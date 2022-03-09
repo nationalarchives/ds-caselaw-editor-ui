@@ -18,97 +18,97 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ds_judgements_public_ui/templates/base.html:26
+#: ds_caselaw_editor_ui/templates/base.html:26
 msgid "skiplink"
 msgstr "Skip to Main Content"
 
-#: ds_judgements_public_ui/templates/includes/breadcrumbs.html:6
+#: ds_caselaw_editor_ui/templates/includes/breadcrumbs.html:6
 msgid "common.home"
 msgstr "Home"
 
-#: ds_judgements_public_ui/templates/includes/breadcrumbs.html:7
-#: ds_judgements_public_ui/templates/judgment/results.html:5
-#: ds_judgements_public_ui/templates/pages/home.html:5
-#: ds_judgements_public_ui/templates/pages/home.html:18
-#: ds_judgements_public_ui/templates/pages/open_justice_licence.html:7
-#: ds_judgements_public_ui/templates/pages/sources.html:7
-#: ds_judgements_public_ui/templates/pages/terms_of_use.html:6
+#: ds_caselaw_editor_ui/templates/includes/breadcrumbs.html:7
+#: ds_caselaw_editor_ui/templates/judgment/results.html:5
+#: ds_caselaw_editor_ui/templates/pages/home.html:5
+#: ds_caselaw_editor_ui/templates/pages/home.html:18
+#: ds_caselaw_editor_ui/templates/pages/open_justice_licence.html:7
+#: ds_caselaw_editor_ui/templates/pages/sources.html:7
+#: ds_caselaw_editor_ui/templates/pages/terms_of_use.html:6
 msgid "common.findcaselaw"
-msgstr "Find case law"
+msgstr "Find and manage case law"
 
-#: ds_judgements_public_ui/templates/judgment/results.html:3
+#: ds_caselaw_editor_ui/templates/judgment/results.html:3
 msgid "results.search.title"
 msgstr "Search results"
 
-#: ds_judgements_public_ui/templates/pages/home.html:20
+#: ds_caselaw_editor_ui/templates/pages/home.html:20
 msgid "home.useservice"
 msgstr ""
-"Use this service to find, view and download judgments and tribunal decisions"
+"Use this service to find and manage judgments and tribunal decisions on the 'Find Case Law' site"
 
-#: ds_judgements_public_ui/templates/pages/no_results.html:4
+#: ds_caselaw_editor_ui/templates/pages/no_results.html:4
 #, python-format
 msgid "No results for '%(data)s'"
 msgstr ""
 
-#: ds_judgements_public_ui/templates/pages/no_results.html:10
+#: ds_caselaw_editor_ui/templates/pages/no_results.html:10
 msgid "search.noresults"
 msgstr "There are no results for your search"
 
-#: ds_judgements_public_ui/templates/pages/no_results.html:11
+#: ds_caselaw_editor_ui/templates/pages/no_results.html:11
 msgid "search.improvesearch"
 msgstr ""
 "Improve your search results by removing filters, double-checking your "
 "spelling, using fewer keywords or searching for something less specific."
 
-#: ds_judgements_public_ui/templates/pages/open_justice_licence.html:4
+#: ds_caselaw_editor_ui/templates/pages/open_justice_licence.html:4
 msgid "openjusticelicence.title"
 msgstr "Open Justice Licence"
 
-#: ds_judgements_public_ui/templates/pages/sources.html:4
+#: ds_caselaw_editor_ui/templates/pages/sources.html:4
 msgid "judgmentsources.title"
 msgstr "Judgment Sources"
 
-#: ds_judgements_public_ui/templates/pages/structured_search.html:4
+#: ds_caselaw_editor_ui/templates/pages/structured_search.html:4
 msgid "search.title"
 msgstr "Search"
 
-#: ds_judgements_public_ui/templates/pages/structured_search.html:6
+#: ds_caselaw_editor_ui/templates/pages/structured_search.html:6
 msgid "commom.findcaselaw"
-msgstr "Find case law"
+msgstr "Find and manage case law"
 
-#: ds_judgements_public_ui/templates/pages/terms_of_use.html:3
+#: ds_caselaw_editor_ui/templates/pages/terms_of_use.html:3
 msgid "terms.title"
 msgstr "Terms of use"
 
 #, fuzzy
 #~| msgid "common.findcaselaw"
 #~ msgid "findcaselaw"
-#~ msgstr "Find case law"
+#~ msgstr "Find and manage case law"
 
-#: ds_judgements_public_ui/templates/includes/judgment_text_toolbar.html:9
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:9
 msgid "judgment.downloadasxml"
 msgstr "Download as XML"
 
-#: ds_judgements_public_ui/templates/includes/judgment_text_toolbar.html:5
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:5
 msgid "judgment.back"
 msgstr "Back to search results"
 
-#: ds_judgements_public_ui/templates/includes/judgment_text_source.html:3
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_source.html:3
 msgid "judgment.source_by"
 msgstr "This judgment has been provided to The National Archives by "
 
-#: ds_judgements_public_ui/templates/includes/judgment_text_source.html:4
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_source.html:4
 msgid "judgment.bailii"
 msgstr "The British and Irish Legal Information Institute"
 
-#: ds_judgements_public_ui/templates/includes/recent_judgments.html:28
+#: ds_caselaw_editor_ui/templates/includes/recent_judgments.html:28
 msgid "judgments.allrecent"
 msgstr "See all recent judgments"
 
-#: ds_judgements_public_ui/templates/includes/recent_judgments.html:20
+#: ds_caselaw_editor_ui/templates/includes/recent_judgments.html:20
 msgid "judgments.date"
 msgstr "Date:"
 
-#: ds_judgements_public_ui/templates/includes/recent_judgments.html:23
+#: ds_caselaw_editor_ui/templates/includes/recent_judgments.html:23
 msgid "judgments.court"
 msgstr "Court:"

@@ -26,6 +26,6 @@ if __name__ == "__main__":
     # This allows easy placement of apps within the interior
     # ds_judgements_public_ui directory.
     current_path = Path(__file__).parent.resolve()
-    sys.path.append(str(current_path / "ds_judgements_public_ui"))
+    sys.path.append(str(current_path / "ds_caselaw_editor_ui"))
 
     execute_from_command_line(sys.argv)

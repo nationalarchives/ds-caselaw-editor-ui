@@ -23,7 +23,7 @@ from wsgi_basic_auth import BasicAuth
 # This allows easy placement of apps within the interior
 # ds_judgements_public_ui directory.
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent
-sys.path.append(str(ROOT_DIR / "ds_judgements_public_ui"))
+sys.path.append(str(ROOT_DIR / "ds_caselaw_editor_ui"))
 # We defer to a DJANGO_SETTINGS_MODULE already in the environment. This breaks
 # if running multiple sites in the same mod_wsgi process. To fix this, use
 # mod_wsgi daemon mode with each site in its own daemon process, or use

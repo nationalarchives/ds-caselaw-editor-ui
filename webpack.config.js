@@ -3,10 +3,10 @@ const path = require('path');
 module.exports = {
   mode: 'development',
   devtool: false,
-  entry: './ds_judgements_public_ui/static/js/src/app.js',
+  entry: './ds_caselaw_editor_ui/static/js/src/app.js',
   output: {
     filename: 'app.js',
-    path: path.resolve(__dirname, 'ds_judgements_public_ui/static/js/dist'),
+    path: path.resolve(__dirname, 'ds_caselaw_editor_ui/static/js/dist'),
   },
   module: {
   rules: [

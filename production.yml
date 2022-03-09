@@ -10,7 +10,7 @@ services:
     build:
       context: .
       dockerfile: ./compose/production/django/Dockerfile
-    image: ds_judgements_public_ui_production_django
+    image: ds_caselaw_editor_ui_production_django
     depends_on:
       - postgres
       - redis
@@ -25,7 +25,7 @@ services:
     build:
       context: .
       dockerfile: ./compose/production/postgres/Dockerfile
-    image: ds_judgements_public_ui_production_postgres
+    image: ds_caselaw_editor_ui_production_postgres
     volumes:
       - production_postgres_data:/var/lib/postgresql/data:Z
       - production_postgres_data_backups:/backups:z
@@ -52,7 +52,7 @@ services:
     build:
       context: .
       dockerfile: ./compose/production/traefik/Dockerfile
-    image: ds_judgements_public_ui_production_traefik
+    image: ds_caselaw_editor_ui_production_traefik
     depends_on:
       - django
     volumes:

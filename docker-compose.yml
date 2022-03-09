@@ -55,19 +55,3 @@ services:
     volumes:
       - ./docker/db/data/:/var/opt/MarkLogic/
       - ./docker/db/backup:/var/opt/backup
-
-  docs:
-    image: ds_judgements_public_ui_local_docs
-    container_name: ds_judgements_public_ui_local_docs
-    build:
-      context: .
-      dockerfile: ./compose/local/docs/Dockerfile
-    env_file:
-      - ./.env
-    volumes:
-      - ./docs:/docs:z
-      - ./config:/app/config:z
-      - ./ds_judgements_public_ui:/app/ds_judgements_public_ui:z
-    ports:
-      - "7000:7000"
-    command: /start-docs

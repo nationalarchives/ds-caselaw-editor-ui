@@ -1,5 +1,5 @@
 
-# ds-judgements-public-ui
+# ds-judgements-editor-ui
 
 ## Local development
 
