@@ -18,16 +18,6 @@ urlpatterns = [
         name="terms_of_use",
     ),
     path(
-        "sources",
-        views.SourcesView.as_view(),
-        name="sources",
-    ),
-    path(
-        "structured_search",
-        views.StructuredSearchView.as_view(),
-        name="structured_search",
-    ),
-    path(
         "no_results",
         views.NoResultsView.as_view(),
         name="no_results",
@@ -37,7 +27,6 @@ urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     # Your stuff: custom urls includes go here
     path("", include("judgments.urls")),
-    path("judgments_admin/", include("judgments_admin.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

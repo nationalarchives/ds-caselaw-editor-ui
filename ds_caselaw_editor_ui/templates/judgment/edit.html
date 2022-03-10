@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "layout_judgment_html.html" %}
 {% block content %}
   {% if context.success %}
     {{ context.success }}
@@ -6,12 +6,11 @@
   {% if context.error %}
     {{ context.error }}
   {% endif %}
-  <p>Editing {{context.uri}}</p>
+  <p>Editing {{context.metadata_name}} ({{context.judgment_uri}})</p>
   <form action="{% url 'update' %}" method="post">
     {% csrf_token %}
     <input type="text" value="{{context.metadata_name}}" name="metadata_name" />
-    <input type="hidden" name="uri" value="{{context.uri}}"/>
+    <input type="hidden" name="judgment_uri" value="{{context.judgment_uri}}"/>
     <input type="submit" value="Save"/>
   </form>
-<a href="{% url 'detail' context.uri %}">Back to Judgment detail page</a>
 {% endblock content %}

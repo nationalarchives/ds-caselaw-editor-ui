@@ -7,7 +7,7 @@
         <li class="recent-judgments__judgment">
           <span>
             <span class="recent-judgments__title">
-              <a href="{% url 'detail' item.uri %}">
+              <a href="{% url 'detail' %}?judgment_uri={{item.uri}}">
                 {{ item.name }}
               </a>
             </span>
