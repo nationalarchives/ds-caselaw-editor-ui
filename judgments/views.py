@@ -63,10 +63,12 @@ def update(request):
         judgment_xml = api_client.get_judgment_xml(judgment_uri)
         xml = etree.XML(bytes(judgment_xml, encoding="utf8"))
         name = xml_tools.get_metadata_name_element(xml)
-        name.set("value", request.POST["metadata_name"])
+        new_name = request.POST["metadata_name"]
+        name.set("value", new_name)
         api_client.save_judgment_xml(judgment_uri, xml)
         context["metadata_name"] = xml_tools.get_metadata_name_value(xml)
         context["success"] = "Judgment successfully updated"
+        context["page_title"] = new_name
     except MarklogicAPIError:
         context["error"] = "There was an error saving the Judgment"
     except JudgmentMissingMetadataError:
