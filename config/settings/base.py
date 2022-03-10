@@ -281,8 +281,8 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # SOCIALACCOUNT_FORMS = {"signup": "ds_judgements_public_ui.users.forms.UserSocialSignupForm"}
 
 SOCIALACCOUNT_PROVIDERS = {
-    'auth0': {
-        'AUTH0_URL': 'https://dev-w-rqd9lv.eu.auth0.com',
+    "auth0": {
+        "AUTH0_URL": "https://dev-w-rqd9lv.eu.auth0.com",
     }
 }
 
