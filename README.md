@@ -240,3 +240,9 @@ msgstr "This is my translation"
 ```
 django-admin compilemessages
 ```
+
+## Authentication
+
+To login or signup to the staging application, go to `http://localhost:3000/accounts/login`. From there you will be able to create an account or login to an existing one.
+
+Authentication is provided by [Auth0](https://auth0.com).
