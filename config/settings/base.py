@@ -74,6 +74,7 @@ THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    "allauth.socialaccount.providers.auth0",
 ]
 
 LOCAL_APPS = [
@@ -99,8 +100,9 @@ AUTHENTICATION_BACKENDS = [
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 # AUTH_USER_MODEL = "users.User"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
-LOGIN_REDIRECT_URL = "users:redirect"
-# https://docs.djangoproject.com/en/dev/ref/settings/#login-url
+# LOGIN_REDIRECT_URL = "users:redirect"
+# https://
+# docs.djangoproject.com/en/dev/ref/settings/#login-url
 LOGIN_URL = "account_login"
 
 # PASSWORDS
@@ -278,6 +280,11 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # https://django-allauth.readthedocs.io/en/latest/forms.html
 # SOCIALACCOUNT_FORMS = {"signup": "ds_judgements_public_ui.users.forms.UserSocialSignupForm"}
 
+SOCIALACCOUNT_PROVIDERS = {
+    "auth0": {
+        "AUTH0_URL": "https://dev-w-rqd9lv.eu.auth0.com",
+    }
+}
 
 # Your stuff...
 # ------------------------------------------------------------------------------

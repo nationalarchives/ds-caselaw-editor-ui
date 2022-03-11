@@ -33,6 +33,7 @@ urlpatterns = [
         name="no_results",
     ),
     # Django Admin, use {% url 'admin:index' %}
+    path("accounts/", include("allauth.urls")),
     path(settings.ADMIN_URL, admin.site.urls),
     # Your stuff: custom urls includes go here
     path("", include("judgments.urls")),
