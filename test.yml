@@ -1,16 +1,16 @@
 version: '3'
 
 volumes:
-  ds_judgements_public_ui_local_postgres_data: {}
-  ds_judgements_public_ui_local_postgres_data_backups: {}
+  ds_caselaw_editor_ui_local_postgres_data: {}
+  ds_caselaw_editor_ui_local_postgres_data_backups: {}
 
 services:
   django:
     build:
       context: .
       dockerfile: ./compose/local/django/Dockerfile
-    image: ds_judgements_public_ui_local_django
-    container_name: ds_judgements_public_ui_local_django
+    image: ds_caselaw_editor_ui_local_django
+    container_name: ds_caselaw_editor_ui_local_django
     depends_on:
       - postgres
     volumes:
@@ -26,11 +26,11 @@ services:
     build:
       context: .
       dockerfile: ./compose/production/postgres/Dockerfile
-    image: ds_judgements_public_ui_production_postgres
-    container_name: ds_judgements_public_ui_local_postgres
+    image: ds_caselaw_editor_ui_production_postgres
+    container_name: ds_caselaw_editor_ui_local_postgres
     volumes:
-      - ds_judgements_public_ui_local_postgres_data:/var/lib/postgresql/data:Z
-      - ds_judgements_public_ui_local_postgres_data_backups:/backups:z
+      - ds_caselaw_editor_ui_local_postgres_data:/var/lib/postgresql/data:Z
+      - ds_caselaw_editor_ui_local_postgres_data_backups:/backups:z
     env_file:
       - ./.envs/.test/.postgres
 
@@ -50,8 +50,8 @@ services:
 
 
   docs:
-    image: ds_judgements_public_ui_local_docs
-    container_name: ds_judgements_public_ui_local_docs
+    image: ds_caselaw_editor_ui_local_docs
+    container_name: ds_caselaw_editor_ui_local_docs
     build:
       context: .
       dockerfile: ./compose/local/docs/Dockerfile
@@ -60,7 +60,7 @@ services:
     volumes:
       - ./docs:/docs:z
       - ./config:/app/config:z
-      - ./ds_judgements_public_ui:/app/ds_judgements_public_ui:z
+      - ./ds_caselaw_editor_ui:/app/ds_caselaw_editor_ui:z
     ports:
       - "7000:7000"
     command: /start-docs

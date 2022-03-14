@@ -118,7 +118,7 @@ def test(c):
             "exec",
             "django",
             "mypy",
-            "ds_judgements_public_ui",
+            "ds_caselaw_editor_ui",
         ]
     )
     # Pytest

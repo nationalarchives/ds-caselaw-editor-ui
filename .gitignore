@@ -274,7 +274,7 @@ Session.vim
 tags
 
 ### Project template
-ds_judgements_public_ui/media/
+ds_caselaw_editor_ui/media/
 
 .pytest_cache/
 .ipython/
@@ -284,6 +284,6 @@ ds_judgements_public_ui/media/
 
 docker/*
 
-/ds_judgements_public_ui/static/css/main.css
-/ds_judgements_public_ui/static/css/main.css.map
-/ds_judgements_public_ui/static/js/dist/app.js
+/ds_caselaw_editor_ui/static/css/main.css
+/ds_caselaw_editor_ui/static/css/main.css.map
+/ds_caselaw_editor_ui/static/js/dist/app.js
