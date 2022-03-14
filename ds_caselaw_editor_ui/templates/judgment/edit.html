@@ -1,5 +1,6 @@
 {% extends "layout_judgment_html.html" %}
 {% block content %}
+{% load i18n %}
   <div class="edit-component">
     <div class="edit-component__container">
       {% if context.success %}
@@ -8,10 +9,10 @@
       {% if context.error %}
         <div class="edit-component__error">{{ context.error }}</div>
       {% endif %}
-      <h2 class="edit-component__header">Edit Judgment <span class="judgment-uri">{{context.judgment_uri}}</span></h2>
+      <h2 class="edit-component__header">{% translate "judgment.edit_judgment" %} <span class="judgment-uri">{{context.judgment_uri}}</span></h2>
       <form action="{% url 'update' %}" aria-label="Edit judgment" method="post">
         {% csrf_token %}
-        <label for="metadata_name">Judgment name</label>
+        <label for="metadata_name">{% translate "judgment.judgment_name" %}</label>
         <input type="text" class="edit-component__metadata_name-input" value="{{context.metadata_name}}"
                name="metadata_name" id="metadata_name" />
         <input type="hidden" name="judgment_uri" value="{{context.judgment_uri}}"/>

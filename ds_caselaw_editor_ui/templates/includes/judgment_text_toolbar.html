@@ -8,9 +8,9 @@
         </div>
         <div class="judgment-toolbar__edit">
           {% if context.judgment  %}
-            <a class="" href="{% url 'edit' %}?judgment_uri={{context.judgment_uri}}">Edit this Judgment</a>
+            <a class="" href="{% url 'edit' %}?judgment_uri={{context.judgment_uri}}">{% translate "judgment.edit_this_judgment" %}</a>
           {% else %}
-            <a class="" href="{% url 'detail' %}?judgment_uri={{context.judgment_uri}}">View this Judgment</a>
+            <a class="" href="{% url 'detail' %}?judgment_uri={{context.judgment_uri}}">{% translate "judgment.view_this_judgment" %}</a>
           {% endif %}
         </div>
     </div>
