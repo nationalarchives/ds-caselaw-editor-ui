@@ -19,7 +19,7 @@
         </div>
         <div class="edit-component__panel">
           <label for="published">{% translate "judgment.published" %}</label>
-          <input type="checkbox" class="edit-component__published-input" value="" name="published" id="published"/>
+          <input type="checkbox" class="edit-component__published-input" {% if context.published %}checked{% endif %} name="published" id="published"/>
         </div>
         <div class="edit-component__panel">
           <input type="hidden" name="judgment_uri" value="{{context.judgment_uri}}"/>
