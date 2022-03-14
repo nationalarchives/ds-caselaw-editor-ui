@@ -43,7 +43,7 @@ def edit(request):
     context = {"judgment_uri": judgment_uri}
     try:
         judgment_xml = api_client.get_judgment_xml(judgment_uri)
-        context["published"] = api_client.is_published(judgment_uri)
+        context["published"] = api_client.is_document_published(judgment_uri)
         xml = etree.XML(bytes(judgment_xml, encoding="utf8"))
         name = xml_tools.get_metadata_name_value(xml)
         context["metadata_name"] = name
@@ -64,7 +64,7 @@ def update(request):
 
     context = {"judgment_uri": judgment_uri}
     try:
-        api_client.mark_document_published(judgment_uri, published)
+        api_client.publish_document(judgment_uri, published)
 
         judgment_xml = api_client.get_judgment_xml(judgment_uri)
         xml = etree.XML(bytes(judgment_xml, encoding="utf8"))

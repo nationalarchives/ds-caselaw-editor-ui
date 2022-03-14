@@ -193,7 +193,7 @@ class MarklogicApiClient:
             xquery_path, vars=f'{{"uri":"{uri}"}}', accept_header="application/xml"
         )
 
-    def mark_document_published(self, judgment_uri, published=False):
+    def publish_document(self, judgment_uri, published=False):
         uri = f"/{judgment_uri.lstrip('/')}.xml"
         xquery_path = os.path.join(
             settings.ROOT_DIR, "judgments", "xquery", "publish.xqy"
@@ -205,7 +205,7 @@ class MarklogicApiClient:
             accept_header="application/xml",
         )
 
-    def is_published(self, judgment_uri):
+    def is_document_published(self, judgment_uri):
         uri = f"/{judgment_uri.lstrip('/')}.xml"
         xquery_path = os.path.join(
             settings.ROOT_DIR, "judgments", "xquery", "is-published.xqy"
