@@ -25,6 +25,7 @@ def detail(request):
     try:
         results = api_client.eval_xslt(judgment_uri)
         xml_results = api_client.get_judgment_xml(judgment_uri)
+
         multipart_data = decoder.MultipartDecoder.from_response(results)
         judgment = multipart_data.parts[0].text
         model = Judgment.create_from_string(xml_results)
@@ -42,6 +43,7 @@ def edit(request):
     context = {"judgment_uri": judgment_uri}
     try:
         judgment_xml = api_client.get_judgment_xml(judgment_uri)
+        context["published"] = api_client.is_published(judgment_uri)
         xml = etree.XML(bytes(judgment_xml, encoding="utf8"))
         name = xml_tools.get_metadata_name_value(xml)
         context["metadata_name"] = name
@@ -58,14 +60,19 @@ def edit(request):
 
 def update(request):
     judgment_uri = request.POST["judgment_uri"]
+    published = bool(request.POST.get("published", False))
+
     context = {"judgment_uri": judgment_uri}
     try:
+        api_client.mark_document_published(judgment_uri, published)
+
         judgment_xml = api_client.get_judgment_xml(judgment_uri)
         xml = etree.XML(bytes(judgment_xml, encoding="utf8"))
         name = xml_tools.get_metadata_name_element(xml)
         new_name = request.POST["metadata_name"]
         name.set("value", new_name)
         api_client.save_judgment_xml(judgment_uri, xml)
+        context["published"] = published
         context["metadata_name"] = xml_tools.get_metadata_name_value(xml)
         context["success"] = "Judgment successfully updated"
         context["page_title"] = new_name

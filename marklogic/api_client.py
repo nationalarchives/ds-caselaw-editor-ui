@@ -8,6 +8,7 @@ from django.conf import settings
 from lxml import etree
 from lxml.etree import Element
 from requests.auth import HTTPBasicAuth
+from requests_toolbelt.multipart import decoder
 
 from config.settings.base import env
 
@@ -188,9 +189,20 @@ class MarklogicApiClient:
 
     def mark_document_published(self, judgment_uri, published=False):
         uri = f"/{judgment_uri.lstrip('/')}.xml"
-        xquery_path = os.path.join(settings.ROOT_DIR, "judgments", "xquery", "xslt.xqy")
+        xquery_path = os.path.join(settings.ROOT_DIR, "judgments", "xquery", "publish.xqy")
+        published_value = 'true' if published else 'false'
+        return self.eval(xquery_path, vars=f'{{"uri":"{uri}","published":"{published_value}"}}', accept_header="application/xml")
 
-        return self.eval(xquery_path, vars=f'{{"uri":"{uri}","published":{published}}}', accept_header="application/xml")
+    def is_published(self, judgment_uri):
+        uri = f"/{judgment_uri.lstrip('/')}.xml"
+        xquery_path = os.path.join(settings.ROOT_DIR, "judgments", "xquery", "is-published.xqy")
+
+        response = self.eval(xquery_path, vars=f'{{"uri":"{uri}"}}',
+                         accept_header="multipart/mixed")
+
+        content = decoder.MultipartDecoder.from_response(response).parts[0].text
+        xml = etree.fromstring(content)
+        return xml.text == "true"
 
 
 api_client = MarklogicApiClient(
