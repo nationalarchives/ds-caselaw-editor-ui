@@ -146,7 +146,9 @@ class MarklogicApiClient:
             headers,
         )
 
-    def eval(self, xquery_path, vars, database="Judgments", accept_header="multipart/mixed"):
+    def eval(
+        self, xquery_path, vars, database="Judgments", accept_header="multipart/mixed"
+    ):
         headers = {
             "Content-type": "application/x-www-form-urlencoded",
             "Accept": accept_header,
@@ -155,7 +157,7 @@ class MarklogicApiClient:
             "xquery": Path(xquery_path).read_text(),
             "vars": vars,
         }
-        path = f'LATEST/eval?database={database}'
+        path = f"LATEST/eval?database={database}"
         response = self.session.request(
             "POST", url=self._path_to_request_url(path), headers=headers, data=data
         )
@@ -174,7 +176,9 @@ class MarklogicApiClient:
         date_to=None,
         page=1,
     ) -> requests.Response:
-        xquery_path = os.path.join(settings.ROOT_DIR, "judgments", "xquery", "search.xqy")
+        xquery_path = os.path.join(
+            settings.ROOT_DIR, "judgments", "xquery", "search.xqy"
+        )
         vars = f'{{"court":"{str(court or "")}","judge":"{str(judge or "")}",\
         "page":{page},"page-size":{RESULTS_PER_PAGE},"q":"{str(q or "")}","party":"{str(party or "")}",\
         "order":"{str(order or "")}","from":"{str(date_from or "")}","to":"{str(date_to or "")}"}}'
@@ -185,20 +189,31 @@ class MarklogicApiClient:
         uri = f"/{judgment_uri.lstrip('/')}.xml"
         xquery_path = os.path.join(settings.ROOT_DIR, "judgments", "xquery", "xslt.xqy")
 
-        return self.eval(xquery_path, vars=f'{{"uri":"{uri}"}}', accept_header="application/xml")
+        return self.eval(
+            xquery_path, vars=f'{{"uri":"{uri}"}}', accept_header="application/xml"
+        )
 
     def mark_document_published(self, judgment_uri, published=False):
         uri = f"/{judgment_uri.lstrip('/')}.xml"
-        xquery_path = os.path.join(settings.ROOT_DIR, "judgments", "xquery", "publish.xqy")
-        published_value = 'true' if published else 'false'
-        return self.eval(xquery_path, vars=f'{{"uri":"{uri}","published":"{published_value}"}}', accept_header="application/xml")
+        xquery_path = os.path.join(
+            settings.ROOT_DIR, "judgments", "xquery", "publish.xqy"
+        )
+        published_value = "true" if published else "false"
+        return self.eval(
+            xquery_path,
+            vars=f'{{"uri":"{uri}","published":"{published_value}"}}',
+            accept_header="application/xml",
+        )
 
     def is_published(self, judgment_uri):
         uri = f"/{judgment_uri.lstrip('/')}.xml"
-        xquery_path = os.path.join(settings.ROOT_DIR, "judgments", "xquery", "is-published.xqy")
+        xquery_path = os.path.join(
+            settings.ROOT_DIR, "judgments", "xquery", "is-published.xqy"
+        )
 
-        response = self.eval(xquery_path, vars=f'{{"uri":"{uri}"}}',
-                         accept_header="multipart/mixed")
+        response = self.eval(
+            xquery_path, vars=f'{{"uri":"{uri}"}}', accept_header="multipart/mixed"
+        )
 
         content = decoder.MultipartDecoder.from_response(response).parts[0].text
         xml = etree.fromstring(content)
