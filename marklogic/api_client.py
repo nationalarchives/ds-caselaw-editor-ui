@@ -145,6 +145,23 @@ class MarklogicApiClient:
             headers,
         )
 
+    def eval(self, xquery_path, vars, database="Judgments", accept_header="multipart/mixed"):
+        headers = {
+            "Content-type": "application/x-www-form-urlencoded",
+            "Accept": accept_header,
+        }
+        data = {
+            "xquery": Path(xquery_path).read_text(),
+            "vars": vars,
+        }
+        path = f'LATEST/eval?database={database}'
+        response = self.session.request(
+            "POST", url=self._path_to_request_url(path), headers=headers, data=data
+        )
+        # Raise relevant exception for an erroneous response
+        self._raise_for_status(response)
+        return response
+
     def advanced_search(
         self,
         q=None,
@@ -156,44 +173,24 @@ class MarklogicApiClient:
         date_to=None,
         page=1,
     ) -> requests.Response:
-        headers = {
-            "Content-type": "application/x-www-form-urlencoded",
-            "Accept": "multipart/mixed",
-        }
-        xquery_path = os.path.join(settings.ROOT_DIR, "judgments", "xquery.xqy")
+        xquery_path = os.path.join(settings.ROOT_DIR, "judgments", "xquery", "search.xqy")
         vars = f'{{"court":"{str(court or "")}","judge":"{str(judge or "")}",\
         "page":{page},"page-size":{RESULTS_PER_PAGE},"q":"{str(q or "")}","party":"{str(party or "")}",\
         "order":"{str(order or "")}","from":"{str(date_from or "")}","to":"{str(date_to or "")}"}}'
-        data = {
-            "xquery": Path(xquery_path).read_text(),
-            "vars": vars,
-        }
-        path = "LATEST/eval?database=Judgments"
-        response = self.session.request(
-            "POST", url=self._path_to_request_url(path), headers=headers, data=data
-        )
-        # Raise relevant exception for an erroneous response
-        self._raise_for_status(response)
-        return response
+
+        return self.eval(xquery_path, vars)
 
     def eval_xslt(self, judgment_uri) -> requests.Response:
         uri = f"/{judgment_uri.lstrip('/')}.xml"
-        headers = {
-            "Content-type": "application/x-www-form-urlencoded",
-            "Accept": "application/xml",
-        }
-        xquery_path = os.path.join(settings.ROOT_DIR, "judgments", "xslt.xqy")
-        data = {
-            "xquery": Path(xquery_path).read_text(),
-            "vars": f'{{"uri":"{uri}"}}',
-        }
-        path = "LATEST/eval?database=Judgments"
-        response = self.session.request(
-            "POST", url=self._path_to_request_url(path), headers=headers, data=data
-        )
-        # Raise relevant exception for an erroneous response
-        self._raise_for_status(response)
-        return response
+        xquery_path = os.path.join(settings.ROOT_DIR, "judgments", "xquery", "xslt.xqy")
+
+        return self.eval(xquery_path, vars=f'{{"uri":"{uri}"}}', accept_header="application/xml")
+
+    def mark_document_published(self, judgment_uri, published=False):
+        uri = f"/{judgment_uri.lstrip('/')}.xml"
+        xquery_path = os.path.join(settings.ROOT_DIR, "judgments", "xquery", "xslt.xqy")
+
+        return self.eval(xquery_path, vars=f'{{"uri":"{uri}","published":{published}}}', accept_header="application/xml")
 
 
 api_client = MarklogicApiClient(
