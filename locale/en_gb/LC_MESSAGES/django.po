@@ -128,3 +128,7 @@ msgstr "Edit Judgment"
 #: ds_caselaw_editor_ui/templates/judgment/edit.html:14
 msgid "judgment.judgment_name"
 msgstr "Judgment name"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:18
+msgid "judgment.published"
+msgstr "Published?"
