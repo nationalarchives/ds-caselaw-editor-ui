@@ -112,3 +112,23 @@ msgstr "Date:"
 #: ds_caselaw_editor_ui/templates/includes/recent_judgments.html:23
 msgid "judgments.court"
 msgstr "Court:"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:11
+msgid "judgment.edit_this_judgment"
+msgstr "Edit this Judgment"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:13
+msgid "judgment.view_this_judgment"
+msgstr "View this Judgment"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:11
+msgid "judgment.edit_judgment"
+msgstr "Edit Judgment"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:14
+msgid "judgment.judgment_name"
+msgstr "Judgment name"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:18
+msgid "judgment.published"
+msgstr "Published?"

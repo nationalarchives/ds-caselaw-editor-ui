@@ -6,7 +6,7 @@
       <dl class="results__result-terms">
         <dt class="results__result-term-sr">Title</dt>
         <dd>
-          <a class="results__result-title" href="{% url 'detail' result.uri %}">
+          <a class="results__result-title" href="{% url 'detail' %}?judgment_uri={{result.uri}}">
             {{ result.name | safe }}
           </a>
         </dd>

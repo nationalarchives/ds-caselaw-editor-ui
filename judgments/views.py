@@ -1,50 +1,27 @@
-import datetime
 import math
 import re
 
-import xmltodict
 from django.http import Http404, HttpResponse
 from django.template import loader
 from django.utils.translation import gettext
+from lxml import etree
 from requests_toolbelt.multipart import decoder
 
 import marklogic.api_client
 from judgments.models import Judgment, SearchResult, SearchResults
+from marklogic import xml_tools
 from marklogic.api_client import (
     MarklogicAPIError,
     MarklogicResourceNotFoundError,
     api_client,
 )
+from marklogic.xml_tools import JudgmentMissingMetadataError
 
 
-def browse(request, court=None, subdivision=None, year=None):
-    court_query = "/".join(filter(lambda x: x is not None, [court, subdivision]))
-    page = request.GET.get("page", 1)
-    context = {}
-
-    try:
-        model = perform_advanced_search(
-            court=court_query if court_query else None,
-            date_from=datetime.date(year=year, month=1, day=1).strftime("%Y-%m-%d")
-            if year
-            else None,
-            date_to=datetime.date(year=year, month=12, day=31).strftime("%Y-%m-%d")
-            if year
-            else None,
-        )
-        context["search_results"] = [
-            SearchResult.create_from_node(result) for result in model.results
-        ]
-        context["total"] = model.total
-        context["paginator"] = paginator(int(page), model.total)
-    except MarklogicResourceNotFoundError:
-        raise Http404("Search failed")  # TODO: This should be something else!
-    template = loader.get_template("judgment/results.html")
-    return HttpResponse(template.render({"context": context}, request))
-
-
-def detail(request, judgment_uri):
-    context = {}
+def detail(request):
+    params = request.GET
+    judgment_uri = params.get("judgment_uri", None)
+    context = {"judgment_uri": judgment_uri}
     try:
         results = api_client.eval_xslt(judgment_uri)
         xml_results = api_client.get_judgment_xml(judgment_uri)
@@ -53,63 +30,53 @@ def detail(request, judgment_uri):
         model = Judgment.create_from_string(xml_results)
         context["judgment"] = judgment
         context["page_title"] = model.metadata_name
-        context["judgment_uri"] = judgment_uri
     except MarklogicResourceNotFoundError:
         raise Http404("Judgment was not found")
     template = loader.get_template("judgment/detail.html")
     return HttpResponse(template.render({"context": context}, request))
 
 
-def advanced_search(request):
+def edit(request):
     params = request.GET
-    query_params = {
-        "query": params.get("query"),
-        "court": params.get("court"),
-        "judge": params.get("judge"),
-        "party": params.get("party"),
-        "order": params.get("order"),
-        "from": params.get("from"),
-        "to": params.get("to"),
-    }
-    page = params.get("page", 1)
-    context = {}
-
+    judgment_uri = params.get("judgment_uri")
+    context = {"judgment_uri": judgment_uri}
     try:
-        model = perform_advanced_search(
-            query=query_params["query"],
-            court=query_params["court"],
-            judge=query_params["judge"],
-            party=query_params["party"],
-            page=page,
-            order=query_params["order"],
-            date_from=query_params["from"],
-            date_to=query_params["to"],
-        )
-
-        context["search_results"] = [
-            SearchResult.create_from_node(result) for result in model.results
-        ]
-        context["total"] = model.total
-        context["paginator"] = paginator(int(page), model.total)
-
-        context["query_string"] = "&".join(
-            [f'{key}={query_params[key] or ""}' for key in query_params]
-        )
-
+        judgment_xml = api_client.get_judgment_xml(judgment_uri)
+        xml = etree.XML(bytes(judgment_xml, encoding="utf8"))
+        name = xml_tools.get_metadata_name_value(xml)
+        context["metadata_name"] = name
+        context["page_title"] = name
     except MarklogicResourceNotFoundError:
-        raise Http404("Search failed")  # TODO: This should be something else!
-    template = loader.get_template("judgment/results.html")
+        raise Http404("Judgment was not found")
+    except JudgmentMissingMetadataError:
+        context[
+            "error"
+        ] = "The Judgment is missing correct metadata structure and cannot be edited"
+    template = loader.get_template("judgment/edit.html")
     return HttpResponse(template.render({"context": context}, request))
 
 
-def detail_xml(_request, judgment_uri):
+def update(request):
+    judgment_uri = request.POST["judgment_uri"]
+    context = {"judgment_uri": judgment_uri}
     try:
         judgment_xml = api_client.get_judgment_xml(judgment_uri)
-    except MarklogicResourceNotFoundError:
-        raise Http404("Judgment was not found")
-    response = HttpResponse(judgment_xml, content_type="application/xml")
-    response["Content-Disposition"] = f"attachment; filename={judgment_uri}.xml"
-    return response
+        xml = etree.XML(bytes(judgment_xml, encoding="utf8"))
+        name = xml_tools.get_metadata_name_element(xml)
+        new_name = request.POST["metadata_name"]
+        name.set("value", new_name)
+        api_client.save_judgment_xml(judgment_uri, xml)
+        context["metadata_name"] = xml_tools.get_metadata_name_value(xml)
+        context["success"] = "Judgment successfully updated"
+        context["page_title"] = new_name
+    except MarklogicAPIError:
+        context["error"] = "There was an error saving the Judgment"
+    except JudgmentMissingMetadataError:
+        context[
+            "error"
+        ] = "The Judgment is missing correct metadata structure and cannot be edited"
+    template = loader.get_template("judgment/edit.html")
+    return HttpResponse(template.render({"context": context}, request))
 
 
 def index(request):
@@ -139,66 +106,28 @@ def results(request):
 
         if query:
             results = api_client.basic_search(query, page)
-            if type(results) == str:  # Mocked WebLogic response
-                xml_results = xmltodict.parse(results)
-                total = xml_results["search:response"]["@total"]
-                search_results = render_mocked_results(results, with_matches=True)
-                context["search_results"] = search_results
-                context["total"] = total
-                context["paginator"] = paginator(int(page), total)
-            else:
-                model = SearchResults.create_from_string(results.text)
+            model = SearchResults.create_from_string(results.text)
 
-                context["search_results"] = [
-                    SearchResult.create_from_node(result) for result in model.results
-                ]
-                context["total"] = model.total
-                context["paginator"] = paginator(int(page), model.total)
-                context["query_string"] = f"query={query}"
+            context["search_results"] = [
+                SearchResult.create_from_node(result) for result in model.results
+            ]
+            context["total"] = model.total
+            context["paginator"] = paginator(int(page), model.total)
+            context["query_string"] = f"query={query}"
         else:
-            results = api_client.get_judgments_index(page)
-            if type(results) == str:  # Mocked WebLogic response
-                xml_results = xmltodict.parse(results)
-                total = xml_results["search:response"]["@total"]
-                search_results = render_mocked_results(results)
-                context["search_results"] = search_results
-                context["total"] = total
-                context["paginator"] = paginator(int(page), total)
-            else:
-                model = perform_advanced_search(order="-date", page=page)
-                search_results = [
-                    SearchResult.create_from_node(result) for result in model.results
-                ]
-                context["recent_judgments"] = search_results
+            model = perform_advanced_search(order="-date", page=page)
+            search_results = [
+                SearchResult.create_from_node(result) for result in model.results
+            ]
+            context["recent_judgments"] = search_results
 
-                context["total"] = model.total
-                context["search_results"] = search_results
-                context["paginator"] = paginator(int(page), model.total)
+            context["total"] = model.total
+            context["search_results"] = search_results
+            context["paginator"] = paginator(int(page), model.total)
     except MarklogicAPIError:
         raise Http404("Search error")  # TODO: This should be something else!
     template = loader.get_template("judgment/results.html")
     return HttpResponse(template.render({"context": context}, request))
-
-
-def render_mocked_results(results, with_matches=False):
-    xml_results = xmltodict.parse(results)
-    search_results = xml_results["search:response"]["search:result"]
-    matches = ""
-    if with_matches:
-        matches = "<p>A test <mark>matching</mark> search result</p>"
-
-    search_results = [
-        SearchResult(
-            uri=trim_leading_slash(result["@uri"]),
-            neutral_citation="Fake neutral citation",
-            name="Fake Judgment name",
-            court="Fake court",
-            date="2021-01-01",
-            matches=matches,
-        )
-        for result in search_results
-    ]
-    return search_results
 
 
 def paginator(current_page, total):
