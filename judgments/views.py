@@ -23,8 +23,8 @@ def detail(request):
     judgment_uri = params.get("judgment_uri", None)
     context = {"judgment_uri": judgment_uri}
     try:
-        results = api_client.eval_xslt(judgment_uri)
-        xml_results = api_client.get_judgment_xml(judgment_uri)
+        results = api_client.eval_xslt(judgment_uri, show_unpublished=True)
+        xml_results = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
 
         multipart_data = decoder.MultipartDecoder.from_response(results)
         judgment = multipart_data.parts[0].text
@@ -42,7 +42,7 @@ def edit(request):
     judgment_uri = params.get("judgment_uri")
     context = {"judgment_uri": judgment_uri}
     try:
-        judgment_xml = api_client.get_judgment_xml(judgment_uri)
+        judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
         context["published"] = api_client.is_document_published(judgment_uri)
         xml = etree.XML(bytes(judgment_xml, encoding="utf8"))
         name = xml_tools.get_metadata_name_value(xml)
@@ -66,7 +66,7 @@ def update(request):
     try:
         api_client.publish_document(judgment_uri, published)
 
-        judgment_xml = api_client.get_judgment_xml(judgment_uri)
+        judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
         xml = etree.XML(bytes(judgment_xml, encoding="utf8"))
         name = xml_tools.get_metadata_name_element(xml)
         new_name = request.POST["metadata_name"]
@@ -112,8 +112,7 @@ def results(request):
         page = params.get("page") if params.get("page") else "1"
 
         if query:
-            results = api_client.basic_search(query, page)
-            model = SearchResults.create_from_string(results.text)
+            model = perform_advanced_search(query=query, page=page)
 
             context["search_results"] = [
                 SearchResult.create_from_node(result) for result in model.results
