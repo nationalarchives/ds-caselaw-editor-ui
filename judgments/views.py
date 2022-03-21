@@ -42,8 +42,10 @@ def edit(request):
     judgment_uri = params.get("judgment_uri")
     context = {"judgment_uri": judgment_uri}
     try:
-        judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
-        context["published"] = api_client.is_document_published(judgment_uri)
+        judgment_xml = api_client.get_judgment_xml(judgment_uri)
+        context["published"] = api_client.get_published(judgment_uri)
+        context["sensitive"] = api_client.get_sensitive(judgment_uri)
+        context["supplemental"] = api_client.get_supplemental(judgment_uri)
         xml = etree.XML(bytes(judgment_xml, encoding="utf8"))
         name = xml_tools.get_metadata_name_value(xml)
         context["metadata_name"] = name
@@ -61,10 +63,14 @@ def edit(request):
 def update(request):
     judgment_uri = request.POST["judgment_uri"]
     published = bool(request.POST.get("published", False))
+    sensitive = bool(request.POST.get("sensitive", False))
+    supplemental = bool(request.POST.get("supplemental", False))
 
     context = {"judgment_uri": judgment_uri}
     try:
-        api_client.publish_document(judgment_uri, published)
+        api_client.set_published(judgment_uri, published)
+        api_client.set_sensitive(judgment_uri, sensitive)
+        api_client.set_supplemental(judgment_uri, supplemental)
 
         judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
         xml = etree.XML(bytes(judgment_xml, encoding="utf8"))
