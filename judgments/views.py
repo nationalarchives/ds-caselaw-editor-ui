@@ -79,11 +79,13 @@ def update(request):
         name.set("value", new_name)
         api_client.save_judgment_xml(judgment_uri, xml)
         context["published"] = published
-        context["metadata_name"] = xml_tools.get_metadata_name_value(xml)
+        context["sensitive"] = sensitive
+        context["supplemental"] = supplemental
+        context["metadata_name"] = new_name
         context["success"] = "Judgment successfully updated"
         context["page_title"] = new_name
-    except MarklogicAPIError:
-        context["error"] = "There was an error saving the Judgment"
+    except MarklogicAPIError as e:
+        context["error"] = f"There was an error saving the Judgment: {e}"
     except JudgmentMissingMetadataError:
         context[
             "error"
