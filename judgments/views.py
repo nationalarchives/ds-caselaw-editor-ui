@@ -42,7 +42,7 @@ def edit(request):
     judgment_uri = params.get("judgment_uri")
     context = {"judgment_uri": judgment_uri}
     try:
-        judgment_xml = api_client.get_judgment_xml(judgment_uri)
+        judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
         context["published"] = api_client.get_published(judgment_uri)
         context["sensitive"] = api_client.get_sensitive(judgment_uri)
         context["supplemental"] = api_client.get_supplemental(judgment_uri)
