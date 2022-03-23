@@ -140,3 +140,7 @@ msgstr "Contains sensitive information?"
 #: ds_caselaw_editor_ui/templates/judgment/edit.html:29
 msgid "judgment.supplemental"
 msgstr "Has supplemental documents?"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:42
+msgid "judgment.previous_versions"
+msgstr "Previous versions of this Judgment"

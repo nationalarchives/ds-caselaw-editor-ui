@@ -29,6 +29,11 @@
     display: inline-block;
   }
 
+  &__version {
+    margin-top: $spacer__unit;
+    font-weight: bold;
+  }
+
   &__container {
     margin: auto;
 
