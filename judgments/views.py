@@ -42,7 +42,7 @@ def edit(request):
     judgment_uri = params.get("judgment_uri")
     context = {"judgment_uri": judgment_uri}
     try:
-        judgment_xml = api_client.get_judgment_xml(judgment_uri)
+        judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
         context["published"] = api_client.get_published(judgment_uri)
         context["sensitive"] = api_client.get_sensitive(judgment_uri)
         context["supplemental"] = api_client.get_supplemental(judgment_uri)
@@ -79,11 +79,13 @@ def update(request):
         name.set("value", new_name)
         api_client.save_judgment_xml(judgment_uri, xml)
         context["published"] = published
-        context["metadata_name"] = xml_tools.get_metadata_name_value(xml)
+        context["sensitive"] = sensitive
+        context["supplemental"] = supplemental
+        context["metadata_name"] = new_name
         context["success"] = "Judgment successfully updated"
         context["page_title"] = new_name
-    except MarklogicAPIError:
-        context["error"] = "There was an error saving the Judgment"
+    except MarklogicAPIError as e:
+        context["error"] = f"There was an error saving the Judgment: {e}"
     except JudgmentMissingMetadataError:
         context[
             "error"
