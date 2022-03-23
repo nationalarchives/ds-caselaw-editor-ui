@@ -129,6 +129,14 @@ msgstr "Edit Judgment"
 msgid "judgment.judgment_name"
 msgstr "Judgment name"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:18
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:21
 msgid "judgment.published"
 msgstr "Published?"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:25
+msgid "judgment.sensitive"
+msgstr "Contains sensitive information?"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:29
+msgid "judgment.supplemental"
+msgstr "Has supplemental documents?"
