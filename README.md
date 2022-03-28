@@ -47,37 +47,45 @@ $ cp .env.example .env
 If you wish to use Marklogic in dev, set `MARKLOGIC_MOCK_REQUESTS` to False. See [Using Marklogic](#using-marklogic)
 for instructions on how to populate your Marklogic database with data.
 
-### 3. Build Docker containers
+### 3. Compile frontend assets
+
+With the dependencies installed as described in [Front end development](#front-end-development)
+
+```bash
+npm run build
+```
+
+### 4. Build Docker containers
 
 ```console
 $ fab build
 ```
 
-### 4. Start Docker containers
+### 5. Start Docker containers
 
 ```console
 $ fab start
 ```
 
-### 5. Start a shell session with the 'django' container
+### 6. Start a shell session with the 'django' container
 
 ```console
 $ fab sh
 ```
 
-### 6. Apply database migrations
+### 7. Apply database migrations
 
 ```console
 $ python manage.py migrate
 ```
 
-### 7. Run a 'development' web server
+### 8. Run a 'development' web server
 
 ```console
 $ python manage.py runserver_plus 0.0.0.0:3000
 ```
 
-### 8. Access the site
+### 9. Access the site
 
 <http://127.0.0.1:3000>
 
