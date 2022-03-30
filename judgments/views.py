@@ -197,11 +197,13 @@ def perform_advanced_search(
 
 def render_versions(multipart_response):
     decoded_versions = decoder.MultipartDecoder.from_response(multipart_response)
+
     versions = [
         {
             "uri": part.text.rstrip(".xml"),
-            "version": re.search(r"([\d])-([\d]+).xml", part.text).group(1),
+            "version": int(re.search(r"([\d]+)-([\d]+).xml", part.text).group(1)),
         }
         for part in decoded_versions.parts
     ]
-    return versions
+    sorted_versions = sorted(versions, key=lambda d: -d["version"])
+    return sorted_versions
