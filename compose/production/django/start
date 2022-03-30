@@ -4,7 +4,7 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-
+npm run build
 python /app/manage.py collectstatic --noinput
 ( cd /app/manage.py ; django-admin compilemessages )
 
