@@ -16,9 +16,6 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   build-essential \
   # psycopg2 dependencies
   libpq-dev
-  # WeasyPrint dependencies \
-  weasyprint \
-  python3-cffi python3-brotli libpango-1.0-0 libpangoft2-1.0-0
 
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements .
@@ -51,9 +48,6 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   # Translations dependencies
   gettext \
   curl \
-  # WeasyPrint dependencies \
-  weasyprint \
-  python3-cffi python3-brotli libpango-1.0-0 libpangoft2-1.0-0 \
   # node install
   nodejs npm \
   # cleaning up unused files
