@@ -1,5 +1,6 @@
 import math
 import re
+import xml.etree.ElementTree as ET
 
 import caselawclient.xml_tools as xml_tools
 from caselawclient.Client import (
@@ -12,7 +13,6 @@ from caselawclient.xml_tools import JudgmentMissingMetadataError
 from django.http import Http404, HttpResponse
 from django.template import loader
 from django.utils.translation import gettext
-from lxml import etree
 from requests_toolbelt.multipart import decoder
 
 from judgments.models import SearchResult, SearchResults
@@ -49,7 +49,8 @@ def edit(request):
         context["sensitive"] = api_client.get_sensitive(judgment_uri)
         context["supplemental"] = api_client.get_supplemental(judgment_uri)
         context["anonymised"] = api_client.get_anonymised(judgment_uri)
-        xml = etree.XML(bytes(judgment_xml, encoding="utf8"))
+
+        xml = ET.XML(bytes(judgment_xml, encoding="utf-8"))
         name = xml_tools.get_metadata_name_value(xml)
         context["metadata_name"] = name
         context["page_title"] = name
@@ -80,7 +81,7 @@ def update(request):
         api_client.set_anonymised(judgment_uri, anonymised)
 
         judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
-        xml = etree.XML(bytes(judgment_xml, encoding="utf8"))
+        xml = ET.XML(bytes(judgment_xml, encoding="utf8"))
         name = xml_tools.get_metadata_name_element(xml)
         new_name = request.POST["metadata_name"]
         name.set("value", new_name)
