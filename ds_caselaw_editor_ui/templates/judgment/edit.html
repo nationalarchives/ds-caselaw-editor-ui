@@ -30,6 +30,10 @@
           <input type="checkbox" class="edit-component__supplemental-input" {% if context.supplemental %}checked{% endif %} name="supplemental" id="supplemental"/>
         </div>
         <div class="edit-component__panel">
+          <label for="anonymised">{% translate "judgment.anonymised" %}</label>
+          <input type="checkbox" class="edit-component__anonymised-input" {% if context.anonymised %}checked{% endif %} name="anonymised" id="anonymised"/>
+        </div>
+        <div class="edit-component__panel">
           <input type="hidden" name="judgment_uri" value="{{context.judgment_uri}}"/>
           <input type="submit" value="Save"/>
         </div>

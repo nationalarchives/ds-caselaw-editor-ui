@@ -48,6 +48,7 @@ def edit(request):
         context["published"] = api_client.get_published(judgment_uri)
         context["sensitive"] = api_client.get_sensitive(judgment_uri)
         context["supplemental"] = api_client.get_supplemental(judgment_uri)
+        context["anonymised"] = api_client.get_anonymised(judgment_uri)
         xml = etree.XML(bytes(judgment_xml, encoding="utf8"))
         name = xml_tools.get_metadata_name_value(xml)
         context["metadata_name"] = name
@@ -69,12 +70,14 @@ def update(request):
     published = bool(request.POST.get("published", False))
     sensitive = bool(request.POST.get("sensitive", False))
     supplemental = bool(request.POST.get("supplemental", False))
+    anonymised = bool(request.POST.get("anonymised", False))
 
     context = {"judgment_uri": judgment_uri}
     try:
         api_client.set_published(judgment_uri, published)
         api_client.set_sensitive(judgment_uri, sensitive)
         api_client.set_supplemental(judgment_uri, supplemental)
+        api_client.set_anonymised(judgment_uri, anonymised)
 
         judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
         xml = etree.XML(bytes(judgment_xml, encoding="utf8"))
@@ -85,6 +88,7 @@ def update(request):
         context["published"] = published
         context["sensitive"] = sensitive
         context["supplemental"] = supplemental
+        context["anonymised"] = anonymised
         context["metadata_name"] = new_name
         context["success"] = "Judgment successfully updated"
         context["page_title"] = new_name
