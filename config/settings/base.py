@@ -282,7 +282,7 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 
 SOCIALACCOUNT_PROVIDERS = {
     "auth0": {
-        "AUTH0_URL": "https://dev-w-rqd9lv.eu.auth0.com",
+        "AUTH0_URL": "https://tna-caselaw-editorial-team.eu.auth0.com",
     }
 }
 
