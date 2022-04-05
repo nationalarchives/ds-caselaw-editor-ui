@@ -1,5 +1,6 @@
 import math
 import re
+import xml.etree.ElementTree as ET
 
 import caselawclient.xml_tools as xml_tools
 from caselawclient.Client import (
@@ -12,25 +13,26 @@ from caselawclient.xml_tools import JudgmentMissingMetadataError
 from django.http import Http404, HttpResponse
 from django.template import loader
 from django.utils.translation import gettext
-from lxml import etree
 from requests_toolbelt.multipart import decoder
 
-from judgments.models import Judgment, SearchResult, SearchResults
+from judgments.models import SearchResult, SearchResults
 
 
 def detail(request):
     params = request.GET
     judgment_uri = params.get("judgment_uri", None)
+    version_uri = params.get("version_uri", None)
     context = {"judgment_uri": judgment_uri}
     try:
-        results = api_client.eval_xslt(judgment_uri, show_unpublished=True)
-        xml_results = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
+        results = api_client.eval_xslt(judgment_uri, version_uri, show_unpublished=True)
+        metadata_name = api_client.get_judgment_name(judgment_uri)
 
         multipart_data = decoder.MultipartDecoder.from_response(results)
         judgment = multipart_data.parts[0].text
-        model = Judgment.create_from_string(xml_results)
         context["judgment"] = judgment
-        context["page_title"] = model.metadata_name
+        context["page_title"] = metadata_name
+        if version_uri:
+            context["version"] = re.search(r"([\d])-([\d]+)", version_uri).group(1)
     except MarklogicResourceNotFoundError:
         raise Http404("Judgment was not found")
     template = loader.get_template("judgment/detail.html")
@@ -43,11 +45,17 @@ def edit(request):
     context = {"judgment_uri": judgment_uri}
     try:
         judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
-        context["published"] = api_client.is_document_published(judgment_uri)
-        xml = etree.XML(bytes(judgment_xml, encoding="utf8"))
+        context["published"] = api_client.get_published(judgment_uri)
+        context["sensitive"] = api_client.get_sensitive(judgment_uri)
+        context["supplemental"] = api_client.get_supplemental(judgment_uri)
+        context["anonymised"] = api_client.get_anonymised(judgment_uri)
+
+        xml = ET.XML(bytes(judgment_xml, encoding="utf-8"))
         name = xml_tools.get_metadata_name_value(xml)
         context["metadata_name"] = name
         context["page_title"] = name
+        version_response = api_client.list_judgment_versions(judgment_uri)
+        context["previous_versions"] = render_versions(version_response)
     except MarklogicResourceNotFoundError:
         raise Http404("Judgment was not found")
     except JudgmentMissingMetadataError:
@@ -61,23 +69,35 @@ def edit(request):
 def update(request):
     judgment_uri = request.POST["judgment_uri"]
     published = bool(request.POST.get("published", False))
+    sensitive = bool(request.POST.get("sensitive", False))
+    supplemental = bool(request.POST.get("supplemental", False))
+    anonymised = bool(request.POST.get("anonymised", False))
 
     context = {"judgment_uri": judgment_uri}
     try:
-        api_client.publish_document(judgment_uri, published)
+        api_client.set_published(judgment_uri, published)
+        api_client.set_sensitive(judgment_uri, sensitive)
+        api_client.set_supplemental(judgment_uri, supplemental)
+        api_client.set_anonymised(judgment_uri, anonymised)
 
         judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
-        xml = etree.XML(bytes(judgment_xml, encoding="utf8"))
+        xml = ET.XML(bytes(judgment_xml, encoding="utf8"))
         name = xml_tools.get_metadata_name_element(xml)
         new_name = request.POST["metadata_name"]
         name.set("value", new_name)
         api_client.save_judgment_xml(judgment_uri, xml)
         context["published"] = published
-        context["metadata_name"] = xml_tools.get_metadata_name_value(xml)
+        context["sensitive"] = sensitive
+        context["supplemental"] = supplemental
+        context["anonymised"] = anonymised
+        context["metadata_name"] = new_name
         context["success"] = "Judgment successfully updated"
         context["page_title"] = new_name
-    except MarklogicAPIError:
-        context["error"] = "There was an error saving the Judgment"
+
+        version_response = api_client.list_judgment_versions(judgment_uri)
+        context["previous_versions"] = render_versions(version_response)
+    except MarklogicAPIError as e:
+        context["error"] = f"There was an error saving the Judgment: {e}"
     except JudgmentMissingMetadataError:
         context[
             "error"
@@ -178,3 +198,17 @@ def perform_advanced_search(
     )
     multipart_data = decoder.MultipartDecoder.from_response(response)
     return SearchResults.create_from_string(multipart_data.parts[0].text)
+
+
+def render_versions(multipart_response):
+    decoded_versions = decoder.MultipartDecoder.from_response(multipart_response)
+
+    versions = [
+        {
+            "uri": part.text.rstrip(".xml"),
+            "version": int(re.search(r"([\d]+)-([\d]+).xml", part.text).group(1)),
+        }
+        for part in decoded_versions.parts
+    ]
+    sorted_versions = sorted(versions, key=lambda d: -d["version"])
+    return sorted_versions

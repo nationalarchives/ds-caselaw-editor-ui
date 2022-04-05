@@ -77,7 +77,7 @@ $ fab sh
 $ python manage.py runserver_plus 0.0.0.0:3000
 ```
 
-### 8. Access the site
+### 9. Access the site
 
 <http://127.0.0.1:3000>
 
@@ -162,7 +162,7 @@ We're using [the built-in django translation module](https://docs.djangoproject.
 django-admin makemessages -l {langage_code}
 ```
 
-where `language_code` is the ISO 3166-1 country code (e.g. en_gb)
+where `language_code` is the ISO 3166-1 country code (e.g. en_GB)
 
 4) In the generated `.po` file, find the generated msgid string and add the translation below it
 

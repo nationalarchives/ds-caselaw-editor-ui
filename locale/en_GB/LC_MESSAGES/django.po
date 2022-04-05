@@ -129,6 +129,22 @@ msgstr "Edit Judgment"
 msgid "judgment.judgment_name"
 msgstr "Judgment name"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:18
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:21
 msgid "judgment.published"
 msgstr "Published?"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:25
+msgid "judgment.sensitive"
+msgstr "Contains sensitive information?"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:29
+msgid "judgment.supplemental"
+msgstr "Has supplemental documents?"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:32
+msgid "judgment.anonymised"
+msgstr "This Judgment has been anonymised"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:42
+msgid "judgment.previous_versions"
+msgstr "Previous versions of this Judgment"

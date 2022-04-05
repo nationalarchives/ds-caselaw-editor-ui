@@ -13,5 +13,10 @@
             <a class="" href="{% url 'detail' %}?judgment_uri={{context.judgment_uri}}">{% translate "judgment.view_this_judgment" %}</a>
           {% endif %}
         </div>
+        {% if context.version %}
+          <div class="judgment-toolbar__version">
+            <b>You are viewing version {{ context.version }} of this Judgment.</b>
+          </div>
+        {% endif %}
     </div>
 </div>

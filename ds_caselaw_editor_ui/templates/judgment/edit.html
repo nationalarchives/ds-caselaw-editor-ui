@@ -22,10 +22,38 @@
           <input type="checkbox" class="edit-component__published-input" {% if context.published %}checked{% endif %} name="published" id="published"/>
         </div>
         <div class="edit-component__panel">
+          <label for="sensitive">{% translate "judgment.sensitive" %}</label>
+          <input type="checkbox" class="edit-component__sensitive-input" {% if context.sensitive %}checked{% endif %} name="sensitive" id="sensitive"/>
+        </div>
+        <div class="edit-component__panel">
+          <label for="supplemental">{% translate "judgment.supplemental" %}</label>
+          <input type="checkbox" class="edit-component__supplemental-input" {% if context.supplemental %}checked{% endif %} name="supplemental" id="supplemental"/>
+        </div>
+        <div class="edit-component__panel">
+          <label for="anonymised">{% translate "judgment.anonymised" %}</label>
+          <input type="checkbox" class="edit-component__anonymised-input" {% if context.anonymised %}checked{% endif %} name="anonymised" id="anonymised"/>
+        </div>
+        <div class="edit-component__panel">
           <input type="hidden" name="judgment_uri" value="{{context.judgment_uri}}"/>
           <input type="submit" value="Save"/>
         </div>
       </form>
     </div>
   </div>
+  {% if context.previous_versions %}
+  <div class="list-versions-component">
+    <div class="list-versions-component__container">
+      <h2 class="list-versions-component__header">{% translate "judgment.previous_versions" %}</h2>
+      <ul>
+        {% for version in context.previous_versions %}
+          <li>
+            <a class="list-versions__version-title" href="{% url 'detail' %}?judgment_uri={{context.judgment_uri}}&version_uri={{version.uri}}">
+              v{{ version.version }} ( {{version.uri}} )
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% endif %}
 {% endblock content %}
