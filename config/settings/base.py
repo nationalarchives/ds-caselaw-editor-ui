@@ -275,5 +275,6 @@ ACCOUNT_EMAIL_VERIFICATION = "none"
 
 STRONGHOLD_PUBLIC_URLS = (
     r"^/accounts/login",
+    r"^/accounts/password/reset/",
     r"^/check",
 )
