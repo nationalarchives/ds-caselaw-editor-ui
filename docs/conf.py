@@ -26,7 +26,7 @@ django.setup()
 
 # -- Project information -----------------------------------------------------
 
-project = "ds-judgements-public-ui"
+project = "ds-judgments-editor-ui"
 copyright = """2022, Laura Porter"""
 author = "Laura Porter"
 

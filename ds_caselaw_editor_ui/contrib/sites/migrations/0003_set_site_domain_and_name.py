@@ -41,7 +41,7 @@ def update_site_forward(apps, schema_editor):
         Site,
         schema_editor.connection,
         "dxw.com",
-        "ds-judgements-public-ui",
+        "ds-judgments-editor-ui",
     )
 
 

@@ -12,7 +12,7 @@ services:
       - .:/app:z
     init: true
     environment:
-      DATABASE_URL: "postgres://postgres:admin@postgres:5432/ds_judgements_public_ui"
+      DATABASE_URL: "postgres://postgres:admin@postgres:5432/ds_judgments_editor_ui"
       DJANGO_SETTINGS_MODULE: "config.settings.local"
       SECRET_KEY: local_dev_secret_key
       SECURE_SSL_REDIRECT: "false"
@@ -28,12 +28,12 @@ services:
     ports:
      - "5432:5432"
     environment:
-      POSTGRES_DB: ds_judgements_public_ui
+      POSTGRES_DB: ds_judgments_editor_ui
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
-      PGDATABASE: ds_judgements_public_ui
+      PGDATABASE: ds_judgments_editor_ui
       PGUSER: postgres
       PGPASSWORD: admin
       POSTGRES_HOST_AUTH_METHOD: trust

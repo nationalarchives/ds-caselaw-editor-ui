@@ -6,7 +6,7 @@ from pathlib import Path
 import environ
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
-# ds_judgements_public_ui/
+# ds_judgments_editor_ui/
 APPS_DIR = ROOT_DIR / "ds_caselaw_editor_ui"
 env = environ.Env()
 
@@ -270,6 +270,7 @@ ACCOUNT_ALLOW_REGISTRATION = False
 ACCOUNT_AUTHENTICATION_METHOD = "username"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "none"
+
 
 # Your stuff...
 # ------------------------------------------------------------------------------

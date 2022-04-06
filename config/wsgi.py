@@ -1,5 +1,5 @@
 """
-WSGI config for ds-judgements-public-ui project.
+WSGI config for ds-judgments-editor-ui project.
 
 This module contains the WSGI application used by Django's development server
 and any production WSGI deployments. It should expose a module-level variable
@@ -21,7 +21,7 @@ from django.core.wsgi import get_wsgi_application
 from wsgi_basic_auth import BasicAuth
 
 # This allows easy placement of apps within the interior
-# ds_judgements_public_ui directory.
+# ds_judgments_editor_ui directory.
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent
 sys.path.append(str(ROOT_DIR / "ds_caselaw_editor_ui"))
 # We defer to a DJANGO_SETTINGS_MODULE already in the environment. This breaks
