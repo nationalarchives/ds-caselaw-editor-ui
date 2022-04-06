@@ -3,7 +3,9 @@
   "name": "production",
   "description": "Case Law Editorial",
   "app_type": "regular_web",
-  "callbacks": [],
+  "callbacks": [
+    "https://editor.caselaw.dalmatian.dxw.net/accounts/auth0/login/callback/"
+  ],
   "is_first_party": true,
   "oidc_conformant": true,
   "sso_disabled": false,
