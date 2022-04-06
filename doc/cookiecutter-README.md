@@ -27,7 +27,7 @@ For convenience, you can keep your normal user logged in on Chrome and your supe
 
 Running type checks with mypy:
 
-    $ mypy ds_judgements_public_ui
+    $ mypy ds_judgments_public_ui
 
 ### Test coverage
 
