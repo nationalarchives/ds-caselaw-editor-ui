@@ -271,3 +271,8 @@ ACCOUNT_EMAIL_VERIFICATION = "none"
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+STRONGHOLD_PUBLIC_URLS = (
+    r"^/accounts/login",
+    r"^/check",
+)
