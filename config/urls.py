@@ -29,7 +29,7 @@ urlpatterns = [
         name="check",
     ),
     # Django Admin, use {% url 'admin:index' %}
-    path("accounts/login/", auth_views.LoginView.as_view()),
+    path("accounts/", include("allauth.urls")),
     path(settings.ADMIN_URL, admin.site.urls),
     # Your stuff: custom urls includes go here
     path("", include("judgments.urls")),
