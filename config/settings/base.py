@@ -73,6 +73,7 @@ THIRD_PARTY_APPS = [
     "crispy_bootstrap5",
     "allauth",
     "allauth.account",
+    "stronghold"
 ]
 
 LOCAL_APPS = [
@@ -136,6 +137,7 @@ MIDDLEWARE = [
     "django.middleware.common.BrokenLinkEmailsMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "rollbar.contrib.django.middleware.RollbarNotifierMiddleware",
+    "stronghold.middleware.LoginRequiredMiddleware",
 ]
 
 # STATIC
