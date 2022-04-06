@@ -24,7 +24,7 @@ if __name__ == "__main__":
         raise
 
     # This allows easy placement of apps within the interior
-    # ds_judgments_public_ui directory.
+    # ds_judgments_editor_ui directory.
     current_path = Path(__file__).parent.resolve()
     sys.path.append(str(current_path / "ds_caselaw_editor_ui"))
 

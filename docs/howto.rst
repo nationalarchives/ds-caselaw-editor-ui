@@ -4,7 +4,7 @@ How To - Project Documentation
 Get Started
 ----------------------------------------------------------------------
 
-Documentation can be written as rst files in `ds_judgments_public_ui/docs`.
+Documentation can be written as rst files in `ds_judgments_editor_ui/docs`.
 
 
 To build and serve docs, use the commands::

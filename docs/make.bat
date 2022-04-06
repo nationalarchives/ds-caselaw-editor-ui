@@ -10,7 +10,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=_source
 set BUILDDIR=_build
-set APP=..\ds_judgments_public_ui
+set APP=..\ds_judgments_editor_ui
 
 if "%1" == "" goto help
 

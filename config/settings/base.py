@@ -6,7 +6,7 @@ from pathlib import Path
 import environ
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
-# ds_judgments_public_ui/
+# ds_judgments_editor_ui/
 APPS_DIR = ROOT_DIR / "ds_caselaw_editor_ui"
 env = environ.Env()
 
@@ -272,13 +272,13 @@ ACCOUNT_EMAIL_REQUIRED = True
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-# ACCOUNT_ADAPTER = "ds_judgments_public_ui.users.adapters.AccountAdapter"
+# ACCOUNT_ADAPTER = "ds_judgments_editor_ui.users.adapters.AccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/forms.html
-# ACCOUNT_FORMS = {"signup": "ds_judgments_public_ui.users.forms.UserSignupForm"}
+# ACCOUNT_FORMS = {"signup": "ds_judgments_editor_ui.users.forms.UserSignupForm"}
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-# SOCIALACCOUNT_ADAPTER = "ds_judgments_public_ui.users.adapters.SocialAccountAdapter"
+# SOCIALACCOUNT_ADAPTER = "ds_judgments_editor_ui.users.adapters.SocialAccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/forms.html
-# SOCIALACCOUNT_FORMS = {"signup": "ds_judgments_public_ui.users.forms.UserSocialSignupForm"}
+# SOCIALACCOUNT_FORMS = {"signup": "ds_judgments_editor_ui.users.forms.UserSocialSignupForm"}
 
 SOCIALACCOUNT_PROVIDERS = {
     "auth0": {
