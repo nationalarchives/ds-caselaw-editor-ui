@@ -73,7 +73,7 @@ THIRD_PARTY_APPS = [
     "crispy_bootstrap5",
     "allauth",
     "allauth.account",
-    "stronghold"
+    "stronghold",
 ]
 
 LOCAL_APPS = [
