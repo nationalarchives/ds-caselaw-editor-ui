@@ -1,5 +1,6 @@
 from django.utils.translation import gettext
 from django.views.generic import TemplateView
+from stronghold.views import StrongholdPublicMixin
 
 
 class TemplateViewWithContext(TemplateView):
@@ -37,5 +38,5 @@ class NoResultsView(TemplateViewWithContext):
     template_name = "pages/no_results.html"
 
 
-class CheckView(TemplateViewWithContext):
+class CheckView(TemplateViewWithContext, StrongholdPublicMixin):
     template_name = "pages/check.html"
