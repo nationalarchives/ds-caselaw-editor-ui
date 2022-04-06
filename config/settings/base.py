@@ -265,7 +265,7 @@ MARKLOGIC_FIXTURES_DIR = str(ROOT_DIR / "judgments" / "fixtures")
 # django-allauth
 # ------------------------------------------------------------------------------
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_ADAPTER = 'judgments.account_adapter.NoNewUsersAccountAdapter'
+ACCOUNT_ADAPTER = "judgments.account_adapter.NoNewUsersAccountAdapter"
 ACCOUNT_ALLOW_REGISTRATION = False
 ACCOUNT_AUTHENTICATION_METHOD = "username"
 ACCOUNT_EMAIL_REQUIRED = True
