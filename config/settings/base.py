@@ -73,8 +73,6 @@ THIRD_PARTY_APPS = [
     "crispy_bootstrap5",
     "allauth",
     "allauth.account",
-    "allauth.socialaccount",
-    "allauth.socialaccount.providers.auth0",
 ]
 
 LOCAL_APPS = [
@@ -269,20 +267,6 @@ ACCOUNT_ALLOW_REGISTRATION = False
 ACCOUNT_AUTHENTICATION_METHOD = "username"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "none"
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
-# ACCOUNT_ADAPTER = "ds_judgements_public_ui.users.adapters.AccountAdapter"
-# https://django-allauth.readthedocs.io/en/latest/forms.html
-# ACCOUNT_FORMS = {"signup": "ds_judgements_public_ui.users.forms.UserSignupForm"}
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
-# SOCIALACCOUNT_ADAPTER = "ds_judgements_public_ui.users.adapters.SocialAccountAdapter"
-# https://django-allauth.readthedocs.io/en/latest/forms.html
-# SOCIALACCOUNT_FORMS = {"signup": "ds_judgements_public_ui.users.forms.UserSocialSignupForm"}
-
-SOCIALACCOUNT_PROVIDERS = {
-    "auth0": {
-        "AUTH0_URL": "https://tna-caselaw-editorial-team.eu.auth0.com",
-    }
-}
 
 # Your stuff...
 # ------------------------------------------------------------------------------
