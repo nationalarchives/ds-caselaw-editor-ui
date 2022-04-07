@@ -109,7 +109,7 @@ def update(request):
 def index(request):
     context = {}
     try:
-        model = perform_advanced_search(order="-date")
+        model = perform_advanced_search(order="-date", only_unpublished=True)
         search_results = [
             SearchResult.create_from_node(result) for result in model.results
         ]
@@ -185,6 +185,7 @@ def perform_advanced_search(
     date_from=None,
     date_to=None,
     page=1,
+    only_unpublished=False,
 ):
     response = api_client.advanced_search(
         q=query,
@@ -195,6 +196,8 @@ def perform_advanced_search(
         order=order,
         date_from=date_from,
         date_to=date_to,
+        show_unpublished=True,
+        only_unpublished=only_unpublished,
     )
     multipart_data = decoder.MultipartDecoder.from_response(response)
     return SearchResults.create_from_string(multipart_data.parts[0].text)
