@@ -2,7 +2,9 @@ import math
 import re
 import xml.etree.ElementTree as ET
 
+import boto3
 import caselawclient.xml_tools as xml_tools
+import environ
 from caselawclient.Client import (
     RESULTS_PER_PAGE,
     MarklogicAPIError,
@@ -16,6 +18,8 @@ from django.utils.translation import gettext
 from requests_toolbelt.multipart import decoder
 
 from judgments.models import SearchResult, SearchResults
+
+env = environ.Env()
 
 
 def detail(request):
@@ -79,6 +83,9 @@ def update(request):
         api_client.set_sensitive(judgment_uri, sensitive)
         api_client.set_supplemental(judgment_uri, supplemental)
         api_client.set_anonymised(judgment_uri, anonymised)
+
+        if published:
+            publish_documents(judgment_uri)
 
         judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
         xml = ET.XML(bytes(judgment_xml, encoding="utf8"))
@@ -215,3 +222,21 @@ def render_versions(multipart_response):
     ]
     sorted_versions = sorted(versions, key=lambda d: -d["version"])
     return sorted_versions
+
+
+def publish_documents(uri: str) -> None:
+    session = boto3.session.Session(
+        aws_access_key_id=env("AWS_ACCESS_KEY_ID", default=None),
+        aws_secret_access_key=env("AWS_SECRET_KEY", default=None),
+    )
+
+    public_bucket = env("PUBLIC_ASSET_BUCKET")
+    private_bucket = env("PRIVATE_ASSET_BUCKET")
+
+    client = session.client("s3", endpoint_url=env("AWS_ENDPOINT_URL", default=None))
+
+    response = client.list_objects(Bucket=private_bucket, prefix=uri)
+
+    for result in response["Contents"]:
+        source = {"Bucket": private_bucket, "Key": result["Key"]}
+        client.copy(source, public_bucket, result["Key"])
