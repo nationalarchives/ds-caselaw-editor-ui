@@ -24,6 +24,6 @@ django-xml~=3.0.0
 wsgi-basic-auth~=1.1.0
 ds-caselaw-marklogic-api-client
 rollbar
-django-stronghold==0.3.2
+django-stronghold==0.4.0
 boto3==1.21.37
 botocore==1.24.37
