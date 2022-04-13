@@ -235,7 +235,7 @@ def publish_documents(uri: str) -> None:
 
     client = session.client("s3", endpoint_url=env("AWS_ENDPOINT_URL", default=None))
 
-    response = client.list_objects(Bucket=private_bucket, prefix=uri)
+    response = client.list_objects(Bucket=private_bucket, Prefix=uri)
 
     for result in response["Contents"]:
         source = {"Bucket": private_bucket, "Key": result["Key"]}
