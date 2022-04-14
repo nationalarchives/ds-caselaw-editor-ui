@@ -88,6 +88,8 @@ def update(request):
 
         if published:
             publish_documents(judgment_uri)
+        else:
+            unpublish_documents(judgment_uri)
 
         judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
         xml = ET.XML(bytes(judgment_xml, encoding="utf8"))
@@ -244,18 +246,37 @@ def render_versions(multipart_response):
 
 
 def publish_documents(uri: str) -> None:
-    session = boto3.session.Session(
-        aws_access_key_id=env("AWS_ACCESS_KEY_ID", default=None),
-        aws_secret_access_key=env("AWS_SECRET_KEY", default=None),
-    )
+    client = create_s3_client()
 
     public_bucket = env("PUBLIC_ASSET_BUCKET")
     private_bucket = env("PRIVATE_ASSET_BUCKET")
-
-    client = session.client("s3", endpoint_url=env("AWS_ENDPOINT_URL", default=None))
 
     response = client.list_objects(Bucket=private_bucket, Prefix=uri)
 
     for result in response["Contents"]:
         source = {"Bucket": private_bucket, "Key": result["Key"]}
         client.copy(source, public_bucket, result["Key"])
+
+
+def unpublish_documents(uri: str) -> None:
+    client = create_s3_client()
+
+    public_bucket = env("PUBLIC_ASSET_BUCKET")
+
+    response = client.list_objects(Bucket=public_bucket, Prefix=uri)
+    objects_to_delete = [{"Key": obj["Key"]} for obj in response["Contents"]]
+
+    client.delete_objects(
+        Bucket=public_bucket,
+        Delete={
+            "Objects": objects_to_delete,
+        },
+    )
+
+
+def create_s3_client():
+    session = boto3.session.Session(
+        aws_access_key_id=env("AWS_ACCESS_KEY_ID", default=None),
+        aws_secret_access_key=env("AWS_SECRET_KEY", default=None),
+    )
+    return session.client("s3", endpoint_url=env("AWS_ENDPOINT_URL", default=None))
