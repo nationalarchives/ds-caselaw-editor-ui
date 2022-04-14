@@ -55,9 +55,11 @@ def edit(request):
         context["anonymised"] = api_client.get_anonymised(judgment_uri)
 
         xml = ET.XML(bytes(judgment_xml, encoding="utf-8"))
-        name = xml_tools.get_metadata_name_value(xml)
-        context["metadata_name"] = name
-        context["page_title"] = name
+        context["metadata_name"] = xml_tools.get_metadata_name_value(xml)
+        context["page_title"] = context["metadata_name"]
+        context["court"] = xml_tools.get_court_value(xml)
+        context["neutral_citation"] = xml_tools.get_neutral_citation_name_value(xml)
+        context["judgment_date"] = xml_tools.get_judgment_date_value(xml)
         version_response = api_client.list_judgment_versions(judgment_uri)
         context["previous_versions"] = render_versions(version_response)
     except MarklogicResourceNotFoundError:
@@ -89,15 +91,32 @@ def update(request):
 
         judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
         xml = ET.XML(bytes(judgment_xml, encoding="utf8"))
+        # Set name
         name = xml_tools.get_metadata_name_element(xml)
         new_name = request.POST["metadata_name"]
         name.set("value", new_name)
+        # Set neutral citation
+        citation = xml_tools.get_neutral_citation_element(xml)
+        new_citation = request.POST["neutral_citation"]
+        citation.set("value", new_citation)
+        # Set court
+        court = xml_tools.get_court_element(xml)
+        new_court = request.POST["court"]
+        court.set("value", new_court)
+        # Date
+        date = xml_tools.get_judgment_date_element(xml)
+        new_date = request.POST["judgment_date"]
+        date.set("value", new_date)
+        # Save
         api_client.save_judgment_xml(judgment_uri, xml)
         context["published"] = published
         context["sensitive"] = sensitive
         context["supplemental"] = supplemental
         context["anonymised"] = anonymised
         context["metadata_name"] = new_name
+        context["neutral_citation"] = new_citation
+        context["court"] = new_court
+        context["judgment_date"] = new_date
         context["success"] = "Judgment successfully updated"
         context["page_title"] = new_name
 
