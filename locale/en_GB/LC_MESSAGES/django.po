@@ -129,6 +129,18 @@ msgstr "Edit Judgment"
 msgid "judgment.judgment_name"
 msgstr "Judgment name"
 
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:14
+msgid "judgment.neutral_citation"
+msgstr "Neutral citation"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:14
+msgid "judgment.court"
+msgstr "Court"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:14
+msgid "judgment.judgment_date"
+msgstr "Judgment date"
+
 #: ds_caselaw_editor_ui/templates/judgment/edit.html:21
 msgid "judgment.published"
 msgstr "Published?"

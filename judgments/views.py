@@ -100,15 +100,15 @@ def update(request):
         # Set neutral citation
         citation = xml_tools.get_neutral_citation_element(xml)
         new_citation = request.POST["neutral_citation"]
-        citation.set("value", new_citation)
+        citation.text = new_citation
         # Set court
         court = xml_tools.get_court_element(xml)
         new_court = request.POST["court"]
-        court.set("value", new_court)
+        court.text = new_court
         # Date
         date = xml_tools.get_judgment_date_element(xml)
         new_date = request.POST["judgment_date"]
-        date.set("value", new_date)
+        date.set("date", new_date)
         # Save
         api_client.save_judgment_xml(judgment_uri, xml)
         context["published"] = published
