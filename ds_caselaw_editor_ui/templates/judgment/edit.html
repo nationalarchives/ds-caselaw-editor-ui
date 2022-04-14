@@ -18,6 +18,21 @@
                name="metadata_name" id="metadata_name" />
         </div>
         <div class="edit-component__panel">
+          <label for="neutral_citation">{% translate "judgment.neutral_citation" %}</label>
+          <input type="text" class="edit-component__neutral_citation-input" value="{{context.neutral_citation}}"
+               name="neutral_citation" id="neutral_citation" />
+        </div>
+        <div class="edit-component__panel">
+          <label for="court">{% translate "judgment.court" %}</label>
+          <input type="text" class="edit-component__court-input" value="{{context.court}}"
+               name="court" id="court" />
+        </div>
+        <div class="edit-component__panel">
+          <label for="judgment_date">{% translate "judgment.judgment_date" %}</label>
+          <input type="text" class="edit-component__judgment_date-input" value="{{context.judgment_date}}"
+               name="judgment_date" id="judgment_date" />
+        </div>
+        <div class="edit-component__panel">
           <label for="published">{% translate "judgment.published" %}</label>
           <input type="checkbox" class="edit-component__published-input" {% if context.published %}checked{% endif %} name="published" id="published"/>
         </div>
