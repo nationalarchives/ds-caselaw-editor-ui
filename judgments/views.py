@@ -253,7 +253,7 @@ def publish_documents(uri: str) -> None:
 
     response = client.list_objects(Bucket=private_bucket, Prefix=uri)
 
-    for result in response["Contents"]:
+    for result in response.get("Contents", []):
         source = {"Bucket": private_bucket, "Key": result["Key"]}
         client.copy(source, public_bucket, result["Key"])
 
@@ -264,14 +264,16 @@ def unpublish_documents(uri: str) -> None:
     public_bucket = env("PUBLIC_ASSET_BUCKET")
 
     response = client.list_objects(Bucket=public_bucket, Prefix=uri)
-    objects_to_delete = [{"Key": obj["Key"]} for obj in response["Contents"]]
 
-    client.delete_objects(
-        Bucket=public_bucket,
-        Delete={
-            "Objects": objects_to_delete,
-        },
-    )
+    if response.get("Contents"):
+        objects_to_delete = [{"Key": obj["Key"]} for obj in response.get("Contents")]
+
+        client.delete_objects(
+            Bucket=public_bucket,
+            Delete={
+                "Objects": objects_to_delete,
+            },
+        )
 
 
 def create_s3_client():
