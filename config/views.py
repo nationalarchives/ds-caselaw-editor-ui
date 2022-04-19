@@ -18,11 +18,6 @@ class OpenJusticeLicenceView(TemplateViewWithContext):
     page_title = "openjusticelicence.title"
 
 
-class TermsOfUseView(TemplateViewWithContext):
-    template_name = "pages/terms_of_use.html"
-    page_title = "terms.title"
-
-
 class SourcesView(TemplateViewWithContext):
     template_name = "pages/sources.html"
     page_title = "judgmentsources.title"

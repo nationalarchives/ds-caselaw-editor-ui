@@ -14,11 +14,6 @@ urlpatterns = [
         name="open_justice_licence",
     ),
     path(
-        "terms-of-use",
-        views.TermsOfUseView.as_view(),
-        name="terms_of_use",
-    ),
-    path(
         "no_results",
         views.NoResultsView.as_view(),
         name="no_results",
