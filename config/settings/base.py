@@ -127,6 +127,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
 MIDDLEWARE = [
+    "django.middleware.cache.UpdateCacheMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -139,6 +140,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "rollbar.contrib.django.middleware.RollbarNotifierMiddleware",
     "stronghold.middleware.LoginRequiredMiddleware",
+    "django.middleware.cache.FetchFromCacheMiddleware",
 ]
 
 # STATIC
@@ -154,6 +156,10 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
+
+# CACHING
+# disable all caching - this should set Expires and Cache-Control headers to control downstream
+CACHE_MIDDLEWARE_SECONDS = 0
 
 # MEDIA
 # ------------------------------------------------------------------------------
