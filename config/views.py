@@ -12,6 +12,7 @@ class TemplateViewWithContext(TemplateView):
             }
         }
 
+
 class SourcesView(TemplateViewWithContext):
     template_name = "pages/sources.html"
     page_title = "judgmentsources.title"
