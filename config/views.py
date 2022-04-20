@@ -12,12 +12,6 @@ class TemplateViewWithContext(TemplateView):
             }
         }
 
-
-class OpenJusticeLicenceView(TemplateViewWithContext):
-    template_name = "pages/open_justice_licence.html"
-    page_title = "openjusticelicence.title"
-
-
 class SourcesView(TemplateViewWithContext):
     template_name = "pages/sources.html"
     page_title = "judgmentsources.title"

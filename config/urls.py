@@ -9,11 +9,6 @@ from . import views
 
 urlpatterns = [
     path(
-        "open-justice-licence",
-        views.OpenJusticeLicenceView.as_view(),
-        name="open_justice_licence",
-    ),
-    path(
         "no_results",
         views.NoResultsView.as_view(),
         name="no_results",
