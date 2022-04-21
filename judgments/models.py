@@ -8,19 +8,31 @@ from lxml import etree
 
 
 class SearchResultMeta:
-    def __init__(self, author="", author_email="", consignment_reference="", submission_datetime=""):
+    def __init__(
+        self,
+        author="",
+        author_email="",
+        consignment_reference="",
+        submission_datetime="",
+    ):
         self.author = author
         self.author_email = author_email
         self.consignment_reference = consignment_reference
-        self.submission_datetime = datetime.strptime(submission_datetime, "%Y-%m-%dT%H:%M:%SZ") if submission_datetime else datetime.min
+        self.submission_datetime = (
+            datetime.strptime(submission_datetime, "%Y-%m-%dT%H:%M:%SZ")
+            if submission_datetime
+            else datetime.min
+        )
 
     @staticmethod
     def create_from_uri(uri: str):
         return SearchResultMeta(
             author=api_client.get_property(uri, "source-name"),
             author_email=api_client.get_property(uri, "source-email"),
-            consignment_reference=api_client.get_property(uri, "transfer-consignment-reference"),
-            submission_datetime=api_client.get_property(uri, "transfer-received-at")
+            consignment_reference=api_client.get_property(
+                uri, "transfer-consignment-reference"
+            ),
+            submission_datetime=api_client.get_property(uri, "transfer-received-at"),
         )
 
 
@@ -45,7 +57,14 @@ class Judgment(xmlmodels.XmlModel):
 
 class SearchResult:
     def __init__(
-        self, uri="", neutral_citation="", name="", court="", date="", matches=[], meta=SearchResultMeta()
+        self,
+        uri="",
+        neutral_citation="",
+        name="",
+        court="",
+        date="",
+        matches=[],
+        meta=SearchResultMeta(),
     ) -> None:
         self.uri = uri
         self.neutral_citation = neutral_citation
@@ -71,7 +90,7 @@ class SearchResult:
             matches=matches.transform_to_html(),
             court=judgment.court,
             date=judgment.date,
-            meta=SearchResultMeta.create_from_uri(uri)
+            meta=SearchResultMeta.create_from_uri(uri),
         )
 
 

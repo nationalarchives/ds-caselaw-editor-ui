@@ -12,6 +12,14 @@
         </dd>
         <dt class="results__result-term-sr">Neutral citation</dt>
         <dd class="results__result-neutral-citation">{{ result.neutral_citation }}</dd>
+        <dt class="results__result-term-sr">Submitter</dt>
+        <dd class="results__result-neutral-citation">{{ result.meta.author }}</dd>
+        <dt class="results__result-term-sr">Submitter email</dt>
+        <dd class="results__result-neutral-citation">{{ result.meta.author_email }}</dd>
+        <dt class="results__result-term-sr">Submission date</dt>
+        <dd class="results__result-neutral-citation">{{ result.meta.submission_datetime }}</dd>
+        <dt class="results__result-term-sr">Consignment reference</dt>
+        <dd class="results__result-neutral-citation">{{ result.meta.consignment_reference }}</dd>
         {% if result.matches %}
           <dt class="results__result-term-matching">Matching text sample</dt>
           <dd>
