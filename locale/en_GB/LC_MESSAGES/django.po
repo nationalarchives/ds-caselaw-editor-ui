@@ -164,3 +164,19 @@ msgstr "Previous versions of this Judgment"
 #: ds_caselaw_editor_ui/templates/includes/recent_judgments.html:5
 msgid "home.recent"
 msgstr "Unpublished judgments"
+
+#: ds_caselaw_editor_ui/templates/includes/recent_judgments.html:27
+msgid "judgments.submitter"
+msgstr "Submitted by:"
+
+#: ds_caselaw_editor_ui/templates/includes/recent_judgments.html:30
+msgid "judgments.submitteremail"
+msgstr "Contact email:"
+
+#: ds_caselaw_editor_ui/templates/includes/recent_judgments.html:33
+msgid "judgments.submissiondate"
+msgstr "Submission date:"
+
+#: ds_caselaw_editor_ui/templates/includes/recent_judgments.html:36
+msgid "judgments.consignmentref"
+msgstr "Consignment Reference:"
