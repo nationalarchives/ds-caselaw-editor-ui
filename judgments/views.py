@@ -133,7 +133,7 @@ def update(request):
             "error"
         ] = "The Judgment is missing correct metadata structure and cannot be edited"
 
-    invalidate_caches(judgment_uri)
+    # invalidate_caches(judgment_uri)
     template = loader.get_template("judgment/edit.html")
     return HttpResponse(template.render({"context": context}, request))
 
