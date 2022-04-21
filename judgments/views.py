@@ -1,5 +1,6 @@
 import math
 import re
+import time
 import xml.etree.ElementTree as ET
 
 import boto3
@@ -68,6 +69,8 @@ def edit(request):
         context[
             "error"
         ] = "The Judgment is missing correct metadata structure and cannot be edited"
+
+    invalidate_caches(judgment_uri)
     template = loader.get_template("judgment/edit.html")
     return HttpResponse(template.render({"context": context}, request))
 
@@ -274,6 +277,17 @@ def unpublish_documents(uri: str) -> None:
                 "Objects": objects_to_delete,
             },
         )
+
+
+def invalidate_caches(uri: str) -> None:
+    cloudfront = aws_session().client("cloudfront")
+    cloudfront.create_invalidation(
+        DistributionId=env("CLOUDFRONT_PUBLIC_DISTRIBUTION_ID"),
+        InvalidationBatch={
+            "Paths": {"Quantity": 1, "Items": "/*"},
+            "CallerReference": str(time.time()),
+        },
+    )
 
 
 def aws_session():
