@@ -276,9 +276,14 @@ def unpublish_documents(uri: str) -> None:
         )
 
 
-def create_s3_client():
-    session = boto3.session.Session(
+def aws_session():
+    return boto3.session.Session(
         aws_access_key_id=env("AWS_ACCESS_KEY_ID", default=None),
         aws_secret_access_key=env("AWS_SECRET_KEY", default=None),
     )
-    return session.client("s3", endpoint_url=env("AWS_ENDPOINT_URL", default=None))
+
+
+def create_s3_client():
+    return aws_session().client(
+        "s3", endpoint_url=env("AWS_ENDPOINT_URL", default=None)
+    )
