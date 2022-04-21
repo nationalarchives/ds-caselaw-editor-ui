@@ -70,7 +70,6 @@ def edit(request):
             "error"
         ] = "The Judgment is missing correct metadata structure and cannot be edited"
 
-    invalidate_caches(judgment_uri)
     template = loader.get_template("judgment/edit.html")
     return HttpResponse(template.render({"context": context}, request))
 
@@ -133,6 +132,8 @@ def update(request):
         context[
             "error"
         ] = "The Judgment is missing correct metadata structure and cannot be edited"
+
+    invalidate_caches(judgment_uri)
     template = loader.get_template("judgment/edit.html")
     return HttpResponse(template.render({"context": context}, request))
 
@@ -284,7 +285,7 @@ def invalidate_caches(uri: str) -> None:
     cloudfront.create_invalidation(
         DistributionId=env("CLOUDFRONT_PUBLIC_DISTRIBUTION_ID"),
         InvalidationBatch={
-            "Paths": {"Quantity": 1, "Items": "/*"},
+            "Paths": {"Quantity": 1, "Items": ["/*"]},
             "CallerReference": str(time.time()),
         },
     )
