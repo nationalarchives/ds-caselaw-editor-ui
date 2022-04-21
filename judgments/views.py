@@ -1,5 +1,6 @@
 import math
 import re
+import time
 import xml.etree.ElementTree as ET
 
 import boto3
@@ -68,6 +69,8 @@ def edit(request):
         context[
             "error"
         ] = "The Judgment is missing correct metadata structure and cannot be edited"
+
+    invalidate_caches(judgment_uri)
     template = loader.get_template("judgment/edit.html")
     return HttpResponse(template.render({"context": context}, request))
 
@@ -276,9 +279,25 @@ def unpublish_documents(uri: str) -> None:
         )
 
 
-def create_s3_client():
-    session = boto3.session.Session(
+def invalidate_caches(uri: str) -> None:
+    cloudfront = aws_session().client("cloudfront")
+    cloudfront.create_invalidation(
+        DistributionId=env("CLOUDFRONT_PUBLIC_DISTRIBUTION_ID"),
+        InvalidationBatch={
+            "Paths": {"Quantity": 1, "Items": "/*"},
+            "CallerReference": str(time.time()),
+        },
+    )
+
+
+def aws_session():
+    return boto3.session.Session(
         aws_access_key_id=env("AWS_ACCESS_KEY_ID", default=None),
         aws_secret_access_key=env("AWS_SECRET_KEY", default=None),
     )
-    return session.client("s3", endpoint_url=env("AWS_ENDPOINT_URL", default=None))
+
+
+def create_s3_client():
+    return aws_session().client(
+        "s3", endpoint_url=env("AWS_ENDPOINT_URL", default=None)
+    )
