@@ -23,6 +23,18 @@
             <span class="recent-judgments__court">
               {% translate "judgments.court" %} {{ item.court }}
             </span>
+             <span class="recent-judgments__submitter">
+              {% translate "judgments.submitter" %} {{ item.meta.author }}
+            </span>
+            <span class="recent-judgments__submitteremail">
+              {% translate "judgments.submitteremail" %} {{  item.meta.author_email }}
+            </span>
+            <span class="recent-judgments__submissiondate">
+              {% translate "judgments.submissiondate" %} {{ item.meta.submission_datetime }}
+            </span>
+            <span class="recent-judgments__consignmentrefence">
+              {% translate "judgments.consignmentref" %} {{ item.meta.consignment_reference }}
+            </span>
           </span>
         </li>
       {% endfor %}

@@ -61,10 +61,11 @@
     }
   }
 
-  &__court {
+  &__court, &__submitter, &__submitteremail,  &__submissiondate, &__consignmentrefence {
     display: block;
     font-size: 0.9rem;
     color: $color__dark-grey;
+    line-height: 1rem;
 
     @media (min-width: $grid__breakpoint-medium) {
       text-align: right;
