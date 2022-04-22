@@ -36,7 +36,7 @@ A database server built from the official [marklogic](https://hub.docker.com/_/m
 not already have this application installed, you will need to follow the setup instructions for it. You will need to
 run the Marklogic container *only* (see step 3 in this README).
 
-**NOTE**: The `.env.example` file contains references to AWS tokens, such as `AWS_ACCESS_KEY_ID`, `AWS_SECRET_KEY` and `AWS_ENDPOINT_URL`. These should only be populated if you are testing locally with `localstack`. Leaving them blank will default to your configured AWS account.
+**NOTE**: The `.env.example` file contains references to AWS tokens, such as `AWS_ACCESS_KEY_ID`, `AWS_SECRET_KEY` and `AWS_ENDPOINT_URL`. These should only be populated if you are testing locally with `localstack` (though the values do not matter, you can use anything). Leaving them blank will default to your configured AWS account.
 
 ### 1. Create `.env`
 
