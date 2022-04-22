@@ -183,3 +183,20 @@ django-admin compilemessages
 To login or signup to the staging application, go to `http://localhost:3000/accounts/login`. From there you will be able to log in to an existing account.
 
 To set up the first administrator account, run `python manage.py createsuperuser`, then create subsequent accounts at `/admin`.
+
+## Deployment
+
+### Staging
+
+The `main` branch is automatically deployed with each commit. The deployed app can be viewed at [https://editor.staging.caselaw.nationalarchives.gov.uk/](https://editor.staging.caselaw.nationalarchives.gov.uk/)
+
+### Production
+
+To deploy to production:
+
+1. Create a [new release](https://github.com/nationalarchives/ds-caselaw-editor-ui/releases).
+2. Set the tag and release name to `vX.Y.Z`, following semantic versioning.
+3. Publish the release.
+4. Automated workflow will then tag that release as `latest`, which will then be deployed to the production environment.
+
+The production app is at [https://editor.caselaw.nationalarchives.gov.uk/](https://editor.caselaw.nationalarchives.gov.uk/)
