@@ -32,9 +32,8 @@ A database server built from the official [marklogic](https://hub.docker.com/_/m
 
 **NOTE**: For any of the following commands to work, you must first [install Fabric](https://www.fabfile.org/installing.html). Once installed, you can type `fab -l` to see a list of available commands.
 
-**NOTE**: This app is intended to edit Judgments in the Marklogic database for the app ds-caselaw-public-ui. If you do
-not already have this application installed, you will need to follow the setup instructions for it. You will need to
-run the Marklogic container *only* (see step 3 in this README).
+**NOTE**: This app is intended to edit Judgments in the Marklogic database defined in [ds-caselaw-public-access-service/marklogic](https://github.com/nationalarchives/ds-caselaw-public-access-service/tree/main/marklogic). If you do
+not already have this application installed, you will need to follow the setup instructions for it.
 
 **NOTE**: The `.env.example` file contains references to AWS tokens, such as `AWS_ACCESS_KEY_ID`, `AWS_SECRET_KEY` and `AWS_ENDPOINT_URL`. These should only be populated if you are testing locally with `localstack` (though the values do not matter, you can use anything). Leaving them blank will default to your configured AWS account.
 
@@ -52,10 +51,10 @@ $ fab build
 
 ### 3. Run Marklogic
 
-Switch to the location of your ds-caselaw-public-ui app and run:
+Switch to the location of ds-caselaw-public-access-service/marklogic and run:
 
 ```console
-docker-compose up marklogic
+docker-compose up
 ```
 
 ### 4. Start Docker containers
