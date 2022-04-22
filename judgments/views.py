@@ -277,7 +277,8 @@ def publish_documents(uri: str) -> None:
 
     for result in response.get("Contents", []):
         source = {"Bucket": private_bucket, "Key": result["Key"]}
-        client.copy(source, public_bucket, result["Key"])
+        extra_args = {"ACL": "public-read"}
+        client.copy(source, public_bucket, result["Key"], extra_args)
 
 
 def unpublish_documents(uri: str) -> None:
