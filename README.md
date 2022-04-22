@@ -24,10 +24,6 @@ official [python 3.9](https://hub.docker.com/_/python/) base image
 
 The database service built from the official [postgres](https://hub.docker.com/_/postgres/) image
 
-### `marklogic`
-
-A database server built from the official [marklogic](https://hub.docker.com/_/marklogic) image.
-
 ## Getting started
 
 **NOTE**: For any of the following commands to work, you must first [install Fabric](https://www.fabfile.org/installing.html). Once installed, you can type `fab -l` to see a list of available commands.
