@@ -281,7 +281,13 @@ def unpublish_documents(uri: str) -> None:
 
 
 def invalidate_caches(uri: str) -> None:
-    cloudfront = aws_session().client("cloudfront")
+    aws = boto3.session.Session(
+        aws_access_key_id=env("CLOUDFRONT_INVALIDATION_ACCESS_KEY_ID", default=None),
+        aws_secret_access_key=env(
+            "CLOUDFRONT_INVALIDATION_ACCESS_SECRET", default=None
+        ),
+    )
+    cloudfront = aws.client("cloudfront")
     cloudfront.create_invalidation(
         DistributionId=env("CLOUDFRONT_PUBLIC_DISTRIBUTION_ID"),
         InvalidationBatch={
@@ -291,14 +297,9 @@ def invalidate_caches(uri: str) -> None:
     )
 
 
-def aws_session():
-    return boto3.session.Session(
+def create_s3_client():
+    aws = boto3.session.Session(
         aws_access_key_id=env("AWS_ACCESS_KEY_ID", default=None),
         aws_secret_access_key=env("AWS_SECRET_KEY", default=None),
     )
-
-
-def create_s3_client():
-    return aws_session().client(
-        "s3", endpoint_url=env("AWS_ENDPOINT_URL", default=None)
-    )
+    return aws.client("s3", endpoint_url=env("AWS_ENDPOINT_URL", default=None))
