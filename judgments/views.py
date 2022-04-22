@@ -21,6 +21,8 @@ from requests_toolbelt.multipart import decoder
 from judgments.models import SearchResult, SearchResults
 
 env = environ.Env()
+akn_namespace = {"akn": "http://docs.oasis-open.org/legaldocml/ns/akn/3.0"}
+uk_namespace = {"uk": "https://caselaw.nationalarchives.gov.uk/akn"}
 
 
 def detail(request):
@@ -99,18 +101,34 @@ def update(request):
         name = xml_tools.get_metadata_name_element(xml)
         new_name = request.POST["metadata_name"]
         name.set("value", new_name)
+        frbrwork_parent = xml.find(
+            ".//akn:FRBRWork",
+            namespaces=akn_namespace,
+        )
+        if frbrwork_parent:
+            frbrwork_parent.append(name)
         # Set neutral citation
         citation = xml_tools.get_neutral_citation_element(xml)
         new_citation = request.POST["neutral_citation"]
         citation.text = new_citation
+        uk_parent = xml.find(
+            ".//uk:proprietary",
+            namespaces=uk_namespace,
+        )
+        if uk_parent:
+            uk_parent.append(name)
         # Set court
         court = xml_tools.get_court_element(xml)
         new_court = request.POST["court"]
         court.text = new_court
+        if uk_parent:
+            uk_parent.append(name)
         # Date
         date = xml_tools.get_judgment_date_element(xml)
         new_date = request.POST["judgment_date"]
         date.set("date", new_date)
+        if frbrwork_parent:
+            frbrwork_parent.append(date)
         # Save
         api_client.save_judgment_xml(judgment_uri, xml)
         context["published"] = published
