@@ -39,6 +39,7 @@
         </li>
       {% endfor %}
     </ul>
+    {% include 'includes/pagination.html' %}
     <p class="recent-judgments__more-info"><a href="{% url 'results' %}">{% translate "judgments.allrecent" %}</a></p>
   </div>
 </div>
