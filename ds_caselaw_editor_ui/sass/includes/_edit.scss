@@ -1,4 +1,4 @@
-.edit-component, .list-versions-component {
+.edit-component, .list-versions-component, .judgment-info-component {
   background-color: $color__light-grey;
   padding: $spacer__unit;
 
@@ -74,4 +74,12 @@
 
     }
   }
+}
+
+.judgment-info-component {
+  float:right;
+  position: sticky;
+  right: 0;
+  top: 0;
+  width: 20vw;
 }

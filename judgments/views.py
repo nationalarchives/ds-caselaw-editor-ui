@@ -38,6 +38,7 @@ def detail(request):
         judgment = multipart_data.parts[0].text
         context["judgment"] = judgment
         context["page_title"] = metadata_name
+
         if version_uri:
             context["version"] = re.search(r"([\d])-([\d]+)", version_uri).group(1)
     except MarklogicResourceNotFoundError:
@@ -65,6 +66,8 @@ def edit(request):
         context["judgment_date"] = xml_tools.get_judgment_date_value(xml)
         version_response = api_client.list_judgment_versions(judgment_uri)
         context["previous_versions"] = render_versions(version_response)
+        context["docx_url"] = generate_docx_url(judgment_uri)
+
     except MarklogicResourceNotFoundError:
         raise Http404("Judgment was not found")
     except JudgmentMissingMetadataError:
@@ -141,6 +144,7 @@ def update(request):
         context["judgment_date"] = new_date
         context["success"] = "Judgment successfully updated"
         context["page_title"] = new_name
+        context["docx_url"] = generate_docx_url(judgment_uri)
 
         version_response = api_client.list_judgment_versions(judgment_uri)
         context["previous_versions"] = render_versions(version_response)
@@ -322,3 +326,14 @@ def create_s3_client():
         aws_secret_access_key=env("AWS_SECRET_KEY", default=None),
     )
     return aws.client("s3", endpoint_url=env("AWS_ENDPOINT_URL", default=None))
+
+
+def generate_docx_url(uri: str):
+    client = create_s3_client()
+
+    key = f'{uri}/{uri.replace("/", "_")}.docx'
+    bucket = env("PRIVATE_ASSET_BUCKET")
+
+    return client.generate_presigned_url(
+        "get_object", Params={"Bucket": bucket, "Key": key}
+    )
