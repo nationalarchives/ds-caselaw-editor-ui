@@ -45,7 +45,9 @@ class EditJudgmentView(View):
             meta["metadata_name"] = xml_tools.get_metadata_name_value(judgment)
             meta["page_title"] = meta["metadata_name"]
             meta["court"] = xml_tools.get_court_value(judgment)
-            meta["neutral_citation"] = xml_tools.get_neutral_citation_name_value(judgment)
+            meta["neutral_citation"] = xml_tools.get_neutral_citation_name_value(
+                judgment
+            )
             meta["judgment_date"] = xml_tools.get_judgment_date_value(judgment)
             meta["docx_url"] = generate_docx_url(uri)
             meta["previous_versions"] = self.get_versions(uri)
