@@ -16,6 +16,7 @@ from caselawclient.xml_tools import JudgmentMissingMetadataError
 from django.http import Http404, HttpResponse
 from django.template import loader
 from django.utils.translation import gettext
+from django.views.generic import View
 from requests_toolbelt.multipart import decoder
 
 from judgments.models import SearchResult, SearchResults
@@ -23,6 +24,120 @@ from judgments.models import SearchResult, SearchResults
 env = environ.Env()
 akn_namespace = {"akn": "http://docs.oasis-open.org/legaldocml/ns/akn/3.0"}
 uk_namespace = {"uk": "https://caselaw.nationalarchives.gov.uk/akn"}
+
+
+class EditJudgmentView(View):
+    def get_judgment(self, uri: str):
+        try:
+            judgment_xml = api_client.get_judgment_xml(uri, show_unpublished=True)
+            return ET.XML(bytes(judgment_xml, encoding="utf-8"))
+        except MarklogicResourceNotFoundError:
+            raise Http404("Judgment was not found")
+
+    def get_metadata(self, uri: str, judgment: ET.Element) -> dict:
+        meta = dict()
+
+        try:
+            meta["published"] = api_client.get_published(uri)
+            meta["sensitive"] = api_client.get_sensitive(uri)
+            meta["supplemental"] = api_client.get_supplemental(uri)
+            meta["anonymised"] = api_client.get_anonymised(uri)
+            meta["metadata_name"] = xml_tools.get_metadata_name_value(judgment)
+            meta["page_title"] = meta["metadata_name"]
+            meta["court"] = xml_tools.get_court_value(judgment)
+            meta["neutral_citation"] = xml_tools.get_neutral_citation_name_value(judgment)
+            meta["judgment_date"] = xml_tools.get_judgment_date_value(judgment)
+            meta["docx_url"] = generate_docx_url(uri)
+            meta["previous_versions"] = self.get_versions(uri)
+        except JudgmentMissingMetadataError:
+            meta[
+                "error"
+            ] = "The Judgment is missing correct metadata structure and cannot be edited"
+
+        return meta
+
+    def get_versions(self, uri: str):
+        return render_versions(api_client.list_judgment_versions(uri))
+
+    def render(self, request, context):
+        template = loader.get_template("judgment/edit.html")
+        return HttpResponse(template.render({"context": context}, request))
+
+    def get(self, request, *args, **kwargs):
+        params = request.GET
+        judgment_uri = params.get("judgment_uri")
+        context = {"judgment_uri": judgment_uri}
+        judgment = self.get_judgment(judgment_uri)
+        context.update(self.get_metadata(judgment_uri, judgment))
+
+        return self.render(request, context)
+
+    def post(self, request, *args, **kwargs):
+        judgment_uri = request.POST["judgment_uri"]
+        published = bool(request.POST.get("published", False))
+        sensitive = bool(request.POST.get("sensitive", False))
+        supplemental = bool(request.POST.get("supplemental", False))
+        anonymised = bool(request.POST.get("anonymised", False))
+
+        context = {"judgment_uri": judgment_uri}
+        try:
+            api_client.set_published(judgment_uri, published)
+            api_client.set_sensitive(judgment_uri, sensitive)
+            api_client.set_supplemental(judgment_uri, supplemental)
+            api_client.set_anonymised(judgment_uri, anonymised)
+
+            if published:
+                publish_documents(judgment_uri)
+            else:
+                unpublish_documents(judgment_uri)
+
+            xml = self.get_judgment(judgment_uri)
+
+            # Set name
+            name = xml_tools.get_metadata_name_element(xml)
+            new_name = request.POST["metadata_name"]
+            name.set("value", new_name)
+            frbrwork_parent = xml.find(
+                ".//akn:FRBRWork",
+                namespaces=akn_namespace,
+            )
+            if frbrwork_parent:
+                frbrwork_parent.append(name)
+            # Set neutral citation
+            citation = xml_tools.get_neutral_citation_element(xml)
+            new_citation = request.POST["neutral_citation"]
+            citation.text = new_citation
+            uk_parent = xml.find(
+                ".//uk:proprietary",
+                namespaces=uk_namespace,
+            )
+            if uk_parent:
+                uk_parent.append(name)
+            # Set court
+            court = xml_tools.get_court_element(xml)
+            new_court = request.POST["court"]
+            court.text = new_court
+            if uk_parent:
+                uk_parent.append(name)
+            # Date
+            date = xml_tools.get_judgment_date_element(xml)
+            new_date = request.POST["judgment_date"]
+            date.set("date", new_date)
+            if frbrwork_parent:
+                frbrwork_parent.append(date)
+
+            # Save
+            api_client.save_judgment_xml(judgment_uri, xml)
+
+            context["success"] = "Judgment successfully updated"
+            context.update(self.get_metadata(judgment_uri, xml))
+
+        except MarklogicAPIError as e:
+            context["error"] = f"There was an error saving the Judgment: {e}"
+
+        invalidate_caches(judgment_uri)
+
+        return self.render(request, context)
 
 
 def detail(request):
@@ -44,119 +159,6 @@ def detail(request):
     except MarklogicResourceNotFoundError:
         raise Http404("Judgment was not found")
     template = loader.get_template("judgment/detail.html")
-    return HttpResponse(template.render({"context": context}, request))
-
-
-def edit(request):
-    params = request.GET
-    judgment_uri = params.get("judgment_uri")
-    context = {"judgment_uri": judgment_uri}
-    try:
-        judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
-        context["published"] = api_client.get_published(judgment_uri)
-        context["sensitive"] = api_client.get_sensitive(judgment_uri)
-        context["supplemental"] = api_client.get_supplemental(judgment_uri)
-        context["anonymised"] = api_client.get_anonymised(judgment_uri)
-
-        xml = ET.XML(bytes(judgment_xml, encoding="utf-8"))
-        context["metadata_name"] = xml_tools.get_metadata_name_value(xml)
-        context["page_title"] = context["metadata_name"]
-        context["court"] = xml_tools.get_court_value(xml)
-        context["neutral_citation"] = xml_tools.get_neutral_citation_name_value(xml)
-        context["judgment_date"] = xml_tools.get_judgment_date_value(xml)
-        version_response = api_client.list_judgment_versions(judgment_uri)
-        context["previous_versions"] = render_versions(version_response)
-        context["docx_url"] = generate_docx_url(judgment_uri)
-
-    except MarklogicResourceNotFoundError:
-        raise Http404("Judgment was not found")
-    except JudgmentMissingMetadataError:
-        context[
-            "error"
-        ] = "The Judgment is missing correct metadata structure and cannot be edited"
-
-    template = loader.get_template("judgment/edit.html")
-    return HttpResponse(template.render({"context": context}, request))
-
-
-def update(request):
-    judgment_uri = request.POST["judgment_uri"]
-    published = bool(request.POST.get("published", False))
-    sensitive = bool(request.POST.get("sensitive", False))
-    supplemental = bool(request.POST.get("supplemental", False))
-    anonymised = bool(request.POST.get("anonymised", False))
-
-    context = {"judgment_uri": judgment_uri}
-    try:
-        api_client.set_published(judgment_uri, published)
-        api_client.set_sensitive(judgment_uri, sensitive)
-        api_client.set_supplemental(judgment_uri, supplemental)
-        api_client.set_anonymised(judgment_uri, anonymised)
-
-        if published:
-            publish_documents(judgment_uri)
-        else:
-            unpublish_documents(judgment_uri)
-
-        judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
-        xml = ET.XML(bytes(judgment_xml, encoding="utf8"))
-        # Set name
-        name = xml_tools.get_metadata_name_element(xml)
-        new_name = request.POST["metadata_name"]
-        name.set("value", new_name)
-        frbrwork_parent = xml.find(
-            ".//akn:FRBRWork",
-            namespaces=akn_namespace,
-        )
-        if frbrwork_parent:
-            frbrwork_parent.append(name)
-        # Set neutral citation
-        citation = xml_tools.get_neutral_citation_element(xml)
-        new_citation = request.POST["neutral_citation"]
-        citation.text = new_citation
-        uk_parent = xml.find(
-            ".//uk:proprietary",
-            namespaces=uk_namespace,
-        )
-        if uk_parent:
-            uk_parent.append(name)
-        # Set court
-        court = xml_tools.get_court_element(xml)
-        new_court = request.POST["court"]
-        court.text = new_court
-        if uk_parent:
-            uk_parent.append(name)
-        # Date
-        date = xml_tools.get_judgment_date_element(xml)
-        new_date = request.POST["judgment_date"]
-        date.set("date", new_date)
-        if frbrwork_parent:
-            frbrwork_parent.append(date)
-        # Save
-        api_client.save_judgment_xml(judgment_uri, xml)
-        context["published"] = published
-        context["sensitive"] = sensitive
-        context["supplemental"] = supplemental
-        context["anonymised"] = anonymised
-        context["metadata_name"] = new_name
-        context["neutral_citation"] = new_citation
-        context["court"] = new_court
-        context["judgment_date"] = new_date
-        context["success"] = "Judgment successfully updated"
-        context["page_title"] = new_name
-        context["docx_url"] = generate_docx_url(judgment_uri)
-
-        version_response = api_client.list_judgment_versions(judgment_uri)
-        context["previous_versions"] = render_versions(version_response)
-    except MarklogicAPIError as e:
-        context["error"] = f"There was an error saving the Judgment: {e}"
-    except JudgmentMissingMetadataError:
-        context[
-            "error"
-        ] = "The Judgment is missing correct metadata structure and cannot be edited"
-
-    invalidate_caches(judgment_uri)
-    template = loader.get_template("judgment/edit.html")
     return HttpResponse(template.render({"context": context}, request))
 
 
