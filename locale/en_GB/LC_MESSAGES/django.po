@@ -180,3 +180,7 @@ msgstr "Submission date:"
 #: ds_caselaw_editor_ui/templates/includes/recent_judgments.html:36
 msgid "judgments.consignmentref"
 msgstr "Consignment Reference:"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:5
+msgid "judgment.download_docx"
+msgstr "Download the original judgment"

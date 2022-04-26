@@ -1,6 +1,9 @@
 {% extends "layout_judgment_html.html" %}
 {% block content %}
 {% load i18n %}
+   <aside class="judgment-info-component">
+    <a href="{{ context.docx_url }}">{% translate "judgment.download_docx" %}</a>
+  </aside>
   <div class="edit-component">
     <div class="edit-component__container">
       {% if context.success %}
