@@ -332,9 +332,7 @@ def create_s3_client():
         aws_access_key_id=env("AWS_ACCESS_KEY_ID", default=None),
         aws_secret_access_key=env("AWS_SECRET_KEY", default=None),
     )
-    return aws.client(
-        "s3", endpoint_url=env("AWS_ENDPOINT_URL", default=None), signature_version="v4"
-    )
+    return aws.client("s3", endpoint_url=env("AWS_ENDPOINT_URL", default=None))
 
 
 def generate_docx_url(uri: str):
