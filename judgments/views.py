@@ -4,6 +4,7 @@ import time
 import xml.etree.ElementTree as ET
 
 import boto3
+import botocore.client
 import caselawclient.xml_tools as xml_tools
 import environ
 from caselawclient.Client import (
@@ -311,7 +312,11 @@ def create_s3_client():
         aws_access_key_id=env("AWS_ACCESS_KEY_ID", default=None),
         aws_secret_access_key=env("AWS_SECRET_KEY", default=None),
     )
-    return aws.client("s3", endpoint_url=env("AWS_ENDPOINT_URL", default=None))
+    return aws.client(
+        "s3",
+        endpoint_url=env("AWS_ENDPOINT_URL", default=None),
+        config=botocore.client.Config(signature_version="s3v4"),
+    )
 
 
 def generate_docx_url(uri: str):
