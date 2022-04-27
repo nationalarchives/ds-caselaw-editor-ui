@@ -315,7 +315,7 @@ def create_s3_client():
     return aws.client(
         "s3",
         endpoint_url=env("AWS_ENDPOINT_URL", default=None),
-        region_name="eu-west-2",
+        region_name=env("PRIVATE_ASSET_BUCKET_REGION", default=None),
         config=botocore.client.Config(signature_version="s3v4"),
     )
 
