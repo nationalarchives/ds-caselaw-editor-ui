@@ -101,4 +101,8 @@
     padding: $spacer__unit calc($spacer__unit * 2);
     margin: $spacer__unit 0;
   }
+
+  &__result-failed {
+    color: red;
+  }
 }

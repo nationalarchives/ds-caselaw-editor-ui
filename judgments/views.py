@@ -128,12 +128,14 @@ def detail(request):
     version_uri = params.get("version_uri", None)
     context = {"judgment_uri": judgment_uri}
     try:
-        if 'failures' in judgment_uri:
+        if "failures" in judgment_uri:
             results = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
             metadata_name = judgment_uri
-            judgment = f'<pre>{results}</pre>'
+            judgment = f"<pre>{results}</pre>"
         else:
-            results = api_client.eval_xslt(judgment_uri, version_uri, show_unpublished=True)
+            results = api_client.eval_xslt(
+                judgment_uri, version_uri, show_unpublished=True
+            )
             metadata_name = api_client.get_judgment_name(judgment_uri)
 
             multipart_data = decoder.MultipartDecoder.from_response(results)

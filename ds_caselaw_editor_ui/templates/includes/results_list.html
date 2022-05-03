@@ -7,7 +7,11 @@
         <dt class="results__result-term-sr">Title</dt>
         <dd>
           <a class="results__result-title" href="{% url 'detail' %}?judgment_uri={{result.uri}}">
-            {{ result.name | safe }}
+            {% if not result.is_failure %}
+              {{ result.name | safe }}
+            {% else %}
+              <span class="results__result-failed">Failed processing:</span> {{result.uri}}
+            {% endif %}
           </a>
         </dd>
         <dt class="results__result-term-sr">Neutral citation</dt>
