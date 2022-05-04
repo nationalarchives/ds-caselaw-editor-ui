@@ -39,7 +39,17 @@ import $ from 'jquery'
         'expanded_text': 'Hide filter options',
         'initially_hidden': true
     }
+
+    $.fn.delete_prompt = () => {
+        if (confirm("Are you sure you want to delete this judgment? Deletion is permanent.")) {
+            alert("Delete");
+        }
+    }
 }($));
 
 
 $('.js-results-facets-wrapper').manage_filters();
+
+$('.judgment-toolbar__delete').click(() =>
+     confirm("Are you sure you want to delete this judgment? Deletion is permanent.")
+)

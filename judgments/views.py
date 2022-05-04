@@ -153,6 +153,18 @@ def detail(request):
     return HttpResponse(template.render({"context": context}, request))
 
 
+def delete(request):
+    judgment_uri = request.GET.get("judgment_uri", None)
+    context = {"judgment_uri": judgment_uri}
+    try:
+        api_client.delete_judgment(judgment_uri)
+    except MarklogicResourceNotFoundError:
+        raise Http404("Judgment was not found")
+
+    template = loader.get_template("judgment/deleted.html")
+    return HttpResponse(template.render({"context": context}, request))
+
+
 def index(request):
     context = {}
     try:

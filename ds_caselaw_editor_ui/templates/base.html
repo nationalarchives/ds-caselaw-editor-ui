@@ -24,6 +24,8 @@
   <body>
     <a id="skip-to-main-content" href="#main-content">{% translate "skiplink" %}</a>
     {% include 'includes/phase_banner.html' %}
+    {% block header %}
+    {% endblock header %}
     <main id="main-content">
       {% block content %}
       {% endblock content %}
