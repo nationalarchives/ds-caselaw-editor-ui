@@ -73,6 +73,7 @@ class SearchResult:
         self.court = court
         self.matches = matches
         self.meta = meta
+        self.is_failure = "failures" in self.uri
 
     @staticmethod
     def create_from_node(node):

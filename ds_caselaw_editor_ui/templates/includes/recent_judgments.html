@@ -9,7 +9,11 @@
           <span>
             <span class="recent-judgments__title">
               <a href="{% url 'detail' %}?judgment_uri={{item.uri}}">
-                {{ item.name }}
+                {% if not item.is_failure %}
+                  {{ item.name }}
+                {% else %}
+                  <span class="recent-judgments__failed">Failed processing:</span> {{item.uri}}
+                {% endif %}
               </a>
             </span>
             <span class="recent-judgments__neutralcitation">

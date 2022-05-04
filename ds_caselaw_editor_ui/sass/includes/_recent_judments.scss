@@ -40,6 +40,10 @@
     }
   }
 
+  &__failed {
+    color: red;
+  }
+
   &__title {
     display: block;
     font-weight: normal;
