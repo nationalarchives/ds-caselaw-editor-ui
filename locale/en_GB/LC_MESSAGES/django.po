@@ -196,3 +196,6 @@ msgstr "Return to Find and manage case law"
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:22
 msgid "judgment.delete"
 msgstr "Delete judgment"
+
+msgid "judgment.delete_a_judgment"
+msgstr "Delete a judgment"

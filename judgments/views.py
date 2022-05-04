@@ -155,7 +155,10 @@ def detail(request):
 
 def delete(request):
     judgment_uri = request.GET.get("judgment_uri", None)
-    context = {"judgment_uri": judgment_uri}
+    context = {
+        "judgment_uri": judgment_uri,
+        "page_title": gettext("judgment.delete_a_judgment"),
+    }
     try:
         api_client.delete_judgment(judgment_uri)
 

@@ -3,7 +3,7 @@
 
 {% block header %}
    <header class="page-header">
-     {% include 'includes/breadcrumbs.html' with title="Delete a judgment" link=request.get_full_path current="Delete a judgment" %}
+     {% include 'includes/breadcrumbs.html' with title=context.page_title link=request.get_full_path current=context.page_title %}
      {% include 'includes/logo.html' %}
 
     </header>
