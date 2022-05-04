@@ -126,12 +126,13 @@ def detail(request):
     params = request.GET
     judgment_uri = params.get("judgment_uri", None)
     version_uri = params.get("version_uri", None)
-    context = {"judgment_uri": judgment_uri}
+    context = {"judgment_uri": judgment_uri, "is_failure": False}
     try:
         if "failures" in judgment_uri:
             results = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
             metadata_name = judgment_uri
             judgment = f"<pre>{results}</pre>"
+            context["is_failure"] = True
         else:
             results = api_client.eval_xslt(
                 judgment_uri, version_uri, show_unpublished=True
@@ -142,6 +143,7 @@ def detail(request):
             judgment = multipart_data.parts[0].text
         context["judgment"] = judgment
         context["page_title"] = metadata_name
+        context["docx_url"] = generate_docx_url(judgment_uri)
 
         if version_uri:
             context["version"] = re.search(r"([\d])-([\d]+)", version_uri).group(1)
