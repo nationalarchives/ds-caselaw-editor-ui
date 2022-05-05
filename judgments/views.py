@@ -7,6 +7,7 @@ import boto3
 import botocore.client
 import caselawclient.xml_tools as xml_tools
 import environ
+from botocore.exceptions import ClientError
 from caselawclient.Client import (
     RESULTS_PER_PAGE,
     MarklogicAPIError,
@@ -129,9 +130,8 @@ def detail(request):
     context = {"judgment_uri": judgment_uri, "is_failure": False}
     try:
         if "failures" in judgment_uri:
-            results = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
+            judgment = get_parser_log(judgment_uri)
             metadata_name = judgment_uri
-            judgment = f"<pre>{results}</pre>"
             context["is_failure"] = True
         else:
             results = api_client.eval_xslt(
@@ -147,7 +147,7 @@ def detail(request):
 
         if version_uri:
             context["version"] = re.search(r"([\d])-([\d]+)", version_uri).group(1)
-    except MarklogicResourceNotFoundError:
+    except (MarklogicResourceNotFoundError, ClientError):
         raise Http404("Judgment was not found")
     template = loader.get_template("judgment/detail.html")
     return HttpResponse(template.render({"context": context}, request))
@@ -221,6 +221,14 @@ def results(request):
         raise Http404("Search error")  # TODO: This should be something else!
     template = loader.get_template("judgment/results.html")
     return HttpResponse(template.render({"context": context}, request))
+
+
+def get_parser_log(uri: str) -> str:
+    s3 = create_s3_client()
+    private_bucket = env("PRIVATE_ASSET_BUCKET")
+
+    parser_log = s3.get_object(Bucket=private_bucket, Key=f"{uri}/parser.log")
+    return parser_log["Body"].read().decode("utf-8")
 
 
 def paginator(current_page, total):

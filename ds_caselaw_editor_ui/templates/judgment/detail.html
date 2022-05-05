@@ -1,9 +1,15 @@
 {% extends "layout_judgment_html.html" %}
 {% block content %}
   {% if context.judgment %}
-    {% autoescape off %}
-      {{ context.judgment }}
-    {% endautoescape %}
+    {% if context.is_failure %}
+      <pre>
+        {{ context.judgment }}
+      </pre>
+    {% else %}
+      {% autoescape off %}
+        {{ context.judgment }}
+      {% endautoescape %}
+      {% endif %}
   {% else %}
     {{ content }}
   {% endif %}
