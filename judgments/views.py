@@ -153,6 +153,23 @@ def detail(request):
     return HttpResponse(template.render({"context": context}, request))
 
 
+def delete(request):
+    judgment_uri = request.GET.get("judgment_uri", None)
+    context = {
+        "judgment_uri": judgment_uri,
+        "page_title": gettext("judgment.delete_a_judgment"),
+    }
+    try:
+        api_client.delete_judgment(judgment_uri)
+
+        delete_documents(judgment_uri)
+    except MarklogicResourceNotFoundError:
+        raise Http404("Judgment was not found")
+
+    template = loader.get_template("judgment/deleted.html")
+    return HttpResponse(template.render({"context": context}, request))
+
+
 def index(request):
     context = {}
     try:
@@ -267,6 +284,27 @@ def render_versions(multipart_response):
     return sorted_versions
 
 
+def delete_from_bucket(uri: str, bucket: str) -> None:
+    client = create_s3_client()
+    response = client.list_objects(Bucket=bucket, Prefix=uri)
+
+    if response.get("Contents"):
+        objects_to_delete = [
+            {"Key": obj["Key"]} for obj in response.get("Contents", [])
+        ]
+        client.delete_objects(
+            Bucket=bucket,
+            Delete={
+                "Objects": objects_to_delete,
+            },
+        )
+
+
+def delete_documents(uri: str) -> None:
+    unpublish_documents(uri)
+    delete_from_bucket(uri, env("PRIVATE_ASSET_BUCKET"))
+
+
 def publish_documents(uri: str) -> None:
     client = create_s3_client()
 
@@ -282,21 +320,7 @@ def publish_documents(uri: str) -> None:
 
 
 def unpublish_documents(uri: str) -> None:
-    client = create_s3_client()
-
-    public_bucket = env("PUBLIC_ASSET_BUCKET")
-
-    response = client.list_objects(Bucket=public_bucket, Prefix=uri)
-
-    if response.get("Contents"):
-        objects_to_delete = [{"Key": obj["Key"]} for obj in response.get("Contents")]
-
-        client.delete_objects(
-            Bucket=public_bucket,
-            Delete={
-                "Objects": objects_to_delete,
-            },
-        )
+    delete_from_bucket(uri, env("PUBLIC_ASSET_BUCKET"))
 
 
 def invalidate_caches(uri: str) -> None:

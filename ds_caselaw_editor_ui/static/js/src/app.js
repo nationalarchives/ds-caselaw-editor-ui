@@ -43,3 +43,7 @@ import $ from 'jquery'
 
 
 $('.js-results-facets-wrapper').manage_filters();
+
+$('.judgment-toolbar__delete').click(() =>
+     confirm("Are you sure you want to delete this judgment? Deletion is permanent.")
+)

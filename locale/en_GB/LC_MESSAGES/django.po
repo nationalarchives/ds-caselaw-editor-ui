@@ -184,3 +184,18 @@ msgstr "Consignment Reference:"
 #: ds_caselaw_editor_ui/templates/judgment/edit.html:5
 msgid "judgment.download_docx"
 msgstr "Download the original judgment"
+
+#: ds_caselaw_editor_ui/templates/judgment/deleted.html:13
+msgid "judgment.deleted"
+msgstr "Judgment successfully deleted"
+
+#: ds_caselaw_editor_ui/templates/judgment/deleted.html:15
+msgid "judgment.return_home"
+msgstr "Return to Find and manage case law"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:22
+msgid "judgment.delete"
+msgstr "Delete judgment"
+
+msgid "judgment.delete_a_judgment"
+msgstr "Delete a judgment"
