@@ -322,9 +322,12 @@ def publish_documents(uri: str) -> None:
     response = client.list_objects(Bucket=private_bucket, Prefix=uri)
 
     for result in response.get("Contents", []):
-        source = {"Bucket": private_bucket, "Key": result["Key"]}
-        extra_args = {"ACL": "public-read"}
-        client.copy(source, public_bucket, result["Key"], extra_args)
+        key = str(result["Key"])
+
+        if not key.endswith("parser.log") and not key.endswith(".tar.gz"):
+            source = {"Bucket": private_bucket, "Key": key}
+            extra_args = {"ACL": "public-read"}
+            client.copy(source, public_bucket, key, extra_args)
 
 
 def unpublish_documents(uri: str) -> None:
