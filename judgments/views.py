@@ -227,8 +227,11 @@ def get_parser_log(uri: str) -> str:
     s3 = create_s3_client()
     private_bucket = env("PRIVATE_ASSET_BUCKET")
 
-    parser_log = s3.get_object(Bucket=private_bucket, Key=f"{uri}/parser.log")
-    return parser_log["Body"].read().decode("utf-8")
+    try:
+        parser_log = s3.get_object(Bucket=private_bucket, Key=f"{uri}/parser.log")
+        return parser_log["Body"].read().decode("utf-8")
+    except KeyError:
+        return ""
 
 
 def paginator(current_page, total):
