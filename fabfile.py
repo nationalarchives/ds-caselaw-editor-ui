@@ -2,6 +2,7 @@ import os
 import subprocess
 
 from invoke import run as local
+from invoke.exceptions import UnexpectedExit
 from invoke.tasks import task
 
 # Process .env file
@@ -75,8 +76,16 @@ def run(c):
     django_exec("rm -rf /app/staticfiles")
     django_exec("python manage.py collectstatic")
     # Piping Marklogic logs to marklogic.log
-    local("docker logs marklogic > marklogic.log")
-    return django_exec("python manage.py runserver_plus 0.0.0.0:3000")
+    try:
+        local("docker logs marklogic > marklogic.log")
+    except UnexpectedExit:
+        print("Unable to collect MarkLogic logs!")
+        pass
+    try:
+        django_exec("python manage.py runserver 0.0.0.0:3000")
+    except KeyboardInterrupt:
+        pass
+    stop(c, "django")
 
 
 @task
