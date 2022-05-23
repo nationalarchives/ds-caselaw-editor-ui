@@ -68,13 +68,19 @@ $ fab start
 $ fab sh
 ```
 
-### 6. Run a 'development' web server
+### 6. Add a django user so you can log in
+
+```console
+$ ./manage.py createsuperuser
+```
+
+### 7. Run a 'development' web server
 
 ```console
 $ python manage.py runserver_plus 0.0.0.0:3000
 ```
 
-### 9. Access the site
+### 8. Access the site
 
 <http://127.0.0.1:3000>
 
