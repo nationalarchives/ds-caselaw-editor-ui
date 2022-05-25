@@ -198,6 +198,6 @@ To deploy to production:
 1. Create a [new release](https://github.com/nationalarchives/ds-caselaw-editor-ui/releases).
 2. Set the tag and release name to `vX.Y.Z`, following semantic versioning.
 3. Publish the release.
-4. Automated workflow will then tag that release as `latest`, which will then be deployed to the production environment.
+4. Automated workflow will then force-push that release to the `production` branch, which will then be deployed to the production environment.
 
 The production app is at [https://editor.caselaw.nationalarchives.gov.uk/](https://editor.caselaw.nationalarchives.gov.uk/)
