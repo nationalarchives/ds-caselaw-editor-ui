@@ -185,6 +185,9 @@ msgstr "Consignment Reference:"
 msgid "judgment.download_docx"
 msgstr "Download the original judgment"
 
+msgid "judgment.download_pdf"
+msgstr "Download PDF"
+
 #: ds_caselaw_editor_ui/templates/judgment/deleted.html:13
 msgid "judgment.deleted"
 msgstr "Judgment successfully deleted"

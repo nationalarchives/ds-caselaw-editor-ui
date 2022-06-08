@@ -7,6 +7,7 @@ import boto3
 import botocore.client
 import caselawclient.xml_tools as xml_tools
 import environ
+import requests
 from botocore.exceptions import ClientError
 from caselawclient.Client import (
     RESULTS_PER_PAGE,
@@ -16,6 +17,7 @@ from caselawclient.Client import (
 )
 from caselawclient.xml_tools import JudgmentMissingMetadataError
 from django.http import Http404, HttpResponse
+from django.shortcuts import redirect
 from django.template import loader
 from django.utils.translation import gettext
 from django.views.generic import View
@@ -52,6 +54,7 @@ class EditJudgmentView(View):
             )
             meta["judgment_date"] = xml_tools.get_judgment_date_value(judgment)
             meta["docx_url"] = generate_docx_url(uri)
+            meta["has_pdf"] = has_pdf(uri)
             meta["previous_versions"] = self.get_versions(uri)
         except JudgmentMissingMetadataError:
             meta[
@@ -144,6 +147,7 @@ def detail(request):
         context["judgment"] = judgment
         context["page_title"] = metadata_name
         context["docx_url"] = generate_docx_url(judgment_uri)
+        context["has_pdf"] = has_pdf(judgment_uri)
 
         if version_uri:
             context["version"] = re.search(r"([\d])-([\d]+)", version_uri).group(1)
@@ -151,6 +155,21 @@ def detail(request):
         raise Http404("Judgment was not found")
     template = loader.get_template("judgment/detail.html")
     return HttpResponse(template.render({"context": context}, request))
+
+
+def detail_pdf(request):
+    params = request.GET
+    judgment_uri = params.get("judgment_uri")
+    pdf_path = f'{judgment_uri}/{judgment_uri.replace("/", "_")}.pdf'
+    pdf_uri = f'https://{env("PUBLIC_ASSET_BUCKET")}.s3.{env("S3_REGION")}.amazonaws.com/{pdf_path}'
+    return redirect(pdf_uri)
+
+
+def has_pdf(judgment_uri):
+    pdf_path = f'{judgment_uri}/{judgment_uri.replace("/", "_")}.pdf'
+    pdf_uri = f'https://{env("PUBLIC_ASSET_BUCKET")}.s3.{env("S3_REGION")}.amazonaws.com/{pdf_path}'
+    response = requests.head(pdf_uri)
+    return response.status_code == 200
 
 
 def delete(request):

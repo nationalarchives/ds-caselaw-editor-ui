@@ -18,6 +18,9 @@
           {% if context.docx_url %}
             <a href="{{ context.docx_url }}">{% translate "judgment.download_docx" %}</a>
           {% endif %}
+          {% if context.has_pdf %}
+            <a href="{% url 'detail_pdf' %}?judgment_uri={{context.judgment_uri}}">{% translate "judgment.download_pdf" %}</a>
+          {% endif %}
           {% if context.is_failure %}
             <a class="judgment-toolbar__delete" href="{% url 'delete' %}?judgment_uri={{ context.judgment_uri }}">{% translate "judgment.delete" %}</a>
           {% endif %}

@@ -3,6 +3,9 @@
 {% load i18n %}
    <aside class="judgment-info-component">
     <a href="{{ context.docx_url }}">{% translate "judgment.download_docx" %}</a>
+    {% if context.has_pdf %}
+      <a href="{% url 'detail_pdf' %}?judgment_uri={{context.judgment_uri}}">{% translate "judgment.download_pdf" %}</a>
+    {% endif %}
   </aside>
   <div class="edit-component">
     <div class="edit-component__container">
