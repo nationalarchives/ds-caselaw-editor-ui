@@ -1,23 +1,10 @@
-import os
 import re
-from unittest import mock, skip
-from unittest.mock import patch
+from unittest import skip
 
 from django.test import TestCase
 
 from judgments import converters, views
 from judgments.models import Judgment
-
-
-def mocked_requests_head(*args):
-    class MockResponse:
-        def __init__(self, status_code):
-            self.status_code = status_code
-
-    if "ewca/civ/2004/632" in args[0]:
-        return MockResponse(200)
-
-    return MockResponse(404)
 
 
 class TestJudgment(TestCase):
@@ -34,24 +21,6 @@ class TestJudgment(TestCase):
         decoded_response = response.content.decode("utf-8")
         self.assertIn("Judgment was not found", decoded_response)
         self.assertEqual(response.status_code, 404)
-
-    @patch.dict(
-        os.environ,
-        {"PUBLIC_ASSET_BUCKET": "public-asset-bucket", "S3_REGION": "eu-west-2"},
-        clear=True,
-    )
-    @mock.patch("requests.head", side_effect=mocked_requests_head)
-    def test_has_pdf_true(self, mock_head):
-        self.assertEqual(views.has_pdf("ewca/civ/2004/632"), True)
-
-    @patch.dict(
-        os.environ,
-        {"PUBLIC_ASSET_BUCKET": "public-asset-bucket", "S3_REGION": "eu-west-2"},
-        clear=True,
-    )
-    @mock.patch("requests.head", side_effect=mocked_requests_head)
-    def test_has_pdf_false(self, mock_head):
-        self.assertEqual(views.has_pdf("ewca/civ/2004/XXX"), False)
 
 
 class TestJudgmentModel(TestCase):
