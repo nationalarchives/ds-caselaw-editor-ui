@@ -131,7 +131,10 @@ def detail(request):
     context = {"judgment_uri": judgment_uri, "is_failure": False}
     try:
         if "failures" in judgment_uri:
-            judgment = get_parser_log(judgment_uri)
+            try:
+                judgment = get_parser_log(judgment_uri)
+            except ClientError:
+                judgment = f"No parser.log found for {judgment_uri}"
             metadata_name = judgment_uri
             context["is_failure"] = True
         else:
@@ -151,8 +154,6 @@ def detail(request):
             context["version"] = re.search(r"([\d])-([\d]+)", version_uri).group(1)
     except MarklogicResourceNotFoundError:
         raise Http404(f"Judgment was not found at uri {judgment_uri}")
-    except ClientError:
-        raise Http404(f"Parser log was not found at for judgment at uri {judgment_uri}")
     template = loader.get_template("judgment/detail.html")
     return HttpResponse(template.render({"context": context}, request))
 
