@@ -34,7 +34,7 @@ class EditJudgmentView(View):
             judgment_xml = api_client.get_judgment_xml(uri, show_unpublished=True)
             return ET.XML(bytes(judgment_xml, encoding="utf-8"))
         except MarklogicResourceNotFoundError:
-            raise Http404("Judgment was not found")
+            raise Http404(f"Judgment XML was not found at uri {uri}")
 
     def get_metadata(self, uri: str, judgment: ET.Element) -> dict:
         meta = dict()
@@ -131,7 +131,10 @@ def detail(request):
     context = {"judgment_uri": judgment_uri, "is_failure": False}
     try:
         if "failures" in judgment_uri:
-            judgment = get_parser_log(judgment_uri)
+            try:
+                judgment = get_parser_log(judgment_uri)
+            except ClientError:
+                judgment = f"No parser.log found for {judgment_uri}"
             metadata_name = judgment_uri
             context["is_failure"] = True
         else:
@@ -149,8 +152,8 @@ def detail(request):
 
         if version_uri:
             context["version"] = re.search(r"([\d])-([\d]+)", version_uri).group(1)
-    except (MarklogicResourceNotFoundError, ClientError):
-        raise Http404("Judgment was not found")
+    except MarklogicResourceNotFoundError:
+        raise Http404(f"Judgment was not found at uri {judgment_uri}")
     template = loader.get_template("judgment/detail.html")
     return HttpResponse(template.render({"context": context}, request))
 
@@ -166,7 +169,7 @@ def delete(request):
 
         delete_documents(judgment_uri)
     except MarklogicResourceNotFoundError:
-        raise Http404("Judgment was not found")
+        raise Http404(f"Judgment was not found at uri {judgment_uri}")
 
     template = loader.get_template("judgment/deleted.html")
     return HttpResponse(template.render({"context": context}, request))
