@@ -5,6 +5,7 @@ from django.test import TestCase
 
 from judgments import converters, views
 from judgments.models import Judgment
+from judgments.utils import get_judgment_root
 
 
 class TestJudgment(TestCase):
@@ -109,3 +110,24 @@ class TestConverters(TestCase):
     def test_subdivision_converter_fails_to_parse(self):
         converter = converters.SubdivisionConverter()
         self.assertIsNone(re.match(converter.regex, "notasubdivision"))
+
+
+class TestUtils(TestCase):
+    def test_get_judgment_root_error(self):
+        xml = "<error>parser.log contents</error>"
+        assert get_judgment_root(xml) == "error"
+
+    def test_get_judgment_root_akomantoso(self):
+        xml = (
+            "<akomaNtoso xmlns:uk='https://caselaw.nationalarchives.gov.uk/akn' "
+            "xmlns='http://docs.oasis-open.org/legaldocml/ns/akn/3.0'>judgment</akomaNtoso>"
+        )
+        assert (
+            get_judgment_root(xml)
+            == "{http://docs.oasis-open.org/legaldocml/ns/akn/3.0}akomaNtoso"
+        )
+
+    def test_get_judgment_root_malformed_xml(self):
+        # Should theoretically never happen but test anyway
+        xml = "<error>malformed xml"
+        assert get_judgment_root(xml) == "error"
