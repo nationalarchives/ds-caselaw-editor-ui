@@ -1,11 +1,13 @@
 import re
 from unittest import skip
+from unittest.mock import Mock
 
 from django.test import TestCase
 
 from judgments import converters, views
 from judgments.models import Judgment
 from judgments.utils import get_judgment_root
+from judgments.views import extract_version, render_versions
 
 
 class TestJudgment(TestCase):
@@ -22,6 +24,35 @@ class TestJudgment(TestCase):
         decoded_response = response.content.decode("utf-8")
         self.assertIn("Judgment was not found", decoded_response)
         self.assertEqual(response.status_code, 404)
+
+    def test_extract_version_uri(self):
+        uri = "/ewhc/ch/2022/1178_xml_versions/2-1178.xml"
+        assert extract_version(uri) == 2
+
+    def test_extract_version_failure(self):
+        uri = "/failures/TDR-2022-DBF_xml_versions/1-TDR-2022-DBF.xml"
+        assert extract_version(uri) == 1
+
+    def test_extract_version_not_found(self):
+        uri = "some-other-string"
+        assert extract_version(uri) == 0
+
+    def test_render_versions(self):
+        version_parts = (
+            Mock(text="/ewhc/ch/2022/1178_xml_versions/3-1178.xml"),
+            Mock(text="/ewhc/ch/2022/1178_xml_versions/2-1178.xml"),
+            Mock(text="/ewhc/ch/2022/1178_xml_versions/1-1178.xml"),
+        )
+        requests_toolbelt = Mock()
+        requests_toolbelt.multipart.decoder.BodyPart.return_value = version_parts
+
+        expected_result = [
+            {"uri": "/ewhc/ch/2022/1178_xml_versions/3-1178", "version": 3},
+            {"uri": "/ewhc/ch/2022/1178_xml_versions/2-1178", "version": 2},
+            {"uri": "/ewhc/ch/2022/1178_xml_versions/1-1178", "version": 1},
+        ]
+
+        assert render_versions(version_parts) == expected_result
 
 
 class TestJudgmentModel(TestCase):

@@ -26,6 +26,7 @@ from judgments.models import SearchResult, SearchResults
 env = environ.Env()
 akn_namespace = {"akn": "http://docs.oasis-open.org/legaldocml/ns/akn/3.0"}
 uk_namespace = {"uk": "https://caselaw.nationalarchives.gov.uk/akn"}
+VERSION_REGEX = r"(\d+)-(\d+|TDR)"
 
 
 class EditJudgmentView(View):
@@ -62,7 +63,12 @@ class EditJudgmentView(View):
         return meta
 
     def get_versions(self, uri: str):
-        return render_versions(api_client.list_judgment_versions(uri))
+        versions_response = api_client.list_judgment_versions(uri)
+        try:
+            decoded_versions = decoder.MultipartDecoder.from_response(versions_response)
+            return render_versions(decoded_versions.parts)
+        except AttributeError:
+            return []
 
     def render(self, request, context):
         template = loader.get_template("judgment/edit.html")
@@ -151,7 +157,11 @@ def detail(request):
         context["pdf_url"] = generate_pdf_url(judgment_uri)
 
         if version_uri:
-            context["version"] = re.search(r"([\d])-([\d]+)", version_uri).group(1)
+            try:
+                version = re.search(VERSION_REGEX, version_uri).group(1)
+            except AttributeError:
+                version = None
+            context["version"] = version
     except MarklogicResourceNotFoundError:
         raise Http404(f"Judgment was not found at uri {judgment_uri}")
     template = loader.get_template("judgment/detail.html")
@@ -289,18 +299,23 @@ def perform_advanced_search(
     return SearchResults.create_from_string(multipart_data.parts[0].text)
 
 
-def render_versions(multipart_response):
-    decoded_versions = decoder.MultipartDecoder.from_response(multipart_response)
-
+def render_versions(decoded_versions):
     versions = [
         {
             "uri": part.text.rstrip(".xml"),
-            "version": int(re.search(r"([\d]+)-([\d]+).xml", part.text).group(1)),
+            "version": extract_version(part.text),
         }
-        for part in decoded_versions.parts
+        for part in decoded_versions
     ]
     sorted_versions = sorted(versions, key=lambda d: -d["version"])
     return sorted_versions
+
+
+def extract_version(version_string: str) -> int:
+    try:
+        return int(re.search(VERSION_REGEX, version_string).group(1))
+    except AttributeError:
+        return 0
 
 
 def delete_from_bucket(uri: str, bucket: str) -> None:
