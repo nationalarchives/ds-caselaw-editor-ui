@@ -7,7 +7,6 @@ import boto3
 import botocore.client
 import caselawclient.xml_tools as xml_tools
 import environ
-from botocore.exceptions import ClientError
 from caselawclient.Client import (
     RESULTS_PER_PAGE,
     MarklogicAPIError,
@@ -22,6 +21,7 @@ from django.views.generic import View
 from requests_toolbelt.multipart import decoder
 
 from judgments.models import SearchResult, SearchResults
+from judgments.utils import get_judgment_root
 
 env = environ.Env()
 akn_namespace = {"akn": "http://docs.oasis-open.org/legaldocml/ns/akn/3.0"}
@@ -136,13 +136,12 @@ def detail(request):
     version_uri = params.get("version_uri", None)
     context = {"judgment_uri": judgment_uri, "is_failure": False}
     try:
-        if "failures" in judgment_uri:
-            try:
-                judgment = get_parser_log(judgment_uri)
-            except ClientError:
-                judgment = f"No parser.log found for {judgment_uri}"
-            metadata_name = judgment_uri
+        judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
+        judgment_root = get_judgment_root(judgment_xml)
+        if "error" in judgment_root:
             context["is_failure"] = True
+            judgment = judgment_xml
+            metadata_name = judgment_uri
         else:
             results = api_client.eval_xslt(
                 judgment_uri, version_uri, show_unpublished=True
