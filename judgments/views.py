@@ -15,13 +15,20 @@ from caselawclient.Client import (
 )
 from caselawclient.xml_tools import JudgmentMissingMetadataError
 from django.http import Http404, HttpResponse
+from django.shortcuts import redirect
 from django.template import loader
+from django.urls import reverse
 from django.utils.translation import gettext
 from django.views.generic import View
 from requests_toolbelt.multipart import decoder
 
 from judgments.models import SearchResult, SearchResults
-from judgments.utils import get_judgment_root
+from judgments.utils import (
+    MoveJudgmentError,
+    NeutralCitationToUriError,
+    get_judgment_root,
+    update_judgment_uri,
+)
 
 env = environ.Env()
 akn_namespace = {"akn": "http://docs.oasis-open.org/legaldocml/ns/akn/3.0"}
@@ -118,9 +125,19 @@ class EditJudgmentView(View):
             new_date = request.POST["judgment_date"]
             api_client.set_judgment_date(judgment_uri, new_date)
 
+            # If judgment_uri is a `failure` URI, amend it to match new neutral citation and redirect
+            if "failures" in judgment_uri and new_citation is not None:
+                new_judgment_uri = update_judgment_uri(judgment_uri, new_citation)
+                return redirect(reverse("edit") + f"?judgment_uri={new_judgment_uri}")
+
             context["success"] = "Judgment successfully updated"
             xml = self.get_judgment(judgment_uri)
             context.update(self.get_metadata(judgment_uri, xml))
+
+        except (MoveJudgmentError, NeutralCitationToUriError) as e:
+            context[
+                "error"
+            ] = f"There was an error updating the Judgment's neutral citation: {e}"
 
         except MarklogicAPIError as e:
             context["error"] = f"There was an error saving the Judgment: {e}"
