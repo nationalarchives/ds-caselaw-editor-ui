@@ -41,8 +41,8 @@ class EditJudgmentView(View):
         try:
             judgment_xml = api_client.get_judgment_xml(uri, show_unpublished=True)
             return ET.XML(bytes(judgment_xml, encoding="utf-8"))
-        except MarklogicResourceNotFoundError:
-            raise Http404(f"Judgment XML was not found at uri {uri}")
+        except MarklogicResourceNotFoundError as e:
+            raise Http404(f"Judgment XML was not found at uri {uri}, {e}")
 
     def get_metadata(self, uri: str, judgment: ET.Element) -> dict:
         meta = dict()
@@ -178,8 +178,8 @@ def detail(request):
             except AttributeError:
                 version = None
             context["version"] = version
-    except MarklogicResourceNotFoundError:
-        raise Http404(f"Judgment was not found at uri {judgment_uri}")
+    except MarklogicResourceNotFoundError as e:
+        raise Http404(f"Judgment was not found at uri {judgment_uri}, {e}")
     template = loader.get_template("judgment/detail.html")
     return HttpResponse(template.render({"context": context}, request))
 
@@ -194,8 +194,8 @@ def delete(request):
         api_client.delete_judgment(judgment_uri)
 
         delete_documents(judgment_uri)
-    except MarklogicResourceNotFoundError:
-        raise Http404(f"Judgment was not found at uri {judgment_uri}")
+    except MarklogicResourceNotFoundError as e:
+        raise Http404(f"Judgment was not found at uri {judgment_uri}, {e}")
 
     template = loader.get_template("judgment/deleted.html")
     return HttpResponse(template.render({"context": context}, request))
@@ -213,9 +213,9 @@ def index(request):
         context["recent_judgments"] = search_results
         context["paginator"] = paginator(int(page), model.total)
 
-    except MarklogicResourceNotFoundError:
+    except MarklogicResourceNotFoundError as e:
         raise Http404(
-            "Search results not found"
+            f"Search results not found, {e}"
         )  # TODO: This should be something else!
     template = loader.get_template("pages/home.html")
     return HttpResponse(template.render({"context": context}, request))
@@ -248,8 +248,8 @@ def results(request):
             context["total"] = model.total
             context["search_results"] = search_results
             context["paginator"] = paginator(int(page), model.total)
-    except MarklogicAPIError:
-        raise Http404("Search error")  # TODO: This should be something else!
+    except MarklogicAPIError as e:
+        raise Http404(f"Search error, {e}")  # TODO: This should be something else!
     template = loader.get_template("judgment/results.html")
     return HttpResponse(template.render({"context": context}, request))
 
