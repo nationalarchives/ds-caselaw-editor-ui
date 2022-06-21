@@ -1,12 +1,15 @@
 import re
 from unittest import skip
-from unittest.mock import Mock
+from unittest.mock import MagicMock, Mock, patch
 
+import ds_caselaw_utils
+from caselawclient.Client import MarklogicAPIError
 from django.test import TestCase
 
+import judgments
 from judgments import converters, views
 from judgments.models import Judgment
-from judgments.utils import get_judgment_root
+from judgments.utils import get_judgment_root, update_judgment_uri
 from judgments.views import extract_version, render_versions
 
 
@@ -162,3 +165,48 @@ class TestUtils(TestCase):
         # Should theoretically never happen but test anyway
         xml = "<error>malformed xml"
         assert get_judgment_root(xml) == "error"
+
+    @patch("judgments.utils.api_client")
+    def test_update_judgment_uri_success(self, fake_client):
+        ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
+        attrs = {
+            "copy_judgment.return_value": True,
+            "delete_judgment.return_value": True,
+        }
+        fake_client.configure_mock(**attrs)
+
+        result = update_judgment_uri("old/uri", "[2002] EAT 1")
+
+        fake_client.copy_judgment.assert_called_with("old/uri", "new/uri")
+        fake_client.delete_judgment.assert_called_with("old/uri")
+        assert result == "new/uri"
+
+    @patch("judgments.utils.api_client")
+    def test_update_judgment_uri_exception_copy(self, fake_client):
+        ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
+        attrs = {
+            "copy_judgment.side_effect": MarklogicAPIError,
+            "delete_judgment.return_value": True,
+        }
+        fake_client.configure_mock(**attrs)
+
+        with self.assertRaises(judgments.utils.MoveJudgmentError):
+            update_judgment_uri("old/uri", "[2002] EAT 1")
+
+    @patch("judgments.utils.api_client")
+    def test_update_judgment_uri_exception_delete(self, fake_client):
+        ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
+        attrs = {
+            "copy_judgment.return_value": True,
+            "delete_judgment.side_effect": MarklogicAPIError,
+        }
+        fake_client.configure_mock(**attrs)
+
+        with self.assertRaises(judgments.utils.MoveJudgmentError):
+            update_judgment_uri("old/uri", "[2002] EAT 1")
+
+    def test_update_judgment_uri_unparseable_citation(self):
+        ds_caselaw_utils.neutral_url = MagicMock(return_value=None)
+
+        with self.assertRaises(judgments.utils.NeutralCitationToUriError):
+            update_judgment_uri("old/uri", "Wrong neutral citation")
