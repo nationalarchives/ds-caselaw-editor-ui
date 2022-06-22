@@ -52,13 +52,13 @@ class EditJudgmentView(View):
             meta["sensitive"] = api_client.get_sensitive(uri)
             meta["supplemental"] = api_client.get_supplemental(uri)
             meta["anonymised"] = api_client.get_anonymised(uri)
-            meta["metadata_name"] = xml_tools.get_metadata_name_value(judgment)
+            meta["metadata_name"] = xml_tools.get_metadata_name_value(judgment) or ""
             meta["page_title"] = meta["metadata_name"]
-            meta["court"] = xml_tools.get_court_value(judgment)
-            meta["neutral_citation"] = xml_tools.get_neutral_citation_name_value(
-                judgment
+            meta["court"] = xml_tools.get_court_value(judgment) or ""
+            meta["neutral_citation"] = (
+                xml_tools.get_neutral_citation_name_value(judgment) or ""
             )
-            meta["judgment_date"] = xml_tools.get_judgment_date_value(judgment)
+            meta["judgment_date"] = xml_tools.get_judgment_date_value(judgment) or ""
             meta["docx_url"] = generate_docx_url(uri)
             meta["pdf_url"] = generate_pdf_url(uri)
             meta["previous_versions"] = self.get_versions(uri)
