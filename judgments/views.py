@@ -7,7 +7,6 @@ import boto3
 import botocore.client
 import caselawclient.xml_tools as xml_tools
 import environ
-from botocore.exceptions import ClientError
 from caselawclient.Client import (
     RESULTS_PER_PAGE,
     MarklogicAPIError,
@@ -16,16 +15,25 @@ from caselawclient.Client import (
 )
 from caselawclient.xml_tools import JudgmentMissingMetadataError
 from django.http import Http404, HttpResponse
+from django.shortcuts import redirect
 from django.template import loader
+from django.urls import reverse
 from django.utils.translation import gettext
 from django.views.generic import View
 from requests_toolbelt.multipart import decoder
 
 from judgments.models import SearchResult, SearchResults
+from judgments.utils import (
+    MoveJudgmentError,
+    NeutralCitationToUriError,
+    get_judgment_root,
+    update_judgment_uri,
+)
 
 env = environ.Env()
 akn_namespace = {"akn": "http://docs.oasis-open.org/legaldocml/ns/akn/3.0"}
 uk_namespace = {"uk": "https://caselaw.nationalarchives.gov.uk/akn"}
+VERSION_REGEX = r"(\d+)-(\d+|TDR)"
 
 
 class EditJudgmentView(View):
@@ -33,8 +41,8 @@ class EditJudgmentView(View):
         try:
             judgment_xml = api_client.get_judgment_xml(uri, show_unpublished=True)
             return ET.XML(bytes(judgment_xml, encoding="utf-8"))
-        except MarklogicResourceNotFoundError:
-            raise Http404(f"Judgment XML was not found at uri {uri}")
+        except MarklogicResourceNotFoundError as e:
+            raise Http404(f"Judgment XML was not found at uri {uri}, {e}")
 
     def get_metadata(self, uri: str, judgment: ET.Element) -> dict:
         meta = dict()
@@ -44,13 +52,13 @@ class EditJudgmentView(View):
             meta["sensitive"] = api_client.get_sensitive(uri)
             meta["supplemental"] = api_client.get_supplemental(uri)
             meta["anonymised"] = api_client.get_anonymised(uri)
-            meta["metadata_name"] = xml_tools.get_metadata_name_value(judgment)
+            meta["metadata_name"] = xml_tools.get_metadata_name_value(judgment) or ""
             meta["page_title"] = meta["metadata_name"]
-            meta["court"] = xml_tools.get_court_value(judgment)
-            meta["neutral_citation"] = xml_tools.get_neutral_citation_name_value(
-                judgment
+            meta["court"] = xml_tools.get_court_value(judgment) or ""
+            meta["neutral_citation"] = (
+                xml_tools.get_neutral_citation_name_value(judgment) or ""
             )
-            meta["judgment_date"] = xml_tools.get_judgment_date_value(judgment)
+            meta["judgment_date"] = xml_tools.get_judgment_date_value(judgment) or ""
             meta["docx_url"] = generate_docx_url(uri)
             meta["pdf_url"] = generate_pdf_url(uri)
             meta["previous_versions"] = self.get_versions(uri)
@@ -62,7 +70,12 @@ class EditJudgmentView(View):
         return meta
 
     def get_versions(self, uri: str):
-        return render_versions(api_client.list_judgment_versions(uri))
+        versions_response = api_client.list_judgment_versions(uri)
+        try:
+            decoded_versions = decoder.MultipartDecoder.from_response(versions_response)
+            return render_versions(decoded_versions.parts)
+        except AttributeError:
+            return []
 
     def render(self, request, context):
         template = loader.get_template("judgment/edit.html")
@@ -112,9 +125,19 @@ class EditJudgmentView(View):
             new_date = request.POST["judgment_date"]
             api_client.set_judgment_date(judgment_uri, new_date)
 
+            # If judgment_uri is a `failure` URI, amend it to match new neutral citation and redirect
+            if "failures" in judgment_uri and new_citation is not None:
+                new_judgment_uri = update_judgment_uri(judgment_uri, new_citation)
+                return redirect(reverse("edit") + f"?judgment_uri={new_judgment_uri}")
+
             context["success"] = "Judgment successfully updated"
             xml = self.get_judgment(judgment_uri)
             context.update(self.get_metadata(judgment_uri, xml))
+
+        except (MoveJudgmentError, NeutralCitationToUriError) as e:
+            context[
+                "error"
+            ] = f"There was an error updating the Judgment's neutral citation: {e}"
 
         except MarklogicAPIError as e:
             context["error"] = f"There was an error saving the Judgment: {e}"
@@ -130,13 +153,12 @@ def detail(request):
     version_uri = params.get("version_uri", None)
     context = {"judgment_uri": judgment_uri, "is_failure": False}
     try:
-        if "failures" in judgment_uri:
-            try:
-                judgment = get_parser_log(judgment_uri)
-            except ClientError:
-                judgment = f"No parser.log found for {judgment_uri}"
-            metadata_name = judgment_uri
+        judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
+        judgment_root = get_judgment_root(judgment_xml)
+        if "error" in judgment_root:
             context["is_failure"] = True
+            judgment = judgment_xml
+            metadata_name = judgment_uri
         else:
             results = api_client.eval_xslt(
                 judgment_uri, version_uri, show_unpublished=True
@@ -151,9 +173,13 @@ def detail(request):
         context["pdf_url"] = generate_pdf_url(judgment_uri)
 
         if version_uri:
-            context["version"] = re.search(r"([\d])-([\d]+)", version_uri).group(1)
-    except MarklogicResourceNotFoundError:
-        raise Http404(f"Judgment was not found at uri {judgment_uri}")
+            try:
+                version = re.search(VERSION_REGEX, version_uri).group(1)
+            except AttributeError:
+                version = None
+            context["version"] = version
+    except MarklogicResourceNotFoundError as e:
+        raise Http404(f"Judgment was not found at uri {judgment_uri}, {e}")
     template = loader.get_template("judgment/detail.html")
     return HttpResponse(template.render({"context": context}, request))
 
@@ -168,8 +194,8 @@ def delete(request):
         api_client.delete_judgment(judgment_uri)
 
         delete_documents(judgment_uri)
-    except MarklogicResourceNotFoundError:
-        raise Http404(f"Judgment was not found at uri {judgment_uri}")
+    except MarklogicResourceNotFoundError as e:
+        raise Http404(f"Judgment was not found at uri {judgment_uri}, {e}")
 
     template = loader.get_template("judgment/deleted.html")
     return HttpResponse(template.render({"context": context}, request))
@@ -187,9 +213,9 @@ def index(request):
         context["recent_judgments"] = search_results
         context["paginator"] = paginator(int(page), model.total)
 
-    except MarklogicResourceNotFoundError:
+    except MarklogicResourceNotFoundError as e:
         raise Http404(
-            "Search results not found"
+            f"Search results not found, {e}"
         )  # TODO: This should be something else!
     template = loader.get_template("pages/home.html")
     return HttpResponse(template.render({"context": context}, request))
@@ -222,8 +248,8 @@ def results(request):
             context["total"] = model.total
             context["search_results"] = search_results
             context["paginator"] = paginator(int(page), model.total)
-    except MarklogicAPIError:
-        raise Http404("Search error")  # TODO: This should be something else!
+    except MarklogicAPIError as e:
+        raise Http404(f"Search error, {e}")  # TODO: This should be something else!
     template = loader.get_template("judgment/results.html")
     return HttpResponse(template.render({"context": context}, request))
 
@@ -289,18 +315,23 @@ def perform_advanced_search(
     return SearchResults.create_from_string(multipart_data.parts[0].text)
 
 
-def render_versions(multipart_response):
-    decoded_versions = decoder.MultipartDecoder.from_response(multipart_response)
-
+def render_versions(decoded_versions):
     versions = [
         {
             "uri": part.text.rstrip(".xml"),
-            "version": int(re.search(r"([\d]+)-([\d]+).xml", part.text).group(1)),
+            "version": extract_version(part.text),
         }
-        for part in decoded_versions.parts
+        for part in decoded_versions
     ]
     sorted_versions = sorted(versions, key=lambda d: -d["version"])
     return sorted_versions
+
+
+def extract_version(version_string: str) -> int:
+    try:
+        return int(re.search(VERSION_REGEX, version_string).group(1))
+    except AttributeError:
+        return 0
 
 
 def delete_from_bucket(uri: str, bucket: str) -> None:

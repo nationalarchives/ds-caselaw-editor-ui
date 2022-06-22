@@ -1,10 +1,16 @@
 import re
 from unittest import skip
+from unittest.mock import MagicMock, Mock, patch
 
+import ds_caselaw_utils
+from caselawclient.Client import MarklogicAPIError
 from django.test import TestCase
 
+import judgments
 from judgments import converters, views
 from judgments.models import Judgment
+from judgments.utils import get_judgment_root, update_judgment_uri
+from judgments.views import extract_version, render_versions
 
 
 class TestJudgment(TestCase):
@@ -21,6 +27,35 @@ class TestJudgment(TestCase):
         decoded_response = response.content.decode("utf-8")
         self.assertIn("Judgment was not found", decoded_response)
         self.assertEqual(response.status_code, 404)
+
+    def test_extract_version_uri(self):
+        uri = "/ewhc/ch/2022/1178_xml_versions/2-1178.xml"
+        assert extract_version(uri) == 2
+
+    def test_extract_version_failure(self):
+        uri = "/failures/TDR-2022-DBF_xml_versions/1-TDR-2022-DBF.xml"
+        assert extract_version(uri) == 1
+
+    def test_extract_version_not_found(self):
+        uri = "some-other-string"
+        assert extract_version(uri) == 0
+
+    def test_render_versions(self):
+        version_parts = (
+            Mock(text="/ewhc/ch/2022/1178_xml_versions/3-1178.xml"),
+            Mock(text="/ewhc/ch/2022/1178_xml_versions/2-1178.xml"),
+            Mock(text="/ewhc/ch/2022/1178_xml_versions/1-1178.xml"),
+        )
+        requests_toolbelt = Mock()
+        requests_toolbelt.multipart.decoder.BodyPart.return_value = version_parts
+
+        expected_result = [
+            {"uri": "/ewhc/ch/2022/1178_xml_versions/3-1178", "version": 3},
+            {"uri": "/ewhc/ch/2022/1178_xml_versions/2-1178", "version": 2},
+            {"uri": "/ewhc/ch/2022/1178_xml_versions/1-1178", "version": 1},
+        ]
+
+        assert render_versions(version_parts) == expected_result
 
 
 class TestJudgmentModel(TestCase):
@@ -109,3 +144,69 @@ class TestConverters(TestCase):
     def test_subdivision_converter_fails_to_parse(self):
         converter = converters.SubdivisionConverter()
         self.assertIsNone(re.match(converter.regex, "notasubdivision"))
+
+
+class TestUtils(TestCase):
+    def test_get_judgment_root_error(self):
+        xml = "<error>parser.log contents</error>"
+        assert get_judgment_root(xml) == "error"
+
+    def test_get_judgment_root_akomantoso(self):
+        xml = (
+            "<akomaNtoso xmlns:uk='https://caselaw.nationalarchives.gov.uk/akn' "
+            "xmlns='http://docs.oasis-open.org/legaldocml/ns/akn/3.0'>judgment</akomaNtoso>"
+        )
+        assert (
+            get_judgment_root(xml)
+            == "{http://docs.oasis-open.org/legaldocml/ns/akn/3.0}akomaNtoso"
+        )
+
+    def test_get_judgment_root_malformed_xml(self):
+        # Should theoretically never happen but test anyway
+        xml = "<error>malformed xml"
+        assert get_judgment_root(xml) == "error"
+
+    @patch("judgments.utils.api_client")
+    def test_update_judgment_uri_success(self, fake_client):
+        ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
+        attrs = {
+            "copy_judgment.return_value": True,
+            "delete_judgment.return_value": True,
+        }
+        fake_client.configure_mock(**attrs)
+
+        result = update_judgment_uri("old/uri", "[2002] EAT 1")
+
+        fake_client.copy_judgment.assert_called_with("old/uri", "new/uri")
+        fake_client.delete_judgment.assert_called_with("old/uri")
+        assert result == "new/uri"
+
+    @patch("judgments.utils.api_client")
+    def test_update_judgment_uri_exception_copy(self, fake_client):
+        ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
+        attrs = {
+            "copy_judgment.side_effect": MarklogicAPIError,
+            "delete_judgment.return_value": True,
+        }
+        fake_client.configure_mock(**attrs)
+
+        with self.assertRaises(judgments.utils.MoveJudgmentError):
+            update_judgment_uri("old/uri", "[2002] EAT 1")
+
+    @patch("judgments.utils.api_client")
+    def test_update_judgment_uri_exception_delete(self, fake_client):
+        ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
+        attrs = {
+            "copy_judgment.return_value": True,
+            "delete_judgment.side_effect": MarklogicAPIError,
+        }
+        fake_client.configure_mock(**attrs)
+
+        with self.assertRaises(judgments.utils.MoveJudgmentError):
+            update_judgment_uri("old/uri", "[2002] EAT 1")
+
+    def test_update_judgment_uri_unparseable_citation(self):
+        ds_caselaw_utils.neutral_url = MagicMock(return_value=None)
+
+        with self.assertRaises(judgments.utils.NeutralCitationToUriError):
+            update_judgment_uri("old/uri", "Wrong neutral citation")
