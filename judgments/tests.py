@@ -170,6 +170,7 @@ class TestUtils(TestCase):
     def test_update_judgment_uri_success(self, fake_client):
         ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
         attrs = {
+            "get_judgment_xml.return_value": "",
             "copy_judgment.return_value": True,
             "delete_judgment.return_value": True,
         }
@@ -210,3 +211,14 @@ class TestUtils(TestCase):
 
         with self.assertRaises(judgments.utils.NeutralCitationToUriError):
             update_judgment_uri("old/uri", "Wrong neutral citation")
+
+    @patch("judgments.utils.api_client")
+    def test_update_judgment_uri_duplicate_uri(self, fake_client):
+        ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
+        attrs = {
+            "get_judgment_xml.return_value": "<akomaNtoso><judgment></judgment></akomaNtoso>",
+        }
+        fake_client.configure_mock(**attrs)
+
+        with self.assertRaises(judgments.utils.MoveJudgmentError):
+            update_judgment_uri("old/uri", "[2002] EAT 1")

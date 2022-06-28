@@ -36,8 +36,16 @@ def update_judgment_uri(old_uri, new_citation):
             f"Unable to form new URI for {old_uri} from neutral citation: {new_citation}"
         )
 
+    existing_judgment = api_client.get_judgment_xml(new_uri, show_unpublished=True)
+    if existing_judgment != "":
+        raise MoveJudgmentError(
+            f"The URI {new_uri} generated from {new_citation} already exists, you cannot move this judgment to a"
+            f" pre-existing Neutral Citation Number."
+        )
+
     try:
         api_client.copy_judgment(old_uri, new_uri)
+        set_metadata(old_uri, new_uri)
     except MarklogicAPIError as e:
         raise MoveJudgmentError(
             f"Failure when attempting to copy judgment from {old_uri} to {new_uri}: {e}"
@@ -51,3 +59,22 @@ def update_judgment_uri(old_uri, new_citation):
         )
 
     return new_uri
+
+
+def set_metadata(old_uri, new_uri):
+    source_organisation = api_client.get_property(old_uri, "source-organisation")
+    source_name = api_client.get_property(old_uri, "source-name")
+    source_email = api_client.get_property(old_uri, "source-email")
+    transfer_consignment_reference = api_client.get_property(
+        old_uri, "transfer-consignment-reference"
+    )
+    transfer_received_at = api_client.get_property(old_uri, "transfer-received-at")
+    for (key, value) in [
+        ("source-organisation", source_organisation),
+        ("source-name", source_name),
+        ("source-email", source_email),
+        ("transfer-consignment_reference", transfer_consignment_reference),
+        ("transfer-received-at", transfer_received_at),
+    ]:
+        if value is not None:
+            api_client.set_property(new_uri, key, value)
