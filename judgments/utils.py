@@ -36,6 +36,13 @@ def update_judgment_uri(old_uri, new_citation):
             f"Unable to form new URI for {old_uri} from neutral citation: {new_citation}"
         )
 
+    existing_judgment = api_client.get_judgment_xml(new_uri, show_unpublished=True)
+    if existing_judgment != "":
+        raise MoveJudgmentError(
+            f"The URI {new_uri} generated from {new_citation} already exists, you cannot move this judgment to a"
+            f" pre-existing Neutral Citation Number."
+        )
+
     try:
         api_client.copy_judgment(old_uri, new_uri)
         set_metadata(old_uri, new_uri)
