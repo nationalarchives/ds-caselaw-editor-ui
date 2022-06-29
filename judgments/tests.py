@@ -170,7 +170,7 @@ class TestUtils(TestCase):
     def test_update_judgment_uri_success(self, fake_client):
         ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
         attrs = {
-            "get_judgment_xml.return_value": "",
+            "get_judgment_xml.side_effect": MarklogicAPIError,
             "copy_judgment.return_value": True,
             "delete_judgment.return_value": True,
         }
