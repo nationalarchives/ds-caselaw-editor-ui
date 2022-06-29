@@ -285,5 +285,7 @@ ds_caselaw_editor_ui/media/
 docker/*
 
 /ds_caselaw_editor_ui/static/css/main.css
+/ds_caselaw_editor_ui/static/css/edit.css
 /ds_caselaw_editor_ui/static/css/main.css.map
+/ds_caselaw_editor_ui/static/css/edit.css.map
 /ds_caselaw_editor_ui/static/js/dist/app.js
