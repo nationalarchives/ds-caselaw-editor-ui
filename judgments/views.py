@@ -210,7 +210,7 @@ def index(request):
         search_results = [
             SearchResult.create_from_node(result) for result in model.results
         ]
-        context["recent_judgments"] = search_results
+        context["recent_judgments"] = list(filter(None, search_results))
         context["paginator"] = paginator(int(page), model.total)
 
     except MarklogicResourceNotFoundError as e:

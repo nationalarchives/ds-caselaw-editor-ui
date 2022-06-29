@@ -1,7 +1,9 @@
 # from django.db import models
+import logging
 from datetime import datetime
 from os.path import dirname, join
 
+import caselawclient.Client
 from caselawclient.Client import api_client
 from djxml import xmlmodels
 from lxml import etree
@@ -81,18 +83,24 @@ class SearchResult:
         matches = SearchMatch.create_from_string(
             etree.tostring(node, encoding="UTF-8").decode("UTF-8")
         )
-        judgment_xml = api_client.get_judgment_xml(uri, show_unpublished=True)
-        judgment = Judgment.create_from_string(judgment_xml)
+        try:
+            judgment_xml = api_client.get_judgment_xml(uri, show_unpublished=True)
+            judgment = Judgment.create_from_string(judgment_xml)
 
-        return SearchResult(
-            uri=uri,
-            neutral_citation=judgment.neutral_citation,
-            name=judgment.metadata_name,
-            matches=matches.transform_to_html(),
-            court=judgment.court,
-            date=judgment.date,
-            meta=SearchResultMeta.create_from_uri(uri),
-        )
+            return SearchResult(
+                uri=uri,
+                neutral_citation=judgment.neutral_citation,
+                name=judgment.metadata_name,
+                matches=matches.transform_to_html(),
+                court=judgment.court,
+                date=judgment.date,
+                meta=SearchResultMeta.create_from_uri(uri),
+            )
+        except caselawclient.Client.MarklogicAPIError as e:
+            logging.warning(
+                f"Deleted item uri: {uri} in search results. Full error: {e}"
+            )
+            return None
 
 
 class SearchResults(xmlmodels.XmlModel):
