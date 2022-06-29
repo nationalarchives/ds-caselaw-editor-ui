@@ -73,7 +73,7 @@ def set_metadata(old_uri, new_uri):
         ("source-organisation", source_organisation),
         ("source-name", source_name),
         ("source-email", source_email),
-        ("transfer-consignment_reference", transfer_consignment_reference),
+        ("transfer-consignment-reference", transfer_consignment_reference),
         ("transfer-received-at", transfer_received_at),
     ]:
         if value is not None:
