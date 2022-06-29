@@ -131,8 +131,6 @@ class EditJudgmentView(View):
                 return redirect(reverse("edit") + f"?judgment_uri={new_judgment_uri}")
 
             context["success"] = "Judgment successfully updated"
-            xml = self.get_judgment(judgment_uri)
-            context.update(self.get_metadata(judgment_uri, xml))
 
         except (MoveJudgmentError, NeutralCitationToUriError) as e:
             context[
@@ -142,6 +140,8 @@ class EditJudgmentView(View):
         except MarklogicAPIError as e:
             context["error"] = f"There was an error saving the Judgment: {e}"
 
+        xml = self.get_judgment(judgment_uri)
+        context.update(self.get_metadata(judgment_uri, xml))
         invalidate_caches(judgment_uri)
 
         return self.render(request, context)
