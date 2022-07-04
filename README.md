@@ -24,21 +24,6 @@ official [python 3.9](https://hub.docker.com/_/python/) base image
 
 The database service built from the official [postgres](https://hub.docker.com/_/postgres/) image
 
-## Git Submodules
-
-This project includes `ds-caselaw-public-ui` as a submodule. After cloning `ds-caselaw-editor-ui`
-you will need to run:
-
-```console
-$ git submodule init
-$ git submodule update
-```
-
-Any time there are updates to `ds-caselaw-public-ui` that you want to see reflected in `editor-ui`
-(specifically, changes to the shared CSS), you will need to run `git submodule update`
-
-See [Shared styles](#shared-styles).
-
 ## Getting started
 
 **NOTE**: For any of the following commands to work, you must first [install Fabric](https://www.fabfile.org/installing.html). Once installed, you can type `fab -l` to see a list of available commands.
@@ -183,17 +168,6 @@ Included in this repository is:
 * Install SASS globally by running `npm install -g sass`.
 * To watch and build the site SASS, run `npm run start-sass`
 * To modify styles, navigate to the `sass` folder in your editor.
-
-#### [Shared styles]
-
-This app uses most of the styles from `ds-caselaw-public-ui`, which is included in this project
-as a submodule. If you wish to make CSS changes that affect the editor UI *only*, make them in
-`ds-caselaw-editor-ui` (this application). If your CSS changes affect both public_ui and
-editor_ui, make them in `ds-caselaw-public-ui` and commit your changes there as normal. Do not
-edit the files in `public_ui` directly, they are included as a [Git Submodule](https://www.hildeberto.com/2018/02/creating-django-app-git-submodule.html)
-
-When you compile the Sass files into CSS, `main.css` is compiled from the public_ui submodule.
-`edit.css` contains CSS for the editor UI only.
 
 ### Working with JavaScript
 

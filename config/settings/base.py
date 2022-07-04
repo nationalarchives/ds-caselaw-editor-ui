@@ -79,8 +79,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     # Your stuff: custom apps go here
-    "judgments.apps.JudgmentsConfig",
-    "public_ui",
+    "judgments.apps.JudgmentsConfig"
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -151,10 +150,7 @@ STATIC_ROOT = str(ROOT_DIR / "staticfiles")
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
-STATICFILES_DIRS = [
-    str(APPS_DIR / "static"),
-    "public_ui/ds_judgements_public_ui/static",
-]
+STATICFILES_DIRS = [str(APPS_DIR / "static")]
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
