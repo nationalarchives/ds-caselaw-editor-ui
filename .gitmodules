@@ -1,0 +1,3 @@
+[submodule "public_ui"]
+	path = public_ui
+	url = https://github.com/nationalarchives/ds-caselaw-public-ui.git
