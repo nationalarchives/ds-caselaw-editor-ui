@@ -78,3 +78,14 @@ def set_metadata(old_uri, new_uri):
     ]:
         if value is not None:
             api_client.set_property(new_uri, key, value)
+
+
+def build_new_key(old_key, new_uri):
+    old_filename = old_key.rsplit("/", 1)[-1]
+
+    if old_filename.endswith(".docx") or old_filename.endswith(".pdf"):
+        new_filename = new_uri.replace("/", "_")
+        return f"{new_uri}/{new_filename}.{old_filename.split('.')[-1]}"
+    else:
+        return f"{new_uri}/{old_filename}"
+
