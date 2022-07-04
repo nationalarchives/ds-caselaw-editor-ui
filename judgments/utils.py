@@ -1,8 +1,18 @@
+import logging
 import xml.etree.ElementTree as ET
 from datetime import datetime
 
+import boto3
+import botocore.client
 import ds_caselaw_utils as caselawutils
-from caselawclient.Client import MarklogicAPIError, api_client
+import environ
+from caselawclient.Client import (
+    MarklogicAPIError,
+    MarklogicResourceNotFoundError,
+    api_client,
+)
+
+env = environ.Env()
 
 
 class MoveJudgmentError(Exception):
@@ -42,10 +52,11 @@ def update_judgment_uri(old_uri, new_citation):
             f"The URI {new_uri} generated from {new_citation} already exists, you cannot move this judgment to a"
             f" pre-existing Neutral Citation Number."
         )
-    except MarklogicAPIError:
+    except (MarklogicAPIError, MarklogicResourceNotFoundError):
         try:
             api_client.copy_judgment(old_uri, new_uri)
             set_metadata(old_uri, new_uri)
+            copy_assets(old_uri, new_uri)
         except MarklogicAPIError as e:
             raise MoveJudgmentError(
                 f"Failure when attempting to copy judgment from {old_uri} to {new_uri}: {e}"
@@ -87,6 +98,22 @@ def set_metadata(old_uri, new_uri):
     api_client.set_boolean_property(new_uri, "published", bool(published))
 
 
+def copy_assets(old_uri, new_uri):
+    client = create_s3_client()
+    bucket = env("PRIVATE_ASSET_BUCKET")
+    response = client.list_objects(Bucket=bucket, Prefix=old_uri)
+    for result in response.get("Contents", []):
+        old_key = str(result["Key"])
+        new_key = build_new_key(old_key, new_uri.lstrip("/"))
+        if new_key is not None:
+            try:
+                source = {"Bucket": bucket, "Key": old_key}
+                client.copy(source, bucket, new_key)
+            except botocore.client.ClientError as e:
+                logging.warning(
+                    f"Unable to copy file {old_key} to new location {new_key}, error: {e}"
+                )
+
 
 def build_new_key(old_key, new_uri):
     old_filename = old_key.rsplit("/", 1)[-1]
@@ -97,3 +124,15 @@ def build_new_key(old_key, new_uri):
     else:
         return f"{new_uri}/{old_filename}"
 
+
+def create_s3_client():
+    aws = boto3.session.Session(
+        aws_access_key_id=env("AWS_ACCESS_KEY_ID", default=None),
+        aws_secret_access_key=env("AWS_SECRET_KEY", default=None),
+    )
+    return aws.client(
+        "s3",
+        endpoint_url=env("AWS_ENDPOINT_URL", default=None),
+        region_name=env("PRIVATE_ASSET_BUCKET_REGION", default=None),
+        config=botocore.client.Config(signature_version="s3v4"),
+    )
