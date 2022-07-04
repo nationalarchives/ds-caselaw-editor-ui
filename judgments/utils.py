@@ -79,6 +79,14 @@ def set_metadata(old_uri, new_uri):
         if value is not None:
             api_client.set_property(new_uri, key, value)
 
+    """
+    `published` is a boolean property and set differently, technically
+    these failures should be unpublished but copy the property just in case.
+    """
+    published = api_client.get_published(old_uri)
+    api_client.set_boolean_property(new_uri, "published", bool(published))
+
+
 
 def build_new_key(old_key, new_uri):
     old_filename = old_key.rsplit("/", 1)[-1]
