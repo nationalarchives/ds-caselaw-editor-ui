@@ -9,7 +9,7 @@ from django.test import TestCase
 import judgments
 from judgments import converters, views
 from judgments.models import Judgment
-from judgments.utils import get_judgment_root, update_judgment_uri
+from judgments.utils import build_new_key, get_judgment_root, update_judgment_uri
 from judgments.views import extract_version, render_versions
 
 
@@ -167,19 +167,22 @@ class TestUtils(TestCase):
         assert get_judgment_root(xml) == "error"
 
     @patch("judgments.utils.api_client")
-    def test_update_judgment_uri_success(self, fake_client):
+    @patch("boto3.session.Session.client")
+    def test_update_judgment_uri_success(self, fake_boto3_client, fake_api_client):
         ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
-        attrs = {
+        api_attrs = {
             "get_judgment_xml.side_effect": MarklogicAPIError,
             "copy_judgment.return_value": True,
             "delete_judgment.return_value": True,
         }
-        fake_client.configure_mock(**attrs)
+        fake_api_client.configure_mock(**api_attrs)
+        boto_attrs = {"list_objects.return_value": []}
+        fake_boto3_client.configure_mock(**boto_attrs)
 
         result = update_judgment_uri("old/uri", "[2002] EAT 1")
 
-        fake_client.copy_judgment.assert_called_with("old/uri", "new/uri")
-        fake_client.delete_judgment.assert_called_with("old/uri")
+        fake_api_client.copy_judgment.assert_called_with("old/uri", "new/uri")
+        fake_api_client.delete_judgment.assert_called_with("old/uri")
         assert result == "new/uri"
 
     @patch("judgments.utils.api_client")
@@ -222,3 +225,18 @@ class TestUtils(TestCase):
 
         with self.assertRaises(judgments.utils.MoveJudgmentError):
             update_judgment_uri("old/uri", "[2002] EAT 1")
+
+    def test_build_new_key_docx(self):
+        old_key = "failures/TDR-2022-DNWR/failures_TDR-2022-DNWR.docx"
+        new_uri = "ukpc/2023/120"
+        assert build_new_key(old_key, new_uri) == "ukpc/2023/120/ukpc_2023_120.docx"
+
+    def test_build_new_key_pdf(self):
+        old_key = "failures/TDR-2022-DNWR/failures_TDR-2022-DNWR.pdf"
+        new_uri = "ukpc/2023/120"
+        assert build_new_key(old_key, new_uri) == "ukpc/2023/120/ukpc_2023_120.pdf"
+
+    def test_build_new_key_image(self):
+        old_key = "failures/TDR-2022-DNWR/image1.jpg"
+        new_uri = "ukpc/2023/120"
+        assert build_new_key(old_key, new_uri) == "ukpc/2023/120/image1.jpg"

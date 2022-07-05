@@ -62,6 +62,11 @@ class EditJudgmentView(View):
             meta["docx_url"] = generate_docx_url(uri)
             meta["pdf_url"] = generate_pdf_url(uri)
             meta["previous_versions"] = self.get_versions(uri)
+            meta["consignment_reference"] = api_client.get_property(
+                uri, "transfer-consignment-reference"
+            )
+            meta["source_name"] = api_client.get_property(uri, "source-name")
+            meta["source_email"] = api_client.get_property(uri, "source-email")
         except JudgmentMissingMetadataError:
             meta[
                 "error"
