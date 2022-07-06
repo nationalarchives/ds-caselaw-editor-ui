@@ -425,6 +425,7 @@ def generate_docx_url(uri: str):
         return ""
 
     client = create_s3_client()
+    uri = uri.lstrip("/")
 
     key = f'{uri}/{uri.replace("/", "_")}.docx'
 
@@ -439,6 +440,7 @@ def generate_pdf_url(uri: str):
         return ""
 
     client = create_s3_client()
+    uri = uri.lstrip("/")
 
     key = f'{uri}/{uri.replace("/", "_")}.pdf'
 

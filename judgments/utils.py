@@ -101,10 +101,14 @@ def set_metadata(old_uri, new_uri):
 def copy_assets(old_uri, new_uri):
     client = create_s3_client()
     bucket = env("PRIVATE_ASSET_BUCKET")
+    old_uri = old_uri.lstrip("/")
+    new_uri = new_uri.lstrip("/")
+
     response = client.list_objects(Bucket=bucket, Prefix=old_uri)
+
     for result in response.get("Contents", []):
         old_key = str(result["Key"])
-        new_key = build_new_key(old_key, new_uri.lstrip("/"))
+        new_key = build_new_key(old_key, new_uri)
         if new_key is not None:
             try:
                 source = {"Bucket": bucket, "Key": old_key}
