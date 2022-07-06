@@ -160,10 +160,12 @@ def detail(request):
     try:
         judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
         judgment_root = get_judgment_root(judgment_xml)
+        context["is_editable"] = True
         if "failures" in judgment_uri:
             context["is_failure"] = True
 
         if "error" in judgment_root:
+            context["is_editable"] = False
             judgment = judgment_xml
             metadata_name = judgment_uri
         else:

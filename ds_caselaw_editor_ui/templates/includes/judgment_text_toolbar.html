@@ -7,7 +7,7 @@
             {% endif %}
         </div>
         <div class="judgment-toolbar__edit">
-          {% if not context.is_failure %}
+          {% if context.is_editable %}
             {% if context.judgment  %}
               <a class="" href="{% url 'edit' %}?judgment_uri={{context.judgment_uri}}">{% translate "judgment.edit_this_judgment" %}</a>
             {% else %}
