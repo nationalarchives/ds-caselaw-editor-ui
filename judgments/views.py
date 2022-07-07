@@ -67,6 +67,7 @@ class EditJudgmentView(View):
             )
             meta["source_name"] = api_client.get_property(uri, "source-name")
             meta["source_email"] = api_client.get_property(uri, "source-email")
+            meta["is_editable"] = True
         except JudgmentMissingMetadataError:
             meta[
                 "error"
