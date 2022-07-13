@@ -57,6 +57,7 @@ def update_judgment_uri(old_uri, new_citation):
             api_client.copy_judgment(old_uri, new_uri)
             set_metadata(old_uri, new_uri)
             copy_assets(old_uri, new_uri)
+            api_client.set_judgment_this_uri(new_uri)
         except MarklogicAPIError as e:
             raise MoveJudgmentError(
                 f"Failure when attempting to copy judgment from {old_uri} to {new_uri}: {e}"
