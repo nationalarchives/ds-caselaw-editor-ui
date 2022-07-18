@@ -374,6 +374,7 @@ def publish_documents(uri: str) -> None:
     public_bucket = env("PUBLIC_ASSET_BUCKET")
     private_bucket = env("PRIVATE_ASSET_BUCKET")
 
+    uri = uri.lstrip('/')
     response = client.list_objects(Bucket=private_bucket, Prefix=uri)
 
     for result in response.get("Contents", []):
@@ -391,6 +392,7 @@ def publish_documents(uri: str) -> None:
 
 
 def unpublish_documents(uri: str) -> None:
+    uri = uri.lstrip('/')
     delete_from_bucket(uri, env("PUBLIC_ASSET_BUCKET"))
 
 
