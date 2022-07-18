@@ -29,6 +29,7 @@ from judgments.utils import (
     NeutralCitationToUriError,
     get_judgment_root,
     update_judgment_uri,
+    uri_for_s3,
 )
 
 env = environ.Env()
@@ -60,8 +61,8 @@ class EditJudgmentView(View):
                 xml_tools.get_neutral_citation_name_value(judgment) or ""
             )
             meta["judgment_date"] = xml_tools.get_judgment_date_value(judgment) or ""
-            meta["docx_url"] = generate_docx_url(uri)
-            meta["pdf_url"] = generate_pdf_url(uri)
+            meta["docx_url"] = generate_docx_url(uri_for_s3(uri))
+            meta["pdf_url"] = generate_pdf_url(uri_for_s3(uri))
             meta["previous_versions"] = self.get_versions(uri)
             meta["consignment_reference"] = api_client.get_property(
                 uri, "transfer-consignment-reference"
@@ -112,9 +113,9 @@ class EditJudgmentView(View):
             api_client.set_anonymised(judgment_uri, anonymised)
 
             if published:
-                publish_documents(judgment_uri)
+                publish_documents(uri_for_s3(judgment_uri))
             else:
-                unpublish_documents(judgment_uri)
+                unpublish_documents(uri_for_s3(judgment_uri))
 
             # Set name
             new_name = request.POST["metadata_name"]
@@ -180,8 +181,8 @@ def detail(request):
             judgment = multipart_data.parts[0].text
         context["judgment"] = judgment
         context["page_title"] = metadata_name
-        context["docx_url"] = generate_docx_url(judgment_uri)
-        context["pdf_url"] = generate_pdf_url(judgment_uri)
+        context["docx_url"] = generate_docx_url(uri_for_s3(judgment_uri))
+        context["pdf_url"] = generate_pdf_url(uri_for_s3(judgment_uri))
 
         if version_uri:
             try:
@@ -374,7 +375,6 @@ def publish_documents(uri: str) -> None:
     public_bucket = env("PUBLIC_ASSET_BUCKET")
     private_bucket = env("PRIVATE_ASSET_BUCKET")
 
-    uri = uri.lstrip('/')
     response = client.list_objects(Bucket=private_bucket, Prefix=uri)
 
     for result in response.get("Contents", []):
@@ -392,7 +392,6 @@ def publish_documents(uri: str) -> None:
 
 
 def unpublish_documents(uri: str) -> None:
-    uri = uri.lstrip('/')
     delete_from_bucket(uri, env("PUBLIC_ASSET_BUCKET"))
 
 
@@ -434,7 +433,6 @@ def generate_docx_url(uri: str):
         return ""
 
     client = create_s3_client()
-    uri = uri.lstrip("/")
 
     key = f'{uri}/{uri.replace("/", "_")}.docx'
 
@@ -449,7 +447,6 @@ def generate_pdf_url(uri: str):
         return ""
 
     client = create_s3_client()
-    uri = uri.lstrip("/")
 
     key = f'{uri}/{uri.replace("/", "_")}.pdf'
 
