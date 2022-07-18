@@ -1,3 +1,4 @@
+import logging
 import math
 import re
 import time
@@ -381,7 +382,12 @@ def publish_documents(uri: str) -> None:
         if not key.endswith("parser.log") and not key.endswith(".tar.gz"):
             source = {"Bucket": private_bucket, "Key": key}
             extra_args = {"ACL": "public-read"}
-            client.copy(source, public_bucket, key, extra_args)
+            try:
+                client.copy(source, public_bucket, key, extra_args)
+            except botocore.client.ClientError as e:
+                logging.warning(
+                    f"Unable to copy file {key} to new location {public_bucket}, error: {e}"
+                )
 
 
 def unpublish_documents(uri: str) -> None:
