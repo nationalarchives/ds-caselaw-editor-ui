@@ -1,3 +1,4 @@
+import logging
 import math
 import re
 import time
@@ -28,6 +29,7 @@ from judgments.utils import (
     NeutralCitationToUriError,
     get_judgment_root,
     update_judgment_uri,
+    uri_for_s3,
 )
 
 env = environ.Env()
@@ -59,8 +61,8 @@ class EditJudgmentView(View):
                 xml_tools.get_neutral_citation_name_value(judgment) or ""
             )
             meta["judgment_date"] = xml_tools.get_judgment_date_value(judgment) or ""
-            meta["docx_url"] = generate_docx_url(uri)
-            meta["pdf_url"] = generate_pdf_url(uri)
+            meta["docx_url"] = generate_docx_url(uri_for_s3(uri))
+            meta["pdf_url"] = generate_pdf_url(uri_for_s3(uri))
             meta["previous_versions"] = self.get_versions(uri)
             meta["consignment_reference"] = api_client.get_property(
                 uri, "transfer-consignment-reference"
@@ -111,9 +113,9 @@ class EditJudgmentView(View):
             api_client.set_anonymised(judgment_uri, anonymised)
 
             if published:
-                publish_documents(judgment_uri)
+                publish_documents(uri_for_s3(judgment_uri))
             else:
-                unpublish_documents(judgment_uri)
+                unpublish_documents(uri_for_s3(judgment_uri))
 
             # Set name
             new_name = request.POST["metadata_name"]
@@ -179,8 +181,8 @@ def detail(request):
             judgment = multipart_data.parts[0].text
         context["judgment"] = judgment
         context["page_title"] = metadata_name
-        context["docx_url"] = generate_docx_url(judgment_uri)
-        context["pdf_url"] = generate_pdf_url(judgment_uri)
+        context["docx_url"] = generate_docx_url(uri_for_s3(judgment_uri))
+        context["pdf_url"] = generate_pdf_url(uri_for_s3(judgment_uri))
 
         if version_uri:
             try:
@@ -381,7 +383,12 @@ def publish_documents(uri: str) -> None:
         if not key.endswith("parser.log") and not key.endswith(".tar.gz"):
             source = {"Bucket": private_bucket, "Key": key}
             extra_args = {"ACL": "public-read"}
-            client.copy(source, public_bucket, key, extra_args)
+            try:
+                client.copy(source, public_bucket, key, extra_args)
+            except botocore.client.ClientError as e:
+                logging.warning(
+                    f"Unable to copy file {key} to new location {public_bucket}, error: {e}"
+                )
 
 
 def unpublish_documents(uri: str) -> None:
@@ -426,7 +433,6 @@ def generate_docx_url(uri: str):
         return ""
 
     client = create_s3_client()
-    uri = uri.lstrip("/")
 
     key = f'{uri}/{uri.replace("/", "_")}.docx'
 
@@ -441,7 +447,6 @@ def generate_pdf_url(uri: str):
         return ""
 
     client = create_s3_client()
-    uri = uri.lstrip("/")
 
     key = f'{uri}/{uri.replace("/", "_")}.pdf'
 

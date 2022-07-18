@@ -102,8 +102,8 @@ def set_metadata(old_uri, new_uri):
 def copy_assets(old_uri, new_uri):
     client = create_s3_client()
     bucket = env("PRIVATE_ASSET_BUCKET")
-    old_uri = old_uri.lstrip("/")
-    new_uri = new_uri.lstrip("/")
+    old_uri = uri_for_s3(old_uri)
+    new_uri = uri_for_s3(new_uri)
 
     response = client.list_objects(Bucket=bucket, Prefix=old_uri)
 
@@ -141,3 +141,7 @@ def create_s3_client():
         region_name=env("PRIVATE_ASSET_BUCKET_REGION", default=None),
         config=botocore.client.Config(signature_version="s3v4"),
     )
+
+
+def uri_for_s3(uri: str):
+    return uri.lstrip("/")
