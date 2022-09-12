@@ -75,6 +75,15 @@ def run(c):
     django_exec("python manage.py migrate")
     django_exec("rm -rf /app/staticfiles")
     django_exec("python manage.py collectstatic")
+    # Get the public-ui version of _judgment_text.scss
+    django_exec("apt-get update && apt-get install -y jq curl")
+    django_exec(
+        "curl https://raw.githubusercontent.com/nationalarchives/ds-caselaw-public-ui/"
+        "$(curl -H 'Accept: application/vnd.github+json' "
+        "https://api.github.com/repos/nationalarchives/ds-caselaw-public-ui/releases/latest | jq -r .tag_name)"
+        "/ds_judgements_public_ui/sass/includes/_judgment_text.scss "
+        "-o ds_caselaw_editor_ui/sass/includes/_judgment_text.scss"
+    )
     # Piping Marklogic logs to marklogic.log
     try:
         local("docker logs marklogic > marklogic.log")
