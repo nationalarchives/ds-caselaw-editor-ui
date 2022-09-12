@@ -7,9 +7,9 @@
     "doc": "docs"
   },
   "scripts": {
-    "start-sass": "sass --watch ds_caselaw_editor_ui/sass/main.scss:ds_caselaw_editor_ui/static/css/main.css",
+    "start-sass": "npx sass --watch ds_caselaw_editor_ui/sass/main.scss:ds_caselaw_editor_ui/static/css/main.css",
     "start-scripts": "npx webpack --watch",
-    "build": "npx webpack && sass ds_caselaw_editor_ui/sass/main.scss:ds_caselaw_editor_ui/static/css/main.css"
+    "build": "npx webpack && npx sass ds_caselaw_editor_ui/sass/main.scss:ds_caselaw_editor_ui/static/css/main.css"
   },
   "repository": {
     "type": "git",
