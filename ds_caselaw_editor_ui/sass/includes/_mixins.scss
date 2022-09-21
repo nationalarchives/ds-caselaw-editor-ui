@@ -85,12 +85,12 @@
   color: $color__white;
   text-decoration: underline;
 
-  &:hover {
-    text-decoration: none;
+  &:visited {
     color: $color__white;
   }
 
-  &:visited {
+  &:hover {
+    text-decoration: none;
     color: $color__white;
   }
 
