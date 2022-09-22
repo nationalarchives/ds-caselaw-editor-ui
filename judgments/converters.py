@@ -35,7 +35,7 @@ class CourtConverter:
 
 
 class SubdivisionConverter:
-    regex = "civ|crim|admin|admlty|ch|comm|costs|fam|ipec|mercantile|pat|qb|tcc"
+    regex = "civ|crim|admin|admlty|ch|comm|costs|fam|ipec|mercantile|pat|qb|kb|tcc"
 
     def to_python(self, value):
         return value
