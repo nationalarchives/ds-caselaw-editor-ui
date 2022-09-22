@@ -423,6 +423,15 @@ def notify_changed(uri: str, status: str, name: str) -> None:
 
 
 def invalidate_caches(uri: str) -> None:
+    if (
+        env("CLOUDFRONT_INVALIDATION_ACCESS_KEY_ID", default=None) is None
+        and env("CLOUDFRONT_INVALIDATION_ACCESS_SECRET", default=None) is None
+    ):
+        logging.warning(
+            "Cannot invalidate cache: no cloudfront environment variables set"
+        )
+        return
+
     aws = boto3.session.Session(
         aws_access_key_id=env("CLOUDFRONT_INVALIDATION_ACCESS_KEY_ID", default=None),
         aws_secret_access_key=env(
