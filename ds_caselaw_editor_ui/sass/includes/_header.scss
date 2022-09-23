@@ -55,7 +55,7 @@
       margin-right: calc($spacer__unit / 2);
     }
   }
-  
+
   &__container {
     @include container;
     @media (min-width: $grid__breakpoint-medium) {
