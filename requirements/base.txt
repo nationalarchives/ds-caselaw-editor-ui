@@ -26,5 +26,5 @@ ds-caselaw-marklogic-api-client~=4.10.0
 ds-caselaw-utils~=0.1.6
 rollbar
 django-stronghold==0.4.0
-boto3==1.21.45
+boto3==1.24.79
 botocore==1.24.45
