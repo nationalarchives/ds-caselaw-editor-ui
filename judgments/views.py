@@ -147,6 +147,7 @@ class EditJudgmentView(View):
                 uri=judgment_uri,
                 status=notify_status,
                 name=request.POST["metadata_name"],
+                enrich=published,  # placeholder for now, should perhaps be "has this become published"
             )
 
             context["success"] = "Judgment successfully updated"
@@ -406,19 +407,26 @@ def unpublish_documents(uri: str) -> None:
     delete_from_bucket(uri, env("PUBLIC_ASSET_BUCKET"))
 
 
-def notify_changed(uri: str, status: str, name: str) -> None:
+def notify_changed(uri: str, status: str, name: str, enrich: bool = False) -> None:
     client = create_aws_client("sns")
+
+    message_attributes = {}
+    message_attributes["update_type"] = {
+        "DataType": "String",
+        "StringValue": status,
+    }
+    if enrich:
+        message_attributes["trigger_enrichment"] = {
+            "DataType": "String",
+            "StringValue": "1",
+        }
+
     client.publish(
         TopicArn=env("SNS_TOPIC"),
         MessageStructure="json",
-        Message=json.dumps({"uri_reference": uri, "status": status}),
+        Message=json.dumps({"uri_reference": uri, "status": status, "default": ""}),
         Subject=f"{name} updated: {status}",
-        MessageAttributes={
-            "update_type": {
-                "DataType": "string",
-                "StringValue": status,
-            }
-        },
+        MessageAttributes=message_attributes,
     )
 
 
