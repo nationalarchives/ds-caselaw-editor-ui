@@ -145,6 +145,23 @@ You can then access the site in your browser as usual:
 
 <http://127.0.0.1:3000>
 
+### Localstack
+
+The button that submits an edited document needs S3 and SNS services
+to function (as it copies files across and notifies the enrichment
+service that it might have been published).
+
+Start it up by running from the `ds-caselaw-ingester` repo:
+
+`docker-compose up -d`
+
+and then, in this repo:
+
+`script/setup-localstack.sh`
+
+That script will create in localstack a `caselaw-stg-judgment-updated` SNS
+topic and `public-` and `private-asset-buckets` for S3.
+
 ### Running tests
 
 ```console

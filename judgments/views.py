@@ -1,3 +1,4 @@
+import json
 import logging
 import math
 import re
@@ -137,6 +138,17 @@ class EditJudgmentView(View):
             if "failures" in judgment_uri and new_citation is not None:
                 new_judgment_uri = update_judgment_uri(judgment_uri, new_citation)
                 return redirect(reverse("edit") + f"?judgment_uri={new_judgment_uri}")
+
+            if published:
+                notify_status = "published"
+            else:
+                notify_status = "not published"
+            notify_changed(
+                uri=judgment_uri,
+                status=notify_status,
+                name=request.POST["metadata_name"],
+                enrich=published,  # placeholder for now, should perhaps be "has this become published"
+            )
 
             context["success"] = "Judgment successfully updated"
 
@@ -395,7 +407,39 @@ def unpublish_documents(uri: str) -> None:
     delete_from_bucket(uri, env("PUBLIC_ASSET_BUCKET"))
 
 
+def notify_changed(uri: str, status: str, name: str, enrich: bool = False) -> None:
+    client = create_aws_client("sns")
+
+    message_attributes = {}
+    message_attributes["update_type"] = {
+        "DataType": "String",
+        "StringValue": status,
+    }
+    if enrich:
+        message_attributes["trigger_enrichment"] = {
+            "DataType": "String",
+            "StringValue": "1",
+        }
+
+    client.publish(
+        TopicArn=env("SNS_TOPIC"),
+        MessageStructure="json",
+        Message=json.dumps({"uri_reference": uri, "status": status, "default": ""}),
+        Subject=f"{name} updated: {status}",
+        MessageAttributes=message_attributes,
+    )
+
+
 def invalidate_caches(uri: str) -> None:
+    if (
+        env("CLOUDFRONT_INVALIDATION_ACCESS_KEY_ID", default=None) is None
+        and env("CLOUDFRONT_INVALIDATION_ACCESS_SECRET", default=None) is None
+    ):
+        logging.warning(
+            "Cannot invalidate cache: no cloudfront environment variables set"
+        )
+        return
+
     aws = boto3.session.Session(
         aws_access_key_id=env("CLOUDFRONT_INVALIDATION_ACCESS_KEY_ID", default=None),
         aws_secret_access_key=env(
@@ -412,17 +456,23 @@ def invalidate_caches(uri: str) -> None:
     )
 
 
-def create_s3_client():
+def create_aws_client(service: str):  # service
+    """@param: service The AWS service, e.g. 's3'"""
     aws = boto3.session.Session(
         aws_access_key_id=env("AWS_ACCESS_KEY_ID", default=None),
         aws_secret_access_key=env("AWS_SECRET_KEY", default=None),
     )
     return aws.client(
-        "s3",
+        service,
         endpoint_url=env("AWS_ENDPOINT_URL", default=None),
         region_name=env("PRIVATE_ASSET_BUCKET_REGION", default=None),
         config=botocore.client.Config(signature_version="s3v4"),
     )
+
+
+def create_s3_client():
+    """We can rename all the places this is called later"""
+    return create_aws_client("s3")
 
 
 def generate_docx_url(uri: str):
