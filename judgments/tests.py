@@ -9,7 +9,7 @@ from lxml import etree
 
 import judgments
 from judgments import converters, views
-from judgments.models import Judgment, SearchResult
+from judgments.models import SearchResult
 from judgments.utils import build_new_key, get_judgment_root, update_judgment_uri
 from judgments.views import extract_version, render_versions
 
@@ -57,36 +57,6 @@ class TestJudgment(TestCase):
         ]
 
         assert render_versions(version_parts) == expected_result
-
-
-class TestJudgmentModel(TestCase):
-    def test_can_parse_judgment(self):
-        xml = """
-            <akomaNtoso xmlns="http://docs.oasis-open.org/legaldocml/ns/akn/3.0">
-                <judgment name="judgment" contains="originalVersion">
-                    <meta>
-                        <identification source="#tna">
-                            <FRBRdate date="2004-06-10" name="judgment"/>
-                            <FRBRname value="My Judgment Name"/>
-                        </identification>
-                        <proprietary source="ewca/civ/2004/811/eng/docx" xmlns:uk="https:/judgments.gov.uk/">
-                            <uk:court>EWCA-Civil</uk:court>
-                        </proprietary>
-                    </meta>
-                    <header>
-                        <p>
-                            <neutralCitation>[2017] EWHC 3289 (QB)</neutralCitation>
-                        </p>
-                    </header>
-                </judgment>
-            </akomaNtoso>
-        """
-
-        model = Judgment.create_from_string(xml)
-        self.assertEqual("My Judgment Name", model.metadata_name)
-        self.assertEqual("[2017] EWHC 3289 (QB)", model.neutral_citation)
-        self.assertEqual("2004-06-10", model.date)
-        self.assertEqual("EWCA-Civil", model.court)
 
 
 class TestSearchResultModel(TestCase):

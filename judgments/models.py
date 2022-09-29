@@ -38,25 +38,6 @@ class SearchResultMeta:
         )
 
 
-class Judgment(xmlmodels.XmlModel):
-    class Meta:
-        namespaces = {
-            "akn": "http://docs.oasis-open.org/legaldocml/ns/akn/3.0",
-            "uk": "https:/judgments.gov.uk/",
-        }
-
-    metadata_name = xmlmodels.XPathTextField(
-        "//akn:FRBRname/@value", ignore_extra_nodes=True
-    )
-    neutral_citation = xmlmodels.XPathTextField(
-        "//akn:neutralCitation", ignore_extra_nodes=True
-    )
-    date = xmlmodels.XPathTextField(
-        "//akn:FRBRdate[@name='judgment']/@date", ignore_extra_nodes=True
-    )
-    court = xmlmodels.XPathTextField("//akn:proprietary/uk:court")
-
-
 class SearchResult:
     def __init__(
         self,
