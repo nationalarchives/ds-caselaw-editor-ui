@@ -38,25 +38,6 @@ class SearchResultMeta:
         )
 
 
-class Judgment(xmlmodels.XmlModel):
-    class Meta:
-        namespaces = {
-            "akn": "http://docs.oasis-open.org/legaldocml/ns/akn/3.0",
-            "uk": "https:/judgments.gov.uk/",
-        }
-
-    metadata_name = xmlmodels.XPathTextField(
-        "//akn:FRBRname/@value", ignore_extra_nodes=True
-    )
-    neutral_citation = xmlmodels.XPathTextField(
-        "//akn:neutralCitation", ignore_extra_nodes=True
-    )
-    date = xmlmodels.XPathTextField(
-        "//akn:FRBRdate[@name='judgment']/@date", ignore_extra_nodes=True
-    )
-    court = xmlmodels.XPathTextField("//akn:proprietary/uk:court")
-
-
 class SearchResult:
     def __init__(
         self,
@@ -79,21 +60,44 @@ class SearchResult:
 
     @staticmethod
     def create_from_node(node):
+        namespaces = {
+            "search": "http://marklogic.com/appservices/search",
+            "uk": "https://caselaw.nationalarchives.gov.uk/akn",
+            "akn": "http://docs.oasis-open.org/legaldocml/ns/akn/3.0",
+        }
         uri = node.xpath("@uri")[0].lstrip("/").split(".xml")[0]
+        neutral_citation = (
+            node.xpath("search:extracted/uk:cite", namespaces=namespaces)[0].text
+            if node.xpath("search:extracted/uk:cite", namespaces=namespaces)
+            else ""
+        )
+        court = (
+            node.xpath("search:extracted/uk:court", namespaces=namespaces)[0].text
+            if node.xpath("search:extracted/uk:court", namespaces=namespaces)
+            else ""
+        )
+        metadata_name = (
+            node.xpath("search:extracted/akn:FRBRname/@value", namespaces=namespaces)[0]
+            if node.xpath("search:extracted/akn:FRBRname/@value", namespaces=namespaces)
+            else ""
+        )
+        date = (
+            node.xpath("search:extracted/akn:FRBRdate/@date", namespaces=namespaces)[0]
+            if node.xpath("search:extracted/akn:FRBRdate/@date", namespaces=namespaces)
+            else ""
+        )
         matches = SearchMatch.create_from_string(
             etree.tostring(node, encoding="UTF-8").decode("UTF-8")
         )
-        try:
-            judgment_xml = api_client.get_judgment_xml(uri, show_unpublished=True)
-            judgment = Judgment.create_from_string(judgment_xml)
 
+        try:
             return SearchResult(
                 uri=uri,
-                neutral_citation=judgment.neutral_citation,
-                name=judgment.metadata_name,
+                neutral_citation=neutral_citation,
+                name=metadata_name,
                 matches=matches.transform_to_html(),
-                court=judgment.court,
-                date=judgment.date,
+                court=court,
+                date=date,
                 meta=SearchResultMeta.create_from_uri(uri),
             )
         except caselawclient.Client.MarklogicAPIError as e:

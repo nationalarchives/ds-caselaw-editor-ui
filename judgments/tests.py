@@ -5,10 +5,11 @@ from unittest.mock import MagicMock, Mock, patch
 import ds_caselaw_utils
 from caselawclient.Client import MarklogicAPIError
 from django.test import TestCase
+from lxml import etree
 
 import judgments
 from judgments import converters, views
-from judgments.models import Judgment
+from judgments.models import SearchResult
 from judgments.utils import build_new_key, get_judgment_root, update_judgment_uri
 from judgments.views import extract_version, render_versions
 
@@ -58,34 +59,59 @@ class TestJudgment(TestCase):
         assert render_versions(version_parts) == expected_result
 
 
-class TestJudgmentModel(TestCase):
-    def test_can_parse_judgment(self):
-        xml = """
-            <akomaNtoso xmlns="http://docs.oasis-open.org/legaldocml/ns/akn/3.0">
-                <judgment name="judgment" contains="originalVersion">
-                    <meta>
-                        <identification source="#tna">
-                            <FRBRdate date="2004-06-10" name="judgment"/>
-                            <FRBRname value="My Judgment Name"/>
-                        </identification>
-                        <proprietary source="ewca/civ/2004/811/eng/docx" xmlns:uk="https:/judgments.gov.uk/">
-                            <uk:court>EWCA-Civil</uk:court>
-                        </proprietary>
-                    </meta>
-                    <header>
-                        <p>
-                            <neutralCitation>[2017] EWHC 3289 (QB)</neutralCitation>
-                        </p>
-                    </header>
-                </judgment>
-            </akomaNtoso>
+class TestSearchResultModel(TestCase):
+    @patch("judgments.models.SearchResultMeta")
+    def test_create_from_node(self, fake_model):
+        model_attrs = {"create_from_uri.return_value": "a/fake/uri.xml"}
+        fake_model.configure_mock(**model_attrs)
+        search_result_str = """
+        <search:result xmlns:search="http://marklogic.com/appservices/search" index="1" uri="/ukut/lc/2022/241.xml">
+            <search:snippet/>
+            <search:extracted kind="element">
+                <FRBRdate xmlns="http://docs.oasis-open.org/legaldocml/ns/akn/3.0" date="2022-09-09" name="decision"/>
+                <FRBRname xmlns="http://docs.oasis-open.org/legaldocml/ns/akn/3.0"
+                          value="London Borough of Waltham Forest v Nasim Hussain"/>
+                <uk:court xmlns:uk="https://caselaw.nationalarchives.gov.uk/akn">UKUT-LC</uk:court>
+                <uk:cite xmlns:uk="https://caselaw.nationalarchives.gov.uk/akn">[2022] UKUT 241 (LC)</uk:cite>
+                <neutralCitation xmlns="http://docs.oasis-open.org/legaldocml/ns/akn/3.0">
+                    [2022] UKUT 241 (LC)
+                </neutralCitation>
+            </search:extracted>
+        </search:result>
         """
+        search_result_xml = etree.fromstring(search_result_str)
+        search_result = SearchResult.create_from_node(search_result_xml)
+        self.assertEqual(
+            "London Borough of Waltham Forest v Nasim Hussain", search_result.name
+        )
+        self.assertEqual("ukut/lc/2022/241", search_result.uri)
+        self.assertEqual("[2022] UKUT 241 (LC)", search_result.neutral_citation)
+        self.assertEqual("UKUT-LC", search_result.court)
 
-        model = Judgment.create_from_string(xml)
-        self.assertEqual("My Judgment Name", model.metadata_name)
-        self.assertEqual("[2017] EWHC 3289 (QB)", model.neutral_citation)
-        self.assertEqual("2004-06-10", model.date)
-        self.assertEqual("EWCA-Civil", model.court)
+    @patch("judgments.models.SearchResultMeta")
+    def test_create_from_node_with_missing_elements(self, fake_model):
+        model_attrs = {"create_from_uri.return_value": "a/fake/uri.xml"}
+        fake_model.configure_mock(**model_attrs)
+        search_result_str = """
+        <search:result xmlns:search="http://marklogic.com/appservices/search" index="1" uri="/ukut/lc/2022/241.xml">
+            <search:snippet/>
+            <search:extracted kind="element">
+                <FRBRdate xmlns="http://docs.oasis-open.org/legaldocml/ns/akn/3.0" date="2022-09-09" name="decision"/>
+                <FRBRname xmlns="http://docs.oasis-open.org/legaldocml/ns/akn/3.0"
+                          value="London Borough of Waltham Forest v Nasim Hussain"/>
+                <uk:cite xmlns:uk="https://caselaw.nationalarchives.gov.uk/akn"></uk:cite>
+                <uk:court xmlns:uk="https://caselaw.nationalarchives.gov.uk/akn"></uk:court>
+            </search:extracted>
+        </search:result>
+        """
+        search_result_xml = etree.fromstring(search_result_str)
+        search_result = SearchResult.create_from_node(search_result_xml)
+        self.assertEqual(
+            "London Borough of Waltham Forest v Nasim Hussain", search_result.name
+        )
+        self.assertEqual("ukut/lc/2022/241", search_result.uri)
+        self.assertEqual(None, search_result.neutral_citation)
+        self.assertEqual(None, search_result.court)
 
 
 class TestPaginator(TestCase):
