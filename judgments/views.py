@@ -415,6 +415,10 @@ def notify_changed(uri: str, status: str, name: str, enrich: bool = False) -> No
         "DataType": "String",
         "StringValue": status,
     }
+    message_attributes["uri_reference"] = {
+        "DataType": "String",
+        "StringValue": uri,
+    }
     if enrich:
         message_attributes["trigger_enrichment"] = {
             "DataType": "String",
@@ -423,8 +427,7 @@ def notify_changed(uri: str, status: str, name: str, enrich: bool = False) -> No
 
     client.publish(
         TopicArn=env("SNS_TOPIC"),
-        MessageStructure="json",
-        Message=json.dumps({"uri_reference": uri, "status": status, "default": ""}),
+        Message=json.dumps({"uri_reference": uri, "status": status}),
         Subject=f"{name} updated: {status}",
         MessageAttributes=message_attributes,
     )
