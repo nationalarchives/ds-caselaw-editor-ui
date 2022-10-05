@@ -14,8 +14,6 @@
       <select class="unpublished-judgments-controls__select" id="order_by" name="order">
         <option value="relevance" {% if context.order == "relevance" or context.order is None %}selected='selected'{% endif %}>Date received &ndash; Newest</option>
         <option value="date" {% if context.order == "date" %}selected='selected'{% endif %}>Date received &ndash; Oldest</option>
-       <!-- <option value="date" {% if context.order == "date" %}selected='selected'{% endif %}>Assigned &ndash; A to Z</option> 
-       <option value="date" {% if context.order == "date" %}selected='selected'{% endif %}>Assigned &ndash; Z to A</option> -->
       </select>
       </div>
       <input aria-label="sort unpublished judgments" type="submit" value="Go" class="unpublished-judgments-controls__button">
