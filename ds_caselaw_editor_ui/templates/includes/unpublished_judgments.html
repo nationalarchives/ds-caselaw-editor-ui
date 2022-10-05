@@ -1,0 +1,56 @@
+{% load static i18n %}
+
+<div class="incoming-judgments">
+  <div class="incoming-judgments__container">
+
+    <div class="incoming-judgments__incoming-judgments-controls-container">
+      <div class="results__result-header">
+        <p id="recently-published-judgments" class="incoming-judgments__header">{% translate "home.recent" %}</p>
+      </div>
+      {% include 'includes/unpublished_judgments_controls.html' %}
+    </div>
+
+    <ul class="incoming-judgments__list">
+      {% for item in context.recent_judgments %}
+      <li class="incoming-judgments__judgment">
+        <span>
+          <span class="incoming-judgments__title">
+            <a href="{% url 'detail' %}?judgment_uri={{item.uri}}">
+              {% if not item.is_failure %}
+              {{ item.name }}
+              {% else %}
+              <span class="incoming-judgments__failed">Failed processing:</span> {{item.uri}}
+              {% endif %}
+            </a>
+          </span>
+          <span class="incoming-judgments__neutralcitation">
+            {{ item.neutral_citation }}
+          </span>
+        </span>
+        <span>
+          <span class="incoming-judgments__date">
+            {% translate "judgments.date" %} {{ item.date }}
+          </span>
+          <span class="incoming-judgments__court">
+            {% translate "judgments.court" %} {{ item.court }}
+          </span>
+          <span class="incoming-judgments__submitter">
+            {% translate "judgments.submitter" %} {{ item.meta.author }}
+          </span>
+          <span class="incoming-judgments__submitteremail">
+            {% translate "judgments.submitteremail" %} {{ item.meta.author_email }}
+          </span>
+          <span class="incoming-judgments__submissiondate">
+            {% translate "judgments.submissiondate" %} {{ item.meta.submission_datetime }}
+          </span>
+          <span class="incoming-judgments__consignmentrefence">
+            {% translate "judgments.consignmentref" %} {{ item.meta.consignment_reference }}
+          </span>
+        </span>
+      </li>
+      {% endfor %}
+    </ul>
+    {% include 'includes/pagination.html' %}
+    <p class="incoming-judgments__more-info"><a href="{% url 'results' %}">{% translate "judgments.allrecent" %}</a></p>
+  </div>
+</div>
