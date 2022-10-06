@@ -4,6 +4,7 @@ from unittest.mock import MagicMock, Mock, patch
 
 import ds_caselaw_utils
 from caselawclient.Client import MarklogicAPIError
+from django.contrib.auth.models import User
 from django.test import TestCase
 from lxml import etree
 
@@ -57,6 +58,28 @@ class TestJudgment(TestCase):
         ]
 
         assert render_versions(version_parts) == expected_result
+
+
+class TestSearchResults(TestCase):
+    @patch("judgments.views.perform_advanced_search")
+    def test_oldest(self, advanced_search):
+        advanced_search.results.return_value = []
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        response = self.client.get("?order=-date")
+        advanced_search.assert_called_with(
+            order="-date", only_unpublished=True, page="1"
+        )
+        assert b"<option value=\"-date\" selected='selected'>" in response.content
+
+    @patch("judgments.views.perform_advanced_search")
+    def test_newest(self, advanced_search):
+        advanced_search.results.return_value = []
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        response = self.client.get("?order=date")
+        advanced_search.assert_called_with(
+            order="date", only_unpublished=True, page="1"
+        )
+        assert b"<option value=\"date\" selected='selected'>" in response.content
 
 
 class TestSearchResultModel(TestCase):

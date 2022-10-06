@@ -230,12 +230,16 @@ def index(request):
     try:
         params = request.GET
         page = params.get("page") if params.get("page") else "1"
-        model = perform_advanced_search(order="-date", only_unpublished=True, page=page)
+        order = (
+            params.get("order") if params.get("order") in ["date", "-date"] else "-date"
+        )
+        model = perform_advanced_search(order=order, only_unpublished=True, page=page)
         search_results = [
             SearchResult.create_from_node(result) for result in model.results
         ]
         context["recent_judgments"] = list(filter(None, search_results))
         context["paginator"] = paginator(int(page), model.total)
+        context["order"] = order
 
     except MarklogicResourceNotFoundError as e:
         raise Http404(
