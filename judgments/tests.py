@@ -260,6 +260,25 @@ class TestUtils(TestCase):
         assert result == "new/uri"
 
     @patch("judgments.utils.api_client")
+    @patch("boto3.session.Session.client")
+    def test_update_judgment_uri_strips_whitespace(
+        self, fake_boto3_client, fake_api_client
+    ):
+        ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
+        api_attrs = {
+            "get_judgment_xml.side_effect": MarklogicAPIError,
+            "copy_judgment.return_value": True,
+            "delete_judgment.return_value": True,
+        }
+        fake_api_client.configure_mock(**api_attrs)
+        boto_attrs = {"list_objects.return_value": []}
+        fake_boto3_client.configure_mock(**boto_attrs)
+
+        update_judgment_uri("old/uri", " [2002] EAT 1 ")
+
+        ds_caselaw_utils.neutral_url.assert_called_with("[2002] EAT 1")
+
+    @patch("judgments.utils.api_client")
     def test_update_judgment_uri_exception_copy(self, fake_client):
         ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
         attrs = {

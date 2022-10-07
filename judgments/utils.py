@@ -40,7 +40,7 @@ def get_judgment_root(judgment_xml) -> str:
 
 
 def update_judgment_uri(old_uri, new_citation):
-    new_uri = caselawutils.neutral_url(new_citation)
+    new_uri = caselawutils.neutral_url(new_citation.strip())
     if new_uri is None:
         raise NeutralCitationToUriError(
             f"Unable to form new URI for {old_uri} from neutral citation: {new_citation}"
