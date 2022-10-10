@@ -62,6 +62,15 @@
           <input type="checkbox" class="edit-component__anonymised-input" {% if context.anonymised %}checked{% endif %} name="anonymised" id="anonymised"/>
         </div>
         <div class="edit-component__panel">
+          <label for="assigned_to">{% translate "judgment.assigned_to" %}</label>
+          <select class="edit-component__assigned_to-input" name="assigned_to" id="assigned_to">
+            <option value="" {% if context.assigned_to == "" %}selected{% endif %}>{% translate "judgments.noone" %}</option>
+            {% for user in context.users %}
+            <option value="{{user.name}}"{% if context.assigned_to == user.name %} selected{% endif %}>{{user.print_name}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="edit-component__panel">
           <input type="hidden" name="judgment_uri" value="{{context.judgment_uri}}"/>
           <input type="submit" value="Save"/>
         </div>

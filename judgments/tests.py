@@ -333,3 +333,23 @@ class TestUtils(TestCase):
         old_key = "failures/TDR-2022-DNWR/image1.jpg"
         new_uri = "ukpc/2023/120"
         assert build_new_key(old_key, new_uri) == "ukpc/2023/120/image1.jpg"
+
+
+class TestJudgmentEditor(TestCase):
+    @patch("judgments.views.api_client")
+    def test_assigned(self, mock_api):
+        mock_api.get_judgment_xml.return_value = "<x>Kitten</x>"
+        mock_api.get_published.return_value = "6"
+        mock_api.get_sensitive.return_value = "6"
+        mock_api.get_supplemental.return_value = "6"
+        mock_api.get_anonymised.return_value = "6"
+        mock_api.list_judgment_versions.return_value = []
+        mock_api.get_property.side_effect = (
+            lambda _, property: "otheruser" if property == "assigned-to" else "xxx"
+        )
+        User.objects.get_or_create(username="otheruser")[0]
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        response = self.client.get("/edit?judgment_uri=ewhc/ch/1999/1")
+        mock_api.get_judgment_xml.assert_called()
+        mock_api.get_property.assert_called_with("ewhc/ch/1999/1", "assigned-to")
+        assert b"selected>otheruser" in response.content
