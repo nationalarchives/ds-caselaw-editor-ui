@@ -163,7 +163,7 @@ msgstr "Previous versions of this Judgment"
 
 #: ds_caselaw_editor_ui/templates/judgment/edit.html:67
 msgid "judgment.assigned_to"
-msgstr "Assigned to:"
+msgstr "Assigned to"
 
 #: ds_caselaw_editor_ui/templates/includes/recent_judgments.html:5
 msgid "home.recent"

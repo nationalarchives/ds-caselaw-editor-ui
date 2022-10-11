@@ -46,6 +46,10 @@
           <span class="unpublished-judgments__consignmentrefence">
             {% translate "judgments.consignmentref" %} {{ item.meta.consignment_reference }}
           </span>
+          <span class="unpublished-judgments__assignedto">
+            {% translate "judgments.assignedto" %} {{ item.meta.assigned_to|default:"no-one" }}
+          </span>
+
         </span>
       </li>
       {% endfor %}

@@ -65,7 +65,7 @@
     }
   }
 
-  &__court, &__submitter, &__submitteremail,  &__submissiondate, &__consignmentrefence {
+  &__court, &__submitter, &__submitteremail,  &__submissiondate, &__consignmentrefence, &__assignedto {
     display: block;
     font-size: 0.9rem;
     color: $color__dark-grey;

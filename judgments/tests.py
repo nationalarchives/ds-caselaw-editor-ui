@@ -84,9 +84,8 @@ class TestSearchResults(TestCase):
 
 class TestSearchResultModel(TestCase):
     @patch("judgments.models.SearchResultMeta")
-    def test_create_from_node(self, fake_model):
-        model_attrs = {"create_from_uri.return_value": "a/fake/uri.xml"}
-        fake_model.configure_mock(**model_attrs)
+    def test_create_from_node(self, fake_meta):
+        fake_meta.create_from_uri.return_value.assigned_to = "someone"
         search_result_str = """
         <search:result xmlns:search="http://marklogic.com/appservices/search" index="1" uri="/ukut/lc/2022/241.xml">
             <search:snippet/>
@@ -110,6 +109,7 @@ class TestSearchResultModel(TestCase):
         self.assertEqual("ukut/lc/2022/241", search_result.uri)
         self.assertEqual("[2022] UKUT 241 (LC)", search_result.neutral_citation)
         self.assertEqual("UKUT-LC", search_result.court)
+        self.assertEqual("someone", search_result.meta.assigned_to)
 
     @patch("judgments.models.SearchResultMeta")
     def test_create_from_node_with_missing_elements(self, fake_model):
