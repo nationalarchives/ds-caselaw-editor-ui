@@ -146,13 +146,13 @@ class EditJudgmentView(View):
             notify_changed(
                 uri=judgment_uri,
                 status=notify_status,
-                name=request.POST["metadata_name"],
                 enrich=published,  # placeholder for now, should perhaps be "has this become published"
             )
 
             context["success"] = "Judgment successfully updated"
 
         except (MoveJudgmentError, NeutralCitationToUriError) as e:
+
             context[
                 "error"
             ] = f"There was an error updating the Judgment's neutral citation: {e}"
@@ -411,7 +411,7 @@ def unpublish_documents(uri: str) -> None:
     delete_from_bucket(uri, env("PUBLIC_ASSET_BUCKET"))
 
 
-def notify_changed(uri: str, status: str, name: str, enrich: bool = False) -> None:
+def notify_changed(uri: str, status: str, enrich: bool = False) -> None:
     client = create_aws_client("sns")
 
     message_attributes = {}
@@ -432,7 +432,7 @@ def notify_changed(uri: str, status: str, name: str, enrich: bool = False) -> No
     client.publish(
         TopicArn=env("SNS_TOPIC"),
         Message=json.dumps({"uri_reference": uri, "status": status}),
-        Subject=f"{name} updated: {status}",
+        Subject=f"Updated: {uri} {status}",
         MessageAttributes=message_attributes,
     )
 
