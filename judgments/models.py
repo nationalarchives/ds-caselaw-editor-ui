@@ -102,7 +102,7 @@ class SearchResult:
             )
         except caselawclient.Client.MarklogicAPIError as e:
             logging.warning(
-                f"Deleted item uri: {uri} in search results. Full error: {e}"
+                f"Unable to create search result for {uri}. Has it been deleted? Full error: {e}"
             )
             return None
 
