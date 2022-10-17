@@ -256,6 +256,20 @@ To login or signup to the staging application, go to `http://localhost:3000/acco
 
 To set up the first administrator account, run `python manage.py createsuperuser`, then create subsequent accounts at `/admin`.
 
+## Deleting judgments on production
+
+Currently there is no way for the editors to delete a judgment from the production site, if the judgment has been assigned
+a neutral citation number. Until this functionality is built into the editor UI, judgments need to be deleted manually.
+Editors will create a Trello ticket with the URI of the judgment they need removed from the site.
+
+To do this:
+- Log in to the [production XQuery console](http://caselaw-alb-16tn9udgqba77-1339658714.eu-west-2.elb.amazonaws.com:8000/qconsole/)
+- Get the [XQuery to delete a judgment from the API Client](https://github.com/nationalarchives/ds-caselaw-custom-api-client/blob/main/src/caselawclient/xquery/delete_judgment.xqy)
+  (Often there is a pre-existing tab in the XQuery console with this in)
+- Add the URI of the judgment to delete to the script; e.g. `declare variable $uri := '<your URI here>'`. Don't forget
+  URIs in Marklogic begin with a slash and end in `.xml`
+- Run the script, if it is successful it will return no output
+
 ## Deployment
 
 ### Staging
