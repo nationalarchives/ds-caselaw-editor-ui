@@ -16,6 +16,7 @@ from caselawclient.Client import (
     api_client,
 )
 from caselawclient.xml_tools import JudgmentMissingMetadataError
+from django.contrib.auth.models import User
 from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
 from django.template import loader
@@ -70,6 +71,7 @@ class EditJudgmentView(View):
             )
             meta["source_name"] = api_client.get_property(uri, "source-name")
             meta["source_email"] = api_client.get_property(uri, "source-email")
+            meta["assigned_to"] = api_client.get_property(uri, "assigned-to")
             meta["is_editable"] = True
         except JudgmentMissingMetadataError:
             meta[
@@ -96,6 +98,15 @@ class EditJudgmentView(View):
         context = {"judgment_uri": judgment_uri}
         judgment = self.get_judgment(judgment_uri)
         context.update(self.get_metadata(judgment_uri, judgment))
+        users = User.objects.all()
+        users_dict = [
+            {
+                "name": u.get_username(),
+                "print_name": u.get_full_name() or u.get_username(),
+            }
+            for u in users
+        ]
+        context.update({"users": users_dict})
 
         return self.render(request, context)
 
@@ -133,6 +144,11 @@ class EditJudgmentView(View):
             # Date
             new_date = request.POST["judgment_date"]
             api_client.set_judgment_date(judgment_uri, new_date)
+
+            # Assignment
+            # TODO consider validating assigned_to is a user?
+            if new_assignment := request.POST["assigned_to"]:
+                api_client.set_property(judgment_uri, "assigned-to", new_assignment)
 
             # If judgment_uri is a `failure` URI, amend it to match new neutral citation and redirect
             if "failures" in judgment_uri and new_citation is not None:

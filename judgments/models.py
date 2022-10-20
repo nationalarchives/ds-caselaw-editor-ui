@@ -16,6 +16,7 @@ class SearchResultMeta:
         author_email="",
         consignment_reference="",
         submission_datetime="",
+        assigned_to="",
     ):
         self.author = author
         self.author_email = author_email
@@ -25,6 +26,7 @@ class SearchResultMeta:
             if submission_datetime
             else datetime.min
         )
+        self.assigned_to = assigned_to
 
     @staticmethod
     def create_from_uri(uri: str):
@@ -35,6 +37,7 @@ class SearchResultMeta:
                 uri, "transfer-consignment-reference"
             ),
             submission_datetime=api_client.get_property(uri, "transfer-received-at"),
+            assigned_to=api_client.get_property(uri, "assigned-to"),
         )
 
 
@@ -48,6 +51,7 @@ class SearchResult:
         date="",
         matches=[],
         meta=SearchResultMeta(),
+        assigned_to="",
     ) -> None:
         self.uri = uri
         self.neutral_citation = neutral_citation
@@ -102,7 +106,7 @@ class SearchResult:
             )
         except caselawclient.Client.MarklogicAPIError as e:
             logging.warning(
-                f"Deleted item uri: {uri} in search results. Full error: {e}"
+                f"Unable to create search result for {uri}. Has it been deleted? Full error: {e}"
             )
             return None
 

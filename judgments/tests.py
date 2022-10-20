@@ -84,9 +84,8 @@ class TestSearchResults(TestCase):
 
 class TestSearchResultModel(TestCase):
     @patch("judgments.models.SearchResultMeta")
-    def test_create_from_node(self, fake_model):
-        model_attrs = {"create_from_uri.return_value": "a/fake/uri.xml"}
-        fake_model.configure_mock(**model_attrs)
+    def test_create_from_node(self, fake_meta):
+        fake_meta.create_from_uri.return_value.assigned_to = "someone"
         search_result_str = """
         <search:result xmlns:search="http://marklogic.com/appservices/search" index="1" uri="/ukut/lc/2022/241.xml">
             <search:snippet/>
@@ -110,6 +109,7 @@ class TestSearchResultModel(TestCase):
         self.assertEqual("ukut/lc/2022/241", search_result.uri)
         self.assertEqual("[2022] UKUT 241 (LC)", search_result.neutral_citation)
         self.assertEqual("UKUT-LC", search_result.court)
+        self.assertEqual("someone", search_result.meta.assigned_to)
 
     @patch("judgments.models.SearchResultMeta")
     def test_create_from_node_with_missing_elements(self, fake_model):
@@ -333,3 +333,23 @@ class TestUtils(TestCase):
         old_key = "failures/TDR-2022-DNWR/image1.jpg"
         new_uri = "ukpc/2023/120"
         assert build_new_key(old_key, new_uri) == "ukpc/2023/120/image1.jpg"
+
+
+class TestJudgmentEditor(TestCase):
+    @patch("judgments.views.api_client")
+    def test_assigned(self, mock_api):
+        mock_api.get_judgment_xml.return_value = "<x>Kitten</x>"
+        mock_api.get_published.return_value = "6"
+        mock_api.get_sensitive.return_value = "6"
+        mock_api.get_supplemental.return_value = "6"
+        mock_api.get_anonymised.return_value = "6"
+        mock_api.list_judgment_versions.return_value = []
+        mock_api.get_property.side_effect = (
+            lambda _, property: "otheruser" if property == "assigned-to" else "xxx"
+        )
+        User.objects.get_or_create(username="otheruser")[0]
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        response = self.client.get("/edit?judgment_uri=ewhc/ch/1999/1")
+        mock_api.get_judgment_xml.assert_called()
+        mock_api.get_property.assert_called_with("ewhc/ch/1999/1", "assigned-to")
+        assert b"selected>otheruser" in response.content

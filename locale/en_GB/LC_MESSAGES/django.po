@@ -161,6 +161,10 @@ msgstr "This Judgment has been anonymised"
 msgid "judgment.previous_versions"
 msgstr "Previous versions of this Judgment"
 
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:67
+msgid "judgment.assigned_to"
+msgstr "Assigned to"
+
 #: ds_caselaw_editor_ui/templates/includes/recent_judgments.html:5
 msgid "home.recent"
 msgstr "Unpublished judgments"
@@ -180,6 +184,14 @@ msgstr "Submission date:"
 #: ds_caselaw_editor_ui/templates/includes/recent_judgments.html:36
 msgid "judgments.consignmentref"
 msgstr "Consignment Reference:"
+
+#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:50
+msgid "judgments.assignedto"
+msgstr "Assigned to:"
+
+#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:50
+msgid "judgments.noone"
+msgstr "No one"
 
 #: ds_caselaw_editor_ui/templates/judgment/edit.html:5
 msgid "judgment.download_docx"
