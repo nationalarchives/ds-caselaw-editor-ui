@@ -200,6 +200,9 @@ msgstr "Download the original judgment"
 msgid "judgment.download_pdf"
 msgstr "Download PDF"
 
+msgid "judgment.download_xml"
+msgstr "Download XML"
+
 #: ds_caselaw_editor_ui/templates/judgment/deleted.html:13
 msgid "judgment.deleted"
 msgstr "Judgment successfully deleted"
