@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-02 09:37+0000\n"
+"POT-Creation-Date: 2022-10-26 09:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,202 +18,216 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ds_caselaw_editor_ui/templates/base.html:26
-msgid "skiplink"
-msgstr "Skip to Main Content"
+#: ds_caselaw_editor_ui/templates/account/login.html:5
+#: ds_caselaw_editor_ui/templates/account/login.html:10
+#: ds_caselaw_editor_ui/templates/account/login.html:19
+msgid "Sign In"
+msgstr ""
 
-#: ds_caselaw_editor_ui/templates/includes/breadcrumbs.html:6
-msgid "common.home"
-msgstr "Home"
+#: ds_caselaw_editor_ui/templates/account/login.html:18
+msgid "Forgot Password?"
+msgstr ""
 
+#: ds_caselaw_editor_ui/templates/base.html:9
 #: ds_caselaw_editor_ui/templates/includes/breadcrumbs.html:7
 #: ds_caselaw_editor_ui/templates/judgment/results.html:5
-#: ds_caselaw_editor_ui/templates/pages/home.html:5
-#: ds_caselaw_editor_ui/templates/pages/home.html:18
-#: ds_caselaw_editor_ui/templates/pages/open_justice_licence.html:7
-#: ds_caselaw_editor_ui/templates/pages/sources.html:7
-#: ds_caselaw_editor_ui/templates/pages/terms_of_use.html:6
+#: ds_caselaw_editor_ui/templates/layout_judgment_html.html:11
+#: ds_caselaw_editor_ui/templates/pages/home.html:13
 msgid "common.findcaselaw"
 msgstr "Find and manage case law"
 
-#: ds_caselaw_editor_ui/templates/judgment/results.html:3
+#: ds_caselaw_editor_ui/templates/base.html:25
+#: ds_caselaw_editor_ui/templates/layout_judgment_html.html:25
+msgid "skiplink"
+msgstr "Skip to Main Content"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:6
+msgid "judgment.back"
+msgstr "Back to search results"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:12
+msgid "judgment.edit_this_judgment"
+msgstr "Edit this Judgment"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:14
+msgid "judgment.view_this_judgment"
+msgstr "View this Judgment"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:19
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:11
+msgid "judgment.download_docx"
+msgstr "Download the original judgment"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:22
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:14
+msgid "judgment.download_pdf"
+msgstr "Download PDF"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:24
+msgid "judgment.download_xml"
+msgstr "Download XML"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:26
+msgid "judgment.delete"
+msgstr "Delete judgment"
+
+#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:8
+msgid "home.recent"
+msgstr "Unpublished judgments"
+
+#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:15
+msgid "judgments.details"
+msgstr "Judgment details:"
+
+#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:18
+#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:37
+msgid "judgments.submission_datetime"
+msgstr "Submitted:"
+
+#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:45
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:8
+msgid "judgments.consignmentref"
+msgstr "TDR Reference:"
+
+#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:53
+msgid "judgments.ncn"
+msgstr "NCN"
+
+#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:61
+msgid "judgments.court"
+msgstr "Court:"
+
+#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:69
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:6
+msgid "judgments.submitter"
+msgstr "Submitted by:"
+
+#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:84
+msgid "judgments.allrecent"
+msgstr "See all recent judgments"
+
+#: ds_caselaw_editor_ui/templates/judgment/deleted.html:13
+msgid "judgment.deleted"
+msgstr "Judgment successfully deleted"
+
+#: ds_caselaw_editor_ui/templates/judgment/deleted.html:14
+msgid "judgment.return_home"
+msgstr "Return to Find and manage case law"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:7
+msgid "judgments.submitteremail"
+msgstr "Contact email:"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:25
+msgid "judgment.edit_judgment"
+msgstr "Edit Judgment"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:29
+msgid "judgment.judgment_name"
+msgstr "Judgment name"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:34
+msgid "judgment.neutral_citation"
+msgstr "Neutral citation"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:39
+msgid "judgment.court"
+msgstr "Court"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:44
+msgid "judgment.judgment_date"
+msgstr "Judgment date"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:49
+msgid "judgment.published"
+msgstr "Published?"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:53
+msgid "judgment.sensitive"
+msgstr "Contains sensitive information?"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:57
+msgid "judgment.supplemental"
+msgstr "Has supplemental documents?"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:61
+msgid "judgment.anonymised"
+msgstr "This Judgment has been anonymised"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:65
+msgid "judgment.assigned_to"
+msgstr "Assigned to"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:67
+msgid "judgments.noone"
+msgstr "No one"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:83
+msgid "judgment.previous_versions"
+msgstr "Previous versions of this Judgment"
+
+#: ds_caselaw_editor_ui/templates/judgment/results.html:5
+#: ds_caselaw_editor_ui/templates/judgment/results.html:9
+#: judgments/views.py:284
 msgid "results.search.title"
 msgstr "Search results"
 
-#: ds_caselaw_editor_ui/templates/pages/home.html:20
+#: ds_caselaw_editor_ui/templates/pages/home.html:15
 msgid "home.useservice"
 msgstr ""
-"Use this service to find and manage judgments and tribunal decisions on the 'Find Case Law' site"
+"Use this service to find and manage judgments and tribunal decisions on the "
+"'Find Case Law' site"
 
-#: ds_caselaw_editor_ui/templates/pages/no_results.html:4
+#: ds_caselaw_editor_ui/templates/pages/no_results.html:5
 #, python-format
 msgid "No results for '%(data)s'"
 msgstr ""
 
-#: ds_caselaw_editor_ui/templates/pages/no_results.html:10
+#: ds_caselaw_editor_ui/templates/pages/no_results.html:11
 msgid "search.noresults"
 msgstr "There are no results for your search"
 
-#: ds_caselaw_editor_ui/templates/pages/no_results.html:11
+#: ds_caselaw_editor_ui/templates/pages/no_results.html:12
 msgid "search.improvesearch"
 msgstr ""
 "Improve your search results by removing filters, double-checking your "
 "spelling, using fewer keywords or searching for something less specific."
 
-#: ds_caselaw_editor_ui/templates/pages/open_justice_licence.html:4
-msgid "openjusticelicence.title"
-msgstr "Open Justice Licence"
+#: judgments/views.py:245
+msgid "judgment.delete_a_judgment"
+msgstr "Delete a judgment"
 
-#: ds_caselaw_editor_ui/templates/pages/sources.html:4
-msgid "judgmentsources.title"
-msgstr "Judgment Sources"
+#~ msgid "common.home"
+#~ msgstr "Home"
 
-#: ds_caselaw_editor_ui/templates/pages/structured_search.html:4
-msgid "search.title"
-msgstr "Search"
+#~ msgid "openjusticelicence.title"
+#~ msgstr "Open Justice Licence"
 
-#: ds_caselaw_editor_ui/templates/pages/structured_search.html:6
-msgid "commom.findcaselaw"
-msgstr "Find and manage case law"
+#~ msgid "judgmentsources.title"
+#~ msgstr "Judgment Sources"
 
-#: ds_caselaw_editor_ui/templates/pages/terms_of_use.html:3
-msgid "terms.title"
-msgstr "Terms of use"
+#~ msgid "search.title"
+#~ msgstr "Search"
+
+#~ msgid "commom.findcaselaw"
+#~ msgstr "Find and manage case law"
+
+#~ msgid "terms.title"
+#~ msgstr "Terms of use"
 
 #, fuzzy
 #~| msgid "common.findcaselaw"
 #~ msgid "findcaselaw"
 #~ msgstr "Find and manage case law"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:9
-msgid "judgment.downloadasxml"
-msgstr "Download as XML"
+#~ msgid "judgment.downloadasxml"
+#~ msgstr "Download as XML"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:5
-msgid "judgment.back"
-msgstr "Back to search results"
+#~ msgid "judgment.source_by"
+#~ msgstr "This judgment has been provided to The National Archives by "
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_text_source.html:3
-msgid "judgment.source_by"
-msgstr "This judgment has been provided to The National Archives by "
+#~ msgid "judgment.bailii"
+#~ msgstr "The British and Irish Legal Information Institute"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_text_source.html:4
-msgid "judgment.bailii"
-msgstr "The British and Irish Legal Information Institute"
-
-#: ds_caselaw_editor_ui/templates/includes/recent_judgments.html:28
-msgid "judgments.allrecent"
-msgstr "See all recent judgments"
-
-#: ds_caselaw_editor_ui/templates/includes/recent_judgments.html:20
-msgid "judgments.date"
-msgstr "Date:"
-
-#: ds_caselaw_editor_ui/templates/includes/recent_judgments.html:23
-msgid "judgments.court"
-msgstr "Court:"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:11
-msgid "judgment.edit_this_judgment"
-msgstr "Edit this Judgment"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:13
-msgid "judgment.view_this_judgment"
-msgstr "View this Judgment"
-
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:11
-msgid "judgment.edit_judgment"
-msgstr "Edit Judgment"
-
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:14
-msgid "judgment.judgment_name"
-msgstr "Judgment name"
-
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:14
-msgid "judgment.neutral_citation"
-msgstr "Neutral citation"
-
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:14
-msgid "judgment.court"
-msgstr "Court"
-
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:14
-msgid "judgment.judgment_date"
-msgstr "Judgment date"
-
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:21
-msgid "judgment.published"
-msgstr "Published?"
-
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:25
-msgid "judgment.sensitive"
-msgstr "Contains sensitive information?"
-
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:29
-msgid "judgment.supplemental"
-msgstr "Has supplemental documents?"
-
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:32
-msgid "judgment.anonymised"
-msgstr "This Judgment has been anonymised"
-
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:42
-msgid "judgment.previous_versions"
-msgstr "Previous versions of this Judgment"
-
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:67
-msgid "judgment.assigned_to"
-msgstr "Assigned to"
-
-#: ds_caselaw_editor_ui/templates/includes/recent_judgments.html:5
-msgid "home.recent"
-msgstr "Unpublished judgments"
-
-#: ds_caselaw_editor_ui/templates/includes/recent_judgments.html:27
-msgid "judgments.submitter"
-msgstr "Submitted by:"
-
-#: ds_caselaw_editor_ui/templates/includes/recent_judgments.html:30
-msgid "judgments.submitteremail"
-msgstr "Contact email:"
-
-#: ds_caselaw_editor_ui/templates/includes/recent_judgments.html:33
-msgid "judgments.submissiondate"
-msgstr "Submission date:"
-
-#: ds_caselaw_editor_ui/templates/includes/recent_judgments.html:36
-msgid "judgments.consignmentref"
-msgstr "Consignment Reference:"
-
-#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:50
-msgid "judgments.assignedto"
-msgstr "Assigned to:"
-
-#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:50
-msgid "judgments.noone"
-msgstr "No one"
-
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:5
-msgid "judgment.download_docx"
-msgstr "Download the original judgment"
-
-msgid "judgment.download_pdf"
-msgstr "Download PDF"
-
-msgid "judgment.download_xml"
-msgstr "Download XML"
-
-#: ds_caselaw_editor_ui/templates/judgment/deleted.html:13
-msgid "judgment.deleted"
-msgstr "Judgment successfully deleted"
-
-#: ds_caselaw_editor_ui/templates/judgment/deleted.html:15
-msgid "judgment.return_home"
-msgstr "Return to Find and manage case law"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:22
-msgid "judgment.delete"
-msgstr "Delete judgment"
-
-msgid "judgment.delete_a_judgment"
-msgstr "Delete a judgment"
+#~ msgid "judgments.assignedto"
+#~ msgstr "Assigned to:"
