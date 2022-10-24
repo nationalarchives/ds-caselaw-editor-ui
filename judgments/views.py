@@ -188,6 +188,7 @@ def detail(request):
     judgment_uri = params.get("judgment_uri", None)
     version_uri = params.get("version_uri", None)
     context = {"judgment_uri": judgment_uri, "is_failure": False}
+
     try:
         judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
         judgment_root = get_judgment_root(judgment_xml)
@@ -222,6 +223,19 @@ def detail(request):
         raise Http404(f"Judgment was not found at uri {judgment_uri}, {e}")
     template = loader.get_template("judgment/detail.html")
     return HttpResponse(template.render({"context": context}, request))
+
+
+def detail_xml(request):
+    params = request.GET
+    judgment_uri = params.get("judgment_uri", None)
+    try:
+        judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
+    except MarklogicResourceNotFoundError as e:
+        raise Http404(f"Judgment was not found at uri {judgment_uri}, {e}")
+
+    response = HttpResponse(judgment_xml, content_type="application/xml")
+    response["Content-Disposition"] = f"attachment; filename={judgment_uri}.xml"
+    return response
 
 
 def delete(request):
