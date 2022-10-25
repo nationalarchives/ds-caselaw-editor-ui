@@ -21,6 +21,7 @@
           {% if context.pdf_url %}
             <a href="{{ context.pdf_url }}">{% translate "judgment.download_pdf" %}</a>
           {% endif %}
+          <a href="{% url 'detail_xml' %}?judgment_uri={{context.judgment_uri}}">{% translate "judgment.download_xml" %}</a>
           {% if context.is_failure %}
             <a class="judgment-toolbar__delete" href="{% url 'delete' %}?judgment_uri={{ context.judgment_uri }}">{% translate "judgment.delete" %}</a>
           {% endif %}
