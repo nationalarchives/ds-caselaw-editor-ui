@@ -71,6 +71,19 @@
                     <span class="unpublished-judgments__judgment-details-meta-value">
                       {{ item.meta.author }}
                     </span>
+                  <li>
+                    <span class="unpublished-judgments__judgment-details-meta-key">
+                      Assigned To TODO TRANSLATE
+                    </span>
+                    <span class="unpublished-judgments__judgment-details-meta-value">
+                      TODO
+                      <form action="/assign" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="judgment_uri" value="{{item.uri}}">
+                        <input type="submit" name="assign" value="Assign to me">
+                      </form>
+
+                    </span>
                   </li>
                 </ul>
               </div>
