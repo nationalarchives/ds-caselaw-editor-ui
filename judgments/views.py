@@ -345,10 +345,6 @@ def paginator(current_page, total):
     }
 
 
-def trim_leading_slash(uri):
-    return re.sub("^/|/$", "", uri)
-
-
 def perform_advanced_search(
     query=None,
     court=None,
