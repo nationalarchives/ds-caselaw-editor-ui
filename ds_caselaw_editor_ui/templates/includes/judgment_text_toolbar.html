@@ -23,7 +23,13 @@
           {% endif %}
           <a href="{% url 'detail_xml' %}?judgment_uri={{context.judgment_uri}}">{% translate "judgment.download_xml" %}</a>
           {% if context.is_failure %}
-            <a class="judgment-toolbar__delete" href="{% url 'delete' %}?judgment_uri={{ context.judgment_uri }}">{% translate "judgment.delete" %}</a>
+
+          <form action="/delete" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="judgment_uri" value="{{context.judgment_uri}}">
+            <input type="submit" name="assign" value="{% translate 'judgment.delete' %}">
+          </form>
+
           {% endif %}
         </div>
         {% if context.version %}
