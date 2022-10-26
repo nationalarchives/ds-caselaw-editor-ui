@@ -1,5 +1,9 @@
 .unpublished-judgments {
 
+  &__unpublished-judgments-controls-container {
+    margin-bottom: calc(2 * $spacer__unit);
+  }
+
   &__container {
     @include container;
     padding: calc($spacer__unit * 4) 0;
@@ -9,78 +13,107 @@
     font-family: $font__roboto;
     font-weight: normal;
     font-size: 1.8rem;
-    margin: 0 0 calc($spacer__unit * 3);
+    margin: 0 0 calc($spacer__unit);
+  }
+
+  &__table-header {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    padding:  $spacer__unit calc($spacer__unit / 2);
+    flex-grow:0;
+    width: 100%;
+    border-bottom: 1px solid black;
+  }
+
+  &__table-header-details {
+    flex-basis: 100%;
+    @media (min-width: $grid__breakpoint-medium) {
+      flex-basis: 75%;
+    }
+  }
+
+  &__table-header-submitted {
+    flex-basis: 25%;
+    display: none;
+    @media (min-width: $grid__breakpoint-medium) {
+      display: block;
+    }
   }
 
   &__list {
     padding: 0;
     list-style-type: none;
+    margin-top: 0;
   }
 
   &__judgment {
-
-    padding: $spacer__unit 0;
-    border-bottom: 2px solid $color__grey;
-    line-height: 2rem;
-
-    @media (min-width: $grid__breakpoint-medium) {
-      display: flex;
-      justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    flex-grow: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding: $spacer__unit calc($spacer__unit / 2);
+    border-bottom: 1px solid $color__dark-grey;
+    &:last-child {
+      border-bottom: none;
     }
+  }
 
-    > span {
+  &__judgment-details {
+    flex-basis: 100%;
+    @media (min-width: $grid__breakpoint-medium) {
+      flex-basis: 75%;
+    }
+  }
 
+  &__judgment-submitted {
+    flex-basis: 25%;
+    display: none;
+    @media (min-width: $grid__breakpoint-medium) {
+      display: block;
+    }
+  }
+
+  &__judgment-details-submitted-mobile {
+    @media(min-width: $grid__breakpoint-medium) {
+      display: none;
+    }
+  }
+
+  &__judgment-details-meta {
+    list-style-type: none;
+    padding: 0;
+    float: left;
+    width: 100%;
+    @media (min-width: $grid__breakpoint-large) {
+      width: 80%;
+    }
+    @media (min-width: $grid__breakpoint-extra-large) {
+      width: 70%;
+    }
+    margin-top: 1em;
+    font-size: 0.8em;
+    li {
+      float: left;
+      width: 100%;
       @media (min-width: $grid__breakpoint-medium) {
-        flex-basis: 50%;
+        width: 50%;
       }
-
-      > span {
-        padding: calc($spacer__unit / 4);
+      box-sizing: border-box;
+      span:nth-child(odd) {
+        float: left;
+        width: 33%;
+      }
+      span:nth-child(even) {
+        float: left;
+        width: 66%;
       }
     }
   }
 
-  &__failed {
-    color: red;
-  }
-
-  &__title {
-    display: block;
-    font-weight: normal;
-    font-size: 1.25rem;
-    font-family: $font__roboto;
-  }
-
-  &__date {
-    display: block;
-    font-size: 0.9rem;
+  &__judgment-details-meta-key {
     color: $color__dark-grey;
-
-    @media (max-width: $grid__breakpoint-medium) {
-      margin-top: $spacer__unit;
-    }
-
-    @media (min-width: $grid__breakpoint-medium) {
-      text-align: right;
-    }
   }
 
-  &__court, &__submitter, &__submitteremail,  &__submissiondate, &__consignmentrefence, &__assignedto {
-    display: block;
-    font-size: 0.9rem;
-    color: $color__dark-grey;
-    line-height: 1rem;
-
-    @media (min-width: $grid__breakpoint-medium) {
-      text-align: right;
-    }
-
-    @media (max-width: $grid__breakpoint-medium) {
-      margin-top: 0;
-    }
-  }
-
-  &__more-info {
-      margin: calc($spacer__unit * 2) 0;
-  }
 }

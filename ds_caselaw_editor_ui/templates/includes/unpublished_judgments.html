@@ -5,56 +5,83 @@
 
     <div class="unpublished-judgments__unpublished-judgments-controls-container">
       <div class="results__result-header">
-        <p id="recently-published-judgments" class="unpublished-judgments__header">{% translate "home.recent" %}</p>
+        <p id="recently-published-judgments" class="unpublished-judgments__header">{% translate "home.recent" %}: {{ context.count_judgments }} </p>
       </div>
       {% include 'includes/unpublished_judgments_controls.html' %}
     </div>
-
-    <ul class="unpublished-judgments__list">
-      {% for item in context.recent_judgments %}
-      <li class="unpublished-judgments__judgment">
-        <span>
-          <span class="unpublished-judgments__title">
-            <a href="{% url 'detail' %}?judgment_uri={{item.uri}}">
-              {% if not item.is_failure %}
-              {{ item.name }}
-              {% else %}
-              <span class="unpublished-judgments__failed">Failed processing:</span> {{item.uri}}
-              {% endif %}
-            </a>
-          </span>
-          <span class="unpublished-judgments__neutralcitation">
-            {{ item.neutral_citation }}
-          </span>
-        </span>
-        <span>
-          <span class="unpublished-judgments__date">
-            {% translate "judgments.date" %} {{ item.date }}
-          </span>
-          <span class="unpublished-judgments__court">
-            {% translate "judgments.court" %} {{ item.court }}
-          </span>
-          <span class="unpublished-judgments__submitter">
-            {% translate "judgments.submitter" %} {{ item.meta.author }}
-          </span>
-          <span class="unpublished-judgments__submitteremail">
-            {% translate "judgments.submitteremail" %} {{ item.meta.author_email }}
-          </span>
-          <span class="unpublished-judgments__submissiondate">
-            {% translate "judgments.submissiondate" %} {{ item.meta.submission_datetime }}
-          </span>
-          <span class="unpublished-judgments__consignmentrefence">
-            {% translate "judgments.consignmentref" %} {{ item.meta.consignment_reference }}
-          </span>
-          <span class="unpublished-judgments__assignedto">
-            {% translate "judgments.assignedto" %} {{ item.meta.assigned_to|default:"no-one" }}
-          </span>
-
-        </span>
-      </li>
-      {% endfor %}
-    </ul>
-    {% include 'includes/pagination.html' %}
-    <p class="unpublished-judgments__more-info"><a href="{% url 'results' %}">{% translate "judgments.allrecent" %}</a></p>
+    <div class="unpublished-judgments__table">
+    <div class="unpublished-judgments__table-header">
+        <div class="unpublished-judgments__table-header-details">
+          {% translate "judgments.details" %}
+        </div>
+        <div class="unpublished-judgments__table-header-submitted">
+          {% translate "judgments.submission_datetime" %}
+        </div>
+    </div>
+      <ul class="unpublished-judgments__list">
+        {% for item in context.recent_judgments %}
+            <li class="unpublished-judgments__judgment">
+              <div class="unpublished-judgments__judgment-details">
+                <div class="unpublished-judgments__judgment-details-name">
+                  <a href="{% url 'detail' %}?judgment_uri={{item.uri}}">
+                    {% if not item.is_failure %}
+                      {{ item.name }}
+                    {% else %}
+                      <span class="unpublished-judgments__failed">Failed processing:</span> {{item.uri}}
+                    {% endif %}
+                  </a>
+                </div>
+                <ul class="unpublished-judgments__judgment-details-meta">
+                  <li class="unpublished-judgments__judgment-details-submitted-mobile">
+                    <span class="unpublished-judgments__judgment-details-meta-key">
+                      {% translate "judgments.submission_datetime" %}
+                    </span>
+                    <span class="unpublished-judgments__judgment-details-meta-value">
+                      {{ item.meta.submission_datetime  }}
+                    </span>
+                  </li>
+                  <li>
+                    <span class="unpublished-judgments__judgment-details-meta-key">
+                      {% translate "judgments.consignmentref" %}
+                    </span>
+                    <span class="unpublished-judgments__judgment-details-meta-value">
+                      {{ item.meta.consignment_reference }}
+                    </span>
+                  </li>
+                  <li>
+                    <span class="unpublished-judgments__judgment-details-meta-key">
+                      {% translate "judgments.ncn" %}
+                    </span>
+                    <span class="unpublished-judgments__judgment-details-meta-value">
+                      {{ item.neutral_citation }}
+                    </span>
+                  </li>
+                  <li>
+                    <span class="unpublished-judgments__judgment-details-meta-key">
+                      {% translate "judgments.court" %}
+                    </span>
+                    <span class="unpublished-judgments__judgment-details-meta-value">
+                      {{ item.court }}
+                    </span>
+                  </li>
+                  <li>
+                    <span class="unpublished-judgments__judgment-details-meta-key">
+                      {% translate "judgments.submitter" %}
+                    </span>
+                    <span class="unpublished-judgments__judgment-details-meta-value">
+                      {{ item.meta.author }}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+              <div class="unpublished-judgments__judgment-submitted">
+                {{ item.meta.submission_datetime }}
+              </div>
+            </li>
+        {% endfor %}
+      </ul>
+      {% include 'includes/pagination.html' %}
+      <p class="unpublished-judgments__more-info"><a href="{% url 'results' %}">{% translate "judgments.allrecent" %}</a></p>
+    </div>
   </div>
 </div>
