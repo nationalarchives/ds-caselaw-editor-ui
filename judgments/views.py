@@ -239,7 +239,7 @@ def detail_xml(request):
 
 
 def delete(request):
-    judgment_uri = request.GET.get("judgment_uri", None)
+    judgment_uri = request.POST.get("judgment_uri", None)
     context = {
         "judgment_uri": judgment_uri,
         "page_title": gettext("judgment.delete_a_judgment"),
