@@ -87,6 +87,23 @@
 
                     </span>
                   </li>
+                  <li>
+                    <span class="unpublished-judgments__judgment-details-meta-key">
+                      {% translate "judgments.editor_priority" %}
+                    </span>
+                    <span class="unpublished-judgments__judgment-details-meta-value">
+                      <form action="/prioritise" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="judgment_uri" value="{{item.uri}}">
+                        <select name="priority" id="editor_priority">
+                          <option value="low" {% if item.meta.editor_priority == "10" %}selected{% endif %}>Low</option>
+                          <option value="medium" {% if item.meta.editor_priority == "20" %}selected{% endif %}>Medium</option>
+                          <option value="high" {% if item.meta.editor_priority == "30" %}selected{% endif %}>High</option>
+                        </select>
+                        <input type="submit" name="submit" value="set priority">
+                      </form>
+                    </span>
+                  </li>
                 </ul>
               </div>
               <div class="unpublished-judgments__judgment-submitted">
