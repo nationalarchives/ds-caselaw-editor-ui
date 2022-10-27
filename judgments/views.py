@@ -257,11 +257,9 @@ def delete(request):
 
 def assign_judgment_button(request):
     judgment_uri = request.POST["judgment_uri"]
-    original_uri = request.META.get("HTTP_REFERER")
     api_client.set_property(judgment_uri, "assigned-to", request.user.username)
-    if original_uri:
-        return redirect(original_uri)
-    return HttpResponse("Judgment assigned to you.")
+    target_uri = request.META.get("HTTP_REFERER") or '/'
+    return redirect(target_uri)
 
 
 def index(request):
