@@ -16,6 +16,7 @@ from caselawclient.Client import (
     api_client,
 )
 from caselawclient.xml_tools import JudgmentMissingMetadataError
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
@@ -258,7 +259,8 @@ def delete(request):
 def assign_judgment_button(request):
     judgment_uri = request.POST["judgment_uri"]
     api_client.set_property(judgment_uri, "assigned-to", request.user.username)
-    target_uri = request.META.get("HTTP_REFERER") or '/'
+    target_uri = request.META.get("HTTP_REFERER") or "/"
+    messages.success(request, "Judgment assigned to you.")
     return redirect(target_uri)
 
 
