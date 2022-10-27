@@ -254,6 +254,8 @@ def delete(request):
         raise Http404(f"Judgment was not found at uri {judgment_uri}, {e}")
 
     template = loader.get_template("judgment/deleted.html")
+
+    messages.success(request, "Judgment deleted.")
     return HttpResponse(template.render({"context": context}, request))
 
 
@@ -279,7 +281,10 @@ def prioritise_judgment_button(request):
     if priority:
         api_client.set_property(judgment_uri, "editor-priority", priority)
         target_uri = request.META.get("HTTP_REFERER") or "/"
+
+        messages.success(request, "Judgment priority set.")
         return redirect(target_uri)
+
     return HttpResponseBadRequest("Priority string not recognised")
 
 
