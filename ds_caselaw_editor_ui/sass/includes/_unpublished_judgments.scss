@@ -29,7 +29,10 @@
   &__table-header-details {
     flex-basis: 100%;
     @media (min-width: $grid__breakpoint-medium) {
-      flex-basis: 75%;
+      flex-basis: 66%;
+    }
+    @media (min-width: $grid__breakpoint-extra-large) {
+      flex-basis: 50%;
     }
   }
 
@@ -63,7 +66,12 @@
   &__judgment-details {
     flex-basis: 100%;
     @media (min-width: $grid__breakpoint-medium) {
-      flex-basis: 75%;
+      flex-basis: 66%;
+      padding-right: calc($spacer__unit /2);
+    }
+    @media (min-width: $grid__breakpoint-extra-large) {
+      flex-basis: 50%;
+      padding-right: calc($spacer__unit / 2);
     }
   }
 

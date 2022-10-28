@@ -34,15 +34,23 @@
                 <ul class="unpublished-judgments__judgment-details-meta">
                   <li class="unpublished-judgments__judgment-details-submitted-mobile">
                     <span class="unpublished-judgments__judgment-details-meta-key">
-                      {% translate "judgments.submission_datetime" %}
+                      {% translate "judgments.submission_datetime" %}:
                     </span>
                     <span class="unpublished-judgments__judgment-details-meta-value">
-                      {{ item.meta.submission_datetime  }}
+                      {{ item.meta.submission_datetime | date:"d M Y" }} {{ item.meta.submission_datetime | time:"h:i a" }}
                     </span>
                   </li>
                   <li>
                     <span class="unpublished-judgments__judgment-details-meta-key">
-                      {% translate "judgments.consignmentref" %}
+                      {% translate "judgments.submitter" %}:
+                    </span>
+                    <span class="unpublished-judgments__judgment-details-meta-value">
+                      <a href="mailto:{{ item.meta.author_email }}">{{ item.meta.author }}</a>
+                    </span>
+                  </li>
+                  <li>
+                    <span class="unpublished-judgments__judgment-details-meta-key">
+                      {% translate "judgments.consignmentref" %}:
                     </span>
                     <span class="unpublished-judgments__judgment-details-meta-value">
                       {{ item.meta.consignment_reference }}
@@ -50,7 +58,7 @@
                   </li>
                   <li>
                     <span class="unpublished-judgments__judgment-details-meta-key">
-                      {% translate "judgments.ncn" %}
+                      {% translate "judgments.ncn" %}:
                     </span>
                     <span class="unpublished-judgments__judgment-details-meta-value">
                       {{ item.neutral_citation }}
@@ -58,24 +66,18 @@
                   </li>
                   <li>
                     <span class="unpublished-judgments__judgment-details-meta-key">
-                      {% translate "judgments.court" %}
+                      {% translate "judgments.court" %}:
                     </span>
                     <span class="unpublished-judgments__judgment-details-meta-value">
                       {{ item.court }}
                     </span>
                   </li>
-                  <li>
-                    <span class="unpublished-judgments__judgment-details-meta-key">
-                      {% translate "judgments.submitter" %}
-                    </span>
-                    <span class="unpublished-judgments__judgment-details-meta-value">
-                      {{ item.meta.author }}
-                    </span>
-                  </li>
                 </ul>
               </div>
               <div class="unpublished-judgments__judgment-submitted">
-                {{ item.meta.submission_datetime }}
+                {{ item.meta.submission_datetime | date:"d M Y" }}
+                <br />
+                {{ item.meta.submission_datetime | time:"h:i a" }}
               </div>
             </li>
         {% endfor %}

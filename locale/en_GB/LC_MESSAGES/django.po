@@ -77,17 +77,17 @@ msgstr "Unpublished judgments"
 
 #: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:15
 msgid "judgments.details"
-msgstr "Judgment details:"
+msgstr "Judgment details"
 
 #: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:18
 #: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:37
 msgid "judgments.submission_datetime"
-msgstr "Submitted:"
+msgstr "Submitted"
 
 #: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:45
 #: ds_caselaw_editor_ui/templates/judgment/edit.html:8
 msgid "judgments.consignmentref"
-msgstr "TDR Reference:"
+msgstr "TDR Ref"
 
 #: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:53
 msgid "judgments.ncn"
@@ -95,12 +95,12 @@ msgstr "NCN"
 
 #: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:61
 msgid "judgments.court"
-msgstr "Court:"
+msgstr "Court"
 
 #: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:69
 #: ds_caselaw_editor_ui/templates/judgment/edit.html:6
 msgid "judgments.submitter"
-msgstr "Submitted by:"
+msgstr "By"
 
 #: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:84
 msgid "judgments.allrecent"
