@@ -16,6 +16,7 @@ from caselawclient.Client import (
     api_client,
 )
 from caselawclient.xml_tools import JudgmentMissingMetadataError
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
@@ -239,7 +240,7 @@ def detail_xml(request):
 
 
 def delete(request):
-    judgment_uri = request.GET.get("judgment_uri", None)
+    judgment_uri = request.POST.get("judgment_uri", None)
     context = {
         "judgment_uri": judgment_uri,
         "page_title": gettext("judgment.delete_a_judgment"),
@@ -253,6 +254,14 @@ def delete(request):
 
     template = loader.get_template("judgment/deleted.html")
     return HttpResponse(template.render({"context": context}, request))
+
+
+def assign_judgment_button(request):
+    judgment_uri = request.POST["judgment_uri"]
+    api_client.set_property(judgment_uri, "assigned-to", request.user.username)
+    target_uri = request.META.get("HTTP_REFERER") or "/"
+    messages.success(request, "Judgment assigned to you.")
+    return redirect(target_uri)
 
 
 def index(request):
@@ -343,10 +352,6 @@ def paginator(current_page, total):
         "next_pages": next_pages,
         "number_of_pages": number_of_pages,
     }
-
-
-def trim_leading_slash(uri):
-    return re.sub("^/|/$", "", uri)
 
 
 def perform_advanced_search(
