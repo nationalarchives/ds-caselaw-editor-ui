@@ -9,6 +9,14 @@ from djxml import xmlmodels
 from lxml import etree
 
 
+def one(x):
+    if len(x) > 1:
+        raise RuntimeError("More than one found.")
+    if len(x) > 0:
+        return x[0]
+    return None
+
+
 class SearchResultMeta:
     def __init__(
         self,
@@ -17,6 +25,8 @@ class SearchResultMeta:
         consignment_reference="",
         submission_datetime="",
         assigned_to="",
+        editor_hold="",
+        editor_priority="",
     ):
         self.author = author
         self.author_email = author_email
@@ -27,17 +37,30 @@ class SearchResultMeta:
             else datetime.min
         )
         self.assigned_to = assigned_to
+        self.editor_hold = editor_hold
+        self.editor_priority = editor_priority
 
     @staticmethod
     def create_from_uri(uri: str):
+        response_text = api_client.get_properties_for_search_results([uri])
+        root = etree.fromstring(response_text)
+        return SearchResultMeta.create_from_node(root)
+
+    @staticmethod
+    def create_from_node(node):
+        # we assume that there is only one node in the search result XML.
         return SearchResultMeta(
-            author=api_client.get_property(uri, "source-name"),
-            author_email=api_client.get_property(uri, "source-email"),
-            consignment_reference=api_client.get_property(
-                uri, "transfer-consignment-reference"
-            ),
-            submission_datetime=api_client.get_property(uri, "transfer-received-at"),
-            assigned_to=api_client.get_property(uri, "assigned-to"),
+            author=one(node.xpath("//source-name/text()")) or "",
+            author_email=one(node.xpath("//source-email/text()")) or "",
+            consignment_reference=one(
+                node.xpath("//transfer-consignment-reference/text()")
+            )
+            or "",
+            submission_datetime=one(node.xpath("//transfer-received-at/text()")) or "",
+            assigned_to=one(node.xpath("//assigned-to/text()")) or "",
+            editor_hold=one(node.xpath("//editor-hold/text()")) or "",
+            editor_priority=one(node.xpath("//editor-priority/text()"))
+            or "20",  # medium priority
         )
 
 
