@@ -276,6 +276,7 @@ def index(request):
         search_results = [
             SearchResult.create_from_node(result) for result in model.results
         ]
+
         context["recent_judgments"] = list(filter(None, search_results))
         context["count_judgments"] = model.total
         context["paginator"] = paginator(int(page), model.total)
