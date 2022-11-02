@@ -11,5 +11,6 @@ urlpatterns = [
     path("delete", views.delete, name="delete"),
     path("assign", views.assign_judgment_button, name="assign"),
     path("prioritise", views.prioritise_judgment_button, name="prioritise"),
+    path("hold", views.hold_judgment_button, name="hold"),
     path("", views.index, name="home"),
 ]
