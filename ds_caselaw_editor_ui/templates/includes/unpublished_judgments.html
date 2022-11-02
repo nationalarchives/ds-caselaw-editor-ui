@@ -25,7 +25,7 @@
                 <div class="unpublished-judgments__judgment-details-name">
                   <a href="{% url 'detail' %}?judgment_uri={{item.uri}}">
                     {% if not item.is_failure %}
-                      {{ item.name }}
+                      {{ item.name | default:"[Untitled Judgment]"}}
                     {% else %}
                       <span class="unpublished-judgments__failed">Failed processing:</span> {{item.uri}}
                     {% endif %}
