@@ -105,6 +105,9 @@ msgstr "Submitted by:"
 msgid "judgments.assigned_to"
 msgstr "Assigned to:"
 
+msgid "judgments.editor_priority"
+msgstr "Priority:"
+
 #: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:84
 msgid "judgments.allrecent"
 msgstr "See all recent judgments"

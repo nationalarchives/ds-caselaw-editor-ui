@@ -4,6 +4,7 @@ import math
 import re
 import time
 import xml.etree.ElementTree as ET
+from typing import Optional, Union
 
 import boto3
 import botocore.client
@@ -18,7 +19,7 @@ from caselawclient.Client import (
 from caselawclient.xml_tools import JudgmentMissingMetadataError
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import redirect
 from django.template import loader
 from django.urls import reverse
@@ -253,6 +254,8 @@ def delete(request):
         raise Http404(f"Judgment was not found at uri {judgment_uri}, {e}")
 
     template = loader.get_template("judgment/deleted.html")
+
+    messages.success(request, "Judgment deleted.")
     return HttpResponse(template.render({"context": context}, request))
 
 
@@ -262,6 +265,27 @@ def assign_judgment_button(request):
     target_uri = request.META.get("HTTP_REFERER") or "/"
     messages.success(request, "Judgment assigned to you.")
     return redirect(target_uri)
+
+
+def prioritise_judgment_button(request):
+    """Editors can let other editors know that some judgments are more important than others."""
+
+    def parse_priority(priority: Union[str, int]) -> Optional[str]:
+        # note: use 09 if using numbers less than 10.
+        priorities = {"low": "10", "medium": "20", "high": "30"}
+        priority_string = priority.lower().strip()
+        return priorities.get(priority_string)
+
+    judgment_uri = request.POST["judgment_uri"]
+    priority = parse_priority(request.POST["priority"])
+    if priority:
+        api_client.set_property(judgment_uri, "editor-priority", priority)
+        target_uri = request.META.get("HTTP_REFERER") or "/"
+
+        messages.success(request, "Judgment priority set.")
+        return redirect(target_uri)
+
+    return HttpResponseBadRequest("Priority string not recognised")
 
 
 def index(request):

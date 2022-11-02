@@ -25,7 +25,7 @@
                 <div class="unpublished-judgments__judgment-details-name">
                   <a href="{% url 'detail' %}?judgment_uri={{item.uri}}">
                     {% if not item.is_failure %}
-                      {{ item.name }}
+                      {{ item.name | default:"[Untitled Judgment]"}}
                     {% else %}
                       <span class="unpublished-judgments__failed">Failed processing:</span> {{item.uri}}
                     {% endif %}
@@ -78,13 +78,30 @@
                       {% translate "judgments.assigned_to" %}
                     </span>
                     <span class="unpublished-judgments__judgment-details-meta-value">
-                      {{item.meta.assigned_to}}
+                      {{item.meta.assigned_to | default:"no-one"}}
                       <form action="/assign" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="judgment_uri" value="{{item.uri}}">
                         <input type="submit" name="assign" value="Assign to me">
                       </form>
 
+                    </span>
+                  </li>
+                  <li>
+                    <span class="unpublished-judgments__judgment-details-meta-key">
+                      {% translate "judgments.editor_priority" %}
+                    </span>
+                    <span class="unpublished-judgments__judgment-details-meta-value">
+                      <form action="/prioritise" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="judgment_uri" value="{{item.uri}}">
+                        <select name="priority" id="editor_priority">
+                          <option value="low" {% if item.meta.editor_priority == "10" %}selected{% endif %}>Low</option>
+                          <option value="medium" {% if item.meta.editor_priority == "20" %}selected{% endif %}>Medium</option>
+                          <option value="high" {% if item.meta.editor_priority == "30" %}selected{% endif %}>High</option>
+                        </select>
+                        <input type="submit" name="submit" value="set priority">
+                      </form>
                     </span>
                   </li>
                 </ul>
