@@ -10,7 +10,7 @@ from lxml import etree
 
 import judgments
 from judgments import converters, views
-from judgments.models import SearchResult
+from judgments.models import SearchResult, SearchResultMeta
 from judgments.utils import build_new_key, get_judgment_root, update_judgment_uri
 from judgments.views import extract_version, render_versions
 
@@ -80,6 +80,25 @@ class TestSearchResults(TestCase):
             order="date", only_unpublished=True, page="1"
         )
         assert b"<option value=\"date\" selected='selected'>" in response.content
+
+
+class TestSearchResultMeta(TestCase):
+    def test_create_from_node(self):
+        meta_str = """
+        <property-results>
+          <property-result uri="/ukut/lc/2022/241.xml">
+            <source-name>Fireman Sam</source-name>
+            <transfer-consignment-reference>TDR-2022-BAG</transfer-consignment-reference>
+            <transfer-received-at>2022-09-09T09:18:45Z</transfer-received-at>
+            <assigned-to>dragon</assigned-to>
+          </property-result>
+        </property-results>
+        """
+        metadata = SearchResultMeta.create_from_node(etree.fromstring(meta_str))
+        assert metadata.author == "Fireman Sam"
+        assert metadata.author_email == ""  # most things default to empty string
+        assert metadata.assigned_to == "dragon"
+        assert metadata.editor_priority == "20"  # default priority, medium
 
 
 class TestSearchResultModel(TestCase):
