@@ -78,7 +78,7 @@
                       {% translate "judgments.assigned_to" %}
                     </span>
                     <span class="unpublished-judgments__judgment-details-meta-value">
-                      {{item.meta.assigned_to}}
+                      {{item.meta.assigned_to | default:"no-one"}}
                       <form action="/assign" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="judgment_uri" value="{{item.uri}}">
