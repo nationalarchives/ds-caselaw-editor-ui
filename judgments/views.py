@@ -259,6 +259,22 @@ def delete(request):
     return HttpResponse(template.render({"context": context}, request))
 
 
+def hold_judgment_button(request):
+    judgment_uri = request.POST["judgment_uri"]
+    # we probably shouldn't hold if the judgment isn't assigned but we won't check
+    hold = request.POST["hold"]
+    if hold not in ["false", "true"]:
+        raise RuntimeError("Hold value must be '0' or '1'")
+    api_client.set_property(judgment_uri, "editor-hold", hold)
+    target_uri = request.META.get("HTTP_REFERER") or "/"
+    if hold == "true":
+        word = "held"
+    else:
+        word = "released"
+    messages.success(request, f"Judgment {word}.")
+    return redirect(target_uri)
+
+
 def assign_judgment_button(request):
     judgment_uri = request.POST["judgment_uri"]
     api_client.set_property(judgment_uri, "assigned-to", request.user.username)

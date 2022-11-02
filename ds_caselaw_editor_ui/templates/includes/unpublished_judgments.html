@@ -104,6 +104,22 @@
                       </form>
                     </span>
                   </li>
+                  <li>
+                    <span class="unpublished-judgments__judgment-details-meta-key">
+                      {% translate "judgments.editor_status" %}
+                    </span>
+                    <span class="unpublished-judgments__judgment-details-meta-value">
+                      {{item.meta.editor_status}}
+                      {% if item.meta.assigned_to %}
+                      <form action="/hold" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="judgment_uri" value="{{item.uri}}">
+                        <input type="hidden" name="hold" value="{% if item.meta.editor_hold == 'true' %}false{% else %}true{% endif %}">
+                        <input type="submit" name="submit" value="{% if item.meta.editor_hold == 'true' %}Release{% else %}Hold{% endif %} judgment">
+                      </form>
+                      {% endif %}
+                    </span>
+                  </li>
                 </ul>
               </div>
               <div class="unpublished-judgments__judgment-submitted">

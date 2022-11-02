@@ -100,6 +100,39 @@ class TestSearchResultMeta(TestCase):
         assert metadata.assigned_to == "dragon"
         assert metadata.editor_priority == "20"  # default priority, medium
 
+    def test_editor_status(self):
+        assigned = """
+        <property-results>
+          <property-result uri="/ukut/lc/2022/241.xml">
+            <assigned-to>dragon</assigned-to>
+          </property-result>
+        </property-results>
+        """
+        unassigned = """
+        <property-results>
+          <property-result uri="/ukut/lc/2022/241.xml">
+          </property-result>
+        </property-results>
+        """
+
+        held = """
+        <property-results>
+          <property-result uri="/ukut/lc/2022/241.xml">
+            <assigned-to>dragon</assigned-to>
+            <editor-hold>true</editor-hold>
+          </property-result>
+        </property-results>
+        """
+        metadata = SearchResultMeta.create_from_node(etree.fromstring(assigned))
+        assert metadata.editor_status == "in progress"
+        assert metadata.editor_hold == "false"
+        metadata = SearchResultMeta.create_from_node(etree.fromstring(unassigned))
+        assert metadata.editor_status == "new"
+        assert metadata.editor_hold == "false"
+        metadata = SearchResultMeta.create_from_node(etree.fromstring(held))
+        assert metadata.editor_status == "hold"
+        assert metadata.editor_hold == "true"
+
 
 class TestSearchResultModel(TestCase):
     @patch("judgments.models.SearchResultMeta")

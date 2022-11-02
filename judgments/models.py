@@ -37,8 +37,15 @@ class SearchResultMeta:
             else datetime.min
         )
         self.assigned_to = assigned_to
-        self.editor_hold = editor_hold
+        self.editor_hold = editor_hold or "false"
         self.editor_priority = editor_priority
+
+        if editor_hold == "true":
+            self.editor_status = "hold"
+        elif assigned_to:
+            self.editor_status = "in progress"
+        else:
+            self.editor_status = "new"
 
     @staticmethod
     def create_from_uri(uri: str):
