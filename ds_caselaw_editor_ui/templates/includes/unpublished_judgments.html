@@ -23,7 +23,7 @@
             <li class="unpublished-judgments__judgment">
               <div class="unpublished-judgments__judgment-details">
                 <div class="unpublished-judgments__judgment-details-name">
-                  <a href="{% url 'detail' %}?judgment_uri={{item.uri}}">
+                  <a href="{% url 'detail' item.uri %}">
                     {% if not item.is_failure %}
                       {{ item.name | default:"[Untitled Judgment]"}}
                     {% else %}

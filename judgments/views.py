@@ -20,7 +20,7 @@ from caselawclient.xml_tools import JudgmentMissingMetadataError
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.http import Http404, HttpResponse, HttpResponseBadRequest
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.template import loader
 from django.urls import reverse
 from django.utils.translation import gettext
@@ -185,9 +185,20 @@ class EditJudgmentView(View):
         return self.render(request, context)
 
 
-def detail(request):
+def edit_old(request):
     params = request.GET
     judgment_uri = params.get("judgment_uri", None)
+    return EditJudgmentView.as_view()
+
+
+def detail_old(request):
+    params = request.GET
+    judgment_uri = params.get("judgment_uri", None)
+    return detail(request, judgment_uri)
+
+
+def detail(request, judgment_uri):
+    params = request.GET
     version_uri = params.get("version_uri", None)
     context = {"judgment_uri": judgment_uri, "is_failure": False}
 

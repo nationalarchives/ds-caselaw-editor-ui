@@ -1,10 +1,12 @@
-from django.urls import path
+from django.urls import path, re_path
 
 from . import views
 
 urlpatterns = [
-    path("edit", views.EditJudgmentView.as_view(), name="edit"),
-    path("detail", views.detail, name="detail"),
+    path("edit", views.edit_old, name="edit_old"),
+    re_path(r"(?P<judgment_uri>.*/\d{4}/\d+|failures/TDR-\d{4}-\w*)/edit", views.EditJudgmentView.as_view(), name="edit"),
+    path("detail", views.detail_old, name="detail_old"),
+    re_path(r"(?P<judgment_uri>.*/\d{4}/\d+|failures/TDR-\d{4}-\w*)", views.detail, name="detail"),
     path("xml", views.detail_xml, name="detail_xml"),
     path("results", views.results, name="results"),
     # buttons that do a thing and redirect
