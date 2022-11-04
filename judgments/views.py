@@ -8,7 +8,6 @@ from typing import Optional, Union
 
 import boto3
 import botocore.client
-import caselawclient.xml_tools as xml_tools
 import environ
 from caselawclient.Client import (
     RESULTS_PER_PAGE,
@@ -16,7 +15,6 @@ from caselawclient.Client import (
     MarklogicResourceNotFoundError,
     api_client,
 )
-from caselawclient.xml_tools import JudgmentMissingMetadataError
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.http import Http404, HttpResponse, HttpResponseBadRequest
@@ -50,36 +48,28 @@ class EditJudgmentView(View):
         except MarklogicResourceNotFoundError as e:
             raise Http404(f"Judgment XML was not found at uri {uri}, {e}")
 
-    def get_metadata(self, uri: str, judgment: ET.Element) -> dict:
+    def get_metadata(self, uri: str) -> dict:
         meta = dict()
 
-        try:
-            meta["published"] = api_client.get_published(uri)
-            meta["sensitive"] = api_client.get_sensitive(uri)
-            meta["supplemental"] = api_client.get_supplemental(uri)
-            meta["anonymised"] = api_client.get_anonymised(uri)
-            meta["metadata_name"] = xml_tools.get_metadata_name_value(judgment) or ""
-            meta["page_title"] = meta["metadata_name"]
-            meta["court"] = xml_tools.get_court_value(judgment) or ""
-            meta["neutral_citation"] = (
-                xml_tools.get_neutral_citation_name_value(judgment) or ""
-            )
-            meta["judgment_date"] = xml_tools.get_judgment_date_value(judgment) or ""
-            meta["docx_url"] = generate_docx_url(uri_for_s3(uri))
-            meta["pdf_url"] = generate_pdf_url(uri_for_s3(uri))
-            meta["previous_versions"] = self.get_versions(uri)
-            meta["consignment_reference"] = api_client.get_property(
-                uri, "transfer-consignment-reference"
-            )
-            meta["source_name"] = api_client.get_property(uri, "source-name")
-            meta["source_email"] = api_client.get_property(uri, "source-email")
-            meta["assigned_to"] = api_client.get_property(uri, "assigned-to")
-            meta["is_editable"] = True
-        except JudgmentMissingMetadataError:
-            meta[
-                "error"
-            ] = "The Judgment is missing correct metadata structure and cannot be edited"
-
+        meta["published"] = api_client.get_published(uri)
+        meta["sensitive"] = api_client.get_sensitive(uri)
+        meta["supplemental"] = api_client.get_supplemental(uri)
+        meta["anonymised"] = api_client.get_anonymised(uri)
+        meta["metadata_name"] = api_client.get_judgment_name(uri)
+        meta["page_title"] = meta["metadata_name"]
+        meta["court"] = api_client.get_judgment_court(uri)
+        meta["neutral_citation"] = api_client.get_judgment_citation(uri)
+        meta["judgment_date"] = api_client.get_judgment_work_date(uri)
+        meta["docx_url"] = generate_docx_url(uri_for_s3(uri))
+        meta["pdf_url"] = generate_pdf_url(uri_for_s3(uri))
+        meta["previous_versions"] = self.get_versions(uri)
+        meta["consignment_reference"] = api_client.get_property(
+            uri, "transfer-consignment-reference"
+        )
+        meta["source_name"] = api_client.get_property(uri, "source-name")
+        meta["source_email"] = api_client.get_property(uri, "source-email")
+        meta["assigned_to"] = api_client.get_property(uri, "assigned-to")
+        meta["is_editable"] = True
         return meta
 
     def get_versions(self, uri: str):
@@ -98,8 +88,7 @@ class EditJudgmentView(View):
         params = request.GET
         judgment_uri = params.get("judgment_uri")
         context = {"judgment_uri": judgment_uri}
-        judgment = self.get_judgment(judgment_uri)
-        context.update(self.get_metadata(judgment_uri, judgment))
+        context.update(self.get_metadata(judgment_uri))
         users = User.objects.all()
         users_dict = [
             {
