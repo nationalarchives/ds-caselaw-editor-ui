@@ -390,7 +390,6 @@ class TestUtils(TestCase):
 class TestJudgmentEditor(TestCase):
     @patch("judgments.views.api_client")
     def test_assigned(self, mock_api):
-        mock_api.get_judgment_xml.return_value = "<x>Kitten</x>"
         mock_api.get_published.return_value = "6"
         mock_api.get_sensitive.return_value = "6"
         mock_api.get_supplemental.return_value = "6"
@@ -402,6 +401,5 @@ class TestJudgmentEditor(TestCase):
         User.objects.get_or_create(username="otheruser")[0]
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
         response = self.client.get("/edit?judgment_uri=ewhc/ch/1999/1")
-        mock_api.get_judgment_xml.assert_called()
         mock_api.get_property.assert_called_with("ewhc/ch/1999/1", "assigned-to")
         assert b"selected>otheruser" in response.content
