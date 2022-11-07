@@ -167,8 +167,7 @@ class EditJudgmentView(View):
         except MarklogicAPIError as e:
             context["error"] = f"There was an error saving the Judgment: {e}"
 
-        xml = self.get_judgment(judgment_uri)
-        context.update(self.get_metadata(judgment_uri, xml))
+        context.update(self.get_metadata(judgment_uri))
         invalidate_caches(judgment_uri)
 
         return self.render(request, context)
