@@ -254,7 +254,17 @@ django-admin compilemessages
 
 To login or signup to the staging application, go to `http://localhost:3000/accounts/login`. From there you will be able to log in to an existing account.
 
-To set up the first administrator account, run `python manage.py createsuperuser`, then create subsequent accounts at `/admin`.
+To set up the first administrator account or recreate an account if the login credentials no longer work, run the following procedure:
+1) Make sure that both the Docker container and the VPN are running.
+2) Check that the Fab Build is also running by opening a terminal window and typing `fab start`, this should return a message to say it's up to date.
+3) Now open a new terminal window and create a new superuser account by running the following commands:
+  * Type `docker-compose exec django bash` and hit return
+  * Now type `python manage.py createsuperuser`and hit return, This will show the set username of `root`. You can change this to something else to make it more personal – but it can be left as it is. If you want to change it, type in your new username and hit return if you are happy with leaving it as `root` also just hit return.
+  * It will now ask you for your email address, type this in and hit return.
+  * Lastly, you will require a password, There are no rules to follow so it can be what you want. You will need to re-type your password so that it is validated.
+  * Success – your superuser account is now created.
+Head back over to `http://localhost:3000/accounts/login` and input your new login credentials to gain access to the Editor UI local instance.
+
 
 ## Deleting judgments on production
 
