@@ -254,7 +254,20 @@ django-admin compilemessages
 
 To login or signup to the staging application, go to `http://localhost:3000/accounts/login`. From there you will be able to log in to an existing account.
 
-To set up the first administrator account, run `python manage.py createsuperuser`, then create subsequent accounts at `/admin`.
+### If the login fails for some reason, try creating a new superuser account to gain access.
+
+1) You need have the Docker EUI container running as well as the VPN.
+Then you need to make sure 'Fab' is running properly. In the terminal type: `Fab start` 
+2) It should say it's up to date. If not, run the commands `fab build` and `fab run` again.
+3) Now you can to set up a new user account to access the EUI.
+4) In a new terminal window type: `docker-compose exec django bash'
+5) After hitting return, type `python manage.py createsuperuser`
+6) This should return a username as 'root'. Leave it as this if you want and hit return.
+7) Now enter your email address and press enter.
+8) Next it will ask for a password which will be used to log in.
+9) You will need to input the password again to confirm it.
+10) You have now successufully created a new superuser account.
+11) Now try logging in to your local EUI using the new credentials. The username will be 'root' assuming that you didn't change it. 
 
 ## Deleting judgments on production
 
