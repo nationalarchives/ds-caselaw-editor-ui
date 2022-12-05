@@ -1,5 +1,10 @@
+# The National Archives: Find Case Law
 
-# ds-caselaw-editor-ui
+This repository is part of the [Find Case Law](https://caselaw.nationalarchives.gov.uk/) project at [The National Archives](https://www.nationalarchives.gov.uk/). For more information on the project, check [the documentation](https://github.com/nationalarchives/ds-find-caselaw-docs).
+
+# Editor Interface
+
+An interface for editors to modify content metadata for the Find Case Law service.
 
 ## Local development
 
