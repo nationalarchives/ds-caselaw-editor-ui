@@ -87,7 +87,7 @@ msgstr "Submitted:"
 #: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:45
 #: ds_caselaw_editor_ui/templates/judgment/edit.html:8
 msgid "judgments.consignmentref"
-msgstr "TDR Reference:"
+msgstr "TDR Ref:"
 
 #: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:53
 msgid "judgments.ncn"
