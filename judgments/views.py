@@ -298,7 +298,9 @@ def index(request):
         params = request.GET
         page = params.get("page") if params.get("page") else "1"
         order = (
-            params.get("order") if params.get("order") in ["date", "-date"] else "-date"
+            params.get("order")
+            if params.get("order") in ["date", "-date", "priority", "-priority"]
+            else "-date"
         )
         model = perform_advanced_search(order=order, only_unpublished=True, page=page)
         search_results = [
@@ -309,6 +311,8 @@ def index(request):
         context["count_judgments"] = model.total
         context["paginator"] = paginator(int(page), model.total)
         context["order"] = order
+        # we leave out the 'page' parameter here, as it's always overwritten on pagination.
+        context["query_string"] = "order=%s" % order
 
     except MarklogicResourceNotFoundError as e:
         raise Http404(
