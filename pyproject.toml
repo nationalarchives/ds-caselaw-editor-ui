@@ -13,7 +13,7 @@ exclude = '''
 
 [tool.curlylint.rules]
 indent = 2
-html_has_lang = 'en-GB'
+html_has_lang = true
 aria_role = true
 django_forms_rendering = true
 image_alt = true

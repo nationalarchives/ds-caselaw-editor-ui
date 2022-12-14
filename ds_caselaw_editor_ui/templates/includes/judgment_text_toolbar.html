@@ -1,41 +1,58 @@
 {% load i18n %}
 <div class="judgment-toolbar">
-    <div class="judgment-toolbar__container">
-        <div class="judgment-toolbar__return-link">
-            {% if request.args.origin == 'results' %}
-                <a href="{{ request.args.return_link }}">{% translate "judgment.back" %}</a>
-            {% endif %}
-        </div>
-        <div class="judgment-toolbar__edit">
-          {% if context.is_editable %}
-            {% if context.judgment  %}
-              <a class="" href="{% url 'edit' %}?judgment_uri={{context.judgment_uri}}">{% translate "judgment.edit_this_judgment" %}</a>
-            {% else %}
-              <a class="" href="{% url 'detail' %}?judgment_uri={{context.judgment_uri}}">{% translate "judgment.view_this_judgment" %}</a>
-            {% endif %}
-          {% endif %}
-
-          {% if context.docx_url %}
-            <a href="{{ context.docx_url }}">{% translate "judgment.download_docx" %}</a>
-          {% endif %}
-          {% if context.pdf_url %}
-            <a href="{{ context.pdf_url }}">{% translate "judgment.download_pdf" %}</a>
-          {% endif %}
-          <a href="{% url 'detail_xml' %}?judgment_uri={{context.judgment_uri}}">{% translate "judgment.download_xml" %}</a>
-          {% if context.is_failure %}
-
-          <form action="/delete" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="judgment_uri" value="{{context.judgment_uri}}">
-            <input type="submit" name="assign" value="{% translate 'judgment.delete' %}">
-          </form>
-
-          {% endif %}
-        </div>
-        {% if context.version %}
-          <div class="judgment-toolbar__version">
-            <b>You are viewing version {{ context.version }} of this Judgment.</b>
-          </div>
-        {% endif %}
+  <div class="judgment-toolbar__container">
+    <div class="judgment-toolbar__return-link">
+      {% if request.args.origin == 'results' %}
+        <a href="{{ request.args.return_link }}">
+          {% translate "judgment.back" %}
+        </a>
+      {% endif %}
     </div>
+    <div class="judgment-toolbar__edit">
+      {% if context.is_editable %}
+        {% if context.judgment %}
+          <a class="" href="{% url 'edit' %}?judgment_uri={{context.judgment_uri}}">
+            {% translate "judgment.edit_this_judgment" %}
+          </a>
+        {% else %}
+          <a class="" href="{% url 'detail' %}?judgment_uri={{context.judgment_uri}}">
+            {% translate "judgment.view_this_judgment" %}
+          </a>
+        {% endif %}
+      {% endif %}
+      {% if context.docx_url %}
+        <a href="{{ context.docx_url }}">
+          {% translate "judgment.download_docx" %}
+        </a>
+      {% endif %}
+      {% if context.pdf_url %}
+        <a href="{{ context.pdf_url }}">
+          {% translate "judgment.download_pdf" %}
+        </a>
+      {% endif %}
+      <a href="{% url 'detail_xml' %}?judgment_uri={{context.judgment_uri}}">
+        {% translate "judgment.download_xml" %}
+      </a>
+      {% if context.is_failure %}
+        <form action="/delete" method="post">
+          {% csrf_token %}
+          <input
+            type="hidden"
+            name="judgment_uri"
+            value="{{context.judgment_uri}}"
+          />
+          <input
+            type="submit"
+            name="assign"
+            value="{% translate 'judgment.delete' %}"
+          />
+        </form>
+      {% endif %}
+    </div>
+    {% if context.version %}
+      <div class="judgment-toolbar__version">
+        <b>You are viewing version {{ context.version }} of this Judgment.</b>
+      </div>
+    {% endif %}
+  </div>
 </div>
