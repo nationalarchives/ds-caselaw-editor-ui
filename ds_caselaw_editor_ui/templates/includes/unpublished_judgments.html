@@ -123,7 +123,8 @@
                 </ul>
               </div>
               <div class="unpublished-judgments__judgment-submitted">
-                {{ item.meta.submission_datetime }}
+                {{ item.meta.submission_datetime|date:"d M Y" }}<br />
+                {{ item.meta.submission_datetime|time:"h:i a"}}
               </div>
             </li>
         {% endfor %}
