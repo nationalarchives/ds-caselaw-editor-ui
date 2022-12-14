@@ -1,18 +1,18 @@
 {% extends "layout_judgment_html.html" %}
 {% block content %}
-{% load i18n %}
-   <aside class="judgment-info-component">
-     <ul>
-       <li>{% translate "judgments.submitter" %} {{context.source_name}}</li>
-       <li>{% translate "judgments.submitteremail" %} {{context.source_email}}</li>
-       <li>{% translate "judgments.consignmentref" %} {{context.consignment_reference}}</li>
-     </ul>
-     {% if context.docx_url %}
+  {% load i18n %}
+  <aside class="judgment-info-component">
+    <ul>
+      <li>{% translate "judgments.submitter" %} {{context.source_name}}</li>
+      <li>{% translate "judgments.submitteremail" %} {{context.source_email}}</li>
+      <li>{% translate "judgments.consignmentref" %} {{context.consignment_reference}}</li>
+    </ul>
+    {% if context.docx_url %}
       <a href="{{ context.docx_url }}">{% translate "judgment.download_docx" %}</a>
-     {% endif %}
-     {% if context.pdf_url %}
+    {% endif %}
+    {% if context.pdf_url %}
       <a href="{{ context.pdf_url }}">{% translate "judgment.download_pdf" %}</a>
-     {% endif %}
+    {% endif %}
   </aside>
   <div class="edit-component">
     <div class="edit-component__container">
@@ -28,22 +28,22 @@
         <div class="edit-component__panel">
           <label for="metadata_name">{% translate "judgment.judgment_name" %}</label>
           <input type="text" class="edit-component__metadata_name-input" value="{{context.metadata_name}}"
-               name="metadata_name" id="metadata_name" />
+                 name="metadata_name" id="metadata_name" />
         </div>
         <div class="edit-component__panel">
           <label for="neutral_citation">{% translate "judgment.neutral_citation" %}</label>
           <input type="text" class="edit-component__neutral_citation-input" value="{{context.neutral_citation}}"
-               name="neutral_citation" id="neutral_citation" />
+                 name="neutral_citation" id="neutral_citation" />
         </div>
         <div class="edit-component__panel">
           <label for="court">{% translate "judgment.court" %}</label>
           <input type="text" class="edit-component__court-input" value="{{context.court}}"
-               name="court" id="court" />
+                 name="court" id="court" />
         </div>
         <div class="edit-component__panel">
           <label for="judgment_date">{% translate "judgment.judgment_date" %}</label>
           <input type="text" class="edit-component__judgment_date-input" value="{{context.judgment_date}}"
-               name="judgment_date" id="judgment_date" />
+                 name="judgment_date" id="judgment_date" />
         </div>
         <div class="edit-component__panel">
           <label for="published">{% translate "judgment.published" %}</label>
@@ -66,7 +66,7 @@
           <select class="edit-component__assigned_to-input" name="assigned_to" id="assigned_to">
             <option value="" {% if context.assigned_to == "" %}selected{% endif %}>{% translate "judgments.noone" %}</option>
             {% for user in context.users %}
-            <option value="{{user.name}}"{% if context.assigned_to == user.name %} selected{% endif %}>{{user.print_name}}</option>
+              <option value="{{user.name}}"{% if context.assigned_to == user.name %} selected{% endif %}>{{user.print_name}}</option>
             {% endfor %}
           </select>
         </div>
@@ -78,19 +78,19 @@
     </div>
   </div>
   {% if context.previous_versions %}
-  <div class="list-versions-component">
-    <div class="list-versions-component__container">
-      <h2 class="list-versions-component__header">{% translate "judgment.previous_versions" %}</h2>
-      <ul>
-        {% for version in context.previous_versions %}
-          <li>
-            <a class="list-versions__version-title" href="{% url 'detail' %}?judgment_uri={{context.judgment_uri}}&version_uri={{version.uri}}">
-              v{{ version.version }} ( {{version.uri}} )
-            </a>
-          </li>
-        {% endfor %}
-      </ul>
+    <div class="list-versions-component">
+      <div class="list-versions-component__container">
+        <h2 class="list-versions-component__header">{% translate "judgment.previous_versions" %}</h2>
+        <ul>
+          {% for version in context.previous_versions %}
+            <li>
+              <a class="list-versions__version-title" href="{% url 'detail' %}?judgment_uri={{context.judgment_uri}}&version_uri={{version.uri}}">
+                v{{ version.version }} ( {{version.uri}} )
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
-  </div>
   {% endif %}
 {% endblock content %}

@@ -2,16 +2,14 @@
 {% load static i18n %}
 
 {% block header %}
-   <header class="page-header">
-     {% include 'includes/breadcrumbs.html' with title=context.page_title link=request.get_full_path current=context.page_title %}
-     {% include 'includes/logo.html' %}
-
-    </header>
+  <header class="page-header">
+    {% include 'includes/breadcrumbs.html' with title=context.page_title link=request.get_full_path current=context.page_title %}
+    {% include 'includes/logo.html' %}
+  </header>
 {% endblock header %}
 {% block content %}
   <div class="delete-judgment">
     <p class="delete-judgment__confirmation">{% translate "judgment.deleted" %}</p>
     <a href="{% url 'home' %}">{% translate "judgment.return_home" %}</a>
   </div>
-
 {% endblock content %}
