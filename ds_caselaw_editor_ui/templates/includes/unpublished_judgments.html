@@ -17,6 +17,9 @@
         <div class="unpublished-judgments__table-header-submitted">
           {% translate "judgments.submission_datetime" %}
         </div>
+        <div class="unpublished-judgments__table-header-assigned">
+          {% translate "judgments.submission_assigned" %}
+        </div>
       </div>
       <ul class="unpublished-judgments__list">
         {% for item in context.recent_judgments %}
@@ -74,19 +77,6 @@
                 </li>
                 <li>
                   <span class="unpublished-judgments__judgment-details-meta-key">
-                    {% translate "judgments.assigned_to" %}
-                  </span>
-                  <span class="unpublished-judgments__judgment-details-meta-value">
-                    {{item.meta.assigned_to | default:"no-one"}}
-                    <form action="/assign" method="post">
-                      {% csrf_token %}
-                      <input type="hidden" name="judgment_uri" value="{{item.uri}}">
-                      <input type="submit" name="assign" value="Assign to me">
-                    </form>
-                  </span>
-                </li>
-                <li>
-                  <span class="unpublished-judgments__judgment-details-meta-key">
                     {% translate "judgments.editor_priority" %}
                   </span>
                   <span class="unpublished-judgments__judgment-details-meta-value">
@@ -118,12 +108,39 @@
                     {% endif %}
                   </span>
                 </li>
+                <li class="unpublished-judgments__judgment-details-assigned-mobile">
+                  <span class="unpublished-judgments__judgment-details-meta-key">
+                    {% translate "judgments.assigned_to" %}
+                  </span>
+                  <span class="unpublished-judgments__judgment-details-meta-value">
+                    {% if item.meta.assigned_to %}
+                      <a href="{% url 'edit' %}?judgment_uri={{item.uri}}#assigned_to">{{ item.meta.assigned_to }}</a>
+                    {% else %}
+                      <form action="/assign" method="post" class="unpublished-judgments__judgment-assign-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="judgment_uri" value="{{item.uri}}">
+                        <input type="submit" class="unpublished-judgments__action-button" name="assign" value="Assign to me">
+                      </form>
+                    {% endif %}
+                  </span>
+                </li>
               </ul>
             </div>
             <div class="unpublished-judgments__judgment-submitted">
               {{ item.meta.submission_datetime|date:"d M Y" }}
               <br />
               {{ item.meta.submission_datetime|time:"h:i a"}}
+            </div>
+            <div class="unpublished-judgments__judgment-assigned">
+              {% if item.meta.assigned_to %}
+                <a href="{% url 'edit' %}?judgment_uri={{item.uri}}#assigned_to">{{ item.meta.assigned_to }}</a>
+              {% else %}
+                <form action="/assign" method="post" class="unpublished-judgments__judgment-assign-form">
+                  {% csrf_token %}
+                  <input type="hidden" name="judgment_uri" value="{{item.uri}}">
+                  <input type="submit" class="unpublished-judgments__action-button" name="assign" value="Assign to me">
+                </form>
+              {% endif %}
             </div>
           </li>
         {% endfor %}

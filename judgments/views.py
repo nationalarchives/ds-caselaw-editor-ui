@@ -267,8 +267,14 @@ def assign_judgment_button(request):
     judgment_uri = request.POST["judgment_uri"]
     api_client.set_property(judgment_uri, "assigned-to", request.user.username)
     target_uri = request.META.get("HTTP_REFERER") or "/"
-    messages.success(request, "Judgment assigned to you.")
-    return redirect(target_uri)
+    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        return HttpResponse(
+            json.dumps({"assigned_to": request.user.username}),
+            content_type="application/json",
+        )
+    else:
+        messages.success(request, "Judgment assigned to you.")
+        return redirect(target_uri)
 
 
 def prioritise_judgment_button(request):
