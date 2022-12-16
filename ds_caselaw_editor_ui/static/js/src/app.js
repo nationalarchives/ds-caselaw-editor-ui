@@ -69,7 +69,7 @@ $(".unpublished-judgments__judgment-assign-form").on(
         const assigned_to = data["assigned_to"];
         loading.replaceWith(
           "<a aria-busy='false' href='/edit?judgment_uri=" +
-            uri +
+            encodeURIComponent(uri) +
             "#assigned_to'>" +
             assigned_to +
             "</a>"
