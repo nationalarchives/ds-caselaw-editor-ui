@@ -34,7 +34,15 @@
   }
 
   &__table-header-submitted {
-    flex-basis: 25%;
+    flex-basis: 12.5%;
+    display: none;
+    @media (min-width: $grid__breakpoint-medium) {
+      display: block;
+    }
+  }
+
+  &__table-header-assigned {
+    flex-basis: 12.5%;
     display: none;
     @media (min-width: $grid__breakpoint-medium) {
       display: block;
@@ -68,7 +76,15 @@
   }
 
   &__judgment-submitted {
-    flex-basis: 25%;
+    flex-basis: 12.5%;
+    display: none;
+    @media (min-width: $grid__breakpoint-medium) {
+      display: block;
+    }
+  }
+
+  &__judgment-assigned {
+    flex-basis: 12.5%;
     display: none;
     @media (min-width: $grid__breakpoint-medium) {
       display: block;
@@ -76,6 +92,12 @@
   }
 
   &__judgment-details-submitted-mobile {
+    @media(min-width: $grid__breakpoint-medium) {
+      display: none;
+    }
+  }
+
+  &__judgment-details-assigned-mobile {
     @media(min-width: $grid__breakpoint-medium) {
       display: none;
     }
@@ -116,4 +138,16 @@
     color: $color__dark-grey;
   }
 
+  &__action-button {
+    @include call-to-action-button;
+    outline-color: $color__dark-blue;
+    font-weight: normal;
+    margin-top: 0;
+    padding: 0.5rem;
+    font-size: .9rem;
+    &:hover {
+      background-color: $color__link-blue-hover;
+      cursor: grab;
+    }
+  }
 }

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-26 09:24+0000\n"
+"POT-Creation-Date: 2022-12-15 13:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,38 +36,38 @@ msgstr ""
 msgid "common.findcaselaw"
 msgstr "Find and manage case law"
 
-#: ds_caselaw_editor_ui/templates/base.html:25
+#: ds_caselaw_editor_ui/templates/base.html:33
 #: ds_caselaw_editor_ui/templates/layout_judgment_html.html:25
 msgid "skiplink"
 msgstr "Skip to Main Content"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:6
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:7
 msgid "judgment.back"
 msgstr "Back to search results"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:12
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:15
 msgid "judgment.edit_this_judgment"
 msgstr "Edit this Judgment"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:14
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:19
 msgid "judgment.view_this_judgment"
 msgstr "View this Judgment"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:19
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:25
 #: ds_caselaw_editor_ui/templates/judgment/edit.html:11
 msgid "judgment.download_docx"
 msgstr "Download the original judgment"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:22
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:30
 #: ds_caselaw_editor_ui/templates/judgment/edit.html:14
 msgid "judgment.download_pdf"
 msgstr "Download PDF"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:24
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:34
 msgid "judgment.download_xml"
 msgstr "Download XML"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:26
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:47
 msgid "judgment.delete"
 msgstr "Delete judgment"
 
@@ -80,46 +80,53 @@ msgid "judgments.details"
 msgstr "Judgment details:"
 
 #: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:18
-#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:37
+#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:40
 msgid "judgments.submission_datetime"
 msgstr "Submitted:"
 
-#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:45
+#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:21
+msgid "judgments.submission_assigned"
+msgstr "Assigned:"
+
+#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:48
 #: ds_caselaw_editor_ui/templates/judgment/edit.html:8
 msgid "judgments.consignmentref"
 msgstr "TDR Ref:"
 
-#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:53
+#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:56
 msgid "judgments.ncn"
 msgstr "NCN"
 
-#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:61
+#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:64
 msgid "judgments.court"
 msgstr "Court:"
 
-#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:69
+#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:72
 #: ds_caselaw_editor_ui/templates/judgment/edit.html:6
 msgid "judgments.submitter"
 msgstr "Submitted by:"
 
-msgid "judgments.assigned_to"
-msgstr "Assigned to:"
-
+#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:80
 msgid "judgments.editor_priority"
 msgstr "Priority:"
 
+#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:97
 msgid "judgments.editor_status"
 msgstr "Status:"
 
-#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:84
+#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:113
+msgid "judgments.assigned_to"
+msgstr "Assigned to:"
+
+#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:159
 msgid "judgments.allrecent"
 msgstr "See all recent judgments"
 
-#: ds_caselaw_editor_ui/templates/judgment/deleted.html:13
+#: ds_caselaw_editor_ui/templates/judgment/deleted.html:12
 msgid "judgment.deleted"
 msgstr "Judgment successfully deleted"
 
-#: ds_caselaw_editor_ui/templates/judgment/deleted.html:14
+#: ds_caselaw_editor_ui/templates/judgment/deleted.html:13
 msgid "judgment.return_home"
 msgstr "Return to Find and manage case law"
 
@@ -177,7 +184,7 @@ msgstr "Previous versions of this Judgment"
 
 #: ds_caselaw_editor_ui/templates/judgment/results.html:5
 #: ds_caselaw_editor_ui/templates/judgment/results.html:9
-#: judgments/views.py:284
+#: judgments/views.py:330
 msgid "results.search.title"
 msgstr "Search results"
 
@@ -202,7 +209,7 @@ msgstr ""
 "Improve your search results by removing filters, double-checking your "
 "spelling, using fewer keywords or searching for something less specific."
 
-#: judgments/views.py:245
+#: judgments/views.py:235
 msgid "judgment.delete_a_judgment"
 msgstr "Delete a judgment"
 
