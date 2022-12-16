@@ -246,13 +246,13 @@ where `language_code` is the ISO 3166-1 country code (e.g. en_GB)
 4) In the generated `.po` file, find the generated msgid string and add the translation below it
 
 ```
-msgid "naamespace.mytranslation"
+msgid "namespace.mytranslation"
 msgstr "This is my translation"
 ```
 
 5) Compile the translations to a binary file  (see also 'a note on the django-admin command' below):
 ```
-django-admin compilemessages
+  django-admin compilemessages
 ```
 
 ### Changing existing translations:
@@ -266,7 +266,7 @@ django-admin compilemessages
 2) Go and look for this translation in the `django.po` file (you'll be looking for a line with `msgid` at the start and the string you saw in the template):
 
 ```
-msgid "naamespace.mytranslation"
+msgid "namespace.mytranslation"
 msgstr "This is my translation"
 ```
 
@@ -274,7 +274,7 @@ msgstr "This is my translation"
 
 
 ```
-msgid "naamespace.mytranslation"
+msgid "namespace.mytranslation"
 msgstr "This is the new tranlation text I have edited"
 ```
 
