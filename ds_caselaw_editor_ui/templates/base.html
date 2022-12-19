@@ -18,10 +18,15 @@
 
     {% block javascript %}
       <script defer src="{% static 'js/dist/app.js' %}"></script>
+      <script defer src="{% static 'js/dist/cookie_consent.js' %}"></script>
     {% endblock javascript %}
+
+    {% include 'includes/gtm/gtm_head.html' %}
   </head>
 
   <body>
+    {% include 'includes/cookie_consent/cookie_banner.html' %}
+    {% include 'includes/gtm/gtm_body.html' %}
     {% if messages %}
       <ul class="messages">
         {% for message in messages %}
