@@ -89,15 +89,8 @@ class EditJudgmentView(View):
         judgment_uri = params.get("judgment_uri")
         context = {"judgment_uri": judgment_uri}
         context.update(self.get_metadata(judgment_uri))
-        users = User.objects.all()
-        users_dict = [
-            {
-                "name": u.get_username(),
-                "print_name": u.get_full_name() or u.get_username(),
-            }
-            for u in users
-        ]
-        context.update({"users": users_dict})
+
+        context.update({"users": users_dict()})
 
         return self.render(request, context)
 
@@ -169,6 +162,8 @@ class EditJudgmentView(View):
 
         context.update(self.get_metadata(judgment_uri))
         invalidate_caches(judgment_uri)
+
+        context.update({"users": users_dict()})
 
         return self.render(request, context)
 
@@ -581,3 +576,14 @@ def generate_pdf_url(uri: str):
     return client.generate_presigned_url(
         "get_object", Params={"Bucket": bucket, "Key": key}
     )
+
+
+def users_dict():
+    users = User.objects.all()
+    return [
+        {
+            "name": u.get_username(),
+            "print_name": u.get_full_name() or u.get_username(),
+        }
+        for u in users
+    ]
