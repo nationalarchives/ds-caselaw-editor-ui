@@ -19,9 +19,13 @@
 
     {% block javascript %}
       <script defer src="{% static 'js/dist/app.js' %}"></script>
+      <script defer src="{% static 'js/dist/cookie_consent.js' %}"></script>
     {% endblock javascript %}
+    {% include 'includes/gtm/gtm_head.html' %}
   </head>
   <body>
+    {% include 'includes/cookie_consent/cookie_banner.html' %}
+    {% include 'includes/gtm/gtm_body.html' %}
     <a id="skip-to-main-content" href="#main-content">{% translate "skiplink" %}</a>
     <header class="page-header">
       {% include 'includes/breadcrumbs.html' with current=context.page_title title=context.page_title link=request.get_full_path %}
