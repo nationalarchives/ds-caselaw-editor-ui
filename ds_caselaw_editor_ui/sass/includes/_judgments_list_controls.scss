@@ -1,4 +1,4 @@
-.unpublished-judgments-controls {
+.judgments-list-controls {
   text-align: left;
   display: inline-block;
 
@@ -49,7 +49,7 @@
   }
 }
 
-.unpublished-judgments__unpublished-judgments-controls-container {
+.judgments-list__judgments-list-controls-container {
 
   @media (min-width: $grid__breakpoint-large) {
     display: flex;
