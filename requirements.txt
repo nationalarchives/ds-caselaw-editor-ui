@@ -3,7 +3,7 @@
 -r requirements/production.txt
 
 pip~=22.1
-wheel~=0.37.1
+wheel~=0.38.4
 cryptography~=38.0.3
 packaging~=22.0
 setuptools~=62.3.1
