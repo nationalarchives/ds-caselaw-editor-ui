@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import redirect
 
+
 def hold_judgment_button(request):
     judgment_uri = request.POST["judgment_uri"]
     # we probably shouldn't hold if the judgment isn't assigned but we won't check
@@ -20,6 +21,7 @@ def hold_judgment_button(request):
         word = "released"
     messages.success(request, f"Judgment {word}.")
     return redirect(target_uri)
+
 
 def assign_judgment_button(request):
     judgment_uri = request.POST["judgment_uri"]
@@ -54,4 +56,3 @@ def prioritise_judgment_button(request):
         return redirect(target_uri)
 
     return HttpResponseBadRequest("Priority string not recognised")
-

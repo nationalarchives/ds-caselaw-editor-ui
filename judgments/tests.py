@@ -9,12 +9,13 @@ from django.test import TestCase
 from lxml import etree
 
 import judgments
-from judgments import converters, views
+from judgments import converters
 from judgments.models import SearchResult, SearchResultMeta
 from judgments.utils import (
     build_new_key,
     extract_version,
     get_judgment_root,
+    paginator,
     render_versions,
     update_judgment_uri,
 )
@@ -66,7 +67,7 @@ class TestJudgment(TestCase):
 
 
 class TestSearchResults(TestCase):
-    @patch("judgments.views.perform_advanced_search")
+    @patch("judgments.views.index.perform_advanced_search")
     def test_oldest(self, advanced_search):
         advanced_search.results.return_value = []
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
@@ -76,7 +77,7 @@ class TestSearchResults(TestCase):
         )
         assert b"<option value=\"-date\" selected='selected'>" in response.content
 
-    @patch("judgments.views.perform_advanced_search")
+    @patch("judgments.views.index.perform_advanced_search")
     def test_newest(self, advanced_search):
         advanced_search.results.return_value = []
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
@@ -205,7 +206,7 @@ class TestPaginator(TestCase):
             "next_pages": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
             "number_of_pages": 250,
         }
-        self.assertEqual(views.paginator(10, 2500), expected_result)
+        self.assertEqual(paginator(10, 2500), expected_result)
 
     def test_paginator_25(self):
         # 25 items has 5 items on page 3.
@@ -218,7 +219,7 @@ class TestPaginator(TestCase):
             "next_pages": [2, 3],
             "number_of_pages": 3,
         }
-        self.assertEqual(views.paginator(1, 25), expected_result)
+        self.assertEqual(paginator(1, 25), expected_result)
 
     def test_paginator_5(self):
         expected_result = {
@@ -230,7 +231,7 @@ class TestPaginator(TestCase):
             "next_pages": [],
             "number_of_pages": 1,
         }
-        self.assertEqual(views.paginator(1, 5), expected_result)
+        self.assertEqual(paginator(1, 5), expected_result)
 
 
 class TestConverters(TestCase):
