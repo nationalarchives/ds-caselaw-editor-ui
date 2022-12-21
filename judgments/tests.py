@@ -11,8 +11,13 @@ from lxml import etree
 import judgments
 from judgments import converters, views
 from judgments.models import SearchResult, SearchResultMeta
-from judgments.utils import build_new_key, get_judgment_root, update_judgment_uri
-from judgments.views import extract_version, render_versions
+from judgments.utils import (
+    build_new_key,
+    extract_version,
+    get_judgment_root,
+    render_versions,
+    update_judgment_uri,
+)
 
 
 class TestJudgment(TestCase):
@@ -388,7 +393,7 @@ class TestUtils(TestCase):
 
 
 class TestJudgmentEditor(TestCase):
-    @patch("judgments.views.api_client")
+    @patch("judgments.views.edit_judgment.api_client")
     def test_assigned(self, mock_api):
         mock_api.get_published.return_value = "6"
         mock_api.get_sensitive.return_value = "6"
