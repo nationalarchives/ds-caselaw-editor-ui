@@ -1,9 +1,6 @@
+from caselawclient.Client import MarklogicResourceNotFoundError, api_client
 from django.http import Http404, HttpResponse
 
-from caselawclient.Client import (
-    MarklogicResourceNotFoundError,
-    api_client,
-)
 
 def detail_xml(request):
     params = request.GET

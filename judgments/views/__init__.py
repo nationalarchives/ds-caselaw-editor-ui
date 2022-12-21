@@ -17,8 +17,9 @@ from django.utils.translation import gettext
 from requests_toolbelt.multipart import decoder
 
 from judgments.models import SearchResult, SearchResults
-from judgments.utils import create_s3_client, delete_documents
+from judgments.utils import create_s3_client
 
+from .delete import delete  # noqa
 from .detail import detail  # noqa
 from .detail_xml import detail_xml  # noqa
 from .edit_judgment import EditJudgmentView  # noqa
@@ -26,25 +27,6 @@ from .edit_judgment import EditJudgmentView  # noqa
 env = environ.Env()
 akn_namespace = {"akn": "http://docs.oasis-open.org/legaldocml/ns/akn/3.0"}
 uk_namespace = {"uk": "https://caselaw.nationalarchives.gov.uk/akn"}
-
-
-def delete(request):
-    judgment_uri = request.POST.get("judgment_uri", None)
-    context = {
-        "judgment_uri": judgment_uri,
-        "page_title": gettext("judgment.delete_a_judgment"),
-    }
-    try:
-        api_client.delete_judgment(judgment_uri)
-
-        delete_documents(judgment_uri)
-    except MarklogicResourceNotFoundError as e:
-        raise Http404(f"Judgment was not found at uri {judgment_uri}, {e}")
-
-    template = loader.get_template("judgment/deleted.html")
-
-    messages.success(request, "Judgment deleted.")
-    return HttpResponse(template.render({"context": context}, request))
 
 
 def hold_judgment_button(request):
