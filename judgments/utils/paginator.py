@@ -2,6 +2,7 @@ import math
 
 from caselawclient.Client import RESULTS_PER_PAGE
 
+
 def paginator(current_page, total):
     size_per_page = RESULTS_PER_PAGE
     number_of_pages = math.ceil(int(total) / size_per_page)
@@ -18,4 +19,3 @@ def paginator(current_page, total):
         "next_pages": next_pages,
         "number_of_pages": number_of_pages,
     }
-

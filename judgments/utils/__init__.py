@@ -10,10 +10,7 @@ from caselawclient.Client import (
 )
 from django.contrib.auth.models import User
 
-from .aws import *  # noqa
 from .aws import copy_assets
-from .paginator import *  # noqa
-from .perform_advanced_search import *  # noqa
 
 VERSION_REGEX = r"(\d+)-(\d+|TDR)"
 akn_namespace = {"akn": "http://docs.oasis-open.org/legaldocml/ns/akn/3.0"}

@@ -4,7 +4,7 @@ from django.http import Http404, HttpResponse
 from django.template import loader
 from django.utils.translation import gettext
 
-from judgments.utils import delete_documents
+from judgments.utils.aws import delete_documents
 
 
 def delete(request):

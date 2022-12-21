@@ -5,13 +5,8 @@ from django.http import Http404, HttpResponse
 from django.template import loader
 from requests_toolbelt.multipart import decoder
 
-from judgments.utils import (
-    VERSION_REGEX,
-    generate_docx_url,
-    generate_pdf_url,
-    get_judgment_root,
-    uri_for_s3,
-)
+from judgments.utils import VERSION_REGEX, get_judgment_root
+from judgments.utils.aws import generate_docx_url, generate_pdf_url, uri_for_s3
 
 
 def detail(request):

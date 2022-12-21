@@ -1,8 +1,11 @@
-from judgments.utils import perform_advanced_search, paginator
-from judgments.models import SearchResult
 from caselawclient.Client import MarklogicResourceNotFoundError
 from django.http import Http404, HttpResponse
 from django.template import loader
+
+from judgments.models import SearchResult
+from judgments.utils.paginator import paginator
+from judgments.utils.perform_advanced_search import perform_advanced_search
+
 
 def index(request):
     context = {}

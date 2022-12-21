@@ -15,16 +15,18 @@ from requests_toolbelt.multipart import decoder
 from judgments.utils import (
     MoveJudgmentError,
     NeutralCitationToUriError,
+    render_versions,
+    update_judgment_uri,
+    users_dict,
+)
+from judgments.utils.aws import (
     generate_docx_url,
     generate_pdf_url,
     invalidate_caches,
     notify_changed,
     publish_documents,
-    render_versions,
     unpublish_documents,
-    update_judgment_uri,
     uri_for_s3,
-    users_dict,
 )
 
 

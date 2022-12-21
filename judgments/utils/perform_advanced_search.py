@@ -1,6 +1,8 @@
 from caselawclient.Client import api_client
 from requests_toolbelt.multipart import decoder
+
 from judgments.models import SearchResults
+
 
 def perform_advanced_search(
     query=None,

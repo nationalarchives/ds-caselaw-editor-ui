@@ -12,13 +12,13 @@ import judgments
 from judgments import converters
 from judgments.models import SearchResult, SearchResultMeta
 from judgments.utils import (
-    build_new_key,
     extract_version,
     get_judgment_root,
-    paginator,
     render_versions,
     update_judgment_uri,
 )
+from judgments.utils.aws import build_new_key
+from judgments.utils.paginator import paginator
 
 
 class TestJudgment(TestCase):
