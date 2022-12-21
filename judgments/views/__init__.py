@@ -20,24 +20,12 @@ from judgments.models import SearchResult, SearchResults
 from judgments.utils import create_s3_client, delete_documents
 
 from .detail import detail  # noqa
+from .detail_xml import detail_xml  # noqa
 from .edit_judgment import EditJudgmentView  # noqa
 
 env = environ.Env()
 akn_namespace = {"akn": "http://docs.oasis-open.org/legaldocml/ns/akn/3.0"}
 uk_namespace = {"uk": "https://caselaw.nationalarchives.gov.uk/akn"}
-
-
-def detail_xml(request):
-    params = request.GET
-    judgment_uri = params.get("judgment_uri", None)
-    try:
-        judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
-    except MarklogicResourceNotFoundError as e:
-        raise Http404(f"Judgment was not found at uri {judgment_uri}, {e}")
-
-    response = HttpResponse(judgment_xml, content_type="application/xml")
-    response["Content-Disposition"] = f"attachment; filename={judgment_uri}.xml"
-    return response
 
 
 def delete(request):

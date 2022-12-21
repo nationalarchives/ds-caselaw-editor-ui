@@ -1,14 +1,9 @@
 import re
 
+from caselawclient.Client import MarklogicResourceNotFoundError, api_client
 from django.http import Http404, HttpResponse
 from django.template import loader
-
 from requests_toolbelt.multipart import decoder
-
-from caselawclient.Client import (
-    MarklogicResourceNotFoundError,
-    api_client,
-)
 
 from judgments.utils import (
     VERSION_REGEX,
@@ -17,6 +12,7 @@ from judgments.utils import (
     get_judgment_root,
     uri_for_s3,
 )
+
 
 def detail(request):
     params = request.GET
