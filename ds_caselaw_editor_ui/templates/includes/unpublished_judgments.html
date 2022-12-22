@@ -5,14 +5,14 @@
 
     <div class="judgments-list__judgments-list-controls-container">
       <div class="results__result-header">
-        <p id="recently-published-judgments" class="judgments-list__header">{% translate "home.recent" %}: {{ context.count_judgments }} </p>
+        <p id="recently-published-judgments" class="judgments-list__header">{% translate "home.recent" %}: {{ context.total }} </p>
       </div>
       {% include 'includes/judgments_list_controls.html' %}
     </div>
     <div class="judgments-list__table">
       {% include "includes/judgments_list_header.html" %}
       <ul class="judgments-list__list">
-        {% for item in context.recent_judgments %}
+        {% for item in context.judgments %}
           {% include "includes/judgments_list_item.html" %}
         {% endfor %}
       </ul>

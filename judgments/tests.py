@@ -67,23 +67,23 @@ class TestJudgment(TestCase):
 
 
 class TestSearchResults(TestCase):
-    @patch("judgments.views.index.perform_advanced_search")
+    @patch("judgments.utils.view_helpers.perform_advanced_search")
     def test_oldest(self, advanced_search):
         advanced_search.results.return_value = []
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
         response = self.client.get("?order=-date")
         advanced_search.assert_called_with(
-            order="-date", only_unpublished=True, page="1"
+            query=None, order="-date", only_unpublished=True, page=1
         )
         assert b"<option value=\"-date\" selected='selected'>" in response.content
 
-    @patch("judgments.views.index.perform_advanced_search")
+    @patch("judgments.utils.view_helpers.perform_advanced_search")
     def test_newest(self, advanced_search):
         advanced_search.results.return_value = []
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
         response = self.client.get("?order=date")
         advanced_search.assert_called_with(
-            order="date", only_unpublished=True, page="1"
+            query=None, order="date", only_unpublished=True, page=1
         )
         assert b"<option value=\"date\" selected='selected'>" in response.content
 
