@@ -14,6 +14,7 @@ from judgments.models import SearchResult, SearchResultMeta
 from judgments.utils import (
     extract_version,
     get_judgment_root,
+    referrer_url,
     render_versions,
     update_judgment_uri,
 )
@@ -409,3 +410,22 @@ class TestJudgmentEditor(TestCase):
         response = self.client.get("/edit?judgment_uri=ewhc/ch/1999/1")
         mock_api.get_property.assert_called_with("ewhc/ch/1999/1", "assigned-to")
         assert b"selected>otheruser" in response.content
+
+
+class TestReferrerUrlHelper(TestCase):
+    @patch("django.http.request.HttpRequest")
+    def test_when_referrer_is_relative(self, request):
+        request.META = {"HTTP_REFERER": "/foo/bar"}
+        assert referrer_url(request, "/default") == "/foo/bar"
+
+    @patch("django.http.request.HttpRequest")
+    def test_when_referrer_is_absolute_and_local(self, request):
+        request.META = {"HTTP_REFERER": "https://www.example.com/foo/bar"}
+        request.get_host.return_value = "www.example.com"
+        assert referrer_url(request, "/default") == "https://www.example.com/foo/bar"
+
+    @patch("django.http.request.HttpRequest")
+    def test_when_referrer_is_absolute_and_remote(self, request):
+        request.META = {"HTTP_REFERER": "https://www.someone-nefarious.com/foo/bar"}
+        request.get_host.return_value = "www.example.com"
+        assert referrer_url(request, "/default") == "/default"
