@@ -95,7 +95,7 @@ msgstr "TDR Ref:"
 
 #: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:56
 msgid "judgments.ncn"
-msgstr "NCN"
+msgstr "NCN:"
 
 #: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:64
 msgid "judgments.court"
@@ -104,7 +104,7 @@ msgstr "Court:"
 #: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:72
 #: ds_caselaw_editor_ui/templates/judgment/edit.html:6
 msgid "judgments.submitter"
-msgstr "Submitted by:"
+msgstr "Submitter:"
 
 #: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html:80
 msgid "judgments.editor_priority"

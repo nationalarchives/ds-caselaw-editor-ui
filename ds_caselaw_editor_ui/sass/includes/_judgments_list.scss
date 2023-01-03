@@ -108,6 +108,7 @@
     padding: 0;
     float: left;
     width: 100%;
+    line-height: 22px;
     @media (min-width: $grid__breakpoint-large) {
       width: 80%;
     }
@@ -125,7 +126,7 @@
       box-sizing: border-box;
       span:nth-child(odd) {
         float: left;
-        width: 33%;
+        width: 27%;
       }
       span:nth-child(even) {
         float: left;
