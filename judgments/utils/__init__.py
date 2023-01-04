@@ -1,6 +1,7 @@
 import re
 import xml.etree.ElementTree as ET
 from datetime import datetime
+from urllib.parse import urlparse
 
 import ds_caselaw_utils as caselawutils
 from caselawclient.Client import (
@@ -23,6 +24,20 @@ class MoveJudgmentError(Exception):
 
 class NeutralCitationToUriError(Exception):
     pass
+
+
+def is_url_relative(url):
+    return not bool(urlparse(url).netloc)
+
+
+def referrer_url(request, default="/"):
+    referrer = request.META.get("HTTP_REFERER")
+    if referrer:
+        parsed = urlparse(referrer)
+        is_url_local = parsed.netloc in ["", request.get_host()]
+        if is_url_local:
+            return referrer
+    return default
 
 
 def format_date(date):
