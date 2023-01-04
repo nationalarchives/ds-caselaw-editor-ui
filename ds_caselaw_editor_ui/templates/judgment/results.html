@@ -28,7 +28,7 @@
         <div class="judgments-list__table">
           {% include "includes/judgments_list_header.html" %}
           <ul class="judgments-list__list">
-            {% for item in context.search_results %}
+            {% for item in context.judgments %}
               {% include "includes/judgments_list_item.html" %}
             {% endfor %}
           </ul>

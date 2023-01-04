@@ -1,18 +1,20 @@
-import logging
+import re
 import xml.etree.ElementTree as ET
 from datetime import datetime
 
-import boto3
-import botocore.client
 import ds_caselaw_utils as caselawutils
-import environ
 from caselawclient.Client import (
     MarklogicAPIError,
     MarklogicResourceNotFoundError,
     api_client,
 )
+from django.contrib.auth.models import User
 
-env = environ.Env()
+from .aws import copy_assets
+
+VERSION_REGEX = r"(\d+)-(\d+|TDR)"
+akn_namespace = {"akn": "http://docs.oasis-open.org/legaldocml/ns/akn/3.0"}
+uk_namespace = {"uk": "https://caselaw.nationalarchives.gov.uk/akn"}
 
 
 class MoveJudgmentError(Exception):
@@ -99,49 +101,31 @@ def set_metadata(old_uri, new_uri):
     api_client.set_boolean_property(new_uri, "published", bool(published))
 
 
-def copy_assets(old_uri, new_uri):
-    client = create_s3_client()
-    bucket = env("PRIVATE_ASSET_BUCKET")
-    old_uri = uri_for_s3(old_uri)
-    new_uri = uri_for_s3(new_uri)
-
-    response = client.list_objects(Bucket=bucket, Prefix=old_uri)
-
-    for result in response.get("Contents", []):
-        old_key = str(result["Key"])
-        new_key = build_new_key(old_key, new_uri)
-        if new_key is not None:
-            try:
-                source = {"Bucket": bucket, "Key": old_key}
-                client.copy(source, bucket, new_key)
-            except botocore.client.ClientError as e:
-                logging.warning(
-                    f"Unable to copy file {old_key} to new location {new_key}, error: {e}"
-                )
+def render_versions(decoded_versions):
+    versions = [
+        {
+            "uri": part.text.rstrip(".xml"),
+            "version": extract_version(part.text),
+        }
+        for part in decoded_versions
+    ]
+    sorted_versions = sorted(versions, key=lambda d: -d["version"])
+    return sorted_versions
 
 
-def build_new_key(old_key, new_uri):
-    old_filename = old_key.rsplit("/", 1)[-1]
-
-    if old_filename.endswith(".docx") or old_filename.endswith(".pdf"):
-        new_filename = new_uri.replace("/", "_")
-        return f"{new_uri}/{new_filename}.{old_filename.split('.')[-1]}"
-    else:
-        return f"{new_uri}/{old_filename}"
+def extract_version(version_string: str) -> int:
+    try:
+        return int(re.search(VERSION_REGEX, version_string).group(1))
+    except AttributeError:
+        return 0
 
 
-def create_s3_client():
-    aws = boto3.session.Session(
-        aws_access_key_id=env("AWS_ACCESS_KEY_ID", default=None),
-        aws_secret_access_key=env("AWS_SECRET_KEY", default=None),
-    )
-    return aws.client(
-        "s3",
-        endpoint_url=env("AWS_ENDPOINT_URL", default=None),
-        region_name=env("PRIVATE_ASSET_BUCKET_REGION", default=None),
-        config=botocore.client.Config(signature_version="s3v4"),
-    )
-
-
-def uri_for_s3(uri: str):
-    return uri.lstrip("/")
+def users_dict():
+    users = User.objects.all()
+    return [
+        {
+            "name": u.get_username(),
+            "print_name": u.get_full_name() or u.get_username(),
+        }
+        for u in users
+    ]

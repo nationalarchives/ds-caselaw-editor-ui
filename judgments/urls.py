@@ -1,16 +1,26 @@
 from django.urls import path
 
-from . import views
+from .views.button_handlers import (
+    assign_judgment_button,
+    hold_judgment_button,
+    prioritise_judgment_button,
+)
+from .views.delete import delete
+from .views.detail import detail
+from .views.detail_xml import detail_xml
+from .views.edit_judgment import EditJudgmentView
+from .views.index import index
+from .views.results import results
 
 urlpatterns = [
-    path("edit", views.EditJudgmentView.as_view(), name="edit"),
-    path("detail", views.detail, name="detail"),
-    path("xml", views.detail_xml, name="detail_xml"),
-    path("results", views.results, name="results"),
+    path("edit", EditJudgmentView.as_view(), name="edit"),
+    path("detail", detail, name="detail"),
+    path("xml", detail_xml, name="detail_xml"),
+    path("results", results, name="results"),
     # buttons that do a thing and redirect
-    path("delete", views.delete, name="delete"),
-    path("assign", views.assign_judgment_button, name="assign"),
-    path("prioritise", views.prioritise_judgment_button, name="prioritise"),
-    path("hold", views.hold_judgment_button, name="hold"),
-    path("", views.index, name="home"),
+    path("delete", delete, name="delete"),
+    path("assign", assign_judgment_button, name="assign"),
+    path("prioritise", prioritise_judgment_button, name="prioritise"),
+    path("hold", hold_judgment_button, name="hold"),
+    path("", index, name="home"),
 ]
