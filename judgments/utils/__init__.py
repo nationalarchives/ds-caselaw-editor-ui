@@ -30,13 +30,18 @@ def is_url_relative(url):
     return not bool(urlparse(url).netloc)
 
 
-def referrer_url(request, default="/"):
-    referrer = request.META.get("HTTP_REFERER")
-    if referrer:
-        parsed = urlparse(referrer)
+def ensure_local_referer_url(request, default="/"):
+    """
+    Make sure that we do not redirect the user to a website we do not control.
+    In future we should explicitly specify a return URL in the POST data when clicking a button,
+    rather than parsing the HTTP_REFERER header.
+    """
+    referer = request.META.get("HTTP_REFERER")
+    if referer:
+        parsed = urlparse(referer)
         is_url_local = parsed.netloc in ["", request.get_host()]
         if is_url_local:
-            return referrer
+            return referer
     return default
 
 

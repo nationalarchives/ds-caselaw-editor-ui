@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import redirect
 
-from judgments.utils import referrer_url
+from judgments.utils import ensure_local_referer_url
 
 
 def hold_judgment_button(request):
@@ -21,7 +21,7 @@ def hold_judgment_button(request):
     else:
         word = "released"
     messages.success(request, f"Judgment {word}.")
-    return redirect(referrer_url(request))
+    return redirect(ensure_local_referer_url(request))
 
 
 def assign_judgment_button(request):
@@ -34,7 +34,7 @@ def assign_judgment_button(request):
         )
     else:
         messages.success(request, "Judgment assigned to you.")
-        return redirect(referrer_url(request))
+        return redirect(ensure_local_referer_url(request))
 
 
 def prioritise_judgment_button(request):
@@ -52,6 +52,6 @@ def prioritise_judgment_button(request):
         api_client.set_property(judgment_uri, "editor-priority", priority)
 
         messages.success(request, "Judgment priority set.")
-        return redirect(referrer_url(request))
+        return redirect(ensure_local_referer_url(request))
 
     return HttpResponseBadRequest("Priority string not recognised")
