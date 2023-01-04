@@ -12,9 +12,9 @@ import judgments
 from judgments import converters
 from judgments.models import SearchResult, SearchResultMeta
 from judgments.utils import (
+    ensure_local_referer_url,
     extract_version,
     get_judgment_root,
-    referrer_url,
     render_versions,
     update_judgment_uri,
 )
@@ -416,16 +416,19 @@ class TestReferrerUrlHelper(TestCase):
     @patch("django.http.request.HttpRequest")
     def test_when_referrer_is_relative(self, request):
         request.META = {"HTTP_REFERER": "/foo/bar"}
-        assert referrer_url(request, "/default") == "/foo/bar"
+        assert ensure_local_referer_url(request, "/default") == "/foo/bar"
 
     @patch("django.http.request.HttpRequest")
     def test_when_referrer_is_absolute_and_local(self, request):
         request.META = {"HTTP_REFERER": "https://www.example.com/foo/bar"}
         request.get_host.return_value = "www.example.com"
-        assert referrer_url(request, "/default") == "https://www.example.com/foo/bar"
+        assert (
+            ensure_local_referer_url(request, "/default")
+            == "https://www.example.com/foo/bar"
+        )
 
     @patch("django.http.request.HttpRequest")
     def test_when_referrer_is_absolute_and_remote(self, request):
         request.META = {"HTTP_REFERER": "https://www.someone-nefarious.com/foo/bar"}
         request.get_host.return_value = "www.example.com"
-        assert referrer_url(request, "/default") == "/default"
+        assert ensure_local_referer_url(request, "/default") == "/default"
