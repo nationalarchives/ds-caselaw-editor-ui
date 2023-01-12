@@ -411,6 +411,42 @@ class TestJudgmentEditor(TestCase):
         mock_api.get_property.assert_called_with("ewhc/ch/1999/1", "assigned-to")
         assert b"selected>otheruser" in response.content
 
+    @patch("judgments.views.edit_judgment.api_client")
+    @patch("judgments.views.edit_judgment.unpublish_documents")
+    @patch("judgments.views.edit_judgment.notify_changed")
+    @patch("judgments.views.edit_judgment.EditJudgmentView.get_metadata")
+    def test_no_court_no_problem(self, mock_metadata, mock_sns, mock_s3, mock_api):
+        User.objects.get_or_create(username="otheruser")[0]
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        data = {
+            "judgment_uri": "x",
+            "metadata_name": "x",
+            "neutral_citation": "x",
+            "court": "",
+            "judgment_date": "x",
+            "assigned_to": "x",
+        }
+        self.client.post("/edit", data)
+        mock_api.set_judgment_court.assert_not_called()
+
+    @patch("judgments.views.edit_judgment.api_client")
+    @patch("judgments.views.edit_judgment.unpublish_documents")
+    @patch("judgments.views.edit_judgment.notify_changed")
+    @patch("judgments.views.edit_judgment.EditJudgmentView.get_metadata")
+    def test_court_is_called(self, mock_metadata, mock_sns, mock_s3, mock_api):
+        User.objects.get_or_create(username="otheruser")[0]
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        data = {
+            "judgment_uri": "uri of judgment",
+            "metadata_name": "x",
+            "neutral_citation": "x",
+            "court": "ewhc",
+            "judgment_date": "x",
+            "assigned_to": "x",
+        }
+        self.client.post("/edit", data)
+        mock_api.set_judgment_court.assert_called_with("uri of judgment", "ewhc")
+
 
 class TestReferrerUrlHelper(TestCase):
     @patch("django.http.request.HttpRequest")

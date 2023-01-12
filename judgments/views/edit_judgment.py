@@ -112,8 +112,8 @@ class EditJudgmentView(View):
             api_client.set_judgment_citation(judgment_uri, new_citation)
 
             # Set court
-            new_court = request.POST["court"]
-            api_client.set_judgment_court(judgment_uri, new_court)
+            if new_court := request.POST["court"]:
+                api_client.set_judgment_court(judgment_uri, new_court)
 
             # Date
             new_date = request.POST["judgment_date"]
