@@ -56,11 +56,17 @@ You will need to be using the dxw vpn. Retrieve the staging Marklogic credential
 one of the other developers/ops). Use these to fill MARKLOGIC_HOST, MARKLOGIC_USER and MARKLOGIC_PASSWORD
 in your `.env` file (see step 2).
 
+At the time of writing, dxw developer's MARKLOGIC_HOST should start with `caselaw`;
+you won't be able to use the one starting with `internal`.
+
 #### TNA/other developers
 
 You will need vpn credentials from the dxw ops team, and the staging Marklogic credentials from one of the
 dxw development team. Use these to fill MARKLOGIC_HOST, MARKLOGIC_USER and MARKLOGIC_PASSWORD
 in your `.env` file (see step 2).
+
+At the time of writing, non-dxw developer's MARKLOGIC_HOST should start with `internal`;
+you won't be able to use the one starting with `caselaw`.
 
 In both cases, when you run the application, you will be viewing data on staging Marklogic. This
 data is also used for testing and occasionally user research, so please exercise caution when creating/
