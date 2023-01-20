@@ -52,13 +52,5 @@
 
       text-align: center;
     }
-
-    @media (min-width: $grid__breakpoint-medium) {
-      max-width: 40rem;
-    }
-
-    @media (min-width: $grid__breakpoint-medium) {
-      max-width: 51rem;
-    }
   }
 }
