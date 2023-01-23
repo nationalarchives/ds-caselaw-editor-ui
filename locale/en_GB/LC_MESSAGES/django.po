@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-23 17:13+0000\n"
+"POT-Creation-Date: 2023-01-23 20:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,28 +41,33 @@ msgid "judgment.back"
 msgstr "Back to search results"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:15
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:22
 msgid "judgment.edit_this_judgment"
-msgstr "Edit this Judgment"
+msgstr "Edit judgment"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:19
-msgid "judgment.view_this_judgment"
-msgstr "View this Judgment"
-
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:18
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:25
+msgid "judgment.view_this_judgment"
+msgstr "View as HTML"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:31
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:35
 #: ds_caselaw_editor_ui/templates/judgment/edit.html:11
 msgid "judgment.download_docx"
-msgstr "Download the original judgment"
+msgstr "Download original .docx"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:30
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:41
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:45
 #: ds_caselaw_editor_ui/templates/judgment/edit.html:14
 msgid "judgment.download_pdf"
 msgstr "Download PDF"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:35
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:51
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:55
 msgid "judgment.view_on_public"
 msgstr "View on public site"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:49
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:70
 msgid "judgment.delete"
 msgstr "Delete judgment"
 
