@@ -254,7 +254,7 @@ We're using [the built-in django translation module](https://docs.djangoproject.
 1) Ensure that the `i18n` module is loaded at the top of the file:
 
 ```django
-{% extends 'base.html' %}
+{% extends 'layouts/base.html' %}
 {% load i18n %}
 ...
 ```
