@@ -1,13 +1,13 @@
 {% load i18n %}
 <div class="judgment-toolbar">
   <div class="judgment-toolbar__container">
-    <div class="judgment-toolbar__return-link">
-      {% if request.args.origin == 'results' %}
+    {% if request.args.origin == 'results' %}
+      <div class="judgment-toolbar__return-link">
         <a href="{{ request.args.return_link }}">
           {% translate "judgment.back" %}
         </a>
-      {% endif %}
-    </div>
+      </div>
+    {% endif %}
     <div class="judgment-toolbar__edit">
       {% if context.is_editable %}
         {% if context.judgment %}
