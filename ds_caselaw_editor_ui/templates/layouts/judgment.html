@@ -1,10 +1,12 @@
 {% extends 'layouts/base.html' %}
+{% load static %}
 
 {% block header %}
 
-  <header class="page-header">
+  <header class="page-header page-header-slim">
+
     {% include 'includes/breadcrumbs.html' with current=context.page_title title=context.page_title link=request.get_full_path %}
-    {% include 'includes/logo.html' %}
+
   </header>
 
   {% include 'includes/judgment_text_toolbar.html' %}
