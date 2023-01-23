@@ -20,6 +20,10 @@
       <a href="{{ context.pdf_url }}">{% translate "judgment.download_pdf" %}</a>
     {% endif %}
     <a href="{% url 'detail_xml' %}?judgment_uri={{context.judgment_uri}}">{% translate "judgment.download_xml" %}</a>
+
+    <h4>Tools</h4>
+
+    <p><a href="{{ context.jira_create_link }}" target="_blank" rel="noopener noreferrer">{% translate "judgment.create_in_jira" %}</a></p>
   </aside>
   <div class="edit-component">
     <div class="edit-component__container">
