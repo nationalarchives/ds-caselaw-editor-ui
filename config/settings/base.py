@@ -288,3 +288,5 @@ STRONGHOLD_PUBLIC_URLS = (
     r"^/accounts/password/reset/",
     r"^/check",
 )
+
+JIRA_INSTANCE = env("JIRA_INSTANCE")

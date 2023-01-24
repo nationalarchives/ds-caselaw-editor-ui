@@ -1,10 +1,12 @@
 import xml.etree.ElementTree as ET
+from urllib.parse import urlencode
 
 from caselawclient.Client import (
     MarklogicAPIError,
     MarklogicResourceNotFoundError,
     api_client,
 )
+from django.conf import settings
 from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
 from django.template import loader
@@ -70,6 +72,40 @@ class EditJudgmentView(View):
         except AttributeError:
             return []
 
+    def build_jira_create_link(self, request, context):
+
+        summary_string = "{name} / {ncn} / {tdr}".format(
+            name=context["metadata_name"],
+            ncn=context["neutral_citation"],
+            tdr=context["consignment_reference"],
+        )
+
+        editor_details_url = request.build_absolute_uri(
+            "{base_url}?{params}".format(
+                base_url=reverse("detail"),
+                params=urlencode(
+                    {
+                        "judgment_uri": context["judgment_uri"],
+                    }
+                ),
+            )
+        )
+
+        description_string = "{editor_details_url}".format(
+            editor_details_url=editor_details_url
+        )
+
+        params = {
+            "pid": "10090",
+            "issuetype": "10320",
+            "priority": "3",
+            "summary": summary_string,
+            "description": description_string,
+        }
+        return "https://{jira_instance}/secure/CreateIssueDetails!init.jspa?{params}".format(
+            jira_instance=settings.JIRA_INSTANCE, params=urlencode(params)
+        )
+
     def render(self, request, context):
         template = loader.get_template("judgment/edit.html")
         return HttpResponse(template.render({"context": context}, request))
@@ -81,6 +117,8 @@ class EditJudgmentView(View):
         context.update(self.get_metadata(judgment_uri))
 
         context.update({"users": users_dict()})
+
+        context["jira_create_link"] = self.build_jira_create_link(request, context)
 
         return self.render(request, context)
 
