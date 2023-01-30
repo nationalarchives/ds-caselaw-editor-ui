@@ -11,6 +11,7 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
 from django.template import loader
 from django.urls import reverse
+from django.utils.translation import gettext
 from django.views.generic import View
 from requests_toolbelt.multipart import decoder
 
@@ -92,7 +93,19 @@ class EditJudgmentView(View):
         )
 
         description_string = "{editor_details_url}".format(
-            editor_details_url=editor_details_url
+            editor_details_url="""{details_url}
+
+{source_name_label} {source_name}
+{source_email_label} {source_email}
+{consignment_ref_label} {consignment_ref}""".format(
+                details_url=editor_details_url,
+                source_name_label=gettext("judgments.submitter"),
+                source_name=context["source_name"],
+                source_email_label=gettext("judgments.submitteremail"),
+                source_email=context["source_email"],
+                consignment_ref_label=gettext("judgments.consignmentref"),
+                consignment_ref=context["consignment_reference"],
+            )
         )
 
         params = {
