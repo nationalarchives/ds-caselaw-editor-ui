@@ -76,6 +76,7 @@ THIRD_PARTY_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "stronghold",
+    "waffle",
 ]
 
 LOCAL_APPS = [
@@ -142,6 +143,7 @@ MIDDLEWARE = [
     "rollbar.contrib.django.middleware.RollbarNotifierMiddleware",
     "stronghold.middleware.LoginRequiredMiddleware",
     "django.middleware.cache.FetchFromCacheMiddleware",
+    "waffle.middleware.WaffleMiddleware",
 ]
 
 # STATIC
