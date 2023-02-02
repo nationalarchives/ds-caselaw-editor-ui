@@ -77,6 +77,17 @@
   }
   li {
     list-style: none;
+    margin-top: 0.4rem;
+  }
+
+  &__label {
+    font-size: 0.9rem;
+    font-weight: bold;
+
+    &::after{
+      content: "\a";
+      white-space: pre;
+    }
   }
 }
 .create-email-block {
