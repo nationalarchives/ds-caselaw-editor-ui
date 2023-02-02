@@ -1,4 +1,6 @@
-.edit-component, .list-versions-component, .judgment-info-component, .create-email-block {
+.edit-component,
+.list-versions-component,
+.judgment-info-component {
   background-color: $color__light-grey;
   padding: $spacer__unit;
 
@@ -77,38 +79,44 @@
 }
 
 .judgment-info-component {
-  float:right;
+  float: right;
   position: sticky;
   right: 0;
   top: 0;
   width: 20vw;
+
   a {
     display: block;
   }
+
   ul {
     padding-left: 0;
   }
+
   li {
     list-style: none;
   }
 }
 
 .create-email-block {
-  border:2px 
-  #FFB952 solid; 
-  display:inline-block; 
-  padding: 0px 10px 0px 0; 
-  margin-left:100px
- h3 {
-     padding-left:10px; 
-     margin: 10px 0 0 0;
+  border: 2px #FFB952 solid;
+  display: inline-block;
+  padding: 0px 10px 0px 0;
+
+  &__list-header {
+    padding-left: 10px;
+    margin-top: 10px;
   }
- ul {
-     list-style: none; 
-     padding-left: 10px; 
-     margin-top: 5px;
- }
- li {
-   padding-bottom: 5px;
- }
+  
+  &__list {
+    list-style: none;
+    padding-left: 10px;
+    margin-top: 5px;
+  }
+  
+  &__list-link {
+    padding-bottom: 5px;
+  }
 }
+
+
