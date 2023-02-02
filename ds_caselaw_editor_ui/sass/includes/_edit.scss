@@ -1,4 +1,4 @@
-.edit-component, .list-versions-component, .judgment-info-component {
+.edit-component, .list-versions-component, .judgment-info-component, .create-email-block {
   background-color: $color__light-grey;
   padding: $spacer__unit;
 
@@ -91,4 +91,24 @@
   li {
     list-style: none;
   }
+}
+
+.create-email-block {
+  border:2px 
+  #FFB952 solid; 
+  display:inline-block; 
+  padding: 0px 10px 0px 0; 
+  margin-left:100px
+ h3 {
+     padding-left:10px; 
+     margin: 10px 0 0 0;
+  }
+ ul {
+     list-style: none; 
+     padding-left: 10px; 
+     margin-top: 5px;
+ }
+ li {
+   padding-bottom: 5px;
+ }
 }
