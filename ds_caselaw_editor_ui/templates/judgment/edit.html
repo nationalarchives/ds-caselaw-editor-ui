@@ -3,28 +3,7 @@
 {% block content %}
   {% load i18n %}
   <aside class="judgment-info-component">
-
-    <h4>Submission</h4>
-
-    <ul>
-      <li>{% translate "judgments.submitter" %} {{context.source_name}}</li>
-      <li>{% translate "judgments.submitteremail" %} {{context.source_email}}</li>
-      <li>{% translate "judgments.consignmentref" %} {{context.consignment_reference}}</li>
-    </ul>
-
-    <h4>Downloads</h4>
-
-    {% if context.docx_url %}
-      <a href="{{ context.docx_url }}">{% translate "judgment.download_docx" %}</a>
-    {% endif %}
-    {% if context.pdf_url %}
-      <a href="{{ context.pdf_url }}">{% translate "judgment.download_pdf" %}</a>
-    {% endif %}
-    <a href="{% url 'detail_xml' %}?judgment_uri={{context.judgment_uri}}">{% translate "judgment.download_xml" %}</a>
-
-    <h4>Tools</h4>
-
-    <p><a href="{{ context.jira_create_link }}" target="_blank" rel="noopener noreferrer">{% translate "judgment.create_in_jira" %}</a></p>
+    {% include "includes/judgment_sidebar.html" %}
   </aside>
   <div class="edit-component">
     <div class="edit-component__container">
