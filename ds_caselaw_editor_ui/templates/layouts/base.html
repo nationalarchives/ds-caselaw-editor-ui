@@ -1,7 +1,8 @@
-{% load static i18n %}<!DOCTYPE html>
+{% load static i18n %}
 {% get_current_language as LANGUAGE_CODE %}
 
-<html lang="{{ LANGUAGE_CODE }}">
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}" class="h-100">
   <head>
     <meta charset="utf-8">
     <meta name="robots" content="noindex,nofollow">
@@ -12,7 +13,6 @@
     <link rel="icon" href="{% static 'images/favicons/favicon.png' %}">
 
     {% block css %}
-      <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&amp;family=Roboto:wght@400;600;700&amp;display=swap" rel="stylesheet">
       <link href="{% static 'css/main.css' %}" rel="stylesheet">
     {% endblock %}
 
@@ -24,7 +24,8 @@
     {% include 'includes/gtm/gtm_head.html' %}
   </head>
 
-  <body>
+  <body class="d-flex flex-column h-100">
+
     {% include 'includes/cookie_consent/cookie_banner.html' %}
     {% include 'includes/gtm/gtm_body.html' %}
 
@@ -36,16 +37,18 @@
       </ul>
     {% endif %}
 
-    <a id="skip-to-main-content" href="#main-content">{% translate "skiplink" %}</a>
-
+    <a id="skip-to-main-content" href="#main-content" hidden>{% translate "skiplink" %}</a>
     {% block header %}
     {% endblock header %}
-
-    <main id="main-content">
+    <main id="main-content" class="flex-shrink-0">
       {% block content %}
       {% endblock content %}
     </main>
-
-    {% include 'includes/footer.html' %}
+    <footer class="footer mt-auto py-3 bg-light">
+      <div class="container">
+        {% include 'includes/footer.html' %}
+      </div>
+    </footer>
   </body>
+
 </html>

@@ -1,28 +1,11 @@
+@import url(https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&amp;family=Roboto:wght@400;600;700&amp;display=swap);
+
+$font-family-base: "Open Sans", "Segoe UI", Tahoma, sans-serif;
+$headings-font-family: "Roboto", "Franklin Gothic Medium", Tahoma, sans-serif;
+
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+// Judgment text behaviour
 @import "includes/variables";
-@import "includes/animations";
 @import "includes/mixins";
-@import "includes/global";
-@import "includes/service_introduction";
-@import "includes/search";
-@import "includes/edit";
-@import "includes/judgments_list";
-@import "includes/browse_by_court";
-@import "includes/links";
-@import "includes/structured_search";
-@import "includes/results";
-@import "includes/results_search_component";
-@import "includes/result_controls";
-@import "includes/pagination";
-@import "includes/footer";
-@import "includes/header";
 @import "includes/judgment_text";
-@import "includes/judgment_text_toolbar";
-@import "includes/judgment_text_source";
-@import "includes/judgment_text_service_introduction";
-@import "includes/standard-text-template";
-@import "includes/sources_introduction";
-@import "includes/sources";
-@import "includes/judgments_list_controls";
-@import "includes/loading_indicator";
-@import "includes/cookie_consent/ds-cookie-consent";
-@import "includes/cookie_consent/cookie-consent";
