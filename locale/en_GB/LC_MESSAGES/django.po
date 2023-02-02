@@ -66,18 +66,18 @@ msgstr "Fill out our short survey"
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html:49
 #: judgments/views/edit_judgment.py:144
 msgid "judgments.submitter"
-msgstr "Submitter:"
+msgstr "Submitter"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html:7
 #: judgments/views/edit_judgment.py:146
 msgid "judgments.submitteremail"
-msgstr "Contact email:"
+msgstr "Contact email"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html:8
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html:25
 #: judgments/views/edit_judgment.py:148
 msgid "judgments.consignmentref"
-msgstr "TDR Ref:"
+msgstr "TDR Ref"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html:14
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:31

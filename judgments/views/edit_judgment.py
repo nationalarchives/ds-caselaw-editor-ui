@@ -137,9 +137,9 @@ class EditJudgmentView(View):
         description_string = "{editor_details_url}".format(
             editor_details_url="""{details_url}
 
-{source_name_label} {source_name}
-{source_email_label} {source_email}
-{consignment_ref_label} {consignment_ref}""".format(
+{source_name_label}: {source_name}
+{source_email_label}: {source_email}
+{consignment_ref_label}: {consignment_ref}""".format(
                 details_url=editor_details_url,
                 source_name_label=gettext("judgments.submitter"),
                 source_name=context["source_name"],
