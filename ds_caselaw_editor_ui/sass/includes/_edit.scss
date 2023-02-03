@@ -70,15 +70,28 @@
   right: 0;
   top: 0;
   width: 20vw;
-  a {
-    display: block;
-  }
-  ul {
-    padding-left: 0;
-  }
-  li {
-    list-style: none;
-    margin-top: 0.4rem;
+
+  &__block {
+
+    margin-bottom: 2rem;
+
+    h4 {
+      margin-bottom: 0.6rem;
+    }
+
+    a {
+      display: block;
+    }
+
+    ul {
+      padding-left: 0;
+    }
+
+    li {
+      list-style: none;
+      margin-top: 0.4rem;
+    }
+
   }
 
   &__label {
