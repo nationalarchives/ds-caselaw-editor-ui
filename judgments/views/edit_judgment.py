@@ -1,5 +1,5 @@
 import xml.etree.ElementTree as ET
-from urllib.parse import urlencode
+from urllib.parse import quote, urlencode
 
 from caselawclient.Client import (
     MarklogicAPIError,
@@ -73,6 +73,37 @@ class EditJudgmentView(View):
         except AttributeError:
             return []
 
+    def build_email_link_with_content(self, address, subject, body=None):
+
+        params = {"subject": subject}
+
+        if body:
+            params["body"] = body
+
+        return "mailto:{address}?{params}".format(
+            address=address, params=urlencode(params, quote_via=quote)
+        )
+
+    def build_raise_issue_email_link(self, context):
+
+        subject_string = "[TNA Find Caselaw] Issue(s) found with {reference}".format(
+            reference=context["consignment_reference"]
+        )
+
+        return self.build_email_link_with_content(
+            context["source_email"], subject_string
+        )
+
+    def build_confirmation_email_link(self, context):
+
+        subject_string = "[TNA Find Caselaw] Your upload reference {reference} has been published".format(
+            reference=context["consignment_reference"]
+        )
+
+        return self.build_email_link_with_content(
+            context["source_email"], subject_string
+        )
+
     def build_jira_create_link(self, request, context):
         summary_string = "{name} / {ncn} / {tdr}".format(
             name=context["metadata_name"],
@@ -130,6 +161,8 @@ class EditJudgmentView(View):
 
         context.update({"users": users_dict()})
 
+        context["email_raise_issue_link"] = self.build_raise_issue_email_link(context)
+        context["email_confirmation_link"] = self.build_confirmation_email_link(context)
         context["jira_create_link"] = self.build_jira_create_link(request, context)
 
         return self.render(request, context)
