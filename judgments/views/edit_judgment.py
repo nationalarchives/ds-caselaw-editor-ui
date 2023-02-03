@@ -11,6 +11,7 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
 from django.template import loader
 from django.urls import reverse
+from django.utils.text import wrap
 from django.utils.translation import gettext
 from django.views.generic import View
 from requests_toolbelt.multipart import decoder
@@ -100,8 +101,22 @@ class EditJudgmentView(View):
             reference=context["consignment_reference"]
         )
 
+        email_context = {
+            "reference": context["consignment_reference"],
+            "public_judgment_url": "https://caselaw.nationalarchives.gov.uk/{uri}".format(
+                uri=context["judgment_uri"]
+            ),
+        }
+
+        body_string = wrap(
+            loader.render_to_string(
+                "emails/confirmation_to_submitter.txt", email_context
+            ),
+            76,
+        )
+
         return self.build_email_link_with_content(
-            context["source_email"], subject_string
+            context["source_email"], subject_string, body_string
         )
 
     def build_jira_create_link(self, request, context):
