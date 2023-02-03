@@ -38,7 +38,7 @@ msgstr "Find and manage case law"
 
 #: ds_caselaw_editor_ui/templates/includes/create_emails_list.html:3
 msgid "judgment.email_submitter.header"
-msgstr "Create an email to"
+msgstr "Create an email template"
 
 #: ds_caselaw_editor_ui/templates/includes/create_emails_list.html:5
 msgid "judgment.email_submitter.issue"

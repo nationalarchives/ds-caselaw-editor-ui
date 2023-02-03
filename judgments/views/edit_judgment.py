@@ -75,7 +75,6 @@ class EditJudgmentView(View):
             return []
 
     def build_email_link_with_content(self, address, subject, body=None):
-
         params = {"subject": "[TNA Find Caselaw] {subject}".format(subject=subject)}
 
         if body:
@@ -86,7 +85,6 @@ class EditJudgmentView(View):
         )
 
     def build_raise_issue_email_link(self, context):
-
         subject_string = "Issue(s) found with {reference}".format(
             reference=context["consignment_reference"]
         )
@@ -96,7 +94,6 @@ class EditJudgmentView(View):
         )
 
     def build_confirmation_email_link(self, context):
-
         subject_string = "Your upload reference {reference} has been published".format(
             reference=context["consignment_reference"]
         )

@@ -82,15 +82,14 @@
             {% endfor %}
           </select>
         </div>
-        <div class="edit-component__panel">
+
+        <div class="edit-component__actions">
           <input type="hidden" name="judgment_uri" value="{{context.judgment_uri}}"/>
           <input type="submit" value="Save"/>
         </div>
-
         {% flag "email_submitter_block" %}
         {% include 'includes/create_emails_block.html' %}
         {% endflag %}
-
       </form>
     </div>
   </div>
