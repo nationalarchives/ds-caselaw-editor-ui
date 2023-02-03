@@ -15,19 +15,23 @@
 
   <h4>Downloads</h4>
 
-  {% if context.docx_url %}
-    <a href="{{ context.docx_url }}">{% translate "judgment.download_docx" %}</a>
-  {% endif %}
-  {% if context.pdf_url %}
-    <a href="{{ context.pdf_url }}">{% translate "judgment.download_pdf" %}</a>
-  {% endif %}
-  <a href="{% url 'detail_xml' %}?judgment_uri={{context.judgment_uri}}">{% translate "judgment.download_xml" %}</a>
+  <ul>
+    {% if context.docx_url %}
+      <li><a href="{{ context.docx_url }}">{% translate "judgment.download_docx" %}</a></li>
+    {% endif %}
+    {% if context.pdf_url %}
+      <li><a href="{{ context.pdf_url }}">{% translate "judgment.download_pdf" %}</a></li>
+    {% endif %}
+    <li><a href="{% url 'detail_xml' %}?judgment_uri={{context.judgment_uri}}">{% translate "judgment.download_xml" %}</a></li>
+  </ul>
 
 </div>
 <div class="judgment-sidebar__block">
 
   <h4>Tools</h4>
 
-  <p><a href="{{ context.jira_create_link }}" target="_blank" rel="noopener noreferrer">{% translate "judgment.create_in_jira" %}</a></p>
+  <ul>
+    <li><a href="{{ context.jira_create_link }}" target="_blank" rel="noopener noreferrer">{% translate "judgment.create_in_jira" %}</a></li>
+  </ul>
 
 </div>
