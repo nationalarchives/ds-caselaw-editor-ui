@@ -103,7 +103,7 @@ def set_metadata(old_uri, new_uri):
         old_uri, "transfer-consignment-reference"
     )
     transfer_received_at = api_client.get_property(old_uri, "transfer-received-at")
-    for (key, value) in [
+    for key, value in [
         ("source-organisation", source_organisation),
         ("source-name", source_name),
         ("source-email", source_email),

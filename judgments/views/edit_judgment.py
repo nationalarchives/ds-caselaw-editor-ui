@@ -74,7 +74,6 @@ class EditJudgmentView(View):
             return []
 
     def build_jira_create_link(self, request, context):
-
         summary_string = "{name} / {ncn} / {tdr}".format(
             name=context["metadata_name"],
             ncn=context["neutral_citation"],
@@ -193,7 +192,6 @@ class EditJudgmentView(View):
             context["success"] = "Judgment successfully updated"
 
         except (MoveJudgmentError, NeutralCitationToUriError) as e:
-
             context[
                 "error"
             ] = f"There was an error updating the Judgment's neutral citation: {e}"
