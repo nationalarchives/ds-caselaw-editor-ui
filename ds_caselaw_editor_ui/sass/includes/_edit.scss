@@ -63,20 +63,45 @@
     }
   }
 }
-.judgment-info-component {
-  float: right;
+
+.judgment-sidebar {
+  float:right;
   position: sticky;
   right: 0;
   top: 0;
   width: 20vw;
-  a {
-    display: block;
+
+  &__block {
+
+    margin-bottom: 2rem;
+
+    h4 {
+      margin-bottom: 0.6rem;
+    }
+
+    a {
+      display: block;
+    }
+
+    ul {
+      padding-left: 0;
+    }
+
+    li {
+      list-style: none;
+      margin-top: 0.4rem;
+    }
+
   }
-  ul {
-    padding-left: 0;
-  }
-  li {
-    list-style: none;
+
+  &__label {
+    font-size: 0.9rem;
+    font-weight: bold;
+
+    &::after{
+      content: "\a";
+      white-space: pre;
+    }
   }
 }
 .create-email-block {
