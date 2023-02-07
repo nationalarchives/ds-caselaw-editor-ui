@@ -1,5 +1,5 @@
 import xml.etree.ElementTree as ET
-from urllib.parse import urlencode
+from urllib.parse import quote, urlencode
 
 from caselawclient.Client import (
     MarklogicAPIError,
@@ -11,6 +11,7 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
 from django.template import loader
 from django.urls import reverse
+from django.utils.text import wrap
 from django.utils.translation import gettext
 from django.views.generic import View
 from requests_toolbelt.multipart import decoder
@@ -73,6 +74,48 @@ class EditJudgmentView(View):
         except AttributeError:
             return []
 
+    def build_email_link_with_content(self, address, subject, body=None):
+        params = {"subject": "[TNA Find Caselaw] {subject}".format(subject=subject)}
+
+        if body:
+            params["body"] = body
+
+        return "mailto:{address}?{params}".format(
+            address=address, params=urlencode(params, quote_via=quote)
+        )
+
+    def build_raise_issue_email_link(self, context):
+        subject_string = "Issue(s) found with {reference}".format(
+            reference=context["consignment_reference"]
+        )
+
+        return self.build_email_link_with_content(
+            context["source_email"], subject_string
+        )
+
+    def build_confirmation_email_link(self, context):
+        subject_string = "Your upload reference {reference} has been published".format(
+            reference=context["consignment_reference"]
+        )
+
+        email_context = {
+            "reference": context["consignment_reference"],
+            "public_judgment_url": "https://caselaw.nationalarchives.gov.uk/{uri}".format(
+                uri=context["judgment_uri"]
+            ),
+        }
+
+        body_string = wrap(
+            loader.render_to_string(
+                "emails/confirmation_to_submitter.txt", email_context
+            ),
+            76,
+        )
+
+        return self.build_email_link_with_content(
+            context["source_email"], subject_string, body_string
+        )
+
     def build_jira_create_link(self, request, context):
         summary_string = "{name} / {ncn} / {tdr}".format(
             name=context["metadata_name"],
@@ -130,6 +173,8 @@ class EditJudgmentView(View):
 
         context.update({"users": users_dict()})
 
+        context["email_raise_issue_link"] = self.build_raise_issue_email_link(context)
+        context["email_confirmation_link"] = self.build_confirmation_email_link(context)
         context["jira_create_link"] = self.build_jira_create_link(request, context)
 
         return self.render(request, context)
