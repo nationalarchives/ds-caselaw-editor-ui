@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-03 12:38+0000\n"
+"POT-Creation-Date: 2023-02-07 13:29+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,15 +36,15 @@ msgstr ""
 msgid "common.findcaselaw"
 msgstr "Find and manage case law"
 
-#: ds_caselaw_editor_ui/templates/includes/create_emails_list.html:3
+#: ds_caselaw_editor_ui/templates/includes/create_emails_block.html:3
 msgid "judgment.email_submitter.header"
 msgstr "Create an email template"
 
-#: ds_caselaw_editor_ui/templates/includes/create_emails_list.html:5
+#: ds_caselaw_editor_ui/templates/includes/create_emails_block.html:5
 msgid "judgment.email_submitter.issue"
 msgstr "Raise issue(s) to submitter"
 
-#: ds_caselaw_editor_ui/templates/includes/create_emails_list.html:6
+#: ds_caselaw_editor_ui/templates/includes/create_emails_block.html:7
 msgid "judgment.email_submitter.confirm"
 msgstr "Confirm publication"
 
@@ -64,13 +64,13 @@ msgstr "View as HTML"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:31
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:35
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:17
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:18
 msgid "judgment.download_docx"
 msgstr "Download original .docx"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:41
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:45
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:20
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:21
 msgid "judgment.download_pdf"
 msgstr "Download PDF"
 
@@ -97,8 +97,8 @@ msgid "judgments.submission_assigned"
 msgstr "Assigned:"
 
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html:25
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:11
-#: judgments/views/edit_judgment.py:137
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:12
+#: judgments/views/edit_judgment.py:148
 msgid "judgments.consignmentref"
 msgstr "TDR Ref:"
 
@@ -111,8 +111,8 @@ msgid "judgments.court"
 msgstr "Court:"
 
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html:49
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:9
-#: judgments/views/edit_judgment.py:133
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:10
+#: judgments/views/edit_judgment.py:144
 msgid "judgments.submitter"
 msgstr "Submitter:"
 
@@ -145,64 +145,64 @@ msgstr "Judgment successfully deleted"
 msgid "judgment.return_home"
 msgstr "Return to Find and manage case law"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:10
-#: judgments/views/edit_judgment.py:135
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:11
+#: judgments/views/edit_judgment.py:146
 msgid "judgments.submitteremail"
 msgstr "Contact email:"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:22
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:23
 msgid "judgment.download_xml"
 msgstr "Download XML"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:26
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:27
 msgid "judgment.create_in_jira"
 msgstr "Create in Jira"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:36
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:37
 msgid "judgment.edit_judgment"
 msgstr "Edit Judgment"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:40
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:41
 msgid "judgment.judgment_name"
 msgstr "Judgment name"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:45
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:46
 msgid "judgment.neutral_citation"
 msgstr "Neutral citation"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:50
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:51
 msgid "judgment.court"
 msgstr "Court"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:55
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:56
 msgid "judgment.judgment_date"
 msgstr "Judgment date"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:60
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:61
 msgid "judgment.published"
 msgstr "Published?"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:64
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:65
 msgid "judgment.sensitive"
 msgstr "Contains sensitive information?"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:68
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:69
 msgid "judgment.supplemental"
 msgstr "Has supplemental documents?"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:72
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:73
 msgid "judgment.anonymised"
 msgstr "This Judgment has been anonymised"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:76
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:77
 msgid "judgment.assigned_to"
 msgstr "Assigned to"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:78
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:79
 msgid "judgments.noone"
 msgstr "No one"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:97
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:99
 msgid "judgment.previous_versions"
 msgstr "Previous versions of this Judgment"
 
@@ -240,6 +240,17 @@ msgstr ""
 #: judgments/views/delete.py:14
 msgid "judgment.delete_a_judgment"
 msgstr "Delete a judgment"
+
+#~ msgid "service.improved"
+#~ msgstr "How can this service be improved?"
+
+#~ msgid "survey.link"
+#~ msgstr ""
+#~ "https://corexmsnp4n42lf2kht3.qualtrics.com/jfe/form/SV_dp1FClbR0ZZdW4e?"
+#~ "jfefe=new"
+
+#~ msgid "survey.link.text"
+#~ msgstr "Fill out our short survey"
 
 #~ msgid "common.home"
 #~ msgstr "Home"
