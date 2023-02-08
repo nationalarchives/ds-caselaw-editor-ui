@@ -62,7 +62,7 @@ def uri_for_s3(uri: str):
     return uri.lstrip("/")
 
 
-def generate_docx_url(uri: str):
+def generate_signed_asset_url(key: str):
     # If there isn't a PRIVATE_ASSET_BUCKET, don't try to get the bucket.
     # This helps local environment setup where we don't use S3.
     bucket = env("PRIVATE_ASSET_BUCKET", None)
@@ -71,25 +71,21 @@ def generate_docx_url(uri: str):
 
     client = create_s3_client()
 
-    key = f'{uri}/{uri.replace("/", "_")}.docx'
-
     return client.generate_presigned_url(
         "get_object", Params={"Bucket": bucket, "Key": key}
     )
+
+
+def generate_docx_url(uri: str):
+    key = f'{uri}/{uri.replace("/", "_")}.docx'
+
+    return generate_signed_asset_url(key)
 
 
 def generate_pdf_url(uri: str):
-    bucket = env("PRIVATE_ASSET_BUCKET", None)
-    if not bucket:
-        return ""
-
-    client = create_s3_client()
-
     key = f'{uri}/{uri.replace("/", "_")}.pdf'
 
-    return client.generate_presigned_url(
-        "get_object", Params={"Bucket": bucket, "Key": key}
-    )
+    return generate_signed_asset_url(key)
 
 
 def delete_from_bucket(uri: str, bucket: str) -> None:

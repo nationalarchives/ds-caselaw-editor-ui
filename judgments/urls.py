@@ -11,6 +11,7 @@ from .views.detail_xml import detail_xml
 from .views.edit_judgment import EditJudgmentView
 from .views.index import index
 from .views.results import results
+from .views.signed_asset import redirect_to_signed_asset
 
 urlpatterns = [
     path("edit", EditJudgmentView.as_view(), name="edit"),
@@ -22,5 +23,7 @@ urlpatterns = [
     path("assign", assign_judgment_button, name="assign"),
     path("prioritise", prioritise_judgment_button, name="prioritise"),
     path("hold", hold_judgment_button, name="hold"),
+    # redirect to signed asset URLs
+    path("signed-asset/<path:key>", redirect_to_signed_asset, name="signed-asset"),
     path("", index, name="home"),
 ]
