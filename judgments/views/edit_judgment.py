@@ -11,7 +11,6 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
 from django.template import loader
 from django.urls import reverse
-from django.utils.text import wrap
 from django.utils.translation import gettext
 from django.views.generic import View
 from requests_toolbelt.multipart import decoder
@@ -105,11 +104,8 @@ class EditJudgmentView(View):
             ),
         }
 
-        body_string = wrap(
-            loader.render_to_string(
-                "emails/confirmation_to_submitter.txt", email_context
-            ),
-            76,
+        body_string = loader.render_to_string(
+            "emails/confirmation_to_submitter.txt", email_context
         )
 
         return self.build_email_link_with_content(
