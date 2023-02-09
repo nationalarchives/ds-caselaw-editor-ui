@@ -1,7 +1,12 @@
-We are pleased to inform you that your judgment reference {{ reference }} has been published on Find Case Law, and can be viewed at {{ public_judgment_url }}.
+Dear XXXXXX,
+
+We are pleased to inform you that your uploaded judgment "{{ judgment_name }}", reference {{ reference }}, has been published on Find Case Law. You can see the published judgment at {{ public_judgment_url }}.
 
 Please check through the content of the published judgment for any errors.
 
 We cannot make any amendments to the content or formatting of the judgment. If you wish to supply us with an amended version of the judgment please resubmit it via TDR.
 
 If you need to contact us regarding your judgment please email judgments@nationalarchives.gov.uk quoting your case details and TDR reference "{{ reference }}".
+
+Kind regards,
+{{ user_signature }}

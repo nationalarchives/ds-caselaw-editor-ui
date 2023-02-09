@@ -11,7 +11,6 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
 from django.template import loader
 from django.urls import reverse
-from django.utils.text import wrap
 from django.utils.translation import gettext
 from django.views.generic import View
 from requests_toolbelt.multipart import decoder
@@ -75,7 +74,7 @@ class EditJudgmentView(View):
             return []
 
     def build_email_link_with_content(self, address, subject, body=None):
-        params = {"subject": "[TNA Find Caselaw] {subject}".format(subject=subject)}
+        params = {"subject": "Find Case Law – {subject}".format(subject=subject)}
 
         if body:
             params["body"] = body
@@ -93,23 +92,22 @@ class EditJudgmentView(View):
             context["source_email"], subject_string
         )
 
-    def build_confirmation_email_link(self, context):
-        subject_string = "Your upload reference {reference} has been published".format(
+    def build_confirmation_email_link(self, request, context):
+        subject_string = "Notification of publication [TDR ref: {reference}]".format(
             reference=context["consignment_reference"]
         )
 
         email_context = {
+            "judgment_name": context["metadata_name"],
             "reference": context["consignment_reference"],
             "public_judgment_url": "https://caselaw.nationalarchives.gov.uk/{uri}".format(
                 uri=context["judgment_uri"]
             ),
+            "user_signature": request.user.get_full_name() or "XXXXXX",
         }
 
-        body_string = wrap(
-            loader.render_to_string(
-                "emails/confirmation_to_submitter.txt", email_context
-            ),
-            76,
+        body_string = loader.render_to_string(
+            "emails/confirmation_to_submitter.txt", email_context
         )
 
         return self.build_email_link_with_content(
@@ -174,7 +172,9 @@ class EditJudgmentView(View):
         context.update({"users": users_dict()})
 
         context["email_raise_issue_link"] = self.build_raise_issue_email_link(context)
-        context["email_confirmation_link"] = self.build_confirmation_email_link(context)
+        context["email_confirmation_link"] = self.build_confirmation_email_link(
+            request, context
+        )
         context["jira_create_link"] = self.build_jira_create_link(request, context)
 
         return self.render(request, context)
