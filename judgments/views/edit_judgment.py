@@ -92,7 +92,7 @@ class EditJudgmentView(View):
             context["source_email"], subject_string
         )
 
-    def build_confirmation_email_link(self, context):
+    def build_confirmation_email_link(self, request, context):
         subject_string = "Notification of publication [TDR ref: {reference}]".format(
             reference=context["consignment_reference"]
         )
@@ -103,6 +103,7 @@ class EditJudgmentView(View):
             "public_judgment_url": "https://caselaw.nationalarchives.gov.uk/{uri}".format(
                 uri=context["judgment_uri"]
             ),
+            "user_signature": request.user.get_full_name() or "XXXXXX",
         }
 
         body_string = loader.render_to_string(
@@ -171,7 +172,9 @@ class EditJudgmentView(View):
         context.update({"users": users_dict()})
 
         context["email_raise_issue_link"] = self.build_raise_issue_email_link(context)
-        context["email_confirmation_link"] = self.build_confirmation_email_link(context)
+        context["email_confirmation_link"] = self.build_confirmation_email_link(
+            request, context
+        )
         context["jira_create_link"] = self.build_jira_create_link(request, context)
 
         return self.render(request, context)
