@@ -74,7 +74,7 @@ class EditJudgmentView(View):
             return []
 
     def build_email_link_with_content(self, address, subject, body=None):
-        params = {"subject": "[TNA Find Caselaw] {subject}".format(subject=subject)}
+        params = {"subject": "Find Case Law – {subject}".format(subject=subject)}
 
         if body:
             params["body"] = body
