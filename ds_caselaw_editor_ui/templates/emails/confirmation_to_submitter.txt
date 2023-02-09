@@ -1,6 +1,6 @@
 Dear XXXXXX,
 
-We are pleased to inform you that your judgment reference {{ reference }} has been published on Find Case Law, and can be viewed at {{ public_judgment_url }}.
+We are pleased to inform you that your uploaded judgment "{{ judgment_name }}", reference {{ reference }}, has been published on Find Case Law. You can see the published judgment at {{ public_judgment_url }}.
 
 Please check through the content of the published judgment for any errors.
 

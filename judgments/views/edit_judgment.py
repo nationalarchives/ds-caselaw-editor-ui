@@ -98,6 +98,7 @@ class EditJudgmentView(View):
         )
 
         email_context = {
+            "judgment_name": context["metadata_name"],
             "reference": context["consignment_reference"],
             "public_judgment_url": "https://caselaw.nationalarchives.gov.uk/{uri}".format(
                 uri=context["judgment_uri"]
