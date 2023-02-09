@@ -93,7 +93,7 @@ class EditJudgmentView(View):
         )
 
     def build_confirmation_email_link(self, context):
-        subject_string = "Your upload reference {reference} has been published".format(
+        subject_string = "Notification of publication [TDR ref: {reference}]".format(
             reference=context["consignment_reference"]
         )
 
