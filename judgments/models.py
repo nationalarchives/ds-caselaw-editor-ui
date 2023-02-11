@@ -154,3 +154,15 @@ class SearchMatch(xmlmodels.XmlModel):
         namespaces = {"search": "http://marklogic.com/appservices/search"}
 
     transform_to_html = xmlmodels.XsltField(join(dirname(__file__), "search_match.xsl"))
+
+
+class JudgmentManager:
+    def get_by_uri(self, uri: str) -> "Judgment":
+        return Judgment(uri)
+
+
+class Judgment:
+    def __init__(self, uri: str):
+        self.uri = uri
+
+    objects = JudgmentManager()

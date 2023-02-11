@@ -10,6 +10,7 @@ from django.utils.translation import gettext
 from django.views.generic import View
 from requests_toolbelt.multipart import decoder
 
+from judgments.models import Judgment
 from judgments.utils import (
     MoveJudgmentError,
     NeutralCitationToUriError,
@@ -164,6 +165,8 @@ class EditJudgmentView(View):
             request, context
         )
         context["jira_create_link"] = self.build_jira_create_link(request, context)
+
+        context["judgment"] = Judgment.objects.get_by_uri(judgment_uri)
 
         return self.render(request, context)
 
