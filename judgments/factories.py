@@ -8,6 +8,7 @@ class JudgmentFactory(factory.Factory):
         model = Judgment
 
     uri = "test/1234"
+    neutral_citation = "2023/test/1234"
     name = "Test Judgment v Test Judgement"
 
     @classmethod

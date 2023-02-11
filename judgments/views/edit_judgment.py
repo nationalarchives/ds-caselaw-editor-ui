@@ -38,7 +38,6 @@ class EditJudgmentView(View):
         meta["supplemental"] = api_client.get_supplemental(uri)
         meta["anonymised"] = api_client.get_anonymised(uri)
         meta["court"] = api_client.get_judgment_court(uri)
-        meta["neutral_citation"] = api_client.get_judgment_citation(uri)
         meta["page_title"] = api_client.get_judgment_name(uri)
         meta["judgment_date"] = api_client.get_judgment_work_date(uri)
         meta["docx_url"] = generate_docx_url(uri_for_s3(uri))
@@ -104,8 +103,8 @@ class EditJudgmentView(View):
 
     def build_jira_create_link(self, request, context):
         summary_string = "{name} / {ncn} / {tdr}".format(
-            ncn=context["neutral_citation"],
             name=context["judgment"].name,
+            ncn=context["judgment"].neutral_citation,
             tdr=context["consignment_reference"],
         )
 

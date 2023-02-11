@@ -169,5 +169,9 @@ class Judgment:
     objects = JudgmentManager()
 
     @cached_property
+    def neutral_citation(self) -> str:
+        return api_client.get_judgment_citation(self.uri)
+
+    @cached_property
     def name(self) -> str:
         return api_client.get_judgment_name(self.uri)
