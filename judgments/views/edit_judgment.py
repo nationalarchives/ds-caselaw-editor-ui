@@ -37,10 +37,9 @@ class EditJudgmentView(View):
         meta["sensitive"] = api_client.get_sensitive(uri)
         meta["supplemental"] = api_client.get_supplemental(uri)
         meta["anonymised"] = api_client.get_anonymised(uri)
-        meta["metadata_name"] = api_client.get_judgment_name(uri)
-        meta["page_title"] = meta["metadata_name"]
         meta["court"] = api_client.get_judgment_court(uri)
         meta["neutral_citation"] = api_client.get_judgment_citation(uri)
+        meta["page_title"] = api_client.get_judgment_name(uri)
         meta["judgment_date"] = api_client.get_judgment_work_date(uri)
         meta["docx_url"] = generate_docx_url(uri_for_s3(uri))
         meta["pdf_url"] = generate_pdf_url(uri_for_s3(uri))
@@ -87,7 +86,7 @@ class EditJudgmentView(View):
         )
 
         email_context = {
-            "judgment_name": context["metadata_name"],
+            "judgment_name": context["judgment"].name,
             "reference": context["consignment_reference"],
             "public_judgment_url": "https://caselaw.nationalarchives.gov.uk/{uri}".format(
                 uri=context["judgment_uri"]
@@ -105,8 +104,8 @@ class EditJudgmentView(View):
 
     def build_jira_create_link(self, request, context):
         summary_string = "{name} / {ncn} / {tdr}".format(
-            name=context["metadata_name"],
             ncn=context["neutral_citation"],
+            name=context["judgment"].name,
             tdr=context["consignment_reference"],
         )
 
@@ -158,6 +157,8 @@ class EditJudgmentView(View):
         context = {"judgment_uri": judgment_uri}
         context.update(self.get_metadata(judgment_uri))
 
+        context["judgment"] = Judgment.objects.get_by_uri(judgment_uri)
+
         context.update({"users": users_dict()})
 
         context["email_raise_issue_link"] = self.build_raise_issue_email_link(context)
@@ -165,8 +166,6 @@ class EditJudgmentView(View):
             request, context
         )
         context["jira_create_link"] = self.build_jira_create_link(request, context)
-
-        context["judgment"] = Judgment.objects.get_by_uri(judgment_uri)
 
         return self.render(request, context)
 
