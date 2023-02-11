@@ -1,6 +1,7 @@
 # from django.db import models
 import logging
 from datetime import datetime
+from functools import cached_property
 from os.path import dirname, join
 
 import caselawclient.Client
@@ -166,3 +167,7 @@ class Judgment:
         self.uri = uri
 
     objects = JudgmentManager()
+
+    @cached_property
+    def name(self) -> str:
+        return api_client.get_judgment_name(self.uri)

@@ -18,7 +18,7 @@
         {% csrf_token %}
         <div class="edit-component__panel">
           <label for="metadata_name">{% translate "judgment.judgment_name" %}</label>
-          <input type="text" class="edit-component__metadata_name-input" value="{{context.metadata_name}}"
+          <input type="text" class="edit-component__metadata_name-input" value="{{ context.judgment.name }}"
                  name="metadata_name" id="metadata_name" />
         </div>
         <div class="edit-component__panel">
