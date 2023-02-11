@@ -37,7 +37,6 @@ class EditJudgmentView(View):
         meta["sensitive"] = api_client.get_sensitive(uri)
         meta["supplemental"] = api_client.get_supplemental(uri)
         meta["anonymised"] = api_client.get_anonymised(uri)
-        meta["court"] = api_client.get_judgment_court(uri)
         meta["page_title"] = api_client.get_judgment_name(uri)
         meta["judgment_date"] = api_client.get_judgment_work_date(uri)
         meta["docx_url"] = generate_docx_url(uri_for_s3(uri))

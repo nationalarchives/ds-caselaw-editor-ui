@@ -23,3 +23,11 @@ class TestJudgment(TestCase):
         judgment = Judgment("x")
 
         assert judgment.name == "Test Judgment v Test Judgement"
+
+    @patch("judgments.models.api_client")
+    def test_judgment_court(self, mock_api_client):
+        mock_api_client.get_judgment_court.return_value = "Court of Testing"
+
+        judgment = Judgment("x")
+
+        assert judgment.court == "Court of Testing"

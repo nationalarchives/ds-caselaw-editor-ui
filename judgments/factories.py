@@ -9,6 +9,7 @@ class JudgmentFactory(factory.Factory):
 
     uri = "test/1234"
     neutral_citation = "2023/test/1234"
+    court = "Court of Testing"
     name = "Test Judgment v Test Judgement"
 
     @classmethod

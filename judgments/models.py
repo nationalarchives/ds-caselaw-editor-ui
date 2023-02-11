@@ -175,3 +175,7 @@ class Judgment:
     @cached_property
     def name(self) -> str:
         return api_client.get_judgment_name(self.uri)
+
+    @cached_property
+    def court(self) -> str:
+        return api_client.get_judgment_court(self.uri)
