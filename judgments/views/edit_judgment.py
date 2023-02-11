@@ -1,13 +1,8 @@
-import xml.etree.ElementTree as ET
 from urllib.parse import quote, urlencode
 
-from caselawclient.Client import (
-    MarklogicAPIError,
-    MarklogicResourceNotFoundError,
-    api_client,
-)
+from caselawclient.Client import MarklogicAPIError, api_client
 from django.conf import settings
-from django.http import Http404, HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template import loader
 from django.urls import reverse
@@ -34,13 +29,6 @@ from judgments.utils.aws import (
 
 
 class EditJudgmentView(View):
-    def get_judgment(self, uri: str):
-        try:
-            judgment_xml = api_client.get_judgment_xml(uri, show_unpublished=True)
-            return ET.XML(bytes(judgment_xml, encoding="utf-8"))
-        except MarklogicResourceNotFoundError as e:
-            raise Http404(f"Judgment XML was not found at uri {uri}, {e}")
-
     def get_metadata(self, uri: str) -> dict:
         meta = dict()
 
