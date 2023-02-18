@@ -13,6 +13,8 @@ on:
   push:
     branches: ["master", "main"]
     paths-ignore: ["docs/**"]
+    
+  merge_group:
 
 jobs:
   linter:
