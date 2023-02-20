@@ -19,8 +19,6 @@ from judgments.utils import (
     users_dict,
 )
 from judgments.utils.aws import (
-    generate_docx_url,
-    generate_pdf_url,
     invalidate_caches,
     notify_changed,
     publish_documents,
@@ -33,8 +31,6 @@ class EditJudgmentView(View):
     def get_metadata(self, uri: str) -> dict:
         meta = dict()
 
-        meta["docx_url"] = generate_docx_url(uri_for_s3(uri))
-        meta["pdf_url"] = generate_pdf_url(uri_for_s3(uri))
         meta["previous_versions"] = self.get_versions(uri)
         meta["consignment_reference"] = api_client.get_property(
             uri, "transfer-consignment-reference"

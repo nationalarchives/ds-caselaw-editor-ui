@@ -26,8 +26,8 @@
         </span>
       {% endif %}
 
-      {% if context.docx_url %}
-        <a class="judgment-toolbar__button" href="{{ context.docx_url }}">
+      {% if context.judgment.docx_url %}
+        <a class="judgment-toolbar__button" href="{{ context.judgment.docx_url }}">
           {% translate "judgment.download_docx" %}
         </a>
       {% else %}
@@ -36,8 +36,8 @@
         </span>
       {% endif %}
 
-      {% if context.pdf_url %}
-        <a class="judgment-toolbar__button" href="{{ context.pdf_url }}">
+      {% if context.judgment.pdf_url %}
+        <a class="judgment-toolbar__button" href="{{ context.judgment.pdf_url }}">
           {% translate "judgment.download_pdf" %}
         </a>
       {% else %}

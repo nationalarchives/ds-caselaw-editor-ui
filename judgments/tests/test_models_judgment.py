@@ -101,3 +101,26 @@ class TestJudgment(TestCase):
         mock_api_client.get_property.assert_called_once_with(
             "test/1234", "source-email"
         )
+
+    @patch("judgments.models.generate_docx_url")
+    def test_judgment_docx_url(self, mock_url_generator):
+        mock_url_generator.return_value = "https://example.com/mock.docx"
+
+        judgment = Judgment("test/1234")
+
+        assert judgment.docx_url == "https://example.com/mock.docx"
+        mock_url_generator.assert_called_once
+
+    @patch("judgments.models.generate_pdf_url")
+    def test_judgment_pdf_url(self, mock_url_generator):
+        mock_url_generator.return_value = "https://example.com/mock.pdf"
+
+        judgment = Judgment("test/1234")
+
+        assert judgment.pdf_url == "https://example.com/mock.pdf"
+        mock_url_generator.assert_called_once
+
+    def test_judgment_xml_url(self):
+        judgment = Judgment("test/1234")
+
+        assert judgment.xml_url == "/xml?judgment_uri=test/1234"

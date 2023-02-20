@@ -16,13 +16,13 @@
   <h4>Downloads</h4>
 
   <ul>
-    {% if context.docx_url %}
-      <li><a href="{{ context.docx_url }}">{% translate "judgment.download_docx" %}</a></li>
+    {% if context.judgment.docx_url %}
+      <li><a href="{{ context.judgment.docx_url }}">{% translate "judgment.download_docx" %}</a></li>
     {% endif %}
-    {% if context.pdf_url %}
-      <li><a href="{{ context.pdf_url }}">{% translate "judgment.download_pdf" %}</a></li>
+    {% if context.judgment.pdf_url %}
+      <li><a href="{{ context.judgment.pdf_url }}">{% translate "judgment.download_pdf" %}</a></li>
     {% endif %}
-    <li><a href="{% url 'detail_xml' %}?judgment_uri={{context.judgment_uri}}">{% translate "judgment.download_xml" %}</a></li>
+    <li><a href="{{ context.judgment.xml_url }}">{% translate "judgment.download_xml" %}</a></li>
   </ul>
 
 </div>

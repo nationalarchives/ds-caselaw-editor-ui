@@ -6,8 +6,11 @@ from os.path import dirname, join
 
 import caselawclient.Client
 from caselawclient.Client import api_client
+from django.urls import reverse
 from djxml import xmlmodels
 from lxml import etree
+
+from judgments.utils.aws import generate_docx_url, generate_pdf_url, uri_for_s3
 
 
 def one(x):
@@ -213,3 +216,15 @@ class Judgment:
     @cached_property
     def source_email(self) -> str:
         return api_client.get_property(self.uri, "source-email")
+
+    @property
+    def docx_url(self) -> str:
+        return generate_docx_url(uri_for_s3(self.uri))
+
+    @property
+    def pdf_url(self) -> str:
+        return generate_pdf_url(uri_for_s3(self.uri))
+
+    @cached_property
+    def xml_url(self) -> str:
+        return reverse("detail_xml") + "?judgment_uri=" + self.uri
