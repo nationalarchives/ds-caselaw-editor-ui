@@ -40,7 +40,6 @@ class EditJudgmentView(View):
             uri, "transfer-consignment-reference"
         )
         meta["assigned_to"] = api_client.get_property(uri, "assigned-to")
-        meta["is_editable"] = True
         return meta
 
     def get_versions(self, uri: str):
@@ -151,6 +150,7 @@ class EditJudgmentView(View):
 
         context["judgment"] = judgment
         context["page_title"] = judgment.name
+        context["is_editable"] = True
 
         context.update({"users": users_dict()})
 
@@ -227,7 +227,14 @@ class EditJudgmentView(View):
         except MarklogicAPIError as e:
             context["error"] = f"There was an error saving the Judgment: {e}"
 
+        judgment = Judgment.objects.get_by_uri(judgment_uri)
+
         context.update(self.get_metadata(judgment_uri))
+
+        context["judgment"] = judgment
+        context["page_title"] = judgment.name
+        context["is_editable"] = True
+
         invalidate_caches(judgment_uri)
 
         context.update({"users": users_dict()})
