@@ -34,7 +34,6 @@ class EditJudgmentView(View):
         meta = dict()
 
         meta["page_title"] = api_client.get_judgment_name(uri)
-        meta["judgment_date"] = api_client.get_judgment_work_date(uri)
         meta["docx_url"] = generate_docx_url(uri_for_s3(uri))
         meta["pdf_url"] = generate_pdf_url(uri_for_s3(uri))
         meta["previous_versions"] = self.get_versions(uri)

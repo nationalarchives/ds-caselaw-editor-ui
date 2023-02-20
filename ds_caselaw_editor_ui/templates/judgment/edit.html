@@ -33,7 +33,7 @@
         </div>
         <div class="edit-component__panel">
           <label for="judgment_date">{% translate "judgment.judgment_date" %}</label>
-          <input type="text" class="edit-component__judgment_date-input" value="{{context.judgment_date}}"
+          <input type="text" class="edit-component__judgment_date-input" value="{{ context.judgment.judgment_date_as_string }}"
                  name="judgment_date" id="judgment_date" />
         </div>
         <div class="edit-component__panel">

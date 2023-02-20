@@ -1,3 +1,4 @@
+import datetime
 from unittest.mock import patch
 
 from django.test import TestCase
@@ -34,6 +35,16 @@ class TestJudgment(TestCase):
 
         assert judgment.court == "Court of Testing"
         mock_api_client.get_judgment_court.assert_called_once_with("test/1234")
+
+    @patch("judgments.models.api_client")
+    def test_judgment_date_as_string(self, mock_api_client):
+        mock_api_client.get_judgment_work_date.return_value = "2023-02-03"
+
+        judgment = Judgment("test/1234")
+
+        assert judgment.judgment_date_as_string == "2023-02-03"
+        assert judgment.judgment_date_as_date == datetime.date(2023, 2, 3)
+        mock_api_client.get_judgment_work_date.assert_called_once_with("test/1234")
 
     @patch("judgments.models.api_client")
     def test_judgment_is_published(self, mock_api_client):

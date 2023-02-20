@@ -1,6 +1,6 @@
 # from django.db import models
+import datetime
 import logging
-from datetime import datetime
 from functools import cached_property
 from os.path import dirname, join
 
@@ -33,9 +33,9 @@ class SearchResultMeta:
         self.author_email = author_email
         self.consignment_reference = consignment_reference
         self.submission_datetime = (
-            datetime.strptime(submission_datetime, "%Y-%m-%dT%H:%M:%SZ")
+            datetime.datetime.strptime(submission_datetime, "%Y-%m-%dT%H:%M:%SZ")
             if submission_datetime
-            else datetime.min
+            else datetime.datetime.min
         )
         self.assigned_to = assigned_to
         self.editor_hold = editor_hold or "false"
@@ -179,6 +179,16 @@ class Judgment:
     @cached_property
     def court(self) -> str:
         return api_client.get_judgment_court(self.uri)
+
+    @cached_property
+    def judgment_date_as_string(self) -> str:
+        return api_client.get_judgment_work_date(self.uri)
+
+    @cached_property
+    def judgment_date_as_date(self) -> datetime.date:
+        return datetime.datetime.strptime(
+            self.judgment_date_as_string, "%Y-%m-%d"
+        ).date()
 
     @cached_property
     def is_published(self) -> bool:

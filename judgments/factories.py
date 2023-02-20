@@ -11,6 +11,7 @@ class JudgmentFactory(factory.Factory):
     neutral_citation = "2023/test/1234"
     court = "Court of Testing"
     name = "Test Judgment v Test Judgement"
+    judgment_date_as_string = "2023-02-03"
 
     published = True
     sensitive = False
