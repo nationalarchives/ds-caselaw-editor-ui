@@ -31,3 +31,11 @@ class TestJudgment(TestCase):
         judgment = Judgment("x")
 
         assert judgment.court == "Court of Testing"
+
+    @patch("judgments.models.api_client")
+    def test_judgment_is_published(self, mock_api_client):
+        mock_api_client.get_published.return_value = True
+
+        judgment = Judgment("x")
+
+        assert judgment.is_published is True

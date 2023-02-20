@@ -12,6 +12,8 @@ class JudgmentFactory(factory.Factory):
     court = "Court of Testing"
     name = "Test Judgment v Test Judgement"
 
+    published = True
+
     @classmethod
     def _create(cls, model_class, *args, **kwargs):
         return model_class.objects.get_by_uri(cls.uri)

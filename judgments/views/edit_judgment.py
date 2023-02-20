@@ -33,7 +33,6 @@ class EditJudgmentView(View):
     def get_metadata(self, uri: str) -> dict:
         meta = dict()
 
-        meta["published"] = api_client.get_published(uri)
         meta["sensitive"] = api_client.get_sensitive(uri)
         meta["supplemental"] = api_client.get_supplemental(uri)
         meta["anonymised"] = api_client.get_anonymised(uri)
