@@ -39,8 +39,6 @@ class EditJudgmentView(View):
         meta["consignment_reference"] = api_client.get_property(
             uri, "transfer-consignment-reference"
         )
-        meta["source_name"] = api_client.get_property(uri, "source-name")
-        meta["source_email"] = api_client.get_property(uri, "source-email")
         meta["assigned_to"] = api_client.get_property(uri, "assigned-to")
         meta["is_editable"] = True
         return meta
@@ -69,7 +67,7 @@ class EditJudgmentView(View):
         )
 
         return self.build_email_link_with_content(
-            context["source_email"], subject_string
+            context["judgment"].source_email, subject_string
         )
 
     def build_confirmation_email_link(self, request, context):
@@ -91,7 +89,7 @@ class EditJudgmentView(View):
         )
 
         return self.build_email_link_with_content(
-            context["source_email"], subject_string, body_string
+            context["judgment"].source_email, subject_string, body_string
         )
 
     def build_jira_create_link(self, request, context):
@@ -120,9 +118,9 @@ class EditJudgmentView(View):
 {consignment_ref_label}: {consignment_ref}""".format(
                 details_url=editor_details_url,
                 source_name_label=gettext("judgments.submitter"),
-                source_name=context["source_name"],
+                source_name=context["judgment"].source_name,
                 source_email_label=gettext("judgments.submitteremail"),
-                source_email=context["source_email"],
+                source_email=context["judgment"].source_email,
                 consignment_ref_label=gettext("judgments.consignmentref"),
                 consignment_ref=context["consignment_reference"],
             )

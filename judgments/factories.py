@@ -18,6 +18,9 @@ class JudgmentFactory(factory.Factory):
     supplemental = False
     anonymised = False
 
+    source_name = "A. N. Uploader"
+    source_email = "anuploader@example.com"
+
     @classmethod
     def _create(cls, model_class, *args, **kwargs):
         return model_class.objects.get_by_uri(cls.uri)

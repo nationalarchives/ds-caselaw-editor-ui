@@ -5,8 +5,8 @@
   <h4>Submission</h4>
 
   <ul>
-    <li><span class="judgment-sidebar__label">{% translate "judgments.submitter" %}:</span> {{context.source_name}}</li>
-    <li><span class="judgment-sidebar__label">{% translate "judgments.submitteremail" %}:</span> <a href="mailto:{{context.source_email}}">{{context.source_email}}</a></li>
+    <li><span class="judgment-sidebar__label">{% translate "judgments.submitter" %}:</span> {{ context.judgment.source_name }}</li>
+    <li><span class="judgment-sidebar__label">{% translate "judgments.submitteremail" %}:</span> <a href="mailto:{{ context.judgment.source_email }}">{{ context.judgment.source_email }}</a></li>
     <li><span class="judgment-sidebar__label">{% translate "judgments.consignmentref" %}:</span> {{context.consignment_reference}}</li>
   </ul>
 

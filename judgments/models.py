@@ -205,3 +205,11 @@ class Judgment:
     @cached_property
     def has_supplementary_materials(self) -> bool:
         return api_client.get_supplemental(self.uri)
+
+    @cached_property
+    def source_name(self) -> str:
+        return api_client.get_property(self.uri, "source-name")
+
+    @cached_property
+    def source_email(self) -> str:
+        return api_client.get_property(self.uri, "source-email")

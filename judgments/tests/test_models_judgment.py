@@ -81,3 +81,23 @@ class TestJudgment(TestCase):
 
         assert judgment.has_supplementary_materials is True
         mock_api_client.get_supplemental.assert_called_once_with("test/1234")
+
+    @patch("judgments.models.api_client")
+    def test_judgment_source_name(self, mock_api_client):
+        mock_api_client.get_property.return_value = "Test Name"
+
+        judgment = Judgment("test/1234")
+
+        assert judgment.source_name == "Test Name"
+        mock_api_client.get_property.assert_called_once_with("test/1234", "source-name")
+
+    @patch("judgments.models.api_client")
+    def test_judgment_source_email(self, mock_api_client):
+        mock_api_client.get_property.return_value = "testemail@example.com"
+
+        judgment = Judgment("test/1234")
+
+        assert judgment.source_email == "testemail@example.com"
+        mock_api_client.get_property.assert_called_once_with(
+            "test/1234", "source-email"
+        )
