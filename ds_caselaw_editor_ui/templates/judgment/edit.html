@@ -42,15 +42,15 @@
         </div>
         <div class="edit-component__panel">
           <label for="sensitive">{% translate "judgment.sensitive" %}</label>
-          <input type="checkbox" class="edit-component__sensitive-input" {% if context.sensitive %}checked{% endif %} name="sensitive" id="sensitive"/>
+          <input type="checkbox" class="edit-component__sensitive-input" {% if context.judgment.is_sensitive %}checked{% endif %} name="sensitive" id="sensitive"/>
         </div>
         <div class="edit-component__panel">
           <label for="supplemental">{% translate "judgment.supplemental" %}</label>
-          <input type="checkbox" class="edit-component__supplemental-input" {% if context.supplemental %}checked{% endif %} name="supplemental" id="supplemental"/>
+          <input type="checkbox" class="edit-component__supplemental-input" {% if context.judgment.has_supplementary_materials %}checked{% endif %} name="supplemental" id="supplemental"/>
         </div>
         <div class="edit-component__panel">
           <label for="anonymised">{% translate "judgment.anonymised" %}</label>
-          <input type="checkbox" class="edit-component__anonymised-input" {% if context.anonymised %}checked{% endif %} name="anonymised" id="anonymised"/>
+          <input type="checkbox" class="edit-component__anonymised-input" {% if context.judgment.is_anonymised %}checked{% endif %} name="anonymised" id="anonymised"/>
         </div>
         <div class="edit-component__panel">
           <label for="assigned_to">{% translate "judgment.assigned_to" %}</label>

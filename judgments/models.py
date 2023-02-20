@@ -183,3 +183,15 @@ class Judgment:
     @cached_property
     def is_published(self) -> bool:
         return api_client.get_published(self.uri)
+
+    @cached_property
+    def is_sensitive(self) -> bool:
+        return api_client.get_sensitive(self.uri)
+
+    @cached_property
+    def is_anonymised(self) -> bool:
+        return api_client.get_anonymised(self.uri)
+
+    @cached_property
+    def has_supplementary_materials(self) -> bool:
+        return api_client.get_supplemental(self.uri)

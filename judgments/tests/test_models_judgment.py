@@ -43,3 +43,30 @@ class TestJudgment(TestCase):
 
         assert judgment.is_published is True
         mock_api_client.get_published.assert_called_once_with("test/1234")
+
+    @patch("judgments.models.api_client")
+    def test_judgment_is_sensitive(self, mock_api_client):
+        mock_api_client.get_sensitive.return_value = True
+
+        judgment = Judgment("test/1234")
+
+        assert judgment.is_sensitive is True
+        mock_api_client.get_sensitive.assert_called_once_with("test/1234")
+
+    @patch("judgments.models.api_client")
+    def test_judgment_is_anonymised(self, mock_api_client):
+        mock_api_client.get_anonymised.return_value = True
+
+        judgment = Judgment("test/1234")
+
+        assert judgment.is_anonymised is True
+        mock_api_client.get_anonymised.assert_called_once_with("test/1234")
+
+    @patch("judgments.models.api_client")
+    def test_judgment_has_supplementary_materials(self, mock_api_client):
+        mock_api_client.get_supplemental.return_value = True
+
+        judgment = Judgment("test/1234")
+
+        assert judgment.has_supplementary_materials is True
+        mock_api_client.get_supplemental.assert_called_once_with("test/1234")

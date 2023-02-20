@@ -13,6 +13,9 @@ class JudgmentFactory(factory.Factory):
     name = "Test Judgment v Test Judgement"
 
     published = True
+    sensitive = False
+    supplemental = False
+    anonymised = False
 
     @classmethod
     def _create(cls, model_class, *args, **kwargs):
