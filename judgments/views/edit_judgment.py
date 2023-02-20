@@ -33,7 +33,6 @@ class EditJudgmentView(View):
     def get_metadata(self, uri: str) -> dict:
         meta = dict()
 
-        meta["page_title"] = api_client.get_judgment_name(uri)
         meta["docx_url"] = generate_docx_url(uri_for_s3(uri))
         meta["pdf_url"] = generate_pdf_url(uri_for_s3(uri))
         meta["previous_versions"] = self.get_versions(uri)
@@ -147,10 +146,13 @@ class EditJudgmentView(View):
     def get(self, request, *args, **kwargs):
         params = request.GET
         judgment_uri = params.get("judgment_uri")
+        judgment = Judgment.objects.get_by_uri(judgment_uri)
+
         context = {"judgment_uri": judgment_uri}
         context.update(self.get_metadata(judgment_uri))
 
-        context["judgment"] = Judgment.objects.get_by_uri(judgment_uri)
+        context["judgment"] = judgment
+        context["page_title"] = judgment.name
 
         context.update({"users": users_dict()})
 
