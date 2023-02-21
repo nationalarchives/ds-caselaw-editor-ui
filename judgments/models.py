@@ -218,6 +218,10 @@ class Judgment:
     def source_email(self) -> str:
         return api_client.get_property(self.uri, "source-email")
 
+    @cached_property
+    def consignment_reference(self) -> str:
+        return api_client.get_property(self.uri, "transfer-consignment-reference")
+
     @property
     def docx_url(self) -> str:
         return generate_docx_url(uri_for_s3(self.uri))

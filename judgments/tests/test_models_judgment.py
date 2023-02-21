@@ -102,6 +102,17 @@ class TestJudgment(TestCase):
             "test/1234", "source-email"
         )
 
+    @patch("judgments.models.api_client")
+    def test_judgment_consignment_reference(self, mock_api_client):
+        mock_api_client.get_property.return_value = "TDR-2023-ABC"
+
+        judgment = Judgment("test/1234")
+
+        assert judgment.consignment_reference == "TDR-2023-ABC"
+        mock_api_client.get_property.assert_called_once_with(
+            "test/1234", "transfer-consignment-reference"
+        )
+
     @patch("judgments.models.generate_docx_url")
     def test_judgment_docx_url(self, mock_url_generator):
         mock_url_generator.return_value = "https://example.com/mock.docx"

@@ -32,9 +32,6 @@ class EditJudgmentView(View):
         meta = dict()
 
         meta["previous_versions"] = self.get_versions(uri)
-        meta["consignment_reference"] = api_client.get_property(
-            uri, "transfer-consignment-reference"
-        )
         return meta
 
     def get_versions(self, uri: str):
@@ -57,7 +54,7 @@ class EditJudgmentView(View):
 
     def build_raise_issue_email_link(self, context):
         subject_string = "Issue(s) found with {reference}".format(
-            reference=context["consignment_reference"]
+            reference=context["judgment"].consignment_reference
         )
 
         return self.build_email_link_with_content(
@@ -66,12 +63,12 @@ class EditJudgmentView(View):
 
     def build_confirmation_email_link(self, request, context):
         subject_string = "Notification of publication [TDR ref: {reference}]".format(
-            reference=context["consignment_reference"]
+            reference=context["judgment"].consignment_reference
         )
 
         email_context = {
             "judgment_name": context["judgment"].name,
-            "reference": context["consignment_reference"],
+            "reference": context["judgment"].consignment_reference,
             "public_judgment_url": "https://caselaw.nationalarchives.gov.uk/{uri}".format(
                 uri=context["judgment_uri"]
             ),
@@ -90,7 +87,7 @@ class EditJudgmentView(View):
         summary_string = "{name} / {ncn} / {tdr}".format(
             name=context["judgment"].name,
             ncn=context["judgment"].neutral_citation,
-            tdr=context["consignment_reference"],
+            tdr=context["judgment"].consignment_reference,
         )
 
         editor_details_url = request.build_absolute_uri(
@@ -116,7 +113,7 @@ class EditJudgmentView(View):
                 source_email_label=gettext("judgments.submitteremail"),
                 source_email=context["judgment"].source_email,
                 consignment_ref_label=gettext("judgments.consignmentref"),
-                consignment_ref=context["consignment_reference"],
+                consignment_ref=context["judgment"].consignment_reference,
             )
         )
 
