@@ -26,11 +26,6 @@ from judgments.utils.aws import (
 
 
 class EditJudgmentView(View):
-    def get_metadata(self, uri: str) -> dict:
-        meta = dict()
-
-        return meta
-
     def build_email_link_with_content(self, address, subject, body=None):
         params = {"subject": "Find Case Law – {subject}".format(subject=subject)}
 
@@ -127,7 +122,6 @@ class EditJudgmentView(View):
         judgment = Judgment.objects.get_by_uri(judgment_uri)
 
         context = {"judgment_uri": judgment_uri}
-        context.update(self.get_metadata(judgment_uri))
 
         context["judgment"] = judgment
         context["page_title"] = judgment.name
@@ -209,8 +203,6 @@ class EditJudgmentView(View):
             context["error"] = f"There was an error saving the Judgment: {e}"
 
         judgment = Judgment.objects.get_by_uri(judgment_uri)
-
-        context.update(self.get_metadata(judgment_uri))
 
         context["judgment"] = judgment
         context["page_title"] = judgment.name
