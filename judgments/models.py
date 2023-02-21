@@ -253,6 +253,11 @@ class Judgment:
     def content_as_xml(self) -> str:
         return api_client.get_judgment_xml(self.uri, show_unpublished=True)
 
+    def content_as_html(self, version_uri: str) -> str:
+        results = api_client.eval_xslt(self.uri, version_uri, show_unpublished=True)
+        multipart_data = decoder.MultipartDecoder.from_response(results)
+        return multipart_data.parts[0].text
+
     @cached_property
     def is_failure(self) -> bool:
         if "failures" in self.uri:

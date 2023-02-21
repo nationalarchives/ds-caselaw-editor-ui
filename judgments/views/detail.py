@@ -1,7 +1,6 @@
-from caselawclient.Client import MarklogicResourceNotFoundError, api_client
+from caselawclient.Client import MarklogicResourceNotFoundError
 from django.http import Http404, HttpResponse
 from django.template import loader
-from requests_toolbelt.multipart import decoder
 
 from judgments.models import Judgment
 from judgments.utils import extract_version
@@ -19,13 +18,8 @@ def detail(request):
             judgment_content = judgment.content_as_xml()
             metadata_name = judgment_uri
         else:
-            results = api_client.eval_xslt(
-                judgment_uri, version_uri, show_unpublished=True
-            )
+            judgment_content = judgment.content_as_html(version_uri=version_uri)
             metadata_name = judgment.name
-
-            multipart_data = decoder.MultipartDecoder.from_response(results)
-            judgment_content = multipart_data.parts[0].text
 
         context["judgment_content"] = judgment_content
         context["page_title"] = metadata_name
