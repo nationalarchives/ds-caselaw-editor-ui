@@ -393,15 +393,7 @@ class TestJudgmentEditor(TestCase):
         "judgments.views.edit_judgment.Judgment.objects.get_by_uri",
         autospec=Judgment,
     )
-    @patch("judgments.views.edit_judgment.api_client")
-    def test_assigned(self, mock_api, mock_judgment):
-        mock_api.get_published.return_value = "6"
-        mock_api.get_sensitive.return_value = "6"
-        mock_api.get_supplemental.return_value = "6"
-        mock_api.get_anonymised.return_value = "6"
-        mock_api.list_judgment_versions.return_value = []
-        mock_api.get_property.side_effect = "xxx"
-
+    def test_assigned(self, mock_judgment):
         mock_judgment.return_value.assigned_to = "otheruser"
         mock_judgment.return_value.versions = []
 
