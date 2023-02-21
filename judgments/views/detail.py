@@ -17,7 +17,6 @@ def detail(request):
     try:
         judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
         judgment_root = get_judgment_root(judgment_xml)
-        context["published"] = api_client.get_published(judgment_uri)
         context["is_editable"] = True
 
         if "error" in judgment_root:
