@@ -138,6 +138,7 @@ def test(c):
             "django",
             "mypy",
             "ds_caselaw_editor_ui",
+            "judgments",
         ]
     )
     # Pytest
