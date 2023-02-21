@@ -1,13 +1,13 @@
 {% extends "layouts/judgment.html" %}
 {% block content %}
-  {% if context.judgment %}
+  {% if context.judgment_content %}
     {% if context.is_failure %}
       <pre>
-        {{ context.judgment }}
+        {{ context.judgment_content }}
       </pre>
     {% else %}
       {% autoescape off %}
-        {{ context.judgment }}
+        {{ context.judgment_content }}
       {% endautoescape %}
     {% endif %}
   {% else %}

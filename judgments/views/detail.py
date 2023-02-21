@@ -23,7 +23,7 @@ def detail(request):
 
         if "error" in judgment_root:
             context["is_editable"] = False
-            judgment = judgment_xml
+            judgment_content = judgment_xml
             metadata_name = judgment_uri
         else:
             results = api_client.eval_xslt(
@@ -32,8 +32,8 @@ def detail(request):
             metadata_name = api_client.get_judgment_name(judgment_uri)
 
             multipart_data = decoder.MultipartDecoder.from_response(results)
-            judgment = multipart_data.parts[0].text
-        context["judgment"] = judgment
+            judgment_content = multipart_data.parts[0].text
+        context["judgment_content"] = judgment_content
         context["page_title"] = metadata_name
         context["docx_url"] = generate_docx_url(uri_for_s3(judgment_uri))
         context["pdf_url"] = generate_pdf_url(uri_for_s3(judgment_uri))

@@ -11,10 +11,10 @@
     <div class="judgment-toolbar__edit">
 
       {% if context.is_editable %}
-        <a class="judgment-toolbar__button{% if not context.judgment %} judgment-toolbar__button-selected{% endif %}" href="{% url 'edit' %}?judgment_uri={{context.judgment_uri}}">
+        <a class="judgment-toolbar__button{% if not context.judgment_content %} judgment-toolbar__button-selected{% endif %}" href="{% url 'edit' %}?judgment_uri={{context.judgment_uri}}">
           {% translate "judgment.edit_this_judgment" %}
         </a>
-        <a class="judgment-toolbar__button{% if context.judgment %} judgment-toolbar__button-selected{% endif %}" href="{% url 'detail' %}?judgment_uri={{context.judgment_uri}}">
+        <a class="judgment-toolbar__button{% if context.judgment_content %} judgment-toolbar__button-selected{% endif %}" href="{% url 'detail' %}?judgment_uri={{context.judgment_uri}}">
           {% translate "judgment.view_this_judgment" %}
         </a>
       {% else %}
