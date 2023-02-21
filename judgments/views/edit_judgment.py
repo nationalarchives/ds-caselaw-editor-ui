@@ -8,13 +8,11 @@ from django.template import loader
 from django.urls import reverse
 from django.utils.translation import gettext
 from django.views.generic import View
-from requests_toolbelt.multipart import decoder
 
 from judgments.models import Judgment
 from judgments.utils import (
     MoveJudgmentError,
     NeutralCitationToUriError,
-    render_versions,
     update_judgment_uri,
     users_dict,
 )
@@ -31,16 +29,7 @@ class EditJudgmentView(View):
     def get_metadata(self, uri: str) -> dict:
         meta = dict()
 
-        meta["previous_versions"] = self.get_versions(uri)
         return meta
-
-    def get_versions(self, uri: str):
-        versions_response = api_client.list_judgment_versions(uri)
-        try:
-            decoded_versions = decoder.MultipartDecoder.from_response(versions_response)
-            return render_versions(decoded_versions.parts)
-        except AttributeError:
-            return []
 
     def build_email_link_with_content(self, address, subject, body=None):
         params = {"subject": "Find Case Law – {subject}".format(subject=subject)}

@@ -403,6 +403,7 @@ class TestJudgmentEditor(TestCase):
         mock_api.get_property.side_effect = "xxx"
 
         mock_judgment.return_value.assigned_to = "otheruser"
+        mock_judgment.return_value.versions = []
 
         User.objects.get_or_create(username="otheruser")[0]
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])

@@ -9,7 +9,9 @@ from caselawclient.Client import api_client
 from django.urls import reverse
 from djxml import xmlmodels
 from lxml import etree
+from requests_toolbelt.multipart import decoder
 
+from judgments.utils import render_versions
 from judgments.utils.aws import generate_docx_url, generate_pdf_url, uri_for_s3
 
 
@@ -237,3 +239,13 @@ class Judgment:
     @cached_property
     def assigned_to(self) -> str:
         return api_client.get_property(self.uri, "assigned-to")
+
+    @cached_property
+    def versions(self) -> list:
+        versions_response = api_client.list_judgment_versions(self.uri)
+
+        try:
+            decoded_versions = decoder.MultipartDecoder.from_response(versions_response)
+            return render_versions(decoded_versions.parts)
+        except AttributeError:
+            return []

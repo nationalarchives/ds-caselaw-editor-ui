@@ -72,12 +72,12 @@
       </form>
     </div>
   </div>
-  {% if context.previous_versions %}
+  {% if context.judgment.versions %}
     <div class="list-versions-component">
       <div class="list-versions-component__container">
         <h2 class="list-versions-component__header">{% translate "judgment.previous_versions" %}</h2>
         <ul>
-          {% for version in context.previous_versions %}
+          {% for version in context.judgment.versions %}
             <li>
               <a class="list-versions__version-title" href="{% url 'detail' %}?judgment_uri={{context.judgment_uri}}&version_uri={{version.uri}}">
                 v{{ version.version }} ( {{version.uri}} )
