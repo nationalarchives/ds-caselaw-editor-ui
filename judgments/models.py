@@ -249,3 +249,6 @@ class Judgment:
             return render_versions(decoded_versions.parts)
         except AttributeError:
             return []
+
+    def content_as_xml(self) -> str:
+        return api_client.get_judgment_xml(self.uri, show_unpublished=True)

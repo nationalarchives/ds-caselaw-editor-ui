@@ -144,3 +144,14 @@ class TestJudgment(TestCase):
 
         assert judgment.assigned_to == "testuser"
         mock_api_client.get_property.assert_called_once_with("test/1234", "assigned-to")
+
+    @patch("judgments.models.api_client")
+    def test_judgment_content_as_xml(self, mock_api_client):
+        mock_api_client.get_judgment_xml.return_value = "<xml></xml>"
+
+        judgment = Judgment("test/1234")
+
+        assert judgment.content_as_xml() == "<xml></xml>"
+        mock_api_client.get_judgment_xml.assert_called_once_with(
+            "test/1234", show_unpublished=True
+        )

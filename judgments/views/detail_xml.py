@@ -1,12 +1,15 @@
-from caselawclient.Client import MarklogicResourceNotFoundError, api_client
+from caselawclient.Client import MarklogicResourceNotFoundError
 from django.http import Http404, HttpResponse
+
+from judgments.models import Judgment
 
 
 def detail_xml(request):
     params = request.GET
     judgment_uri = params.get("judgment_uri", None)
     try:
-        judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
+        judgment = Judgment(judgment_uri)
+        judgment_xml = judgment.content_as_xml()
     except MarklogicResourceNotFoundError as e:
         raise Http404(f"Judgment was not found at uri {judgment_uri}, {e}")
 
