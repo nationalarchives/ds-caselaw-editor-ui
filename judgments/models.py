@@ -252,3 +252,9 @@ class Judgment:
 
     def content_as_xml(self) -> str:
         return api_client.get_judgment_xml(self.uri, show_unpublished=True)
+
+    @cached_property
+    def is_failure(self) -> bool:
+        if "failures" in self.uri:
+            return True
+        return False

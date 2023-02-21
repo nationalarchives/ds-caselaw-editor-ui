@@ -12,15 +12,13 @@ def detail(request):
     judgment_uri = params.get("judgment_uri", None)
     version_uri = params.get("version_uri", None)
     judgment = Judgment(judgment_uri)
-    context = {"judgment_uri": judgment_uri, "is_failure": False, "judgment": judgment}
+    context = {"judgment_uri": judgment_uri, "judgment": judgment}
 
     try:
         judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
         judgment_root = get_judgment_root(judgment_xml)
         context["published"] = api_client.get_published(judgment_uri)
         context["is_editable"] = True
-        if "failures" in judgment_uri:
-            context["is_failure"] = True
 
         if "error" in judgment_root:
             context["is_editable"] = False

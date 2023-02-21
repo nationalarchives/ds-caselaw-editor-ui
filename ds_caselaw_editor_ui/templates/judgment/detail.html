@@ -1,7 +1,7 @@
 {% extends "layouts/judgment.html" %}
 {% block content %}
   {% if context.judgment_content %}
-    {% if context.is_failure %}
+    {% if context.judgment.is_failure %}
       <pre>
         {{ context.judgment_content }}
       </pre>

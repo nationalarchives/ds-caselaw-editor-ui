@@ -155,3 +155,10 @@ class TestJudgment(TestCase):
         mock_api_client.get_judgment_xml.assert_called_once_with(
             "test/1234", show_unpublished=True
         )
+
+    def test_judgment_is_failure(self):
+        successful_judgment = Judgment("test/1234")
+        failing_judgment = Judgment("failures/test/1234")
+
+        assert successful_judgment.is_failure is False
+        assert failing_judgment.is_failure is True
