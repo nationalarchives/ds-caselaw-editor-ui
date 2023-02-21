@@ -11,7 +11,7 @@ from djxml import xmlmodels
 from lxml import etree
 from requests_toolbelt.multipart import decoder
 
-from judgments.utils import render_versions
+from judgments.utils import get_judgment_root, render_versions
 from judgments.utils.aws import generate_docx_url, generate_pdf_url, uri_for_s3
 
 
@@ -258,3 +258,12 @@ class Judgment:
         if "failures" in self.uri:
             return True
         return False
+
+    @cached_property
+    def is_editable(self) -> bool:
+        if "error" in self._get_root():
+            return False
+        return True
+
+    def _get_root(self) -> str:
+        return get_judgment_root(self.content_as_xml())

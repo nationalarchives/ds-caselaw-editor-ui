@@ -125,7 +125,6 @@ class EditJudgmentView(View):
 
         context["judgment"] = judgment
         context["page_title"] = judgment.name
-        context["is_editable"] = True
 
         context.update({"users": users_dict()})
 
@@ -206,7 +205,6 @@ class EditJudgmentView(View):
 
         context["judgment"] = judgment
         context["page_title"] = judgment.name
-        context["is_editable"] = True
 
         invalidate_caches(judgment_uri)
 

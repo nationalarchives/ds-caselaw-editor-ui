@@ -4,7 +4,7 @@ from django.template import loader
 from requests_toolbelt.multipart import decoder
 
 from judgments.models import Judgment
-from judgments.utils import extract_version, get_judgment_root
+from judgments.utils import extract_version
 
 
 def detail(request):
@@ -16,11 +16,8 @@ def detail(request):
 
     try:
         judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
-        judgment_root = get_judgment_root(judgment_xml)
-        context["is_editable"] = True
 
-        if "error" in judgment_root:
-            context["is_editable"] = False
+        if not judgment.is_editable:
             judgment_content = judgment_xml
             metadata_name = judgment_uri
         else:
