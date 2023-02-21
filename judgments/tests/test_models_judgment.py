@@ -124,3 +124,12 @@ class TestJudgment(TestCase):
         judgment = Judgment("test/1234")
 
         assert judgment.xml_url == "/xml?judgment_uri=test/1234"
+
+    @patch("judgments.models.api_client")
+    def test_judgment_assigned_to(self, mock_api_client):
+        mock_api_client.get_property.return_value = "testuser"
+
+        judgment = Judgment("test/1234")
+
+        assert judgment.assigned_to == "testuser"
+        mock_api_client.get_property.assert_called_once_with("test/1234", "assigned-to")

@@ -8,8 +8,8 @@ from django.test import TestCase
 from lxml import etree
 
 import judgments
-from judgments import converters, factories
-from judgments.models import SearchResult, SearchResultMeta
+from judgments import converters
+from judgments.models import Judgment, SearchResult, SearchResultMeta
 from judgments.utils import (
     ensure_local_referer_url,
     extract_version,
@@ -389,7 +389,10 @@ class TestUtils(TestCase):
 
 
 class TestJudgmentEditor(TestCase):
-    @patch("judgments.views.edit_judgment.Judgment.objects.get_by_uri")
+    @patch(
+        "judgments.views.edit_judgment.Judgment.objects.get_by_uri",
+        autospec=Judgment,
+    )
     @patch("judgments.views.edit_judgment.api_client")
     def test_assigned(self, mock_api, mock_judgment):
         mock_api.get_published.return_value = "6"
@@ -397,16 +400,14 @@ class TestJudgmentEditor(TestCase):
         mock_api.get_supplemental.return_value = "6"
         mock_api.get_anonymised.return_value = "6"
         mock_api.list_judgment_versions.return_value = []
-        mock_api.get_property.side_effect = (
-            lambda _, property: "otheruser" if property == "assigned-to" else "xxx"
-        )
+        mock_api.get_property.side_effect = "xxx"
 
-        mock_judgment.return_value = factories.JudgmentFactory
+        mock_judgment.return_value.assigned_to = "otheruser"
 
         User.objects.get_or_create(username="otheruser")[0]
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
         response = self.client.get("/edit?judgment_uri=ewhc/ch/1999/1")
-        mock_api.get_property.assert_called_with("ewhc/ch/1999/1", "assigned-to")
+
         assert b"selected>otheruser" in response.content
 
 

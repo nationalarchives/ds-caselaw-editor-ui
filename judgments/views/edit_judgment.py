@@ -35,7 +35,6 @@ class EditJudgmentView(View):
         meta["consignment_reference"] = api_client.get_property(
             uri, "transfer-consignment-reference"
         )
-        meta["assigned_to"] = api_client.get_property(uri, "assigned-to")
         return meta
 
     def get_versions(self, uri: str):

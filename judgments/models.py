@@ -161,7 +161,8 @@ class SearchMatch(xmlmodels.XmlModel):
 
 
 class JudgmentManager:
-    def get_by_uri(self, uri: str) -> "Judgment":
+    @classmethod
+    def get_by_uri(cls, uri: str) -> "Judgment":
         return Judgment(uri)
 
 
@@ -225,6 +226,10 @@ class Judgment:
     def pdf_url(self) -> str:
         return generate_pdf_url(uri_for_s3(self.uri))
 
-    @cached_property
+    @property
     def xml_url(self) -> str:
         return reverse("detail_xml") + "?judgment_uri=" + self.uri
+
+    @cached_property
+    def assigned_to(self) -> str:
+        return api_client.get_property(self.uri, "assigned-to")
