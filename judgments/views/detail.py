@@ -3,15 +3,16 @@ from django.http import Http404, HttpResponse
 from django.template import loader
 from requests_toolbelt.multipart import decoder
 
+from judgments.models import Judgment
 from judgments.utils import extract_version, get_judgment_root
-from judgments.utils.aws import generate_docx_url, generate_pdf_url, uri_for_s3
 
 
 def detail(request):
     params = request.GET
     judgment_uri = params.get("judgment_uri", None)
     version_uri = params.get("version_uri", None)
-    context = {"judgment_uri": judgment_uri, "is_failure": False}
+    judgment = Judgment(judgment_uri)
+    context = {"judgment_uri": judgment_uri, "is_failure": False, "judgment": judgment}
 
     try:
         judgment_xml = api_client.get_judgment_xml(judgment_uri, show_unpublished=True)
@@ -35,8 +36,6 @@ def detail(request):
             judgment_content = multipart_data.parts[0].text
         context["judgment_content"] = judgment_content
         context["page_title"] = metadata_name
-        context["docx_url"] = generate_docx_url(uri_for_s3(judgment_uri))
-        context["pdf_url"] = generate_pdf_url(uri_for_s3(judgment_uri))
 
         if version_uri:
             context["version"] = extract_version(version_uri)
