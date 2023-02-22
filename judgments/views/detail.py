@@ -1,11 +1,9 @@
-import re
-
 from caselawclient.Client import MarklogicResourceNotFoundError, api_client
 from django.http import Http404, HttpResponse
 from django.template import loader
 from requests_toolbelt.multipart import decoder
 
-from judgments.utils import VERSION_REGEX, get_judgment_root
+from judgments.utils import extract_version, get_judgment_root
 from judgments.utils.aws import generate_docx_url, generate_pdf_url, uri_for_s3
 
 
@@ -41,11 +39,7 @@ def detail(request):
         context["pdf_url"] = generate_pdf_url(uri_for_s3(judgment_uri))
 
         if version_uri:
-            try:
-                version = re.search(VERSION_REGEX, version_uri).group(1)
-            except AttributeError:
-                version = None
-            context["version"] = version
+            context["version"] = extract_version(version_uri)
     except MarklogicResourceNotFoundError as e:
         raise Http404(f"Judgment was not found at uri {judgment_uri}, {e}")
     template = loader.get_template("judgment/detail.html")

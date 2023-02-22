@@ -134,10 +134,8 @@ def render_versions(decoded_versions):
 
 
 def extract_version(version_string: str) -> int:
-    try:
-        return int(re.search(VERSION_REGEX, version_string).group(1))
-    except AttributeError:
-        return 0
+    result = re.search(VERSION_REGEX, version_string)
+    return int(result.group(1)) if result else 0
 
 
 def users_dict():

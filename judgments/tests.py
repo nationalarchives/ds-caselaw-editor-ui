@@ -1,5 +1,4 @@
 import re
-from unittest import skip
 from unittest.mock import MagicMock, Mock, patch
 
 import ds_caselaw_utils
@@ -23,18 +22,10 @@ from judgments.utils.paginator import paginator
 
 
 class TestJudgment(TestCase):
-    @skip
-    def test_valid_content(self):
-        response = self.client.get("/judgments/ewca/civ/2004/632")
-        decoded_response = response.content.decode("utf-8")
-        self.assertIn("[2004] EWCA Civ 632", decoded_response)
-        self.assertEqual(response.status_code, 200)
-
-    @skip
     def test_404_response(self):
         response = self.client.get("/judgments/ewca/civ/2004/63X")
         decoded_response = response.content.decode("utf-8")
-        self.assertIn("Judgment was not found", decoded_response)
+        self.assertIn("Page not found", decoded_response)
         self.assertEqual(response.status_code, 404)
 
     def test_extract_version_uri(self):
@@ -239,7 +230,7 @@ class TestConverters(TestCase):
     def test_year_converter_parses_year(self):
         converter = converters.YearConverter()
         match = re.match(converter.regex, "1994")
-
+        assert isinstance(match, re.Match)
         self.assertEqual(match.group(0), "1994")
 
     def test_year_converter_converts_to_python(self):
@@ -253,6 +244,7 @@ class TestConverters(TestCase):
     def test_date_converter_parses_date(self):
         converter = converters.DateConverter()
         match = re.match(converter.regex, "2022-02-28")
+        assert isinstance(match, re.Match)
         self.assertEqual(match.group(0), "2022-02-28")
 
     def test_date_converter_fails_to_parse_string(self):
@@ -263,6 +255,7 @@ class TestConverters(TestCase):
     def test_court_converter_parses_court(self):
         converter = converters.CourtConverter()
         match = re.match(converter.regex, "ewhc")
+        assert isinstance(match, re.Match)
         self.assertEqual(match.group(0), "ewhc")
 
     def test_court_converter_fails_to_parse(self):
@@ -272,6 +265,7 @@ class TestConverters(TestCase):
     def test_subdivision_converter_parses_court(self):
         converter = converters.SubdivisionConverter()
         match = re.match(converter.regex, "comm")
+        assert isinstance(match, re.Match)
         self.assertEqual(match.group(0), "comm")
 
     def test_subdivision_converter_fails_to_parse(self):
@@ -309,7 +303,7 @@ class TestUtils(TestCase):
             "delete_judgment.return_value": True,
         }
         fake_api_client.configure_mock(**api_attrs)
-        boto_attrs = {"list_objects.return_value": []}
+        boto_attrs: dict[str, list] = {"list_objects.return_value": []}
         fake_boto3_client.configure_mock(**boto_attrs)
 
         result = update_judgment_uri("old/uri", "[2002] EAT 1")
@@ -330,7 +324,7 @@ class TestUtils(TestCase):
             "delete_judgment.return_value": True,
         }
         fake_api_client.configure_mock(**api_attrs)
-        boto_attrs = {"list_objects.return_value": []}
+        boto_attrs: dict[str, list] = {"list_objects.return_value": []}
         fake_boto3_client.configure_mock(**boto_attrs)
 
         update_judgment_uri("old/uri", " [2002] EAT 1 ")

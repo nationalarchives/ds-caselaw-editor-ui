@@ -35,10 +35,29 @@ jobs:
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.0
 
+  static-analysis:
+    runs-on: ubuntu-latest
+    needs: linter
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v3
+
+      - name: Copy .env.example file
+        uses: canastro/copy-file-action@master
+        with:
+          source: ".env.example"
+          target: ".env"
+
+      - name: Build the Stack
+        run: docker-compose build django postgres
+
+      - name: Run mypy
+        run: docker-compose run django mypy ds_caselaw_editor_ui judgments
+
   # With no caching at all the entire ci process takes 4m 30s to complete!
   pytest:
     runs-on: ubuntu-latest
-
+    needs: linter
     steps:
       - name: Checkout Code Repository
         uses: actions/checkout@v3
