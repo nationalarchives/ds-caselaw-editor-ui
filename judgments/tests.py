@@ -309,7 +309,7 @@ class TestUtils(TestCase):
             "delete_judgment.return_value": True,
         }
         fake_api_client.configure_mock(**api_attrs)
-        boto_attrs = {"list_objects.return_value": []}
+        boto_attrs: dict[str, list] = {"list_objects.return_value": []}
         fake_boto3_client.configure_mock(**boto_attrs)
 
         result = update_judgment_uri("old/uri", "[2002] EAT 1")
@@ -330,7 +330,7 @@ class TestUtils(TestCase):
             "delete_judgment.return_value": True,
         }
         fake_api_client.configure_mock(**api_attrs)
-        boto_attrs = {"list_objects.return_value": []}
+        boto_attrs: dict[str, list] = {"list_objects.return_value": []}
         fake_boto3_client.configure_mock(**boto_attrs)
 
         update_judgment_uri("old/uri", " [2002] EAT 1 ")
