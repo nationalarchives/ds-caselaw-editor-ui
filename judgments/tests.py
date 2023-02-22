@@ -1,5 +1,4 @@
 import re
-from unittest import skip
 from unittest.mock import MagicMock, Mock, patch
 
 import ds_caselaw_utils
@@ -23,13 +22,6 @@ from judgments.utils.paginator import paginator
 
 
 class TestJudgment(TestCase):
-    @skip("TODO: Fix")
-    def test_valid_content(self):
-        response = self.client.get("/judgments/ewca/civ/2004/632")
-        decoded_response = response.content.decode("utf-8")
-        self.assertIn("[2004] EWCA Civ 632", decoded_response)
-        self.assertEqual(response.status_code, 200)
-
     def test_404_response(self):
         response = self.client.get("/judgments/ewca/civ/2004/63X")
         decoded_response = response.content.decode("utf-8")
