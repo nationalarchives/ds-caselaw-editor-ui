@@ -390,7 +390,7 @@ class TestUtils(TestCase):
 
 class TestJudgmentEditor(TestCase):
     @patch(
-        "judgments.views.edit_judgment.Judgment.objects.get_by_uri",
+        "judgments.views.edit_judgment.Judgment",
         autospec=Judgment,
     )
     def test_assigned(self, mock_judgment):

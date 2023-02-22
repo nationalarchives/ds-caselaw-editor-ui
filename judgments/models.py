@@ -162,17 +162,9 @@ class SearchMatch(xmlmodels.XmlModel):
     transform_to_html = xmlmodels.XsltField(join(dirname(__file__), "search_match.xsl"))
 
 
-class JudgmentManager:
-    @classmethod
-    def get_by_uri(cls, uri: str) -> "Judgment":
-        return Judgment(uri)
-
-
 class Judgment:
     def __init__(self, uri: str):
         self.uri = uri
-
-    objects = JudgmentManager()
 
     @cached_property
     def neutral_citation(self) -> str:

@@ -119,7 +119,7 @@ class EditJudgmentView(View):
     def get(self, request, *args, **kwargs):
         params = request.GET
         judgment_uri = params.get("judgment_uri")
-        judgment = Judgment.objects.get_by_uri(judgment_uri)
+        judgment = Judgment(judgment_uri)
 
         context = {"judgment_uri": judgment_uri}
 
@@ -201,7 +201,7 @@ class EditJudgmentView(View):
         except MarklogicAPIError as e:
             context["error"] = f"There was an error saving the Judgment: {e}"
 
-        judgment = Judgment.objects.get_by_uri(judgment_uri)
+        judgment = Judgment(judgment_uri)
 
         context["judgment"] = judgment
         context["page_title"] = judgment.name
