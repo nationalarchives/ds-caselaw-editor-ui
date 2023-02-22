@@ -3,9 +3,11 @@ import datetime
 import logging
 from functools import cached_property
 from os.path import dirname, join
+from typing import Optional
 
 import caselawclient.Client
-from caselawclient.Client import api_client
+from caselawclient.Client import MarklogicApiClient, api_client
+from django.conf import settings
 from django.urls import reverse
 from djxml import xmlmodels
 from lxml import etree
@@ -163,24 +165,33 @@ class SearchMatch(xmlmodels.XmlModel):
 
 
 class Judgment:
-    def __init__(self, uri: str):
+    def __init__(self, uri: str, api_client: Optional[MarklogicApiClient] = None):
         self.uri = uri
+        if api_client:
+            self.api_client = api_client
+        else:
+            self.api_client = MarklogicApiClient(
+                host=settings.MARKLOGIC_HOST,
+                username=settings.MARKLOGIC_USER,
+                password=settings.MARKLOGIC_PASSWORD,
+                use_https=settings.MARKLOGIC_USE_HTTPS,
+            )
 
     @cached_property
     def neutral_citation(self) -> str:
-        return api_client.get_judgment_citation(self.uri)
+        return self.api_client.get_judgment_citation(self.uri)
 
     @cached_property
     def name(self) -> str:
-        return api_client.get_judgment_name(self.uri)
+        return self.api_client.get_judgment_name(self.uri)
 
     @cached_property
     def court(self) -> str:
-        return api_client.get_judgment_court(self.uri)
+        return self.api_client.get_judgment_court(self.uri)
 
     @cached_property
     def judgment_date_as_string(self) -> str:
-        return api_client.get_judgment_work_date(self.uri)
+        return self.api_client.get_judgment_work_date(self.uri)
 
     @cached_property
     def judgment_date_as_date(self) -> datetime.date:
@@ -190,31 +201,31 @@ class Judgment:
 
     @cached_property
     def is_published(self) -> bool:
-        return api_client.get_published(self.uri)
+        return self.api_client.get_published(self.uri)
 
     @cached_property
     def is_sensitive(self) -> bool:
-        return api_client.get_sensitive(self.uri)
+        return self.api_client.get_sensitive(self.uri)
 
     @cached_property
     def is_anonymised(self) -> bool:
-        return api_client.get_anonymised(self.uri)
+        return self.api_client.get_anonymised(self.uri)
 
     @cached_property
     def has_supplementary_materials(self) -> bool:
-        return api_client.get_supplemental(self.uri)
+        return self.api_client.get_supplemental(self.uri)
 
     @cached_property
     def source_name(self) -> str:
-        return api_client.get_property(self.uri, "source-name")
+        return self.api_client.get_property(self.uri, "source-name")
 
     @cached_property
     def source_email(self) -> str:
-        return api_client.get_property(self.uri, "source-email")
+        return self.api_client.get_property(self.uri, "source-email")
 
     @cached_property
     def consignment_reference(self) -> str:
-        return api_client.get_property(self.uri, "transfer-consignment-reference")
+        return self.api_client.get_property(self.uri, "transfer-consignment-reference")
 
     @property
     def docx_url(self) -> str:
@@ -230,11 +241,11 @@ class Judgment:
 
     @cached_property
     def assigned_to(self) -> str:
-        return api_client.get_property(self.uri, "assigned-to")
+        return self.api_client.get_property(self.uri, "assigned-to")
 
     @cached_property
     def versions(self) -> list:
-        versions_response = api_client.list_judgment_versions(self.uri)
+        versions_response = self.api_client.list_judgment_versions(self.uri)
 
         try:
             decoded_versions = decoder.MultipartDecoder.from_response(versions_response)
@@ -243,10 +254,12 @@ class Judgment:
             return []
 
     def content_as_xml(self) -> str:
-        return api_client.get_judgment_xml(self.uri, show_unpublished=True)
+        return self.api_client.get_judgment_xml(self.uri, show_unpublished=True)
 
     def content_as_html(self, version_uri: str) -> str:
-        results = api_client.eval_xslt(self.uri, version_uri, show_unpublished=True)
+        results = self.api_client.eval_xslt(
+            self.uri, version_uri, show_unpublished=True
+        )
         multipart_data = decoder.MultipartDecoder.from_response(results)
         return multipart_data.parts[0].text
 
