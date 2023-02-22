@@ -122,6 +122,15 @@ msgstr "View on public site"
 msgid "judgment.delete"
 msgstr "Delete judgment"
 
+msgid "judgment.unlock_judgment_title"
+msgstr "Unlock judgment"
+
+msgid "judgment.confirm_unlock"
+msgstr "Forcibly unlock this judgment? This will make any enrichment processes on the judgment fail."
+
+msgid "judgment.back_to_judgment"
+msgstr "Back to judgment"
+
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_header.html:4
 msgid "judgments.details"
 msgstr "Judgment details:"

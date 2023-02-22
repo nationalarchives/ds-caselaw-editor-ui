@@ -1,0 +1,21 @@
+{% extends "layouts/base.html" %}
+{% load static i18n %}
+
+{% block header %}
+  <header class="page-header">
+    {% include 'includes/breadcrumbs.html' with title=context.page_title link=request.get_full_path current=context.page_title %}
+    {% include 'includes/logo.html' %}
+  </header>
+{% endblock header %}
+{% block content %}
+  <div class="unlock-judgment">
+    <p>{{context.judgment_uri}}</p>
+    <p class="unlock-judgment__confirmation">{% translate "judgment.confirm_unlock" %}</p>
+    <form method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="judgment_uri" value="{{context.judgment_uri}}">
+      <button type="submit">{% translate "judgment.unlock_judgment_title" %}</button>
+    </form>
+    <a href="{% url 'detail' %}?judgment_uri={{context.judgment_uri}}">{% translate "judgment.back_to_judgment" %}</a>
+  </div>
+{% endblock content %}

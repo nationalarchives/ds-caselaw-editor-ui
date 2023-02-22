@@ -29,9 +29,9 @@
 <div class="judgment-sidebar__block">
 
   <h4>Tools</h4>
-
   <ul>
     <li><a href="{{ context.jira_create_link }}" target="_blank" rel="noopener noreferrer">{% translate "judgment.create_in_jira" %}</a></li>
+    <li><a href="{% url 'unlock' %}?judgment_uri={{context.judgment_uri}}">{% translate "judgment.unlock_judgment_title" %}</a></li>
   </ul>
 
 </div>
