@@ -230,7 +230,7 @@ class TestConverters(TestCase):
     def test_year_converter_parses_year(self):
         converter = converters.YearConverter()
         match = re.match(converter.regex, "1994")
-
+        assert isinstance(match, re.Match)
         self.assertEqual(match.group(0), "1994")
 
     def test_year_converter_converts_to_python(self):
@@ -244,6 +244,7 @@ class TestConverters(TestCase):
     def test_date_converter_parses_date(self):
         converter = converters.DateConverter()
         match = re.match(converter.regex, "2022-02-28")
+        assert isinstance(match, re.Match)
         self.assertEqual(match.group(0), "2022-02-28")
 
     def test_date_converter_fails_to_parse_string(self):
@@ -254,6 +255,7 @@ class TestConverters(TestCase):
     def test_court_converter_parses_court(self):
         converter = converters.CourtConverter()
         match = re.match(converter.regex, "ewhc")
+        assert isinstance(match, re.Match)
         self.assertEqual(match.group(0), "ewhc")
 
     def test_court_converter_fails_to_parse(self):
@@ -263,6 +265,7 @@ class TestConverters(TestCase):
     def test_subdivision_converter_parses_court(self):
         converter = converters.SubdivisionConverter()
         match = re.match(converter.regex, "comm")
+        assert isinstance(match, re.Match)
         self.assertEqual(match.group(0), "comm")
 
     def test_subdivision_converter_fails_to_parse(self):
