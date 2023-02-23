@@ -1,30 +1,22 @@
-import xml.etree.ElementTree as ET
 from urllib.parse import quote, urlencode
 
-from caselawclient.Client import (
-    MarklogicAPIError,
-    MarklogicResourceNotFoundError,
-    api_client,
-)
+from caselawclient.Client import MarklogicAPIError, api_client
 from django.conf import settings
-from django.http import Http404, HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template import loader
 from django.urls import reverse
 from django.utils.translation import gettext
 from django.views.generic import View
-from requests_toolbelt.multipart import decoder
 
+from judgments.models import Judgment
 from judgments.utils import (
     MoveJudgmentError,
     NeutralCitationToUriError,
-    render_versions,
     update_judgment_uri,
     users_dict,
 )
 from judgments.utils.aws import (
-    generate_docx_url,
-    generate_pdf_url,
     invalidate_caches,
     notify_changed,
     publish_documents,
@@ -34,45 +26,6 @@ from judgments.utils.aws import (
 
 
 class EditJudgmentView(View):
-    def get_judgment(self, uri: str):
-        try:
-            judgment_xml = api_client.get_judgment_xml(uri, show_unpublished=True)
-            return ET.XML(bytes(judgment_xml, encoding="utf-8"))
-        except MarklogicResourceNotFoundError as e:
-            raise Http404(f"Judgment XML was not found at uri {uri}, {e}")
-
-    def get_metadata(self, uri: str) -> dict:
-        meta = dict()
-
-        meta["published"] = api_client.get_published(uri)
-        meta["sensitive"] = api_client.get_sensitive(uri)
-        meta["supplemental"] = api_client.get_supplemental(uri)
-        meta["anonymised"] = api_client.get_anonymised(uri)
-        meta["metadata_name"] = api_client.get_judgment_name(uri)
-        meta["page_title"] = meta["metadata_name"]
-        meta["court"] = api_client.get_judgment_court(uri)
-        meta["neutral_citation"] = api_client.get_judgment_citation(uri)
-        meta["judgment_date"] = api_client.get_judgment_work_date(uri)
-        meta["docx_url"] = generate_docx_url(uri_for_s3(uri))
-        meta["pdf_url"] = generate_pdf_url(uri_for_s3(uri))
-        meta["previous_versions"] = self.get_versions(uri)
-        meta["consignment_reference"] = api_client.get_property(
-            uri, "transfer-consignment-reference"
-        )
-        meta["source_name"] = api_client.get_property(uri, "source-name")
-        meta["source_email"] = api_client.get_property(uri, "source-email")
-        meta["assigned_to"] = api_client.get_property(uri, "assigned-to")
-        meta["is_editable"] = True
-        return meta
-
-    def get_versions(self, uri: str):
-        versions_response = api_client.list_judgment_versions(uri)
-        try:
-            decoded_versions = decoder.MultipartDecoder.from_response(versions_response)
-            return render_versions(decoded_versions.parts)
-        except AttributeError:
-            return []
-
     def build_email_link_with_content(self, address, subject, body=None):
         params = {"subject": "Find Case Law – {subject}".format(subject=subject)}
 
@@ -85,21 +38,21 @@ class EditJudgmentView(View):
 
     def build_raise_issue_email_link(self, context):
         subject_string = "Issue(s) found with {reference}".format(
-            reference=context["consignment_reference"]
+            reference=context["judgment"].consignment_reference
         )
 
         return self.build_email_link_with_content(
-            context["source_email"], subject_string
+            context["judgment"].source_email, subject_string
         )
 
     def build_confirmation_email_link(self, request, context):
         subject_string = "Notification of publication [TDR ref: {reference}]".format(
-            reference=context["consignment_reference"]
+            reference=context["judgment"].consignment_reference
         )
 
         email_context = {
-            "judgment_name": context["metadata_name"],
-            "reference": context["consignment_reference"],
+            "judgment_name": context["judgment"].name,
+            "reference": context["judgment"].consignment_reference,
             "public_judgment_url": "https://caselaw.nationalarchives.gov.uk/{uri}".format(
                 uri=context["judgment_uri"]
             ),
@@ -111,14 +64,14 @@ class EditJudgmentView(View):
         )
 
         return self.build_email_link_with_content(
-            context["source_email"], subject_string, body_string
+            context["judgment"].source_email, subject_string, body_string
         )
 
     def build_jira_create_link(self, request, context):
         summary_string = "{name} / {ncn} / {tdr}".format(
-            name=context["metadata_name"],
-            ncn=context["neutral_citation"],
-            tdr=context["consignment_reference"],
+            name=context["judgment"].name,
+            ncn=context["judgment"].neutral_citation,
+            tdr=context["judgment"].consignment_reference,
         )
 
         editor_details_url = request.build_absolute_uri(
@@ -140,11 +93,11 @@ class EditJudgmentView(View):
 {consignment_ref_label}: {consignment_ref}""".format(
                 details_url=editor_details_url,
                 source_name_label=gettext("judgments.submitter"),
-                source_name=context["source_name"],
+                source_name=context["judgment"].source_name,
                 source_email_label=gettext("judgments.submitteremail"),
-                source_email=context["source_email"],
+                source_email=context["judgment"].source_email,
                 consignment_ref_label=gettext("judgments.consignmentref"),
-                consignment_ref=context["consignment_reference"],
+                consignment_ref=context["judgment"].consignment_reference,
             )
         )
 
@@ -166,8 +119,12 @@ class EditJudgmentView(View):
     def get(self, request, *args, **kwargs):
         params = request.GET
         judgment_uri = params.get("judgment_uri")
+        judgment = Judgment(judgment_uri)
+
         context = {"judgment_uri": judgment_uri}
-        context.update(self.get_metadata(judgment_uri))
+
+        context["judgment"] = judgment
+        context["page_title"] = judgment.name
 
         context.update({"users": users_dict()})
 
@@ -244,7 +201,11 @@ class EditJudgmentView(View):
         except MarklogicAPIError as e:
             context["error"] = f"There was an error saving the Judgment: {e}"
 
-        context.update(self.get_metadata(judgment_uri))
+        judgment = Judgment(judgment_uri)
+
+        context["judgment"] = judgment
+        context["page_title"] = judgment.name
+
         invalidate_caches(judgment_uri)
 
         context.update({"users": users_dict()})

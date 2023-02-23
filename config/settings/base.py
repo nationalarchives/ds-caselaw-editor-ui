@@ -266,6 +266,11 @@ LOGGING = {
 # where to look for fixtures when env("MARKLOGIC_MOCK_REQUESTS") = 'true'
 MARKLOGIC_FIXTURES_DIR = str(ROOT_DIR / "judgments" / "fixtures")
 
+MARKLOGIC_HOST = env("MARKLOGIC_HOST", default=None)
+MARKLOGIC_USER = env("MARKLOGIC_USER", default=None)
+MARKLOGIC_PASSWORD = env("MARKLOGIC_PASSWORD", default=None)
+MARKLOGIC_USE_HTTPS = env("MARKLOGIC_USE_HTTPS", default=False)
+
 # django-allauth
 # ------------------------------------------------------------------------------
 # https://django-allauth.readthedocs.io/en/latest/configuration.html

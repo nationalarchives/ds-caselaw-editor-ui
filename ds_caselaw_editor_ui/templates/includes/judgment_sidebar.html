@@ -5,9 +5,9 @@
   <h4>Submission</h4>
 
   <ul>
-    <li><span class="judgment-sidebar__label">{% translate "judgments.submitter" %}:</span> {{context.source_name}}</li>
-    <li><span class="judgment-sidebar__label">{% translate "judgments.submitteremail" %}:</span> <a href="mailto:{{context.source_email}}">{{context.source_email}}</a></li>
-    <li><span class="judgment-sidebar__label">{% translate "judgments.consignmentref" %}:</span> {{context.consignment_reference}}</li>
+    <li><span class="judgment-sidebar__label">{% translate "judgments.submitter" %}:</span> {{ context.judgment.source_name }}</li>
+    <li><span class="judgment-sidebar__label">{% translate "judgments.submitteremail" %}:</span> <a href="mailto:{{ context.judgment.source_email }}">{{ context.judgment.source_email }}</a></li>
+    <li><span class="judgment-sidebar__label">{% translate "judgments.consignmentref" %}:</span> {{ context.judgment.consignment_reference }}</li>
   </ul>
 
 </div>
@@ -16,13 +16,13 @@
   <h4>Downloads</h4>
 
   <ul>
-    {% if context.docx_url %}
-      <li><a href="{{ context.docx_url }}">{% translate "judgment.download_docx" %}</a></li>
+    {% if context.judgment.docx_url %}
+      <li><a href="{{ context.judgment.docx_url }}">{% translate "judgment.download_docx" %}</a></li>
     {% endif %}
-    {% if context.pdf_url %}
-      <li><a href="{{ context.pdf_url }}">{% translate "judgment.download_pdf" %}</a></li>
+    {% if context.judgment.pdf_url %}
+      <li><a href="{{ context.judgment.pdf_url }}">{% translate "judgment.download_pdf" %}</a></li>
     {% endif %}
-    <li><a href="{% url 'detail_xml' %}?judgment_uri={{context.judgment_uri}}">{% translate "judgment.download_xml" %}</a></li>
+    <li><a href="{{ context.judgment.xml_url }}">{% translate "judgment.download_xml" %}</a></li>
   </ul>
 
 </div>

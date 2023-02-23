@@ -10,11 +10,11 @@
     {% endif %}
     <div class="judgment-toolbar__edit">
 
-      {% if context.is_editable %}
-        <a class="judgment-toolbar__button{% if not context.judgment %} judgment-toolbar__button-selected{% endif %}" href="{% url 'edit' %}?judgment_uri={{context.judgment_uri}}">
+      {% if context.judgment.is_editable %}
+        <a class="judgment-toolbar__button{% if not context.judgment_content %} judgment-toolbar__button-selected{% endif %}" href="{% url 'edit' %}?judgment_uri={{context.judgment_uri}}">
           {% translate "judgment.edit_this_judgment" %}
         </a>
-        <a class="judgment-toolbar__button{% if context.judgment %} judgment-toolbar__button-selected{% endif %}" href="{% url 'detail' %}?judgment_uri={{context.judgment_uri}}">
+        <a class="judgment-toolbar__button{% if context.judgment_content %} judgment-toolbar__button-selected{% endif %}" href="{% url 'detail' %}?judgment_uri={{context.judgment_uri}}">
           {% translate "judgment.view_this_judgment" %}
         </a>
       {% else %}
@@ -26,8 +26,8 @@
         </span>
       {% endif %}
 
-      {% if context.docx_url %}
-        <a class="judgment-toolbar__button" href="{{ context.docx_url }}">
+      {% if context.judgment.docx_url %}
+        <a class="judgment-toolbar__button" href="{{ context.judgment.docx_url }}">
           {% translate "judgment.download_docx" %}
         </a>
       {% else %}
@@ -36,8 +36,8 @@
         </span>
       {% endif %}
 
-      {% if context.pdf_url %}
-        <a class="judgment-toolbar__button" href="{{ context.pdf_url }}">
+      {% if context.judgment.pdf_url %}
+        <a class="judgment-toolbar__button" href="{{ context.judgment.pdf_url }}">
           {% translate "judgment.download_pdf" %}
         </a>
       {% else %}
@@ -46,7 +46,7 @@
         </span>
       {% endif %}
 
-      {% if context.published %}
+      {% if context.judgment.is_published %}
         <a class="judgment-toolbar__button" href="https://caselaw.nationalarchives.gov.uk/{{context.judgment_uri}}" target="_blank">
           {% translate "judgment.view_on_public" %}
         </a>
@@ -56,7 +56,7 @@
         </span>
       {% endif %}
 
-      {% if context.is_failure %}
+      {% if context.judgment.is_failure %}
         <form action="/delete" method="post">
           {% csrf_token %}
           <input
