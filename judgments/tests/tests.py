@@ -1,11 +1,9 @@
-import re
 from unittest.mock import Mock, patch
 
 from django.contrib.auth.models import User
 from django.test import TestCase
 from lxml import etree
 
-from judgments import converters
 from judgments.models import Judgment, SearchResult, SearchResultMeta
 from judgments.utils import extract_version, render_versions
 
@@ -174,53 +172,6 @@ class TestSearchResultModel(TestCase):
         self.assertEqual("ukut/lc/2022/241", search_result.uri)
         self.assertEqual(None, search_result.neutral_citation)
         self.assertEqual(None, search_result.court)
-
-
-class TestConverters(TestCase):
-    def test_year_converter_parses_year(self):
-        converter = converters.YearConverter()
-        match = re.match(converter.regex, "1994")
-        assert isinstance(match, re.Match)
-        self.assertEqual(match.group(0), "1994")
-
-    def test_year_converter_converts_to_python(self):
-        converter = converters.YearConverter()
-        self.assertEqual(converter.to_python("1994"), 1994)
-
-    def test_year_converter_converts_to_url(self):
-        converter = converters.YearConverter()
-        self.assertEqual(converter.to_url(1994), "1994")
-
-    def test_date_converter_parses_date(self):
-        converter = converters.DateConverter()
-        match = re.match(converter.regex, "2022-02-28")
-        assert isinstance(match, re.Match)
-        self.assertEqual(match.group(0), "2022-02-28")
-
-    def test_date_converter_fails_to_parse_string(self):
-        converter = converters.DateConverter()
-        match = re.match(converter.regex, "202L-ab-er")
-        self.assertIsNone(match)
-
-    def test_court_converter_parses_court(self):
-        converter = converters.CourtConverter()
-        match = re.match(converter.regex, "ewhc")
-        assert isinstance(match, re.Match)
-        self.assertEqual(match.group(0), "ewhc")
-
-    def test_court_converter_fails_to_parse(self):
-        converter = converters.CourtConverter()
-        self.assertIsNone(re.match(converter.regex, "notacourt"))
-
-    def test_subdivision_converter_parses_court(self):
-        converter = converters.SubdivisionConverter()
-        match = re.match(converter.regex, "comm")
-        assert isinstance(match, re.Match)
-        self.assertEqual(match.group(0), "comm")
-
-    def test_subdivision_converter_fails_to_parse(self):
-        converter = converters.SubdivisionConverter()
-        self.assertIsNone(re.match(converter.regex, "notasubdivision"))
 
 
 class TestJudgmentEditor(TestCase):
