@@ -2,7 +2,8 @@ from urllib.parse import quote, urlencode
 
 from caselawclient.Client import MarklogicAPIError, api_client
 from django.conf import settings
-from django.http import HttpResponse
+from django.contrib import messages
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.template import loader
 from django.urls import reverse
@@ -143,7 +144,6 @@ class EditJudgmentView(View):
         supplemental = bool(request.POST.get("supplemental", False))
         anonymised = bool(request.POST.get("anonymised", False))
 
-        context = {"judgment_uri": judgment_uri}
         try:
             api_client.set_published(judgment_uri, published)
             api_client.set_sensitive(judgment_uri, sensitive)
@@ -191,23 +191,17 @@ class EditJudgmentView(View):
                 enrich=published,  # placeholder for now, should perhaps be "has this become published"
             )
 
-            context["success"] = "Judgment successfully updated"
+            messages.success(request, "Judgment successfully updated")
 
         except (MoveJudgmentError, NeutralCitationToUriError) as e:
-            context[
-                "error"
-            ] = f"There was an error updating the Judgment's neutral citation: {e}"
+            messages.error(
+                request,
+                f"There was an error updating the Judgment's neutral citation: {e}",
+            )
 
         except MarklogicAPIError as e:
-            context["error"] = f"There was an error saving the Judgment: {e}"
-
-        judgment = Judgment(judgment_uri)
-
-        context["judgment"] = judgment
-        context["page_title"] = judgment.name
+            messages.error(request, f"There was an error saving the Judgment: {e}")
 
         invalidate_caches(judgment_uri)
 
-        context.update({"users": users_dict()})
-
-        return self.render(request, context)
+        return HttpResponseRedirect(reverse("edit") + "?judgment_uri=" + judgment_uri)

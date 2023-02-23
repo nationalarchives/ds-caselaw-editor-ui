@@ -4,6 +4,7 @@ Base settings to build other settings files upon.
 from pathlib import Path
 
 import environ
+from django.contrib.messages import constants as message_constants
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # ds_judgments_editor_ui/
@@ -291,3 +292,8 @@ STRONGHOLD_PUBLIC_URLS = (
 )
 
 JIRA_INSTANCE = env("JIRA_INSTANCE")
+
+MESSAGE_TAGS = {
+    message_constants.SUCCESS: "edit-component__success",
+    message_constants.ERROR: "edit-component__error",
+}
