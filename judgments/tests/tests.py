@@ -7,7 +7,7 @@ from lxml import etree
 
 from judgments import converters
 from judgments.models import Judgment, SearchResult, SearchResultMeta
-from judgments.utils import ensure_local_referer_url, extract_version, render_versions
+from judgments.utils import extract_version, render_versions
 
 
 class TestJudgment(TestCase):
@@ -237,25 +237,3 @@ class TestJudgmentEditor(TestCase):
         response = self.client.get("/edit?judgment_uri=ewhc/ch/1999/1")
 
         assert b"selected>otheruser" in response.content
-
-
-class TestReferrerUrlHelper(TestCase):
-    @patch("django.http.request.HttpRequest")
-    def test_when_referrer_is_relative(self, request):
-        request.META = {"HTTP_REFERER": "/foo/bar"}
-        assert ensure_local_referer_url(request, "/default") == "/foo/bar"
-
-    @patch("django.http.request.HttpRequest")
-    def test_when_referrer_is_absolute_and_local(self, request):
-        request.META = {"HTTP_REFERER": "https://www.example.com/foo/bar"}
-        request.get_host.return_value = "www.example.com"
-        assert (
-            ensure_local_referer_url(request, "/default")
-            == "https://www.example.com/foo/bar"
-        )
-
-    @patch("django.http.request.HttpRequest")
-    def test_when_referrer_is_absolute_and_remote(self, request):
-        request.META = {"HTTP_REFERER": "https://www.someone-nefarious.com/foo/bar"}
-        request.get_host.return_value = "www.example.com"
-        assert ensure_local_referer_url(request, "/default") == "/default"

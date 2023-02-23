@@ -5,7 +5,11 @@ from caselawclient.Client import MarklogicAPIError
 from django.test import TestCase
 
 import judgments
-from judgments.utils import get_judgment_root, update_judgment_uri
+from judgments.utils import (
+    ensure_local_referer_url,
+    get_judgment_root,
+    update_judgment_uri,
+)
 from judgments.utils.aws import build_new_key
 from judgments.utils.paginator import paginator
 
@@ -162,3 +166,25 @@ class TestUtils(TestCase):
         old_key = "failures/TDR-2022-DNWR/image1.jpg"
         new_uri = "ukpc/2023/120"
         assert build_new_key(old_key, new_uri) == "ukpc/2023/120/image1.jpg"
+
+
+class TestReferrerUrlHelper(TestCase):
+    @patch("django.http.request.HttpRequest")
+    def test_when_referrer_is_relative(self, request):
+        request.META = {"HTTP_REFERER": "/foo/bar"}
+        assert ensure_local_referer_url(request, "/default") == "/foo/bar"
+
+    @patch("django.http.request.HttpRequest")
+    def test_when_referrer_is_absolute_and_local(self, request):
+        request.META = {"HTTP_REFERER": "https://www.example.com/foo/bar"}
+        request.get_host.return_value = "www.example.com"
+        assert (
+            ensure_local_referer_url(request, "/default")
+            == "https://www.example.com/foo/bar"
+        )
+
+    @patch("django.http.request.HttpRequest")
+    def test_when_referrer_is_absolute_and_remote(self, request):
+        request.META = {"HTTP_REFERER": "https://www.someone-nefarious.com/foo/bar"}
+        request.get_host.return_value = "www.example.com"
+        assert ensure_local_referer_url(request, "/default") == "/default"
