@@ -47,7 +47,7 @@
       {% endif %}
 
       {% if context.judgment.is_published %}
-        <a class="judgment-toolbar__button" href="https://caselaw.nationalarchives.gov.uk/{{context.judgment_uri}}" target="_blank">
+        <a class="judgment-toolbar__button" href="{{ context.judgment.public_uri }}" target="_blank">
           {% translate "judgment.view_on_public" %}
         </a>
       {% else %}

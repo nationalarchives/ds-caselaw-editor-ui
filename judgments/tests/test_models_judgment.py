@@ -29,6 +29,15 @@ class TestJudgment:
 
         mock_api_client_class.assert_not_called()
 
+    def test_public_uri(self, mock_api_client):
+        mock_api_client.get_judgment_citation.return_value = "2023/test/1234"
+
+        judgment = Judgment("test/1234", mock_api_client)
+
+        assert (
+            judgment.public_uri == "https://caselaw.nationalarchives.gov.uk/test/1234"
+        )
+
     def test_judgment_neutral_citation(self, mock_api_client):
         mock_api_client.get_judgment_citation.return_value = "2023/test/1234"
 

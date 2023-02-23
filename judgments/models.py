@@ -177,6 +177,10 @@ class Judgment:
                 use_https=settings.MARKLOGIC_USE_HTTPS,
             )
 
+    @property
+    def public_uri(self) -> str:
+        return "https://caselaw.nationalarchives.gov.uk/{uri}".format(uri=self.uri)
+
     @cached_property
     def neutral_citation(self) -> str:
         return self.api_client.get_judgment_citation(self.uri)
