@@ -166,7 +166,7 @@ class SearchMatch(xmlmodels.XmlModel):
 
 class Judgment:
     def __init__(self, uri: str, api_client: Optional[MarklogicApiClient] = None):
-        self.uri = uri
+        self.uri = uri.strip("/")
         if api_client:
             self.api_client = api_client
         else:
