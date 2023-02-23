@@ -2,6 +2,7 @@ from urllib.parse import quote, urlencode
 
 from caselawclient.Client import MarklogicAPIError, api_client
 from django.conf import settings
+from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template import loader
@@ -191,15 +192,16 @@ class EditJudgmentView(View):
                 enrich=published,  # placeholder for now, should perhaps be "has this become published"
             )
 
-            context["success"] = "Judgment successfully updated"
+            messages.success(request, "Judgment successfully updated")
 
         except (MoveJudgmentError, NeutralCitationToUriError) as e:
-            context[
-                "error"
-            ] = f"There was an error updating the Judgment's neutral citation: {e}"
+            messages.error(
+                request,
+                f"There was an error updating the Judgment's neutral citation: {e}",
+            )
 
         except MarklogicAPIError as e:
-            context["error"] = f"There was an error saving the Judgment: {e}"
+            messages.error(request, f"There was an error saving the Judgment: {e}")
 
         judgment = Judgment(judgment_uri)
 
