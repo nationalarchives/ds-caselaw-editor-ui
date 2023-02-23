@@ -12,6 +12,7 @@
     display: inline-block;
     text-decoration: none;
     transition: all 0.2s;
+    margin: 0.5rem 0.25rem;
 
     &:hover {
       background-color: scale-color($color__aqua-blue, $lightness: +8%);
