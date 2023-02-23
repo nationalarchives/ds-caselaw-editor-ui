@@ -29,12 +29,24 @@ class TestJudgment:
 
         mock_api_client_class.assert_not_called()
 
+    def test_uri_strips_slashes(self, mock_api_client):
+        judgment = Judgment("////test/1234/////", mock_api_client)
+
+        assert judgment.uri == "test/1234"
+
+    def test_public_uri(self, mock_api_client):
+        judgment = Judgment("test/1234", mock_api_client)
+
+        assert (
+            judgment.public_uri == "https://caselaw.nationalarchives.gov.uk/test/1234"
+        )
+
     def test_judgment_neutral_citation(self, mock_api_client):
-        mock_api_client.get_judgment_citation.return_value = "2023/test/1234"
+        mock_api_client.get_judgment_citation.return_value = "[2023] TEST 1234"
 
         judgment = Judgment("test/1234", mock_api_client)
 
-        assert judgment.neutral_citation == "2023/test/1234"
+        assert judgment.neutral_citation == "[2023] TEST 1234"
         mock_api_client.get_judgment_citation.assert_called_once_with("test/1234")
 
     def test_judgment_name(self, mock_api_client):

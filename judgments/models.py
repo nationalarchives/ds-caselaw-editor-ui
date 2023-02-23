@@ -166,7 +166,7 @@ class SearchMatch(xmlmodels.XmlModel):
 
 class Judgment:
     def __init__(self, uri: str, api_client: Optional[MarklogicApiClient] = None):
-        self.uri = uri
+        self.uri = uri.strip("/")
         if api_client:
             self.api_client = api_client
         else:
@@ -176,6 +176,10 @@ class Judgment:
                 password=settings.MARKLOGIC_PASSWORD,
                 use_https=settings.MARKLOGIC_USE_HTTPS,
             )
+
+    @property
+    def public_uri(self) -> str:
+        return "https://caselaw.nationalarchives.gov.uk/{uri}".format(uri=self.uri)
 
     @cached_property
     def neutral_citation(self) -> str:
