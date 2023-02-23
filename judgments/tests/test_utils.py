@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, Mock, patch
 
 import ds_caselaw_utils
 from caselawclient.Client import MarklogicAPIError
@@ -7,7 +7,9 @@ from django.test import TestCase
 import judgments
 from judgments.utils import (
     ensure_local_referer_url,
+    extract_version,
     get_judgment_root,
+    render_versions,
     update_judgment_uri,
 )
 from judgments.utils.aws import build_new_key
@@ -188,3 +190,34 @@ class TestReferrerUrlHelper(TestCase):
         request.META = {"HTTP_REFERER": "https://www.someone-nefarious.com/foo/bar"}
         request.get_host.return_value = "www.example.com"
         assert ensure_local_referer_url(request, "/default") == "/default"
+
+
+class TestVersionUtils:
+    def test_extract_version_uri(self):
+        uri = "/ewhc/ch/2022/1178_xml_versions/2-1178.xml"
+        assert extract_version(uri) == 2
+
+    def test_extract_version_failure(self):
+        uri = "/failures/TDR-2022-DBF_xml_versions/1-TDR-2022-DBF.xml"
+        assert extract_version(uri) == 1
+
+    def test_extract_version_not_found(self):
+        uri = "some-other-string"
+        assert extract_version(uri) == 0
+
+    def test_render_versions(self):
+        version_parts = (
+            Mock(text="/ewhc/ch/2022/1178_xml_versions/3-1178.xml"),
+            Mock(text="/ewhc/ch/2022/1178_xml_versions/2-1178.xml"),
+            Mock(text="/ewhc/ch/2022/1178_xml_versions/1-1178.xml"),
+        )
+        requests_toolbelt = Mock()
+        requests_toolbelt.multipart.decoder.BodyPart.return_value = version_parts
+
+        expected_result = [
+            {"uri": "/ewhc/ch/2022/1178_xml_versions/3-1178", "version": 3},
+            {"uri": "/ewhc/ch/2022/1178_xml_versions/2-1178", "version": 2},
+            {"uri": "/ewhc/ch/2022/1178_xml_versions/1-1178", "version": 1},
+        ]
+
+        assert render_versions(version_parts) == expected_result
