@@ -35,8 +35,6 @@ class TestJudgment:
         assert judgment.uri == "test/1234"
 
     def test_public_uri(self, mock_api_client):
-        mock_api_client.get_judgment_citation.return_value = "2023/test/1234"
-
         judgment = Judgment("test/1234", mock_api_client)
 
         assert (
@@ -44,11 +42,11 @@ class TestJudgment:
         )
 
     def test_judgment_neutral_citation(self, mock_api_client):
-        mock_api_client.get_judgment_citation.return_value = "2023/test/1234"
+        mock_api_client.get_judgment_citation.return_value = "[2023] TEST 1234"
 
         judgment = Judgment("test/1234", mock_api_client)
 
-        assert judgment.neutral_citation == "2023/test/1234"
+        assert judgment.neutral_citation == "[2023] TEST 1234"
         mock_api_client.get_judgment_citation.assert_called_once_with("test/1234")
 
     def test_judgment_name(self, mock_api_client):
