@@ -6,7 +6,7 @@ from judgments.models import Judgment
 from judgments.utils import extract_version
 
 
-def detail(request):
+def html_view(request):
     params = request.GET
     judgment_uri = params.get("judgment_uri", None)
     version_uri = params.get("version_uri", None)

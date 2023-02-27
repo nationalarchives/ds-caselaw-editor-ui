@@ -73,9 +73,9 @@ class EditJudgmentView(View):
             tdr=context["judgment"].consignment_reference,
         )
 
-        editor_details_url = request.build_absolute_uri(
+        editor_html_url = request.build_absolute_uri(
             "{base_url}?{params}".format(
-                base_url=reverse("detail"),
+                base_url=reverse("full-text-html"),
                 params=urlencode(
                     {
                         "judgment_uri": context["judgment_uri"],
@@ -84,13 +84,13 @@ class EditJudgmentView(View):
             )
         )
 
-        description_string = "{editor_details_url}".format(
-            editor_details_url="""{details_url}
+        description_string = "{editor_html_url}".format(
+            editor_html_url="""{html_url}
 
 {source_name_label}: {source_name}
 {source_email_label}: {source_email}
 {consignment_ref_label}: {consignment_ref}""".format(
-                details_url=editor_details_url,
+                html_url=editor_html_url,
                 source_name_label=gettext("judgments.submitter"),
                 source_name=context["judgment"].source_name,
                 source_email_label=gettext("judgments.submitteremail"),
