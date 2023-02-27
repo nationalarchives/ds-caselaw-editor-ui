@@ -6,7 +6,7 @@
 
   &__container {
     @include container;
-    padding: calc($spacer__unit * 4) 0;
+    padding: calc($spacer__unit * 1) 0;
   }
 
   &__header {

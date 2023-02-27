@@ -1,12 +1,13 @@
 {% extends "layouts/base.html" %}
 {% load i18n %}
 {% block content %}
-  <header class="page-header">
+<header class="page-header page-header-slim"> 
     {% include 'includes/breadcrumbs.html' with current="home" %}
+   <!--START Hiding this content to reduce banner depth
     {% include 'includes/logo.html' %}
-
+    ENDS-->
   </header>
-
+ <!--START Hiding this content to reduce banner depth
   <div class="service-introduction">
     <div class="service-introduction__container">
       <span class="service-introduction__separator"></span>
@@ -17,6 +18,7 @@
       </p>
     </div>
   </div>
+  ENDS-->
   {% include 'includes/basic_search_form.html' %}
   {% include 'includes/unpublished_judgments.html' %}
 {% endblock %}

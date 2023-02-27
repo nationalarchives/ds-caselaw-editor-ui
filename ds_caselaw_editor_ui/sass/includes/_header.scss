@@ -1,7 +1,7 @@
 .page-header {
   background-color: $color__almost-black;
-  padding: 0 0 calc($spacer__unit * 1.25);
-
+  /* padding: 0 0 calc($spacer__unit * 1.25); */
+  padding: 0;
   &__breadcrumb {
 
     display: block;
