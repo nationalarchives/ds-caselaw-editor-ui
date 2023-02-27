@@ -157,7 +157,7 @@ class TestJudgment:
     def test_judgment_xml_url(self, mock_api_client):
         judgment = Judgment("test/1234", mock_api_client)
 
-        assert judgment.xml_url == "/xml?judgment_uri=test/1234"
+        assert judgment.xml_url == "/test/1234/xml"
 
     def test_judgment_assigned_to(self, mock_api_client):
         mock_api_client.get_property.return_value = "testuser"

@@ -244,7 +244,7 @@ class Judgment:
 
     @property
     def xml_url(self) -> str:
-        return reverse("detail_xml") + "?judgment_uri=" + self.uri
+        return reverse("full-text-xml", kwargs={"judgment_uri": self.uri})
 
     @cached_property
     def assigned_to(self) -> str:

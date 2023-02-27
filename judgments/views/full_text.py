@@ -35,6 +35,18 @@ def html_view(request, judgment_uri):
     return HttpResponse(template.render({"context": context}, request))
 
 
+def xml_view(request, judgment_uri):
+    try:
+        judgment = Judgment(judgment_uri)
+        judgment_xml = judgment.content_as_xml()
+    except MarklogicResourceNotFoundError as e:
+        raise Http404(f"Judgment was not found at uri {judgment_uri}, {e}")
+
+    response = HttpResponse(judgment_xml, content_type="application/xml")
+    response["Content-Disposition"] = f"attachment; filename={judgment_uri}.xml"
+    return response
+
+
 def html_view_redirect(request):
     params = request.GET
     judgment_uri = params.get("judgment_uri", None)
@@ -54,3 +66,11 @@ def html_view_redirect(request):
         )
 
     return HttpResponseRedirect(redirect_path)
+
+
+def xml_view_redirect(request):
+    params = request.GET
+    judgment_uri = params.get("judgment_uri", None)
+    return HttpResponseRedirect(
+        reverse("full-text-xml", kwargs={"judgment_uri": judgment_uri})
+    )
