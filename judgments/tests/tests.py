@@ -1,5 +1,6 @@
 from unittest.mock import patch
 
+from caselawclient.Client import MarklogicResourceNotFoundError
 from django.contrib.auth.models import User
 from django.test import TestCase
 from lxml import etree
@@ -8,10 +9,15 @@ from judgments.models import Judgment, SearchResult, SearchResultMeta
 
 
 class TestJudgment(TestCase):
-    def test_404_response(self):
-        response = self.client.get("/judgments/ewca/civ/2004/63X")
+    @patch(
+        "judgments.models.MarklogicApiClient.get_judgment_citation",
+        side_effect=MarklogicResourceNotFoundError(),
+    )
+    def test_judgment_not_found_response(self, mock_api_client):
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        response = self.client.get("/ewca/civ/2004/63X")
         decoded_response = response.content.decode("utf-8")
-        self.assertIn("Page not found", decoded_response)
+        self.assertIn("Judgment was not found", decoded_response)
         self.assertEqual(response.status_code, 404)
 
 

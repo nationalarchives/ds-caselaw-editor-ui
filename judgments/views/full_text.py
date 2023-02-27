@@ -6,14 +6,14 @@ from judgments.models import Judgment
 from judgments.utils import extract_version
 
 
-def html_view(request):
+def html_view(request, judgment_uri):
     params = request.GET
-    judgment_uri = params.get("judgment_uri", None)
     version_uri = params.get("version_uri", None)
-    judgment = Judgment(judgment_uri)
-    context = {"judgment_uri": judgment_uri, "judgment": judgment}
 
     try:
+        judgment = Judgment(judgment_uri)
+        context = {"judgment_uri": judgment_uri, "judgment": judgment}
+
         if not judgment.is_editable:
             judgment_content = judgment.content_as_xml()
             metadata_name = judgment_uri

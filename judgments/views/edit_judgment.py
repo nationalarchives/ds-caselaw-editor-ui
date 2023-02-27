@@ -74,14 +74,7 @@ class EditJudgmentView(View):
         )
 
         editor_html_url = request.build_absolute_uri(
-            "{base_url}?{params}".format(
-                base_url=reverse("full-text-html"),
-                params=urlencode(
-                    {
-                        "judgment_uri": context["judgment_uri"],
-                    }
-                ),
-            )
+            reverse("full-text-html", kwargs={"judgment_uri": context["judgment_uri"]})
         )
 
         description_string = "{editor_html_url}".format(

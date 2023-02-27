@@ -177,6 +177,9 @@ class Judgment:
                 use_https=settings.MARKLOGIC_USE_HTTPS,
             )
 
+        # As part of initialisation, we preload the NCN so we can generate a MarklogicResourceNotFoundError early
+        self.neutral_citation
+
     @property
     def public_uri(self) -> str:
         return "https://caselaw.nationalarchives.gov.uk/{uri}".format(uri=self.uri)

@@ -16,7 +16,6 @@ from .views.unlock import unlock
 
 urlpatterns = [
     path("edit", EditJudgmentView.as_view(), name="edit"),
-    path("detail", html_view, name="full-text-html"),
     path("xml", detail_xml, name="detail_xml"),
     path("results", results, name="results"),
     # buttons that do a thing and redirect
@@ -28,4 +27,5 @@ urlpatterns = [
     # redirect to signed asset URLs
     path("signed-asset/<path:key>", redirect_to_signed_asset, name="signed-asset"),
     path("", index, name="home"),
+    path("<path:judgment_uri>", html_view, name="full-text-html"),
 ]
