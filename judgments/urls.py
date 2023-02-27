@@ -8,7 +8,7 @@ from .views.button_handlers import (
 from .views.delete import delete
 from .views.detail_xml import detail_xml
 from .views.edit_judgment import EditJudgmentView
-from .views.full_text import html_view
+from .views.full_text import html_view, html_view_redirect
 from .views.index import index
 from .views.results import results
 from .views.signed_asset import redirect_to_signed_asset
@@ -27,5 +27,7 @@ urlpatterns = [
     # redirect to signed asset URLs
     path("signed-asset/<path:key>", redirect_to_signed_asset, name="signed-asset"),
     path("", index, name="home"),
+    # Functions for Judgments
+    path("detail", html_view_redirect),
     path("<path:judgment_uri>", html_view, name="full-text-html"),
 ]

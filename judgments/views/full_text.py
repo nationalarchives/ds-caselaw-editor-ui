@@ -1,6 +1,9 @@
+from urllib.parse import urlencode
+
 from caselawclient.Client import MarklogicResourceNotFoundError
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.template import loader
+from django.urls import reverse
 
 from judgments.models import Judgment
 from judgments.utils import extract_version
@@ -30,3 +33,24 @@ def html_view(request, judgment_uri):
         raise Http404(f"Judgment was not found at uri {judgment_uri}, {e}")
     template = loader.get_template("judgment/detail.html")
     return HttpResponse(template.render({"context": context}, request))
+
+
+def html_view_redirect(request):
+    params = request.GET
+    judgment_uri = params.get("judgment_uri", None)
+    version_uri = params.get("version_uri", None)
+
+    redirect_path = reverse("full-text-html", kwargs={"judgment_uri": judgment_uri})
+
+    if version_uri:
+        redirect_path = (
+            redirect_path
+            + "?"
+            + urlencode(
+                {
+                    "version_uri": version_uri,
+                }
+            )
+        )
+
+    return HttpResponseRedirect(redirect_path)
