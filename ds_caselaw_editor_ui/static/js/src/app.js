@@ -66,9 +66,9 @@ $(".judgments-list__judgment-assign-form").on("submit", function (event) {
     success: function (data) {
       const assigned_to = data["assigned_to"];
       loading.replaceWith(
-        "<a aria-busy='false' href='/edit?judgment_uri=" +
+        "<a aria-busy='false' href='/" +
           encodeURIComponent(uri) +
-          "#assigned_to'>" +
+          "/edit#assigned_to'>" +
           assigned_to +
           "</a>"
       );

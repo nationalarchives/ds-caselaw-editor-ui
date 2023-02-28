@@ -11,7 +11,7 @@
     <div class="judgment-toolbar__edit">
 
       {% if context.judgment.is_editable %}
-        <a class="judgment-toolbar__button{% if not context.judgment_content %} judgment-toolbar__button-selected{% endif %}" href="{% url 'edit' %}?judgment_uri={{context.judgment_uri}}">
+        <a class="judgment-toolbar__button{% if not context.judgment_content %} judgment-toolbar__button-selected{% endif %}" href="{% url 'edit-judgment' context.judgment.uri %}">
           {% translate "judgment.edit_this_judgment" %}
         </a>
         <a class="judgment-toolbar__button{% if context.judgment_content %} judgment-toolbar__button-selected{% endif %}" href="{% url 'full-text-html' context.judgment_uri %}">

@@ -95,7 +95,7 @@
         </span>
         <span class="judgments-list__judgment-details-meta-value">
           {% if item.meta.assigned_to %}
-            <a href="{% url 'edit' %}?judgment_uri={{item.uri}}#assigned_to">{{ item.meta.assigned_to }}</a>
+            <a href="{% url 'edit-judgment' item.uri%}#assigned_to">{{ item.meta.assigned_to }}</a>
           {% else %}
             <form action="/assign" method="post" class="judgments-list__judgment-assign-form">
               {% csrf_token %}
@@ -114,7 +114,7 @@
   </div>
   <div class="judgments-list__judgment-assigned">
     {% if item.meta.assigned_to %}
-      <a href="{% url 'edit' %}?judgment_uri={{item.uri}}#assigned_to">{{ item.meta.assigned_to }}</a>
+      <a href="{% url 'edit-judgment' item.uri %}#assigned_to">{{ item.meta.assigned_to }}</a>
     {% else %}
       <form action="/assign" method="post" class="judgments-list__judgment-assign-form">
         {% csrf_token %}
