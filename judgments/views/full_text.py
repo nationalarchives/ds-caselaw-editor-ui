@@ -31,7 +31,7 @@ def html_view(request, judgment_uri):
             context["version"] = extract_version(version_uri)
     except MarklogicResourceNotFoundError as e:
         raise Http404(f"Judgment was not found at uri {judgment_uri}, {e}")
-    template = loader.get_template("judgment/detail.html")
+    template = loader.get_template("judgment/full_text_html.html")
     return HttpResponse(template.render({"context": context}, request))
 
 
