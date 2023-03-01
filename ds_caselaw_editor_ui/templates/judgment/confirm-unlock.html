@@ -16,6 +16,6 @@
       <input type="hidden" name="judgment_uri" value="{{context.judgment_uri}}">
       <button type="submit">{% translate "judgment.unlock_judgment_title" %}</button>
     </form>
-    <a href="{% url 'detail' %}?judgment_uri={{context.judgment_uri}}">{% translate "judgment.back_to_judgment" %}</a>
+    <a href="{% url 'full-text-html' context.judgment_uri %}">{% translate "judgment.back_to_judgment" %}</a>
   </div>
 {% endblock content %}

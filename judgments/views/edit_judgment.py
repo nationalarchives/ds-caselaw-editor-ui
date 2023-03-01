@@ -73,24 +73,17 @@ class EditJudgmentView(View):
             tdr=context["judgment"].consignment_reference,
         )
 
-        editor_details_url = request.build_absolute_uri(
-            "{base_url}?{params}".format(
-                base_url=reverse("detail"),
-                params=urlencode(
-                    {
-                        "judgment_uri": context["judgment_uri"],
-                    }
-                ),
-            )
+        editor_html_url = request.build_absolute_uri(
+            reverse("full-text-html", kwargs={"judgment_uri": context["judgment_uri"]})
         )
 
-        description_string = "{editor_details_url}".format(
-            editor_details_url="""{details_url}
+        description_string = "{editor_html_url}".format(
+            editor_html_url="""{html_url}
 
 {source_name_label}: {source_name}
 {source_email_label}: {source_email}
 {consignment_ref_label}: {consignment_ref}""".format(
-                details_url=editor_details_url,
+                html_url=editor_html_url,
                 source_name_label=gettext("judgments.submitter"),
                 source_name=context["judgment"].source_name,
                 source_email_label=gettext("judgments.submitteremail"),
@@ -116,8 +109,7 @@ class EditJudgmentView(View):
         return HttpResponse(template.render({"context": context}, request))
 
     def get(self, request, *args, **kwargs):
-        params = request.GET
-        judgment_uri = params.get("judgment_uri")
+        judgment_uri = kwargs["judgment_uri"]
         judgment = Judgment(judgment_uri)
 
         context = {"judgment_uri": judgment_uri}
@@ -177,7 +169,9 @@ class EditJudgmentView(View):
             # If judgment_uri is a `failure` URI, amend it to match new neutral citation and redirect
             if "failures" in judgment_uri and new_citation is not None:
                 new_judgment_uri = update_judgment_uri(judgment_uri, new_citation)
-                return redirect(reverse("edit") + f"?judgment_uri={new_judgment_uri}")
+                return redirect(
+                    reverse("edit-judgment", kwargs={"judgment_uri": new_judgment_uri})
+                )
 
             if published:
                 notify_status = "published"
@@ -202,4 +196,14 @@ class EditJudgmentView(View):
 
         invalidate_caches(judgment_uri)
 
-        return HttpResponseRedirect(reverse("edit") + "?judgment_uri=" + judgment_uri)
+        return HttpResponseRedirect(
+            reverse("edit-judgment", kwargs={"judgment_uri": judgment_uri})
+        )
+
+
+def edit_view_redirect(request):
+    params = request.GET
+    judgment_uri = params.get("judgment_uri", None)
+    return HttpResponseRedirect(
+        reverse("edit-judgment", kwargs={"judgment_uri": judgment_uri})
+    )

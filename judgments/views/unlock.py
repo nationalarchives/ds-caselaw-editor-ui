@@ -11,6 +11,8 @@ from django.urls import reverse
 from django.utils.translation import gettext
 from django.views.decorators.http import require_http_methods
 
+from judgments.models import Judgment
+
 
 @require_http_methods(["POST", "GET", "HEAD"])
 def unlock(request):
@@ -34,10 +36,11 @@ def unlock_get(request):
 
 def unlock_post(request):
     """Unlock the judgment in Marklogic and return to edit judgment"""
-    judgment_uri = request.POST.get("judgment_uri")
 
+    judgment_uri = request.POST.get("judgment_uri")
     try:
-        api_client.break_checkout(judgment_uri)
+        judgment = Judgment(judgment_uri)
+        api_client.break_checkout(judgment.uri)
     except MarklogicResourceUnmanagedError as exc:
         raise Http404(
             f"Resource Unmanaged: Judgment '{judgment_uri}' might not exist."
@@ -48,4 +51,4 @@ def unlock_post(request):
         ) from exc
     else:
         messages.success(request, "Judgment unlocked.")
-        return redirect(reverse("edit") + f"?judgment_uri={judgment_uri}")
+        return redirect(reverse("edit-judgment", kwargs={"judgment_uri": judgment.uri}))

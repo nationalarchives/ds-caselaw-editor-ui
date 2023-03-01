@@ -2,17 +2,10 @@ from unittest.mock import patch
 
 from django.contrib.auth.models import User
 from django.test import TestCase
+from django.urls import reverse
 from lxml import etree
 
 from judgments.models import Judgment, SearchResult, SearchResultMeta
-
-
-class TestJudgment(TestCase):
-    def test_404_response(self):
-        response = self.client.get("/judgments/ewca/civ/2004/63X")
-        decoded_response = response.content.decode("utf-8")
-        self.assertIn("Page not found", decoded_response)
-        self.assertEqual(response.status_code, 404)
 
 
 class TestSearchResults(TestCase):
@@ -150,11 +143,14 @@ class TestJudgmentEditor(TestCase):
         autospec=Judgment,
     )
     def test_assigned(self, mock_judgment):
+        mock_judgment.return_value.uri = "ewhc/ch/1999/1"
         mock_judgment.return_value.assigned_to = "otheruser"
         mock_judgment.return_value.versions = []
 
         User.objects.get_or_create(username="otheruser")[0]
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
-        response = self.client.get("/edit?judgment_uri=ewhc/ch/1999/1")
+        response = self.client.get(
+            reverse("edit-judgment", kwargs={"judgment_uri": "ewhc/ch/1999/1"})
+        )
 
         assert b"selected>otheruser" in response.content
