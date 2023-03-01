@@ -1,9 +1,14 @@
 {% extends "layouts/judgment.html" %}
+<<<<<<< HEAD
 {% load waffle_tags %}
 
   {% block content %}
   {% flag "metadata_header_block" %}   {% include 'includes/metadata_header.html' %}
   {% endflag %}
+=======
+{% block content %}
+  {% include 'includes/judgment_view_controls.html' with view='html' %}
+>>>>>>> bfd79c4 (Add toggle switches for HTML/PDF view)
   {% if context.judgment_content %}
     {% if context.judgment.is_failure %}
       <pre>
