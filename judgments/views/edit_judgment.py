@@ -1,5 +1,6 @@
 from urllib.parse import quote, urlencode
 
+import waffle
 from caselawclient.Client import MarklogicAPIError, api_client
 from django.conf import settings
 from django.contrib import messages
@@ -104,10 +105,6 @@ class EditJudgmentView(View):
             jira_instance=settings.JIRA_INSTANCE, params=urlencode(params)
         )
 
-    def render(self, request, context):
-        template = loader.get_template("judgment/edit.html")
-        return HttpResponse(template.render({"context": context}, request))
-
     def get(self, request, *args, **kwargs):
         judgment_uri = kwargs["judgment_uri"]
         judgment = Judgment(judgment_uri)
@@ -116,6 +113,7 @@ class EditJudgmentView(View):
 
         context["judgment"] = judgment
         context["page_title"] = judgment.name
+        context["view"] = "judgment_metadata"
 
         context.update({"users": users_dict()})
 
@@ -125,7 +123,18 @@ class EditJudgmentView(View):
         )
         context["jira_create_link"] = self.build_jira_create_link(request, context)
 
-        return self.render(request, context)
+        template = loader.get_template("judgment/edit.html")
+        return HttpResponse(
+            template.render(
+                {
+                    "context": context,
+                    "feature_flag_embedded_pdfs": waffle.flag_is_active(
+                        request, "embedded_pdf_view"
+                    ),
+                },
+                request,
+            )
+        )
 
     def post(self, request, *args, **kwargs):
         judgment_uri = request.POST["judgment_uri"]

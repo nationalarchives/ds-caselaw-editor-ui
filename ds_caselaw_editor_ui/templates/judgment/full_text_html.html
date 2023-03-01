@@ -1,5 +1,6 @@
 {% extends "layouts/judgment.html" %}
 {% block content %}
+  {% include 'includes/judgment_view_controls.html' with view='html' %}
   {% if context.judgment_content %}
     {% if context.judgment.is_failure %}
       <pre>
