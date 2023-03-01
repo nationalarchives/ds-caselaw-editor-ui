@@ -35,6 +35,31 @@ def html_view(request, judgment_uri):
     return HttpResponse(template.render({"context": context}, request))
 
 
+def pdf_view(request, judgment_uri):
+    params = request.GET
+    version_uri = params.get("version_uri", None)
+
+    try:
+        judgment = Judgment(judgment_uri)
+    except MarklogicResourceNotFoundError as e:
+        raise Http404(f"Judgment was not found at uri {judgment_uri}, {e}")
+
+    if not judgment.pdf_url:
+        raise Http404(f'Judgment "{judgment.name}" does not have a PDF.')
+
+    context = {
+        "judgment_uri": judgment_uri,
+        "judgment": judgment,
+        "page_title": judgment.name,
+    }
+
+    if version_uri:
+        context["version"] = extract_version(version_uri)
+
+    template = loader.get_template("judgment/full_text_pdf.html")
+    return HttpResponse(template.render({"context": context}, request))
+
+
 def xml_view(request, judgment_uri):
     try:
         judgment = Judgment(judgment_uri)
