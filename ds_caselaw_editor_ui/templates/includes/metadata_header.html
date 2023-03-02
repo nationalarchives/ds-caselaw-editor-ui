@@ -1,0 +1,58 @@
+{% load i18n %}
+<!--<div class="metadata-header__block">-->
+    <div class="edit-component">
+        <div class="edit-component__container">
+          <h2 class="edit-component__header">{% translate "judgment.edit_judgment" %} <span class="judgment-uri">{{context.judgment_uri}}</span></h2>
+          <form aria-label="Edit judgment" method="post">
+            {% csrf_token %}
+            <div class="edit-component__panel">
+              <label for="metadata_name">{% translate "judgment.judgment_name" %}</label>
+              <input type="text" class="edit-component__metadata_name-input" value="{{ context.judgment.name }}"
+                     name="metadata_name" id="metadata_name" />
+            </div>
+            <div class="edit-component__panel">
+              <label for="neutral_citation">{% translate "judgment.neutral_citation" %}</label>
+              <input type="text" class="edit-component__neutral_citation-input" value="{{ context.judgment.neutral_citation }}"
+                     name="neutral_citation" id="neutral_citation" />
+            </div>
+            <div class="edit-component__panel">
+              <label for="court">{% translate "judgment.court" %}</label>
+              <input type="text" class="edit-component__court-input" value="{{ context.judgment.court }}"
+                     name="court" id="court" />
+            </div>
+            <div class="edit-component__panel">
+              <label for="judgment_date">{% translate "judgment.judgment_date" %}</label>
+              <input type="text" class="edit-component__judgment_date-input" value="{{ context.judgment.judgment_date_as_string }}"
+                     name="judgment_date" id="judgment_date" />
+            </div>
+            <div class="edit-component__panel">
+              <label for="published">{% translate "judgment.published" %}</label>
+              <input type="checkbox" class="edit-component__published-input" {% if context.judgment.is_published %}checked{% endif %} name="published" id="published"/>
+            </div>
+            <div class="edit-component__panel">
+              <label for="sensitive">{% translate "judgment.sensitive" %}</label>
+              <input type="checkbox" class="edit-component__sensitive-input" {% if context.judgment.is_sensitive %}checked{% endif %} name="sensitive" id="sensitive"/>
+            </div>
+            <div class="edit-component__panel">
+              <label for="supplemental">{% translate "judgment.supplemental" %}</label>
+              <input type="checkbox" class="edit-component__supplemental-input" {% if context.judgment.has_supplementary_materials %}checked{% endif %} name="supplemental" id="supplemental"/>
+            </div>
+            <div class="edit-component__panel">
+              <label for="anonymised">{% translate "judgment.anonymised" %}</label>
+              <input type="checkbox" class="edit-component__anonymised-input" {% if context.judgment.is_anonymised %}checked{% endif %} name="anonymised" id="anonymised"/>
+            </div>
+            <div class="edit-component__panel">
+              <label for="assigned_to">{% translate "judgment.assigned_to" %}</label>
+              <select class="edit-component__assigned_to-input" name="assigned_to" id="assigned_to">
+                <option value="" {% if context.judgment.assigned_to == "" %}selected{% endif %}>{% translate "judgments.noone" %}</option>
+                {% for user in context.users %}
+                  <option value="{{user.name}}"{% if context.judgment.assigned_to == user.name %} selected{% endif %}>{{user.print_name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+    
+            <div class="edit-component__actions">
+              <input type="hidden" name="judgment_uri" value="{{context.judgment_uri}}"/>
+              <input type="submit" value="Save"/>
+            </div>
+<!--</div>-->
