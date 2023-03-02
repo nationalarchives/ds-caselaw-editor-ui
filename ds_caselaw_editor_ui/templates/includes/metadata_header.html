@@ -4,7 +4,7 @@
 <div class="metadata-header__block">
   <div class="edit-component">
     <div class="edit-component__container">
-      <h2 class="edit-component__header">{% translate "judgment.edit_judgment" %} <span class="judgment-uri">{{context.judgment_uri}}</span></h2>
+      <h2 class="edit-component__header">{% translate "judgment.tdr_judgment" %} <span class="judgment-uri">{{context.judgment_uri}}</span></h2>
       <form aria-label="Edit judgment" method="post">
         {% csrf_token %}
         <div class="edit-component__panel">
@@ -30,7 +30,7 @@
         
         <div class="edit-component__actions">
           <input type="hidden" name="judgment_uri" value="{{context.judgment_uri}}"/>
-          <input type="submit" value="Save metadata"/>
+          <input type="submit" value="Save"/>
         </div>
         {% flag "email_submitter_block" %}
         {% include 'includes/create_emails_block.html' %}

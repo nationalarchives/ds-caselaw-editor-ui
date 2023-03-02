@@ -185,6 +185,10 @@ msgstr "Return to Find and manage case law"
 msgid "judgment.edit_judgment"
 msgstr "Edit Judgment"
 
+#: ds_caselaw_editor_ui/templates/includes/metadata_header.html:16
+msgid "judgment.tdr_judgment"
+msgstr "TDR"
+
 #: ds_caselaw_editor_ui/templates/judgment/edit.html:20
 msgid "judgment.judgment_name"
 msgstr "Name"
