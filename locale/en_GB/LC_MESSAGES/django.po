@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-02 14:18+0000\n"
+"POT-Creation-Date: 2023-03-02 14:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -263,43 +263,3 @@ msgstr ""
 #: judgments/views/delete.py:14
 msgid "judgment.delete_a_judgment"
 msgstr "Delete a judgment"
-
-#~ msgid "home.useservice"
-#~ msgstr ""
-#~ "Use this service to find and manage judgments and tribunal decisions on "
-#~ "the 'Find Case Law' site"
-
-#~ msgid "common.home"
-#~ msgstr "Home"
-
-#~ msgid "openjusticelicence.title"
-#~ msgstr "Open Justice Licence"
-
-#~ msgid "judgmentsources.title"
-#~ msgstr "Judgment Sources"
-
-#~ msgid "search.title"
-#~ msgstr "Search"
-
-#~ msgid "commom.findcaselaw"
-#~ msgstr "Find and manage case law"
-
-#~ msgid "terms.title"
-#~ msgstr "Terms of use"
-
-#, fuzzy
-#~| msgid "common.findcaselaw"
-#~ msgid "findcaselaw"
-#~ msgstr "Find and manage case law"
-
-#~ msgid "judgment.downloadasxml"
-#~ msgstr "Download as XML"
-
-#~ msgid "judgment.source_by"
-#~ msgstr "This judgment has been provided to The National Archives by "
-
-#~ msgid "judgment.bailii"
-#~ msgstr "The British and Irish Legal Information Institute"
-
-#~ msgid "judgments.assignedto"
-#~ msgstr "Assigned to:"
