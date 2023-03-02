@@ -22,7 +22,12 @@
           <input type="text" class="edit-component__court-input" value="{{ context.judgment.court }}"
                  name="court" id="court" />
         </div>
-       
+        <div class="edit-component__panel">
+          <label for="judgment_date">{% translate "judgment.judgment_date" %}</label>
+          <input type="text" class="edit-component__judgment_date-input" value="{{ context.judgment.judgment_date_as_string }}"
+                 name="judgment_date" id="judgment_date" />
+        </div>
+        
         <div class="edit-component__actions">
           <input type="hidden" name="judgment_uri" value="{{context.judgment_uri}}"/>
           <input type="submit" value="Save"/>
