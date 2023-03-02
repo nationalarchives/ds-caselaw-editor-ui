@@ -3,12 +3,11 @@
 
 {% flag "metadata_header_block" %}
 {% block header %}
-<div class="page-metadata-header">
-  {% include 'includes/metadata_header.html' %}
-</div>
+  <div class="page-metadata-header">
+    {% include 'includes/metadata_header.html' %}
+  </div>
 {% endblock header %}
 {% endflag %}
-
 {% block content %}
   {% if context.judgment_content %}
     {% if context.judgment.is_failure %}
