@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-07 14:13+0000\n"
+"POT-Creation-Date: 2023-03-02 14:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,7 +32,6 @@ msgstr ""
 #: ds_caselaw_editor_ui/templates/includes/breadcrumbs.html:12
 #: ds_caselaw_editor_ui/templates/judgment/results.html:5
 #: ds_caselaw_editor_ui/templates/layouts/base.html:9
-#: ds_caselaw_editor_ui/templates/pages/home.html:13
 msgid "common.findcaselaw"
 msgstr "Find and manage case law"
 
@@ -62,42 +61,48 @@ msgstr ""
 msgid "survey.link.text"
 msgstr "Fill out our short survey"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html:6
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html:49
-#: judgments/views/edit_judgment.py:144
+#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html:8
+#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html:50
+#: judgments/views/edit_judgment.py:87
 msgid "judgments.submitter"
 msgstr "Submitter"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html:7
-#: judgments/views/edit_judgment.py:146
+#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html:9
+#: judgments/views/edit_judgment.py:89
 msgid "judgments.submitteremail"
 msgstr "Contact email"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html:8
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html:25
-#: judgments/views/edit_judgment.py:148
+#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html:10
+#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html:26
+#: judgments/views/edit_judgment.py:91
 msgid "judgments.consignmentref"
 msgstr "TDR Ref"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html:14
+#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html:20
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:31
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:35
 msgid "judgment.download_docx"
 msgstr "Download original .docx"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html:17
+#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html:23
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:41
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:45
 msgid "judgment.download_pdf"
 msgstr "Download PDF"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html:19
+#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html:25
 msgid "judgment.download_xml"
 msgstr "Download XML"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html:23
+#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html:33
 msgid "judgment.create_in_jira"
 msgstr "Create in Jira"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html:34
+#: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html:17
+#: judgments/views/unlock.py:31
+msgid "judgment.unlock_judgment_title"
+msgstr "Unlock judgment"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html:7
 msgid "judgment.back"
@@ -122,21 +127,12 @@ msgstr "View on public site"
 msgid "judgment.delete"
 msgstr "Delete judgment"
 
-msgid "judgment.unlock_judgment_title"
-msgstr "Unlock judgment"
-
-msgid "judgment.confirm_unlock"
-msgstr "Forcibly unlock this judgment? This will make any enrichment processes on the judgment fail."
-
-msgid "judgment.back_to_judgment"
-msgstr "Back to judgment"
-
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_header.html:4
 msgid "judgments.details"
 msgstr "Judgment details:"
 
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_header.html:7
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html:17
+#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html:18
 msgid "judgments.submission_datetime"
 msgstr "Submitted:"
 
@@ -144,23 +140,23 @@ msgstr "Submitted:"
 msgid "judgments.submission_assigned"
 msgstr "Assigned:"
 
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html:33
+#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html:34
 msgid "judgments.ncn"
 msgstr "NCN:"
 
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html:41
+#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html:42
 msgid "judgments.court"
 msgstr "Court:"
 
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html:57
+#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html:59
 msgid "judgments.editor_priority"
 msgstr "Priority:"
 
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html:74
+#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html:78
 msgid "judgments.editor_status"
 msgstr "Status:"
 
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html:90
+#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html:94
 msgid "judgments.assigned_to"
 msgstr "Assigned to:"
 
@@ -173,6 +169,16 @@ msgstr "Unpublished judgments"
 msgid "judgments.allrecent"
 msgstr "See all recent judgments"
 
+#: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html:13
+msgid "judgment.confirm_unlock"
+msgstr ""
+"Forcibly unlock this judgment? This will make any enrichment processes on "
+"the judgment fail."
+
+#: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html:19
+msgid "judgment.back_to_judgment"
+msgstr "Back to judgment"
+
 #: ds_caselaw_editor_ui/templates/judgment/deleted.html:12
 msgid "judgment.deleted"
 msgstr "Judgment successfully deleted"
@@ -181,7 +187,7 @@ msgstr "Judgment successfully deleted"
 msgid "judgment.return_home"
 msgstr "Return to Find and manage case law"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:16
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:10
 msgid "judgment.edit_judgment"
 msgstr "Edit Judgment"
 
@@ -189,47 +195,47 @@ msgstr "Edit Judgment"
 msgid "judgment.tdr_judgment"
 msgstr "TDR"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:20
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:14
 msgid "judgment.judgment_name"
 msgstr "Name"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:25
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:19
 msgid "judgment.neutral_citation"
 msgstr "NCN"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:30
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:24
 msgid "judgment.court"
 msgstr "Court"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:35
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:29
 msgid "judgment.judgment_date"
 msgstr "Judgment date"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:40
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:34
 msgid "judgment.published"
 msgstr "Published?"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:44
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:38
 msgid "judgment.sensitive"
 msgstr "Contains sensitive information?"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:48
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:42
 msgid "judgment.supplemental"
 msgstr "Has supplemental documents?"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:52
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:46
 msgid "judgment.anonymised"
 msgstr "This Judgment has been anonymised"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:56
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:50
 msgid "judgment.assigned_to"
 msgstr "Assigned to"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:58
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:52
 msgid "judgments.noone"
 msgstr "No one"
 
-#: ds_caselaw_editor_ui/templates/judgment/edit.html:78
+#: ds_caselaw_editor_ui/templates/judgment/edit.html:72
 msgid "judgment.previous_versions"
 msgstr "Previous versions of this Judgment"
 
@@ -242,12 +248,6 @@ msgstr "Search results"
 #: ds_caselaw_editor_ui/templates/layouts/base.html:39
 msgid "skiplink"
 msgstr "Skip to Main Content"
-
-#: ds_caselaw_editor_ui/templates/pages/home.html:15
-msgid "home.useservice"
-msgstr ""
-"Use this service to find and manage judgments and tribunal decisions on the "
-"'Find Case Law' site"
 
 #: ds_caselaw_editor_ui/templates/pages/no_results.html:5
 #, python-format
@@ -267,6 +267,11 @@ msgstr ""
 #: judgments/views/delete.py:14
 msgid "judgment.delete_a_judgment"
 msgstr "Delete a judgment"
+
+#~ msgid "home.useservice"
+#~ msgstr ""
+#~ "Use this service to find and manage judgments and tribunal decisions on "
+#~ "the 'Find Case Law' site"
 
 #~ msgid "common.home"
 #~ msgstr "Home"
