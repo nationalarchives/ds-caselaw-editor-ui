@@ -1,4 +1,3 @@
-{% load waffle_tags %}
 {% load static i18n %}
 
 <li class="judgments-list__judgment">
@@ -55,9 +54,7 @@
       </li>
       <li>
         <span class="judgments-list__judgment-details-meta-key">
-          {% flag "editor_priority_filter" %}
           {% translate "judgments.editor_priority" %}
-
         </span>
         <span class="judgments-list__judgment-details-meta-value">
           <form action="/prioritise" method="post">
@@ -71,7 +68,6 @@
             <input type="submit" name="submit" value="set priority">
           </form>
         </span>
-        {% endflag %}
       </li>
       <li>
         <span class="judgments-list__judgment-details-meta-key">
@@ -95,7 +91,7 @@
         </span>
         <span class="judgments-list__judgment-details-meta-value">
           {% if item.meta.assigned_to %}
-            <a href="{% url 'edit-judgment' item.uri%}#assigned_to">{{ item.meta.assigned_to }}</a>
+            <a href="{% url 'edit' %}?judgment_uri={{item.uri}}#assigned_to">{{ item.meta.assigned_to }}</a>
           {% else %}
             <form action="/assign" method="post" class="judgments-list__judgment-assign-form">
               {% csrf_token %}
@@ -114,7 +110,7 @@
   </div>
   <div class="judgments-list__judgment-assigned">
     {% if item.meta.assigned_to %}
-      <a href="{% url 'edit-judgment' item.uri %}#assigned_to">{{ item.meta.assigned_to }}</a>
+      <a href="{% url 'edit' %}?judgment_uri={{item.uri}}#assigned_to">{{ item.meta.assigned_to }}</a>
     {% else %}
       <form action="/assign" method="post" class="judgments-list__judgment-assign-form">
         {% csrf_token %}
