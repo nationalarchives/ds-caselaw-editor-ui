@@ -266,7 +266,7 @@ We're using [the built-in django translation module](https://docs.djangoproject.
 
 3) Update the locale file by running the following command  (see also 'a note on the django-admin command' below):
 ```
-django-admin makemessages --no-obsolete -l en_GB
+django-admin makemessages --no-obsolete --add-location file -l en_GB
 ```
 
 4) In the generated `.po` file, find the generated msgid string and add the translation below it
