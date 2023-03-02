@@ -187,11 +187,11 @@ msgstr "Edit Judgment"
 
 #: ds_caselaw_editor_ui/templates/judgment/edit.html:20
 msgid "judgment.judgment_name"
-msgstr "Judgment name"
+msgstr "Name"
 
 #: ds_caselaw_editor_ui/templates/judgment/edit.html:25
 msgid "judgment.neutral_citation"
-msgstr "Neutral citation"
+msgstr "NCN"
 
 #: ds_caselaw_editor_ui/templates/judgment/edit.html:30
 msgid "judgment.court"
