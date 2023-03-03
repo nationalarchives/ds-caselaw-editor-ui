@@ -69,10 +69,10 @@
   }
   input[type=submit] {
     @include call-to-action-button;
-   display: block;
+    display: block;
     width: auto;
     min-height: 0.5rem;
-    right: 5rem;
+    right: 4rem;
     position: relative;
   }
   
