@@ -1,7 +1,12 @@
 .metadata-component {
   background-color: $color__light-grey;
   padding: $spacer__unit;
-  
+  border-style: solid;
+  border-color: #ffffff;
+  border-width: 1rem 30rem 1rem 30rem;
+  @media (min-width: $grid__breakpoint-medium) {
+    border-width: 1rem 30rem 1rem 30rem;
+  }
   &__container {
     display: inline-block;
     width: auto;
@@ -9,16 +14,22 @@
   }
   &__ncn {
     display: inline-block;
+    left: 2rem;
+    position: relative;
     padding: calc(#{$spacer__unit} / 2) 0;
   }
   &__court {
     display: inline-block;
+    left: 3rem;
+    position: relative;
     margin-left: 2%;
     padding: calc(#{$spacer__unit} / 2) 0;
   }
   &__date {
     display: inline-block;
     margin-left: 4%;
+    left: 10rem;
+    position: relative;
     padding: calc(#{$spacer__unit} / 2) 0;
   }
   &__tdr {
@@ -32,10 +43,14 @@
   }
   &__panel {
     display: inline-block;
+    left: 2rem;
+    position: relative;
     padding: calc(#{$spacer__unit} / 2) 0;
   } 
   &__actions {
     display: inline-block;
+    left: 7rem;
+    position: relative;
     width: auto;
     padding: calc(#{$spacer__unit} / 2) 0;
   }
@@ -47,7 +62,7 @@
     display: block;
     margin-bottom: 0;
     bottom: 3rem;
-    left: 8.5rem;
+    left: 15rem;
     position: relative;
   }
  
@@ -69,10 +84,11 @@
   }
   input[type=submit] {
     @include call-to-action-button;
-    display: block;
+    display: inline-block;
+    margin-right: 2rem;
     width: auto;
     min-height: 0.5rem;
-    right: 4rem;
+    right: 6rem;
     position: relative;
   }
   
