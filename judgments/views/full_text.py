@@ -1,5 +1,6 @@
 from urllib.parse import urlencode
 
+import waffle
 from caselawclient.Client import MarklogicResourceNotFoundError
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.template import loader
@@ -26,13 +27,60 @@ def html_view(request, judgment_uri):
 
         context["judgment_content"] = judgment_content
         context["page_title"] = metadata_name
+        context["view"] = "judgment_text"
 
         if version_uri:
             context["version"] = extract_version(version_uri)
     except MarklogicResourceNotFoundError as e:
         raise Http404(f"Judgment was not found at uri {judgment_uri}, {e}")
-    template = loader.get_template("judgment/detail.html")
-    return HttpResponse(template.render({"context": context}, request))
+    template = loader.get_template("judgment/full_text_html.html")
+    return HttpResponse(
+        template.render(
+            {
+                "context": context,
+                "feature_flag_embedded_pdfs": waffle.flag_is_active(
+                    request, "embedded_pdf_view"
+                ),
+            },
+            request,
+        )
+    )
+
+
+def pdf_view(request, judgment_uri):
+    params = request.GET
+    version_uri = params.get("version_uri", None)
+
+    try:
+        judgment = Judgment(judgment_uri)
+    except MarklogicResourceNotFoundError as e:
+        raise Http404(f"Judgment was not found at uri {judgment_uri}, {e}")
+
+    if not judgment.pdf_url:
+        raise Http404(f'Judgment "{judgment.name}" does not have a PDF.')
+
+    context = {
+        "judgment_uri": judgment_uri,
+        "judgment": judgment,
+        "page_title": judgment.name,
+        "view": "judgment_text",
+    }
+
+    if version_uri:
+        context["version"] = extract_version(version_uri)
+
+    template = loader.get_template("judgment/full_text_pdf.html")
+    return HttpResponse(
+        template.render(
+            {
+                "context": context,
+                "feature_flag_embedded_pdfs": waffle.flag_is_active(
+                    request, "embedded_pdf_view"
+                ),
+            },
+            request,
+        )
+    )
 
 
 def xml_view(request, judgment_uri):

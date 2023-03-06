@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-02 14:22+0000\n"
+"POT-Creation-Date: 2023-03-06 11:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -104,6 +104,16 @@ msgid "judgment.back"
 msgstr "Back to search results"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
+#| msgid "judgment.edit_judgment"
+msgid "judgment.edit_metadata"
+msgstr "Edit metadata"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
+#| msgid "judgment.view_this_judgment"
+msgid "judgment.view_judgment"
+msgstr "View full text"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.edit_this_judgment"
 msgstr "Edit judgment"
 
@@ -118,6 +128,16 @@ msgstr "View on public site"
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.delete"
 msgstr "Delete judgment"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_view_controls.html
+#| msgid "judgment.view_on_public"
+msgid "judgment.view_control.html"
+msgstr "View HTML"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_view_controls.html
+#| msgid "judgment.view_on_public"
+msgid "judgment.view_control.pdf"
+msgstr "View PDF"
 
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_header.html
 msgid "judgments.details"
