@@ -1,11 +1,9 @@
 {% extends "layouts/judgment.html" %}
 {% load waffle_tags %}
 
-
-{% block content %}
-{% flag "metadata_header_block" %}
-    {% include 'includes/metadata_header.html' %}
- {% endflag %}
+  {% block content %}
+  {% flag "metadata_header_block" %}   {% include 'includes/metadata_header.html' %}
+  {% endflag %}
   {% if context.judgment_content %}
     {% if context.judgment.is_failure %}
       <pre>

@@ -3,44 +3,42 @@
 
 <div class="metadata-header__block">
   <div class="metadata-component">
-    
-      <form aria-label="Edit judgment" method="post" action="{% url 'edit-judgment' context.judgment.uri%}">
-        {% csrf_token %}
-        <div class="metadata-component_container">
+
+    <form aria-label="Edit judgment" method="post" action="{% url 'edit-judgment' context.judgment.uri%}">
+      {% csrf_token %}
+      <div class="metadata-component_container">
         <div class="metadata-component__ncn">
           <label for="neutral_citation" class="metadata-component__main-labels">{% translate "judgment.neutral_citation" %}</label>
           <input type="text" class="metadata-component__neutral_citation-input" value="{{ context.judgment.neutral_citation }}"
-                   name="neutral_citation" id="neutral_citation" />
+                  name="neutral_citation" id="neutral_citation" />
         </div>
-        <div class="metadata-component__court">
-          <label for="court" class="metadata-component__main-labels">{% translate "judgment.court" %}</label>
-          <input type="text" class="metadata-component__court-input" value="{{ context.judgment.court }}"
-                   name="court" id="court" />
-        </div>
-        <div class="metadata-component__date">
-          <label for="judgment_date" class="metadata-component__main-labels">{% translate "judgment.judgment_date" %}</label>
-          <input type="text" class="metadata-component__judgment_date-input" value="{{ context.judgment.judgment_date_as_string }}"
-                   name="judgment_date" id="judgment_date" />
-        </div>
-        </div>
-        <div class="metadata-component_container">
-        <div class="metadata-component__panel">
-          <label for="metadata_name" class="metadata-component__main-labels">{% translate "judgment.judgment_name" %}</label>
-          <input type="text" class="metadata-component__metadata_name-input" value="{{ context.judgment.name }}"
-                 name="metadata_name" id="metadata_name" />
-        </div>
-       
-        <div class="metadata-component__tdr">
-        <aside class="metadata-component__tdr-label">TDR {{context.judgment_uri}}</aside> 
-        </div>
-        <div class="metadata-component__actions">
-          <input type="hidden" name="judgment_uri" value="{{context.judgment_uri}}"/>
-          <input type="submit" value="Edit"/>
-          <input type="hidden" name="judgment_uri" value="{{context.judgment_uri}}"/>
-          <input type="submit" value="Save"/>
-        </div>
-        </div>
-      </form>
+      <div class="metadata-component__court">
+        <label for="court" class="metadata-component__main-labels">{% translate "judgment.court" %}</label>
+        <input type="text" class="metadata-component__court-input" value="{{ context.judgment.court }}"
+                name="court" id="court" />
+      </div>
+      <div class="metadata-component__date">
+        <label for="judgment_date" class="metadata-component__main-labels">{% translate "judgment.judgment_date" %}</label>
+        <input type="text" class="metadata-component__judgment_date-input" value="{{ context.judgment.judgment_date_as_string }}"
+                name="judgment_date" id="judgment_date" />
+      </div>
+      </div>
+      <div class="metadata-component_container">
+      <div class="metadata-component__panel">
+        <label for="metadata_name" class="metadata-component__main-labels">{% translate "judgment.judgment_name" %}</label>
+        <textarea class="metadata-component__metadata_name-input"
+        name="metadata_name" id="metadata_name" rows="2" >{{ context.judgment.name }}</textarea>
+      </div>
+
+      <div class="metadata-component__tdr">
+      <aside class="metadata-component__tdr-label">TDR {{context.judgment_uri}}</aside>
+      </div>
+      <div class="metadata-component__actions">
+        <input type="hidden" name="judgment_uri" value="{{context.judgment_uri}}"/>
+        <input type="submit" value="Save"/>
+      </div>
+      </div>
+    </form>
 
  </div>
 </div>

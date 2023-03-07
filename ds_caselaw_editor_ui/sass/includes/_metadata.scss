@@ -2,10 +2,10 @@
   background-color: $color__light-grey;
   border-style: solid;
   border-color: #ffffff;
- 
-  
+
+
   @media (min-width: 1400px) {
-    width: 55%;
+    width: 65%;
     border-width: 1rem 20rem 1rem 20rem;
     position: relative;
     left: 50%;
@@ -30,7 +30,7 @@
     margin-left: 2rem;
     padding: calc(#{$spacer__unit} / 2) 0;
      @media (min-width: $grid__breakpoint-large) {
-      width: 15rem;
+      width: 20rem;
       margin-left: 2rem;
       left: 3rem;
     }
@@ -44,27 +44,25 @@
     @media (min-width: $grid__breakpoint-large) {
       width: 8rem;
       margin-left: 2rem;
-      left: 11rem;
+      left: 15rem;
     }
   }
   &__tdr {
-    font-size: 1rem;
-    line-height: 2.8rem;
     display: inline-block;
-    font-family: $font__roboto;
-    font-weight: normal;
-    color: $color__almost-black;
-    margin: 0 calc(#{$spacer__unit} * 1.5);
+
+    position: relative;
+    padding: calc(#{$spacer__unit} / 2) 0;
+    width: auto;
+    left: 2rem;
   }
   &__panel {
     display: inline-block;
     left: 2rem;
     position: relative;
     padding: calc(#{$spacer__unit} / 2) 0;
-  } 
+  }
   &__actions {
     display: inline-block;
-   
     position: relative;
     padding: calc(#{$spacer__unit} / 2) 0;
     width: auto;
@@ -76,19 +74,18 @@
   }
   &__tdr-label{
     display: inline-block;
-   
-    bottom: 3rem;
-    left: 20rem;
+    bottom: 6rem;
+    left: 16rem;
     position: relative;
     padding: calc(#{$spacer__unit} / 2) 0;
     @media (min-width: 1500px) {
       margin-bottom: 0;
-      bottom: 3rem;
+      bottom: 6rem;
       margin-left: 2rem;
-      left: 21rem;
+      left: 14rem;
     }
   }
- 
+
   &__more-options {
     margin-top: calc($spacer__unit * 2);
   }
@@ -108,15 +105,16 @@
   input[type=submit] {
     @include call-to-action-button;
     display: inline-block;
+    bottom: 3rem;
     margin-right: 2rem;
-    width: auto;
+    width: 10rem;
     min-height: 0.5rem;
-    right: 6rem;
+    right: 8rem;
     position: relative;
   }
-  
+
   &__judgment_date-input{
-  
+
     width: 80%;
     min-height: 2rem;
     font-size: 1rem;
@@ -136,15 +134,10 @@
     min-height: 2.5rem;
     font-size: 1rem;
     padding-right: 5.5rem;
-    @media (min-width: $grid__breakpoint-small) {
-      width: 4rem;
+    @media (min-width: 1400px) {
+      width: 28rem;
     }
-    @media (min-width: $grid__breakpoint-medium) {
-      width: 4rem;
-    }
-    @media (min-width: $grid__breakpoint-extra-large) {
-      width: 4rem;
-    }
+
   }
   input[type=text] {
     width: 100%;
