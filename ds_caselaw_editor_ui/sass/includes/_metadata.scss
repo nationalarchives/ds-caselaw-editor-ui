@@ -1,39 +1,17 @@
 .metadata-component {
   background-color: $color__light-grey;
-  padding: $spacer__unit;
   border-style: solid;
   border-color: #ffffff;
+ 
   
-
-  @media (min-width: $grid__breakpoint-small) {
-    width: 100%;
+  @media (min-width: 1400px) {
+    width: 55%;
     border-width: 1rem 20rem 1rem 20rem;
     position: relative;
     left: 50%;
     transform: translate(-50%);
   }
-  @media (min-width: $grid__breakpoint-medium) {
-    width: 95%;
-    border-width: 1rem 30rem 1rem 30rem;
-    position: relative;
-    left: 50%;
-    transform: translate(-50%);
-  }
-  @media (min-width: $grid__breakpoint-large) {
-    width: 85%;
-    border-width: 1rem 30rem 1rem 30rem;
-    position: relative;
-    left: 50%;
-    transform: translate(-50%);
-  }
-  @media (min-width: $grid__breakpoint-extra-large) {
-    width: 55%;
-    border-width: 1rem 30rem 1rem 30rem;
-    position: relative;
-    left: 50%;
-    transform: translate(-50%);
-  }
- 
+
   &__container {
     display: inline-block;
     width: auto;
@@ -41,7 +19,7 @@
   }
   &__ncn {
     display: inline-block;
-    left: 2rem;
+    margin-left: 2rem;
     position: relative;
     padding: calc(#{$spacer__unit} / 2) 0;
   }
@@ -49,15 +27,25 @@
     display: inline-block;
     left: 3rem;
     position: relative;
-    margin-left: 2%;
+    margin-left: 2rem;
     padding: calc(#{$spacer__unit} / 2) 0;
+     @media (min-width: $grid__breakpoint-large) {
+      width: 15rem;
+      margin-left: 2rem;
+      left: 3rem;
+    }
   }
   &__date {
     display: inline-block;
-    margin-left: 4%;
-    left: 10rem;
+    margin-left: 3rem;
+    left: 6rem;
     position: relative;
     padding: calc(#{$spacer__unit} / 2) 0;
+    @media (min-width: $grid__breakpoint-large) {
+      width: 8rem;
+      margin-left: 2rem;
+      left: 11rem;
+    }
   }
   &__tdr {
     font-size: 1rem;
@@ -76,21 +64,29 @@
   } 
   &__actions {
     display: inline-block;
-    left: 7rem;
+   
     position: relative;
-    width: auto;
     padding: calc(#{$spacer__unit} / 2) 0;
+    width: auto;
+    left: 13rem;
   }
   &__main-labels {
     display: block;
     margin-bottom: 0.5rem;
   }
   &__tdr-label{
-    display: block;
-    margin-bottom: 0;
+    display: inline-block;
+   
     bottom: 3rem;
-    left: 15rem;
+    left: 20rem;
     position: relative;
+    padding: calc(#{$spacer__unit} / 2) 0;
+    @media (min-width: 1500px) {
+      margin-bottom: 0;
+      bottom: 3rem;
+      margin-left: 2rem;
+      left: 21rem;
+    }
   }
  
   &__more-options {
