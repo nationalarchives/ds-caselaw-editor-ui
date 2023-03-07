@@ -5,9 +5,35 @@ from caselawclient.Client import MarklogicResourceNotFoundError
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
+from factories import JudgmentFactory
 
 
-class TestJudgment(TestCase):
+class TestJudgmentEdit(TestCase):
+    @patch("judgments.views.edit_judgment.Judgment")
+    def test_judgment_edit_view(self, mock_judgment):
+        judgment = JudgmentFactory.build(
+            uri="edtest/4321/123",
+            name="Test v Tested",
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        assert (
+            reverse("edit-judgment", kwargs={"judgment_uri": judgment.uri})
+            == "/edtest/4321/123/edit"
+        )
+
+        response = self.client.get(
+            reverse("edit-judgment", kwargs={"judgment_uri": judgment.uri})
+        )
+
+        decoded_response = response.content.decode("utf-8")
+        self.assertIn("Test v Tested", decoded_response)
+        assert response.status_code == 200
+
+
+class TestJudgmentView(TestCase):
     @patch(
         "judgments.models.MarklogicApiClient.get_judgment_citation",
         side_effect=MarklogicResourceNotFoundError(),
