@@ -169,13 +169,20 @@ The button that submits an edited document needs S3 and SNS services
 to function (as it copies files across and notifies the enrichment
 service that it might have been published).
 
+Before you do this you will need to `pip install awscli-local` and you will probably want **version 1** of the AWS CLI
+tools. Version 2 may cause things to explode in unexpected ways, as it's not fully supported by LocalStack.
+
 Start it up by running from the `ds-caselaw-ingester` repo:
 
-`docker-compose up -d`
+```console
+docker-compose up -d
+```
 
-and then, in this repo:
+and then, in this repo (on your machine, not the Docker image):
 
-`script/setup-localstack.sh`
+```console
+script/setup-localstack.sh
+```
 
 That script will create in localstack a `caselaw-stg-judgment-updated` SNS
 topic and `public-` and `private-asset-buckets` for S3.
