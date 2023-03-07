@@ -9,6 +9,16 @@ class JudgmentFactory:
     PARAMS_MAP: dict[str, tuple[str, Any]] = {
         "uri": ("uri", "test/2023/123"),
         "name": ("name", "Judgment v Judgement"),
+        "neutral_citation": ("neutral_citation", "[2023] Test 123"),
+        "court": ("court", "Court of Testing"),
+        "judgment_date_as_string": ("judgment_date_as_string", "2023-02-03"),
+        "is_published": ("is_published", False),
+        "is_sensitive": ("is_sensitive", False),
+        "is_anonymised": ("is_anonymised", False),
+        "has_supplementary_materials": ("has_supplementary_materials", False),
+        "source_name": ("source_name", "Example Uploader"),
+        "source_email": ("source_email", "uploader@example.com"),
+        "consignment_reference": ("consignment_reference", "TDR-12345"),
         "versions": ("versions", []),
     }
 
