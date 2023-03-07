@@ -16,6 +16,7 @@ class JudgmentFactory:
         "is_sensitive": ("is_sensitive", False),
         "is_anonymised": ("is_anonymised", False),
         "has_supplementary_materials": ("has_supplementary_materials", False),
+        "is_failure": ("is_failure", False),
         "source_name": ("source_name", "Example Uploader"),
         "source_email": ("source_email", "uploader@example.com"),
         "consignment_reference": ("consignment_reference", "TDR-12345"),
@@ -25,6 +26,13 @@ class JudgmentFactory:
     @classmethod
     def build(cls, **kwargs) -> Judgment:
         judgment_mock = Mock(spec=Judgment, autospec=True)
+
+        if "html" in kwargs:
+            judgment_mock.return_value.content_as_html.return_value = kwargs.pop("html")
+        else:
+            judgment_mock.return_value.content_as_html.return_value = (
+                "<p>This is a judgment.</p>"
+            )
 
         for map_to, map_from in cls.PARAMS_MAP.items():
             if map_from[0] in kwargs:

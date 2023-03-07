@@ -34,6 +34,50 @@ class TestJudgmentEdit(TestCase):
 
 
 class TestJudgmentView(TestCase):
+    @patch("judgments.views.full_text.Judgment")
+    def test_judgment_html_view(self, mock_judgment):
+        judgment = JudgmentFactory.build(
+            uri="hvtest/4321/123",
+            name="Test v Tested",
+            html="<h1>Test Judgment</h1>",
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        assert (
+            reverse("full-text-html", kwargs={"judgment_uri": judgment.uri})
+            == "/hvtest/4321/123"
+        )
+
+        response = self.client.get(
+            reverse("full-text-html", kwargs={"judgment_uri": judgment.uri})
+        )
+
+        decoded_response = response.content.decode("utf-8")
+        self.assertIn("Test v Tested", decoded_response)
+        self.assertIn("<h1>Test Judgment</h1>", decoded_response)
+        assert response.status_code == 200
+
+    @patch("judgments.views.full_text.Judgment")
+    def test_judgment_html_view_with_failure(self, mock_judgment):
+        judgment = JudgmentFactory.build(
+            uri="hvtest/4321/123",
+            html="<h1>Test Judgment</h1>",
+            is_failure=True,
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.get(
+            reverse("full-text-html", kwargs={"judgment_uri": judgment.uri})
+        )
+
+        decoded_response = response.content.decode("utf-8")
+        self.assertIn("&lt;h1&gt;Test Judgment&lt;/h1&gt;", decoded_response)
+        assert response.status_code == 200
+
     @patch(
         "judgments.models.MarklogicApiClient.get_judgment_citation",
         side_effect=MarklogicResourceNotFoundError(),
