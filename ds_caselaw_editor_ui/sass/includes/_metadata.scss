@@ -3,10 +3,37 @@
   padding: $spacer__unit;
   border-style: solid;
   border-color: #ffffff;
-  border-width: 1rem 30rem 1rem 30rem;
-  @media (min-width: $grid__breakpoint-medium) {
-    border-width: 1rem 30rem 1rem 30rem;
+  
+
+  @media (min-width: $grid__breakpoint-small) {
+    width: 100%;
+    border-width: 1rem 20rem 1rem 20rem;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
   }
+  @media (min-width: $grid__breakpoint-medium) {
+    width: 95%;
+    border-width: 1rem 30rem 1rem 30rem;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+  }
+  @media (min-width: $grid__breakpoint-large) {
+    width: 85%;
+    border-width: 1rem 30rem 1rem 30rem;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+  }
+  @media (min-width: $grid__breakpoint-extra-large) {
+    width: 55%;
+    border-width: 1rem 30rem 1rem 30rem;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+  }
+ 
   &__container {
     display: inline-block;
     width: auto;
