@@ -15,6 +15,7 @@ from .views.full_text import (
     xml_view_redirect,
 )
 from .views.index import index
+from .views.labs import Labs
 from .views.results import results
 from .views.signed_asset import redirect_to_signed_asset
 from .views.unlock import unlock
@@ -36,6 +37,8 @@ urlpatterns = [
     path("edit", edit_view_redirect),
     path("detail", html_view_redirect),
     path("xml", xml_view_redirect),
+    # Labs
+    path("labs", Labs.as_view(), name="labs"),
     # Different views on judgments
     path("<path:judgment_uri>/edit", EditJudgmentView.as_view(), name="edit-judgment"),
     path("<path:judgment_uri>/pdf", pdf_view, name="full-text-pdf"),

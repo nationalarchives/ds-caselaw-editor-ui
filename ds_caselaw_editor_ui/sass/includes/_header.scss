@@ -2,7 +2,12 @@
   background-color: $color__almost-black;
   padding: 0 0 calc($spacer__unit * 1.25);
 
+  display: flex;
+  flex-direction: row;
+
   &__breadcrumb {
+
+    flex-grow: 1;
 
     display: block;
     position: relative;

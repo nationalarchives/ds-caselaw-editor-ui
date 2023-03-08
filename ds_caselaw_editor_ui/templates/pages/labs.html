@@ -1,0 +1,33 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% block content %}
+  <header class="page-header page-header-slim">
+
+    {% include 'includes/breadcrumbs.html' with current='Labs' title='Labs' link=request.get_full_path %}
+
+  </header>
+
+  <div class="standard-text-template">
+
+    <h1>Labs</h1>
+
+    <p>Labs let you try out new features. We're always open to your feedback on them - good or bad!</p>
+
+    <h2>Current experiments</h2>
+
+    {% for experiment in experiments %}
+
+      <h3>{{ experiment.title }}</h3>
+
+      {% if experiment.active %}
+        <p>This experiment is currently <b>on</b>. <a href="?dwft_{{ experiment.flag }}=0">Switch it off?</a></p>
+      {% else %}
+        <p>This experiment is currently <b>off</b>. <a href="?dwft_{{ experiment.flag }}=1">Switch it on?</a></p>
+      {% endif %}
+
+      <p>{{ experiment.description }}</p>
+
+    {% endfor %}
+
+  </div>
+{% endblock %}
