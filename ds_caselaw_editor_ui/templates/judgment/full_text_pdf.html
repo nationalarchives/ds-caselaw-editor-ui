@@ -1,6 +1,11 @@
 {% extends "layouts/judgment.html" %}
+{% load waffle_tags %}
+
 {% block content %}
-  {% include 'includes/judgment_view_controls.html' with view='pdf'%}
+  {% flag "metadata_header_block" %}
+  {% include 'includes/metadata_header.html' with return_to='pdf' %}
+  {% endflag %}
+  {% include 'includes/judgment_view_controls.html' with view='pdf' %}
   <object data="{{ context.judgment.pdf_url }}" type="application/pdf" width="100%" height="800px">
     Your browser cannot display this embedded PDF. <a href="{{ context.judgment.pdf_url }}">Download it here</a>.
   </object>
