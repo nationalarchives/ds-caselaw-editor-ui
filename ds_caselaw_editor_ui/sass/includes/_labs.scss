@@ -1,0 +1,40 @@
+.page-header__labs {
+  color: #FFF;
+  background: rgb(187, 95, 195) linear-gradient(to right, rgba(0,0,0,1), rgba(0,0,0,0));
+  align-items: center;
+  justify-content: center;
+  padding-right: 1.4rem;
+
+  font-size: 1.2rem;
+  font-weight: bold;
+
+  transition: 0.4s;
+
+  &:hover {
+    color: #FFF;
+    background: rgb(216, 17, 203) linear-gradient(to right, rgba(0,0,0,1), rgba(0,0,0,0));
+
+    .flask {
+      transform: rotate(-15deg);
+    }
+  }
+
+  &:visited {
+    color: #FFF;
+  }
+
+  .flask {
+      width: 32px;
+      height: 32px;
+      fill: #FFF;
+      vertical-align: bottom;
+      margin-right: 0.3rem;
+      transition: 0.8s;
+  }
+
+  display: none;
+
+  @media (min-width: $grid__breakpoint-medium) {
+    display: flex;
+  }
+}
