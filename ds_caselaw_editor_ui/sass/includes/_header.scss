@@ -67,24 +67,6 @@
       text-align: center;
     }
   }
-
-  &__logo {
-    height: 5.5rem;
-    margin: calc($spacer__unit / 2) auto 0;
-    max-width: 80%;
-  }
-
-  &__logo-link {
-
-    &:focus {
-      outline: 0;
-
-      img {
-        outline: 0.19rem solid $color__white;
-        outline-offset: 0.19rem;
-      }
-    }
-  }
 }
 
 .page-header-slim {

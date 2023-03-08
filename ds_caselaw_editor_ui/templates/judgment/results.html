@@ -8,11 +8,6 @@
 {% block content %}
   {% translate "results.search.title" as pagetitle %}
 
-  <header class="page-header">
-    {% include 'includes/breadcrumbs.html' with current=pagetitle title=pagetitle link=request.path %}
-    {% include 'includes/logo.html' %}
-  </header>
-
   <div class="results">
     <h1>{{ pagetitle }}</h1>
 

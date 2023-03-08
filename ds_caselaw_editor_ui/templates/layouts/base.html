@@ -38,8 +38,12 @@
 
     <a id="skip-to-main-content" href="#main-content">{% translate "skiplink" %}</a>
 
-    {% block header %}
-    {% endblock header %}
+    <header class="page-header page-header-slim">
+      {% include 'includes/breadcrumbs.html' with current=context.page_title title=context.page_title link=request.get_full_path %}
+    </header>
+
+    {% block precontent %}
+    {% endblock precontent %}
 
     <main id="main-content">
       {% block content %}
