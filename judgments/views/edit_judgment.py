@@ -138,22 +138,18 @@ class EditJudgmentView(View):
 
     def post(self, request, *args, **kwargs):
         judgment_uri = request.POST["judgment_uri"]
-        published = bool(request.POST.get("published", False))
-        sensitive = bool(request.POST.get("sensitive", False))
-        supplemental = bool(request.POST.get("supplemental", False))
-        anonymised = bool(request.POST.get("anonymised", False))
+        judgment = Judgment(judgment_uri)
+
+        return_to = request.POST.get("return_to", None)
+
+        # Default to not performing a subset update to maintain existing behaviour
+        subset = False
+
+        # But if we're going back to HTML or PDF views, this is a subset update
+        if return_to in ("html", "pdf"):
+            subset = True
 
         try:
-            api_client.set_published(judgment_uri, published)
-            api_client.set_sensitive(judgment_uri, sensitive)
-            api_client.set_supplemental(judgment_uri, supplemental)
-            api_client.set_anonymised(judgment_uri, anonymised)
-
-            if published:
-                publish_documents(uri_for_s3(judgment_uri))
-            else:
-                unpublish_documents(uri_for_s3(judgment_uri))
-
             # Set name
             new_name = request.POST["metadata_name"]
             api_client.set_judgment_name(judgment_uri, new_name)
@@ -170,10 +166,36 @@ class EditJudgmentView(View):
             new_date = request.POST["judgment_date"]
             api_client.set_judgment_date(judgment_uri, new_date)
 
-            # Assignment
-            # TODO consider validating assigned_to is a user?
-            if new_assignment := request.POST["assigned_to"]:
-                api_client.set_property(judgment_uri, "assigned-to", new_assignment)
+            if not subset:
+                published = bool(request.POST.get("published", False))
+                sensitive = bool(request.POST.get("sensitive", False))
+                supplemental = bool(request.POST.get("supplemental", False))
+                anonymised = bool(request.POST.get("anonymised", False))
+
+                api_client.set_published(judgment_uri, published)
+                api_client.set_sensitive(judgment_uri, sensitive)
+                api_client.set_supplemental(judgment_uri, supplemental)
+                api_client.set_anonymised(judgment_uri, anonymised)
+
+                if published:
+                    publish_documents(uri_for_s3(judgment_uri))
+                else:
+                    unpublish_documents(uri_for_s3(judgment_uri))
+
+                # Assignment
+                # TODO consider validating assigned_to is a user?
+                if new_assignment := request.POST["assigned_to"]:
+                    api_client.set_property(judgment_uri, "assigned-to", new_assignment)
+
+                if published:
+                    notify_status = "published"
+                else:
+                    notify_status = "not published"
+                notify_changed(
+                    uri=judgment_uri,
+                    status=notify_status,
+                    enrich=published,  # placeholder for now, should perhaps be "has this become published"
+                )
 
             # If judgment_uri is a `failure` URI, amend it to match new neutral citation and redirect
             if "failures" in judgment_uri and new_citation is not None:
@@ -181,16 +203,6 @@ class EditJudgmentView(View):
                 return redirect(
                     reverse("edit-judgment", kwargs={"judgment_uri": new_judgment_uri})
                 )
-
-            if published:
-                notify_status = "published"
-            else:
-                notify_status = "not published"
-            notify_changed(
-                uri=judgment_uri,
-                status=notify_status,
-                enrich=published,  # placeholder for now, should perhaps be "has this become published"
-            )
 
             messages.success(request, "Judgment successfully updated")
 
@@ -203,11 +215,22 @@ class EditJudgmentView(View):
         except MarklogicAPIError as e:
             messages.error(request, f"There was an error saving the Judgment: {e}")
 
-        invalidate_caches(judgment_uri)
+        invalidate_caches(judgment.uri)
 
-        return HttpResponseRedirect(
-            reverse("edit-judgment", kwargs={"judgment_uri": judgment_uri})
-        )
+        if return_to == "html":
+            return_path = reverse(
+                "full-text-html", kwargs={"judgment_uri": judgment.uri}
+            )
+        elif return_to == "pdf":
+            return_path = reverse(
+                "full-text-pdf", kwargs={"judgment_uri": judgment.uri}
+            )
+        else:
+            return_path = reverse(
+                "edit-judgment", kwargs={"judgment_uri": judgment.uri}
+            )
+
+        return HttpResponseRedirect(return_path)
 
 
 def edit_view_redirect(request):

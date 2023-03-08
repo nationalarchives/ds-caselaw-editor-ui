@@ -6,6 +6,7 @@
 
     <form aria-label="Edit judgment" method="post" action="{% url 'edit-judgment' context.judgment.uri%}">
       {% csrf_token %}
+      <input type="hidden" name="return_to" value="{{ return_to }}">
       <div class="metadata-component_container">
         <div class="metadata-component__ncn">
           <label for="neutral_citation" class="metadata-component__main-labels">{% translate "judgment.neutral_citation" %}</label>
