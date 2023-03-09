@@ -176,9 +176,9 @@ class EditJudgmentView(View):
 
                 published = bool(request.POST.get("published", False))
 
-                if published:
+                if published and not judgment.is_published:
                     judgment.publish()
-                else:
+                elif not published and judgment.is_published:
                     judgment.unpublish()
 
             # If judgment_uri is a `failure` URI, amend it to match new neutral citation and redirect

@@ -41,6 +41,7 @@ class TestJudgmentEdit(TestCase):
         judgment = JudgmentFactory.build(
             uri="pubtest/4321/123",
             name="Publication Test",
+            is_published=False,
         )
         mock_judgment.return_value = judgment
 
@@ -70,12 +71,48 @@ class TestJudgmentEdit(TestCase):
     @patch("judgments.views.edit_judgment.invalidate_caches")
     @patch("judgments.views.edit_judgment.api_client")
     @patch("judgments.views.edit_judgment.Judgment")
+    def test_judgment_publish_flow_if_published(
+        self, mock_judgment, mock_api_client, mock_invalidate_caches
+    ):
+        judgment = JudgmentFactory.build(
+            uri="pubtest/4321/123",
+            name="Publication Test",
+            is_published=True,
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.post(
+            reverse("edit-judgment", kwargs={"judgment_uri": judgment.uri}),
+            data={
+                "judgment_uri": judgment.uri,
+                "metadata_name": judgment.name,
+                "neutral_citation": judgment.neutral_citation,
+                "court": judgment.court,
+                "judgment_date": judgment.judgment_date_as_string,
+                "assigned_to": judgment.assigned_to,
+                "published": "on",
+            },
+        )
+
+        assert response.status_code == 302
+        assert response["Location"] == reverse(
+            "edit-judgment", kwargs={"judgment_uri": judgment.uri}
+        )
+        mock_judgment.return_value.publish.assert_not_called()
+        mock_judgment.return_value.unpublish.assert_not_called()
+
+    @patch("judgments.views.edit_judgment.invalidate_caches")
+    @patch("judgments.views.edit_judgment.api_client")
+    @patch("judgments.views.edit_judgment.Judgment")
     def test_judgment_unpublish_flow(
         self, mock_judgment, mock_api_client, mock_invalidate_caches
     ):
         judgment = JudgmentFactory.build(
             uri="pubtest/4321/123",
             name="Publication Test",
+            is_published=True,
         )
         mock_judgment.return_value = judgment
 
@@ -100,6 +137,40 @@ class TestJudgmentEdit(TestCase):
         mock_judgment.return_value.unpublish.assert_called_once()
         mock_judgment.return_value.publish.assert_not_called()
         mock_invalidate_caches.assert_called_once()
+
+    @patch("judgments.views.edit_judgment.invalidate_caches")
+    @patch("judgments.views.edit_judgment.api_client")
+    @patch("judgments.views.edit_judgment.Judgment")
+    def test_judgment_unpublish_flow_if_not_published(
+        self, mock_judgment, mock_api_client, mock_invalidate_caches
+    ):
+        judgment = JudgmentFactory.build(
+            uri="pubtest/4321/123",
+            name="Publication Test",
+            is_published=False,
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.post(
+            reverse("edit-judgment", kwargs={"judgment_uri": judgment.uri}),
+            data={
+                "judgment_uri": judgment.uri,
+                "metadata_name": judgment.name,
+                "neutral_citation": judgment.neutral_citation,
+                "court": judgment.court,
+                "judgment_date": judgment.judgment_date_as_string,
+                "assigned_to": judgment.assigned_to,
+            },
+        )
+
+        assert response.status_code == 302
+        assert response["Location"] == reverse(
+            "edit-judgment", kwargs={"judgment_uri": judgment.uri}
+        )
+        mock_judgment.return_value.unpublish.assert_not_called()
+        mock_judgment.return_value.publish.assert_not_called()
 
 
 class TestJudgmentView(TestCase):
