@@ -275,3 +275,35 @@ msgstr ""
 #: judgments/views/delete.py
 msgid "judgment.delete_a_judgment"
 msgstr "Delete a judgment"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
+msgid "judgment.publish_this_judgment"
+msgstr "Publish judgment"
+
+#: ds_caselaw_editor_ui/templates/judgment/publish.html
+msgid "judgment.confirm"
+msgstr "Notify us of any minor problems in the document – select all that apply"
+
+#: ds_caselaw_editor_ui/templates/judgment/publish.html
+msgid "judgment.center"
+msgstr "Centring on the front page"
+
+#: ds_caselaw_editor_ui/templates/judgment/publish.html
+msgid "judgment.indentation"
+msgstr "Paragraph indentation"
+
+#: ds_caselaw_editor_ui/templates/judgment/publish.html
+msgid "judgment.headings"
+msgstr "Headings and Sub Headings"
+
+#: ds_caselaw_editor_ui/templates/judgment/publish.html
+msgid "judgment.images"
+msgstr "Images"
+
+#: ds_caselaw_editor_ui/templates/judgment/publish.html
+msgid "judgment.barriers"
+msgstr "Other"
+
+#: ds_caselaw_editor_ui/templates/judgment/publish.html
+msgid "judgment.problems"
+msgstr "No problems within this document"

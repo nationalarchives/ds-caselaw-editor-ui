@@ -1,0 +1,48 @@
+{% extends "layouts/judgment.html" %}
+{% load waffle_tags %}
+{% block content %}
+  {% load i18n %}
+
+<div class="publish-component">
+   <div class="publish-component__container">
+    <div class="publish-metadata">
+    {% include "includes/publish_list_metadata.html" %}
+    </div>
+        <aside class="publish-sidebar">
+        {% include "includes/publish_sidebar.html" %}
+        </aside>
+      <h2 class="publish-component__header">{% translate "judgment.confirm" %} <span class="judgment-uri">{{context.judgment_uri}}</span></h2>
+      <form aria-label="publish judgment" method="post">
+        {% csrf_token %}
+        <div class="publish-component__panel">
+         <input type="checkbox" class="publish-component__center-input" {% if context.judgment.is_centered %}checked{% endif %} name="center" id="center"/>
+         <label for="center">{% translate "judgment.center" %}</label>
+        </div>
+        <div class="publish-component__panel">
+          <input type="checkbox" class="publish-component__indentation-input" {% if context.judgment.is_indentation %}checked{% endif %} name="indentation" id="indentation"/>
+          <label for="indentation">{% translate "judgment.indentation" %}</label>
+        </div>
+        <div class="publish-component__panel">
+         <input type="checkbox" class="publish-component__images-input" {% if context.judgment.is_images %}checked{% endif %} name="images" id="images"/>
+         <label for="images">  {% translate "judgment.images" %}</label>
+        </div>
+         <div class="publish-component__panel">
+         <input type="checkbox" class="publish-component__headings-input" {% if context.judgment.is_headings %}checked{% endif %} name="headings" id="headings"/>
+         <label for="headings">{% translate "judgment.headings" %}</label>
+        </div>
+        <div class="publish-component__panel">
+         <input type="checkbox" class="publish-component__barriers-input" {% if context.judgment.is_barriers %}checked{% endif %} name="barriers" id="barriers"/>
+         <label for="barriers">{% translate "judgment.barriers" %}</label>
+        </div>
+        <div class="publish-component__panel">
+         <input type="checkbox" class="publish-component__problems-input" {% if context.judgment.no_problems %}checked{% endif %} name="problems" id="barriers"/>
+         <label for="problems">{% translate "judgment.problems" %}</label>
+        </div>
+        <div class="publish-component__actions">
+          <input type="hidden" name="judgment_uri" value="{{context.judgment_uri}}"/>
+          <input type="submit" value="Pubish this document"/>
+        </div>
+      </form>
+    </div>
+</div>
+ {% endblock content %}

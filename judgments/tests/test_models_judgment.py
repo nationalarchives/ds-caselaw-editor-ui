@@ -183,3 +183,51 @@ class TestJudgment:
 
         assert successful_judgment.is_failure is False
         assert failing_judgment.is_failure is True
+
+    def test_judgment_is_centered(self, mock_api_client):
+        mock_api_client.get_center.return_value = True
+
+        judgment = Judgment("test/1234", mock_api_client)
+
+        assert judgment.is_centered is True
+        mock_api_client.get_center.assert_called_once_with("test/1234")
+
+    def test_judgment_is_indentation(self, mock_api_client):
+        mock_api_client.get_indentation.return_value = True
+
+        judgment = Judgment("test/1234", mock_api_client)
+
+        assert judgment.is_indentation is True
+        mock_api_client.get_indentation.assert_called_once_with("test/1234")
+
+    def test_judgment_is_images(self, mock_api_client):
+        mock_api_client.get_images.return_value = True
+
+        judgment = Judgment("test/1234", mock_api_client)
+
+        assert judgment.is_images is True
+        mock_api_client.get_images.assert_called_once_with("test/1234")
+
+    def test_judgment_is_headings(self, mock_api_client):
+        mock_api_client.get_headings.return_value = True
+
+        judgment = Judgment("test/1234", mock_api_client)
+
+        assert judgment.is_headings is True
+        mock_api_client.get_headings.assert_called_once_with("test/1234")
+
+    def test_judgment_is_barriers(self, mock_api_client):
+        mock_api_client.get_barriers.return_value = True
+
+        judgment = Judgment("test/1234", mock_api_client)
+
+        assert judgment.is_barriers is True
+        mock_api_client.get_barriers.assert_called_once_with("test/1234")
+
+    def test_judgment_no_problems(self, mock_api_client):
+        mock_api_client.get_problems.return_value = True
+
+        judgment = Judgment("test/1234", mock_api_client)
+
+        assert judgment.no_problems is True
+        mock_api_client.get_problems.assert_called_once_with("test/1234")

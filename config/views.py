@@ -29,3 +29,7 @@ class NoResultsView(TemplateViewWithContext):
 
 class CheckView(TemplateViewWithContext):
     template_name = "pages/check.html"
+
+
+class PublishView(TemplateViewWithContext):
+    template_name = "judgment/publish.html"

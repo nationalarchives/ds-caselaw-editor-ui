@@ -35,12 +35,18 @@
           <a class="judgment-toolbar__button{% if context.judgment_content %} judgment-toolbar__button-selected{% endif %}" href="{% url 'full-text-html' context.judgment_uri %}">
             {% translate "judgment.view_this_judgment" %}
           </a>
+          <a class="judgment-toolbar__button{% if context.judgment_content %} judgment-toolbar__button-selected{% endif %}" href="{% url 'publish' %}">
+            {% translate "judgment.publish_this_judgment" %}
+          </a>
         {% else %}
           <span class="judgment-toolbar__button" aria-disabled="true">
             {% translate "judgment.edit_this_judgment" %}
           </span>
           <span class="judgment-toolbar__button" aria-disabled="true">
             {% translate "judgment.view_this_judgment" %}
+          </span>
+          <span class="judgment-toolbar__button" aria-disabled="true">
+            {% translate "judgment.publish_this_judgment" %}
           </span>
         {% endif %}
       {% endif %}

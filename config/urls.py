@@ -18,6 +18,11 @@ urlpatterns = [
         views.CheckView.as_view(),
         name="check",
     ),
+    path(
+        "publish",
+        views.PublishView.as_view(),
+        name="publish",
+    ),
     path("accounts/", include("allauth.urls")),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
