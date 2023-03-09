@@ -18,13 +18,7 @@ from judgments.utils import (
     update_judgment_uri,
     users_dict,
 )
-from judgments.utils.aws import (
-    invalidate_caches,
-    notify_changed,
-    publish_documents,
-    unpublish_documents,
-    uri_for_s3,
-)
+from judgments.utils.aws import invalidate_caches
 
 
 class EditJudgmentView(View):
@@ -167,35 +161,25 @@ class EditJudgmentView(View):
             api_client.set_judgment_date(judgment_uri, new_date)
 
             if not subset:
-                published = bool(request.POST.get("published", False))
                 sensitive = bool(request.POST.get("sensitive", False))
                 supplemental = bool(request.POST.get("supplemental", False))
                 anonymised = bool(request.POST.get("anonymised", False))
 
-                api_client.set_published(judgment_uri, published)
                 api_client.set_sensitive(judgment_uri, sensitive)
                 api_client.set_supplemental(judgment_uri, supplemental)
                 api_client.set_anonymised(judgment_uri, anonymised)
-
-                if published:
-                    publish_documents(uri_for_s3(judgment_uri))
-                else:
-                    unpublish_documents(uri_for_s3(judgment_uri))
 
                 # Assignment
                 # TODO consider validating assigned_to is a user?
                 if new_assignment := request.POST["assigned_to"]:
                     api_client.set_property(judgment_uri, "assigned-to", new_assignment)
 
+                published = bool(request.POST.get("published", False))
+
                 if published:
-                    notify_status = "published"
+                    judgment.publish()
                 else:
-                    notify_status = "not published"
-                notify_changed(
-                    uri=judgment_uri,
-                    status=notify_status,
-                    enrich=published,  # placeholder for now, should perhaps be "has this become published"
-                )
+                    judgment.unpublish()
 
             # If judgment_uri is a `failure` URI, amend it to match new neutral citation and redirect
             if "failures" in judgment_uri and new_citation is not None:
