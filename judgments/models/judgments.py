@@ -8,7 +8,14 @@ from django.urls import reverse
 from requests_toolbelt.multipart import decoder
 
 from judgments.utils import get_judgment_root, render_versions
-from judgments.utils.aws import generate_docx_url, generate_pdf_url, uri_for_s3
+from judgments.utils.aws import (
+    generate_docx_url,
+    generate_pdf_url,
+    notify_changed,
+    publish_documents,
+    unpublish_documents,
+    uri_for_s3,
+)
 
 
 class CannotPublishUnpublishableJudgment(Exception):
@@ -151,7 +158,19 @@ class Judgment:
         if not self.is_publishable:
             raise CannotPublishUnpublishableJudgment
 
+        publish_documents(uri_for_s3(self.uri))
         self.api_client.set_published(self.uri, True)
+        notify_changed(
+            uri=self.uri,
+            status="published",
+            enrich=True,
+        )
 
     def unpublish(self):
+        unpublish_documents(uri_for_s3(self.uri))
         self.api_client.set_published(self.uri, False)
+        notify_changed(
+            uri=self.uri,
+            status="not published",
+            enrich=False,
+        )

@@ -213,13 +213,29 @@ class TestJudgmentPublication:
             judgment.publish()
             mock_api_client.set_published.assert_not_called()
 
-    def test_publish(self, mock_api_client):
+    @patch("judgments.models.judgments.notify_changed")
+    @patch("judgments.models.judgments.publish_documents")
+    def test_publish(
+        self, mock_publish_documents, mock_notify_changed, mock_api_client
+    ):
         judgment = Judgment("test/1234", mock_api_client)
         judgment.is_publishable = True
         judgment.publish()
+        mock_publish_documents.assert_called_once_with("test/1234")
         mock_api_client.set_published.assert_called_once_with("test/1234", True)
+        mock_notify_changed.assert_called_once_with(
+            uri="test/1234", status="published", enrich=True
+        )
 
-    def test_unpublish(self, mock_api_client):
+    @patch("judgments.models.judgments.notify_changed")
+    @patch("judgments.models.judgments.unpublish_documents")
+    def test_unpublish(
+        self, mock_unpublish_documents, mock_notify_changed, mock_api_client
+    ):
         judgment = Judgment("test/1234", mock_api_client)
         judgment.unpublish()
+        mock_unpublish_documents.assert_called_once_with("test/1234")
         mock_api_client.set_published.assert_called_once_with("test/1234", False)
+        mock_notify_changed.assert_called_once_with(
+            uri="test/1234", status="not published", enrich=False
+        )
