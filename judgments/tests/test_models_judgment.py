@@ -84,6 +84,14 @@ class TestJudgment:
         assert judgment.is_published is True
         mock_api_client.get_published.assert_called_once_with("test/1234")
 
+    def test_judgment_is_held(self, mock_api_client):
+        mock_api_client.get_property.return_value = False
+
+        judgment = Judgment("test/1234", mock_api_client)
+
+        assert judgment.is_held is False
+        mock_api_client.get_property.assert_called_once_with("test/1234", "editor-hold")
+
     def test_judgment_is_sensitive(self, mock_api_client):
         mock_api_client.get_sensitive.return_value = True
 

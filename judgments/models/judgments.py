@@ -58,6 +58,10 @@ class Judgment:
         return self.api_client.get_published(self.uri)
 
     @cached_property
+    def is_held(self) -> bool:
+        return self.api_client.get_property(self.uri, "editor-hold")
+
+    @cached_property
     def is_sensitive(self) -> bool:
         return self.api_client.get_sensitive(self.uri)
 
