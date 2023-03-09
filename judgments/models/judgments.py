@@ -11,6 +11,10 @@ from judgments.utils import get_judgment_root, render_versions
 from judgments.utils.aws import generate_docx_url, generate_pdf_url, uri_for_s3
 
 
+class CannotPublishUnpublishableJudgment(Exception):
+    pass
+
+
 class Judgment:
     def __init__(self, uri: str, api_client: Optional[MarklogicApiClient] = None):
         self.uri = uri.strip("/")
@@ -135,3 +139,19 @@ class Judgment:
 
     def _get_root(self) -> str:
         return get_judgment_root(self.content_as_xml())
+
+    @cached_property
+    def is_publishable(self) -> bool:
+        if self.is_held:
+            return False
+
+        return True
+
+    def publish(self):
+        if not self.is_publishable:
+            raise CannotPublishUnpublishableJudgment
+
+        self.api_client.set_published(self.uri, True)
+
+    def unpublish(self):
+        self.api_client.set_published(self.uri, False)

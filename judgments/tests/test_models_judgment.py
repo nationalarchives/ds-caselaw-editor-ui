@@ -4,7 +4,7 @@ from unittest.mock import ANY, Mock, patch
 import pytest
 from caselawclient.Client import MarklogicApiClient
 
-from judgments.models.judgments import Judgment
+from judgments.models.judgments import CannotPublishUnpublishableJudgment, Judgment
 
 
 @pytest.fixture
@@ -191,3 +191,35 @@ class TestJudgment:
 
         assert successful_judgment.is_failure is False
         assert failing_judgment.is_failure is True
+
+
+class TestJudgmentPublication:
+    def test_judgment_is_publishable_if_held(self, mock_api_client):
+        judgment = Judgment("test/1234", mock_api_client)
+        judgment.is_held = True
+
+        assert judgment.is_publishable is False
+
+    def test_judgment_is_publishable_if_not_held(self, mock_api_client):
+        judgment = Judgment("test/1234", mock_api_client)
+        judgment.is_held = False
+
+        assert judgment.is_publishable is True
+
+    def test_publish_fails_if_not_publishable(self, mock_api_client):
+        with pytest.raises(CannotPublishUnpublishableJudgment):
+            judgment = Judgment("test/1234", mock_api_client)
+            judgment.is_publishable = False
+            judgment.publish()
+            mock_api_client.set_published.assert_not_called()
+
+    def test_publish(self, mock_api_client):
+        judgment = Judgment("test/1234", mock_api_client)
+        judgment.is_publishable = True
+        judgment.publish()
+        mock_api_client.set_published.assert_called_once_with("test/1234", True)
+
+    def test_unpublish(self, mock_api_client):
+        judgment = Judgment("test/1234", mock_api_client)
+        judgment.unpublish()
+        mock_api_client.set_published.assert_called_once_with("test/1234", False)
