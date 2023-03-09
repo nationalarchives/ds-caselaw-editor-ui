@@ -161,7 +161,9 @@ class SearchMatch(xmlmodels.XmlModel):
     class Meta:
         namespaces = {"search": "http://marklogic.com/appservices/search"}
 
-    transform_to_html = xmlmodels.XsltField(join(dirname(__file__), "search_match.xsl"))
+    transform_to_html = xmlmodels.XsltField(
+        join(dirname(__file__), "..", "search_match.xsl")
+    )
 
 
 class Judgment:
