@@ -6,7 +6,7 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
 
-from judgments.models import Judgment
+from judgments.models.judgments import Judgment
 from judgments.utils import extract_version
 
 

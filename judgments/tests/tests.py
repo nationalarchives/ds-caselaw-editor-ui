@@ -5,7 +5,8 @@ from django.test import TestCase
 from django.urls import reverse
 from lxml import etree
 
-from judgments.models import Judgment, SearchResult, SearchResultMeta
+from judgments.models import SearchResult, SearchResultMeta
+from judgments.models.judgments import Judgment
 
 
 class TestSearchResults(TestCase):

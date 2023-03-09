@@ -79,7 +79,7 @@ class TestJudgmentView(TestCase):
         assert response.status_code == 200
 
     @patch(
-        "judgments.models.MarklogicApiClient.get_judgment_citation",
+        "judgments.models.judgments.MarklogicApiClient.get_judgment_citation",
         side_effect=MarklogicResourceNotFoundError(),
     )
     def test_judgment_html_view_not_found_response(self, mock_api_client):
@@ -114,7 +114,7 @@ class TestJudgmentView(TestCase):
         )
 
     @patch(
-        "judgments.models.MarklogicApiClient.get_judgment_citation",
+        "judgments.models.judgments.MarklogicApiClient.get_judgment_citation",
         side_effect=MarklogicResourceNotFoundError(),
     )
     def test_judgment_pdf_view_not_found_response(self, mock_api_client):
@@ -140,7 +140,7 @@ class TestJudgmentView(TestCase):
         self.assertEqual(response.status_code, 404)
 
     @patch(
-        "judgments.models.MarklogicApiClient.get_judgment_citation",
+        "judgments.models.judgments.MarklogicApiClient.get_judgment_citation",
         side_effect=MarklogicResourceNotFoundError(),
     )
     def test_judgment_xml_view_not_found_response(self, mock_api_client):

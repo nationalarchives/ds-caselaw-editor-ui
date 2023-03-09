@@ -11,7 +11,7 @@ from django.urls import reverse
 from django.utils.translation import gettext
 from django.views.generic import View
 
-from judgments.models import Judgment
+from judgments.models.judgments import Judgment
 from judgments.utils import (
     MoveJudgmentError,
     NeutralCitationToUriError,

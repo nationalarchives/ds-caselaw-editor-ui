@@ -1,7 +1,7 @@
 from typing import Any
 from unittest.mock import Mock
 
-from judgments.models import Judgment
+from judgments.models.judgments import Judgment
 
 
 class JudgmentFactory:

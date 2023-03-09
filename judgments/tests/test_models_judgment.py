@@ -4,7 +4,7 @@ from unittest.mock import ANY, Mock, patch
 import pytest
 from caselawclient.Client import MarklogicApiClient
 
-from judgments.models import Judgment
+from judgments.models.judgments import Judgment
 
 
 @pytest.fixture
@@ -13,7 +13,7 @@ def mock_api_client():
 
 
 class TestJudgment:
-    @patch("judgments.models.MarklogicApiClient")
+    @patch("judgments.models.judgments.MarklogicApiClient")
     def test_judgment_uses_default_api_client(self, mock_api_client_class):
         Judgment("test/1234")
 
@@ -21,7 +21,7 @@ class TestJudgment:
             host=ANY, username=ANY, password=ANY, use_https=ANY
         )
 
-    @patch("judgments.models.MarklogicApiClient")
+    @patch("judgments.models.judgments.MarklogicApiClient")
     def test_judgment_doesnt_use_default_api_client_if_provided(
         self, mock_api_client_class, mock_api_client
     ):
@@ -136,7 +136,7 @@ class TestJudgment:
             "test/1234", "transfer-consignment-reference"
         )
 
-    @patch("judgments.models.generate_docx_url")
+    @patch("judgments.models.judgments.generate_docx_url")
     def test_judgment_docx_url(self, mock_url_generator, mock_api_client):
         mock_url_generator.return_value = "https://example.com/mock.docx"
 
@@ -145,7 +145,7 @@ class TestJudgment:
         assert judgment.docx_url == "https://example.com/mock.docx"
         mock_url_generator.assert_called_once
 
-    @patch("judgments.models.generate_pdf_url")
+    @patch("judgments.models.judgments.generate_pdf_url")
     def test_judgment_pdf_url(self, mock_url_generator, mock_api_client):
         mock_url_generator.return_value = "https://example.com/mock.pdf"
 
