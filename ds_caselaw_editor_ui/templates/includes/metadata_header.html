@@ -14,7 +14,12 @@
         </div>
         <div class="metadata-component__court">
           <label for="court" class="metadata-component__main-labels">{% translate "judgment.court" %}</label>
-          <input type="text" class="metadata-component__court-input" value="{{ context.judgment.court }}" name="court" id="court" />
+          <input type="text" class="metadata-component__court-input" value="{{ context.judgment.court }}" name="court" id="court" list="court-ids"/>
+          <datalist id="court-ids">
+            {% for court in context.courts %}
+              <option value="{{ court.code }}">{{court.name}}</option>
+            {% endfor %}
+          </datalist>
         </div>
         <div class="metadata-component__date">
           <label for="judgment_date" class="metadata-component__main-labels">{% translate "judgment.judgment_date" %}</label>

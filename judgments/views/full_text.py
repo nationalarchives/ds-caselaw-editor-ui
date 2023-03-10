@@ -1,5 +1,6 @@
 from urllib.parse import urlencode
 
+import ds_caselaw_utils as caselawutils
 import waffle
 from caselawclient.Client import MarklogicResourceNotFoundError
 from django.http import Http404, HttpResponse, HttpResponseRedirect
@@ -16,7 +17,11 @@ def html_view(request, judgment_uri):
 
     try:
         judgment = Judgment(judgment_uri)
-        context = {"judgment_uri": judgment_uri, "judgment": judgment}
+        context = {
+            "judgment_uri": judgment_uri,
+            "judgment": judgment,
+            "courts": caselawutils.courts.get_all(),
+        }
 
         if not judgment.is_editable:
             judgment_content = judgment.content_as_xml()
