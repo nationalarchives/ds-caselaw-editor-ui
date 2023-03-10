@@ -4,7 +4,7 @@ from unittest.mock import ANY, Mock, patch
 import pytest
 from caselawclient.Client import MarklogicApiClient
 
-from judgments.models import Judgment
+from judgments.models.judgments import CannotPublishUnpublishableJudgment, Judgment
 
 
 @pytest.fixture
@@ -13,7 +13,7 @@ def mock_api_client():
 
 
 class TestJudgment:
-    @patch("judgments.models.MarklogicApiClient")
+    @patch("judgments.models.judgments.MarklogicApiClient")
     def test_judgment_uses_default_api_client(self, mock_api_client_class):
         Judgment("test/1234")
 
@@ -21,7 +21,7 @@ class TestJudgment:
             host=ANY, username=ANY, password=ANY, use_https=ANY
         )
 
-    @patch("judgments.models.MarklogicApiClient")
+    @patch("judgments.models.judgments.MarklogicApiClient")
     def test_judgment_doesnt_use_default_api_client_if_provided(
         self, mock_api_client_class, mock_api_client
     ):
@@ -84,6 +84,14 @@ class TestJudgment:
         assert judgment.is_published is True
         mock_api_client.get_published.assert_called_once_with("test/1234")
 
+    def test_judgment_is_held(self, mock_api_client):
+        mock_api_client.get_property.return_value = False
+
+        judgment = Judgment("test/1234", mock_api_client)
+
+        assert judgment.is_held is False
+        mock_api_client.get_property.assert_called_once_with("test/1234", "editor-hold")
+
     def test_judgment_is_sensitive(self, mock_api_client):
         mock_api_client.get_sensitive.return_value = True
 
@@ -136,7 +144,7 @@ class TestJudgment:
             "test/1234", "transfer-consignment-reference"
         )
 
-    @patch("judgments.models.generate_docx_url")
+    @patch("judgments.models.judgments.generate_docx_url")
     def test_judgment_docx_url(self, mock_url_generator, mock_api_client):
         mock_url_generator.return_value = "https://example.com/mock.docx"
 
@@ -145,7 +153,7 @@ class TestJudgment:
         assert judgment.docx_url == "https://example.com/mock.docx"
         mock_url_generator.assert_called_once
 
-    @patch("judgments.models.generate_pdf_url")
+    @patch("judgments.models.judgments.generate_pdf_url")
     def test_judgment_pdf_url(self, mock_url_generator, mock_api_client):
         mock_url_generator.return_value = "https://example.com/mock.pdf"
 
@@ -183,3 +191,51 @@ class TestJudgment:
 
         assert successful_judgment.is_failure is False
         assert failing_judgment.is_failure is True
+
+
+class TestJudgmentPublication:
+    def test_judgment_is_publishable_if_held(self, mock_api_client):
+        judgment = Judgment("test/1234", mock_api_client)
+        judgment.is_held = True
+
+        assert judgment.is_publishable is False
+
+    def test_judgment_is_publishable_if_not_held(self, mock_api_client):
+        judgment = Judgment("test/1234", mock_api_client)
+        judgment.is_held = False
+
+        assert judgment.is_publishable is True
+
+    def test_publish_fails_if_not_publishable(self, mock_api_client):
+        with pytest.raises(CannotPublishUnpublishableJudgment):
+            judgment = Judgment("test/1234", mock_api_client)
+            judgment.is_publishable = False
+            judgment.publish()
+            mock_api_client.set_published.assert_not_called()
+
+    @patch("judgments.models.judgments.notify_changed")
+    @patch("judgments.models.judgments.publish_documents")
+    def test_publish(
+        self, mock_publish_documents, mock_notify_changed, mock_api_client
+    ):
+        judgment = Judgment("test/1234", mock_api_client)
+        judgment.is_publishable = True
+        judgment.publish()
+        mock_publish_documents.assert_called_once_with("test/1234")
+        mock_api_client.set_published.assert_called_once_with("test/1234", True)
+        mock_notify_changed.assert_called_once_with(
+            uri="test/1234", status="published", enrich=True
+        )
+
+    @patch("judgments.models.judgments.notify_changed")
+    @patch("judgments.models.judgments.unpublish_documents")
+    def test_unpublish(
+        self, mock_unpublish_documents, mock_notify_changed, mock_api_client
+    ):
+        judgment = Judgment("test/1234", mock_api_client)
+        judgment.unpublish()
+        mock_unpublish_documents.assert_called_once_with("test/1234")
+        mock_api_client.set_published.assert_called_once_with("test/1234", False)
+        mock_notify_changed.assert_called_once_with(
+            uri="test/1234", status="not published", enrich=False
+        )

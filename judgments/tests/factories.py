@@ -1,7 +1,7 @@
 from typing import Any
 from unittest.mock import Mock
 
-from judgments.models import Judgment
+from judgments.models.judgments import Judgment
 
 
 class JudgmentFactory:
@@ -20,6 +20,7 @@ class JudgmentFactory:
         "source_name": ("source_name", "Example Uploader"),
         "source_email": ("source_email", "uploader@example.com"),
         "consignment_reference": ("consignment_reference", "TDR-12345"),
+        "assigned_to": ("assigned_to", ""),
         "versions": ("versions", []),
     }
 

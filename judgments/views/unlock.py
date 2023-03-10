@@ -11,7 +11,7 @@ from django.urls import reverse
 from django.utils.translation import gettext
 from django.views.decorators.http import require_http_methods
 
-from judgments.models import Judgment
+from judgments.models.judgments import Judgment
 
 
 @require_http_methods(["POST", "GET", "HEAD"])
