@@ -20,7 +20,7 @@
              name="court" id="court" list="court-ids" size="40"/>
       <datalist id="court-ids">
         {% for court in context.courts %}
-          <option value="{{ court.code }}">{{ court.code }}: {{court.name}}</option>
+          <option value="{{ court.code }}">{{court.name}}</option>
         {% endfor %}
       </datalist>
     </div>
