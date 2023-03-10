@@ -11,7 +11,8 @@
         <aside class="publish-sidebar">
         {% include "includes/publish_sidebar.html" %}
         </aside>
-      <h2 class="publish-component__header">{% translate "judgment.confirm" %} <span class="judgment-uri">{{context.judgment_uri}}</span></h2>
+      <h1 class="publish-component__page-header">Publish this document</h1>
+      <p class="publish-component__header">{% translate "judgment.confirm" %} <span class="judgment-uri">{{context.judgment_uri}}</span></p>
       <form aria-label="publish judgment" method="post">
         {% csrf_token %}
         <div class="publish-component__panel">

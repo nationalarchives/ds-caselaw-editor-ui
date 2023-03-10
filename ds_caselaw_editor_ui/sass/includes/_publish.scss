@@ -1,13 +1,23 @@
 .publish-component {
   background-color: $color__white;
   padding: calc(#{$spacer__unit} * 2);
+  border-bottom: 1px solid $color__almost-black;
   &__container {
     @include container;
     text-align: left;
     padding: 1rem;
   }
+  &__page-header {
+    font-size: 2.2rem;
+    line-height: 2.2rem;
+    margin-left: 6rem;
+    margin-bottom: 0;
+    font-family: $font__roboto;
+    font-weight: 200;
+    color: $color__almost-black;
+  }
   &__header {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     line-height: 2.8rem;
     display: inline-block;
     margin-left: 6rem;
