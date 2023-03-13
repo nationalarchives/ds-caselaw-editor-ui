@@ -1,0 +1,9 @@
+{% extends "layouts/judgment_with_sidebar.html" %}
+{% load waffle_tags %}
+{% block judgment_content %}
+  {% load i18n %}
+  <h2>
+    Publish judgment<br>
+    {{ context.judgment.name }}
+  </h2>
+{% endblock judgment_content %}
