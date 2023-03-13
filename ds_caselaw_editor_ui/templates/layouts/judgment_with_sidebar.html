@@ -1,0 +1,14 @@
+{% extends "layouts/judgment.html" %}
+{% load waffle_tags %}
+{% block content %}
+  {% load i18n %}
+  <aside class="judgment-sidebar">
+    {% include "includes/judgment_sidebar.html" %}
+  </aside>
+  <div class="edit-component">
+    <div class="edit-component__container">
+      {% block judgment_content %}
+      {% endblock judgment_content %}
+    </div>
+  </div>
+{% endblock content %}
