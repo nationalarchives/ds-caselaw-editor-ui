@@ -66,13 +66,6 @@
   }
 }
 
-@mixin call-to-action-button-secondary {
-  @include call-to-action-button;
-  background-color: transparent;
-  color: $color__cta-background !important;
-  border: 2px solid $color__cta-background;
-}
-
 @mixin emphasised-block {
   padding: $spacer__unit;
 
