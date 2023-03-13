@@ -16,7 +16,7 @@
           <a class="judgment-toolbar__button{% if context.view == 'judgment_metadata' %} judgment-toolbar__button-selected{% endif %}" href="{% url 'edit-judgment' context.judgment.uri %}">
             {% translate "judgment.edit_metadata" %}
           </a>
-          <a class="judgment-toolbar__button{% if context.view == 'judgment_text' %} judgment-toolbar__button-selected{% endif %}" href="{% url 'full-text-html' context.judgment_uri %}">
+          <a class="judgment-toolbar__button{% if context.view == 'judgment_text' %} judgment-toolbar__button-selected{% endif %}" href="{% url 'full-text-html' context.judgment.uri %}">
             {% translate "judgment.view_judgment" %}
           </a>
         {% else %}
@@ -32,7 +32,7 @@
           <a class="judgment-toolbar__button{% if not context.judgment_content %} judgment-toolbar__button-selected{% endif %}" href="{% url 'edit-judgment' context.judgment.uri %}">
             {% translate "judgment.edit_this_judgment" %}
           </a>
-          <a class="judgment-toolbar__button{% if context.judgment_content %} judgment-toolbar__button-selected{% endif %}" href="{% url 'full-text-html' context.judgment_uri %}">
+          <a class="judgment-toolbar__button{% if context.judgment_content %} judgment-toolbar__button-selected{% endif %}" href="{% url 'full-text-html' context.judgment.uri %}">
             {% translate "judgment.view_this_judgment" %}
           </a>
         {% else %}
@@ -83,7 +83,7 @@
           <input
             type="hidden"
             name="judgment_uri"
-            value="{{context.judgment_uri}}"
+            value="{{ context.judgment.uri }}"
           />
           <input
             type="submit"
