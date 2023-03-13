@@ -29,10 +29,10 @@
         {% endif %}
       {% else %}
         {% if context.judgment.is_editable %}
-          <a class="judgment-toolbar__button{% if not context.judgment_content %} judgment-toolbar__button-selected{% endif %}" href="{% url 'edit-judgment' context.judgment.uri %}">
+          <a class="judgment-toolbar__button{% if context.view == 'judgment_metadata' %}  judgment-toolbar__button-selected{% endif %}" href="{% url 'edit-judgment' context.judgment.uri %}">
             {% translate "judgment.edit_this_judgment" %}
           </a>
-          <a class="judgment-toolbar__button{% if context.judgment_content %} judgment-toolbar__button-selected{% endif %}" href="{% url 'full-text-html' context.judgment.uri %}">
+          <a class="judgment-toolbar__button{% if context.view == 'judgment_text' %} judgment-toolbar__button-selected{% endif %}" href="{% url 'full-text-html' context.judgment.uri %}">
             {% translate "judgment.view_this_judgment" %}
           </a>
         {% else %}
@@ -43,6 +43,16 @@
             {% translate "judgment.view_this_judgment" %}
           </span>
         {% endif %}
+      {% endif %}
+
+      {% if context.judgment.is_publishable %}
+        <a class="judgment-toolbar__button{% if context.view == 'publish_judgment' %} judgment-toolbar__button-selected{% endif %}" href="{% url 'publish-judgment' context.judgment.uri %}">
+          {% translate "judgment.publish_this_judgment" %}
+        </a>
+      {% else %}
+        <span class="judgment-toolbar__button" aria-disabled="true">
+          {% translate "judgment.publish_this_judgment" %}
+        </span>
       {% endif %}
 
       {% if context.judgment.docx_url %}

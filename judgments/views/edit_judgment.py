@@ -227,8 +227,13 @@ class PublishJudgmentView(TemplateView):
 
         context["context"] = {
             "page_title": "Publish judgment",
+            "view": "publish_judgment",
             "judgment": judgment,
         }
+
+        context["feature_flag_embedded_pdfs"] = waffle.flag_is_active(
+            self.request, "embedded_pdf_view"
+        )
 
         return context
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-08 11:01+0000\n"
+"POT-Creation-Date: 2023-03-13 11:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -119,6 +119,10 @@ msgstr "Edit judgment"
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.view_this_judgment"
 msgstr "View as HTML"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
+msgid "judgment.publish_this_judgment"
+msgstr "Publish judgment"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.view_on_public"
