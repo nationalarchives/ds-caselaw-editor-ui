@@ -8,6 +8,7 @@ from .views.button_handlers import (
 from .views.delete import delete
 from .views.edit_judgment import (
     EditJudgmentView,
+    PublishJudgmentSuccessView,
     PublishJudgmentView,
     edit_view_redirect,
 )
@@ -51,6 +52,11 @@ urlpatterns = [
         "<path:judgment_uri>/publish",
         PublishJudgmentView.as_view(),
         name="publish-judgment",
+    ),
+    path(
+        "<path:judgment_uri>/publish-success",
+        PublishJudgmentSuccessView.as_view(),
+        name="publish-judgment-success",
     ),
     path("<path:judgment_uri>/pdf", pdf_view, name="full-text-pdf"),
     path("<path:judgment_uri>/xml", xml_view, name="full-text-xml"),

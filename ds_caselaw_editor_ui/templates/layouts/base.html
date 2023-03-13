@@ -14,12 +14,10 @@
     {% block css %}
       <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&amp;family=Roboto:wght@400;600;700&amp;display=swap" rel="stylesheet">
       <link href="{% static 'css/main.css' %}" rel="stylesheet">
-    {% endblock %}
+    {% endblock css %}
 
-    {% block javascript %}
-      <script defer src="{% static 'js/dist/app.js' %}"></script>
-      <script defer src="{% static 'js/dist/cookie_consent.js' %}"></script>
-    {% endblock javascript %}
+    <script defer src="{% static 'js/dist/app.js' %}"></script>
+    <script defer src="{% static 'js/dist/cookie_consent.js' %}"></script>
 
     {% include 'includes/gtm/gtm_head.html' %}
   </head>
@@ -51,5 +49,7 @@
     </main>
     {% include 'includes/how_can_this_service_be_improved.html' %}
     {% include 'includes/footer.html' %}
+    {% block footer_javascript %}
+    {% endblock footer_javascript %}
   </body>
 </html>

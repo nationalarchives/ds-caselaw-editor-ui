@@ -14,7 +14,7 @@ def publish(request):
         judgment.publish()
         messages.success(request, "Judgment published!")
         return HttpResponseRedirect(
-            reverse("edit-judgment", kwargs={"judgment_uri": judgment.uri})
+            reverse("publish-judgment-success", kwargs={"judgment_uri": judgment.uri})
         )
     except MarklogicResourceNotFoundError as e:
         raise Http404(f"Judgment was not found at uri {judgment_uri}, {e}")

@@ -1,0 +1,84 @@
+{% extends "layouts/judgment_with_sidebar.html" %}
+{% load waffle_tags %}
+{% block judgment_content %}
+  {% load i18n %}
+  <h2>
+    Published judgment<br>
+    {{ context.judgment.name }}
+  </h2>
+
+  <p>This judgment is now visible to the public.</p>
+
+  <h3>What next?</h3>
+
+  <ul>
+    <li>Inform the uploader: <a href="{{ context.email_confirmation_link }}">Send confirmation email</a></li>
+  </ul>
+
+{% endblock judgment_content %}
+
+{% block footer_javascript %}
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles-preset-confetti@2/tsparticles.preset.confetti.bundle.min.js"></script>
+  <script>
+    (async () => {
+      await tsParticles.load("tsparticles", {
+        particles: {
+          color: {
+            value: ["#CB0D07", "#EBAB00", "#FCE45C", "#008484", "#405480"],
+          },
+        },
+        emitters: [
+          {
+            startCount: 50,
+            rate: {
+              delay: 0,
+              quantity: 0
+            },
+            life: {
+              duration: 0.1,
+              count: 1
+            },
+            position: {
+              x: 0,
+              y: 60,
+            },
+            particles: {
+              move: {
+                direction: "top-right",
+                speed: {
+                  min: 50,
+                  max: 150
+                }
+              },
+            },
+          },
+          {
+            startCount: 50,
+            rate: {
+              delay: 0,
+              quantity: 0
+            },
+            life: {
+              duration: 0.1,
+              count: 1
+            },
+            position: {
+              x: 100,
+              y: 60,
+            },
+            particles: {
+              move: {
+                direction: "top-left",
+                speed: {
+                  min: 50,
+                  max: 150
+                }
+              },
+            },
+          }
+        ],
+        preset: "confetti",
+      });
+    })();
+  </script>
+{% endblock footer_javascript %}
