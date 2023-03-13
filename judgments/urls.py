@@ -20,6 +20,7 @@ from .views.full_text import (
 )
 from .views.index import index
 from .views.labs import Labs
+from .views.publish import publish
 from .views.results import results
 from .views.signed_asset import redirect_to_signed_asset
 from .views.unlock import unlock
@@ -31,7 +32,8 @@ urlpatterns = [
     path("results", results, name="results"),
     # redirect to signed asset URLs
     path("signed-asset/<path:key>", redirect_to_signed_asset, name="signed-asset"),
-    # Legacy judgment verbs
+    # Judgment verbs
+    path("publish", publish, name="publish"),
     path("delete", delete, name="delete"),
     path("unlock", unlock, name="unlock"),
     path("assign", assign_judgment_button, name="assign"),

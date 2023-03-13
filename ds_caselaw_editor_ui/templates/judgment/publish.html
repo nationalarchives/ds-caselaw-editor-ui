@@ -6,4 +6,17 @@
     Publish judgment<br>
     {{ context.judgment.name }}
   </h2>
+
+  <form action="{% url 'publish' %}" method="post">
+    {% csrf_token %}
+    <input
+      type="hidden"
+      name="judgment_uri"
+      value="{{ context.judgment.uri }}"
+    >
+    <input
+      type="submit"
+      value="{% translate 'judgment.publish_this_judgment' %}"
+    >
+  </form>
 {% endblock judgment_content %}
