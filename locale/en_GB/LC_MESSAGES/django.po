@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-13 11:32+0000\n"
+"POT-Creation-Date: 2023-03-14 15:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -60,19 +60,19 @@ msgstr "Fill out our short survey"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
-#: judgments/views/edit_judgment.py
+#: judgments/views/judgment_edit.py
 msgid "judgments.submitter"
 msgstr "Submitter"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
-#: judgments/views/edit_judgment.py
+#: judgments/views/judgment_edit.py
 msgid "judgments.submitteremail"
 msgstr "Contact email"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
 #: ds_caselaw_editor_ui/templates/includes/metadata_header.html
-#: judgments/views/edit_judgment.py
+#: judgments/views/judgment_edit.py
 msgid "judgments.consignmentref"
 msgstr "TDR Reference"
 
@@ -121,6 +121,12 @@ msgid "judgment.view_this_judgment"
 msgstr "View as HTML"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
+#: ds_caselaw_editor_ui/templates/judgment/unpublish.html
+msgid "judgment.unpublish_this_judgment"
+msgstr "Unpublish judgment"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
+#: ds_caselaw_editor_ui/templates/judgment/publish.html
 msgid "judgment.publish_this_judgment"
 msgstr "Publish judgment"
 

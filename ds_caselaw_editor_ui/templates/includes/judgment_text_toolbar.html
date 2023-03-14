@@ -46,14 +46,20 @@
       {% endif %}
 
       {% flag "publish_flow" %}
-      {% if context.judgment.is_publishable %}
-        <a class="judgment-toolbar__button{% if context.view == 'publish_judgment' %} judgment-toolbar__button-selected{% endif %}" href="{% url 'publish-judgment' context.judgment.uri %}">
-          {% translate "judgment.publish_this_judgment" %}
+      {% if context.judgment.is_published %}
+        <a class="judgment-toolbar__button{% if context.view == 'publish_judgment' %} judgment-toolbar__button-selected{% endif %}" href="{% url 'unpublish-judgment' context.judgment.uri %}">
+          {% translate "judgment.unpublish_this_judgment" %}
         </a>
       {% else %}
-        <span class="judgment-toolbar__button" aria-disabled="true">
-          {% translate "judgment.publish_this_judgment" %}
-        </span>
+        {% if context.judgment.is_publishable %}
+          <a class="judgment-toolbar__button{% if context.view == 'publish_judgment' %} judgment-toolbar__button-selected{% endif %}" href="{% url 'publish-judgment' context.judgment.uri %}">
+            {% translate "judgment.publish_this_judgment" %}
+          </a>
+        {% else %}
+          <span class="judgment-toolbar__button" aria-disabled="true">
+            {% translate "judgment.publish_this_judgment" %}
+          </span>
+        {% endif %}
       {% endif %}
       {% endflag %}
 

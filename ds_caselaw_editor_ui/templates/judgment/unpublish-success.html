@@ -1,0 +1,12 @@
+{% extends "layouts/judgment_with_sidebar.html" %}
+{% load waffle_tags %}
+{% block judgment_content %}
+  {% load i18n %}
+  <h2>
+    Unpublished judgment<br>
+    {{ context.judgment.name }}
+  </h2>
+
+  <p>This judgment is now unpublished.</p>
+
+{% endblock judgment_content %}

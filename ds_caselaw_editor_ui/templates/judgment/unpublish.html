@@ -1,0 +1,21 @@
+{% extends "layouts/judgment_with_sidebar.html" %}
+{% block judgment_content %}
+  {% load i18n %}
+  <h2>
+    Unpublish judgment<br>
+    {{ context.judgment.name }}
+  </h2>
+
+  <form action="{% url 'unpublish' %}" method="post">
+    {% csrf_token %}
+    <input
+      type="hidden"
+      name="judgment_uri"
+      value="{{ context.judgment.uri }}"
+    >
+    <input
+      type="submit"
+      value="{% translate 'judgment.unpublish_this_judgment' %}"
+    >
+  </form>
+{% endblock judgment_content %}

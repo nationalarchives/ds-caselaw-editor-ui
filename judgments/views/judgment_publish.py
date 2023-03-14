@@ -43,7 +43,6 @@ class PublishJudgmentSuccessView(TemplateView):
 
         context["context"] = {
             "page_title": "Successfully published judgment",
-            "view": "publish_judgment",
             "judgment": judgment,
             "email_confirmation_link": build_confirmation_email_link(
                 self.request, judgment
@@ -70,6 +69,67 @@ def publish(request):
         messages.success(request, "Judgment published!")
         return HttpResponseRedirect(
             reverse("publish-judgment-success", kwargs={"judgment_uri": judgment.uri})
+        )
+    except MarklogicResourceNotFoundError:
+        return HttpResponseBadRequest(
+            escape(f"Judgment {judgment_uri} could not be found.")
+        )
+
+
+class UnpublishJudgmentView(TemplateView):
+    template_name = "judgment/unpublish.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(UnpublishJudgmentView, self).get_context_data(**kwargs)
+
+        judgment = Judgment(kwargs["judgment_uri"])
+
+        context["context"] = {
+            "page_title": "Unpublish judgment",
+            "view": "publish_judgment",
+            "judgment": judgment,
+        }
+
+        context["feature_flag_embedded_pdfs"] = waffle.flag_is_active(
+            self.request, "embedded_pdf_view"
+        )
+
+        return context
+
+
+class UnpublishJudgmentSuccessView(TemplateView):
+    template_name = "judgment/unpublish-success.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(UnpublishJudgmentSuccessView, self).get_context_data(**kwargs)
+
+        judgment = Judgment(kwargs["judgment_uri"])
+
+        context["context"] = {
+            "page_title": "Successfully unpublished judgment",
+            "judgment": judgment,
+        }
+
+        context["feature_flag_embedded_pdfs"] = waffle.flag_is_active(
+            self.request, "embedded_pdf_view"
+        )
+
+        return context
+
+
+def unpublish(request):
+    judgment_uri = request.POST.get("judgment_uri", None)
+
+    if not judgment_uri:
+        return HttpResponseBadRequest("judgment_uri not provided.")
+
+    try:
+        judgment = Judgment(judgment_uri)
+        judgment.unpublish()
+        invalidate_caches(judgment.uri)
+        messages.success(request, "Judgment unpublished!")
+        return HttpResponseRedirect(
+            reverse("unpublish-judgment-success", kwargs={"judgment_uri": judgment.uri})
         )
     except MarklogicResourceNotFoundError:
         return HttpResponseBadRequest(

@@ -18,7 +18,10 @@ from .views.judgment_edit import EditJudgmentView, edit_view_redirect
 from .views.judgment_publish import (
     PublishJudgmentSuccessView,
     PublishJudgmentView,
+    UnpublishJudgmentSuccessView,
+    UnpublishJudgmentView,
     publish,
+    unpublish,
 )
 from .views.labs import Labs
 from .views.results import results
@@ -34,6 +37,7 @@ urlpatterns = [
     path("signed-asset/<path:key>", redirect_to_signed_asset, name="signed-asset"),
     # Judgment verbs
     path("publish", publish, name="publish"),
+    path("unpublish", unpublish, name="unpublish"),
     path("delete", delete, name="delete"),
     path("unlock", unlock, name="unlock"),
     path("assign", assign_judgment_button, name="assign"),
@@ -56,6 +60,16 @@ urlpatterns = [
         "<path:judgment_uri>/published",
         PublishJudgmentSuccessView.as_view(),
         name="publish-judgment-success",
+    ),
+    path(
+        "<path:judgment_uri>/unpublish",
+        UnpublishJudgmentView.as_view(),
+        name="unpublish-judgment",
+    ),
+    path(
+        "<path:judgment_uri>/unpublished",
+        UnpublishJudgmentSuccessView.as_view(),
+        name="unpublish-judgment-success",
     ),
     path("<path:judgment_uri>/pdf", pdf_view, name="full-text-pdf"),
     path("<path:judgment_uri>/xml", xml_view, name="full-text-xml"),
