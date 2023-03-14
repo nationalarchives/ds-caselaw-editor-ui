@@ -1,0 +1,47 @@
+{% load i18n %}
+<div class="publish-component">
+  <li class="judgments-list__judgment">
+    <ul class="judgments-list__judgment-details-meta">
+      <li>
+        <span class="judgments-list__judgment-details-meta-key">
+          {% translate "judgments.consignmentref" %} {{context.judgment_uri}}
+        </span>
+        <span class="judgments-list__judgment-details-meta-value">
+          {{ context.judgment.consignment_reference }}
+        </span>
+      </li>
+      <li>
+        <span class="judgments-list__judgment-details-meta-key">
+          {% translate "judgments.ncn" %}
+        </span>
+        <span class="judgments-list__judgment-details-meta-value">
+          {{ context.judgment.neutral_citation }}
+        </span>
+      </li>
+      <li>
+        <span class="judgments-list__judgment-details-meta-key">
+          {% translate "judgments.court" %}
+        </span>
+        <span class="judgments-list__judgment-details-meta-value">
+          {{ context.judgment.court }}
+        </span>
+      </li>
+      <li>
+        <span class="judgments-list__judgment-details-meta-key">
+          {% translate "judgment.judgment_date" %}
+        </span>
+        <span class="judgments-list__judgment-details-meta-value">
+          {{ context.judgment.judgment_date_as_string }}
+        </span>
+      </li>
+      <li>
+        <span class="judgments-list__judgment-details-meta-key">
+          {% translate "judgment.judgment_name" %}
+        </span>
+        <span class="judgments-list__judgment-details-meta-value">
+          {{ context.judgment.name }}
+        </span>
+      </li>
+    </ul>
+  </li>
+</div>

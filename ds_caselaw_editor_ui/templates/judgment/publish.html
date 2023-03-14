@@ -1,23 +1,107 @@
-{% extends "layouts/judgment_with_sidebar.html" %}
+{% extends "layouts/judgment_with_publish.html" %}
 {% load waffle_tags %}
+{% load i18n %}
 {% block judgment_content %}
-  {% load i18n %}
-  <h2>
-    {% translate 'judgment.publish.publish_title' %}
-    <br>
-    {{ context.judgment.name }}
-  </h2>
-
-  <form action="{% url 'publish' %}" method="post">
-    {% csrf_token %}
-    <input
-      type="hidden"
-      name="judgment_uri"
-      value="{{ context.judgment.uri }}"
-    >
-    <input
-      type="submit"
-      value="{% translate 'judgment.publish.publish_button' %}"
-    >
-  </form>
+  <div class="publish-component">
+    <div class="publish-component__container">
+      <div class="publish-metadata">
+        {% include "includes/publish_list_metadata.html" %}
+      </div>
+      <div class="publish-component__two-column-container">
+        <div class="publish-component__left-panel">
+          <h1 class="publish-component__page-header">Publish this document</h1>
+          {% if feature_flag_log_minor_issues_on_publish %}
+            <p class="publish-component__header">
+              {% translate "judgment.confirm" %}
+              <span class="judgment-uri">{{context.judgment_uri}}</span>
+            </p>
+          {% endif %}
+          <form
+            aria-label="publish judgment"
+            action="{% url 'publish' %}"
+            method="post"
+          >
+            {% csrf_token %}
+            {% if feature_flag_log_minor_issues_on_publish %}
+              <div class="publish-component__panel">
+                <input
+                  type="checkbox"
+                  class="publish-component__center-input"
+                  {% if context.judgment.is_centered %}checked{% endif %}
+                  name="center"
+                  id="center"
+                />
+                <label for="center">{% translate "judgment.center" %}</label>
+              </div>
+              <div class="publish-component__panel">
+                <input
+                  type="checkbox"
+                  class="publish-component__indentation-input"
+                  {% if context.judgment.is_indentation %}checked{% endif %}
+                  name="indentation"
+                  id="indentation"
+                />
+                <label for="indentation">{% translate "judgment.indentation" %}</label>
+              </div>
+              <div class="publish-component__panel">
+                <input
+                  type="checkbox"
+                  class="publish-component__images-input"
+                  {% if context.judgment.is_images %}checked{% endif %}
+                  name="images"
+                  id="images"
+                />
+                <label for="images"> {% translate "judgment.images" %}</label>
+              </div>
+              <div class="publish-component__panel">
+                <input
+                  type="checkbox"
+                  class="publish-component__headings-input"
+                  {% if context.judgment.is_headings %}checked{% endif %}
+                  name="headings"
+                  id="headings"
+                />
+                <label for="headings">{% translate "judgment.headings" %}</label>
+              </div>
+              <div class="publish-component__panel">
+                <input
+                  type="checkbox"
+                  class="publish-component__barriers-input"
+                  {% if context.judgment.is_barriers %}checked{% endif %}
+                  name="barriers"
+                  id="barriers"
+                />
+                <label for="barriers">{% translate "judgment.barriers" %}</label>
+              </div>
+              <div class="publish-component__panel">
+                <input
+                  type="checkbox"
+                  class="publish-component__problems-input"
+                  {% if context.judgment.no_problems %}checked{% endif %}
+                  name="problems"
+                  id="barriers"
+                />
+                <label for="problems">{% translate "judgment.problems" %}</label>
+              </div>
+            {% endif %}
+            <div class="publish-component__actions">
+              <input
+                type="hidden"
+                name="judgment_uri"
+                value="{{ context.judgment.uri }}"
+              />
+              <input
+                class="button-cta"
+                type="submit"
+                value="{% translate 'judgment.publish_this_judgment' %}"
+              />
+            </div>
+          </form>
+        </div>
+        <div class="publish-component__sidebar">
+          {% include "includes/publish_sidebar.html" %}
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock judgment_content %}

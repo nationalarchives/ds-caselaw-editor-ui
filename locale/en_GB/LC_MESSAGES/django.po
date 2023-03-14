@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-16 13:43+0000\n"
+"POT-Creation-Date: 2023-03-21 12:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,8 +41,13 @@ msgid "judgment.email_submitter.issue"
 msgstr "Raise issue(s) to submitter"
 
 #: ds_caselaw_editor_ui/templates/includes/create_emails_block.html
+#: ds_caselaw_editor_ui/templates/includes/email_confirm_publication.html
 msgid "judgment.email_submitter.confirm"
 msgstr "Confirm publication"
+
+#: ds_caselaw_editor_ui/templates/includes/email_confirm_publication.html
+msgid "judgment.publish_email_header"
+msgstr "Send an email template"
 
 #: ds_caselaw_editor_ui/templates/includes/how_can_this_service_be_improved.html
 msgid "service.improved"
@@ -72,11 +77,13 @@ msgstr "Submission"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
+#: ds_caselaw_editor_ui/templates/includes/publish_sidebar.html
 #: judgments/views/judgment_edit.py
 msgid "judgments.submitter"
 msgstr "Submitter"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
+#: ds_caselaw_editor_ui/templates/includes/publish_sidebar.html
 #: judgments/views/judgment_edit.py
 msgid "judgments.submitteremail"
 msgstr "Contact email"
@@ -84,6 +91,8 @@ msgstr "Contact email"
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
 #: ds_caselaw_editor_ui/templates/includes/metadata_header.html
+#: ds_caselaw_editor_ui/templates/includes/publish_list_metadata.html
+#: ds_caselaw_editor_ui/templates/includes/publish_sidebar.html
 #: judgments/views/judgment_edit.py
 msgid "judgments.consignmentref"
 msgstr "TDR Reference"
@@ -109,10 +118,12 @@ msgid "judgments.sidebar.tools"
 msgstr "Tools"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
+#: ds_caselaw_editor_ui/templates/includes/publish_sidebar.html
 msgid "judgment.create_in_jira"
 msgstr "Create in Jira"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
+#: ds_caselaw_editor_ui/templates/includes/publish_sidebar.html
 #: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html
 #: judgments/views/unlock.py
 msgid "judgment.unlock_judgment_title"
@@ -184,10 +195,12 @@ msgid "judgments.submission_assigned"
 msgstr "Assigned:"
 
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
+#: ds_caselaw_editor_ui/templates/includes/publish_list_metadata.html
 msgid "judgments.ncn"
 msgstr "NCN:"
 
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
+#: ds_caselaw_editor_ui/templates/includes/publish_list_metadata.html
 msgid "judgments.court"
 msgstr "Court:"
 
@@ -214,14 +227,21 @@ msgid "judgment.court"
 msgstr "Court"
 
 #: ds_caselaw_editor_ui/templates/includes/metadata_header.html
+#: ds_caselaw_editor_ui/templates/includes/publish_list_metadata.html
 #: ds_caselaw_editor_ui/templates/judgment/edit.html
 msgid "judgment.judgment_date"
 msgstr "Judgment date"
 
 #: ds_caselaw_editor_ui/templates/includes/metadata_header.html
+#: ds_caselaw_editor_ui/templates/includes/publish_list_metadata.html
 #: ds_caselaw_editor_ui/templates/judgment/edit.html
 msgid "judgment.judgment_name"
 msgstr "Name"
+
+#: ds_caselaw_editor_ui/templates/includes/publish_sidebar.html
+#: ds_caselaw_editor_ui/templates/judgment/edit.html
+msgid "judgments.noone"
+msgstr "No one"
 
 #: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html
 msgid "home.recent"
@@ -271,26 +291,41 @@ msgid "judgment.assigned_to"
 msgstr "Assigned to"
 
 #: ds_caselaw_editor_ui/templates/judgment/edit.html
-msgid "judgments.noone"
-msgstr "No one"
-
-#: ds_caselaw_editor_ui/templates/judgment/edit.html
 msgid "judgment.previous_versions"
 msgstr "Previous versions of this Judgment"
 
-#: ds_caselaw_editor_ui/templates/judgment/publish-success.html
-#: judgments/tests/test_judgments.py judgments/views/judgment_publish.py
-msgid "judgment.publish.publish_success_title"
-msgstr "Published judgment"
+#: ds_caselaw_editor_ui/templates/judgment/publish.html
+msgid "judgment.confirm"
+msgstr ""
+"Notify us of any minor problems in the document – select all that apply"
 
 #: ds_caselaw_editor_ui/templates/judgment/publish.html
-#: judgments/tests/test_judgments.py judgments/views/judgment_publish.py
-msgid "judgment.publish.publish_title"
-msgstr "Publish judgment"
+msgid "judgment.center"
+msgstr "Delete judgment"
 
 #: ds_caselaw_editor_ui/templates/judgment/publish.html
-msgid "judgment.publish.publish_button"
-msgstr "Publish judgment"
+msgid "judgment.indentation"
+msgstr "Judgment details:"
+
+#: ds_caselaw_editor_ui/templates/judgment/publish.html
+msgid "judgment.images"
+msgstr "Images"
+
+#: ds_caselaw_editor_ui/templates/judgment/publish.html
+msgid "judgment.headings"
+msgstr "Headings and Sub Headings"
+
+#: ds_caselaw_editor_ui/templates/judgment/publish.html
+msgid "judgment.barriers"
+msgstr "Other"
+
+#: ds_caselaw_editor_ui/templates/judgment/publish.html
+msgid "judgment.problems"
+msgstr "No problems within this document"
+
+#: ds_caselaw_editor_ui/templates/judgment/publish.html
+msgid "judgment.publish_this_judgment"
+msgstr "Publish this document"
 
 #: ds_caselaw_editor_ui/templates/judgment/results.html
 #: judgments/views/results.py
@@ -337,10 +372,18 @@ msgstr "Caselaw editor UI style guide"
 #: ds_caselaw_editor_ui/templates/pages/style_guide.html
 msgid "style_guide.description"
 msgstr ""
-"This page serves as a sandbox for developing new UI components, "
-"as well as a repository of UI elements used on the site. Please "
-"develop new components in a seperate file under the includes/style_guide "
-"folder, and include it below following the example in the template."
+"This page serves as a sandbox for developing new UI components, as well as a "
+"repository of UI elements used on the site. Please develop new components in "
+"a seperate file under the includes/style_guide folder, and include it below "
+"following the example in the template."
+
+#: judgments/tests/test_judgments.py judgments/views/judgment_publish.py
+msgid "judgment.publish.publish_title"
+msgstr "Publish judgment"
+
+#: judgments/tests/test_judgments.py judgments/views/judgment_publish.py
+msgid "judgment.publish.publish_success_title"
+msgstr "Published judgment"
 
 #: judgments/views/delete.py
 msgid "judgment.delete_a_judgment"

@@ -36,8 +36,6 @@
   input[type=submit] {
     @include call-to-action-button;
     display: block;
-    padding-left: calc(#{$spacer__unit} * 3);
-    padding-right: calc(#{$spacer__unit} * 3);
   }
   span {
     font-weight: bold;

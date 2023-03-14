@@ -1,3 +1,7 @@
+.button-cta {
+  @include call-to-action-button;
+}
+
 .button-secondary {
         @include call-to-action-button;
         background-color: transparent;

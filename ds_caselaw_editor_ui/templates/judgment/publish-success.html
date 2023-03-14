@@ -1,21 +1,30 @@
-{% extends "layouts/judgment_with_sidebar.html" %}
+{% extends "layouts/judgment_with_publish.html" %}
 {% load waffle_tags %}
+{% load i18n %}
 {% block judgment_content %}
-  {% load i18n %}
-  <h2>
-    {% translate 'judgment.publish.publish_success_title' %}
-    <br>
-    {{ context.judgment.name }}
-  </h2>
-
-  <p>This judgment is now visible to the public.</p>
-
-  <h3>What next?</h3>
-
-  <ul>
-    <li>Inform the uploader: <a href="{{ context.email_confirmation_link }}">Send confirmation email</a></li>
-  </ul>
-
+  <div class="publish-component">
+    <div class="publish-component__container">
+      <div class="publish-metadata">
+        {% include "includes/publish_list_metadata.html" %}
+      </div>
+      <div class="publish-component__two-column-container">
+        <div class="publish-component__left-panel">
+          <div class="publish-component__panel">
+            <h2>
+              Success - this document has been published<br>
+              {{ context.judgment.name }}
+            </h2>
+          </div>
+          <div class="publish-component__actions">
+            <p>{% include 'includes/email_confirm_publication.html' %}</p>
+          </div>
+        </div>
+        <aside class="publish-component__sidebar">
+          {% include "includes/publish_sidebar.html" %}
+        </aside>
+      </div>
+    </div>
+  </div>
 {% endblock judgment_content %}
 
 {% block footer_javascript %}
