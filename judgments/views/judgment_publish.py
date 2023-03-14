@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.urls import reverse
 from django.utils.html import escape
+from django.utils.translation import gettext
 from django.views.generic import TemplateView
 
 from judgments.models.judgments import Judgment
@@ -21,7 +22,9 @@ class PublishJudgmentView(TemplateView):
         judgment = Judgment(kwargs["judgment_uri"])
 
         context["context"] = {
-            "page_title": "Publish judgment",
+            "page_title": '{title}: "{judgment}"'.format(
+                title=gettext("judgment.publish.publish_title"), judgment=judgment.name
+            ),
             "view": "publish_judgment",
             "judgment": judgment,
         }
@@ -42,7 +45,10 @@ class PublishJudgmentSuccessView(TemplateView):
         judgment = Judgment(kwargs["judgment_uri"])
 
         context["context"] = {
-            "page_title": "Successfully published judgment",
+            "page_title": '{title}: "{judgment}"'.format(
+                title=gettext("judgment.publish.publish_success_title"),
+                judgment=judgment.name,
+            ),
             "judgment": judgment,
             "email_confirmation_link": build_confirmation_email_link(
                 self.request, judgment
@@ -66,7 +72,9 @@ def publish(request):
         judgment = Judgment(judgment_uri)
         judgment.publish()
         invalidate_caches(judgment.uri)
-        messages.success(request, "Judgment published!")
+        messages.success(
+            request, gettext("judgment.publish.publish_success_flash_message")
+        )
         return HttpResponseRedirect(
             reverse("publish-judgment-success", kwargs={"judgment_uri": judgment.uri})
         )
@@ -85,7 +93,10 @@ class UnpublishJudgmentView(TemplateView):
         judgment = Judgment(kwargs["judgment_uri"])
 
         context["context"] = {
-            "page_title": "Unpublish judgment",
+            "page_title": '{title}: "{judgment}"'.format(
+                title=gettext("judgment.publish.unpublish_title"),
+                judgment=judgment.name,
+            ),
             "view": "publish_judgment",
             "judgment": judgment,
         }
@@ -106,7 +117,10 @@ class UnpublishJudgmentSuccessView(TemplateView):
         judgment = Judgment(kwargs["judgment_uri"])
 
         context["context"] = {
-            "page_title": "Successfully unpublished judgment",
+            "page_title": '{title}: "{judgment}"'.format(
+                title=gettext("judgment.publish.unpublish_success_title"),
+                judgment=judgment.name,
+            ),
             "judgment": judgment,
         }
 
@@ -127,7 +141,9 @@ def unpublish(request):
         judgment = Judgment(judgment_uri)
         judgment.unpublish()
         invalidate_caches(judgment.uri)
-        messages.success(request, "Judgment unpublished!")
+        messages.success(
+            request, gettext("judgment.publish.unpublish_success_flash_message")
+        )
         return HttpResponseRedirect(
             reverse("unpublish-judgment-success", kwargs={"judgment_uri": judgment.uri})
         )

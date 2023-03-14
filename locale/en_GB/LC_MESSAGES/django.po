@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-14 15:33+0000\n"
+"POT-Creation-Date: 2023-03-14 15:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -262,6 +262,16 @@ msgstr "No one"
 msgid "judgment.previous_versions"
 msgstr "Previous versions of this Judgment"
 
+#: ds_caselaw_editor_ui/templates/judgment/publish-success.html
+#: judgments/tests/test_judgments.py judgments/views/judgment_publish.py
+msgid "judgment.publish.publish_success_title"
+msgstr "Published judgment"
+
+#: ds_caselaw_editor_ui/templates/judgment/publish.html
+#: judgments/tests/test_judgments.py judgments/views/judgment_publish.py
+msgid "judgment.publish.publish_title"
+msgstr "Publish judgment"
+
 #: ds_caselaw_editor_ui/templates/judgment/publish.html
 msgid "judgment.publish.publish_button"
 msgstr "Publish judgment"
@@ -270,6 +280,16 @@ msgstr "Publish judgment"
 #: judgments/views/results.py
 msgid "results.search.title"
 msgstr "Search results"
+
+#: ds_caselaw_editor_ui/templates/judgment/unpublish-success.html
+#: judgments/tests/test_judgments.py judgments/views/judgment_publish.py
+msgid "judgment.publish.unpublish_success_title"
+msgstr "Unpublished judgment"
+
+#: ds_caselaw_editor_ui/templates/judgment/unpublish.html
+#: judgments/tests/test_judgments.py judgments/views/judgment_publish.py
+msgid "judgment.publish.unpublish_title"
+msgstr "Unpublish judgment"
 
 #: ds_caselaw_editor_ui/templates/judgment/unpublish.html
 msgid "judgment.unpublish.unpublish_button"
@@ -297,3 +317,11 @@ msgstr ""
 #: judgments/views/delete.py
 msgid "judgment.delete_a_judgment"
 msgstr "Delete a judgment"
+
+#: judgments/views/judgment_publish.py
+msgid "judgment.publish.publish_success_flash_message"
+msgstr "Judgment published"
+
+#: judgments/views/judgment_publish.py
+msgid "judgment.publish.unpublish_success_flash_message"
+msgstr "Judgment unpublished"

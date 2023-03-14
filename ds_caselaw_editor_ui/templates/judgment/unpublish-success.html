@@ -3,7 +3,8 @@
 {% block judgment_content %}
   {% load i18n %}
   <h2>
-    Unpublished judgment<br>
+    {% translate 'judgment.publish.unpublish_success_title' %}
+    <br>
     {{ context.judgment.name }}
   </h2>
 

@@ -5,6 +5,7 @@ from caselawclient.Client import MarklogicResourceNotFoundError
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
+from django.utils.translation import gettext
 from factories import JudgmentFactory
 
 
@@ -317,7 +318,7 @@ class TestJudgmentPublish(TestCase):
         response = self.client.get(publish_uri)
 
         decoded_response = response.content.decode("utf-8")
-        self.assertIn("Publish judgment", decoded_response)
+        self.assertIn(gettext("judgment.publish.publish_title"), decoded_response)
         self.assertIn("Test v Tested", decoded_response)
         assert response.status_code == 200
 
@@ -395,7 +396,9 @@ class TestJudgmentPublish(TestCase):
         response = self.client.get(publish_success_uri)
 
         decoded_response = response.content.decode("utf-8")
-        self.assertIn("Published judgment", decoded_response)
+        self.assertIn(
+            gettext("judgment.publish.publish_success_title"), decoded_response
+        )
         self.assertIn("Test v Tested", decoded_response)
         assert response.status_code == 200
 
@@ -420,7 +423,7 @@ class TestJudgmentUnpublish(TestCase):
         response = self.client.get(unpublish_uri)
 
         decoded_response = response.content.decode("utf-8")
-        self.assertIn("Unpublish judgment", decoded_response)
+        self.assertIn(gettext("judgment.publish.unpublish_title"), decoded_response)
         self.assertIn("Test v Tested", decoded_response)
         assert response.status_code == 200
 
@@ -498,6 +501,8 @@ class TestJudgmentUnpublish(TestCase):
         response = self.client.get(unpublish_success_uri)
 
         decoded_response = response.content.decode("utf-8")
-        self.assertIn("Unpublished judgment", decoded_response)
+        self.assertIn(
+            gettext("judgment.publish.unpublish_success_title"), decoded_response
+        )
         self.assertIn("Test v Tested", decoded_response)
         assert response.status_code == 200
