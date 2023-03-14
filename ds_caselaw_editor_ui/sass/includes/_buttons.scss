@@ -1,0 +1,9 @@
+.button-secondary {
+        @include call-to-action-button;
+        background-color: transparent;
+        color: $color__cta-background !important;
+        border: 2px solid $color__cta-background;
+    &:visited  {
+      color: #ffffff;
+    }
+}
