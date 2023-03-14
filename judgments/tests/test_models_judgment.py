@@ -4,7 +4,13 @@ from unittest.mock import ANY, Mock, patch
 import pytest
 from caselawclient.Client import MarklogicApiClient
 
-from judgments.models.judgments import CannotPublishUnpublishableJudgment, Judgment
+from judgments.models.judgments import (
+    JUDGMENT_STATUS_HOLD,
+    JUDGMENT_STATUS_IN_PROGRESS,
+    JUDGMENT_STATUS_PUBLISHED,
+    CannotPublishUnpublishableJudgment,
+    Judgment,
+)
 
 
 @pytest.fixture
@@ -191,6 +197,22 @@ class TestJudgment:
 
         assert successful_judgment.is_failure is False
         assert failing_judgment.is_failure is True
+
+    def test_judgment_status(self, mock_api_client):
+        in_progress_judgment = Judgment("test/1234", mock_api_client)
+        in_progress_judgment.is_held = False
+        in_progress_judgment.is_published = False
+        assert in_progress_judgment.status == JUDGMENT_STATUS_IN_PROGRESS
+
+        on_hold_judgment = Judgment("test/1234", mock_api_client)
+        on_hold_judgment.is_held = True
+        on_hold_judgment.is_published = False
+        assert on_hold_judgment.status == JUDGMENT_STATUS_HOLD
+
+        published_judgment = Judgment("test/1234", mock_api_client)
+        on_hold_judgment.is_held = False
+        published_judgment.is_published = True
+        assert published_judgment.status == JUDGMENT_STATUS_PUBLISHED
 
 
 class TestJudgmentPublication:

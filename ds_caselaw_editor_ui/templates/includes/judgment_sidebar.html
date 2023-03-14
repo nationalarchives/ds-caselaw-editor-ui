@@ -1,10 +1,11 @@
-{% load i18n %}
+{% load i18n status_tag_css %}
 
 <div class="judgment-sidebar__block">
 
   <h4>{% translate "judgments.sidebar.judgment" %}</h4>
 
   <ul>
+    <li><span class="tna-tag tna-tag--{{ context.judgment.status | status_tag_colour }}">{{ context.judgment.status }}</span></li>
     <li><span class="judgment-sidebar__label">{% translate "judgments.labels.uri" %}:</span> {{ context.judgment.uri }}</li>
   </ul>
 

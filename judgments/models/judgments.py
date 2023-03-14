@@ -17,6 +17,10 @@ from judgments.utils.aws import (
     uri_for_s3,
 )
 
+JUDGMENT_STATUS_HOLD = "On hold"
+JUDGMENT_STATUS_PUBLISHED = "Published"
+JUDGMENT_STATUS_IN_PROGRESS = "In progress"
+
 
 class CannotPublishUnpublishableJudgment(Exception):
     pass
@@ -153,6 +157,16 @@ class Judgment:
             return False
 
         return True
+
+    @property
+    def status(self) -> str:
+        if self.is_published:
+            return JUDGMENT_STATUS_PUBLISHED
+
+        if self.is_held:
+            return JUDGMENT_STATUS_HOLD
+
+        return JUDGMENT_STATUS_IN_PROGRESS
 
     def publish(self):
         if not self.is_publishable:
