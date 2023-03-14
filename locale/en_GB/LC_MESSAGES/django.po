@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-14 15:01+0000\n"
+"POT-Creation-Date: 2023-03-14 15:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,12 +77,10 @@ msgid "judgments.consignmentref"
 msgstr "TDR Reference"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
-#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.download_docx"
 msgstr "Download original .docx"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
-#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.download_pdf"
 msgstr "Download PDF"
 
@@ -101,41 +99,47 @@ msgid "judgment.unlock_judgment_title"
 msgstr "Unlock judgment"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
-msgid "judgment.back"
+msgid "judgment.toolbar.back"
 msgstr "Back to search results"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
-msgid "judgment.edit_metadata"
+msgid "judgment.toolbar.edit_metadata"
 msgstr "Edit metadata"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
-msgid "judgment.view_judgment"
+msgid "judgment.toolbar.view_judgment"
 msgstr "View full text"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
-msgid "judgment.edit_this_judgment"
+msgid "judgment.toolbar.edit"
 msgstr "Edit judgment"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
-msgid "judgment.view_this_judgment"
+msgid "judgment.toolbar.view_html"
 msgstr "View as HTML"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
-#: ds_caselaw_editor_ui/templates/judgment/unpublish.html
-msgid "judgment.unpublish_this_judgment"
+msgid "judgment.toolbar.unpublish"
 msgstr "Unpublish judgment"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
-#: ds_caselaw_editor_ui/templates/judgment/publish.html
-msgid "judgment.publish_this_judgment"
+msgid "judgment.toolbar.publish"
 msgstr "Publish judgment"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
-msgid "judgment.view_on_public"
+msgid "judgment.toolbar.download_docx"
+msgstr "Download .docx"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
+msgid "judgment.toolbar.download_pdf"
+msgstr "Download PDF"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
+msgid "judgment.toolbar.view_on_public"
 msgstr "View on public site"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
-msgid "judgment.delete"
+msgid "judgment.toolbar.delete"
 msgstr "Delete judgment"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_view_controls.html
@@ -258,10 +262,18 @@ msgstr "No one"
 msgid "judgment.previous_versions"
 msgstr "Previous versions of this Judgment"
 
+#: ds_caselaw_editor_ui/templates/judgment/publish.html
+msgid "judgment.publish.publish_button"
+msgstr "Publish judgment"
+
 #: ds_caselaw_editor_ui/templates/judgment/results.html
 #: judgments/views/results.py
 msgid "results.search.title"
 msgstr "Search results"
+
+#: ds_caselaw_editor_ui/templates/judgment/unpublish.html
+msgid "judgment.unpublish.unpublish_button"
+msgstr "Unpublish judgment"
 
 #: ds_caselaw_editor_ui/templates/layouts/base.html
 msgid "skiplink"

@@ -5,7 +5,7 @@
     {% if request.args.origin == 'results' %}
       <div class="judgment-toolbar__return-link">
         <a href="{{ request.args.return_link }}">
-          {% translate "judgment.back" %}
+          {% translate "judgment.toolbar.back" %}
         </a>
       </div>
     {% endif %}
@@ -14,33 +14,33 @@
       {% if feature_flag_embedded_pdfs %}
         {% if context.judgment.is_editable %}
           <a class="judgment-toolbar__button{% if context.view == 'judgment_metadata' %} judgment-toolbar__button-selected{% endif %}" href="{% url 'edit-judgment' context.judgment.uri %}">
-            {% translate "judgment.edit_metadata" %}
+            {% translate "judgment.toolbar.edit_metadata" %}
           </a>
           <a class="judgment-toolbar__button{% if context.view == 'judgment_text' %} judgment-toolbar__button-selected{% endif %}" href="{% url 'full-text-html' context.judgment.uri %}">
-            {% translate "judgment.view_judgment" %}
+            {% translate "judgment.toolbar.view_judgment" %}
           </a>
         {% else %}
           <span class="judgment-toolbar__button" aria-disabled="true">
-            {% translate "judgment.edit_metadata" %}
+            {% translate "judgment.toolbar.edit_metadata" %}
           </span>
           <span class="judgment-toolbar__button" aria-disabled="true">
-            {% translate "judgment.view_judgment" %}
+            {% translate "judgment.toolbar.view_judgment" %}
           </span>
         {% endif %}
       {% else %}
         {% if context.judgment.is_editable %}
           <a class="judgment-toolbar__button{% if context.view == 'judgment_metadata' %}  judgment-toolbar__button-selected{% endif %}" href="{% url 'edit-judgment' context.judgment.uri %}">
-            {% translate "judgment.edit_this_judgment" %}
+            {% translate "judgment.toolbar.edit" %}
           </a>
           <a class="judgment-toolbar__button{% if context.view == 'judgment_text' %} judgment-toolbar__button-selected{% endif %}" href="{% url 'full-text-html' context.judgment.uri %}">
-            {% translate "judgment.view_this_judgment" %}
+            {% translate "judgment.toolbar.view_html" %}
           </a>
         {% else %}
           <span class="judgment-toolbar__button" aria-disabled="true">
-            {% translate "judgment.edit_this_judgment" %}
+            {% translate "judgment.toolbar.edit" %}
           </span>
           <span class="judgment-toolbar__button" aria-disabled="true">
-            {% translate "judgment.view_this_judgment" %}
+            {% translate "judgment.toolbar.view_html" %}
           </span>
         {% endif %}
       {% endif %}
@@ -48,16 +48,16 @@
       {% flag "publish_flow" %}
       {% if context.judgment.is_published %}
         <a class="judgment-toolbar__button{% if context.view == 'publish_judgment' %} judgment-toolbar__button-selected{% endif %}" href="{% url 'unpublish-judgment' context.judgment.uri %}">
-          {% translate "judgment.unpublish_this_judgment" %}
+          {% translate "judgment.toolbar.unpublish" %}
         </a>
       {% else %}
         {% if context.judgment.is_publishable %}
           <a class="judgment-toolbar__button{% if context.view == 'publish_judgment' %} judgment-toolbar__button-selected{% endif %}" href="{% url 'publish-judgment' context.judgment.uri %}">
-            {% translate "judgment.publish_this_judgment" %}
+            {% translate "judgment.toolbar.publish" %}
           </a>
         {% else %}
           <span class="judgment-toolbar__button" aria-disabled="true">
-            {% translate "judgment.publish_this_judgment" %}
+            {% translate "judgment.toolbar.publish" %}
           </span>
         {% endif %}
       {% endif %}
@@ -65,33 +65,33 @@
 
       {% if context.judgment.docx_url %}
         <a class="judgment-toolbar__button" href="{{ context.judgment.docx_url }}">
-          {% translate "judgment.download_docx" %}
+          {% translate "judgment.toolbar.download_docx" %}
         </a>
       {% else %}
         <span class="judgment-toolbar__button" aria-disabled="true">
-          {% translate "judgment.download_docx" %}
+          {% translate "judgment.toolbar.download_docx" %}
         </span>
       {% endif %}
 
       {% if not feature_flag_embedded_pdfs %}
         {% if context.judgment.pdf_url %}
           <a class="judgment-toolbar__button" href="{{ context.judgment.pdf_url }}">
-            {% translate "judgment.download_pdf" %}
+            {% translate "judgment.toolbar.download_pdf" %}
           </a>
         {% else %}
           <span class="judgment-toolbar__button" aria-disabled="true">
-            {% translate "judgment.download_pdf" %}
+            {% translate "judgment.toolbar.download_pdf" %}
           </span>
         {% endif %}
       {% endif %}
 
       {% if context.judgment.is_published %}
         <a class="judgment-toolbar__button" href="{{ context.judgment.public_uri }}" target="_blank" rel="noopener noreferrer">
-          {% translate "judgment.view_on_public" %}
+          {% translate "judgment.toolbar.view_on_public" %}
         </a>
       {% else %}
         <span class="judgment-toolbar__button" aria-disabled="true">
-          {% translate "judgment.view_on_public" %}
+          {% translate "judgment.toolbar.view_on_public" %}
         </span>
       {% endif %}
 
@@ -106,7 +106,7 @@
           <input
             type="submit"
             name="assign"
-            value="{% translate 'judgment.delete' %}"
+            value="{% translate 'judgment.toolbar.delete' %}"
           />
         </form>
       {% endif %}
