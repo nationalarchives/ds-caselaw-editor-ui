@@ -6,12 +6,6 @@ from .views.button_handlers import (
     prioritise_judgment_button,
 )
 from .views.delete import delete
-from .views.edit_judgment import (
-    EditJudgmentView,
-    PublishJudgmentSuccessView,
-    PublishJudgmentView,
-    edit_view_redirect,
-)
 from .views.full_text import (
     html_view,
     html_view_redirect,
@@ -20,8 +14,13 @@ from .views.full_text import (
     xml_view_redirect,
 )
 from .views.index import index
+from .views.judgment_edit import EditJudgmentView, edit_view_redirect
+from .views.judgment_publish import (
+    PublishJudgmentSuccessView,
+    PublishJudgmentView,
+    publish,
+)
 from .views.labs import Labs
-from .views.publish import publish
 from .views.results import results
 from .views.signed_asset import redirect_to_signed_asset
 from .views.unlock import unlock
@@ -54,7 +53,7 @@ urlpatterns = [
         name="publish-judgment",
     ),
     path(
-        "<path:judgment_uri>/publish-success",
+        "<path:judgment_uri>/published",
         PublishJudgmentSuccessView.as_view(),
         name="publish-judgment-success",
     ),

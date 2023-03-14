@@ -140,7 +140,7 @@ class TestSearchResultModel(TestCase):
 
 class TestJudgmentEditor(TestCase):
     @patch(
-        "judgments.views.edit_judgment.Judgment",
+        "judgments.views.judgment_edit.Judgment",
         autospec=Judgment,
     )
     def test_assigned(self, mock_judgment):

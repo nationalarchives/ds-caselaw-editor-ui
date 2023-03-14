@@ -9,7 +9,7 @@ from factories import JudgmentFactory
 
 
 class TestJudgmentEdit(TestCase):
-    @patch("judgments.views.edit_judgment.Judgment")
+    @patch("judgments.views.judgment_edit.Judgment")
     def test_judgment_edit_view(self, mock_judgment):
         judgment = JudgmentFactory.build(
             uri="edtest/4321/123",
@@ -32,9 +32,9 @@ class TestJudgmentEdit(TestCase):
         self.assertIn("Test v Tested", decoded_response)
         assert response.status_code == 200
 
-    @patch("judgments.views.edit_judgment.invalidate_caches")
-    @patch("judgments.views.edit_judgment.api_client")
-    @patch("judgments.views.edit_judgment.Judgment")
+    @patch("judgments.views.judgment_edit.invalidate_caches")
+    @patch("judgments.views.judgment_edit.api_client")
+    @patch("judgments.views.judgment_edit.Judgment")
     def test_judgment_publish_flow(
         self, mock_judgment, mock_api_client, mock_invalidate_caches
     ):
@@ -68,9 +68,9 @@ class TestJudgmentEdit(TestCase):
         mock_judgment.return_value.unpublish.assert_not_called()
         mock_invalidate_caches.assert_called_once()
 
-    @patch("judgments.views.edit_judgment.invalidate_caches")
-    @patch("judgments.views.edit_judgment.api_client")
-    @patch("judgments.views.edit_judgment.Judgment")
+    @patch("judgments.views.judgment_edit.invalidate_caches")
+    @patch("judgments.views.judgment_edit.api_client")
+    @patch("judgments.views.judgment_edit.Judgment")
     def test_judgment_publish_flow_if_published(
         self, mock_judgment, mock_api_client, mock_invalidate_caches
     ):
@@ -103,9 +103,9 @@ class TestJudgmentEdit(TestCase):
         mock_judgment.return_value.publish.assert_not_called()
         mock_judgment.return_value.unpublish.assert_not_called()
 
-    @patch("judgments.views.edit_judgment.invalidate_caches")
-    @patch("judgments.views.edit_judgment.api_client")
-    @patch("judgments.views.edit_judgment.Judgment")
+    @patch("judgments.views.judgment_edit.invalidate_caches")
+    @patch("judgments.views.judgment_edit.api_client")
+    @patch("judgments.views.judgment_edit.Judgment")
     def test_judgment_unpublish_flow(
         self, mock_judgment, mock_api_client, mock_invalidate_caches
     ):
@@ -138,9 +138,9 @@ class TestJudgmentEdit(TestCase):
         mock_judgment.return_value.publish.assert_not_called()
         mock_invalidate_caches.assert_called_once()
 
-    @patch("judgments.views.edit_judgment.invalidate_caches")
-    @patch("judgments.views.edit_judgment.api_client")
-    @patch("judgments.views.edit_judgment.Judgment")
+    @patch("judgments.views.judgment_edit.invalidate_caches")
+    @patch("judgments.views.judgment_edit.api_client")
+    @patch("judgments.views.judgment_edit.Judgment")
     def test_judgment_unpublish_flow_if_not_published(
         self, mock_judgment, mock_api_client, mock_invalidate_caches
     ):
@@ -300,7 +300,7 @@ class TestJudgmentView(TestCase):
 
 
 class TestJudgmentPublish(TestCase):
-    @patch("judgments.views.edit_judgment.Judgment")
+    @patch("judgments.views.judgment_publish.Judgment")
     def test_judgment_publish_view(self, mock_judgment):
         judgment = JudgmentFactory.build(
             uri="pubtest/4321/123",
@@ -321,8 +321,8 @@ class TestJudgmentPublish(TestCase):
         self.assertIn("Test v Tested", decoded_response)
         assert response.status_code == 200
 
-    @patch("judgments.views.publish.invalidate_caches")
-    @patch("judgments.views.publish.Judgment")
+    @patch("judgments.views.judgment_publish.invalidate_caches")
+    @patch("judgments.views.judgment_publish.Judgment")
     def test_judgment_publish_flow(self, mock_judgment, mock_invalidate_caches):
         judgment = JudgmentFactory.build(
             uri="pubtest/4321/123",
@@ -376,7 +376,7 @@ class TestJudgmentPublish(TestCase):
         )
         assert response.status_code == 400
 
-    @patch("judgments.views.edit_judgment.Judgment")
+    @patch("judgments.views.judgment_publish.Judgment")
     def test_judgment_publish_success_view(self, mock_judgment):
         judgment = JudgmentFactory.build(
             uri="pubtest/4321/123",
@@ -390,7 +390,7 @@ class TestJudgmentPublish(TestCase):
             "publish-judgment-success", kwargs={"judgment_uri": judgment.uri}
         )
 
-        assert publish_success_uri == "/pubtest/4321/123/publish-success"
+        assert publish_success_uri == "/pubtest/4321/123/published"
 
         response = self.client.get(publish_success_uri)
 

@@ -9,7 +9,7 @@ from django.shortcuts import redirect
 from django.template import loader
 from django.urls import reverse
 from django.utils.translation import gettext
-from django.views.generic import TemplateView, View
+from django.views.generic import View
 
 from judgments.models.judgments import Judgment
 from judgments.utils import (
@@ -217,51 +217,6 @@ class EditJudgmentView(View):
             )
 
         return HttpResponseRedirect(return_path)
-
-
-class PublishJudgmentView(TemplateView):
-    template_name = "judgment/publish.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(PublishJudgmentView, self).get_context_data(**kwargs)
-
-        judgment = Judgment(kwargs["judgment_uri"])
-
-        context["context"] = {
-            "page_title": "Publish judgment",
-            "view": "publish_judgment",
-            "judgment": judgment,
-        }
-
-        context["feature_flag_embedded_pdfs"] = waffle.flag_is_active(
-            self.request, "embedded_pdf_view"
-        )
-
-        return context
-
-
-class PublishJudgmentSuccessView(TemplateView):
-    template_name = "judgment/publish-success.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(PublishJudgmentSuccessView, self).get_context_data(**kwargs)
-
-        judgment = Judgment(kwargs["judgment_uri"])
-
-        context["context"] = {
-            "page_title": "Successfully published judgment",
-            "view": "publish_judgment",
-            "judgment": judgment,
-            "email_confirmation_link": build_confirmation_email_link(
-                self.request, judgment
-            ),
-        }
-
-        context["feature_flag_embedded_pdfs"] = waffle.flag_is_active(
-            self.request, "embedded_pdf_view"
-        )
-
-        return context
 
 
 def edit_view_redirect(request):
