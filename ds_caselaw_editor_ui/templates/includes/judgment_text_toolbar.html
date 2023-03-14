@@ -45,6 +45,7 @@
         {% endif %}
       {% endif %}
 
+      {% flag "publish_flow" %}
       {% if context.judgment.is_publishable %}
         <a class="judgment-toolbar__button{% if context.view == 'publish_judgment' %} judgment-toolbar__button-selected{% endif %}" href="{% url 'publish-judgment' context.judgment.uri %}">
           {% translate "judgment.publish_this_judgment" %}
@@ -54,6 +55,7 @@
           {% translate "judgment.publish_this_judgment" %}
         </span>
       {% endif %}
+      {% endflag %}
 
       {% if context.judgment.docx_url %}
         <a class="judgment-toolbar__button" href="{{ context.judgment.docx_url }}">

@@ -127,6 +127,9 @@ class EditJudgmentView(View):
                     "feature_flag_embedded_pdfs": waffle.flag_is_active(
                         request, "embedded_pdf_view"
                     ),
+                    "feature_flag_publish_flow": waffle.flag_is_active(
+                        request, "publish_flow"
+                    ),
                 },
                 request,
             )

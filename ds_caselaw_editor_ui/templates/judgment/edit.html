@@ -25,10 +25,14 @@
       <input type="text" class="edit-component__judgment_date-input" value="{{ context.judgment.judgment_date_as_string }}"
              name="judgment_date" id="judgment_date" />
     </div>
-    <div class="edit-component__panel">
-      <label for="published">{% translate "judgment.published" %}</label>
-      <input type="checkbox" class="edit-component__published-input" {% if context.judgment.is_published %}checked{% endif %} name="published" id="published"/>
-    </div>
+
+    {% if not feature_flag_publish_flow %}
+      <div class="edit-component__panel">
+        <label for="published">{% translate "judgment.published" %}</label>
+        <input type="checkbox" class="edit-component__published-input" {% if context.judgment.is_published %}checked{% endif %} name="published" id="published"/>
+      </div>
+    {% endif %}
+
     <div class="edit-component__panel">
       <label for="sensitive">{% translate "judgment.sensitive" %}</label>
       <input type="checkbox" class="edit-component__sensitive-input" {% if context.judgment.is_sensitive %}checked{% endif %} name="sensitive" id="sensitive"/>
