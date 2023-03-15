@@ -15,6 +15,10 @@ class Labs(TemplateView):
             "title": "Embedded PDF",
             "description": "View PDFs directly in the browser without needing to download them.",
         },
+        "publish_flow": {
+            "title": "Revamped Publish Workflow",
+            "description": "A new workflow for publishing judgments.",
+        },
     }
 
     def get_context_data(self, **kwargs):

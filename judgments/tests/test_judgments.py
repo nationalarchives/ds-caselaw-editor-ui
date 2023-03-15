@@ -5,11 +5,12 @@ from caselawclient.Client import MarklogicResourceNotFoundError
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
+from django.utils.translation import gettext
 from factories import JudgmentFactory
 
 
 class TestJudgmentEdit(TestCase):
-    @patch("judgments.views.edit_judgment.Judgment")
+    @patch("judgments.views.judgment_edit.Judgment")
     def test_judgment_edit_view(self, mock_judgment):
         judgment = JudgmentFactory.build(
             uri="edtest/4321/123",
@@ -32,9 +33,9 @@ class TestJudgmentEdit(TestCase):
         self.assertIn("Test v Tested", decoded_response)
         assert response.status_code == 200
 
-    @patch("judgments.views.edit_judgment.invalidate_caches")
-    @patch("judgments.views.edit_judgment.api_client")
-    @patch("judgments.views.edit_judgment.Judgment")
+    @patch("judgments.views.judgment_edit.invalidate_caches")
+    @patch("judgments.views.judgment_edit.api_client")
+    @patch("judgments.views.judgment_edit.Judgment")
     def test_judgment_publish_flow(
         self, mock_judgment, mock_api_client, mock_invalidate_caches
     ):
@@ -68,9 +69,9 @@ class TestJudgmentEdit(TestCase):
         mock_judgment.return_value.unpublish.assert_not_called()
         mock_invalidate_caches.assert_called_once()
 
-    @patch("judgments.views.edit_judgment.invalidate_caches")
-    @patch("judgments.views.edit_judgment.api_client")
-    @patch("judgments.views.edit_judgment.Judgment")
+    @patch("judgments.views.judgment_edit.invalidate_caches")
+    @patch("judgments.views.judgment_edit.api_client")
+    @patch("judgments.views.judgment_edit.Judgment")
     def test_judgment_publish_flow_if_published(
         self, mock_judgment, mock_api_client, mock_invalidate_caches
     ):
@@ -103,9 +104,9 @@ class TestJudgmentEdit(TestCase):
         mock_judgment.return_value.publish.assert_not_called()
         mock_judgment.return_value.unpublish.assert_not_called()
 
-    @patch("judgments.views.edit_judgment.invalidate_caches")
-    @patch("judgments.views.edit_judgment.api_client")
-    @patch("judgments.views.edit_judgment.Judgment")
+    @patch("judgments.views.judgment_edit.invalidate_caches")
+    @patch("judgments.views.judgment_edit.api_client")
+    @patch("judgments.views.judgment_edit.Judgment")
     def test_judgment_unpublish_flow(
         self, mock_judgment, mock_api_client, mock_invalidate_caches
     ):
@@ -138,9 +139,9 @@ class TestJudgmentEdit(TestCase):
         mock_judgment.return_value.publish.assert_not_called()
         mock_invalidate_caches.assert_called_once()
 
-    @patch("judgments.views.edit_judgment.invalidate_caches")
-    @patch("judgments.views.edit_judgment.api_client")
-    @patch("judgments.views.edit_judgment.Judgment")
+    @patch("judgments.views.judgment_edit.invalidate_caches")
+    @patch("judgments.views.judgment_edit.api_client")
+    @patch("judgments.views.judgment_edit.Judgment")
     def test_judgment_unpublish_flow_if_not_published(
         self, mock_judgment, mock_api_client, mock_invalidate_caches
     ):
@@ -297,3 +298,211 @@ class TestJudgmentView(TestCase):
         assert response["Location"] == reverse(
             "full-text-xml", kwargs={"judgment_uri": "ewca/civ/2004/63X"}
         )
+
+
+class TestJudgmentPublish(TestCase):
+    @patch("judgments.views.judgment_publish.Judgment")
+    def test_judgment_publish_view(self, mock_judgment):
+        judgment = JudgmentFactory.build(
+            uri="pubtest/4321/123",
+            name="Test v Tested",
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        publish_uri = reverse("publish-judgment", kwargs={"judgment_uri": judgment.uri})
+
+        assert publish_uri == "/pubtest/4321/123/publish"
+
+        response = self.client.get(publish_uri)
+
+        decoded_response = response.content.decode("utf-8")
+        self.assertIn(gettext("judgment.publish.publish_title"), decoded_response)
+        self.assertIn("Test v Tested", decoded_response)
+        assert response.status_code == 200
+
+    @patch("judgments.views.judgment_publish.invalidate_caches")
+    @patch("judgments.views.judgment_publish.Judgment")
+    def test_judgment_publish_flow(self, mock_judgment, mock_invalidate_caches):
+        judgment = JudgmentFactory.build(
+            uri="pubtest/4321/123",
+            name="Publication Test",
+            is_published=False,
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.post(
+            reverse("publish"),
+            data={
+                "judgment_uri": judgment.uri,
+            },
+        )
+
+        assert response.status_code == 302
+        assert response["Location"] == reverse(
+            "publish-judgment-success", kwargs={"judgment_uri": judgment.uri}
+        )
+        mock_judgment.return_value.publish.assert_called_once()
+        mock_judgment.return_value.unpublish.assert_not_called()
+        mock_invalidate_caches.assert_called_once()
+
+    @patch(
+        "judgments.models.judgments.MarklogicApiClient.get_judgment_citation",
+        side_effect=MarklogicResourceNotFoundError(),
+    )
+    def test_judgment_publish_view_missing_uri(self, mock_api_client):
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.post(
+            reverse("publish"),
+            data={},
+        )
+        assert response.status_code == 400
+
+    @patch(
+        "judgments.models.judgments.MarklogicApiClient.get_judgment_citation",
+        side_effect=MarklogicResourceNotFoundError(),
+    )
+    def test_judgment_publish_view_invalid_uri(self, mock_api_client):
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.post(
+            reverse("publish"),
+            data={
+                "judgment_uri": "invalid",
+            },
+        )
+        assert response.status_code == 400
+
+    @patch("judgments.views.judgment_publish.Judgment")
+    def test_judgment_publish_success_view(self, mock_judgment):
+        judgment = JudgmentFactory.build(
+            uri="pubtest/4321/123",
+            name="Test v Tested",
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        publish_success_uri = reverse(
+            "publish-judgment-success", kwargs={"judgment_uri": judgment.uri}
+        )
+
+        assert publish_success_uri == "/pubtest/4321/123/published"
+
+        response = self.client.get(publish_success_uri)
+
+        decoded_response = response.content.decode("utf-8")
+        self.assertIn(
+            gettext("judgment.publish.publish_success_title"), decoded_response
+        )
+        self.assertIn("Test v Tested", decoded_response)
+        assert response.status_code == 200
+
+
+class TestJudgmentUnpublish(TestCase):
+    @patch("judgments.views.judgment_publish.Judgment")
+    def test_judgment_unpublish_view(self, mock_judgment):
+        judgment = JudgmentFactory.build(
+            uri="pubtest/4321/123",
+            name="Test v Tested",
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        unpublish_uri = reverse(
+            "unpublish-judgment", kwargs={"judgment_uri": judgment.uri}
+        )
+
+        assert unpublish_uri == "/pubtest/4321/123/unpublish"
+
+        response = self.client.get(unpublish_uri)
+
+        decoded_response = response.content.decode("utf-8")
+        self.assertIn(gettext("judgment.publish.unpublish_title"), decoded_response)
+        self.assertIn("Test v Tested", decoded_response)
+        assert response.status_code == 200
+
+    @patch("judgments.views.judgment_publish.invalidate_caches")
+    @patch("judgments.views.judgment_publish.Judgment")
+    def test_judgment_unpublish_flow(self, mock_judgment, mock_invalidate_caches):
+        judgment = JudgmentFactory.build(
+            uri="pubtest/4321/123",
+            name="Publication Test",
+            is_published=True,
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.post(
+            reverse("unpublish"),
+            data={
+                "judgment_uri": judgment.uri,
+            },
+        )
+
+        assert response.status_code == 302
+        assert response["Location"] == reverse(
+            "unpublish-judgment-success", kwargs={"judgment_uri": judgment.uri}
+        )
+        mock_judgment.return_value.publish.assert_not_called()
+        mock_judgment.return_value.unpublish.assert_called_once()
+        mock_invalidate_caches.assert_called_once()
+
+    @patch(
+        "judgments.models.judgments.MarklogicApiClient.get_judgment_citation",
+        side_effect=MarklogicResourceNotFoundError(),
+    )
+    def test_judgment_unpublish_view_missing_uri(self, mock_api_client):
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.post(
+            reverse("unpublish"),
+            data={},
+        )
+        assert response.status_code == 400
+
+    @patch(
+        "judgments.models.judgments.MarklogicApiClient.get_judgment_citation",
+        side_effect=MarklogicResourceNotFoundError(),
+    )
+    def test_judgment_unpublish_view_invalid_uri(self, mock_api_client):
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.post(
+            reverse("unpublish"),
+            data={
+                "judgment_uri": "invalid",
+            },
+        )
+        assert response.status_code == 400
+
+    @patch("judgments.views.judgment_publish.Judgment")
+    def test_judgment_unpublish_success_view(self, mock_judgment):
+        judgment = JudgmentFactory.build(
+            uri="pubtest/4321/123",
+            name="Test v Tested",
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        unpublish_success_uri = reverse(
+            "unpublish-judgment-success", kwargs={"judgment_uri": judgment.uri}
+        )
+
+        assert unpublish_success_uri == "/pubtest/4321/123/unpublished"
+
+        response = self.client.get(unpublish_success_uri)
+
+        decoded_response = response.content.decode("utf-8")
+        self.assertIn(
+            gettext("judgment.publish.unpublish_success_title"), decoded_response
+        )
+        self.assertIn("Test v Tested", decoded_response)
+        assert response.status_code == 200

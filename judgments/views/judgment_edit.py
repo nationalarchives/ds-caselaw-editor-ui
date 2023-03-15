@@ -21,44 +21,46 @@ from judgments.utils import (
 from judgments.utils.aws import invalidate_caches
 
 
+def build_email_link_with_content(address, subject, body=None):
+    params = {"subject": "Find Case Law – {subject}".format(subject=subject)}
+
+    if body:
+        params["body"] = body
+
+    return "mailto:{address}?{params}".format(
+        address=address, params=urlencode(params, quote_via=quote)
+    )
+
+
+def build_confirmation_email_link(request, judgment):
+    subject_string = "Notification of publication [TDR ref: {reference}]".format(
+        reference=judgment.consignment_reference
+    )
+
+    email_context = {
+        "judgment_name": judgment.name,
+        "reference": judgment.consignment_reference,
+        "public_judgment_url": judgment.public_uri,
+        "user_signature": request.user.get_full_name() or "XXXXXX",
+    }
+
+    body_string = loader.render_to_string(
+        "emails/confirmation_to_submitter.txt", email_context
+    )
+
+    return build_email_link_with_content(
+        judgment.source_email, subject_string, body_string
+    )
+
+
 class EditJudgmentView(View):
-    def build_email_link_with_content(self, address, subject, body=None):
-        params = {"subject": "Find Case Law – {subject}".format(subject=subject)}
-
-        if body:
-            params["body"] = body
-
-        return "mailto:{address}?{params}".format(
-            address=address, params=urlencode(params, quote_via=quote)
-        )
-
     def build_raise_issue_email_link(self, context):
         subject_string = "Issue(s) found with {reference}".format(
             reference=context["judgment"].consignment_reference
         )
 
-        return self.build_email_link_with_content(
+        return build_email_link_with_content(
             context["judgment"].source_email, subject_string
-        )
-
-    def build_confirmation_email_link(self, request, context):
-        subject_string = "Notification of publication [TDR ref: {reference}]".format(
-            reference=context["judgment"].consignment_reference
-        )
-
-        email_context = {
-            "judgment_name": context["judgment"].name,
-            "reference": context["judgment"].consignment_reference,
-            "public_judgment_url": context["judgment"].public_uri,
-            "user_signature": request.user.get_full_name() or "XXXXXX",
-        }
-
-        body_string = loader.render_to_string(
-            "emails/confirmation_to_submitter.txt", email_context
-        )
-
-        return self.build_email_link_with_content(
-            context["judgment"].source_email, subject_string, body_string
         )
 
     def build_jira_create_link(self, request, context):
@@ -112,8 +114,8 @@ class EditJudgmentView(View):
         context.update({"users": users_dict()})
 
         context["email_raise_issue_link"] = self.build_raise_issue_email_link(context)
-        context["email_confirmation_link"] = self.build_confirmation_email_link(
-            request, context
+        context["email_confirmation_link"] = build_confirmation_email_link(
+            request, judgment
         )
         context["jira_create_link"] = self.build_jira_create_link(request, context)
 
@@ -124,6 +126,9 @@ class EditJudgmentView(View):
                     "context": context,
                     "feature_flag_embedded_pdfs": waffle.flag_is_active(
                         request, "embedded_pdf_view"
+                    ),
+                    "feature_flag_publish_flow": waffle.flag_is_active(
+                        request, "publish_flow"
                     ),
                 },
                 request,

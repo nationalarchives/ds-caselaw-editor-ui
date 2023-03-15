@@ -6,7 +6,6 @@ from .views.button_handlers import (
     prioritise_judgment_button,
 )
 from .views.delete import delete
-from .views.edit_judgment import EditJudgmentView, edit_view_redirect
 from .views.full_text import (
     html_view,
     html_view_redirect,
@@ -15,6 +14,15 @@ from .views.full_text import (
     xml_view_redirect,
 )
 from .views.index import index
+from .views.judgment_edit import EditJudgmentView, edit_view_redirect
+from .views.judgment_publish import (
+    PublishJudgmentSuccessView,
+    PublishJudgmentView,
+    UnpublishJudgmentSuccessView,
+    UnpublishJudgmentView,
+    publish,
+    unpublish,
+)
 from .views.labs import Labs
 from .views.results import results
 from .views.signed_asset import redirect_to_signed_asset
@@ -27,7 +35,9 @@ urlpatterns = [
     path("results", results, name="results"),
     # redirect to signed asset URLs
     path("signed-asset/<path:key>", redirect_to_signed_asset, name="signed-asset"),
-    # Legacy judgment verbs
+    # Judgment verbs
+    path("publish", publish, name="publish"),
+    path("unpublish", unpublish, name="unpublish"),
     path("delete", delete, name="delete"),
     path("unlock", unlock, name="unlock"),
     path("assign", assign_judgment_button, name="assign"),
@@ -41,6 +51,26 @@ urlpatterns = [
     path("labs", Labs.as_view(), name="labs"),
     # Different views on judgments
     path("<path:judgment_uri>/edit", EditJudgmentView.as_view(), name="edit-judgment"),
+    path(
+        "<path:judgment_uri>/publish",
+        PublishJudgmentView.as_view(),
+        name="publish-judgment",
+    ),
+    path(
+        "<path:judgment_uri>/published",
+        PublishJudgmentSuccessView.as_view(),
+        name="publish-judgment-success",
+    ),
+    path(
+        "<path:judgment_uri>/unpublish",
+        UnpublishJudgmentView.as_view(),
+        name="unpublish-judgment",
+    ),
+    path(
+        "<path:judgment_uri>/unpublished",
+        UnpublishJudgmentSuccessView.as_view(),
+        name="unpublish-judgment-success",
+    ),
     path("<path:judgment_uri>/pdf", pdf_view, name="full-text-pdf"),
     path("<path:judgment_uri>/xml", xml_view, name="full-text-xml"),
     # This 'bare judgment' URL must always go last
