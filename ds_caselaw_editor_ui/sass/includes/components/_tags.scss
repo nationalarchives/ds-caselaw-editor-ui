@@ -1,0 +1,37 @@
+.tna-tag {
+
+  display: inline-block;
+
+  padding: 4px;
+
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+
+  color: $color__white;
+  background-color: $color__dark-blue;
+  letter-spacing: 1px;
+
+  text-decoration: none;
+  text-transform: uppercase;
+
+}
+
+.tna-tag--grey {
+  color: mix(black, $color__dark-grey, 30%);
+  background: mix(white, $color__dark-grey, 90%);
+}
+
+.tna-tag--light-blue {
+  color: mix(black, $color__highlight-blue, 30%);
+  background: mix(white, $color__highlight-blue, 90%);
+}
+
+.tna-tag--green {
+  color: mix(black, $color__green, 30%);
+  background: mix(white, $color__green, 90%);
+}
+
+.tna-tag--red {
+  color: mix(black, $color__red, 30%);
+  background: mix(white, $color__red, 90%);
+}

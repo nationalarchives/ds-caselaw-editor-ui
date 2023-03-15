@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-14 15:53+0000\n"
+"POT-Creation-Date: 2023-03-15 12:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,6 +59,18 @@ msgid "survey.link.text"
 msgstr "Fill out our short survey"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
+msgid "judgments.sidebar.judgment"
+msgstr "Judgment"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
+msgid "judgments.labels.uri"
+msgstr "Internal ID"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
+msgid "judgments.sidebar.submission"
+msgstr "Submission"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
 #: judgments/views/judgment_edit.py
 msgid "judgments.submitter"
@@ -77,6 +89,10 @@ msgid "judgments.consignmentref"
 msgstr "TDR Reference"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
+msgid "judgments.sidebar.downloads"
+msgstr "Downloads"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
 msgid "judgment.download_docx"
 msgstr "Download original .docx"
 
@@ -87,6 +103,10 @@ msgstr "Download PDF"
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
 msgid "judgment.download_xml"
 msgstr "Download XML"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
+msgid "judgments.sidebar.tools"
+msgstr "Tools"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
 msgid "judgment.create_in_jira"
@@ -229,10 +249,6 @@ msgstr "Judgment successfully deleted"
 #: ds_caselaw_editor_ui/templates/judgment/deleted.html
 msgid "judgment.return_home"
 msgstr "Return to Find and manage case law"
-
-#: ds_caselaw_editor_ui/templates/judgment/edit.html
-msgid "judgment.edit_judgment"
-msgstr "Edit Judgment"
 
 #: ds_caselaw_editor_ui/templates/judgment/edit.html
 msgid "judgment.published"
