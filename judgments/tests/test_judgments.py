@@ -32,6 +32,10 @@ class TestJudgmentEdit(TestCase):
         decoded_response = response.content.decode("utf-8")
         self.assertIn("Test v Tested", decoded_response)
         assert response.status_code == 200
+        assert (
+            '<option value="UKSC">United Kingdom Supreme Court</option>'
+            in decoded_response
+        )
 
     @patch("judgments.views.judgment_edit.invalidate_caches")
     @patch("judgments.views.judgment_edit.api_client")

@@ -1,5 +1,6 @@
 from urllib.parse import quote, urlencode
 
+import ds_caselaw_utils as caselawutils
 import waffle
 from caselawclient.Client import MarklogicAPIError, api_client
 from django.conf import settings
@@ -110,6 +111,7 @@ class EditJudgmentView(View):
         context["judgment"] = judgment
         context["page_title"] = judgment.name
         context["view"] = "judgment_metadata"
+        context["courts"] = caselawutils.courts.get_all()
 
         context.update({"users": users_dict()})
 
