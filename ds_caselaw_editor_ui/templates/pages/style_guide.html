@@ -1,0 +1,10 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% block content %}
+  <div class="style-guide">
+    <h2>{% translate "style_guide.title" %}</h2>
+    <p>{% translate "style_guide.description" %}</p>
+    <hr />
+    {% include "includes/style_guide/buttons.html" %}
+  </div>
+{% endblock %}
