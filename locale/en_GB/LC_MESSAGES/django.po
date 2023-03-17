@@ -63,75 +63,69 @@ msgstr ""
 msgid "survey.link.text"
 msgstr "Fill out our short survey"
 
+#: ds_caselaw_editor_ui/templates/includes/judgment_metadata_panel.html
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
-msgid "judgments.sidebar.judgment"
-msgstr "Judgment"
+#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
+#: ds_caselaw_editor_ui/templates/includes/metadata_header.html
+#: judgments/views/judgment_edit.py
+msgid "judgments.consignmentref"
+msgstr "TDR Reference"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
-msgid "judgments.labels.uri"
-msgstr "Internal ID"
+#: ds_caselaw_editor_ui/templates/includes/judgment_metadata_panel.html
+#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
+msgid "judgments.ncn"
+msgstr "NCN"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
-msgid "judgments.sidebar.submission"
-msgstr "Submission"
+#: ds_caselaw_editor_ui/templates/includes/judgment_metadata_panel.html
+#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
+msgid "judgments.court"
+msgstr "Court:"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_metadata_panel.html
+#: ds_caselaw_editor_ui/templates/includes/metadata_header.html
+#: ds_caselaw_editor_ui/templates/judgment/edit.html
+msgid "judgment.judgment_date"
+msgstr "Judgment date"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_metadata_panel.html
+#: ds_caselaw_editor_ui/templates/includes/metadata_header.html
+#: ds_caselaw_editor_ui/templates/judgment/edit.html
+msgid "judgment.judgment_name"
+msgstr "Name"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
-#: ds_caselaw_editor_ui/templates/includes/publish_sidebar.html
 #: judgments/views/judgment_edit.py
 msgid "judgments.submitter"
 msgstr "Submitter"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
-#: ds_caselaw_editor_ui/templates/includes/publish_sidebar.html
 #: judgments/views/judgment_edit.py
 msgid "judgments.submitteremail"
 msgstr "Contact email"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
-#: ds_caselaw_editor_ui/templates/includes/metadata_header.html
-#: ds_caselaw_editor_ui/templates/includes/publish_list_metadata.html
-#: ds_caselaw_editor_ui/templates/includes/publish_sidebar.html
-#: judgments/views/judgment_edit.py
-msgid "judgments.consignmentref"
-msgstr "TDR Reference"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
-msgid "judgments.sidebar.downloads"
-msgstr "Downloads"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
-msgid "judgment.download_docx"
-msgstr "Download original .docx"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
-msgid "judgment.download_pdf"
-msgstr "Download PDF"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
-msgid "judgment.download_xml"
-msgstr "Download XML"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
-msgid "judgments.sidebar.tools"
-msgstr "Tools"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
-#: ds_caselaw_editor_ui/templates/includes/publish_sidebar.html
 msgid "judgment.create_in_jira"
 msgstr "Create in Jira"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
-#: ds_caselaw_editor_ui/templates/includes/publish_sidebar.html
 #: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html
 #: judgments/views/unlock.py
 msgid "judgment.unlock_judgment_title"
 msgstr "Unlock judgment"
 
+#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
+#: ds_caselaw_editor_ui/templates/judgment/edit.html
+msgid "judgments.noone"
+msgstr "No one"
+
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.toolbar.back"
 msgstr "Back to search results"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
+msgid "judgment.toolbar.review_document"
+msgstr "Review document"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.toolbar.edit_metadata"
@@ -195,16 +189,6 @@ msgid "judgments.submission_assigned"
 msgstr "Assigned:"
 
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
-#: ds_caselaw_editor_ui/templates/includes/publish_list_metadata.html
-msgid "judgments.ncn"
-msgstr "NCN:"
-
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
-#: ds_caselaw_editor_ui/templates/includes/publish_list_metadata.html
-msgid "judgments.court"
-msgstr "Court:"
-
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
 msgid "judgments.editor_priority"
 msgstr "Priority:"
 
@@ -225,23 +209,6 @@ msgstr "NCN"
 #: ds_caselaw_editor_ui/templates/judgment/edit.html
 msgid "judgment.court"
 msgstr "Court"
-
-#: ds_caselaw_editor_ui/templates/includes/metadata_header.html
-#: ds_caselaw_editor_ui/templates/includes/publish_list_metadata.html
-#: ds_caselaw_editor_ui/templates/judgment/edit.html
-msgid "judgment.judgment_date"
-msgstr "Judgment date"
-
-#: ds_caselaw_editor_ui/templates/includes/metadata_header.html
-#: ds_caselaw_editor_ui/templates/includes/publish_list_metadata.html
-#: ds_caselaw_editor_ui/templates/judgment/edit.html
-msgid "judgment.judgment_name"
-msgstr "Name"
-
-#: ds_caselaw_editor_ui/templates/includes/publish_sidebar.html
-#: ds_caselaw_editor_ui/templates/judgment/edit.html
-msgid "judgments.noone"
-msgstr "No one"
 
 #: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html
 msgid "home.recent"
@@ -269,6 +236,22 @@ msgstr "Judgment successfully deleted"
 #: ds_caselaw_editor_ui/templates/judgment/deleted.html
 msgid "judgment.return_home"
 msgstr "Return to Find and manage case law"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html
+msgid "judgments.sidebar.downloads"
+msgstr "Downloads"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html
+msgid "judgment.download_docx"
+msgstr "Download original .docx"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html
+msgid "judgment.download_pdf"
+msgstr "Download PDF"
+
+#: ds_caselaw_editor_ui/templates/judgment/edit.html
+msgid "judgment.download_xml"
+msgstr "Download XML"
 
 #: ds_caselaw_editor_ui/templates/judgment/edit.html
 msgid "judgment.published"

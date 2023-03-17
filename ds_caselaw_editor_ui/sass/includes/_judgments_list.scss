@@ -109,12 +109,6 @@
     float: left;
     width: 100%;
     line-height: 22px;
-    @media (min-width: $grid__breakpoint-large) {
-      width: 80%;
-    }
-    @media (min-width: $grid__breakpoint-extra-large) {
-      width: 70%;
-    }
     margin-top: 1em;
     font-size: 0.8em;
     li {
@@ -136,7 +130,7 @@
   }
 
   &__judgment-details-meta-key {
-    color: $color__dark-grey;
+    font-weight: bold;
   }
 
   &__action-button {

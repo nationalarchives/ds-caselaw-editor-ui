@@ -1,77 +1,42 @@
-.publish-component {
+.judgment-component {
     background-color: $color__white;
     padding: calc(#{$spacer__unit} * 2);
-    border-bottom: 1px solid $color__almost-black;
     padding-left: 2rem;
+
+
+
     &__container {
       @include container;
       text-align: left;
       padding: 1rem;
     }
-    &__page-header {
-      font-size: 2.2rem;
-      line-height: 2.2rem;
-      margin-left: 6rem;
-      margin-bottom: 0;
-      font-family: $font__roboto;
-      font-weight: 200;
-      color: $color__almost-black;
-    }
-    &__header {
-      font-size: 1.2rem;
-      line-height: 2.8rem;
-      display: inline-block;
-      margin-left: 6rem;
-      position: relative;
-      font-family: $font__roboto;
-      font-weight: normal;
-      color: $color__almost-black;
-    }
+
     &__panel {
-      margin-left: 6rem;
       padding: calc(#{$spacer__unit} / 2) 0;
     }
 
     &__two-column-container {
       display: flex;
-      position: relative;
-      right: 4rem;
     }
 
     &__left-panel {
       flex: 1;
     }
 
-    &__sidebar {
-      &__block {
-        margin-bottom: 2rem;
-        h4 {
-          margin-bottom: 0.6rem;
-        }
-
-        a {
-          display: block;
-        }
-
-        ul {
-          padding-left: 0;
-        }
-
-        li {
-          list-style: none;
-          margin-top: 0.4rem;
-        }
-      }
+    &__minor-issues-options {
+      input[type=checkbox] {
+        transform: scale(2);
+       }
+        label {
+         display: inline-block;
+         position: relative;
+         left: 2rem;
+       }
     }
 
     input[type=submit] {
       display: inline-block;
       position: relative;
-      margin-left: 6rem;
-    }
-
-    span {
-      font-weight: bold;
     }
 
     &__metadata_name-input {
@@ -88,15 +53,6 @@
       @media (min-width: $grid__breakpoint-extra-large) {
         width: 35rem;
       }
-    }
-
-    input[type=checkbox] {
-     transform: scale(2);
-    }
-     label {
-      display: inline-block;
-      position: relative;
-      left: 2rem;
     }
   }
 
@@ -122,7 +78,6 @@
     border: 2px #FFB952 solid;
     display: inline-block;
     padding: 0px 10px 0px 0;
-    margin-left: 6rem;
     &__list-header {
       padding-left: 10px;
       margin: 10px 0;
@@ -149,3 +104,9 @@
       margin: 20px 0;
     }
   }
+
+.publish-sidebar {
+  &__label {
+    font-weight: bold;
+  }
+}

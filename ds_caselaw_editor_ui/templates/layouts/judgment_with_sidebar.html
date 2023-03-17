@@ -1,14 +1,26 @@
 {% extends "layouts/judgment.html" %}
 {% load waffle_tags %}
+{% load i18n %}
 {% block content %}
-  {% load i18n %}
-  <aside class="judgment-sidebar">
-    {% include "includes/judgment_sidebar.html" %}
-  </aside>
   <div class="edit-component">
     <div class="edit-component__container">
-      {% block judgment_content %}
-      {% endblock judgment_content %}
+      <div class="judgment-component">
+        <div class="judgment-component__container">
+          {% block judgment_header %}
+          {% endblock judgment_header %}
+          <div class="judgment-component__two-column-container">
+            <div class="judgment-component__left-panel">
+              {% block judgment_content %}
+              {% endblock judgment_content %}
+            </div>
+            <aside class="judgment-sidebar">
+              {% include "includes/judgment_sidebar.html" %}
+              {% block extra_sidebar_content %}
+              {% endblock extra_sidebar_content %}
+            </aside>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 {% endblock content %}

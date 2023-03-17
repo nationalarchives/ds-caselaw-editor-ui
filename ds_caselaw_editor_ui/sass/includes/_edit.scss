@@ -1,7 +1,6 @@
 .edit-component,
 .list-versions-component,
 .judgment-info-component {
-  background-color: $color__light-grey;
   padding: $spacer__unit;
   &__container {
     @include container;
@@ -37,9 +36,7 @@
     @include call-to-action-button;
     display: block;
   }
-  span {
-    font-weight: bold;
-  }
+
   &__metadata_name-input {
     @include text_field;
     width: 80%;
@@ -62,46 +59,6 @@
   }
 }
 
-.judgment-sidebar {
-  float:right;
-  position: sticky;
-  right: 0;
-  top: 0;
-  width: 20vw;
-
-  &__block {
-
-    margin-bottom: 2rem;
-
-    h4 {
-      margin-bottom: 0.6rem;
-    }
-
-    a {
-      display: block;
-    }
-
-    ul {
-      padding-left: 0;
-    }
-
-    li {
-      list-style: none;
-      margin-top: 0.4rem;
-    }
-
-  }
-
-  &__label {
-    font-size: 0.9rem;
-    font-weight: bold;
-
-    &::after{
-      content: "\a";
-      white-space: pre;
-    }
-  }
-}
 .create-email-block {
   border: 2px #FFB952 solid;
   display: inline-block;

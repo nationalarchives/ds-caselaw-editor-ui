@@ -1,4 +1,4 @@
-.tna-tag {
+.judgment-status-indicator {
 
   display: inline-block;
 
@@ -16,22 +16,22 @@
 
 }
 
-.tna-tag--grey {
+.judgment-status-indicator--grey {
   color: mix(black, $color__dark-grey, 30%);
   background: mix(white, $color__dark-grey, 90%);
 }
 
-.tna-tag--light-blue {
+.judgment-status-indicator--light-blue {
   color: mix(black, $color__highlight-blue, 30%);
   background: mix(white, $color__highlight-blue, 90%);
 }
 
-.tna-tag--green {
+.judgment-status-indicator--green {
   color: mix(black, $color__green, 30%);
   background: mix(white, $color__green, 90%);
 }
 
-.tna-tag--red {
+.judgment-status-indicator--red {
   color: mix(black, $color__red, 30%);
   background: mix(white, $color__red, 90%);
 }

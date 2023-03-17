@@ -1,29 +1,20 @@
-{% extends "layouts/judgment_with_publish.html" %}
+{% extends "layouts/judgment_with_sidebar.html" %}
 {% load waffle_tags %}
 {% load i18n %}
+
+
+{% block judgment_header %}
+  {% include "includes/judgment_metadata_panel.html" with judgment=context.judgment %}
+{% endblock %}
+
+
 {% block judgment_content %}
-  <div class="publish-component">
-    <div class="publish-component__container">
-      <div class="publish-metadata">
-        {% include "includes/publish_list_metadata.html" %}
-      </div>
-      <div class="publish-component__two-column-container">
-        <div class="publish-component__left-panel">
-          <div class="publish-component__panel">
-            <h2>
-              Success - this document has been published<br>
-              {{ context.judgment.name }}
-            </h2>
-          </div>
-          <div class="publish-component__actions">
-            <p>{% include 'includes/email_confirm_publication.html' %}</p>
-          </div>
-        </div>
-        <aside class="publish-component__sidebar">
-          {% include "includes/publish_sidebar.html" %}
-        </aside>
-      </div>
-    </div>
+  <h2>Success - this document has been published
+    <a href="{{ context.judgment.public_uri }}" target="_blank" rel="noopener noreferrer"><br>
+    {{ context.judgment.name }} </a>
+  </h2>
+  <div class="judgment-component__actions">
+    <p>{% include 'includes/email_confirm_publication.html' %}</p>
   </div>
 {% endblock judgment_content %}
 

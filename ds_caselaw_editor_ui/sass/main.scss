@@ -18,6 +18,8 @@
 @import "includes/judgment_text";
 @import "includes/judgment_text_toolbar";
 @import "includes/judgment_text_source";
+@import "includes/judgment_sidebar";
+@import "includes/judgment_metadata_panel";
 @import "includes/judgment_text_service_introduction";
 @import "includes/standard-text-template";
 @import "includes/how_can_this_service_be_improved";
@@ -29,7 +31,7 @@
 @import "includes/cookie_consent/cookie-consent";
 @import "includes/metadata";
 @import "includes/buttons";
-@import "includes/components/tags";
+@import "includes/components/judgment_status_indicator";
 @import "includes/publish";
 @import "includes/labs";
 @import "includes/style_guide";
