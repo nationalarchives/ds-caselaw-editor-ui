@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-28 14:45+0000\n"
+"POT-Creation-Date: 2023-03-28 14:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -124,6 +124,10 @@ msgstr "Create in Jira"
 #: judgments/views/unlock.py
 msgid "judgment.unlock_judgment_title"
 msgstr "Unlock judgment"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
+msgid "judgment.report_blocking_problem"
+msgstr "Report a publication-blocking problem"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
 msgid "judgments.sidebar.assigned_to"
