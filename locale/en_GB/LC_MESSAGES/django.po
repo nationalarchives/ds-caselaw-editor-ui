@@ -69,7 +69,7 @@ msgstr "Fill out our short survey"
 #: ds_caselaw_editor_ui/templates/includes/metadata_header.html
 #: judgments/views/judgment_edit.py
 msgid "judgments.consignmentref"
-msgstr "TDR Reference"
+msgstr "TDR Ref"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_metadata_panel.html
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
@@ -79,7 +79,7 @@ msgstr "NCN"
 #: ds_caselaw_editor_ui/templates/includes/judgment_metadata_panel.html
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
 msgid "judgments.court"
-msgstr "Court:"
+msgstr "Court"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_metadata_panel.html
 #: ds_caselaw_editor_ui/templates/includes/metadata_header.html

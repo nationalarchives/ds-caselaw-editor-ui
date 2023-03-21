@@ -2,6 +2,7 @@
   background-color: $color__light-grey;
   border-style: solid;
   border-color: #ffffff;
+  padding: $spacer__unit;
 
 
   @media (min-width: 1400px) {
@@ -13,77 +14,51 @@
   }
 
   &__container {
-    display: inline-block;
-    width: auto;
-    padding: calc(#{$spacer__unit} / 2) 0;
-  }
-  &__ncn {
-    display: inline-block;
-    margin-left: 2rem;
-    position: relative;
-    padding: calc(#{$spacer__unit} / 2) 0;
-  }
-  &__court {
-    display: inline-block;
-    left: 3rem;
-    position: relative;
-    margin-left: 2rem;
-    padding: calc(#{$spacer__unit} / 2) 0;
-     @media (min-width: $grid__breakpoint-large) {
-      width: 20rem;
-      margin-left: 2rem;
-      left: 3rem;
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    margin-bottom: calc($spacer__unit / 2);
+    &:last-child {
+      margin-bottom: 0;
     }
+  }
+
+  &__ncn {
+    width: 40%;
+  }
+
+  &__court {
+    width: 40%;
+    left: 3rem;
   }
   &__date {
-    display: inline-block;
-    margin-left: 3rem;
-    left: 6rem;
-    position: relative;
-    padding: calc(#{$spacer__unit} / 2) 0;
-    @media (min-width: $grid__breakpoint-large) {
-      width: 8rem;
-      margin-left: 2rem;
-      left: 15rem;
-    }
+    width: 20%;
   }
   &__tdr {
-    display: inline-block;
-
-    position: relative;
-    padding: calc(#{$spacer__unit} / 2) 0;
-    width: auto;
-    left: 2rem;
+    p {
+      margin: 0;
+      line-height: 1rem;
+    }
+    margin-bottom: calc($spacer__unit / 2);
   }
   &__panel {
-    display: inline-block;
-    left: 2rem;
-    position: relative;
-    padding: calc(#{$spacer__unit} / 2) 0;
+    width: 80%;
   }
+
+  &__bottom-right-column {
+    width: 20%;
+    padding: calc($spacer__unit / 2) 0;
+  }
+
   &__actions {
-    display: inline-block;
-    position: relative;
-    padding: calc(#{$spacer__unit} / 2) 0;
     width: auto;
-    left: 11rem;
   }
   &__main-labels {
     display: block;
-    margin-bottom: 0.5rem;
-  }
-  &__tdr-label{
-    display: inline-block;
-    bottom: 6rem;
-    left: 16rem;
-    position: relative;
-    padding: calc(#{$spacer__unit} / 2) 0;
-    @media (min-width: 1500px) {
-      margin-bottom: 0;
-      bottom: 6rem;
-      margin-left: 2rem;
-      left: 14rem;
-    }
+    margin-bottom: calc($spacer__unit / 4);
+    font-size: 0.9rem;
+    line-height: 1.2rem;
+    color: $color__dark-grey;
   }
 
   &__more-options {
@@ -102,15 +77,11 @@
   &__panel {
     padding: calc(#{$spacer__unit} / 2) 0;
   }
+
   input[type=submit] {
     @include call-to-action-button;
-    display: inline-block;
-    bottom: 3rem;
-    margin-right: 2rem;
     width: 10rem;
     min-height: 0.5rem;
-    right: 8rem;
-    position: relative;
   }
 
   &__judgment_date-input{
@@ -128,24 +99,23 @@
       width: 2rem;
     }
   }
+
   &__metadata_name-input {
     @include text_field;
-    width: 80%;
-    min-height: 2.5rem;
+    width: 100%;
+    margin-top: 0;
+    box-sizing: border-box;
+    height: calc(100% - 1.45rem);
     font-size: 1rem;
-    padding-right: 5.5rem;
-    @media (min-width: 1400px) {
-      width: 28rem;
-    }
-
   }
+
   input[type=text] {
+    box-sizing: border-box;
     width: 100%;
     min-height: 2rem;
-    @media (max-width: $grid__breakpoint-medium) {
-      margin: auto 1rem;
-      width: auto;
-      min-height: 1rem;
-      }
+  }
+
+  input[type=submit] {
+    width: 100%;
   }
 }
