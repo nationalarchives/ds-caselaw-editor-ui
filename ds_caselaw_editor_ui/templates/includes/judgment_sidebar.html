@@ -1,42 +1,26 @@
-{% load i18n status_tag_css %}
+{% load i18n status_tag_css%}
 
 <div class="judgment-sidebar__block">
 
-  <h4>{% translate "judgments.sidebar.judgment" %}</h4>
+  <h4>{% translate "judgments.sidebar.status" %}</h4>
 
-  <ul>
-    <li><span class="tna-tag tna-tag--{{ context.judgment.status | status_tag_colour }}">{{ context.judgment.status }}</span></li>
-    <li><span class="judgment-sidebar__label">{% translate "judgments.labels.uri" %}:</span> {{ context.judgment.uri }}</li>
+  <ul class="items">
+    <li><span class="judgment-status-indicator judgment-status-indicator--{{ context.judgment.status | status_tag_colour }}">{{ context.judgment.status }}</span></li>
   </ul>
-
-</div>
-
-<div class="judgment-sidebar__block">
 
   <h4>{% translate "judgments.sidebar.submission" %}</h4>
 
-  <ul>
-    <li><span class="judgment-sidebar__label">{% translate "judgments.submitter" %}:</span> {{ context.judgment.source_name }}</li>
-    <li><span class="judgment-sidebar__label">{% translate "judgments.submitteremail" %}:</span> <a href="mailto:{{ context.judgment.source_email }}">{{ context.judgment.source_email }}</a></li>
-    <li><span class="judgment-sidebar__label">{% translate "judgments.consignmentref" %}:</span> {{ context.judgment.consignment_reference }}</li>
-  </ul>
+  <dl class="items">
+    <dt class="judgment-sidebar__label">{% translate "judgments.submitter" %}</dt>
+    <dd>{{ context.judgment.source_name }}</dd>
+    <dt class="judgment-sidebar__label">{% translate "judgments.submitteremail" %}</dt>
+    <dd><a href="mailto:{{ context.judgment.source_email }}">{{ context.judgment.source_email }}</a></dd>
+    <dt class="judgment-sidebar__label">{% translate "judgments.consignmentref" %}</dt>
+    <dd>{{ context.judgment.consignment_reference }}</dd>
+  </dl>
 
 </div>
-<div class="judgment-sidebar__block">
 
-  <h4>{% translate "judgments.sidebar.downloads" %}</h4>
-
-  <ul>
-    {% if context.judgment.docx_url %}
-      <li><a href="{{ context.judgment.docx_url }}">{% translate "judgment.download_docx" %}</a></li>
-    {% endif %}
-    {% if context.judgment.pdf_url %}
-      <li><a href="{{ context.judgment.pdf_url }}">{% translate "judgment.download_pdf" %}</a></li>
-    {% endif %}
-    <li><a href="{{ context.judgment.xml_url }}">{% translate "judgment.download_xml" %}</a></li>
-  </ul>
-
-</div>
 <div class="judgment-sidebar__block">
 
   <h4>{% translate "judgments.sidebar.tools" %}</h4>
@@ -46,3 +30,16 @@
   </ul>
 
 </div>
+
+{% if feature_flag_assign_in_publish_sidebar %}
+  <div class="judgment-sidebar__block">
+
+    <h4>{% translate "judgments.sidebar.assigned_to" %}</h4>
+    <select class="judgment-component__assigned_to-input" name="assigned_to" id="assigned_to">
+      <option value="" {% if context.judgment.assigned_to == "" %}selected{% endif %}>{% translate "judgments.noone" %}</option>
+      {% for user in context.users %}
+        <option value="{{user.name}}"{% if context.judgment.assigned_to == user.name %} selected{% endif %}>{{user.print_name}}</option>
+      {% endfor %}
+    </select>
+  </div>
+{% endif %}

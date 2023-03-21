@@ -1,7 +1,24 @@
 {% extends "layouts/judgment_with_sidebar.html" %}
 {% load waffle_tags %}
+{% load i18n %}
+
+{% block extra_sidebar_content %}
+  <div class="judgment-sidebar__block">
+    <h4>{% translate "judgments.sidebar.downloads" %}</h4>
+
+    <ul>
+      {% if context.judgment.docx_url %}
+        <li><a href="{{ context.judgment.docx_url }}">{% translate "judgment.download_docx" %}</a></li>
+      {% endif %}
+      {% if context.judgment.pdf_url %}
+        <li><a href="{{ context.judgment.pdf_url }}">{% translate "judgment.download_pdf" %}</a></li>
+      {% endif %}
+      <li><a href="{{ context.judgment.xml_url }}">{% translate "judgment.download_xml" %}</a></li>
+    </ul>
+  </div>
+{% endblock extra_sidebar_content %}
+
 {% block judgment_content %}
-  {% load i18n %}
   <form aria-label="Edit judgment" method="post">
     {% csrf_token %}
     <div class="edit-component__panel">

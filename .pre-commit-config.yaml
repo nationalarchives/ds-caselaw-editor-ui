@@ -26,10 +26,6 @@ repos:
       - id: flake8
         args: ["--config=setup.cfg"]
 
-  - repo: https://github.com/thibaudcolas/curlylint
-    rev: v0.13.1
-    hooks:
-      - id: curlylint
 # sets up .pre-commit-ci.yaml to ensure pre-commit dependencies stay up to date
 ci:
   autoupdate_schedule: weekly

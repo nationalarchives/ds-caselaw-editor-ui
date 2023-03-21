@@ -1,0 +1,45 @@
+{% load i18n %}
+<div class="judgment-metadata-panel">
+  <ul class="judgment-metadata-panel__details">
+    <li>
+      <span class="judgment-metadata-panel__key">
+        {% translate "judgments.consignmentref" %}
+      </span>
+      <span class="judgment-metadata-panel__value">
+        {{ judgment.consignment_reference }}
+      </span>
+    </li>
+    <li>
+      <span class="judgment-metadata-panel__key">
+        {% translate "judgments.ncn" %}
+      </span>
+      <span class="judgment-metadata-panel__value">
+        {{ judgment.neutral_citation }}
+      </span>
+    </li>
+    <li>
+      <span class="judgment-metadata-panel__key">
+        {% translate "judgments.court" %}
+      </span>
+      <span class="judgment-metadata-panel__value">
+        {{ judgment.court }}
+      </span>
+    </li>
+    <li>
+      <span class="judgment-metadata-panel__key">
+        {% translate "judgment.judgment_date" %}
+      </span>
+      <span class="judgment-metadata-panel__value">
+        {{ judgment.judgment_date_as_string }}
+      </span>
+    </li>
+    <li>
+      <span class="judgment-metadata-panel__key">
+        {% translate "judgment.judgment_name" %}
+      </span>
+      <span class="judgment-metadata-panel__value">
+        {{ judgment.name }}
+      </span>
+    </li>
+  </ul>
+</div>

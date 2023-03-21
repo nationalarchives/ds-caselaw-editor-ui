@@ -1,0 +1,40 @@
+.judgment-metadata-panel {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 calc($spacer__unit / 2);
+  border-bottom: 1px solid $color__aqua-blue;
+
+  &__details {
+    list-style-type: none;
+    padding: 0;
+    float: left;
+    width: 100%;
+    line-height: 22px;
+    margin-top: 1em;
+    font-size: 0.8em;
+    li {
+      float: left;
+      width: 100%;
+      @media (min-width: $grid__breakpoint-medium) {
+        width: 50%;
+      }
+      box-sizing: border-box;
+      span:nth-child(odd) {
+        float: left;
+        width: 27%;
+      }
+      span:nth-child(even) {
+        float: left;
+        width: 66%;
+      }
+    }
+  }
+
+  &__key {
+    font-weight: bold;
+  }
+
+  }

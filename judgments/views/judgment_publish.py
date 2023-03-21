@@ -33,6 +33,14 @@ class PublishJudgmentView(TemplateView):
             self.request, "embedded_pdf_view"
         )
 
+        context["feature_flag_log_minor_issues_on_publish"] = waffle.flag_is_active(
+            self.request, "log_minor_issues_on_publish"
+        )
+
+        context["feature_flag_assign_in_publish_sidebar"] = waffle.flag_is_active(
+            self.request, "assign_in_publish_sidebar"
+        )
+
         return context
 
 
@@ -57,6 +65,10 @@ class PublishJudgmentSuccessView(TemplateView):
 
         context["feature_flag_embedded_pdfs"] = waffle.flag_is_active(
             self.request, "embedded_pdf_view"
+        )
+
+        context["feature_flag_assign_in_publish_sidebar"] = waffle.flag_is_active(
+            self.request, "assign_in_publish_sidebar"
         )
 
         return context
