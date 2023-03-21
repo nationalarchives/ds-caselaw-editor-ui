@@ -1,41 +1,45 @@
-.edit-component,
-.list-versions-component,
-.judgment-info-component {
-  padding: 0 $spacer__unit;
+.judgment-component {
+  background-color: $color__white;
+  margin: 0 auto;
+  padding: 0 calc(#{$spacer__unit} * 2);
+
   &__container {
     @include container;
     text-align: left;
-    margin: 0 auto;
-    padding: 0 calc(#{$spacer__unit} * 2);
+    padding: 1rem;
   }
-  &__header {
-    font-size: 1rem;
-    line-height: 2.8rem;
-    display: inline-block;
-    font-family: $font__roboto;
-    font-weight: normal;
-    color: $color__almost-black;
-    margin: 0 calc(#{$spacer__unit} * 1.5);
-  }
-  &__more-options {
-    margin-top: calc($spacer__unit * 2);
-  }
-  &__success {
-    background-color: $color__green;
-    width: fit-content;
-    padding: calc(#{$spacer__unit} / 2);
-  }
-  &__error {
-    background-color: $color__red;
-    width: fit-content;
-    padding: calc(#{$spacer__unit} / 2);
-  }
+
   &__panel {
     padding: calc(#{$spacer__unit} / 2) 0;
   }
-  input[type=submit] {
-    @include call-to-action-button;
-    display: block;
+
+  &__two-column-container {
+    display: flex;
+  }
+
+  &__left-panel {
+    flex: 1;
+  }
+
+  &__live-link {
+    margin-top: 0;
+    margin-bottom: 2rem;
+  }
+
+  &__minor-issues-options {
+    input[type="checkbox"] {
+      transform: scale(2);
+    }
+    label {
+      display: inline-block;
+      position: relative;
+      left: 2rem;
+    }
+  }
+
+  input[type="submit"] {
+    display: inline-block;
+    position: relative;
   }
 
   &__metadata_name-input {
@@ -53,18 +57,30 @@
       width: 35rem;
     }
   }
-  input[type=checkbox] {
-    &:focus {
-      @include focus-default;
-    }
-  }
 }
 
 .create-email-block {
-  border: 2px #FFB952 solid;
+  border: 2px #ffb952 solid;
   display: inline-block;
   padding: 0px 10px 0px 0;
   margin-left: 15%;
+  &__list-header {
+    padding-left: 10px;
+    margin: 10px 0;
+  }
+  &__list {
+    list-style: none;
+    padding-left: 10px;
+    margin: 5px 0;
+  }
+  &__list-link {
+    padding-bottom: 10px;
+  }
+}
+.email-confirm-publish {
+  border: 2px #ffb952 solid;
+  display: inline-block;
+  padding: 0px 10px 0px 0;
   &__list-header {
     padding-left: 10px;
     margin: 10px 0;

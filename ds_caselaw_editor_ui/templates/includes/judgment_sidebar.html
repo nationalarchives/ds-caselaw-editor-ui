@@ -2,13 +2,13 @@
 
 <div class="judgment-sidebar__block">
 
-  <h4>Status</h4>
+  <h4>{% translate "judgments.sidebar.status" %}</h4>
 
   <ul class="items">
     <li><span class="judgment-status-indicator judgment-status-indicator--{{ context.judgment.status | status_tag_colour }}">{{ context.judgment.status }}</span></li>
   </ul>
 
-  <h4>Submission</h4>
+  <h4>{% translate "judgments.sidebar.submission" %}</h4>
 
   <dl class="items">
     <dt class="judgment-sidebar__label">{% translate "judgments.submitter" %}</dt>
@@ -23,7 +23,7 @@
 
 <div class="judgment-sidebar__block">
 
-  <h4>Tools</h4>
+  <h4>{% translate "judgments.sidebar.tools" %}</h4>
   <ul>
     <li><a href="{{ context.jira_create_link }}" target="_blank" rel="noopener noreferrer">{% translate "judgment.create_in_jira" %}</a></li>
     <li><a href="{% url 'unlock' %}?judgment_uri={{context.judgment_uri}}">{% translate "judgment.unlock_judgment_title" %}</a></li>
@@ -34,7 +34,7 @@
 {% if feature_flag_assign_in_publish_sidebar %}
   <div class="judgment-sidebar__block">
 
-    <h4>Assigned to</h4>
+    <h4>{% translate "judgments.sidebar.assigned_to" %}</h4>
     <select class="judgment-component__assigned_to-input" name="assigned_to" id="assigned_to">
       <option value="" {% if context.judgment.assigned_to == "" %}selected{% endif %}>{% translate "judgments.noone" %}</option>
       {% for user in context.users %}

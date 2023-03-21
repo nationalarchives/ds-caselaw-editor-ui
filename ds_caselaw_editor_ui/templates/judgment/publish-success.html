@@ -9,10 +9,12 @@
 
 
 {% block judgment_content %}
-  <h2>Success - this document has been published
-    <a href="{{ context.judgment.public_uri }}" target="_blank" rel="noopener noreferrer"><br>
-    {{ context.judgment.name }} </a>
-  </h2>
+  <h2>Success - this document has been published</h2>
+  <p class="judgment-component__live-link">
+    <a href="{{ context.judgment.public_uri }}" target="_blank" rel="noopener noreferrer">
+      {{ context.judgment.name }}
+    </a>
+  </p>
   <div class="judgment-component__actions">
     <p>{% include 'includes/email_confirm_publication.html' %}</p>
   </div>

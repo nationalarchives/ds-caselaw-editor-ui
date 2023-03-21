@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-21 12:43+0000\n"
+"POT-Creation-Date: 2023-03-21 16:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -94,6 +94,14 @@ msgid "judgment.judgment_name"
 msgstr "Name"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
+msgid "judgments.sidebar.status"
+msgstr "Status"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
+msgid "judgments.sidebar.submission"
+msgstr "Submission"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
 #: judgments/views/judgment_edit.py
 msgid "judgments.submitter"
@@ -103,6 +111,10 @@ msgstr "Submitter"
 #: judgments/views/judgment_edit.py
 msgid "judgments.submitteremail"
 msgstr "Contact email"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
+msgid "judgments.sidebar.tools"
+msgstr "Tools"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
 msgid "judgment.create_in_jira"
@@ -115,6 +127,10 @@ msgid "judgment.unlock_judgment_title"
 msgstr "Unlock judgment"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
+msgid "judgments.sidebar.assigned_to"
+msgstr "Assigned to"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
 #: ds_caselaw_editor_ui/templates/judgment/edit.html
 msgid "judgments.noone"
 msgstr "No one"
@@ -124,12 +140,12 @@ msgid "judgment.toolbar.back"
 msgstr "Back to search results"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
-msgid "judgment.toolbar.review_document"
-msgstr "Review document"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.toolbar.edit_metadata"
 msgstr "Edit metadata"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
+msgid "judgment.toolbar.review_document"
+msgstr "Review document"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.toolbar.view_judgment"
