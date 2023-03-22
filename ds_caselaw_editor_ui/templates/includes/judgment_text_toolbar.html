@@ -13,12 +13,9 @@
 
       {% if feature_flag_embedded_pdfs %}
         {% if context.judgment.is_editable %}
-          {% flag "publish_flow" %}
-          {% else %}
-            <a class="judgment-toolbar__button{% if context.view == 'judgment_metadata' %} judgment-toolbar__button-selected{% endif %}" href="{% url 'edit-judgment' context.judgment.uri %}">
-              {% translate "judgment.toolbar.edit_metadata" %}
-            </a>
-          {% endflag %}
+          <a class="judgment-toolbar__button{% if context.view == 'judgment_metadata' %} judgment-toolbar__button-selected{% endif %}" href="{% url 'edit-judgment' context.judgment.uri %}">
+            {% translate "judgment.toolbar.edit_metadata" %}
+          </a>
           <a class="judgment-toolbar__button{% if context.view == 'judgment_text' %} judgment-toolbar__button-selected{% endif %}" href="{% url 'full-text-html' context.judgment.uri %}">
             {% flag "publish_flow" %}
               {% translate "judgment.toolbar.review_document" %}
@@ -27,12 +24,9 @@
             {% endflag %}
           </a>
         {% else %}
-          {% flag "publish_flow" %}
-          {% else %}
-            <span class="judgment-toolbar__button" aria-disabled="true">
-              {% translate "judgment.toolbar.edit_metadata" %}
-            </span>
-          {% endflag %}
+          <span class="judgment-toolbar__button" aria-disabled="true">
+            {% translate "judgment.toolbar.edit_metadata" %}
+          </span>
           <span class="judgment-toolbar__button" aria-disabled="true">
             {% flag "publish_flow" %}
               {% translate "judgment.toolbar.review_document" %}
