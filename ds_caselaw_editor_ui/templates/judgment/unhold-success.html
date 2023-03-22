@@ -1,0 +1,13 @@
+{% extends "layouts/judgment_with_sidebar.html" %}
+{% load waffle_tags %}
+{% block judgment_content %}
+  {% load i18n %}
+  <h2>
+    {% translate 'judgment.hold.unhold_success_title' %}
+    <br>
+    {{ context.judgment.name }}
+  </h2>
+
+  <p>This judgment is no longer on hold.</p>
+
+{% endblock judgment_content %}

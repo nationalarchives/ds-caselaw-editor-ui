@@ -15,6 +15,14 @@ from .views.full_text import (
 )
 from .views.index import index
 from .views.judgment_edit import EditJudgmentView, edit_view_redirect
+from .views.judgment_hold import (
+    HoldJudgmentSuccessView,
+    HoldJudgmentView,
+    UnholdJudgmentSuccessView,
+    UnholdJudgmentView,
+    hold,
+    unhold,
+)
 from .views.judgment_publish import (
     PublishJudgmentSuccessView,
     PublishJudgmentView,
@@ -39,6 +47,8 @@ urlpatterns = [
     # Judgment verbs
     path("publish", publish, name="publish"),
     path("unpublish", unpublish, name="unpublish"),
+    path("hold", hold, name="hold"),
+    path("unhold", unhold, name="unhold"),
     path("delete", delete, name="delete"),
     path("unlock", unlock, name="unlock"),
     path("assign", assign_judgment_button, name="assign"),
@@ -72,6 +82,26 @@ urlpatterns = [
         "<path:judgment_uri>/unpublished",
         UnpublishJudgmentSuccessView.as_view(),
         name="unpublish-judgment-success",
+    ),
+    path(
+        "<path:judgment_uri>/hold",
+        HoldJudgmentView.as_view(),
+        name="hold-judgment",
+    ),
+    path(
+        "<path:judgment_uri>/onhold",
+        HoldJudgmentSuccessView.as_view(),
+        name="hold-judgment-success",
+    ),
+    path(
+        "<path:judgment_uri>/unhold",
+        UnholdJudgmentView.as_view(),
+        name="unhold-judgment",
+    ),
+    path(
+        "<path:judgment_uri>/unheld",
+        UnholdJudgmentSuccessView.as_view(),
+        name="unhold-judgment-success",
     ),
     path("<path:judgment_uri>/pdf", pdf_view, name="full-text-pdf"),
     path("<path:judgment_uri>/xml", xml_view, name="full-text-xml"),
