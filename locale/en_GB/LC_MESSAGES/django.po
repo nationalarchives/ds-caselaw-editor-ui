@@ -399,7 +399,7 @@ msgstr "Judgment unpublished"
 
 #: ds_caselaw_editor_ui/templates/judgment/hold.html
 msgid "judgment.hold_this_judgment"
-msgstr "Hold this document"
+msgstr "Put document on hold"
 
 #: ds_caselaw_editor_ui/templates/includes/email_confirm_hold.html
 msgid "judgment.email_hold.confirm"
@@ -407,25 +407,38 @@ msgstr "Open submitter email"
 
 #: judgments/views/judgment_hold.py
 msgid "judgment.hold.hold_success_flash_message"
-msgstr "Judgment on hold"
+msgstr "Document on hold"
 
 #: judgments/views/judgment_hold.py
 msgid "judgment.hold.unhold_success_flash_message"
-msgstr "Judgment unhold"
+msgstr "Document unheld"
 
 #: ds_caselaw_editor_ui/templates/judgment/unhold-success.html
 #: judgments/tests/test_judgments.py judgments/views/judgment_hold.py
 msgid "judgment.hold.unhold_success_title"
-msgstr "Judgment not on hold"
+msgstr "Document not on hold"
 
 #: ds_caselaw_editor_ui/templates/judgment/unhold.html
 msgid "judgment.unhold.unhold_button"
-msgstr "Unhold judgment"
+msgstr "Unhold document"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.toolbar.unhold"
-msgstr "Unhold judgment"
+msgstr "Unhold"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.toolbar.hold"
-msgstr "Hold judgment"
+msgstr "Put on hold"
+
+#: ds_caselaw_editor_ui/templates/judgment/unhold.html
+#: judgments/tests/test_judgments.py judgments/views/judgment_hold.py
+msgid "judgment.hold.unhold_title"
+msgstr "Unhold document"
+
+#: judgments/views/judgment_hold.py
+msgid "judgment.hold.hold_success_title"
+msgstr "Document on hold"
+
+#: judgments/views/judgment_hold.py
+msgid "judgment.hold.hold_title"
+msgstr "Put on hold"

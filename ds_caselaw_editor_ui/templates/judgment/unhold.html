@@ -7,16 +7,21 @@
     {{ context.judgment.name }}
   </h2>
 
-  <form action="{% url 'unhold' %}" method="post">
+  <form action="/hold" method="post">
     {% csrf_token %}
-    <input
-      type="hidden"
-      name="judgment_uri"
-      value="{{ context.judgment.uri }}"
-    >
-    <input
-      type="submit"
-      value="{% translate 'judgment.unhold.unhold_button' %}"
-    >
+    <div class="judgment-component__actions">
+      <input
+        type="hidden"
+        name="judgment_uri"
+        value="{{ context.judgment.uri }}"
+      />
+      <input type="hidden" name="hold" value="false"/>
+      <input
+        class="button-cta"
+        type="submit"
+        value="{% translate 'judgment.unhold.unhold_button' %}"
+      />
+    </div>
   </form>
+
 {% endblock judgment_content %}
