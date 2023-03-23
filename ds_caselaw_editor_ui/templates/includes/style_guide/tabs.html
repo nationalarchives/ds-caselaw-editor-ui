@@ -1,16 +1,5 @@
 
 <h4>Tabs</h4>
+<p>Use with <code>include "includes/tabs.html" with label1="HTML view" label2="PDF view" url1="#first-tab" url2="#second-tab" selected=1</code>:</p>
 
-<div class="tabs-set">
-    <div class="tabs-set__item">
-       <input type="radio" id="tab1" name="tab-group" checked>
-     <label for="tab1">HTML view</label>
-    </div>
-
-    <div class="tabs-set__item">
-      <input type="radio" id="tab2" name="tab-group">
-      <label for="tab2">PDF view</label>
-    </div>
-  <div class="tabs-set__divider">
-    </div>
-  </div>
+{% include "includes/tabs.html" with label1="HTML view" label2="PDF view" url1="#first-tab" url2="#second-tab" selected=1 %}
