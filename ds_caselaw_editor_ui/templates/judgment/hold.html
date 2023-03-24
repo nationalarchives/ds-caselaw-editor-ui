@@ -8,7 +8,7 @@
 
 {% block judgment_content %}
   <h2>Put this document on hold</h2>
-  <form action="/hold" method="post">
+  <form action="{% url 'hold' %}" method="post">
     {% csrf_token %}
     <div class="judgment-component__actions">
       <input
@@ -16,7 +16,11 @@
         name="judgment_uri"
         value="{{ context.judgment.uri }}"
       />
-      <input type="hidden" name="hold" value="true"/>
+      <input
+        type="hidden"
+        name="hold"
+        value="context.meta.editor_hold"
+        />
       <input
         class="button-cta"
         type="submit"
