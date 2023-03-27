@@ -92,7 +92,9 @@ def publish(request):
         )
     except MarklogicResourceNotFoundError:
         return HttpResponseBadRequest(
-            escape(f"Judgment {judgment_uri} could not be found.")
+            "Judgment {judgment_uri} could not be found.".format(
+                judgment_uri=escape(judgment_uri)
+            )
         )
 
 
@@ -161,5 +163,7 @@ def unpublish(request):
         )
     except MarklogicResourceNotFoundError:
         return HttpResponseBadRequest(
-            escape(f"Judgment {judgment_uri} could not be found.")
+            "Judgment {judgment_uri} could not be found.".format(
+                judgment_uri=escape(judgment_uri)
+            )
         )
