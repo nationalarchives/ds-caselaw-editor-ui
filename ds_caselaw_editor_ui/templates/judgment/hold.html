@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block judgment_content %}
-  <h2>Put this document on hold</h2>
+  <h2>{% translate "judgment.put.on.hold" %}</h2>
   <form action="{% url 'hold' %}" method="post">
     {% csrf_token %}
     <div class="judgment-component__actions">

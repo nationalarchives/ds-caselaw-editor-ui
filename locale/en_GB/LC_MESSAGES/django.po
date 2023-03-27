@@ -442,3 +442,15 @@ msgstr "Document on hold"
 #: judgments/views/judgment_hold.py
 msgid "judgment.hold.hold_title"
 msgstr "Put on hold"
+
+#: ds_caselaw_editor_ui/templates/judgment/hold-success.html
+msgid "judgment.hold.success"
+msgstr "This document has been put on hold"
+
+#: ds_caselaw_editor_ui/templates/judgment/unhold-success.html
+msgid "judgment.unhold.success"
+msgstr "This document is no longer on hold."
+
+#: ds_caselaw_editor_ui/templates/judgment/hold.html
+msgid "judgment.put.on.hold"
+msgstr "Put this document on hold"

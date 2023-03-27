@@ -90,7 +90,9 @@ def hold(request):
         )
     except MarklogicResourceNotFoundError:
         return HttpResponseBadRequest(
-            escape(f"Judgment {judgment_uri} could not be found.")
+            "Judgment {judgment_uri} could not be found.".format(
+                judgment_uri=escape(judgment_uri)
+            )
         )
 
 
@@ -157,5 +159,7 @@ def unhold(request):
         )
     except MarklogicResourceNotFoundError:
         return HttpResponseBadRequest(
-            escape(f"Judgment {judgment_uri} could not be found.")
+            "Judgment {judgment_uri} could not be found.".format(
+                judgment_uri=escape(judgment_uri)
+            )
         )
