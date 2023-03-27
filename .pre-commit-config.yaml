@@ -26,6 +26,23 @@ repos:
       - id: flake8
         args: ["--config=setup.cfg"]
 
+  - repo: https://github.com/Riverside-Healthcare/djLint
+    rev: v1.19.16
+    hooks:
+      - id: djlint-django
+        name: djLint Reformatting for Django
+        entry: djlint --profile=django --reformat
+        types_or: [html]
+        language: python
+
+  - repo: https://github.com/Riverside-Healthcare/djLint
+    rev: v1.19.16
+    hooks:
+      - id: djlint-django
+        name: djLint Checks for Django
+        entry: djlint --profile=django
+        types_or: [html]
+        language: python
 # sets up .pre-commit-ci.yaml to ensure pre-commit dependencies stay up to date
 ci:
   autoupdate_schedule: weekly
