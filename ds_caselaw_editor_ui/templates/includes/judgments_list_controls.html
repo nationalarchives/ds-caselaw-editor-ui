@@ -1,20 +1,27 @@
 {% load i18n %}
-
-
 <div class="judgments-list-controls">
-  <form method="get" action="{{request.path}}" id="analytics-result-controls">
+  <form method="get"
+        action="{{ request.path }}"
+        id="analytics-result-controls">
     {% for key, value in context.query_params.items %}
-      {% if key != "order" or key != "per_page" %}
-        <input type="hidden" name="{{key}}" value="{{value}}" />
-      {% endif %}
+      {% if key != "order" or key != "per_page" %}<input type="hidden" name="{{ key }}" value="{{ value }}" />{% endif %}
     {% endfor %}
     <div>
       <label for="order_by" class="judgments-list-controls__label">Sort by</label>
       <select class="judgments-list-controls__select" id="order_by" name="order">
-        <option value="-date" {% if context.order == "-date" or context.order is None %}selected='selected'{% endif %}>Date received &ndash; Newest</option>
-        <option value="date" {% if context.order == "date" %}selected='selected'{% endif %}>Date received &ndash; Oldest</option>
+        <option value="-date"
+                {% if context.order == "-date" or context.order is None %}selected='selected'{% endif %}>
+          Date received &ndash; Newest
+        </option>
+        <option value="date"
+                {% if context.order == "date" %}selected='selected'{% endif %}>
+          Date received &ndash; Oldest
+        </option>
       </select>
     </div>
-    <input aria-label="sort unpublished judgments" type="submit" value="Go" class="judgments-list-controls__button">
+    <input aria-label="sort unpublished judgments"
+           type="submit"
+           value="Go"
+           class="judgments-list-controls__button"/>
   </form>
 </div>

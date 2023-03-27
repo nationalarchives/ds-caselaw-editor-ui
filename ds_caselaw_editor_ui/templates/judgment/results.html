@@ -1,23 +1,18 @@
 {% extends "layouts/base.html" %}
 {% load i18n %}
-
 {% block title %}
   {% translate "results.search.title" %} - {% translate "common.findcaselaw" %}
 {% endblock title %}
-
 {% block content %}
   {% translate "results.search.title" as pagetitle %}
-
   <div class="results">
     <h1>{{ pagetitle }}</h1>
-
-    {% include 'includes/basic_search_form.html' %}
+    {% include "includes/basic_search_form.html" %}
     <div class="judgments-list">
       <div class="judgments-list__container">
-
         <div class="judgments-list__judgments-list-controls-container">
           <div class="results__result-header">
-            <p id="recently-published-judgments" class="judgments-list__header">We found {{ context.total }} judgments: </p>
+            <p id="recently-published-judgments" class="judgments-list__header">We found {{ context.total }} judgments:</p>
           </div>
         </div>
         <div class="judgments-list__table">
@@ -27,11 +22,12 @@
               {% include "includes/judgments_list_item.html" %}
             {% endfor %}
           </ul>
-          {% include 'includes/pagination.html' %}
-          <p class="judgments-list__more-info"><a href="{% url 'results' %}">{% translate "judgments.allrecent" %}</a></p>
+          {% include "includes/pagination.html" %}
+          <p class="judgments-list__more-info">
+            <a href="{% url 'results' %}">{% translate "judgments.allrecent" %}</a>
+          </p>
         </div>
       </div>
     </div>
-
   </div>
-{% endblock %}
+{% endblock content %}

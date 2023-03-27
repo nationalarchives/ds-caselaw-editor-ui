@@ -1,13 +1,13 @@
 {% load static i18n %}
-
 <div class="judgments-list">
   <div class="judgments-list__container">
-
     <div class="judgments-list__judgments-list-controls-container">
       <div class="results__result-header">
-        <p id="recently-published-judgments" class="judgments-list__header">{% translate "home.recent" %}: {{ context.total }} </p>
+        <p id="recently-published-judgments" class="judgments-list__header">
+          {% translate "home.recent" %}: {{ context.total }}
+        </p>
       </div>
-      {% include 'includes/judgments_list_controls.html' %}
+      {% include "includes/judgments_list_controls.html" %}
     </div>
     <div class="judgments-list__table">
       {% include "includes/judgments_list_header.html" %}
@@ -16,8 +16,10 @@
           {% include "includes/judgments_list_item.html" %}
         {% endfor %}
       </ul>
-      {% include 'includes/pagination.html' %}
-      <p class="judgments-list__more-info"><a href="{% url 'results' %}">{% translate "judgments.allrecent" %}</a></p>
+      {% include "includes/pagination.html" %}
+      <p class="judgments-list__more-info">
+        <a href="{% url 'results' %}">{% translate "judgments.allrecent" %}</a>
+      </p>
     </div>
   </div>
 </div>

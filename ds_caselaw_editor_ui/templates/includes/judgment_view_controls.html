@@ -1,17 +1,17 @@
 {% load i18n %}
 {% if feature_flag_embedded_pdfs %}
   <div class="judgment-toolbar__container" style="margin: 0.5rem auto">
-    <a class="judgment-toolbar__button{% if view == 'html' %} judgment-toolbar__button-selected{% endif %}" href="{% url 'full-text-html' context.judgment_uri %}">
+    <a class="judgment-toolbar__button{% if view == 'html' %} judgment-toolbar__button-selected{% endif %}"
+       href="{% url 'full-text-html' context.judgment_uri %}">
       {% translate "judgment.view_control.html" %}
     </a>
     {% if context.judgment.pdf_url %}
-      <a class="judgment-toolbar__button{% if view == 'pdf' %} judgment-toolbar__button-selected{% endif %}" href="{% url 'full-text-pdf' context.judgment.uri %}">
+      <a class="judgment-toolbar__button{% if view == 'pdf' %} judgment-toolbar__button-selected{% endif %}"
+         href="{% url 'full-text-pdf' context.judgment.uri %}">
         {% translate "judgment.view_control.pdf" %}
       </a>
     {% else %}
-      <span class="judgment-toolbar__button" aria-disabled="true">
-        {% translate "judgment.view_control.pdf" %}
-      </span>
+      <span class="judgment-toolbar__button" aria-disabled="true">{% translate "judgment.view_control.pdf" %}</span>
     {% endif %}
   </div>
 {% endif %}

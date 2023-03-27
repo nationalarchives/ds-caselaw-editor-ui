@@ -1,98 +1,76 @@
 {% extends "layouts/judgment_with_sidebar.html" %}
 {% load waffle_tags %}
 {% load i18n %}
-
 {% block judgment_header %}
   {% include "includes/judgment_metadata_panel.html" with judgment=context.judgment %}
-{% endblock %}
-
+{% endblock judgment_header %}
 {% block judgment_content %}
   <h2>Publish this document</h2>
   {% if feature_flag_log_minor_issues_on_publish %}
     <p>
       {% translate "judgment.confirm" %}
-      <span class="judgment-uri">{{context.judgment_uri}}</span>
+      <span class="judgment-uri">{{ context.judgment_uri }}</span>
     </p>
   {% endif %}
-  <form
-    aria-label="publish judgment"
-    action="{% url 'publish' %}"
-    method="post"
-  >
+  <form aria-label="publish judgment"
+        action="{% url 'publish' %}"
+        method="post">
     {% csrf_token %}
     {% if feature_flag_log_minor_issues_on_publish %}
       <div class="judgment-component__panel judgment-component__minor-issues-options">
-        <input
-          type="checkbox"
-          class="judgment-component__center-input"
-          {% if context.judgment.is_centered %}checked{% endif %}
-          name="center"
-          id="center"
-        />
+        <input type="checkbox"
+               class="judgment-component__center-input"
+               {% if context.judgment.is_centered %}checked{% endif %}
+               name="center"
+               id="center"/>
         <label for="center">{% translate "judgment.center" %}</label>
       </div>
       <div class="judgment-component__panel">
-        <input
-          type="checkbox"
-          class="judgment-component__indentation-input"
-          {% if context.judgment.is_indentation %}checked{% endif %}
-          name="indentation"
-          id="indentation"
-        />
+        <input type="checkbox"
+               class="judgment-component__indentation-input"
+               {% if context.judgment.is_indentation %}checked{% endif %}
+               name="indentation"
+               id="indentation"/>
         <label for="indentation">{% translate "judgment.indentation" %}</label>
       </div>
       <div class="judgment-component__panel">
-        <input
-          type="checkbox"
-          class="judgment-component__images-input"
-          {% if context.judgment.is_images %}checked{% endif %}
-          name="images"
-          id="images"
-        />
-        <label for="images"> {% translate "judgment.images" %}</label>
+        <input type="checkbox"
+               class="judgment-component__images-input"
+               {% if context.judgment.is_images %}checked{% endif %}
+               name="images"
+               id="images"/>
+        <label for="images">{% translate "judgment.images" %}</label>
       </div>
       <div class="judgment-component__panel">
-        <input
-          type="checkbox"
-          class="judgment-component__headings-input"
-          {% if context.judgment.is_headings %}checked{% endif %}
-          name="headings"
-          id="headings"
-        />
+        <input type="checkbox"
+               class="judgment-component__headings-input"
+               {% if context.judgment.is_headings %}checked{% endif %}
+               name="headings"
+               id="headings"/>
         <label for="headings">{% translate "judgment.headings" %}</label>
       </div>
       <div class="judgment-component__panel">
-        <input
-          type="checkbox"
-          class="judgment-component__barriers-input"
-          {% if context.judgment.is_barriers %}checked{% endif %}
-          name="barriers"
-          id="barriers"
-        />
+        <input type="checkbox"
+               class="judgment-component__barriers-input"
+               {% if context.judgment.is_barriers %}checked{% endif %}
+               name="barriers"
+               id="barriers"/>
         <label for="barriers">{% translate "judgment.barriers" %}</label>
       </div>
       <div class="judgment-component__panel">
-        <input
-          type="checkbox"
-          class="judgment-component__problems-input"
-          {% if context.judgment.no_problems %}checked{% endif %}
-          name="problems"
-          id="barriers"
-        />
+        <input type="checkbox"
+               class="judgment-component__problems-input"
+               {% if context.judgment.no_problems %}checked{% endif %}
+               name="problems"
+               id="barriers"/>
         <label for="problems">{% translate "judgment.problems" %}</label>
       </div>
     {% endif %}
     <div class="judgment-component__actions">
-      <input
-        type="hidden"
-        name="judgment_uri"
-        value="{{ context.judgment.uri }}"
-      />
-      <input
-        class="button-cta"
-        type="submit"
-        value="{% translate 'judgment.publish_this_judgment' %}"
-      />
+      <input type="hidden" name="judgment_uri" value="{{ context.judgment.uri }}" />
+      <input class="button-cta"
+             type="submit"
+             value="{% translate "judgment.publish_this_judgment" %}"/>
     </div>
   </form>
 {% endblock judgment_content %}

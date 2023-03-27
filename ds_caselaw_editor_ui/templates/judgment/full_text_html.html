@@ -1,9 +1,8 @@
 {% extends "layouts/judgment.html" %}
 {% load waffle_tags %}
-
 {% block content %}
-  {% include 'includes/metadata_header.html' with return_to='html' %}
-  {% include 'includes/judgment_view_controls.html' with view='html' %}
+  {% include "includes/metadata_header.html" with return_to="html" %}
+  {% include "includes/judgment_view_controls.html" with view="html" %}
   {% if context.judgment_content %}
     {% if context.judgment.is_failure %}
       <pre>
