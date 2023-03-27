@@ -406,6 +406,7 @@ class TestJudgmentPublish(TestCase):
         self.assertIn("Test v Tested", decoded_response)
         assert response.status_code == 200
 
+
 class TestJudgmentHold(TestCase):
     @patch("judgments.views.judgment_hold.Judgment")
     def test_judgment_hold_view(self, mock_judgment):
@@ -502,11 +503,10 @@ class TestJudgmentHold(TestCase):
         response = self.client.get(hold_success_uri)
 
         decoded_response = response.content.decode("utf-8")
-        self.assertIn(
-            gettext("judgment.hold.hold_success_title"), decoded_response
-        )
+        self.assertIn(gettext("judgment.hold.hold_success_title"), decoded_response)
         self.assertIn("Test v Tested", decoded_response)
         assert response.status_code == 200
+
 
 class TestJudgmentUnhold(TestCase):
     @patch("judgments.views.judgment_hold.Judgment")
@@ -604,9 +604,7 @@ class TestJudgmentUnhold(TestCase):
         response = self.client.get(unhold_success_uri)
 
         decoded_response = response.content.decode("utf-8")
-        self.assertIn(
-            gettext("judgment.hold.unhold_success_title"), decoded_response
-        )
+        self.assertIn(gettext("judgment.hold.unhold_success_title"), decoded_response)
         self.assertIn("Test v Tested", decoded_response)
         assert response.status_code == 200
 
