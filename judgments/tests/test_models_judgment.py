@@ -261,3 +261,19 @@ class TestJudgmentPublication:
         mock_notify_changed.assert_called_once_with(
             uri="test/1234", status="not published", enrich=False
         )
+
+
+class TestJudgmentHold:
+    def test_hold(self, mock_api_client):
+        judgment = Judgment("test/1234", mock_api_client)
+        judgment.hold()
+        mock_api_client.set_property.assert_called_once_with(
+            "test/1234", "editor-hold", "true"
+        )
+
+    def test_unhold(self, mock_api_client):
+        judgment = Judgment("test/1234", mock_api_client)
+        judgment.unhold()
+        mock_api_client.set_property.assert_called_once_with(
+            "test/1234", "editor-hold", "false"
+        )

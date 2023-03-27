@@ -94,6 +94,23 @@
     padding-bottom: 10px;
   }
 }
+.email-hold-publish {
+  border: 2px #ffb952 solid;
+  display: inline-block;
+  padding: 0px 10px 0px 0;
+  &__list-header {
+    padding-left: 10px;
+    margin: 10px 0;
+  }
+  &__list {
+    list-style: none;
+    padding-left: 10px;
+    margin: 5px 0;
+  }
+  &__list-link {
+    padding-bottom: 10px;
+  }
+}
 .edit-component__actions {
   display: inline-block;
   width: auto;

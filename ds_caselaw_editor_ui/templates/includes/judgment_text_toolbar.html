@@ -53,6 +53,26 @@
         {% endif %}
       {% endif %}
 
+      {% flag "hold_flow" %}
+      {% if context.judgment.is_published %}
+        <span class="judgment-toolbar__button" aria-disabled="true">
+          {% translate "judgment.toolbar.hold" %}
+        </span>
+      {% else %}
+        {% if context.judgment.is_held %}
+        <a class="judgment-toolbar__button{% if context.view == 'hold_judgment' %} judgment-toolbar__button-selected{% endif %}" href="{% url 'unhold-judgment' context.judgment.uri %}">
+          {% translate "judgment.toolbar.unhold" %}
+        </a>
+        {% else %}
+        <a class="judgment-toolbar__button{% if context.view == 'hold_judgment' %} judgment-toolbar__button-selected{% endif %}" href="{% url 'hold-judgment' context.judgment.uri %}">
+          {% translate "judgment.toolbar.hold" %}
+        </a>
+
+        {% endif %}
+      {% endif %}
+      {% endflag %}
+
+
       {% flag "publish_flow" %}
       {% if context.judgment.is_published %}
         <a class="judgment-toolbar__button{% if context.view == 'publish_judgment' %} judgment-toolbar__button-selected{% endif %}" href="{% url 'unpublish-judgment' context.judgment.uri %}">

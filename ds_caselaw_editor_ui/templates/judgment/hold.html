@@ -1,0 +1,31 @@
+{% extends "layouts/judgment_with_sidebar.html" %}
+{% load waffle_tags %}
+{% load i18n %}
+
+{% block judgment_header %}
+  {% include "includes/judgment_metadata_panel.html" with judgment=context.judgment %}
+{% endblock %}
+
+{% block judgment_content %}
+  <h2>{% translate "judgment.put.on.hold" %}</h2>
+  <form action="{% url 'hold' %}" method="post">
+    {% csrf_token %}
+    <div class="judgment-component__actions">
+      <input
+        type="hidden"
+        name="judgment_uri"
+        value="{{ context.judgment.uri }}"
+      />
+      <input
+        type="hidden"
+        name="hold"
+        value="true"
+        />
+      <input
+        class="button-cta"
+        type="submit"
+        value="{% translate 'judgment.hold_this_judgment' %}"
+      />
+    </div>
+  </form>
+{% endblock judgment_content %}
