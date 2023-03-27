@@ -1,0 +1,49 @@
+.tabs-set {
+  margin: 1.5rem auto 0.5rem;
+  text-align: center;
+
+  &__item {
+    display: inline-block;
+    margin: 0 0.25rem;
+
+    label {
+      background: $color__dark-blue;
+      padding-top: 0.75rem;
+      border: 2px solid $color__dark-blue;
+      border-bottom: none;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      color: $color__white;
+      font-family: "Open Sans", sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      a {
+        padding: 0.75rem 2rem 0 2rem;
+        position: relative;
+        top: -0.33rem;
+        display: inline-block;
+        text-decoration: none;
+        color: $color__white;
+        &:focus {
+          outline-offset: 5px;
+        }
+      }
+    }
+
+    input[type=radio] {
+      display: none;
+    }
+
+    input[type=radio]:checked~label {
+      border-bottom: 2px solid $color__white;
+      background: $color__white;
+      a {
+        color: $color__dark-blue;
+      }
+    }
+  }
+
+  &__divider {
+    border-top: solid 2px $color__dark-blue;
+  }
+}

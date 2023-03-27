@@ -1,5 +1,7 @@
 import $ from "jquery";
 
+import TabSet from "./components/tabSet";
+
 (function ($) {
   $.fn.manage_filters = function (options) {
     const settings = $.extend({}, $.fn.manage_filters.defaults, options);
@@ -75,3 +77,5 @@ $(".judgments-list__judgment-assign-form").on("submit", function (event) {
     },
   });
 });
+
+TabSet.init();
