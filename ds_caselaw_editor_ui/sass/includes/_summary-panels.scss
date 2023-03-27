@@ -1,0 +1,43 @@
+.summary-panel {
+    border-width: 0px;
+    position: relative;
+    width: 391px;
+    height: 139px;
+    background-color: #f2f2f2;
+    border: none;
+    border-radius: 10px;
+    font-size: 22px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.summary-panel:hover {
+    background-color: #D7D7D7;
+    transition: 0.2s;
+}
+
+.summary-panel:active {
+    background-color: #ffb952;
+}
+
+@media screen and (max-device-width : 480px) {
+    .summary-panel {
+    width: 266px; 
+    height: 95px; }
+}
+
+
+.panel-number {
+    font-size: 45px;
+    text-align: left;
+}
+
+.panel-text {
+    font-size: 22px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
