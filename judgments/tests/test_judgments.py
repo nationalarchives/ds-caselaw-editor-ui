@@ -1,3 +1,4 @@
+import re
 from unittest.mock import patch
 from urllib.parse import urlencode
 
@@ -7,6 +8,10 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils.translation import gettext
 from factories import JudgmentFactory
+
+
+def assert_match(regex, string):
+    assert re.search(regex, string) is not None
 
 
 class TestJudgmentEdit(TestCase):
@@ -32,9 +37,9 @@ class TestJudgmentEdit(TestCase):
         decoded_response = response.content.decode("utf-8")
         self.assertIn("Test v Tested", decoded_response)
         assert response.status_code == 200
-        assert (
-            '<option value="UKSC">United Kingdom Supreme Court</option>'
-            in decoded_response
+        assert_match(
+            '<option value="UKSC">(\\s+)United Kingdom Supreme Court(\\s+)</option>',
+            decoded_response,
         )
 
     @patch("judgments.views.judgment_edit.invalidate_caches")

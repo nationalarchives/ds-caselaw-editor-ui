@@ -17,7 +17,7 @@ def test_break_lock_confirm_page():
     print(response)
     decoded_response = response.content.decode("utf-8")
     assert (
-        '<input type="hidden" name="judgment_uri" value="my_uri">' in decoded_response
+        '<input type="hidden" name="judgment_uri" value="my_uri" />' in decoded_response
     )
     assert response.status_code == 200
 
