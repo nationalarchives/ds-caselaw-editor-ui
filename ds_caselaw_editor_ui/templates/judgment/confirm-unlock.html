@@ -1,13 +1,12 @@
 {% extends "layouts/base.html" %}
 {% load static i18n %}
-
 {% block content %}
   <div class="unlock-judgment">
-    <p>{{context.judgment_uri}}</p>
+    <p>{{ context.judgment_uri }}</p>
     <p class="unlock-judgment__confirmation">{% translate "judgment.confirm_unlock" %}</p>
-    <form method="POST">
+    <form method="post">
       {% csrf_token %}
-      <input type="hidden" name="judgment_uri" value="{{context.judgment_uri}}">
+      <input type="hidden" name="judgment_uri" value="{{ context.judgment_uri }}" />
       <button type="submit">{% translate "judgment.unlock_judgment_title" %}</button>
     </form>
     <a href="{% url 'full-text-html' context.judgment_uri %}">{% translate "judgment.back_to_judgment" %}</a>

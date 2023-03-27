@@ -1,3 +1,4 @@
+import re
 from unittest.mock import patch
 
 from django.contrib.auth.models import User
@@ -9,6 +10,10 @@ from judgments.models import SearchResult, SearchResultMeta
 from judgments.models.judgments import Judgment
 
 
+def assert_match(regex, string):
+    assert re.search(regex, string) is not None
+
+
 class TestSearchResults(TestCase):
     @patch("judgments.utils.view_helpers.perform_advanced_search")
     def test_oldest(self, advanced_search):
@@ -18,7 +23,10 @@ class TestSearchResults(TestCase):
         advanced_search.assert_called_with(
             query=None, order="-date", only_unpublished=True, page=1
         )
-        assert b"<option value=\"-date\" selected='selected'>" in response.content
+        assert_match(
+            b"<option(\\s+)value=\"-date\"(\\s+)selected='selected'(\\s*)>",
+            response.content,
+        )
 
     @patch("judgments.utils.view_helpers.perform_advanced_search")
     def test_newest(self, advanced_search):
@@ -28,7 +36,10 @@ class TestSearchResults(TestCase):
         advanced_search.assert_called_with(
             query=None, order="date", only_unpublished=True, page=1
         )
-        assert b"<option value=\"date\" selected='selected'>" in response.content
+        assert_match(
+            b"<option(\\s+)value=\"date\"(\\s+)selected='selected'(\\s*)>",
+            response.content,
+        )
 
 
 class TestSearchResultMeta(TestCase):
@@ -154,4 +165,4 @@ class TestJudgmentEditor(TestCase):
             reverse("edit-judgment", kwargs={"judgment_uri": "ewhc/ch/1999/1"})
         )
 
-        assert b"selected>otheruser" in response.content
+        assert_match(b"selected>(\\s*)otheruser", response.content)

@@ -1,25 +1,20 @@
 {% extends "layouts/judgment_with_sidebar.html" %}
 {% load waffle_tags %}
 {% load i18n %}
-
-
 {% block judgment_header %}
   {% include "includes/judgment_metadata_panel.html" with judgment=context.judgment %}
-{% endblock %}
-
-
+{% endblock judgment_header %}
 {% block judgment_content %}
   <h2>Success - this document has been published</h2>
   <p class="judgment-component__live-link">
-    <a href="{{ context.judgment.public_uri }}" target="_blank" rel="noopener noreferrer">
-      {{ context.judgment.name }}
-    </a>
+    <a href="{{ context.judgment.public_uri }}"
+       target="_blank"
+       rel="noopener noreferrer">{{ context.judgment.name }}</a>
   </p>
   <div class="judgment-component__actions">
-    <p>{% include 'includes/email_confirm_publication.html' %}</p>
+    <p>{% include "includes/email_confirm_publication.html" %}</p>
   </div>
 {% endblock judgment_content %}
-
 {% block footer_javascript %}
   <script src="https://cdn.jsdelivr.net/npm/tsparticles-preset-confetti@2/tsparticles.preset.confetti.bundle.min.js"></script>
   <script>
