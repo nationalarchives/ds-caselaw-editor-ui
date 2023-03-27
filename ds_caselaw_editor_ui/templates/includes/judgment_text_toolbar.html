@@ -10,11 +10,11 @@
     <div class="judgment-toolbar__edit">
       {% if feature_flag_embedded_pdfs %}
         {% if context.judgment.is_editable %}
-          <a class="judgment-toolbar__button{% if context.view == 'judgment_metadata' %} judgment-toolbar__button-selected{% endif %}"
+          <a class="judgment-toolbar__button {% if context.view == 'judgment_metadata' %}judgment-toolbar__button-selected{% endif %}"
              href="{% url 'edit-judgment' context.judgment.uri %}">
             {% translate "judgment.toolbar.edit_metadata" %}
           </a>
-          <a class="judgment-toolbar__button{% if context.view == 'judgment_text' %} judgment-toolbar__button-selected{% endif %}"
+          <a class="judgment-toolbar__button {% if context.view == 'judgment_text' %}judgment-toolbar__button-selected{% endif %}"
              href="{% url 'full-text-html' context.judgment.uri %}">
             {% flag "publish_flow" %}
             {% translate "judgment.toolbar.review_document" %}
@@ -34,11 +34,11 @@
     {% endif %}
   {% else %}
     {% if context.judgment.is_editable %}
-      <a class="judgment-toolbar__button{% if context.view == 'judgment_metadata' %}  judgment-toolbar__button-selected{% endif %}"
+      <a class="judgment-toolbar__button {% if context.view == 'judgment_metadata' %}judgment-toolbar__button-selected{% endif %}"
          href="{% url 'edit-judgment' context.judgment.uri %}">
         {% translate "judgment.toolbar.edit" %}
       </a>
-      <a class="judgment-toolbar__button{% if context.view == 'judgment_text' %} judgment-toolbar__button-selected{% endif %}"
+      <a class="judgment-toolbar__button {% if context.view == 'judgment_text' %}judgment-toolbar__button-selected{% endif %}"
          href="{% url 'full-text-html' context.judgment.uri %}">
         {% translate "judgment.toolbar.view_html" %}
       </a>
@@ -52,12 +52,12 @@
     <span class="judgment-toolbar__button" aria-disabled="true">{% translate "judgment.toolbar.hold" %}</span>
   {% else %}
     {% if context.judgment.is_held %}
-      <a class="judgment-toolbar__button{% if context.view == 'hold_judgment' %} judgment-toolbar__button-selected{% endif %}"
+      <a class="judgment-toolbar__button {% if context.view == 'hold_judgment' %}judgment-toolbar__button-selected{% endif %}"
          href="{% url 'unhold-judgment' context.judgment.uri %}">
         {% translate "judgment.toolbar.unhold" %}
       </a>
     {% else %}
-      <a class="judgment-toolbar__button{% if context.view == 'hold_judgment' %} judgment-toolbar__button-selected{% endif %}"
+      <a class="judgment-toolbar__button {% if context.view == 'hold_judgment' %}judgment-toolbar__button-selected{% endif %}"
          href="{% url 'hold-judgment' context.judgment.uri %}">
         {% translate "judgment.toolbar.hold" %}
       </a>
@@ -66,13 +66,13 @@
 {% endflag %}
 {% flag "publish_flow" %}
 {% if context.judgment.is_published %}
-  <a class="judgment-toolbar__button{% if context.view == 'publish_judgment' %} judgment-toolbar__button-selected{% endif %}"
+  <a class="judgment-toolbar__button {% if context.view == 'publish_judgment' %}judgment-toolbar__button-selected{% endif %}"
      href="{% url 'unpublish-judgment' context.judgment.uri %}">
     {% translate "judgment.toolbar.unpublish" %}
   </a>
 {% else %}
   {% if context.judgment.is_publishable %}
-    <a class="judgment-toolbar__button{% if context.view == 'publish_judgment' %} judgment-toolbar__button-selected{% endif %}"
+    <a class="judgment-toolbar__button {% if context.view == 'publish_judgment' %}judgment-toolbar__button-selected{% endif %}"
        href="{% url 'publish-judgment' context.judgment.uri %}">
       {% translate "judgment.toolbar.publish" %}
     </a>
