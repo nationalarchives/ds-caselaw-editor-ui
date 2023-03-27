@@ -406,6 +406,213 @@ class TestJudgmentPublish(TestCase):
         self.assertIn("Test v Tested", decoded_response)
         assert response.status_code == 200
 
+class TestJudgmentHold(TestCase):
+    @patch("judgments.views.judgment_hold.Judgment")
+    def test_judgment_hold_view(self, mock_judgment):
+        judgment = JudgmentFactory.build(
+            uri="holdtest/4321/123",
+            name="Test v Tested",
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        hold_uri = reverse("hold-judgment", kwargs={"judgment_uri": judgment.uri})
+
+        assert hold_uri == "/holdtest/4321/123/hold"
+
+        response = self.client.get(hold_uri)
+
+        decoded_response = response.content.decode("utf-8")
+        self.assertIn(gettext("judgment.hold.hold_title"), decoded_response)
+        self.assertIn("Test v Tested", decoded_response)
+        assert response.status_code == 200
+
+    @patch("judgments.views.judgment_hold.invalidate_caches")
+    @patch("judgments.views.judgment_hold.Judgment")
+    def test_judgment_hold_flow(self, mock_judgment, mock_invalidate_caches):
+        judgment = JudgmentFactory.build(
+            uri="holdtest/4321/123",
+            name="Hold Test",
+            is_published=False,
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.post(
+            reverse("hold"),
+            data={
+                "judgment_uri": judgment.uri,
+            },
+        )
+
+        assert response.status_code == 302
+        assert response["Location"] == reverse(
+            "hold-judgment-success", kwargs={"judgment_uri": judgment.uri}
+        )
+        mock_judgment.return_value.hold.assert_called_once()
+        mock_judgment.return_value.unhold.assert_not_called()
+        mock_invalidate_caches.assert_called_once()
+
+    @patch(
+        "judgments.models.judgments.MarklogicApiClient.get_judgment_citation",
+        side_effect=MarklogicResourceNotFoundError(),
+    )
+    def test_judgment_hold_view_missing_uri(self, mock_api_client):
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.post(
+            reverse("hold"),
+            data={},
+        )
+        assert response.status_code == 400
+
+    @patch(
+        "judgments.models.judgments.MarklogicApiClient.get_judgment_citation",
+        side_effect=MarklogicResourceNotFoundError(),
+    )
+    def test_judgment_hold_view_invalid_uri(self, mock_api_client):
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.post(
+            reverse("hold"),
+            data={
+                "judgment_uri": "invalid",
+            },
+        )
+        assert response.status_code == 400
+
+    @patch("judgments.views.judgment_hold.Judgment")
+    def test_judgment_hold_success_view(self, mock_judgment):
+        judgment = JudgmentFactory.build(
+            uri="holdtest/4321/123",
+            name="Test v Tested",
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        hold_success_uri = reverse(
+            "hold-judgment-success", kwargs={"judgment_uri": judgment.uri}
+        )
+
+        assert hold_success_uri == "/holdtest/4321/123/onhold"
+
+        response = self.client.get(hold_success_uri)
+
+        decoded_response = response.content.decode("utf-8")
+        self.assertIn(
+            gettext("judgment.hold.hold_success_title"), decoded_response
+        )
+        self.assertIn("Test v Tested", decoded_response)
+        assert response.status_code == 200
+
+class TestJudgmentUnhold(TestCase):
+    @patch("judgments.views.judgment_hold.Judgment")
+    def test_judgment_unhold_view(self, mock_judgment):
+        judgment = JudgmentFactory.build(
+            uri="unholdtest/4321/123",
+            name="Test v Tested",
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        unhold_uri = reverse("unhold-judgment", kwargs={"judgment_uri": judgment.uri})
+
+        assert unhold_uri == "/unholdtest/4321/123/unhold"
+
+        response = self.client.get(unhold_uri)
+
+        decoded_response = response.content.decode("utf-8")
+        self.assertIn(gettext("judgment.hold.unhold_title"), decoded_response)
+        self.assertIn("Test v Tested", decoded_response)
+        assert response.status_code == 200
+
+    @patch("judgments.views.judgment_hold.invalidate_caches")
+    @patch("judgments.views.judgment_hold.Judgment")
+    def test_judgment_unhold_flow(self, mock_judgment, mock_invalidate_caches):
+        judgment = JudgmentFactory.build(
+            uri="unholdtest/4321/123",
+            name="Unhold Test",
+            is_published=False,
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.post(
+            reverse("unhold"),
+            data={
+                "judgment_uri": judgment.uri,
+            },
+        )
+
+        assert response.status_code == 302
+        assert response["Location"] == reverse(
+            "unhold-judgment-success", kwargs={"judgment_uri": judgment.uri}
+        )
+        mock_judgment.return_value.unhold.assert_called_once()
+        mock_judgment.return_value.hold.assert_not_called()
+        mock_invalidate_caches.assert_called_once()
+
+    @patch(
+        "judgments.models.judgments.MarklogicApiClient.get_judgment_citation",
+        side_effect=MarklogicResourceNotFoundError(),
+    )
+    def test_judgment_unhold_view_missing_uri(self, mock_api_client):
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.post(
+            reverse("unhold"),
+            data={},
+        )
+        assert response.status_code == 400
+
+    @patch(
+        "judgments.models.judgments.MarklogicApiClient.get_judgment_citation",
+        side_effect=MarklogicResourceNotFoundError(),
+    )
+    def test_judgment_unhold_view_invalid_uri(self, mock_api_client):
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.post(
+            reverse("unhold"),
+            data={
+                "judgment_uri": "invalid",
+            },
+        )
+        assert response.status_code == 400
+
+    @patch("judgments.views.judgment_hold.Judgment")
+    def test_judgment_hold_success_view(self, mock_judgment):
+        judgment = JudgmentFactory.build(
+            uri="unholdtest/4321/123",
+            name="Test v Tested",
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        unhold_success_uri = reverse(
+            "unhold-judgment-success", kwargs={"judgment_uri": judgment.uri}
+        )
+
+        assert unhold_success_uri == "/unholdtest/4321/123/unheld"
+
+        response = self.client.get(unhold_success_uri)
+
+        decoded_response = response.content.decode("utf-8")
+        self.assertIn(
+            gettext("judgment.hold.unhold_success_title"), decoded_response
+        )
+        self.assertIn("Test v Tested", decoded_response)
+        assert response.status_code == 200
+
+
+# TIM STOP HERE
+
 
 class TestJudgmentUnpublish(TestCase):
     @patch("judgments.views.judgment_publish.Judgment")
