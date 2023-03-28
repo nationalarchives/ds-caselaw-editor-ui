@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -e
+
+django-admin makemessages --no-obsolete --add-location file -l en_GB
+django-admin compilemessages
