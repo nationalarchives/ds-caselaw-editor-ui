@@ -43,6 +43,14 @@ repos:
         entry: djlint --profile=django
         types_or: [html]
         language: python
+
+  - repo: local
+    hooks:
+      - id: check-translations
+        name: check-translations
+        entry: script/check-translations
+        language: system
+
 # sets up .pre-commit-ci.yaml to ensure pre-commit dependencies stay up to date
 ci:
   autoupdate_schedule: weekly

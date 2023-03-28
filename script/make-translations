@@ -1,0 +1,7 @@
+#!/bin/sh
+
+set -e
+
+django-admin makemessages --no-obsolete --add-location file -l en_GB
+django-admin compilemessages
+sed -i '' '/^"POT-Creation-Date/d' locale/en_GB/LC_MESSAGES/django.po
