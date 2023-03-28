@@ -169,8 +169,10 @@ The button that submits an edited document needs S3 and SNS services
 to function (as it copies files across and notifies the enrichment
 service that it might have been published).
 
-Before you do this you will need to `pip install awscli-local` and you will probably want **version 1** of the AWS CLI
-tools. Version 2 may cause things to explode in unexpected ways, as it's not fully supported by LocalStack.
+Before you do this:
+* `pip install awscli-local awscli`
+* `brew install awscli@1` (Version 2 may cause things to explode in unexpected ways, as it's not fully supported by LocalStack.)
+* `brew install jq`
 
 Start it up by running from the `ds-caselaw-ingester` repo:
 
