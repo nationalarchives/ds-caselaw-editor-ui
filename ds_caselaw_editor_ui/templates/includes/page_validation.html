@@ -1,5 +1,6 @@
 {% spaceless %}
-<div class=page-validation--{% if failure %}failure{% else %}success{% endif %}>
-  <p>{{message}}</p>
-</div>
+  <div class="page-validation--"
+       {% if failure %}failure{% else %}success{% endif %}>
+    <p>{{ message }}</p>
+  </div>
 {% endspaceless %}

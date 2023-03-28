@@ -1,15 +1,17 @@
 <h3>Validation messaging</h3>
-
 <h4>Page validation</h4>
-<p>Used for page reload events &ndash; the message will stay on the screen until the user interacts with something else.
+<p>
+  Used for page reload events &ndash; the message will stay on the screen until the user interacts with something else.
 </p>
-<p>Use with <code>include "includes/page_validation.html" with message="Successfully signed in as Crispin." failure=False</code></p>
+<p>
+  Use with <code>include "includes/page_validation.html" with message="Successfully signed in as Crispin." failure=False</code>
+</p>
 {% include "includes/page_validation.html" with message="Successfully signed in as Crispin." %}
 {% include "includes/page_validation.html" with message="The username and/or password you specified are not correct." failure=True %}
-
 <h4>Context validation</h4>
 <p>Used for individual interactive elements such as forms &ndash; these messages rely on JavaScript.</p>
-<p>Use with <code>include "includes/context_validation.html" with message="Please select at least one checkbox." failure=True</code></p>
-
+<p>
+  Use with <code>include "includes/context_validation.html" with message="Please select at least one checkbox." failure=True</code>
+</p>
 {% include "includes/context_validation.html" with message="Metadata has been saved successfully." %}
 {% include "includes/context_validation.html" with message="Please select at least one checkbox." failure=True %}
