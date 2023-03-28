@@ -1,0 +1,59 @@
+@mixin message {
+    color: $color__white;
+    padding: .5rem 1rem;
+}
+
+@mixin page-validation {
+    margin: auto 15%;
+
+    @media (max-width: $grid__breakpoint-medium) {
+        margin: auto 0;
+    }
+}
+
+.page-validation {
+    &--success {
+        @include page-validation;
+
+        p {
+            background-color: $color__success;
+            @include message;
+        }
+    }
+
+    &--failure {
+        @include page-validation;
+
+        p {
+            background-color: $color__failure;
+            @include message;
+        }
+    }
+
+}
+
+@mixin context-validation {
+    display: inline-block;
+}
+
+
+.context-validation {
+
+    &--success {
+        @include context-validation;
+
+        p {
+            background-color: $color__success;
+            @include message;
+        }
+    }
+
+    &--failure {
+        @include context-validation;
+
+        p {
+            background-color: $color__failure;
+            @include message;
+        }
+    }
+}
