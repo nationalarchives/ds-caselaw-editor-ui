@@ -21,13 +21,15 @@ class HoldJudgmentView(TemplateView):
 
         judgment = Judgment(kwargs["judgment_uri"])
 
-        context["context"] = {
-            "page_title": '{title}: "{judgment}"'.format(
-                title=gettext("judgment.hold.hold_title"), judgment=judgment.name
-            ),
-            "view": "hold_judgment",
-            "judgment": judgment,
-        }
+        context.update(
+            {
+                "page_title": '{title}: "{judgment}"'.format(
+                    title=gettext("judgment.hold.hold_title"), judgment=judgment.name
+                ),
+                "view": "hold_judgment",
+                "judgment": judgment,
+            }
+        )
 
         context["feature_flag_embedded_pdfs"] = waffle.flag_is_active(
             self.request, "embedded_pdf_view"
@@ -52,16 +54,18 @@ class HoldJudgmentSuccessView(TemplateView):
 
         judgment = Judgment(kwargs["judgment_uri"])
 
-        context["context"] = {
-            "page_title": '{title}: "{judgment}"'.format(
-                title=gettext("judgment.hold.hold_success_title"),
-                judgment=judgment.name,
-            ),
-            "judgment": judgment,
-            "email_confirmation_link": build_confirmation_email_link(
-                self.request, judgment
-            ),
-        }
+        context.update(
+            {
+                "page_title": '{title}: "{judgment}"'.format(
+                    title=gettext("judgment.hold.hold_success_title"),
+                    judgment=judgment.name,
+                ),
+                "judgment": judgment,
+                "email_confirmation_link": build_confirmation_email_link(
+                    self.request, judgment
+                ),
+            }
+        )
 
         context["feature_flag_embedded_pdfs"] = waffle.flag_is_active(
             self.request, "embedded_pdf_view"
@@ -104,14 +108,16 @@ class UnholdJudgmentView(TemplateView):
 
         judgment = Judgment(kwargs["judgment_uri"])
 
-        context["context"] = {
-            "page_title": '{title}: "{judgment}"'.format(
-                title=gettext("judgment.hold.unhold_title"),
-                judgment=judgment.name,
-            ),
-            "view": "hold_judgment",
-            "judgment": judgment,
-        }
+        context.update(
+            {
+                "page_title": '{title}: "{judgment}"'.format(
+                    title=gettext("judgment.hold.unhold_title"),
+                    judgment=judgment.name,
+                ),
+                "view": "hold_judgment",
+                "judgment": judgment,
+            }
+        )
 
         context["feature_flag_embedded_pdfs"] = waffle.flag_is_active(
             self.request, "embedded_pdf_view"
@@ -128,13 +134,15 @@ class UnholdJudgmentSuccessView(TemplateView):
 
         judgment = Judgment(kwargs["judgment_uri"])
 
-        context["context"] = {
-            "page_title": '{title}: "{judgment}"'.format(
-                title=gettext("judgment.hold.unhold_success_title"),
-                judgment=judgment.name,
-            ),
-            "judgment": judgment,
-        }
+        context.update(
+            {
+                "page_title": '{title}: "{judgment}"'.format(
+                    title=gettext("judgment.hold.unhold_success_title"),
+                    judgment=judgment.name,
+                ),
+                "judgment": judgment,
+            }
+        )
 
         context["feature_flag_embedded_pdfs"] = waffle.flag_is_active(
             self.request, "embedded_pdf_view"

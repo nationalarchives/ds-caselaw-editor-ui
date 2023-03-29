@@ -19,7 +19,7 @@ class Labs(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(Labs, self).get_context_data(**kwargs)
 
-        context["context"] = {"page_title": "Labs"}
+        context = {"page_title": "Labs"}
 
         context["experiments"] = []
 

@@ -33,23 +33,16 @@ def html_view(request, judgment_uri):
         context["judgment_content"] = judgment_content
         context["page_title"] = metadata_name
         context["view"] = "judgment_text"
+        context["feature_flag_embedded_pdfs"] = waffle.flag_is_active(
+            request, "embedded_pdf_view"
+        )
 
         if version_uri:
             context["version"] = extract_version(version_uri)
     except MarklogicResourceNotFoundError as e:
         raise Http404(f"Judgment was not found at uri {judgment_uri}, {e}")
     template = loader.get_template("judgment/full_text_html.html")
-    return HttpResponse(
-        template.render(
-            {
-                "context": context,
-                "feature_flag_embedded_pdfs": waffle.flag_is_active(
-                    request, "embedded_pdf_view"
-                ),
-            },
-            request,
-        )
-    )
+    return HttpResponse(template.render(context, request))
 
 
 def pdf_view(request, judgment_uri):
@@ -69,6 +62,9 @@ def pdf_view(request, judgment_uri):
         "judgment": judgment,
         "page_title": judgment.name,
         "view": "judgment_text",
+        "feature_flag_embedded_pdfs": waffle.flag_is_active(
+            request, "embedded_pdf_view"
+        ),
     }
 
     if version_uri:
@@ -77,12 +73,7 @@ def pdf_view(request, judgment_uri):
     template = loader.get_template("judgment/full_text_pdf.html")
     return HttpResponse(
         template.render(
-            {
-                "context": context,
-                "feature_flag_embedded_pdfs": waffle.flag_is_active(
-                    request, "embedded_pdf_view"
-                ),
-            },
+            context,
             request,
         )
     )

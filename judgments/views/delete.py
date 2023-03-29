@@ -23,4 +23,4 @@ def delete(request):
     template = loader.get_template("judgment/deleted.html")
 
     messages.success(request, "Judgment deleted.")
-    return HttpResponse(template.render({"context": context}, request))
+    return HttpResponse(template.render(context, request))

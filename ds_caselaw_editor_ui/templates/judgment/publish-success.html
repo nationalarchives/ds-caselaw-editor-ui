@@ -2,14 +2,14 @@
 {% load waffle_tags %}
 {% load i18n %}
 {% block judgment_header %}
-  {% include "includes/judgment_metadata_panel.html" with judgment=context.judgment %}
+  {% include "includes/judgment_metadata_panel.html" with judgment=judgment %}
 {% endblock judgment_header %}
 {% block judgment_content %}
   <h2>Success - this document has been published</h2>
   <p class="judgment-component__live-link">
-    <a href="{{ context.judgment.public_uri }}"
+    <a href="{{ judgment.public_uri }}"
        target="_blank"
-       rel="noopener noreferrer">{{ context.judgment.name }}</a>
+       rel="noopener noreferrer">{{ judgment.name }}</a>
   </p>
   <div class="judgment-component__actions">
     <p>{% include "includes/email_confirm_publication.html" %}</p>

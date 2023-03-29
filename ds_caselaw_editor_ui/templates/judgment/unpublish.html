@@ -4,11 +4,11 @@
   <h2>
     {% translate "judgment.publish.unpublish_title" %}
     <br />
-    {{ context.judgment.name }}
+    {{ judgment.name }}
   </h2>
   <form action="{% url 'unpublish' %}" method="post">
     {% csrf_token %}
-    <input type="hidden" name="judgment_uri" value="{{ context.judgment.uri }}" />
+    <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
     <input type="submit"
            value="{% translate "judgment.unpublish.unpublish_button" %}"/>
   </form>
