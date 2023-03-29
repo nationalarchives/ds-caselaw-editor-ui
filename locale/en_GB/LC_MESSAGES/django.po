@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-28 11:59+0000\n"
+"POT-Creation-Date: 2023-03-28 14:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,19 +54,13 @@ msgstr "Send an email template"
 msgid "judgment.email_hold.confirm"
 msgstr "Open submitter email"
 
-#: ds_caselaw_editor_ui/templates/includes/how_can_this_service_be_improved.html
-msgid "service.improved"
-msgstr "How can this service be improved?"
+#: ds_caselaw_editor_ui/templates/includes/footer.html
+msgid "feedback.prompt"
+msgstr "Something wrong with this page?"
 
-#: ds_caselaw_editor_ui/templates/includes/how_can_this_service_be_improved.html
-msgid "survey.link"
-msgstr ""
-"https://corexmsnp4n42lf2kht3.qualtrics.com/jfe/form/SV_dp1FClbR0ZZdW4e?"
-"jfefe=new"
-
-#: ds_caselaw_editor_ui/templates/includes/how_can_this_service_be_improved.html
-msgid "survey.link.text"
-msgstr "Fill out our short survey"
+#: ds_caselaw_editor_ui/templates/includes/footer.html
+msgid "feedback.link"
+msgstr "Report a problem to the digital team"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_metadata_panel.html
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
@@ -130,6 +124,10 @@ msgstr "Create in Jira"
 #: judgments/views/unlock.py
 msgid "judgment.unlock_judgment_title"
 msgstr "Unlock judgment"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
+msgid "judgment.report_blocking_problem"
+msgstr "Report a publication-blocking problem"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
 msgid "judgments.sidebar.assigned_to"

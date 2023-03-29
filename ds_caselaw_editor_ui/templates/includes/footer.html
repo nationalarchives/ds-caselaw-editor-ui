@@ -1,3 +1,13 @@
+{% load i18n %}
+<div class="sub-footer">
+  <div class="sub-footer__container">
+    <p>
+      {% translate "feedback.prompt" %} <a target="_blank"
+    rel="noreferrer noopener"
+    href="https://docs.google.com/forms/d/e/1FAIpQLSckmLdeUAEoEoBc55ybFVmOsXPEM7CG2VbN2YNwsX6kL9UZ4Q/viewform?usp=pp_url&entry.481919886={{ request.build_absolute_uri|urlencode }}">{% translate "feedback.link" %}</a>.
+    </p>
+  </div>
+</div>
 <footer class="judgments-footer">
   <div class="judgments-footer__container">
     <h2 class="judgments-footer__heading">Footer</h2>
