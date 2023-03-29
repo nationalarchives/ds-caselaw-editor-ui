@@ -121,21 +121,15 @@ class EditJudgmentView(View):
         )
         context["jira_create_link"] = self.build_jira_create_link(request, context)
 
-        template = loader.get_template("judgment/edit.html")
-        return HttpResponse(
-            template.render(
-                {
-                    "context": context,
-                    "feature_flag_embedded_pdfs": waffle.flag_is_active(
-                        request, "embedded_pdf_view"
-                    ),
-                    "feature_flag_publish_flow": waffle.flag_is_active(
-                        request, "publish_flow"
-                    ),
-                },
-                request,
-            )
+        context["feature_flag_embedded_pdfs"] = waffle.flag_is_active(
+            request, "embedded_pdf_view"
         )
+        context["feature_flag_publish_flow"] = waffle.flag_is_active(
+            request, "publish_flow"
+        )
+
+        template = loader.get_template("judgment/edit.html")
+        return HttpResponse(template.render(context, request))
 
     def post(self, request, *args, **kwargs):
         judgment_uri = request.POST["judgment_uri"]

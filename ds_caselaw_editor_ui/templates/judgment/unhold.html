@@ -4,12 +4,12 @@
   <h2>
     {% translate "judgment.hold.unhold_title" %}
     <br />
-    {{ context.judgment.name }}
+    {{ judgment.name }}
   </h2>
   <form action="{% url 'unhold' %}" method="post">
     {% csrf_token %}
     <div class="judgment-component__actions">
-      <input type="hidden" name="judgment_uri" value="{{ context.judgment.uri }}" />
+      <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
       <input type="hidden" name="unhold" value="false" />
       <input class="button-cta"
              type="submit"

@@ -31,7 +31,7 @@ def unlock_get(request):
         "page_title": gettext("judgment.unlock_judgment_title"),
     }
     template = loader.get_template("judgment/confirm-unlock.html")
-    return HttpResponse(template.render({"context": context}, request))
+    return HttpResponse(template.render(context, request))
 
 
 def unlock_post(request):
