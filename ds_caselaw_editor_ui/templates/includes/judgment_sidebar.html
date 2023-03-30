@@ -55,10 +55,10 @@
       <option value="" {% if judgment.assigned_to == "" %}selected{% endif %}>
         {% translate "judgments.noone" %}
       </option>
-      {% for user in users %}
-        <option value="{{ user.name }}"
-                {% if judgment.assigned_to == user.name %} selected{% endif %}>
-          {{ user.print_name }}
+      {% for editor in editors %}
+        <option value="{{ editor.name }}"
+                {% if judgment.assigned_to == editor.name %} selected{% endif %}>
+          {{ editor.print_name }}
         </option>
       {% endfor %}
     </select>

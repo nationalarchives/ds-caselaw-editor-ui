@@ -141,12 +141,12 @@ def extract_version(version_string: str) -> int:
     return int(result.group(1)) if result else 0
 
 
-def users_dict():
-    users = User.objects.all()
+def editors_dict():
+    editors = User.objects.all()
     return [
         {
-            "name": u.get_username(),
-            "print_name": u.get_full_name() or u.get_username(),
+            "name": editor.get_username(),
+            "print_name": editor.get_full_name() or editor.get_username(),
         }
-        for u in users
+        for editor in editors
     ]
