@@ -1,8 +1,20 @@
+.sub-footer {
+  background-color: $color__light-grey;
+
+  &__container {
+    @include container;
+    text-align: center;
+    padding: calc($spacer__unit * 0.8);
+  }
+}
+
+
 .judgments-footer {
 
   background-color: $color__almost-black;
   color: $color__white;
   padding: $spacer__unit;
+  font-size: 0.8em;
 
   &__heading {
     @include sr-only;

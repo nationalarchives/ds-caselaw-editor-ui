@@ -3,7 +3,7 @@
   <h4>{% translate "judgments.sidebar.status" %}</h4>
   <ul class="items">
     <li>
-      <span class="judgment-status-indicator judgment-status-indicator--{{ context.judgment.status | status_tag_colour }}">{{ context.judgment.status }}</span>
+      <span class="judgment-status-indicator judgment-status-indicator--{{ judgment.status | status_tag_colour }}">{{ judgment.status }}</span>
     </li>
   </ul>
   <h4>{% translate "judgments.sidebar.submission" %}</h4>
@@ -12,19 +12,19 @@
       {% translate "judgments.submitter" %}
     </dt>
     <dd>
-      {{ context.judgment.source_name }}
+      {{ judgment.source_name }}
     </dd>
     <dt class="judgment-sidebar__label">
       {% translate "judgments.submitteremail" %}
     </dt>
     <dd>
-      <a href="mailto:{{ context.judgment.source_email }}">{{ context.judgment.source_email }}</a>
+      <a href="mailto:{{ judgment.source_email }}">{{ judgment.source_email }}</a>
     </dd>
     <dt class="judgment-sidebar__label">
       {% translate "judgments.consignmentref" %}
     </dt>
     <dd>
-      {{ context.judgment.consignment_reference }}
+      {{ judgment.consignment_reference }}
     </dd>
   </dl>
 </div>
@@ -32,12 +32,17 @@
   <h4>{% translate "judgments.sidebar.tools" %}</h4>
   <ul>
     <li>
-      <a href="{{ context.jira_create_link }}"
+      <a href="{{ jira_create_link }}"
          target="_blank"
          rel="noopener noreferrer">{% translate "judgment.create_in_jira" %}</a>
     </li>
     <li>
-      <a href="{% url 'unlock' %}?judgment_uri={{ context.judgment_uri }}">{% translate "judgment.unlock_judgment_title" %}</a>
+      <a href="{% url 'unlock' %}?judgment_uri={{ judgment_uri }}">{% translate "judgment.unlock_judgment_title" %}</a>
+    </li>
+    <li>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSckmLdeUAEoEoBc55ybFVmOsXPEM7CG2VbN2YNwsX6kL9UZ4Q/viewform?usp=pp_url&entry.2047884653=Yes&entry.6716552=A+specific+judgment+or+decision&entry.481919886={{ request.build_absolute_uri|urlencode }}&entry.350152829={{ judgment.consignment_reference|urlencode }}"
+         target="_blank"
+         rel="noopener noreferrer">{% translate "judgment.report_blocking_problem" %}</a>
     </li>
   </ul>
 </div>
@@ -47,13 +52,12 @@
     <select class="judgment-component__assigned_to-input"
             name="assigned_to"
             id="assigned_to">
-      <option value=""
-              {% if context.judgment.assigned_to == "" %}selected{% endif %}>
+      <option value="" {% if judgment.assigned_to == "" %}selected{% endif %}>
         {% translate "judgments.noone" %}
       </option>
-      {% for user in context.users %}
+      {% for user in users %}
         <option value="{{ user.name }}"
-                {% if context.judgment.assigned_to == user.name %} selected{% endif %}>
+                {% if judgment.assigned_to == user.name %} selected{% endif %}>
           {{ user.print_name }}
         </option>
       {% endfor %}

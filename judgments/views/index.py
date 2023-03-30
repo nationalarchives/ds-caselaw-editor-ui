@@ -14,4 +14,4 @@ def index(request):
             f"Search results not found, {e}"
         )  # TODO: This should be something else!
     template = loader.get_template("pages/home.html")
-    return HttpResponse(template.render({"context": context}, request))
+    return HttpResponse(template.render(context, request))

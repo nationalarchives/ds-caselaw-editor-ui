@@ -7,7 +7,7 @@
     <meta name="robots" content="noindex,nofollow" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>
-      {% if context.page_title %}{{ context.page_title }} -{% endif %}
+      {% if page_title %}{{ page_title }} -{% endif %}
     {% translate "common.findcaselaw" %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="{% static 'images/favicons/favicon.png' %}" />
@@ -32,7 +32,7 @@
     {% endif %}
     <a id="skip-to-main-content" href="#main-content">{% translate "skiplink" %}</a>
     <header class="page-header page-header-slim">
-      {% include "includes/breadcrumbs.html" with current=context.page_title title=context.page_title link=request.get_full_path %}
+      {% include "includes/breadcrumbs.html" with current=page_title title=page_title link=request.get_full_path %}
     </header>
     {% block precontent %}
     {% endblock precontent %}
@@ -40,7 +40,6 @@
       {% block content %}
       {% endblock content %}
     </main>
-    {% include "includes/how_can_this_service_be_improved.html" %}
     {% include "includes/footer.html" %}
     {% block footer_javascript %}
     {% endblock footer_javascript %}
