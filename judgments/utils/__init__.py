@@ -10,7 +10,8 @@ from caselawclient.Client import (
     MarklogicResourceNotFoundError,
     api_client,
 )
-from django.contrib.auth.models import User
+from django.conf import settings
+from django.contrib.auth.models import Group, User
 
 from .aws import copy_assets
 
@@ -143,7 +144,12 @@ def extract_version(version_string: str) -> int:
 
 
 def editors_dict():
-    editors = User.objects.all()
+    if settings.EDITORS_GROUP_ID:
+        editors_group = Group.objects.get(id=settings.EDITORS_GROUP_ID)
+        editors = editors_group.user_set.all()
+    else:
+        editors = User.objects.all()
+
     return sorted(
         [
             {
