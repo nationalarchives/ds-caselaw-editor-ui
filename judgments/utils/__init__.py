@@ -146,9 +146,9 @@ def extract_version(version_string: str) -> int:
 def editors_dict():
     if settings.EDITORS_GROUP_ID:
         editors_group = Group.objects.get(id=settings.EDITORS_GROUP_ID)
-        editors = editors_group.user_set.all()
+        editors = editors_group.user_set.filter(is_active=True)
     else:
-        editors = User.objects.all()
+        editors = User.objects.filter(is_active=True)
 
     return sorted(
         [

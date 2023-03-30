@@ -255,3 +255,44 @@ class TestEditorsDict:
         assert editors_dict() == [
             {"name": "editor", "print_name": "editor"},
         ]
+
+    @pytest.mark.django_db
+    def test_exclude_inactive_without_editor_group(self, settings):
+        settings.EDITORS_GROUP_ID = None
+
+        UserFactory.create(
+            username="active_user", first_name="", last_name="", is_active=True
+        )
+        UserFactory.create(
+            username="inactive_user", first_name="", last_name="", is_active=False
+        )
+
+        assert editors_dict() == [
+            {"name": "active_user", "print_name": "active_user"},
+        ]
+
+    @pytest.mark.django_db
+    def test_exclude_inactive_with_editor_group(self, settings):
+        group = Group.objects.create(name="Editors")
+        settings.EDITORS_GROUP_ID = group.id
+
+        UserFactory.create(
+            username="active_non_editor", first_name="", last_name="", is_active=True
+        )
+        UserFactory.create(
+            username="inactive_non_editor", first_name="", last_name="", is_active=False
+        )
+
+        active_editor = UserFactory.create(
+            username="active_editor", first_name="", last_name="", is_active=True
+        )
+        inactive_editor = UserFactory.create(
+            username="inactive_editor", first_name="", last_name="", is_active=False
+        )
+
+        active_editor.groups.add(group)
+        inactive_editor.groups.add(group)
+
+        assert editors_dict() == [
+            {"name": "active_editor", "print_name": "active_editor"},
+        ]
