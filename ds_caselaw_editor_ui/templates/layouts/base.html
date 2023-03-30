@@ -23,19 +23,13 @@
   <body>
     {% include "includes/cookie_consent/cookie_banner.html" %}
     {% include "includes/gtm/gtm_body.html" %}
-    {% if messages %}
-      <ul class="messages">
-        {% for message in messages %}
-          <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
     <a id="skip-to-main-content" href="#main-content">{% translate "skiplink" %}</a>
     <header class="page-header page-header-slim">
       {% include "includes/breadcrumbs.html" with current=page_title title=page_title link=request.get_full_path %}
     </header>
     {% block precontent %}
     {% endblock precontent %}
+    {% include "includes/notifications.html" %}
     <main id="main-content">
       {% block content %}
       {% endblock content %}

@@ -8,6 +8,7 @@
     margin: 0 auto;
     padding: 0 calc(#{$spacer__unit} * 2);
   }
+
   &__header {
     font-size: 1rem;
     line-height: 2.8rem;
@@ -20,16 +21,7 @@
   &__more-options {
     margin-top: calc($spacer__unit * 2);
   }
-  &__success {
-    background-color: $color__green;
-    width: fit-content;
-    padding: calc(#{$spacer__unit} / 2);
-  }
-  &__error {
-    background-color: $color__red;
-    width: fit-content;
-    padding: calc(#{$spacer__unit} / 2);
-  }
+
   &__panel {
     padding: calc(#{$spacer__unit} / 2) 0;
   }
