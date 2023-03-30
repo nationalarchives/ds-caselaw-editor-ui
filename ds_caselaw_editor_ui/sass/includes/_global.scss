@@ -2,3 +2,8 @@ body {
   margin: 0;
   font-family: $font__open-sans;
 }
+
+.messages {
+  list-style-type: none;
+  padding-left: 0
+}
