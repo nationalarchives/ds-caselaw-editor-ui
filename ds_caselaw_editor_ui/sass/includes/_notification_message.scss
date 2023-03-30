@@ -3,7 +3,7 @@
     padding: .5rem 1rem;
 }
 
-@mixin page-validation {
+@mixin page-notification {
     margin: auto 15%;
 
     @media (max-width: $grid__breakpoint-medium) {
@@ -11,9 +11,9 @@
     }
 }
 
-.page-validation {
+.page-notification {
     &--success {
-        @include page-validation;
+        @include page-notification;
 
         p {
             background-color: $color__success;
@@ -22,7 +22,7 @@
     }
 
     &--failure {
-        @include page-validation;
+        @include page-notification;
 
         p {
             background-color: $color__failure;
@@ -32,15 +32,15 @@
 
 }
 
-@mixin context-validation {
+@mixin context-notification {
     display: inline-block;
 }
 
 
-.context-validation {
+.context-notification {
 
     &--success {
-        @include context-validation;
+        @include context-notification;
 
         p {
             background-color: $color__success;
@@ -49,7 +49,7 @@
     }
 
     &--failure {
-        @include context-validation;
+        @include context-notification;
 
         p {
             background-color: $color__failure;
