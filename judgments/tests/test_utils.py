@@ -1,11 +1,14 @@
 from unittest.mock import MagicMock, Mock, patch
 
 import ds_caselaw_utils
+import pytest
 from caselawclient.Client import MarklogicAPIError
 from django.test import TestCase
+from factories import UserFactory
 
 import judgments
 from judgments.utils import (
+    editors_dict,
     ensure_local_referer_url,
     extract_version,
     get_judgment_root,
@@ -221,3 +224,16 @@ class TestVersionUtils:
         ]
 
         assert render_versions(version_parts) == expected_result
+
+
+class TestEditorsDict:
+    @pytest.mark.django_db
+    def test_print_name_sorting(self):
+        UserFactory.create(username="joe_bloggs", first_name="", last_name="")
+        UserFactory.create(
+            username="ann_example", first_name="Ann", last_name="Example"
+        )
+        assert editors_dict() == [
+            {"name": "ann_example", "print_name": "Ann Example"},
+            {"name": "joe_bloggs", "print_name": "joe_bloggs"},
+        ]

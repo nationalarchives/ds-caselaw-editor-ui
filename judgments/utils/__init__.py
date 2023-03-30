@@ -1,6 +1,7 @@
 import re
 import xml.etree.ElementTree as ET
 from datetime import datetime
+from operator import itemgetter
 from urllib.parse import urlparse
 
 import ds_caselaw_utils as caselawutils
@@ -143,10 +144,13 @@ def extract_version(version_string: str) -> int:
 
 def editors_dict():
     editors = User.objects.all()
-    return [
-        {
-            "name": editor.get_username(),
-            "print_name": editor.get_full_name() or editor.get_username(),
-        }
-        for editor in editors
-    ]
+    return sorted(
+        [
+            {
+                "name": editor.get_username(),
+                "print_name": editor.get_full_name() or editor.get_username(),
+            }
+            for editor in editors
+        ],
+        key=itemgetter("print_name"),
+    )
