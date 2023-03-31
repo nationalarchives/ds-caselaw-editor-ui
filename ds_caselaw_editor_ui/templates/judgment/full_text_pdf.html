@@ -2,7 +2,7 @@
 {% load waffle_tags %}
 {% block content %}
   {% include "includes/metadata_header.html" with return_to="pdf" %}
-  {% include "includes/judgment_view_controls.html" with view="pdf" %}
+  {% include "includes/judgment_view_controls.html" with selected_tab=2 %}
   <object data="{{ judgment.pdf_url }}"
           type="application/pdf"
           width="100%"
