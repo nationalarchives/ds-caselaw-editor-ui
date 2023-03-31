@@ -2,7 +2,7 @@ import $ from "jquery";
 
 const TabSet = {
   init: function () {
-    const elements = $(".tabs-set");
+    const elements = $(".tabs-set.with-js");
     elements.each(function (ix, element) {
       TabSet.initOne(element);
     });
