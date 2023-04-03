@@ -2,7 +2,7 @@
 {% load waffle_tags %}
 {% block content %}
   {% include "includes/metadata_header.html" with return_to="html" %}
-  {% include "includes/judgment_view_controls.html" with view="html" %}
+  {% include "includes/judgment_view_controls.html" with selected_tab=1 %}
   {% if judgment_content %}
     {% if judgment.is_failure %}
       <pre>
