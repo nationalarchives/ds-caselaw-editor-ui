@@ -22,4 +22,4 @@ ds-caselaw-utils~=0.4.4
 rollbar
 django-stronghold==0.4.0
 boto3==1.26.99
-botocore==1.29.102
+botocore==1.29.104
