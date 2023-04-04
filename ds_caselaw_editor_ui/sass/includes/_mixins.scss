@@ -55,9 +55,13 @@
   margin-top: 1em;
   font-size: 1rem;
 
+  &:visited {
+    color: $color__white;
+  }
+
   &:focus, &:hover {
     @include focus-default;
-    color: $color__white !important;
+    color: $color__white;
     background-color: $color__cta-background-hover;
     outline-color: $color__cta-background-hover;
     border-color: $color__cta-background-hover;

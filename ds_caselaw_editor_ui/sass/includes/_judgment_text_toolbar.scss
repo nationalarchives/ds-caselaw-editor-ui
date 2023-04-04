@@ -2,39 +2,25 @@
 
   background-color: $color__light-grey;
   color: $color__black;
-  padding: $spacer__unit;
+  padding: calc(0.5 * $spacer__unit) $spacer__unit;
   border-bottom: 0.125rem solid $color__grey;
 
   &__button {
-    background-color: $color__aqua-blue;
-    color: $color__white;
-    padding: calc($spacer__unit / 2) calc($spacer__unit * 1.5);
     display: inline-block;
-    text-decoration: none;
-    transition: all 0.2s;
-    margin: 0.5rem 0.25rem;
+    margin: calc(0.5 * $spacer__unit) calc(0.33 * $spacer__unit) !important;
+    padding: calc($spacer__unit / 2) calc($spacer__unit * 1.5) !important;
+  }
 
-    &:hover {
-      background-color: scale-color($color__aqua-blue, $lightness: +8%);
-      color: $color__white;
-    }
-
-    &:visited {
-      color: $color__white;
-    }
-
-    &.judgment-toolbar__delete {
-      background-color: $color__red;
-    }
-
-    &-selected {
-      background-color: scale-color($color__aqua-blue, $lightness: -30%);
-    }
-
-    &[aria-disabled="true"]{
-      background-color: scale-color($color__aqua-blue, $saturation: -95%, $lightness: +55%);
+  &__delete {
+    border-color: $color__red !important;
+    color: $color__red !important;
+    &:focus, &:hover {
+      background-color: $color__red !important;
+      color: $color__white !important;
+      outline-color: $color__red !important;
     }
   }
+
 
   &__return-link {
     display: inline-block;
