@@ -1,11 +1,15 @@
 from unittest.mock import MagicMock, Mock, patch
 
 import ds_caselaw_utils
+import pytest
 from caselawclient.Client import MarklogicAPIError
+from django.contrib.auth.models import Group
 from django.test import TestCase
+from factories import UserFactory
 
 import judgments
 from judgments.utils import (
+    editors_dict,
     ensure_local_referer_url,
     extract_version,
     get_judgment_root,
@@ -221,3 +225,74 @@ class TestVersionUtils:
         ]
 
         assert render_versions(version_parts) == expected_result
+
+
+class TestEditorsDict:
+    @pytest.mark.django_db
+    def test_print_name_sorting(self, settings):
+        settings.EDITORS_GROUP_ID = None
+
+        UserFactory.create(username="joe_bloggs", first_name="", last_name="")
+        UserFactory.create(
+            username="ann_example", first_name="Ann", last_name="Example"
+        )
+
+        assert editors_dict() == [
+            {"name": "ann_example", "print_name": "Ann Example"},
+            {"name": "joe_bloggs", "print_name": "joe_bloggs"},
+        ]
+
+    @pytest.mark.django_db
+    def test_exclude_non_editors(self, settings):
+        group = Group.objects.create(name="Editors")
+        settings.EDITORS_GROUP_ID = group.id
+
+        UserFactory.create(username="non_editor", first_name="", last_name="")
+        editor = UserFactory.create(username="editor", first_name="", last_name="")
+
+        editor.groups.add(group)
+
+        assert editors_dict() == [
+            {"name": "editor", "print_name": "editor"},
+        ]
+
+    @pytest.mark.django_db
+    def test_exclude_inactive_without_editor_group(self, settings):
+        settings.EDITORS_GROUP_ID = None
+
+        UserFactory.create(
+            username="active_user", first_name="", last_name="", is_active=True
+        )
+        UserFactory.create(
+            username="inactive_user", first_name="", last_name="", is_active=False
+        )
+
+        assert editors_dict() == [
+            {"name": "active_user", "print_name": "active_user"},
+        ]
+
+    @pytest.mark.django_db
+    def test_exclude_inactive_with_editor_group(self, settings):
+        group = Group.objects.create(name="Editors")
+        settings.EDITORS_GROUP_ID = group.id
+
+        UserFactory.create(
+            username="active_non_editor", first_name="", last_name="", is_active=True
+        )
+        UserFactory.create(
+            username="inactive_non_editor", first_name="", last_name="", is_active=False
+        )
+
+        active_editor = UserFactory.create(
+            username="active_editor", first_name="", last_name="", is_active=True
+        )
+        inactive_editor = UserFactory.create(
+            username="inactive_editor", first_name="", last_name="", is_active=False
+        )
+
+        active_editor.groups.add(group)
+        inactive_editor.groups.add(group)
+
+        assert editors_dict() == [
+            {"name": "active_editor", "print_name": "active_editor"},
+        ]

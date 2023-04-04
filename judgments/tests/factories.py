@@ -1,7 +1,22 @@
 from typing import Any
 from unittest.mock import Mock
 
+import factory
+from django.contrib.auth import get_user_model
+
 from judgments.models.judgments import Judgment
+
+User = get_user_model()
+
+
+class UserFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = User
+
+    username = factory.Faker("email")
+    email = username
+    first_name = factory.Faker("first_name")
+    last_name = factory.Faker("last_name")
 
 
 class JudgmentFactory:

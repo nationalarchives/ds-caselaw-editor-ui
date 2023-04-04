@@ -16,8 +16,8 @@ from judgments.models.judgments import Judgment
 from judgments.utils import (
     MoveJudgmentError,
     NeutralCitationToUriError,
+    editors_dict,
     update_judgment_uri,
-    users_dict,
 )
 from judgments.utils.aws import invalidate_caches
 
@@ -113,7 +113,7 @@ class EditJudgmentView(View):
         context["view"] = "judgment_metadata"
         context["courts"] = caselawutils.courts.get_all()
 
-        context.update({"users": users_dict()})
+        context.update({"editors": editors_dict()})
 
         context["email_raise_issue_link"] = self.build_raise_issue_email_link(context)
         context["email_confirmation_link"] = build_confirmation_email_link(

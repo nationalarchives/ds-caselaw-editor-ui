@@ -1,6 +1,7 @@
 import re
 import xml.etree.ElementTree as ET
 from datetime import datetime
+from operator import itemgetter
 from urllib.parse import urlparse
 
 import ds_caselaw_utils as caselawutils
@@ -9,7 +10,8 @@ from caselawclient.Client import (
     MarklogicResourceNotFoundError,
     api_client,
 )
-from django.contrib.auth.models import User
+from django.conf import settings
+from django.contrib.auth.models import Group, User
 
 from .aws import copy_assets
 
@@ -141,12 +143,20 @@ def extract_version(version_string: str) -> int:
     return int(result.group(1)) if result else 0
 
 
-def users_dict():
-    users = User.objects.all()
-    return [
-        {
-            "name": u.get_username(),
-            "print_name": u.get_full_name() or u.get_username(),
-        }
-        for u in users
-    ]
+def editors_dict():
+    if settings.EDITORS_GROUP_ID:
+        editors_group = Group.objects.get(id=settings.EDITORS_GROUP_ID)
+        editors = editors_group.user_set.filter(is_active=True)
+    else:
+        editors = User.objects.filter(is_active=True)
+
+    return sorted(
+        [
+            {
+                "name": editor.get_username(),
+                "print_name": editor.get_full_name() or editor.get_username(),
+            }
+            for editor in editors
+        ],
+        key=itemgetter("print_name"),
+    )
