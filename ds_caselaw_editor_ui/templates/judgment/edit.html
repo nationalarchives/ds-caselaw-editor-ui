@@ -100,22 +100,6 @@
              name="anonymised"
              id="anonymised"/>
     </div>
-    <div class="edit-component__panel">
-      <label for="assigned_to">{% translate "judgment.assigned_to" %}</label>
-      <select class="edit-component__assigned_to-input"
-              name="assigned_to"
-              id="assigned_to">
-        <option value="" {% if judgment.assigned_to == "" %}selected{% endif %}>
-          {% translate "judgments.noone" %}
-        </option>
-        {% for editor in editors %}
-          <option value="{{ editor.name }}"
-                  {% if judgment.assigned_to == editor.name %} selected{% endif %}>
-            {{ editor.print_name }}
-          </option>
-        {% endfor %}
-      </select>
-    </div>
     <div class="edit-component__actions">
       <input type="hidden" name="judgment_uri" value="{{ judgment_uri }}"/>
       <input type="submit" value="Save"/>

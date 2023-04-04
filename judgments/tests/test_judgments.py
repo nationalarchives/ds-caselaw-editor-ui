@@ -614,9 +614,6 @@ class TestJudgmentUnhold(TestCase):
         assert response.status_code == 200
 
 
-# TIM STOP HERE
-
-
 class TestJudgmentUnpublish(TestCase):
     @patch("judgments.views.judgment_publish.get_judgment_by_uri")
     def test_judgment_unpublish_view(self, mock_judgment):
@@ -720,3 +717,32 @@ class TestJudgmentUnpublish(TestCase):
         )
         self.assertIn("Test v Tested", decoded_response)
         assert response.status_code == 200
+
+
+class TestJudgmentAssign(TestCase):
+    @patch("judgments.views.button_handlers.api_client")
+    def test_judgment_assigns_to_user(self, api_client):
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        User.objects.get_or_create(username="testuser2")
+        self.client.post(
+            "/assign", {"judgment_uri": "/test/judgment", "assigned_to": "testuser2"}
+        )
+        api_client.set_property.assert_called_with(
+            "/test/judgment", "assigned-to", "testuser2"
+        )
+
+    @patch("judgments.views.button_handlers.api_client")
+    def test_judgment_assignment_defaults_to_current_user(self, api_client):
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        self.client.post("/assign", {"judgment_uri": "/test/judgment"})
+        api_client.set_property.assert_called_with(
+            "/test/judgment", "assigned-to", "testuser"
+        )
+
+    @patch("judgments.views.button_handlers.api_client")
+    def test_judgment_assignment_handles_explicit_unassignment(self, api_client):
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        self.client.post(
+            "/assign", {"judgment_uri": "/test/judgment", "assigned_to": ""}
+        )
+        api_client.set_property.assert_called_with("/test/judgment", "assigned-to", "")

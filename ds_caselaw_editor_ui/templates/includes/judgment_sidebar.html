@@ -46,21 +46,32 @@
     </li>
   </ul>
 </div>
-{% if feature_flag_assign_in_publish_sidebar %}
+{% if feature_flag_publish_flow %}
   <div class="judgment-sidebar__block">
     <h4>{% translate "judgments.sidebar.assigned_to" %}</h4>
-    <select class="judgment-component__assigned_to-input"
-            name="assigned_to"
-            id="assigned_to">
-      <option value="" {% if judgment.assigned_to == "" %}selected{% endif %}>
-        {% translate "judgments.noone" %}
-      </option>
-      {% for editor in editors %}
-        <option value="{{ editor.name }}"
-                {% if judgment.assigned_to == editor.name %} selected{% endif %}>
-          {{ editor.print_name }}
+    <form action="{% url "assign" %}"
+          method="post"
+          class="judgment-sidebar__judgment-assign-form">
+      {% csrf_token %}
+      <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
+      <select class="judgment-sidebar__assignment-input"
+              name="assigned_to"
+              id="assigned_to">
+        <option value="" {% if judgment.assigned_to == "" %}selected{% endif %}>
+          {% translate "judgments.noone" %}
         </option>
-      {% endfor %}
-    </select>
+        {% for editor in editors %}
+          <option value="{{ editor.name }}"
+                  {% if judgment.assigned_to == editor.name %} selected{% endif %}>
+            {{ editor.print_name }}
+          </option>
+        {% endfor %}
+      </select>
+      <input type="submit"
+             class="button-cta"
+             name="assign"
+             value
+             {% translate "judgment.assign_cta" %}/>
+    </form>
   </div>
 {% endif %}

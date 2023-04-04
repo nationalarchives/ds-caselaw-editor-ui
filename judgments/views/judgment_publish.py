@@ -7,7 +7,7 @@ from django.utils.html import escape
 from django.utils.translation import gettext
 from django.views.generic import TemplateView
 
-from judgments.utils import get_judgment_by_uri
+from judgments.utils import editors_dict, get_judgment_by_uri
 from judgments.utils.aws import invalidate_caches
 
 from .judgment_edit import build_confirmation_email_link
@@ -29,6 +29,7 @@ class PublishJudgmentView(TemplateView):
                 ),
                 "view": "publish_judgment",
                 "judgment": judgment,
+                "editors": editors_dict(),
             }
         )
 
@@ -40,8 +41,8 @@ class PublishJudgmentView(TemplateView):
             self.request, "log_minor_issues_on_publish"
         )
 
-        context["feature_flag_assign_in_publish_sidebar"] = waffle.flag_is_active(
-            self.request, "assign_in_publish_sidebar"
+        context["feature_flag_publish_flow"] = waffle.flag_is_active(
+            self.request, "publish_flow"
         )
 
         return context
@@ -65,6 +66,7 @@ class PublishJudgmentSuccessView(TemplateView):
                 "email_confirmation_link": build_confirmation_email_link(
                     self.request, judgment
                 ),
+                "editors": editors_dict(),
             }
         )
 
@@ -72,8 +74,8 @@ class PublishJudgmentSuccessView(TemplateView):
             self.request, "embedded_pdf_view"
         )
 
-        context["feature_flag_assign_in_publish_sidebar"] = waffle.flag_is_active(
-            self.request, "assign_in_publish_sidebar"
+        context["feature_flag_publish_flow"] = waffle.flag_is_active(
+            self.request, "publish_flow"
         )
 
         return context
@@ -117,6 +119,7 @@ class UnpublishJudgmentView(TemplateView):
                 ),
                 "view": "publish_judgment",
                 "judgment": judgment,
+                "editors": editors_dict(),
             }
         )
 
@@ -142,6 +145,7 @@ class UnpublishJudgmentSuccessView(TemplateView):
                     judgment=judgment.name,
                 ),
                 "judgment": judgment,
+                "editors": editors_dict(),
             }
         )
 

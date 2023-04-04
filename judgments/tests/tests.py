@@ -3,8 +3,6 @@ from unittest.mock import patch
 
 from django.contrib.auth.models import User
 from django.test import TestCase
-from django.urls import reverse
-from factories import JudgmentFactory
 from lxml import etree
 
 from judgments.models import SearchResult, SearchResultMeta
@@ -147,23 +145,3 @@ class TestSearchResultModel(TestCase):
         self.assertEqual("ukut/lc/2022/241", search_result.uri)
         self.assertEqual(None, search_result.neutral_citation)
         self.assertEqual(None, search_result.court)
-
-
-class TestJudgmentEditor(TestCase):
-    @patch(
-        "judgments.views.judgment_edit.get_judgment_by_uri",
-    )
-    def test_assigned(self, mock_judgment):
-        judgment = JudgmentFactory.build(
-            uri="ewhc/ch/1999/1",
-            assigned_to="otheruser",
-        )
-        mock_judgment.return_value = judgment
-
-        User.objects.get_or_create(username="otheruser")[0]
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
-        response = self.client.get(
-            reverse("edit-judgment", kwargs={"judgment_uri": "ewhc/ch/1999/1"})
-        )
-
-        assert_match(b"selected>(\\s*)otheruser", response.content)
