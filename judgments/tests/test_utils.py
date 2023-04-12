@@ -1,3 +1,4 @@
+import os
 from unittest.mock import MagicMock, Mock, patch
 
 import ds_caselaw_utils
@@ -16,8 +17,34 @@ from judgments.utils import (
     render_versions,
     update_judgment_uri,
 )
-from judgments.utils.aws import build_new_key
+from judgments.utils.aws import build_new_key, invalidate_caches
 from judgments.utils.paginator import paginator
+
+
+class TestInvalidation:
+    @patch.dict(
+        os.environ,
+        {
+            "CLOUDFRONT_INVALIDATION_ACCESS_KEY_ID": "KEY",
+            "CLOUDFRONT_INVALIDATION_ACCESS_SECRET": "SECRET",
+            "CLOUDFRONT_PUBLIC_DISTRIBUTION_ID": "PUBLIC",
+            "CLOUDFRONT_EDITOR_DISTRIBUTION_ID": "EDITOR",
+            "CLOUDFRONT_ASSETS_DISTRIBUTION_ID": "ASSETS",
+        },
+    )
+    @patch("judgments.utils.aws.boto3")
+    def test_invalidation(self, mockboto):
+        invalidate_caches("ewhc/2022/1")
+        cf = mockboto.session.Session.return_value.client.return_value
+        first, second, third = cf.create_invalidation.mock_calls
+        assert first.kwargs["DistributionId"] == "PUBLIC"
+        assert first.kwargs["InvalidationBatch"]["Paths"]["Items"] == ["/*"]
+        assert second.kwargs["DistributionId"] == "ASSETS"
+        assert second.kwargs["InvalidationBatch"]["Paths"]["Items"] == [
+            "/ewhc/2022/1/*"
+        ]
+        assert third.kwargs["DistributionId"] == "EDITOR"
+        assert third.kwargs["InvalidationBatch"]["Paths"]["Items"] == ["/*"]
 
 
 class TestPaginator:
