@@ -15,7 +15,7 @@ def assert_match(regex, string):
 
 
 class TestJudgmentEdit(TestCase):
-    @patch("judgments.views.judgment_edit.Judgment")
+    @patch("judgments.views.judgment_edit.get_judgment_by_uri")
     def test_judgment_edit_view(self, mock_judgment):
         judgment = JudgmentFactory.build(
             uri="edtest/4321/123",
@@ -44,7 +44,7 @@ class TestJudgmentEdit(TestCase):
 
     @patch("judgments.views.judgment_edit.invalidate_caches")
     @patch("judgments.views.judgment_edit.api_client")
-    @patch("judgments.views.judgment_edit.Judgment")
+    @patch("judgments.views.judgment_edit.get_judgment_by_uri")
     def test_judgment_publish_flow(
         self, mock_judgment, mock_api_client, mock_invalidate_caches
     ):
@@ -80,7 +80,7 @@ class TestJudgmentEdit(TestCase):
 
     @patch("judgments.views.judgment_edit.invalidate_caches")
     @patch("judgments.views.judgment_edit.api_client")
-    @patch("judgments.views.judgment_edit.Judgment")
+    @patch("judgments.views.judgment_edit.get_judgment_by_uri")
     def test_judgment_publish_flow_if_published(
         self, mock_judgment, mock_api_client, mock_invalidate_caches
     ):
@@ -115,7 +115,7 @@ class TestJudgmentEdit(TestCase):
 
     @patch("judgments.views.judgment_edit.invalidate_caches")
     @patch("judgments.views.judgment_edit.api_client")
-    @patch("judgments.views.judgment_edit.Judgment")
+    @patch("judgments.views.judgment_edit.get_judgment_by_uri")
     def test_judgment_unpublish_flow(
         self, mock_judgment, mock_api_client, mock_invalidate_caches
     ):
@@ -150,7 +150,7 @@ class TestJudgmentEdit(TestCase):
 
     @patch("judgments.views.judgment_edit.invalidate_caches")
     @patch("judgments.views.judgment_edit.api_client")
-    @patch("judgments.views.judgment_edit.Judgment")
+    @patch("judgments.views.judgment_edit.get_judgment_by_uri")
     def test_judgment_unpublish_flow_if_not_published(
         self, mock_judgment, mock_api_client, mock_invalidate_caches
     ):
@@ -184,7 +184,7 @@ class TestJudgmentEdit(TestCase):
 
 
 class TestJudgmentView(TestCase):
-    @patch("judgments.views.full_text.Judgment")
+    @patch("judgments.views.full_text.get_judgment_by_uri")
     def test_judgment_html_view(self, mock_judgment):
         judgment = JudgmentFactory.build(
             uri="hvtest/4321/123",
@@ -209,7 +209,7 @@ class TestJudgmentView(TestCase):
         self.assertIn("<h1>Test Judgment</h1>", decoded_response)
         assert response.status_code == 200
 
-    @patch("judgments.views.full_text.Judgment")
+    @patch("judgments.views.full_text.get_judgment_by_uri")
     def test_judgment_html_view_with_failure(self, mock_judgment):
         judgment = JudgmentFactory.build(
             uri="hvtest/4321/123",
@@ -229,7 +229,7 @@ class TestJudgmentView(TestCase):
         assert response.status_code == 200
 
     @patch(
-        "judgments.models.judgments.MarklogicApiClient.get_judgment_citation",
+        "caselawclient.models.judgments.MarklogicApiClient.get_judgment_citation",
         side_effect=MarklogicResourceNotFoundError(),
     )
     def test_judgment_html_view_not_found_response(self, mock_api_client):
@@ -264,7 +264,7 @@ class TestJudgmentView(TestCase):
         )
 
     @patch(
-        "judgments.models.judgments.MarklogicApiClient.get_judgment_citation",
+        "caselawclient.models.judgments.MarklogicApiClient.get_judgment_citation",
         side_effect=MarklogicResourceNotFoundError(),
     )
     def test_judgment_pdf_view_not_found_response(self, mock_api_client):
@@ -275,7 +275,7 @@ class TestJudgmentView(TestCase):
         self.assertEqual(response.status_code, 404)
 
     @patch(
-        "judgments.views.full_text.Judgment",
+        "judgments.views.full_text.get_judgment_by_uri",
     )
     def test_judgment_pdf_view_no_pdf_response(self, mock_judgment):
         mock_judgment.return_value.name = "JUDGMENT v JUDGEMENT"
@@ -290,7 +290,7 @@ class TestJudgmentView(TestCase):
         self.assertEqual(response.status_code, 404)
 
     @patch(
-        "judgments.models.judgments.MarklogicApiClient.get_judgment_citation",
+        "caselawclient.models.judgments.MarklogicApiClient.get_judgment_citation",
         side_effect=MarklogicResourceNotFoundError(),
     )
     def test_judgment_xml_view_not_found_response(self, mock_api_client):
@@ -310,7 +310,7 @@ class TestJudgmentView(TestCase):
 
 
 class TestJudgmentPublish(TestCase):
-    @patch("judgments.views.judgment_publish.Judgment")
+    @patch("judgments.views.judgment_publish.get_judgment_by_uri")
     def test_judgment_publish_view(self, mock_judgment):
         judgment = JudgmentFactory.build(
             uri="pubtest/4321/123",
@@ -332,7 +332,7 @@ class TestJudgmentPublish(TestCase):
         assert response.status_code == 200
 
     @patch("judgments.views.judgment_publish.invalidate_caches")
-    @patch("judgments.views.judgment_publish.Judgment")
+    @patch("judgments.views.judgment_publish.get_judgment_by_uri")
     def test_judgment_publish_flow(self, mock_judgment, mock_invalidate_caches):
         judgment = JudgmentFactory.build(
             uri="pubtest/4321/123",
@@ -359,7 +359,7 @@ class TestJudgmentPublish(TestCase):
         mock_invalidate_caches.assert_called_once()
 
     @patch(
-        "judgments.models.judgments.MarklogicApiClient.get_judgment_citation",
+        "caselawclient.models.judgments.MarklogicApiClient.get_judgment_citation",
         side_effect=MarklogicResourceNotFoundError(),
     )
     def test_judgment_publish_view_missing_uri(self, mock_api_client):
@@ -372,7 +372,7 @@ class TestJudgmentPublish(TestCase):
         assert response.status_code == 400
 
     @patch(
-        "judgments.models.judgments.MarklogicApiClient.get_judgment_citation",
+        "caselawclient.models.judgments.MarklogicApiClient.get_judgment_citation",
         side_effect=MarklogicResourceNotFoundError(),
     )
     def test_judgment_publish_view_invalid_uri(self, mock_api_client):
@@ -386,7 +386,7 @@ class TestJudgmentPublish(TestCase):
         )
         assert response.status_code == 400
 
-    @patch("judgments.views.judgment_publish.Judgment")
+    @patch("judgments.views.judgment_publish.get_judgment_by_uri")
     def test_judgment_publish_success_view(self, mock_judgment):
         judgment = JudgmentFactory.build(
             uri="pubtest/4321/123",
@@ -413,7 +413,7 @@ class TestJudgmentPublish(TestCase):
 
 
 class TestJudgmentHold(TestCase):
-    @patch("judgments.views.judgment_hold.Judgment")
+    @patch("judgments.views.judgment_hold.get_judgment_by_uri")
     def test_judgment_hold_view(self, mock_judgment):
         judgment = JudgmentFactory.build(
             uri="holdtest/4321/123",
@@ -435,7 +435,7 @@ class TestJudgmentHold(TestCase):
         assert response.status_code == 200
 
     @patch("judgments.views.judgment_hold.invalidate_caches")
-    @patch("judgments.views.judgment_hold.Judgment")
+    @patch("judgments.views.judgment_hold.get_judgment_by_uri")
     def test_judgment_hold_flow(self, mock_judgment, mock_invalidate_caches):
         judgment = JudgmentFactory.build(
             uri="holdtest/4321/123",
@@ -462,7 +462,7 @@ class TestJudgmentHold(TestCase):
         mock_invalidate_caches.assert_called_once()
 
     @patch(
-        "judgments.models.judgments.MarklogicApiClient.get_judgment_citation",
+        "caselawclient.models.judgments.MarklogicApiClient.get_judgment_citation",
         side_effect=MarklogicResourceNotFoundError(),
     )
     def test_judgment_hold_view_missing_uri(self, mock_api_client):
@@ -475,7 +475,7 @@ class TestJudgmentHold(TestCase):
         assert response.status_code == 400
 
     @patch(
-        "judgments.models.judgments.MarklogicApiClient.get_judgment_citation",
+        "caselawclient.models.judgments.MarklogicApiClient.get_judgment_citation",
         side_effect=MarklogicResourceNotFoundError(),
     )
     def test_judgment_hold_view_invalid_uri(self, mock_api_client):
@@ -489,7 +489,7 @@ class TestJudgmentHold(TestCase):
         )
         assert response.status_code == 400
 
-    @patch("judgments.views.judgment_hold.Judgment")
+    @patch("judgments.views.judgment_hold.get_judgment_by_uri")
     def test_judgment_hold_success_view(self, mock_judgment):
         judgment = JudgmentFactory.build(
             uri="holdtest/4321/123",
@@ -514,7 +514,7 @@ class TestJudgmentHold(TestCase):
 
 
 class TestJudgmentUnhold(TestCase):
-    @patch("judgments.views.judgment_hold.Judgment")
+    @patch("judgments.views.judgment_hold.get_judgment_by_uri")
     def test_judgment_unhold_view(self, mock_judgment):
         judgment = JudgmentFactory.build(
             uri="unholdtest/4321/123",
@@ -536,7 +536,7 @@ class TestJudgmentUnhold(TestCase):
         assert response.status_code == 200
 
     @patch("judgments.views.judgment_hold.invalidate_caches")
-    @patch("judgments.views.judgment_hold.Judgment")
+    @patch("judgments.views.judgment_hold.get_judgment_by_uri")
     def test_judgment_unhold_flow(self, mock_judgment, mock_invalidate_caches):
         judgment = JudgmentFactory.build(
             uri="unholdtest/4321/123",
@@ -563,7 +563,7 @@ class TestJudgmentUnhold(TestCase):
         mock_invalidate_caches.assert_called_once()
 
     @patch(
-        "judgments.models.judgments.MarklogicApiClient.get_judgment_citation",
+        "caselawclient.models.judgments.MarklogicApiClient.get_judgment_citation",
         side_effect=MarklogicResourceNotFoundError(),
     )
     def test_judgment_unhold_view_missing_uri(self, mock_api_client):
@@ -576,7 +576,7 @@ class TestJudgmentUnhold(TestCase):
         assert response.status_code == 400
 
     @patch(
-        "judgments.models.judgments.MarklogicApiClient.get_judgment_citation",
+        "caselawclient.models.judgments.MarklogicApiClient.get_judgment_citation",
         side_effect=MarklogicResourceNotFoundError(),
     )
     def test_judgment_unhold_view_invalid_uri(self, mock_api_client):
@@ -590,7 +590,7 @@ class TestJudgmentUnhold(TestCase):
         )
         assert response.status_code == 400
 
-    @patch("judgments.views.judgment_hold.Judgment")
+    @patch("judgments.views.judgment_hold.get_judgment_by_uri")
     def test_judgment_hold_success_view(self, mock_judgment):
         judgment = JudgmentFactory.build(
             uri="unholdtest/4321/123",
@@ -618,7 +618,7 @@ class TestJudgmentUnhold(TestCase):
 
 
 class TestJudgmentUnpublish(TestCase):
-    @patch("judgments.views.judgment_publish.Judgment")
+    @patch("judgments.views.judgment_publish.get_judgment_by_uri")
     def test_judgment_unpublish_view(self, mock_judgment):
         judgment = JudgmentFactory.build(
             uri="pubtest/4321/123",
@@ -642,7 +642,7 @@ class TestJudgmentUnpublish(TestCase):
         assert response.status_code == 200
 
     @patch("judgments.views.judgment_publish.invalidate_caches")
-    @patch("judgments.views.judgment_publish.Judgment")
+    @patch("judgments.views.judgment_publish.get_judgment_by_uri")
     def test_judgment_unpublish_flow(self, mock_judgment, mock_invalidate_caches):
         judgment = JudgmentFactory.build(
             uri="pubtest/4321/123",
@@ -669,7 +669,7 @@ class TestJudgmentUnpublish(TestCase):
         mock_invalidate_caches.assert_called_once()
 
     @patch(
-        "judgments.models.judgments.MarklogicApiClient.get_judgment_citation",
+        "caselawclient.models.judgments.MarklogicApiClient.get_judgment_citation",
         side_effect=MarklogicResourceNotFoundError(),
     )
     def test_judgment_unpublish_view_missing_uri(self, mock_api_client):
@@ -682,7 +682,7 @@ class TestJudgmentUnpublish(TestCase):
         assert response.status_code == 400
 
     @patch(
-        "judgments.models.judgments.MarklogicApiClient.get_judgment_citation",
+        "caselawclient.models.judgments.MarklogicApiClient.get_judgment_citation",
         side_effect=MarklogicResourceNotFoundError(),
     )
     def test_judgment_unpublish_view_invalid_uri(self, mock_api_client):
@@ -696,7 +696,7 @@ class TestJudgmentUnpublish(TestCase):
         )
         assert response.status_code == 400
 
-    @patch("judgments.views.judgment_publish.Judgment")
+    @patch("judgments.views.judgment_publish.get_judgment_by_uri")
     def test_judgment_unpublish_success_view(self, mock_judgment):
         judgment = JudgmentFactory.build(
             uri="pubtest/4321/123",

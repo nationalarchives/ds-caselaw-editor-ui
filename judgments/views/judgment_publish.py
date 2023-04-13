@@ -7,7 +7,7 @@ from django.utils.html import escape
 from django.utils.translation import gettext
 from django.views.generic import TemplateView
 
-from judgments.models.judgments import Judgment
+from judgments.utils import get_judgment_by_uri
 from judgments.utils.aws import invalidate_caches
 
 from .judgment_edit import build_confirmation_email_link
@@ -19,7 +19,7 @@ class PublishJudgmentView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(PublishJudgmentView, self).get_context_data(**kwargs)
 
-        judgment = Judgment(kwargs["judgment_uri"])
+        judgment = get_judgment_by_uri(kwargs["judgment_uri"])
 
         context.update(
             {
@@ -53,7 +53,7 @@ class PublishJudgmentSuccessView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(PublishJudgmentSuccessView, self).get_context_data(**kwargs)
 
-        judgment = Judgment(kwargs["judgment_uri"])
+        judgment = get_judgment_by_uri(kwargs["judgment_uri"])
 
         context.update(
             {
@@ -86,7 +86,7 @@ def publish(request):
         return HttpResponseBadRequest("judgment_uri not provided.")
 
     try:
-        judgment = Judgment(judgment_uri)
+        judgment = get_judgment_by_uri(judgment_uri)
         judgment.publish()
         invalidate_caches(judgment.uri)
         messages.success(
@@ -107,7 +107,7 @@ class UnpublishJudgmentView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(UnpublishJudgmentView, self).get_context_data(**kwargs)
 
-        judgment = Judgment(kwargs["judgment_uri"])
+        judgment = get_judgment_by_uri(kwargs["judgment_uri"])
 
         context.update(
             {
@@ -133,7 +133,7 @@ class UnpublishJudgmentSuccessView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(UnpublishJudgmentSuccessView, self).get_context_data(**kwargs)
 
-        judgment = Judgment(kwargs["judgment_uri"])
+        judgment = get_judgment_by_uri(kwargs["judgment_uri"])
 
         context.update(
             {
@@ -159,7 +159,7 @@ def unpublish(request):
         return HttpResponseBadRequest("judgment_uri not provided.")
 
     try:
-        judgment = Judgment(judgment_uri)
+        judgment = get_judgment_by_uri(judgment_uri)
         judgment.unpublish()
         invalidate_caches(judgment.uri)
         messages.success(

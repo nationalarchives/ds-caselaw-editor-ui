@@ -16,7 +16,7 @@
         </li>
       {% endif %}
       <li>
-        <a href="{{ judgment.xml_url }}">{% translate "judgment.download_xml" %}</a>
+        <a href="{% url 'full-text-xml' judgment.uri %}">{% translate "judgment.download_xml" %}</a>
       </li>
     </ul>
   </div>

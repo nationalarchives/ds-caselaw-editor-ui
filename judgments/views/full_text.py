@@ -7,8 +7,7 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
 
-from judgments.models.judgments import Judgment
-from judgments.utils import extract_version
+from judgments.utils import extract_version, get_judgment_by_uri
 
 
 def html_view(request, judgment_uri):
@@ -16,7 +15,7 @@ def html_view(request, judgment_uri):
     version_uri = params.get("version_uri", None)
 
     try:
-        judgment = Judgment(judgment_uri)
+        judgment = get_judgment_by_uri(judgment_uri)
         context = {
             "judgment_uri": judgment_uri,
             "judgment": judgment,
@@ -50,7 +49,7 @@ def pdf_view(request, judgment_uri):
     version_uri = params.get("version_uri", None)
 
     try:
-        judgment = Judgment(judgment_uri)
+        judgment = get_judgment_by_uri(judgment_uri)
     except MarklogicResourceNotFoundError as e:
         raise Http404(f"Judgment was not found at uri {judgment_uri}, {e}")
 
@@ -81,7 +80,7 @@ def pdf_view(request, judgment_uri):
 
 def xml_view(request, judgment_uri):
     try:
-        judgment = Judgment(judgment_uri)
+        judgment = get_judgment_by_uri(judgment_uri)
         judgment_xml = judgment.content_as_xml()
     except MarklogicResourceNotFoundError as e:
         raise Http404(f"Judgment was not found at uri {judgment_uri}, {e}")

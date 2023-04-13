@@ -2,9 +2,8 @@ from typing import Any
 from unittest.mock import Mock
 
 import factory
+from caselawclient.models.judgments import Judgment
 from django.contrib.auth import get_user_model
-
-from judgments.models.judgments import Judgment
 
 User = get_user_model()
 

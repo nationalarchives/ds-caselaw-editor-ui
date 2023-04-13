@@ -11,7 +11,7 @@ from django.urls import reverse
 from django.utils.translation import gettext
 from django.views.decorators.http import require_http_methods
 
-from judgments.models.judgments import Judgment
+from judgments.utils import get_judgment_by_uri
 
 
 @require_http_methods(["POST", "GET", "HEAD"])
@@ -39,7 +39,7 @@ def unlock_post(request):
 
     judgment_uri = request.POST.get("judgment_uri")
     try:
-        judgment = Judgment(judgment_uri)
+        judgment = get_judgment_by_uri(judgment_uri)
         api_client.break_checkout(judgment.uri)
     except MarklogicResourceUnmanagedError as exc:
         raise Http404(

@@ -1,11 +1,10 @@
-from django import template
-from django.template.defaultfilters import stringfilter
-
-from judgments.models.judgments import (
+from caselawclient.models.judgments import (
     JUDGMENT_STATUS_HOLD,
     JUDGMENT_STATUS_IN_PROGRESS,
     JUDGMENT_STATUS_PUBLISHED,
 )
+from django import template
+from django.template.defaultfilters import stringfilter
 
 register = template.Library()
 
