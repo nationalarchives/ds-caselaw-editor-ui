@@ -15,7 +15,8 @@
     </li>
     <li>
       <span class="judgment-metadata-panel__key">{% translate "judgment.judgment_date" %}</span>
-      <time class="judgment-metadata-panel__value" datetime="YYYY-MM-DD">{{ judgment.judgment_date_as_string }}</time>
+      <time class="judgment-metadata-panel__value"
+            datetime="{{ judgment.judgment_date_as_string }}">{{ judgment.judgment_date_as_string }}</time>
     </li>
     <li>
       <span class="judgment-metadata-panel__key">{% translate "judgment.judgment_name" %}</span>
