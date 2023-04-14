@@ -12,11 +12,11 @@ from django.urls import reverse
 from django.utils.translation import gettext
 from django.views.generic import View
 
-from judgments.models.judgments import Judgment
 from judgments.utils import (
     MoveJudgmentError,
     NeutralCitationToUriError,
     editors_dict,
+    get_judgment_by_uri,
     update_judgment_uri,
 )
 from judgments.utils.aws import invalidate_caches
@@ -104,7 +104,7 @@ class EditJudgmentView(View):
 
     def get(self, request, *args, **kwargs):
         judgment_uri = kwargs["judgment_uri"]
-        judgment = Judgment(judgment_uri)
+        judgment = get_judgment_by_uri(judgment_uri)
 
         context = {"judgment_uri": judgment_uri}
 
@@ -133,7 +133,7 @@ class EditJudgmentView(View):
 
     def post(self, request, *args, **kwargs):
         judgment_uri = request.POST["judgment_uri"]
-        judgment = Judgment(judgment_uri)
+        judgment = get_judgment_by_uri(judgment_uri)
 
         return_to = request.POST.get("return_to", None)
 

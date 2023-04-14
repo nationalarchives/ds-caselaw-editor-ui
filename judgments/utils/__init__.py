@@ -6,10 +6,12 @@ from urllib.parse import urlparse
 
 import ds_caselaw_utils as caselawutils
 from caselawclient.Client import (
+    MarklogicApiClient,
     MarklogicAPIError,
     MarklogicResourceNotFoundError,
     api_client,
 )
+from caselawclient.models.judgments import Judgment
 from django.conf import settings
 from django.contrib.auth.models import Group, User
 
@@ -160,3 +162,14 @@ def editors_dict():
         ],
         key=itemgetter("print_name"),
     )
+
+
+def get_judgment_by_uri(judgment_uri: str) -> Judgment:
+    api_client = MarklogicApiClient(
+        host=settings.MARKLOGIC_HOST,
+        username=settings.MARKLOGIC_USER,
+        password=settings.MARKLOGIC_PASSWORD,
+        use_https=settings.MARKLOGIC_USE_HTTPS,
+    )
+
+    return Judgment(judgment_uri, api_client)

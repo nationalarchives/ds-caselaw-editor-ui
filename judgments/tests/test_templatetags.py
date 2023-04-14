@@ -1,8 +1,9 @@
-from judgments.models.judgments import (
+from caselawclient.models.judgments import (
     JUDGMENT_STATUS_HOLD,
     JUDGMENT_STATUS_IN_PROGRESS,
     JUDGMENT_STATUS_PUBLISHED,
 )
+
 from judgments.templatetags.status_tag_css import status_tag_colour
 
 

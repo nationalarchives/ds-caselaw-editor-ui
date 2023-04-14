@@ -4,10 +4,10 @@ from unittest.mock import patch
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
+from factories import JudgmentFactory
 from lxml import etree
 
 from judgments.models import SearchResult, SearchResultMeta
-from judgments.models.judgments import Judgment
 
 
 def assert_match(regex, string):
@@ -151,13 +151,14 @@ class TestSearchResultModel(TestCase):
 
 class TestJudgmentEditor(TestCase):
     @patch(
-        "judgments.views.judgment_edit.Judgment",
-        autospec=Judgment,
+        "judgments.views.judgment_edit.get_judgment_by_uri",
     )
     def test_assigned(self, mock_judgment):
-        mock_judgment.return_value.uri = "ewhc/ch/1999/1"
-        mock_judgment.return_value.assigned_to = "otheruser"
-        mock_judgment.return_value.versions = []
+        judgment = JudgmentFactory.build(
+            uri="ewhc/ch/1999/1",
+            assigned_to="otheruser",
+        )
+        mock_judgment.return_value = judgment
 
         User.objects.get_or_create(username="otheruser")[0]
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])

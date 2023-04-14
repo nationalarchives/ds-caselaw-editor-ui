@@ -4,8 +4,7 @@ import pytest
 from django.contrib.auth.models import User
 from django.test import Client
 from django.urls import reverse
-
-from judgments.models.judgments import Judgment
+from factories import JudgmentFactory
 
 
 @pytest.mark.django_db
@@ -23,14 +22,15 @@ def test_break_lock_confirm_page():
 
 
 @pytest.mark.django_db
-@patch(
-    "judgments.views.unlock.Judgment",
-    autospec=Judgment,
-)
+@patch("judgments.views.unlock.get_judgment_by_uri")
 @patch("judgments.views.unlock.api_client.break_checkout")
 @patch("judgments.views.unlock.messages")
 def test_break_lock_post(messages, break_checkout, mock_judgment):
-    mock_judgment.return_value.uri = "ewca/civ/2023/1"
+    judgment = JudgmentFactory.build(
+        uri="ewca/civ/2023/1",
+    )
+    mock_judgment.return_value = judgment
+
     client = Client()
     client.force_login(User.objects.get_or_create(username="testuser")[0])
 

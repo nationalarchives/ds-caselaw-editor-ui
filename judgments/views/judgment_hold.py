@@ -7,7 +7,7 @@ from django.utils.html import escape
 from django.utils.translation import gettext
 from django.views.generic import TemplateView
 
-from judgments.models.judgments import Judgment
+from judgments.utils import get_judgment_by_uri
 from judgments.utils.aws import invalidate_caches
 
 from .judgment_edit import build_confirmation_email_link
@@ -19,7 +19,7 @@ class HoldJudgmentView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(HoldJudgmentView, self).get_context_data(**kwargs)
 
-        judgment = Judgment(kwargs["judgment_uri"])
+        judgment = get_judgment_by_uri(kwargs["judgment_uri"])
 
         context.update(
             {
@@ -52,7 +52,7 @@ class HoldJudgmentSuccessView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(HoldJudgmentSuccessView, self).get_context_data(**kwargs)
 
-        judgment = Judgment(kwargs["judgment_uri"])
+        judgment = get_judgment_by_uri(kwargs["judgment_uri"])
 
         context.update(
             {
@@ -85,7 +85,7 @@ def hold(request):
         return HttpResponseBadRequest("judgment_uri not provided.")
 
     try:
-        judgment = Judgment(judgment_uri)
+        judgment = get_judgment_by_uri(judgment_uri)
         judgment.hold()
         invalidate_caches(judgment.uri)
         messages.success(request, gettext("judgment.hold.hold_success_flash_message"))
@@ -106,7 +106,7 @@ class UnholdJudgmentView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(UnholdJudgmentView, self).get_context_data(**kwargs)
 
-        judgment = Judgment(kwargs["judgment_uri"])
+        judgment = get_judgment_by_uri(kwargs["judgment_uri"])
 
         context.update(
             {
@@ -132,7 +132,7 @@ class UnholdJudgmentSuccessView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(UnholdJudgmentSuccessView, self).get_context_data(**kwargs)
 
-        judgment = Judgment(kwargs["judgment_uri"])
+        judgment = get_judgment_by_uri(kwargs["judgment_uri"])
 
         context.update(
             {
@@ -158,7 +158,7 @@ def unhold(request):
         return HttpResponseBadRequest("judgment_uri not provided.")
 
     try:
-        judgment = Judgment(judgment_uri)
+        judgment = get_judgment_by_uri(judgment_uri)
         judgment.unhold()
         invalidate_caches(judgment.uri)
         messages.success(request, gettext("judgment.hold.unhold_success_flash_message"))
