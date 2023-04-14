@@ -2,3 +2,9 @@ body {
   margin: 0;
   font-family: $font__open-sans;
 }
+
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
