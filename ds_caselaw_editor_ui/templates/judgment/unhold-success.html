@@ -5,10 +5,6 @@
 {% endblock judgment_header %}
 {% block judgment_content %}
   {% load i18n %}
-  <h2>
-    {% translate "judgment.hold.unhold_success_title" %}
-    <br />
-    {{ judgment.name }}
-  </h2>
+  <h2>{% translate "judgment.hold.unhold_success_title" %}</h2>
   <p>{% translate "judgment.unhold.success" %}</p>
 {% endblock judgment_content %}
