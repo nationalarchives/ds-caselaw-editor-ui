@@ -2,4 +2,11 @@
     max-width: 90%;
     margin: 0 auto;
     padding: 1rem 0;
+
+    hr {
+        margin: 3rem 0;
+        height: 1rem;
+        background-color: $color__light-grey;
+        border: none;
+    }
 }
