@@ -144,11 +144,11 @@ msgstr "Back to search results"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.toolbar.edit_metadata"
-msgstr "Edit metadata"
+msgstr "Edit"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.toolbar.review_document"
-msgstr "Review document"
+msgstr "Review"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.toolbar.view_judgment"
@@ -156,7 +156,7 @@ msgstr "View full text"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.toolbar.edit"
-msgstr "Edit judgment"
+msgstr "Edit"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.toolbar.view_html"
@@ -168,15 +168,15 @@ msgstr "Put on hold"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.toolbar.unhold"
-msgstr "Unhold"
+msgstr "Take off hold"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.toolbar.unpublish"
-msgstr "Unpublish judgment"
+msgstr "Unpublish"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.toolbar.publish"
-msgstr "Publish judgment"
+msgstr "Publish"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.toolbar.download_docx"
@@ -192,7 +192,7 @@ msgstr "View on public site"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.toolbar.delete"
-msgstr "Delete judgment"
+msgstr "Delete"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_view_controls.html
 msgid "judgment.view_control.html"
@@ -357,7 +357,7 @@ msgstr "Search results"
 #: ds_caselaw_editor_ui/templates/judgment/unhold-success.html
 #: judgments/tests/test_judgments.py judgments/views/judgment_hold.py
 msgid "judgment.hold.unhold_success_title"
-msgstr "Document not on hold"
+msgstr "This document has been taken off hold"
 
 #: ds_caselaw_editor_ui/templates/judgment/unhold-success.html
 msgid "judgment.unhold.success"
@@ -366,7 +366,7 @@ msgstr "This document is no longer on hold."
 #: ds_caselaw_editor_ui/templates/judgment/unhold.html
 #: judgments/tests/test_judgments.py judgments/views/judgment_hold.py
 msgid "judgment.hold.unhold_title"
-msgstr "Unhold document"
+msgstr "Take this document off hold"
 
 #: ds_caselaw_editor_ui/templates/judgment/unhold.html
 msgid "judgment.unhold.unhold_button"
@@ -375,16 +375,16 @@ msgstr "Unhold document"
 #: ds_caselaw_editor_ui/templates/judgment/unpublish-success.html
 #: judgments/tests/test_judgments.py judgments/views/judgment_publish.py
 msgid "judgment.publish.unpublish_success_title"
-msgstr "Unpublished judgment"
+msgstr "This document is no longer published"
 
 #: ds_caselaw_editor_ui/templates/judgment/unpublish.html
 #: judgments/tests/test_judgments.py judgments/views/judgment_publish.py
 msgid "judgment.publish.unpublish_title"
-msgstr "Unpublish judgment"
+msgstr "Unpublish this document"
 
 #: ds_caselaw_editor_ui/templates/judgment/unpublish.html
 msgid "judgment.unpublish.unpublish_button"
-msgstr "Unpublish judgment"
+msgstr "Unpublish document"
 
 #: ds_caselaw_editor_ui/templates/layouts/base.html
 msgid "skiplink"

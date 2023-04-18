@@ -4,11 +4,7 @@
 {% endblock judgment_header %}
 {% block judgment_content %}
   {% load i18n %}
-  <h2>
-    {% translate "judgment.hold.unhold_title" %}
-    <br />
-    {{ judgment.name }}
-  </h2>
+  <h2>{% translate "judgment.hold.unhold_title" %}</h2>
   <form action="{% url 'unhold' %}" method="post">
     {% csrf_token %}
     <div class="judgment-component__actions">

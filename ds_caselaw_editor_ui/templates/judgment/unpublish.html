@@ -1,11 +1,10 @@
 {% extends "layouts/judgment_with_sidebar.html" %}
+{% load i18n %}
+{% block judgment_header %}
+  {% include "includes/judgment_metadata_panel.html" with judgment=judgment %}
+{% endblock judgment_header %}
 {% block judgment_content %}
-  {% load i18n %}
-  <h2>
-    {% translate "judgment.publish.unpublish_title" %}
-    <br />
-    {{ judgment.name }}
-  </h2>
+  <h2>{% translate "judgment.publish.unpublish_title" %}</h2>
   <form action="{% url 'unpublish' %}" method="post">
     {% csrf_token %}
     <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />

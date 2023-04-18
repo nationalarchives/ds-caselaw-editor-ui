@@ -1,11 +1,10 @@
 {% extends "layouts/judgment_with_sidebar.html" %}
 {% load waffle_tags %}
+{% block judgment_header %}
+  {% include "includes/judgment_metadata_panel.html" with judgment=judgment %}
+{% endblock judgment_header %}
 {% block judgment_content %}
   {% load i18n %}
-  <h2>
-    {% translate "judgment.publish.unpublish_success_title" %}
-    <br />
-    {{ judgment.name }}
-  </h2>
+  <h2>{% translate "judgment.publish.unpublish_success_title" %}</h2>
   <p>This judgment is now unpublished.</p>
 {% endblock judgment_content %}
