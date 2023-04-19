@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-28 14:47+0000\n"
+"POT-Creation-Date: 2023-04-13 12:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -134,9 +134,14 @@ msgid "judgments.sidebar.assigned_to"
 msgstr "Assigned to"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
-#: ds_caselaw_editor_ui/templates/judgment/edit.html
 msgid "judgments.noone"
 msgstr "No one"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment_sidebar.html
+#, fuzzy
+#| msgid "judgment.assigned_to"
+msgid "judgment.assign_cta"
+msgstr "Assign"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.toolbar.back"
@@ -193,14 +198,6 @@ msgstr "View on public site"
 #: ds_caselaw_editor_ui/templates/includes/judgment_text_toolbar.html
 msgid "judgment.toolbar.delete"
 msgstr "Delete"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment_view_controls.html
-msgid "judgment.view_control.html"
-msgstr "View HTML"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment_view_controls.html
-msgid "judgment.view_control.pdf"
-msgstr "View PDF"
 
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_header.html
 msgid "judgments.details"
@@ -295,10 +292,6 @@ msgstr "Has supplemental documents?"
 #: ds_caselaw_editor_ui/templates/judgment/edit.html
 msgid "judgment.anonymised"
 msgstr "This Judgment has been anonymised"
-
-#: ds_caselaw_editor_ui/templates/judgment/edit.html
-msgid "judgment.assigned_to"
-msgstr "Assigned to"
 
 #: ds_caselaw_editor_ui/templates/judgment/edit.html
 msgid "judgment.previous_versions"
@@ -447,8 +440,8 @@ msgstr "Document unheld"
 
 #: judgments/views/judgment_publish.py
 msgid "judgment.publish.publish_success_flash_message"
-msgstr "Judgment published"
+msgstr "Document published"
 
 #: judgments/views/judgment_publish.py
 msgid "judgment.publish.unpublish_success_flash_message"
-msgstr "Judgment unpublished"
+msgstr "Document unpublished"

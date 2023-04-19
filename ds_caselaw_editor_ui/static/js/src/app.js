@@ -1,6 +1,7 @@
 import $ from "jquery";
 
 import TabSet from "./components/tabSet";
+import JudgmentSidebar from "./components/judgmentSidebar";
 
 (function ($) {
   $.fn.manage_filters = function (options) {
@@ -79,3 +80,4 @@ $(".judgments-list__judgment-assign-form").on("submit", function (event) {
 });
 
 TabSet.init();
+JudgmentSidebar.init();

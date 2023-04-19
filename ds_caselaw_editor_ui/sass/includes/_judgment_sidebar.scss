@@ -37,4 +37,17 @@
         font-size: 1rem;
       }
     }
+
+    &__assignment-input {
+      display: block;
+      min-width: 66%;
+    }
+
+    &__context-notification {
+      margin-top: calc(0.5 * $spacer__unit);
+    }
+
+    .loading-indicator {
+      margin-top: calc(0.5 * $spacer__unit);
+    }
   }

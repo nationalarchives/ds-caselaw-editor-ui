@@ -26,14 +26,21 @@ def hold_judgment_button(request):
 
 def assign_judgment_button(request):
     judgment_uri = request.POST["judgment_uri"]
-    api_client.set_property(judgment_uri, "assigned-to", request.user.username)
+    assigned_to = request.POST.get("assigned_to", request.user.username)
+    api_client.set_property(judgment_uri, "assigned-to", assigned_to)
+    if assigned_to == request.user.username:
+        msg = "Document assigned to you."
+    elif assigned_to == "":
+        msg = "Document unassigned."
+    else:
+        msg = f"Judgment assigned to {assigned_to}."
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return HttpResponse(
-            json.dumps({"assigned_to": request.user.username}),
+            json.dumps({"assigned_to": request.user.username, "message": msg}),
             content_type="application/json",
         )
     else:
-        messages.success(request, "Judgment assigned to you.")
+        messages.success(request, msg)
         return redirect(ensure_local_referer_url(request))
 
 

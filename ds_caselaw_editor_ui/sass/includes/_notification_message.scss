@@ -28,8 +28,15 @@
 @mixin context-notification {
     @include notification;
     display: inline-block;
+    animation: context-notification 0.5s 1;
+    animation-fill-mode: forwards;
+    animation-delay: 2s;
 }
 
+@keyframes context-notification {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
 
 .context-notification {
     &--success {
