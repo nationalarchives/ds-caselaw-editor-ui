@@ -24,11 +24,11 @@
   }
 
   &__ncn {
-    width: 40%;
+    width: 27%;
   }
 
   &__court {
-    width: 40%;
+    width: 52%;
     left: 3rem;
   }
   &__date {
@@ -107,12 +107,17 @@
     box-sizing: border-box;
     height: calc(100% - 1.45rem);
     font-size: 1rem;
+    resize: none;
   }
 
   input[type=text] {
     box-sizing: border-box;
     width: 100%;
     min-height: 2rem;
+    font-size: 1rem;
+    $font__open-sans: 'Open Sans', sans-serif;
+    padding: 0.5rem;
+    border: 2px solid $color__dark-grey;
   }
 
   input[type=submit] {
