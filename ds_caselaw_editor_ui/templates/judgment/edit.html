@@ -25,7 +25,7 @@
   <form aria-label="Edit judgment" method="post">
     {% csrf_token %}
     <div class="edit-component__panel">
-      <label for="metadata_name">{% translate "judgment.judgment_name" %}</label>
+      <label class="edit-component__text-field-label" for="metadata_name">{% translate "judgment.judgment_name" %}</label>
       <input type="text"
              class="edit-component__metadata_name-input"
              value="{{ judgment.name }}"
@@ -33,7 +33,9 @@
              id="metadata_name"/>
     </div>
     <div class="edit-component__panel">
-      <label for="neutral_citation">{% translate "judgment.neutral_citation" %}</label>
+      <label class="edit-component__text-field-label" for="neutral_citation">
+        {% translate "judgment.neutral_citation" %}
+      </label>
       <input type="text"
              class="edit-component__neutral_citation-input"
              value="{{ judgment.neutral_citation }}"
@@ -42,7 +44,7 @@
              size="30"/>
     </div>
     <div class="edit-component__panel">
-      <label for="court">{% translate "judgment.court" %}</label>
+      <label class="edit-component__text-field-label" for="court">{% translate "judgment.court" %}</label>
       <input type="text"
              class="edit-component__court-input"
              value="{{ judgment.court }}"
@@ -59,7 +61,10 @@
       </datalist>
     </div>
     <div class="edit-component__panel">
-      <label for="judgment_date">{% translate "judgment.judgment_date" %}</label>
+      <label class="edit-component__text-field-label"
+             for="judgment_date__text-field-label">
+        {% translate "judgment.judgment_date" %}
+      </label>
       <input type="text"
              class="edit-component__judgment_date-input"
              value="{{ judgment.judgment_date_as_string }}"
@@ -68,7 +73,7 @@
     </div>
     {% if not feature_flag_publish_flow %}
       <div class="edit-component__panel">
-        <label for="published">{% translate "judgment.published" %}</label>
+        <label class="edit-component__checkbox-label" for="published">{% translate "judgment.published" %}</label>
         <input type="checkbox"
                class="edit-component__published-input"
                {% if judgment.is_published %}checked{% endif %}
@@ -77,7 +82,7 @@
       </div>
     {% endif %}
     <div class="edit-component__panel">
-      <label for="sensitive">{% translate "judgment.sensitive" %}</label>
+      <label class="edit-component__checkbox-label" for="sensitive">{% translate "judgment.sensitive" %}</label>
       <input type="checkbox"
              class="edit-component__sensitive-input"
              {% if judgment.is_sensitive %}checked{% endif %}
@@ -85,7 +90,7 @@
              id="sensitive"/>
     </div>
     <div class="edit-component__panel">
-      <label for="supplemental">{% translate "judgment.supplemental" %}</label>
+      <label class="edit-component__checkbox-label" for="supplemental">{% translate "judgment.supplemental" %}</label>
       <input type="checkbox"
              class="edit-component__supplemental-input"
              {% if judgment.has_supplementary_materials %}checked{% endif %}
@@ -93,7 +98,7 @@
              id="supplemental"/>
     </div>
     <div class="edit-component__panel">
-      <label for="anonymised">{% translate "judgment.anonymised" %}</label>
+      <label class="edit-component__checkbox-label" for="anonymised">{% translate "judgment.anonymised" %}</label>
       <input type="checkbox"
              class="edit-component__anonymised-input"
              {% if judgment.is_anonymised %}checked{% endif %}

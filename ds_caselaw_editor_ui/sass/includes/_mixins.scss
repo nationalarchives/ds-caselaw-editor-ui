@@ -109,7 +109,6 @@
 @mixin text_field {
   border: 2px solid $color__dark-grey;
   padding: calc($spacer__unit / 2);
-  margin-bottom: $spacer__unit;
   margin-top: calc($spacer__unit / 2);
   background-color: $color__white;
   width: 80%;

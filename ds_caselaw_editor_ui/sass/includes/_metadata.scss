@@ -111,6 +111,7 @@
   }
 
   input[type=text] {
+    @include text_field;
     box-sizing: border-box;
     width: 100%;
     min-height: 2rem;
@@ -118,6 +119,7 @@
     $font__open-sans: 'Open Sans', sans-serif;
     padding: 0.5rem;
     border: 2px solid $color__dark-grey;
+    margin: 0;
   }
 
   input[type=submit] {
