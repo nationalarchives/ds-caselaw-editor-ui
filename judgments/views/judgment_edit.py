@@ -172,7 +172,7 @@ class EditJudgmentView(View):
 
                 # Assignment
                 # TODO consider validating assigned_to is a user?
-                if new_assignment := request.POST["assigned_to"]:
+                if new_assignment := request.POST.get("assigned_to", False):
                     api_client.set_property(judgment_uri, "assigned-to", new_assignment)
 
                 published = bool(request.POST.get("published", False))
