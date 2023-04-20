@@ -22,3 +22,7 @@ ds-caselaw-utils~=1.0.0
 rollbar
 django-stronghold==0.4.0
 boto3~=1.26.115
+
+# Type stubs
+mypy-boto3-s3==1.26.104
+mypy-boto3-sns==1.26.69
