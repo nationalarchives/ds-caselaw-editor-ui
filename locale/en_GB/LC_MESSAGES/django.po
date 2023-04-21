@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-21 10:09+0000\n"
+"POT-Creation-Date: 2023-04-21 10:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -209,6 +209,10 @@ msgstr "View on public site"
 msgid "judgment.toolbar.delete"
 msgstr "Delete"
 
+#: ds_caselaw_editor_ui/templates/includes/judgment/versions.html
+msgid "judgment.previous_versions"
+msgstr "Previous versions of this Judgment"
+
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_header.html
 msgid "judgments.details"
 msgstr "Judgment details:"
@@ -292,10 +296,6 @@ msgstr "Has supplemental documents?"
 #: ds_caselaw_editor_ui/templates/judgment/edit.html
 msgid "judgment.anonymised"
 msgstr "This Judgment has been anonymised"
-
-#: ds_caselaw_editor_ui/templates/judgment/edit.html
-msgid "judgment.previous_versions"
-msgstr "Previous versions of this Judgment"
 
 #: ds_caselaw_editor_ui/templates/judgment/hold-success.html
 msgid "judgment.hold.success"
