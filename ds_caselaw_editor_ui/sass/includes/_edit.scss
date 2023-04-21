@@ -2,6 +2,7 @@
 .list-versions-component,
 .judgment-info-component {
   padding: 0 $spacer__unit;
+
   &__container {
     @include container;
     text-align: left;
@@ -18,6 +19,7 @@
     color: $color__almost-black;
     margin: 0 calc(#{$spacer__unit} * 1.5);
   }
+
   &__more-options {
     margin-top: calc($spacer__unit * 2);
   }
@@ -25,6 +27,15 @@
   &__panel {
     padding: calc(#{$spacer__unit} / 2) 0;
   }
+
+  label {
+    padding-left: 0;
+  }
+
+  &__text-field-label {
+    display: block;
+  }
+
   input[type=submit] {
     @include call-to-action-button;
     display: block;
@@ -33,22 +44,27 @@
   &__metadata_name-input {
     @include text_field;
     width: 80%;
-    min-height: calc(#{$spacer__unit} * 3);
     font-size: 1.2rem;
+
     @media (min-width: $grid__breakpoint-small) {
       width: 20rem;
     }
+
     @media (min-width: $grid__breakpoint-medium) {
       width: 25rem;
     }
+
     @media (min-width: $grid__breakpoint-extra-large) {
       width: 35rem;
     }
   }
+
+  input[type=text] {
+    @include text_field;
+  }
+
   input[type=checkbox] {
-    &:focus {
-      @include focus-default;
-    }
+    @include checkbox;
   }
 }
 
@@ -57,28 +73,34 @@
   display: inline-block;
   padding: 0px 10px 0px 0;
   margin-left: 15%;
+
   &__list-header {
     padding-left: 10px;
     margin: 10px 0;
   }
+
   &__list {
     list-style: none;
     padding-left: 10px;
     margin: 5px 0;
   }
+
   &__list-link {
     padding-bottom: 10px;
   }
 }
+
 .edit-component__actions {
   display: inline-block;
   width: auto;
   padding: calc(#{$spacer__unit} / 2) 0;
 }
+
 @media (max-width: 800px) {
   .edit-component__actions {
     display: block;
   }
+
   .create-email-block {
     margin: 20px 0;
   }
