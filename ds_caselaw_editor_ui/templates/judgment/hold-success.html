@@ -2,7 +2,7 @@
 {% load waffle_tags %}
 {% load i18n %}
 {% block judgment_header %}
-  {% include "includes/judgment_metadata_panel.html" with judgment=judgment %}
+  {% include "includes/judgment/metadata_panel_static.html" with judgment=judgment %}
 {% endblock judgment_header %}
 {% block judgment_content %}
   <h2>{% translate "judgment.hold.success" %}</h2>
