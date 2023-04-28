@@ -34,7 +34,11 @@ from .views.judgment_publish import (
 from .views.labs import Labs
 from .views.results import results
 from .views.signed_asset import redirect_to_signed_asset
-from .views.style_guide import StyleGuide
+from .views.style_guide import (
+    StyleGuideBranding,
+    StyleGuideComponents,
+    style_guide_redirect,
+)
 from .views.unlock import unlock
 
 urlpatterns = [
@@ -60,7 +64,17 @@ urlpatterns = [
     path("xml", xml_view_redirect),
     # Labs
     path("labs", Labs.as_view(), name="labs"),
-    path("style_guide", StyleGuide.as_view(), name="style_guide"),
+    path("style_guide", style_guide_redirect, name="style_guide"),
+    path(
+        "style_guide/components",
+        StyleGuideComponents.as_view(),
+        name="style_guide_components",
+    ),
+    path(
+        "style_guide/branding",
+        StyleGuideBranding.as_view(),
+        name="style_guide_branding",
+    ),
     # Different views on judgments
     path("<path:judgment_uri>/edit", EditJudgmentView.as_view(), name="edit-judgment"),
     path(
