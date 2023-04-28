@@ -4,7 +4,7 @@
   <div class="style-guide">
     <h2>{% translate "style_guide.title" %}</h2>
     <p>{% translate "style_guide.description" %}</p>
-    <hr/>
+    {% include "includes/tabs.html" with label1="Components" label2="Branding" url1="/style_guide/components" url2="/style_guide/branding" selected=1 %}
     {% include "includes/style_guide/buttons.html" %}
     <hr/>
     {% include "includes/style_guide/colours.html" %}
