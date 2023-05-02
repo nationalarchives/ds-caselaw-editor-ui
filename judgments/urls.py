@@ -23,6 +23,7 @@ from .views.judgment_hold import (
     hold,
     unhold,
 )
+from .views.judgment_move import MoveJudgmentView
 from .views.judgment_publish import (
     PublishJudgmentSuccessView,
     PublishJudgmentView,
@@ -116,6 +117,11 @@ urlpatterns = [
         "<path:judgment_uri>/unheld",
         UnholdJudgmentSuccessView.as_view(),
         name="unhold-judgment-success",
+    ),
+    path(
+        "<path:judgment_uri>/move",
+        MoveJudgmentView.as_view(),
+        name="move-judgment",
     ),
     path("<path:judgment_uri>/pdf", pdf_view, name="full-text-pdf"),
     path("<path:judgment_uri>/xml", xml_view, name="full-text-xml"),
