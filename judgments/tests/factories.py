@@ -49,6 +49,13 @@ class JudgmentFactory:
                 "<p>This is a judgment.</p>"
             )
 
+        if "xml" in kwargs:
+            judgment_mock.return_value.content_as_xml.return_value = kwargs.pop("xml")
+        else:
+            judgment_mock.return_value.content_as_xml.return_value = (
+                "<akomantoso>This is some XML of a judgment.</akomantoso>"
+            )
+
         for map_to, map_from in cls.PARAMS_MAP.items():
             if map_from[0] in kwargs:
                 setattr(judgment_mock.return_value, map_to, kwargs[map_from[0]])

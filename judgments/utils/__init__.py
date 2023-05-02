@@ -24,6 +24,10 @@ class MoveJudgmentError(Exception):
     pass
 
 
+class OverwriteJudgmentError(Exception):
+    pass
+
+
 class NeutralCitationToUriError(Exception):
     pass
 
@@ -61,6 +65,50 @@ def get_judgment_root(judgment_xml) -> str:
         return parsed_xml.tag
     except ET.ParseError:
         return "error"
+
+
+def overwrite_judgment(old_uri, new_citation):
+    """Move the judgment at old_uri on top of the new citation, which must already exist
+    Compare to update_judgment_uri"""
+    new_uri = caselawutils.neutral_url(new_citation.strip())
+
+    if new_uri == old_uri:
+        raise RuntimeError(f"trying to overwrite yourself, {old_uri}")
+    if new_uri is None:
+        raise NeutralCitationToUriError(
+            f"Unable to form new URI for {old_uri} from neutral citation: {new_citation}"
+        )
+    if not api_client.judgment_exists(new_uri):
+        raise OverwriteJudgmentError(
+            f"The URI {new_uri} generated from {new_citation} does not already exist, so cannot be overwritten"
+        )
+    old_judgment = get_judgment_by_uri(old_uri)
+
+    try:
+        old_judgment_bytes = old_judgment.content_as_xml()
+        old_judgment_xml = ET.XML(bytes(old_judgment_bytes, encoding="utf-8"))
+        api_client.save_judgment_xml(
+            new_uri,
+            old_judgment_xml,
+            annotation=f"overwritten from {old_uri}",
+        )
+        set_metadata(old_uri, new_uri)
+        # TODO: consider deleting existing public assets at that location
+        copy_assets(old_uri, new_uri)
+        api_client.set_judgment_this_uri(new_uri)
+    except MarklogicAPIError as e:
+        raise OverwriteJudgmentError(
+            f"Failure when attempting to copy judgment from {old_uri} to {new_uri}: {e}"
+        )
+
+    try:
+        api_client.delete_judgment(old_uri)
+    except MarklogicAPIError as e:
+        raise OverwriteJudgmentError(
+            f"Failure when attempting to delete judgment from {old_uri}: {e}"
+        )
+
+    return new_uri
 
 
 def update_judgment_uri(old_uri, new_citation):
