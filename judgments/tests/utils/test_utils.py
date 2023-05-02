@@ -1,5 +1,5 @@
 import os
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import ANY, MagicMock, Mock, patch
 
 import ds_caselaw_utils
 import pytest
@@ -14,6 +14,7 @@ from judgments.utils import (
     ensure_local_referer_url,
     extract_version,
     get_judgment_root,
+    overwrite_judgment,
     render_versions,
     update_document_uri,
 )
@@ -316,3 +317,34 @@ class TestEditorsDict:
         assert editors_dict() == [
             {"name": "active_editor", "print_name": "active_editor"},
         ]
+
+
+class TestOverwrite(TestCase):
+    @patch("judgments.utils.api_client")
+    @patch("boto3.session.Session.client")
+    @patch("judgments.utils.get_judgment_by_uri")
+    def test_overwrite_judgment_success(
+        self, fake_judgment, fake_boto3_client, fake_api_client
+    ):
+        """Given the target judgment does not exist,
+        we continue to move the judgment to the new location
+        (where moving is copy + delete)"""
+        fake_judgment.return_value = JudgmentFactory.build()
+        ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
+        fake_api_client.judgment_exists.return_value = True
+        fake_api_client.copy_judgment.return_value = True
+        fake_api_client.delete_judgment.return_value = True
+        fake_boto3_client.list_objects.return_value = []
+
+        result = overwrite_judgment("old/uri", "[2002] EAT 1")
+        fake_api_client.save_judgment_xml.assert_called_with(
+            "new/uri", ANY, annotation="overwritten from old/uri"
+        )
+        fake_api_client.delete_judgment.assert_called_with("old/uri")
+        assert result == "new/uri"
+
+    def test_overwrite_judgment_unparseable_citation(self):
+        ds_caselaw_utils.neutral_url = MagicMock(return_value=None)
+
+        with self.assertRaises(judgments.utils.NeutralCitationToUriError):
+            overwrite_judgment("old/uri", "Wrong neutral citation")
