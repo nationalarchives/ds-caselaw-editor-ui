@@ -1,8 +1,4 @@
-from caselawclient.Client import (
-    MarklogicResourceNotFoundError,
-    MarklogicResourceUnmanagedError,
-    api_client,
-)
+from caselawclient.Client import MarklogicResourceUnmanagedError, api_client
 from django.contrib import messages
 from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
@@ -11,7 +7,7 @@ from django.urls import reverse
 from django.utils.translation import gettext
 from django.views.decorators.http import require_http_methods
 
-from judgments.utils import get_judgment_by_uri
+from judgments.utils.view_helpers import get_judgment_by_uri_or_404
 
 
 @require_http_methods(["POST", "GET", "HEAD"])
@@ -39,15 +35,11 @@ def unlock_post(request):
 
     judgment_uri = request.POST.get("judgment_uri")
     try:
-        judgment = get_judgment_by_uri(judgment_uri)
+        judgment = get_judgment_by_uri_or_404(judgment_uri)
         api_client.break_checkout(judgment.uri)
     except MarklogicResourceUnmanagedError as exc:
         raise Http404(
             f"Resource Unmanaged: Judgment '{judgment_uri}' might not exist."
-        ) from exc
-    except MarklogicResourceNotFoundError as exc:
-        raise Http404(
-            f"Resource Not Found: Judgment '{judgment_uri}' was not found."
         ) from exc
     else:
         messages.success(request, "Judgment unlocked.")

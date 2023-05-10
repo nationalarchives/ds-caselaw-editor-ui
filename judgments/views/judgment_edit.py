@@ -16,10 +16,10 @@ from judgments.utils import (
     MoveJudgmentError,
     NeutralCitationToUriError,
     editors_dict,
-    get_judgment_by_uri,
     update_judgment_uri,
 )
 from judgments.utils.aws import invalidate_caches
+from judgments.utils.view_helpers import get_judgment_by_uri_or_404
 
 
 def build_email_link_with_content(address, subject, body=None):
@@ -104,7 +104,7 @@ class EditJudgmentView(View):
 
     def get(self, request, *args, **kwargs):
         judgment_uri = kwargs["judgment_uri"]
-        judgment = get_judgment_by_uri(judgment_uri)
+        judgment = get_judgment_by_uri_or_404(judgment_uri)
 
         context = {"judgment_uri": judgment_uri}
 
@@ -133,7 +133,7 @@ class EditJudgmentView(View):
 
     def post(self, request, *args, **kwargs):
         judgment_uri = request.POST["judgment_uri"]
-        judgment = get_judgment_by_uri(judgment_uri)
+        judgment = get_judgment_by_uri_or_404(judgment_uri)
 
         return_to = request.POST.get("return_to", None)
 
