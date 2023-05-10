@@ -5,15 +5,12 @@ from operator import itemgetter
 from urllib.parse import urlparse
 
 import ds_caselaw_utils as caselawutils
-from caselawclient.Client import (
-    MarklogicApiClient,
-    MarklogicAPIError,
-    MarklogicResourceNotFoundError,
-    api_client,
-)
+from caselawclient.Client import MarklogicApiClient, MarklogicAPIError, api_client
+from caselawclient.errors import JudgmentNotFoundError
 from caselawclient.models.judgments import Judgment
 from django.conf import settings
 from django.contrib.auth.models import Group, User
+from django.http import Http404
 
 from .aws import copy_assets
 
@@ -69,37 +66,40 @@ def get_judgment_root(judgment_xml) -> str:
 
 
 def update_judgment_uri(old_uri, new_citation):
+    """
+    Move the judgment at old_uri to the correct location based on the neutral citation
+    The new neutral citation *must* not already exist (that is handled elsewhere)
+    """
     new_uri = caselawutils.neutral_url(new_citation.strip())
     if new_uri is None:
         raise NeutralCitationToUriError(
             f"Unable to form new URI for {old_uri} from neutral citation: {new_citation}"
         )
 
-    try:
-        api_client.get_judgment_xml(new_uri, show_unpublished=True)
+    if api_client.judgment_exists(new_uri):
         raise MoveJudgmentError(
             f"The URI {new_uri} generated from {new_citation} already exists, you cannot move this judgment to a"
             f" pre-existing Neutral Citation Number."
         )
-    except (MarklogicAPIError, MarklogicResourceNotFoundError):
-        try:
-            api_client.copy_judgment(old_uri, new_uri)
-            set_metadata(old_uri, new_uri)
-            copy_assets(old_uri, new_uri)
-            api_client.set_judgment_this_uri(new_uri)
-        except MarklogicAPIError as e:
-            raise MoveJudgmentError(
-                f"Failure when attempting to copy judgment from {old_uri} to {new_uri}: {e}"
-            )
 
-        try:
-            api_client.delete_judgment(old_uri)
-        except MarklogicAPIError as e:
-            raise MoveJudgmentError(
-                f"Failure when attempting to delete judgment from {old_uri}: {e}"
-            )
+    try:
+        api_client.copy_judgment(old_uri, new_uri)
+        set_metadata(old_uri, new_uri)
+        copy_assets(old_uri, new_uri)
+        api_client.set_judgment_this_uri(new_uri)
+    except MarklogicAPIError as e:
+        raise MoveJudgmentError(
+            f"Failure when attempting to copy judgment from {old_uri} to {new_uri}: {e}"
+        )
 
-        return new_uri
+    try:
+        api_client.delete_judgment(old_uri)
+    except MarklogicAPIError as e:
+        raise MoveJudgmentError(
+            f"Failure when attempting to delete judgment from {old_uri}: {e}"
+        )
+
+    return new_uri
 
 
 def set_metadata(old_uri, new_uri):

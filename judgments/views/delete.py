@@ -1,10 +1,11 @@
-from caselawclient.Client import MarklogicResourceNotFoundError, api_client
+from caselawclient.Client import api_client
 from django.contrib import messages
-from django.http import Http404, HttpResponse
+from django.http import HttpResponse
 from django.template import loader
 from django.utils.translation import gettext
 
 from judgments.utils.aws import delete_documents
+from judgments.utils.view_helpers import get_judgment_by_uri_or_404
 
 
 def delete(request):
@@ -13,12 +14,10 @@ def delete(request):
         "judgment_uri": judgment_uri,
         "page_title": gettext("judgment.delete_a_judgment"),
     }
-    try:
-        api_client.delete_judgment(judgment_uri)
 
-        delete_documents(judgment_uri)
-    except MarklogicResourceNotFoundError as e:
-        raise Http404(f"Judgment was not found at uri {judgment_uri}, {e}")
+    judgment = get_judgment_by_uri_or_404(judgment_uri)
+    api_client.delete_judgment(judgment.uri)
+    delete_documents(judgment.uri)
 
     template = loader.get_template("judgment/deleted.html")
 

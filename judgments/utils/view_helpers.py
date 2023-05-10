@@ -1,4 +1,8 @@
+from caselawclient.errors import JudgmentNotFoundError
+from django.http import Http404
+
 from judgments.models import SearchResult
+from judgments.utils import Judgment, get_judgment_by_uri
 from judgments.utils.paginator import paginator
 from judgments.utils.perform_advanced_search import perform_advanced_search
 
@@ -36,3 +40,10 @@ def get_search_results(query):
         "order": query["order"],
         "paginator": paginator(query["page"], model.total),
     }
+
+
+def get_judgment_by_uri_or_404(uri: str) -> Judgment:
+    try:
+        return get_judgment_by_uri(uri)
+    except JudgmentNotFoundError:
+        raise Http404(f"Judgment not found at {uri}")
