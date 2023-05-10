@@ -3,7 +3,6 @@ from unittest.mock import patch
 from urllib.parse import urlencode
 
 from django.contrib.auth.models import User
-from django.http import Http404
 from django.test import TestCase
 from django.urls import reverse
 from django.utils.translation import gettext
@@ -267,7 +266,6 @@ class TestJudgmentView(TestCase):
         )
         self.assertEqual(response.status_code, 404)
 
-
     def test_judgment_xml_view_redirect(self):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
         response = self.client.get("/xml?judgment_uri=ewca/civ/2004/63X")
@@ -474,7 +472,6 @@ class TestJudgmentUnhold(TestCase):
         mock_judgment.return_value.hold.assert_not_called()
         mock_invalidate_caches.assert_called_once()
 
-
     @patch("judgments.views.judgment_hold.get_judgment_by_uri_or_404")
     def test_judgment_hold_success_view(self, mock_judgment):
         judgment = JudgmentFactory.build(
@@ -549,7 +546,6 @@ class TestJudgmentUnpublish(TestCase):
         mock_judgment.return_value.publish.assert_not_called()
         mock_judgment.return_value.unpublish.assert_called_once()
         mock_invalidate_caches.assert_called_once()
-
 
     @patch("judgments.views.judgment_publish.get_judgment_by_uri_or_404")
     def test_judgment_unpublish_success_view(self, mock_judgment):

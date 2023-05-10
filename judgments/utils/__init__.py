@@ -6,11 +6,9 @@ from urllib.parse import urlparse
 
 import ds_caselaw_utils as caselawutils
 from caselawclient.Client import MarklogicApiClient, MarklogicAPIError, api_client
-from caselawclient.errors import JudgmentNotFoundError
 from caselawclient.models.judgments import Judgment
 from django.conf import settings
 from django.contrib.auth.models import Group, User
-from django.http import Http404
 
 from .aws import copy_assets
 

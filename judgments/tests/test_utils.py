@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, Mock, patch
 
 import ds_caselaw_utils
 import pytest
-from caselawclient.errors import JudgmentNotFoundError, MarklogicAPIError
+from caselawclient.errors import MarklogicAPIError
 from django.contrib.auth.models import Group
 from django.test import TestCase
 from factories import JudgmentFactory, UserFactory
@@ -108,12 +108,10 @@ class TestUtils(TestCase):
 
     @patch("judgments.utils.api_client")
     @patch("boto3.session.Session.client")
-    def test_update_judgment_uri_success(
-        self, fake_boto3_client, fake_api_client
-    ):
+    def test_update_judgment_uri_success(self, fake_boto3_client, fake_api_client):
         """Given the target judgment does not exist,
-           we continue to move the judgment to the new location
-           (where moving is copy + delete)"""
+        we continue to move the judgment to the new location
+        (where moving is copy + delete)"""
         ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
         fake_api_client.judgment_exists.return_value = False
         fake_api_client.copy_judgment.return_value = True
@@ -146,7 +144,7 @@ class TestUtils(TestCase):
     @patch("judgments.utils.get_judgment_by_uri")
     def test_update_judgment_uri_exception_copy(self, fake_judgment, fake_client):
         """Given a judgment exists at the target, and copy_judgment fails,
-            we raise a MoveJudgmentError"""
+        we raise a MoveJudgmentError"""
         fake_judgment.return_value = JudgmentFactory.build()
         ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
         fake_client.copy_judgment.side_effect = MarklogicAPIError
@@ -159,7 +157,7 @@ class TestUtils(TestCase):
     @patch("judgments.utils.get_judgment_by_uri")
     def test_update_judgment_uri_exception_delete(self, fake_getter, fake_client):
         """If there's a target at the judgment and deleting fails,
-           raise a MoveJudgmentError"""
+        raise a MoveJudgmentError"""
         fake_getter.return_value = JudgmentFactory.build()
         ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
         fake_client.copy_judgment.return_value = True
