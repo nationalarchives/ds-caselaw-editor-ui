@@ -1,4 +1,3 @@
-import waffle
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -31,18 +30,6 @@ class HoldJudgmentView(TemplateView):
             }
         )
 
-        context["feature_flag_embedded_pdfs"] = waffle.flag_is_active(
-            self.request, "embedded_pdf_view"
-        )
-
-        context["feature_flag_log_minor_issues_on_publish"] = waffle.flag_is_active(
-            self.request, "log_minor_issues_on_publish"
-        )
-
-        context["feature_flag_publish_flow"] = waffle.flag_is_active(
-            self.request, "publish_flow"
-        )
-
         return context
 
 
@@ -66,14 +53,6 @@ class HoldJudgmentSuccessView(TemplateView):
                 ),
                 "editors": editors_dict(),
             }
-        )
-
-        context["feature_flag_embedded_pdfs"] = waffle.flag_is_active(
-            self.request, "embedded_pdf_view"
-        )
-
-        context["feature_flag_publish_flow"] = waffle.flag_is_active(
-            self.request, "publish_flow"
         )
 
         return context
@@ -110,10 +89,6 @@ class UnholdJudgmentView(TemplateView):
             }
         )
 
-        context["feature_flag_embedded_pdfs"] = waffle.flag_is_active(
-            self.request, "embedded_pdf_view"
-        )
-
         return context
 
 
@@ -134,10 +109,6 @@ class UnholdJudgmentSuccessView(TemplateView):
                 "judgment": judgment,
                 "editors": editors_dict(),
             }
-        )
-
-        context["feature_flag_embedded_pdfs"] = waffle.flag_is_active(
-            self.request, "embedded_pdf_view"
         )
 
         return context

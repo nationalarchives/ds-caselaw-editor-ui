@@ -1,5 +1,4 @@
 {% extends "layouts/judgment_with_sidebar.html" %}
-{% load waffle_tags %}
 {% load i18n %}
 {% block extra_sidebar_content %}
   <div class="judgment-sidebar__block">
@@ -71,16 +70,14 @@
              name="judgment_date"
              id="judgment_date"/>
     </div>
-    {% if not feature_flag_publish_flow %}
-      <div class="edit-component__panel">
-        <label class="edit-component__checkbox-label" for="published">{% translate "judgment.published" %}</label>
-        <input type="checkbox"
-               class="edit-component__published-input"
-               {% if judgment.is_published %}checked{% endif %}
-               name="published"
-               id="published"/>
-      </div>
-    {% endif %}
+    <div class="edit-component__panel">
+      <label class="edit-component__checkbox-label" for="published">{% translate "judgment.published" %}</label>
+      <input type="checkbox"
+             class="edit-component__published-input"
+             {% if judgment.is_published %}checked{% endif %}
+             name="published"
+             id="published"/>
+    </div>
     <div class="edit-component__panel">
       <label class="edit-component__checkbox-label" for="sensitive">{% translate "judgment.sensitive" %}</label>
       <input type="checkbox"
