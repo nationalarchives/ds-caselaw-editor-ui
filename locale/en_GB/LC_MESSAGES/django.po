@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-21 10:14+0000\n"
+"POT-Creation-Date: 2023-05-11 15:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -166,18 +166,6 @@ msgid "judgment.toolbar.review_document"
 msgstr "Review"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/toolbar.html
-msgid "judgment.toolbar.view_judgment"
-msgstr "View full text"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/toolbar.html
-msgid "judgment.toolbar.edit"
-msgstr "Edit"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/toolbar.html
-msgid "judgment.toolbar.view_html"
-msgstr "View as HTML"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/toolbar.html
 msgid "judgment.toolbar.hold"
 msgstr "Put on hold"
 
@@ -196,10 +184,6 @@ msgstr "Publish"
 #: ds_caselaw_editor_ui/templates/includes/judgment/toolbar.html
 msgid "judgment.toolbar.download_docx"
 msgstr "Download .docx"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/toolbar.html
-msgid "judgment.toolbar.download_pdf"
-msgstr "Download PDF"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/toolbar.html
 msgid "judgment.toolbar.view_on_public"
@@ -310,35 +294,6 @@ msgid "judgment.hold_this_judgment"
 msgstr "Put document on hold"
 
 #: ds_caselaw_editor_ui/templates/judgment/publish.html
-msgid "judgment.confirm"
-msgstr ""
-"Notify us of any minor problems in the document – select all that apply"
-
-#: ds_caselaw_editor_ui/templates/judgment/publish.html
-msgid "judgment.center"
-msgstr "Delete judgment"
-
-#: ds_caselaw_editor_ui/templates/judgment/publish.html
-msgid "judgment.indentation"
-msgstr "Judgment details:"
-
-#: ds_caselaw_editor_ui/templates/judgment/publish.html
-msgid "judgment.images"
-msgstr "Images"
-
-#: ds_caselaw_editor_ui/templates/judgment/publish.html
-msgid "judgment.headings"
-msgstr "Headings and Sub Headings"
-
-#: ds_caselaw_editor_ui/templates/judgment/publish.html
-msgid "judgment.barriers"
-msgstr "Other"
-
-#: ds_caselaw_editor_ui/templates/judgment/publish.html
-msgid "judgment.problems"
-msgstr "No problems within this document"
-
-#: ds_caselaw_editor_ui/templates/judgment/publish.html
 msgid "judgment.publish_this_judgment"
 msgstr "Publish this document"
 
@@ -398,11 +353,13 @@ msgstr ""
 "Improve your search results by removing filters, double-checking your "
 "spelling, using fewer keywords or searching for something less specific."
 
-#: ds_caselaw_editor_ui/templates/pages/style_guide.html
+#: ds_caselaw_editor_ui/templates/pages/style_guide_branding.html
+#: ds_caselaw_editor_ui/templates/pages/style_guide_components.html
 msgid "style_guide.title"
 msgstr "Caselaw editor UI style guide"
 
-#: ds_caselaw_editor_ui/templates/pages/style_guide.html
+#: ds_caselaw_editor_ui/templates/pages/style_guide_branding.html
+#: ds_caselaw_editor_ui/templates/pages/style_guide_components.html
 msgid "style_guide.description"
 msgstr ""
 "This page serves as a sandbox for developing new UI components, as well as a "

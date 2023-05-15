@@ -17,6 +17,8 @@
         </p>
       {% endif %}
       <p>{{ experiment.description }}</p>
+    {% empty %}
+      <p>There aren't any currently running experiments.</p>
     {% endfor %}
   </div>
 {% endblock content %}

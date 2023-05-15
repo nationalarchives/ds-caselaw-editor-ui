@@ -1,7 +1,6 @@
 from urllib.parse import quote, urlencode
 
 import ds_caselaw_utils as caselawutils
-import waffle
 from caselawclient.Client import MarklogicAPIError, api_client
 from django.conf import settings
 from django.contrib import messages
@@ -120,13 +119,6 @@ class EditJudgmentView(View):
             request, judgment
         )
         context["jira_create_link"] = self.build_jira_create_link(request, context)
-
-        context["feature_flag_embedded_pdfs"] = waffle.flag_is_active(
-            request, "embedded_pdf_view"
-        )
-        context["feature_flag_publish_flow"] = waffle.flag_is_active(
-            request, "publish_flow"
-        )
 
         template = loader.get_template("judgment/edit.html")
         return HttpResponse(template.render(context, request))

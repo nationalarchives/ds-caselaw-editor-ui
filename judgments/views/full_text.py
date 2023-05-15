@@ -1,7 +1,6 @@
 from urllib.parse import urlencode
 
 import ds_caselaw_utils as caselawutils
-import waffle
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
@@ -31,9 +30,6 @@ def html_view(request, judgment_uri):
     context["judgment_content"] = judgment_content
     context["page_title"] = metadata_name
     context["view"] = "judgment_text"
-    context["feature_flag_embedded_pdfs"] = waffle.flag_is_active(
-        request, "embedded_pdf_view"
-    )
 
     if version_uri:
         context["version"] = extract_version(version_uri)
@@ -56,9 +52,6 @@ def pdf_view(request, judgment_uri):
         "judgment": judgment,
         "page_title": judgment.name,
         "view": "judgment_text",
-        "feature_flag_embedded_pdfs": waffle.flag_is_active(
-            request, "embedded_pdf_view"
-        ),
     }
 
     if version_uri:
