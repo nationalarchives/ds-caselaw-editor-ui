@@ -49,7 +49,12 @@ class PublishJudgmentSuccessView(TemplateView):
                 ),
                 "judgment": judgment,
                 "email_confirmation_link": build_confirmation_email_link(
-                    self.request, judgment
+                    judgment=judgment,
+                    signature=(
+                        self.request.user.get_full_name()
+                        if self.request.user.is_authenticated
+                        else None
+                    ),
                 ),
                 "editors": editors_dict(),
             }
