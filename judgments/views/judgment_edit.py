@@ -1,14 +1,10 @@
-from urllib.parse import quote, urlencode
-
 import ds_caselaw_utils as caselawutils
 from caselawclient.Client import MarklogicAPIError, api_client
-from django.conf import settings
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.template import loader
 from django.urls import reverse
-from django.utils.translation import gettext
 from django.views.generic import View
 
 from judgments.utils import (
@@ -18,89 +14,15 @@ from judgments.utils import (
     update_judgment_uri,
 )
 from judgments.utils.aws import invalidate_caches
+from judgments.utils.link_generators import (
+    build_confirmation_email_link,
+    build_jira_create_link,
+    build_raise_issue_email_link,
+)
 from judgments.utils.view_helpers import get_judgment_by_uri_or_404
 
 
-def build_email_link_with_content(address, subject, body=None):
-    params = {"subject": "Find Case Law – {subject}".format(subject=subject)}
-
-    if body:
-        params["body"] = body
-
-    return "mailto:{address}?{params}".format(
-        address=address, params=urlencode(params, quote_via=quote)
-    )
-
-
-def build_confirmation_email_link(request, judgment):
-    subject_string = "Notification of publication [TDR ref: {reference}]".format(
-        reference=judgment.consignment_reference
-    )
-
-    email_context = {
-        "judgment_name": judgment.name,
-        "reference": judgment.consignment_reference,
-        "public_judgment_url": judgment.public_uri,
-        "user_signature": request.user.get_full_name() or "XXXXXX",
-    }
-
-    body_string = loader.render_to_string(
-        "emails/confirmation_to_submitter.txt", email_context
-    )
-
-    return build_email_link_with_content(
-        judgment.source_email, subject_string, body_string
-    )
-
-
 class EditJudgmentView(View):
-    def build_raise_issue_email_link(self, context):
-        subject_string = "Issue(s) found with {reference}".format(
-            reference=context["judgment"].consignment_reference
-        )
-
-        return build_email_link_with_content(
-            context["judgment"].source_email, subject_string
-        )
-
-    def build_jira_create_link(self, request, context):
-        summary_string = "{name} / {ncn} / {tdr}".format(
-            name=context["judgment"].name,
-            ncn=context["judgment"].neutral_citation,
-            tdr=context["judgment"].consignment_reference,
-        )
-
-        editor_html_url = request.build_absolute_uri(
-            reverse("full-text-html", kwargs={"judgment_uri": context["judgment_uri"]})
-        )
-
-        description_string = "{editor_html_url}".format(
-            editor_html_url="""{html_url}
-
-{source_name_label}: {source_name}
-{source_email_label}: {source_email}
-{consignment_ref_label}: {consignment_ref}""".format(
-                html_url=editor_html_url,
-                source_name_label=gettext("judgments.submitter"),
-                source_name=context["judgment"].source_name,
-                source_email_label=gettext("judgments.submitteremail"),
-                source_email=context["judgment"].source_email,
-                consignment_ref_label=gettext("judgments.consignmentref"),
-                consignment_ref=context["judgment"].consignment_reference,
-            )
-        )
-
-        params = {
-            "pid": "10090",
-            "issuetype": "10320",
-            "priority": "3",
-            "summary": summary_string,
-            "description": description_string,
-        }
-        return "https://{jira_instance}/secure/CreateIssueDetails!init.jspa?{params}".format(
-            jira_instance=settings.JIRA_INSTANCE, params=urlencode(params)
-        )
-
     def get(self, request, *args, **kwargs):
         judgment_uri = kwargs["judgment_uri"]
         judgment = get_judgment_by_uri_or_404(judgment_uri)
@@ -114,11 +36,15 @@ class EditJudgmentView(View):
 
         context.update({"editors": editors_dict()})
 
-        context["email_raise_issue_link"] = self.build_raise_issue_email_link(context)
-        context["email_confirmation_link"] = build_confirmation_email_link(
-            request, judgment
+        context["email_raise_issue_link"] = build_raise_issue_email_link(
+            judgment=judgment, signature=request.user.get_full_name()
         )
-        context["jira_create_link"] = self.build_jira_create_link(request, context)
+        context["email_confirmation_link"] = build_confirmation_email_link(
+            judgment=judgment, signature=request.user.get_full_name()
+        )
+        context["jira_create_link"] = build_jira_create_link(
+            judgment=judgment, request=request
+        )
 
         template = loader.get_template("judgment/edit.html")
         return HttpResponse(template.render(context, request))
