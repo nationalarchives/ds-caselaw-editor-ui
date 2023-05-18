@@ -1,4 +1,4 @@
-Dear XXXXXX,
+Dear {{ submitter }},
 
 We are pleased to inform you that your uploaded judgment "{{ judgment_name|safe }}", reference {{ reference }}, has been published on Find Case Law. You can see the published judgment at {{ public_judgment_url|safe }}.
 
