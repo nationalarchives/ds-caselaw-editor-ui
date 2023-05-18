@@ -1,0 +1,11 @@
+Dear {{ submitter }},
+
+Further to your recent upload of "{{ judgment_name }}", reference {{ reference }},
+
+
+
+If you wish to supply us with an amended version of the judgment please resubmit it via TDR.
+
+Kind regards,
+
+{{ user_signature }}

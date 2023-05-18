@@ -34,6 +34,7 @@ def build_confirmation_email_link(
         "judgment_name": judgment.name,
         "reference": judgment.consignment_reference,
         "public_judgment_url": judgment.public_uri,
+        "submitter": judgment.source_name,
         "user_signature": signature or "XXXXXX",
     }
 
@@ -49,11 +50,24 @@ def build_confirmation_email_link(
 def build_raise_issue_email_link(
     judgment: Judgment, signature: Optional[str] = None
 ) -> str:
-    subject_string = "Issue(s) found with {reference}".format(
+    subject_string = "Find Case Law - Issue(s) found with {reference}".format(
         reference=judgment.consignment_reference
     )
+    email_context = {
+        "judgment_name": judgment.name,
+        "reference": judgment.consignment_reference,
+        "public_judgment_url": judgment.public_uri,
+        "user_signature": signature,
+        "submitter": judgment.source_name or "XXXXXX",
+    }
 
-    return build_email_link_with_content(judgment.source_email, subject_string)
+    body_string = loader.render_to_string(
+        "emails/raise_issue_with_submitter.txt", email_context
+    )
+
+    return build_email_link_with_content(
+        judgment.source_email, subject_string, body_string
+    )
 
 
 def build_jira_create_link(judgment: Judgment, request: HttpRequest) -> str:
