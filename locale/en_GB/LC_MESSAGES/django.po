@@ -113,8 +113,16 @@ msgid "judgments.submitteremail"
 msgstr "Contact email"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
+msgid "judgments.sidebar.manage"
+msgstr "Manage"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
+msgid "judgment.movemerge"
+msgstr "Move and merge"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
 msgid "judgments.sidebar.tools"
-msgstr "Tools"
+msgstr "External Tools"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
 msgid "judgment.create_in_jira"

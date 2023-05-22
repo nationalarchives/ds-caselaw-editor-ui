@@ -1,31 +1,40 @@
-<h1>Overwrite!</h1>
-{{ incoming_judgment.uri }} will overwrite {{ target_judgment.uri }}
-<form action="{% url "overwrite-judgment" incoming_judgment.uri %}"
-      method="post">
-  {% csrf_token %}
-  {{ form }}
-  <input type="submit" value="Submit" />
-</form>
-<p>
-  Name: <b>{{ incoming_judgment.name }}</b> → <s>{{ target_judgment.name }}</s>
-</p>
-<p>
-  Court: <b>{{ incoming_judgment.court }}</b> → <s>{{ target_judgment.court }}</s>
-</p>
-<p>TODO: add more metadata</p>
-<div style="border:1px solid black;
-            height:100%;
-            width:48%;
-            overflow-y:scroll;
-            overflow-x:scroll;
-            float:left">
-  {{ incoming_judgment.content_as_html | safe }}
-</div>
-<div style="border:1px solid black;
-            height:100%;
-            width:48%;
-            overflow-y:scroll;
-            overflow-x:scroll;
-            float:left">
-  {{ target_judgment.content_as_html | safe }}
-</div>
+{% extends "layouts/judgment.html" %}
+{% load i18n %}
+{% block judgment_header %}
+  {% include "includes/judgment/metadata_panel_static.html" with judgment=judgment %}
+{% endblock judgment_header %}
+{% block content %}
+  <h2>Compare and merge</h2>
+  <p>
+    This will <b>create a new version</b> of the judgment at {{ target_judgment.uri }}.
+  </p>
+  <form action="{% url "overwrite-judgment" incoming_judgment.uri %}"
+        method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" />
+  </form>
+  <p>
+    Name: <b>{{ incoming_judgment.name }}</b> → <s>{{ target_judgment.name }}</s>
+  </p>
+  <p>
+    Court: <b>{{ incoming_judgment.court }}</b> → <s>{{ target_judgment.court }}</s>
+  </p>
+  <p>TODO: add more metadata</p>
+  <div style="border:1px solid black;
+              height:100vh;
+              width:48%;
+              overflow-y:scroll;
+              overflow-x:scroll;
+              float:left">
+    {{ incoming_judgment.content_as_html | safe }}
+  </div>
+  <div style="border:1px solid black;
+              height:100vh;
+              width:48%;
+              overflow-y:scroll;
+              overflow-x:scroll;
+              float:left">
+    {{ target_judgment.content_as_html | safe }}
+  </div>
+{% endblock content %}
