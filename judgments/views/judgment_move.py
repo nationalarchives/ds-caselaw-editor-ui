@@ -85,6 +85,7 @@ class OverwriteJudgmentView(FormView):
         context["target_judgment"] = get_judgment_by_uri_or_404(
             caselawutils.neutral_url(target_neutral_citation)
         )
+        context["judgment"] = context["incoming_judgment"]
 
         return context
 

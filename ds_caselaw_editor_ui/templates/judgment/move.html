@@ -1,5 +1,21 @@
-<form action="{% url "move-judgment" judgment.uri %}" method="post">
-  {% csrf_token %}
-  {{ form }}
-  <input type="submit" value="Submit" />
-</form>
+{% extends "layouts/judgment_with_sidebar.html" %}
+{% load i18n %}
+{% block judgment_header %}
+  {% include "includes/judgment/metadata_panel_static.html" with judgment=judgment %}
+{% endblock judgment_header %}
+{% block judgment_content %}
+  <h2>Move and merge</h2>
+
+  <p>Use this form to <b>set the neutral citation</b> of this judgment.</p>
+
+    <ul>
+      <li>If there is no judgment with this neutral citation, this judgment will move to its new home. <b>This will change the document's URI</b>.</li>
+      <li>If there is already a judgment with this neutral citation, you will be able to compare this judgment to the existing one and merge the two, making this the most recent version at that URI.</li>
+    </ul>
+
+  <form action="{% url "move-judgment" judgment.uri %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" />
+  </form>
+{% endblock judgment_content %}
