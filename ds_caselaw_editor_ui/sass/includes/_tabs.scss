@@ -30,11 +30,11 @@
       }
     }
 
-    input[type=radio] {
+    input[type="radio"] {
       display: none;
     }
 
-    input[type=radio]:checked~label {
+    input[type="radio"]:checked ~ label {
       border-bottom: 2px solid $color__white;
       background: $color__white;
       a {

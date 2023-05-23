@@ -1,5 +1,4 @@
 .judgments-list {
-
   &__judgments-list-controls-container {
     margin-bottom: calc(2 * $spacer__unit);
   }
@@ -20,8 +19,8 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
-    padding:  $spacer__unit calc($spacer__unit / 2);
-    flex-grow:0;
+    padding: $spacer__unit calc($spacer__unit / 2);
+    flex-grow: 0;
     width: 100%;
     border-bottom: 1px solid black;
   }
@@ -92,13 +91,13 @@
   }
 
   &__judgment-details-submitted-mobile {
-    @media(min-width: $grid__breakpoint-medium) {
+    @media (min-width: $grid__breakpoint-medium) {
       display: none;
     }
   }
 
   &__judgment-details-assigned-mobile {
-    @media(min-width: $grid__breakpoint-medium) {
+    @media (min-width: $grid__breakpoint-medium) {
       display: none;
     }
   }
@@ -139,7 +138,7 @@
     font-weight: normal;
     margin-top: 0;
     padding: 0.5rem;
-    font-size: .9rem;
+    font-size: 0.9rem;
     &:hover {
       background-color: $color__link-blue-hover;
       cursor: grab;

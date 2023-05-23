@@ -1,5 +1,4 @@
 .result-controls {
-
   &__order-by-label {
     font-family: $font__roboto;
     font-size: 1.4rem;
@@ -11,5 +10,4 @@
     @include select;
     min-width: auto;
   }
-
 }

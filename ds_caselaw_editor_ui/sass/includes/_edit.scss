@@ -36,7 +36,7 @@
     display: block;
   }
 
-  input[type=submit] {
+  input[type="submit"] {
     @include call-to-action-button;
     display: block;
   }
@@ -59,17 +59,17 @@
     }
   }
 
-  input[type=text] {
+  input[type="text"] {
     @include text_field;
   }
 
-  input[type=checkbox] {
+  input[type="checkbox"] {
     @include checkbox;
   }
 }
 
 .create-email-block {
-  border: 2px #FFB952 solid;
+  border: 2px #ffb952 solid;
   display: inline-block;
   padding: 0px 10px 0px 0;
   margin-left: 15%;

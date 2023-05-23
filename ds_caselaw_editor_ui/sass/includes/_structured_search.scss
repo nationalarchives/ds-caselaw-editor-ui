@@ -1,5 +1,4 @@
 .structured-search {
-
   &__main-search {
     background-color: $color__light-grey;
     padding: calc($spacer__unit * 1.5) 0 calc($spacer__unit * 2);
@@ -47,13 +46,11 @@
   }
 
   &__filter-options {
-
     legend {
       font-family: $font__roboto;
       font-size: 1.5rem;
       font-weight: normal;
     }
-
   }
 
   &__name-label {
@@ -84,7 +81,7 @@
       display: grid;
       grid-auto-columns: 1fr;
       grid-template-columns: 1fr 1fr;
-      gap: $spacer__unit
+      gap: $spacer__unit;
     }
   }
 
@@ -130,13 +127,13 @@
     margin-top: $spacer__unit;
   }
 
-  input[type=submit] {
+  input[type="submit"] {
     @include call-to-action-button;
     padding-right: calc($spacer__unit * 3);
     padding-left: calc($spacer__unit * 3);
   }
 
-  input[type=checkbox] {
-    @include checkbox
+  input[type="checkbox"] {
+    @include checkbox;
   }
 }

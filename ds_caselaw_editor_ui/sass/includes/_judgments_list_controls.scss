@@ -2,7 +2,6 @@
   text-align: left;
   display: inline-block;
 
-
   @media (min-width: $grid__breakpoint-extra-large) {
     margin: 0;
   }
@@ -50,7 +49,6 @@
 }
 
 .judgments-list__judgments-list-controls-container {
-
   @media (min-width: $grid__breakpoint-large) {
     display: flex;
     align-items: flex-end;

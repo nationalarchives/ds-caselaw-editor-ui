@@ -4,7 +4,6 @@
   border-color: #ffffff;
   padding: $spacer__unit;
 
-
   @media (min-width: 1400px) {
     width: 65%;
     border-width: 1rem 20rem 1rem 20rem;
@@ -78,14 +77,13 @@
     padding: calc(#{$spacer__unit} / 2) 0;
   }
 
-  input[type=submit] {
+  input[type="submit"] {
     @include call-to-action-button;
     width: 10rem;
     min-height: 0.5rem;
   }
 
-  &__judgment_date-input{
-
+  &__judgment_date-input {
     width: 80%;
     min-height: 2rem;
     font-size: 1rem;
@@ -110,19 +108,19 @@
     resize: none;
   }
 
-  input[type=text] {
+  input[type="text"] {
     @include text_field;
     box-sizing: border-box;
     width: 100%;
     min-height: 2rem;
     font-size: 1rem;
-    $font__open-sans: 'Open Sans', sans-serif;
+    $font__open-sans: "Open Sans", sans-serif;
     padding: 0.5rem;
     border: 2px solid $color__dark-grey;
     margin: 0;
   }
 
-  input[type=submit] {
+  input[type="submit"] {
     width: 100%;
   }
 }
