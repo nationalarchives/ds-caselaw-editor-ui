@@ -50,7 +50,7 @@ def build_confirmation_email_link(
 def build_raise_issue_email_link(
     judgment: Judgment, signature: Optional[str] = None
 ) -> str:
-    subject_string = "Find Case Law - Issue(s) found with {reference}".format(
+    subject_string = "Issue(s) found with {reference}".format(
         reference=judgment.consignment_reference
     )
     email_context = {
