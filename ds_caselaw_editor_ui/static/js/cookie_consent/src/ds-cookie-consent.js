@@ -10,7 +10,9 @@ let measureRadioInput = document.querySelector(Data.form.analytics.measure);
 let doNotMeasureRadioInput = document.querySelector(
   Data.form.analytics.doNotMeasure
 );
-let settingsRadioInput = document.querySelector(Data.form.settings.rememberSettings);
+let settingsRadioInput = document.querySelector(
+  Data.form.settings.rememberSettings
+);
 let doNotRememberSettingsRadioInput = document.querySelector(
   Data.form.settings.doNotRememberSettings
 );
@@ -162,14 +164,14 @@ let doNotRememberSettingsRadioInput = document.querySelector(
       dsCookieConsentBannerAPI.createButton(
         Data.buttonAccept.text,
         Data.buttonAccept.id,
-        Data.buttonAccept.class,
+        Data.buttonAccept.class
       );
 
       // Create Reject Optional Cookies
       dsCookieConsentBannerAPI.createButton(
         Data.buttonReject.text,
         Data.buttonReject.id,
-        Data.buttonReject.class,
+        Data.buttonReject.class
       );
 
       // Select the buttons
@@ -179,9 +181,8 @@ let doNotRememberSettingsRadioInput = document.querySelector(
       const btnPreference = document.querySelector(Data.buttonPreferences.id);
       const bannerParagraph = document.querySelector(Data.bannerParagraph.id);
       const cookieHead = document.querySelector(Data.bannerHeadline.id);
-      const getBannerElementContainer = getBannerElement.querySelector(
-        ".container"
-      );
+      const getBannerElementContainer =
+        getBannerElement.querySelector(".container");
 
       // Check if the button Accept Optional Cookies exists
       if (btnAccept) {
@@ -206,7 +207,7 @@ let doNotRememberSettingsRadioInput = document.querySelector(
           dsCookieConsentBannerAPI.createButton(
             Data.hideThisMessage.text,
             Data.hideThisMessage.id,
-            Data.hideThisMessage.class,
+            Data.hideThisMessage.class
           );
 
           if (btnAccept) {
@@ -258,8 +259,7 @@ let doNotRememberSettingsRadioInput = document.querySelector(
           const DOMhead = document.head;
           const gaScript = document.createElement("script");
           gaScript.id = "frontEndGA";
-          gaScript.src =
-            "/static/js/dist/gtm_script.js";
+          gaScript.src = "/static/js/dist/gtm_script.js";
           DOMhead.appendChild(gaScript);
         });
       }
@@ -287,7 +287,7 @@ let doNotRememberSettingsRadioInput = document.querySelector(
           dsCookieConsentBannerAPI.createButton(
             Data.hideThisMessage.text,
             Data.hideThisMessage.id,
-            Data.hideThisMessage.class,
+            Data.hideThisMessage.class
           );
 
           if (btnAccept) {
@@ -340,7 +340,7 @@ let doNotRememberSettingsRadioInput = document.querySelector(
             Data.cookiesToRemove.two,
             Data.cookiesToRemove.three,
             Data.cookiesToRemove.four,
-            Data.cookiesToRemove.five
+            Data.cookiesToRemove.five,
           ];
 
           // Unset GA cookies if available

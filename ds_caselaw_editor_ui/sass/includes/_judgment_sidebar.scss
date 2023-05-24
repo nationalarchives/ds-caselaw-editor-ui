@@ -1,53 +1,53 @@
 .judgment-sidebar {
-    &__block {
-      margin-bottom: 2rem;
-      h4 {
-        margin-bottom: 0.6rem;
-      }
-
-      a {
-        display: block;
-      }
-
-      ul {
-        padding-left: 0;
-      }
-
-      li {
-        list-style: none;
-        margin-top: 0.4rem;
-        font-size: 0.8rem;
-      }
-
-      dl {
-        margin-top: 1rem;
-        font-size: 0.8rem;
-      }
-
-      dt {
-        font-weight: bold;
-      }
-
-      dd {
-        margin-left: 0;
-        margin-bottom: $spacer__unit;
-      }
-
-      .judgment-status-indicator {
-        font-size: 1rem;
-      }
+  &__block {
+    margin-bottom: 2rem;
+    h4 {
+      margin-bottom: 0.6rem;
     }
 
-    &__assignment-input {
+    a {
       display: block;
-      min-width: 66%;
     }
 
-    &__context-notification {
-      margin-top: calc(0.5 * $spacer__unit);
+    ul {
+      padding-left: 0;
     }
 
-    .loading-indicator {
-      margin-top: calc(0.5 * $spacer__unit);
+    li {
+      list-style: none;
+      margin-top: 0.4rem;
+      font-size: 0.8rem;
+    }
+
+    dl {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+    }
+
+    dt {
+      font-weight: bold;
+    }
+
+    dd {
+      margin-left: 0;
+      margin-bottom: $spacer__unit;
+    }
+
+    .judgment-status-indicator {
+      font-size: 1rem;
     }
   }
+
+  &__assignment-input {
+    display: block;
+    min-width: 66%;
+  }
+
+  &__context-notification {
+    margin-top: calc(0.5 * $spacer__unit);
+  }
+
+  .loading-indicator {
+    margin-top: calc(0.5 * $spacer__unit);
+  }
+}

@@ -6,7 +6,6 @@
   flex-direction: row;
 
   &__breadcrumb {
-
     flex-grow: 1;
 
     display: block;
@@ -70,14 +69,11 @@
 }
 
 .page-header-slim {
-
   padding: calc($spacer__unit * 0.25) 0;
 
   &__breadcrumb {
-
     ol {
       margin: 0 calc($spacer__unit * 0.5);
     }
   }
-
 }

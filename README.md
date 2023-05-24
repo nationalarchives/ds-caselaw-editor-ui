@@ -103,10 +103,9 @@ $ fab start
 You may need to create a docker network if you are running the docker containers for the first time. If you see an
 error message referring to a docker network, run:
 
-``` console
+```console
 $ docker network create caselaw
 ```
-
 
 ### 6. Start a shell session with the 'django' container
 
@@ -152,16 +151,15 @@ You can then access the site in your browser as usual:
 
 <http://127.0.0.1:3000>
 
-
 #### Fixing an issue when another project is already running
+
 When starting up, if you encounter an error message like this:
 
-```ERROR: for postgres  Cannot start service postgres: driver failed programming external connectivity on endpoint ds-caselaw-editor-ui_postgres_1 (0fb7572d583761d3a348e8fd9139b0007638a17c6f91b15e8678f2575f94ffa7): Bind for 0.0.0.0:5432 failed: port is already allocated```
+`ERROR: for postgres Cannot start service postgres: driver failed programming external connectivity on endpoint ds-caselaw-editor-ui_postgres_1 (0fb7572d583761d3a348e8fd9139b0007638a17c6f91b15e8678f2575f94ffa7): Bind for 0.0.0.0:5432 failed: port is already allocated`
 
 It's because the public UI project is still running, you'll need to reopen that project and run the command `fab stop`.
 Now go back to the Editor UI project and use the same command `fab stop`.
 Now you can restart the project up again with `fab run`.
-
 
 ### Localstack
 
@@ -203,10 +201,9 @@ Any commit that's merged to `main` needs to be [signed](https://docs.github.com/
 
 We recommend signing with your ssh key, as it's probably the easiest method of doing so. Assuming you already have an ssh key created, just follow the following steps:
 
-
 - Add your SSH key as a _signing key_ in your [github account](https://github.com/settings/keys) - note this is different to an _authentication key_, which you likely already have set up. You can use the same key for both purposes, but you need to add it separately for each one twice.
 - In your terminal, run the following commands. This assumes you want to set up commit signing by default for all repositories. If you don't want this for whatever, reason, leave out the `--global` flag (but in that case you'll have to remember to repeat these steps in every TNA repository you work on):
-  - Enable signing with  `git config --global commit.gpgsign true`
+  - Enable signing with `git config --global commit.gpgsign true`
   - Specify that we'll use SSH for signing with: `git config --global gpg.format ssh`
   - Specify the key you'll use to sign. If it's not id_rsa.pub, give the correct path here: `git config --global user.signingkey ~/.ssh/id_rsa.pub`
 
@@ -216,15 +213,15 @@ If you have already made some unsigned commits on a branch before setting up sig
 
 Included in this repository is:
 
-* Webpack and Babel for transpiling JavaScript
-* Sass for compiling CSS
+- Webpack and Babel for transpiling JavaScript
+- Sass for compiling CSS
 
 ### Working with SASS/CSS
 
-* Ensure you have NodeJS & NPM installed.
-* Install SASS globally by running `npm install -g sass`.
-* To watch and build the site SASS, run `npm run start-sass`
-* To modify styles, navigate to the `sass` folder in your editor.
+- Ensure you have NodeJS & NPM installed.
+- Install SASS globally by running `npm install -g sass`.
+- To watch and build the site SASS, run `npm run start-sass`
+- To modify styles, navigate to the `sass` folder in your editor.
 
 #### Note about the Judgment display CSS
 
@@ -250,7 +247,7 @@ judgment CSS, you **MUST** make those edits in `ds-caselaw-public-ui`.
 
 ### Working with JavaScript
 
-* In a new terminal session run `npm run start-scripts` to kick off a Webpack watch task
+- In a new terminal session run `npm run start-scripts` to kick off a Webpack watch task
 
 ### Internationalisation
 
@@ -260,91 +257,92 @@ We're using [the built-in django translation module](https://docs.djangoproject.
 
 1. Ensure that the `i18n` module is loaded at the top of the file:
 
-  ```django
-  {% extends 'layouts/base.html' %}
-  {% load i18n %}
-  ...
-  ```
+```django
+{% extends 'layouts/base.html' %}
+{% load i18n %}
+...
+```
 
 2. Add the translation string to the page:
 
-  ```
-  <h1>{% translate "namespace.mytranslation" %}</h1>
-  ```
+```
+<h1>{% translate "namespace.mytranslation" %}</h1>
+```
 
 3. Update the locale file by running the following command in a `fab sh` shell:
 
-  ```
-  python manage.py makemessages --no-obsolete --add-location file -l en_GB
-  ```
+```
+python manage.py makemessages --no-obsolete --add-location file -l en_GB
+```
 
 4. In the generated `.po` file, find the generated translation section, it will be a block like this, with the `msgid` corresponding to the key you added in the template:
 
-  ```
-  #: ds_caselaw_editor_ui/templates/includes/my_template.html
-  #, fuzzy
-  #| msgid "namespace.othertranslation"
-  msgid "namespace.mytranslation"
-  msgstr "An existing translation autofilled as an example"
-  ```
+```
+#: ds_caselaw_editor_ui/templates/includes/my_template.html
+#, fuzzy
+#| msgid "namespace.othertranslation"
+msgid "namespace.mytranslation"
+msgstr "An existing translation autofilled as an example"
+```
 
-  You need to do two things here - first remove the line starting with `#, fuzzy` and any lines starting with `#|` below it, then edit the line starting with `msgstr` to include your translation string. The end result will look something like this:
+You need to do two things here - first remove the line starting with `#, fuzzy` and any lines starting with `#|` below it, then edit the line starting with `msgstr` to include your translation string. The end result will look something like this:
 
-  ```
-  #: ds_caselaw_editor_ui/templates/includes/my_template.html
-  msgid "namespace.mytranslation"
-  msgstr "This is my translation"
-  ```
+```
+#: ds_caselaw_editor_ui/templates/includes/my_template.html
+msgid "namespace.mytranslation"
+msgstr "This is my translation"
+```
 
 5. Compile the translations to a binary file (this should also be run inside a `fab sh` shell):
-  ```
-  python manage.py compilemessages
-  ```
+
+```
+python manage.py compilemessages
+```
 
 ### Changing existing translations
 
 1. Find the translation string you want to change in the template:
 
-  ```django
-    <h1>{% translate "namespace.mytranslation" %}</h1>
-  ```
+```django
+  <h1>{% translate "namespace.mytranslation" %}</h1>
+```
 
 2. Go and look for this translation in the `django.po` file (you'll be looking for a line with `msgid` at the start and the string you saw in the template):
 
-  ```
-  msgid "namespace.mytranslation"
-  msgstr "This is my translation"
-  ```
+```
+msgid "namespace.mytranslation"
+msgstr "This is my translation"
+```
 
 3. Change the text on the following line (begining with `msgstr` to the new translation you want):
 
-
-  ```
-  msgid "namespace.mytranslation"
-  msgstr "This is the new tranlation text I have edited"
-  ```
+```
+msgid "namespace.mytranslation"
+msgstr "This is the new tranlation text I have edited"
+```
 
 4. Compile the translations again to make your changes show up (this should be run inside a `fab sh` shell):
 
-  ```
-  python manage.py compilemessages
-  ```
+```
+python manage.py compilemessages
+```
 
 ## Authentication
 
 To login or signup to the staging application, go to `http://localhost:3000/accounts/login`. From there you will be able to log in to an existing account.
 
 To set up the first administrator account or recreate an account if the login credentials no longer work, run the following procedure:
-1) Make sure that both the Docker container and the VPN are running.
-2) Check that the Fab Build is also running by opening a terminal window and typing `fab start`, this should return a message to say it's up to date.
-3) Now open a new terminal window and create a new superuser account by running the following commands:
-  * Type `docker-compose exec django bash` and hit return
-  * Now type `python manage.py createsuperuser`and hit return, This will show the set username of `root`. You can change this to something else to make it more personal – but it can be left as it is. If you want to change it, type in your new username and hit return if you are happy with leaving it as `root` also just hit return.
-  * It will now ask you for your email address, type this in and hit return.
-  * Lastly, you will require a password, There are no rules to follow so it can be what you want. You will need to re-type your password so that it is validated.
-  * Success – your superuser account is now created.
-Head back over to `http://localhost:3000/accounts/login` and input your new login credentials to gain access to the Editor UI local instance.
 
+1. Make sure that both the Docker container and the VPN are running.
+2. Check that the Fab Build is also running by opening a terminal window and typing `fab start`, this should return a message to say it's up to date.
+3. Now open a new terminal window and create a new superuser account by running the following commands:
+
+- Type `docker-compose exec django bash` and hit return
+- Now type `python manage.py createsuperuser`and hit return, This will show the set username of `root`. You can change this to something else to make it more personal – but it can be left as it is. If you want to change it, type in your new username and hit return if you are happy with leaving it as `root` also just hit return.
+- It will now ask you for your email address, type this in and hit return.
+- Lastly, you will require a password, There are no rules to follow so it can be what you want. You will need to re-type your password so that it is validated.
+- Success – your superuser account is now created.
+  Head back over to `http://localhost:3000/accounts/login` and input your new login credentials to gain access to the Editor UI local instance.
 
 ## Deleting judgments on production
 
@@ -353,6 +351,7 @@ a neutral citation number. Until this functionality is built into the editor UI,
 Editors will create a Trello ticket with the URI of the judgment they need removed from the site.
 
 To do this:
+
 - Log in to the [production XQuery console](http://caselaw-alb-16tn9udgqba77-1339658714.eu-west-2.elb.amazonaws.com:8000/qconsole/)
 - Get the [XQuery to delete a judgment from the API Client](https://github.com/nationalarchives/ds-caselaw-custom-api-client/blob/main/src/caselawclient/xquery/delete_judgment.xqy)
   (Often there is a pre-existing tab in the XQuery console with this in)

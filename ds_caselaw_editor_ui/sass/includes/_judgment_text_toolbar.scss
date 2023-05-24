@@ -1,5 +1,4 @@
 .judgment-toolbar {
-
   background-color: $color__light-grey;
   color: $color__black;
   padding: calc(0.5 * $spacer__unit) $spacer__unit;
@@ -14,21 +13,23 @@
   &__delete {
     border-color: $color__red !important;
     color: $color__red !important;
-    &:focus, &:hover {
+    &:focus,
+    &:hover {
       background-color: $color__red !important;
       color: $color__white !important;
       outline-color: $color__red !important;
     }
   }
 
-
   &__return-link {
     display: inline-block;
 
     a {
-      background: $color__aqua-blue url($fa_chevron_left_white) 0.8rem 0.6rem no-repeat;
+      background: $color__aqua-blue url($fa_chevron_left_white) 0.8rem 0.6rem
+        no-repeat;
       background-size: 0.75rem;
-      padding: calc($spacer__unit / 2) calc($spacer__unit * 1.5) calc($spacer__unit / 2) calc($spacer__unit * 2.5);
+      padding: calc($spacer__unit / 2) calc($spacer__unit * 1.5)
+        calc($spacer__unit / 2) calc($spacer__unit * 2.5);
       display: inline-block;
       text-decoration: none;
     }
@@ -54,7 +55,6 @@
     }
 
     @media (min-width: $grid__breakpoint-small) {
-
       text-align: center;
     }
   }

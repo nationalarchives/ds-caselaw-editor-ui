@@ -1,99 +1,99 @@
 @mixin label {
-    p {
-        text-align: center;
-        padding: 1.5rem;
-    }
+  p {
+    text-align: center;
+    padding: 1.5rem;
+  }
 }
 
 @mixin label-light {
-    @include label;
+  @include label;
 
-    p {
-        color: $color__white;
-    }
+  p {
+    color: $color__white;
+  }
 }
 
 @mixin label-dark {
-    @include label;
+  @include label;
 
-    p {
-        color: $color__black;
-    }
+  p {
+    color: $color__black;
+  }
 }
 
 .swatch {
-    width: 200px;
-    display: inline-block;
-    margin-right: 1rem;
-    padding: 0;
+  width: 200px;
+  display: inline-block;
+  margin-right: 1rem;
+  padding: 0;
 
-    &--yellow {
-        background-color: $color__yellow;
-        @include label-dark;
-    }
+  &--yellow {
+    background-color: $color__yellow;
+    @include label-dark;
+  }
 
-    &--almost-black {
-        background-color: $color__almost-black;
-        @include label-light;
-    }
+  &--almost-black {
+    background-color: $color__almost-black;
+    @include label-light;
+  }
 
-    &--aqua-blue {
-        background-color: $color__aqua-blue;
-        @include label-light;
-    }
+  &--aqua-blue {
+    background-color: $color__aqua-blue;
+    @include label-light;
+  }
 
-    &--dark-blue {
-        background-color: $color__dark-blue;
-        @include label-light;
-    }
+  &--dark-blue {
+    background-color: $color__dark-blue;
+    @include label-light;
+  }
 
-    &--light-grey {
-        background-color: $color__light-grey;
-        @include label-dark;
-    }
+  &--light-grey {
+    background-color: $color__light-grey;
+    @include label-dark;
+  }
 
-    &--grey {
-        background-color: $color__grey;
-        @include label-dark;
-    }
+  &--grey {
+    background-color: $color__grey;
+    @include label-dark;
+  }
 
-    &--dark-grey {
-        background-color: $color__dark-grey;
-        @include label-light;
-    }
+  &--dark-grey {
+    background-color: $color__dark-grey;
+    @include label-light;
+  }
 
-    &--success {
-        background-color: $color__success;
-        @include label-light;
-    }
+  &--success {
+    background-color: $color__success;
+    @include label-light;
+  }
 
-    &--failure {
-        background-color: $color__failure;
-        @include label-light;
-    }
+  &--failure {
+    background-color: $color__failure;
+    @include label-light;
+  }
 
-    &--green {
-        background-color: $color__green;
-        @include label-light;
-    }
+  &--green {
+    background-color: $color__green;
+    @include label-light;
+  }
 
-    &--red {
-        background-color: $color__red;
-        @include label-light;
-    }
+  &--red {
+    background-color: $color__red;
+    @include label-light;
+  }
 
-    &--in-progress {
-        background-color: $colour__in-progress;
-        @include label-dark;
-    }
+  &--in-progress {
+    background-color: $colour__in-progress;
+    @include label-dark;
+  }
 
-    &--on-hold {
-        background-color: $colour__on-hold;
-        @include label-dark;
-    }
+  &--on-hold {
+    background-color: $colour__on-hold;
+    @include label-dark;
+  }
 
-    &--published {
-        background-color: $colour__published;
-        @include label-dark;
-    }
+  &--published {
+    background-color: $colour__published;
+    @include label-dark;
+  }
 }

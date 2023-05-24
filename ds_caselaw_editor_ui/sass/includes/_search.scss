@@ -17,7 +17,7 @@
     margin: 0 calc($spacer__unit * 1.5);
 
     &--sr-only {
-       @include sr-only;
+      @include sr-only;
     }
   }
 
@@ -25,7 +25,7 @@
     margin-top: calc($spacer__unit * 2);
   }
 
-  input[type=submit] {
+  input[type="submit"] {
     @include call-to-action-button;
     padding-left: calc($spacer__unit * 3);
     padding-right: calc($spacer__unit * 3);
@@ -54,10 +54,9 @@
     }
   }
 
-  input[type=checkbox] {
+  input[type="checkbox"] {
     &:focus {
       @include focus-default;
-
     }
   }
 }

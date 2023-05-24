@@ -188,7 +188,7 @@
     font-size: 0.85em;
 
     &::after {
-      content: 'x';
+      content: "x";
       font-size: 1rem;
     }
 
@@ -204,9 +204,7 @@
 }
 
 .results {
-
   &-search-component {
-
     &__toggle-control {
       border: none;
       background-color: transparent;

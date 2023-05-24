@@ -50,7 +50,8 @@
     list-style-type: none;
 
     li {
-      padding: calc($spacer__unit * 2) calc($spacer__unit * 2) calc($spacer__unit * 2) 0;
+      padding: calc($spacer__unit * 2) calc($spacer__unit * 2)
+        calc($spacer__unit * 2) 0;
       border-bottom: 0.125rem solid $color__grey;
     }
   }
