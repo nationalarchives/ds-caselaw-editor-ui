@@ -1,6 +1,6 @@
-Dear {{ submitter }},
+Dear {{ submitter|safe }},
 
-Further to your recent upload of "{{ judgment_name }}", reference {{ reference }},
+Further to your recent upload of "{{ judgment_name|safe }}", reference {{ reference|safe }},
 
 
 
@@ -8,4 +8,4 @@ If you wish to supply us with an amended version of the judgment please resubmit
 
 Kind regards,
 
-{{ user_signature }}
+{{ user_signature|safe }}
