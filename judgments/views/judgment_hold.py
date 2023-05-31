@@ -8,7 +8,7 @@ from judgments.utils import editors_dict
 from judgments.utils.aws import invalidate_caches
 from judgments.utils.view_helpers import get_judgment_by_uri_or_404
 
-from .judgment_edit import build_confirmation_email_link
+from .judgment_edit import build_raise_issue_email_link
 
 
 class HoldJudgmentView(TemplateView):
@@ -48,7 +48,7 @@ class HoldJudgmentSuccessView(TemplateView):
                     judgment=judgment.name,
                 ),
                 "judgment": judgment,
-                "email_confirmation_link": build_confirmation_email_link(
+                "email_issue_link": build_raise_issue_email_link(
                     judgment=judgment,
                     signature=(
                         self.request.user.get_full_name()
