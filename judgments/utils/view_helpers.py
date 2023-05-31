@@ -1,10 +1,14 @@
+from typing import Any
+
+from caselawclient.client_helpers.search_helpers import (
+    search_judgments_and_parse_response,
+)
 from caselawclient.errors import JudgmentNotFoundError
+from caselawclient.search_parameters import SearchParameters
 from django.http import Http404
 
-from judgments.models import SearchResult
 from judgments.utils import Judgment, get_judgment_by_uri
 from judgments.utils.paginator import paginator
-from judgments.utils.perform_advanced_search import perform_advanced_search
 
 ALLOWED_ORDERS = ["date", "-date"]
 
@@ -25,20 +29,21 @@ def get_search_parameters(
     }
 
 
-def get_search_results(query):
-    model = perform_advanced_search(
-        query=query["query"],
-        order=query["order"],
-        only_unpublished=query["only_unpublished"],
-        page=query["page"],
+def get_search_results(parameters: dict[str, Any]) -> dict[str, Any]:
+    search_parameters = SearchParameters(
+        query=parameters["query"],
+        order=parameters["order"],
+        only_unpublished=parameters["only_unpublished"],
+        show_unpublished=True,
+        page=parameters["page"],
     )
-    search_results = [SearchResult.create_from_node(result) for result in model.results]
+    search_response = search_judgments_and_parse_response(search_parameters)
     return {
-        "query": query,
-        "total": model.total,
-        "judgments": search_results,
-        "order": query["order"],
-        "paginator": paginator(query["page"], model.total),
+        "query": parameters,
+        "total": search_response.total,
+        "judgments": search_response.results,
+        "order": parameters["order"],
+        "paginator": paginator(parameters["page"], search_response.total),
     }
 
 
