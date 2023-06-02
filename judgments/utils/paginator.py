@@ -1,6 +1,6 @@
 import math
 
-from caselawclient.Client import RESULTS_PER_PAGE
+from caselawclient.search_parameters import RESULTS_PER_PAGE
 
 
 def paginator(current_page, total):
