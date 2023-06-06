@@ -2,6 +2,7 @@ import json
 from typing import Optional
 
 from caselawclient.Client import api_client
+from caselawclient.responses.search_result import EditorPriority
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import redirect
@@ -48,8 +49,11 @@ def prioritise_judgment_button(request):
     """Editors can let other editors know that some judgments are more important than others."""
 
     def parse_priority(priority: str) -> Optional[str]:
-        # note: use 09 if using numbers less than 10.
-        priorities = {"low": "10", "medium": "20", "high": "30"}
+        priorities = {
+            "low": EditorPriority.LOW.value,
+            "medium": EditorPriority.MEDIUM.value,
+            "high": EditorPriority.HIGH.value,
+        }
         priority_string = priority.lower().strip()
         return priorities.get(priority_string)
 
