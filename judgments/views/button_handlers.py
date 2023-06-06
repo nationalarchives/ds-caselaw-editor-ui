@@ -49,7 +49,6 @@ def prioritise_judgment_button(request):
     """Editors can let other editors know that some judgments are more important than others."""
 
     def parse_priority(priority: str) -> Optional[str]:
-        # note: use 09 if using numbers less than 10.
         priorities = {
             "low": EditorPriority.LOW.value,
             "medium": EditorPriority.MEDIUM.value,
