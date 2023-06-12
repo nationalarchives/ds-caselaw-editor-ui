@@ -3,10 +3,15 @@
     @include container;
 
     padding: $spacer__unit calc($spacer__unit * 2);
-
-    .cookie_head {
-      font-family: $font__roboto;
-      font-size: 1.8rem;
-    }
   }
+}
+
+#ds-cookie-consent-banner a {
+  color: $color__white;
+}
+
+#ds-cookie-consent-banner .container #btn_preferences:hover,
+#ds-cookie-consent-banner .container #btn_preferences:focus {
+  background: none;
+  border: 2px solid transparent;
 }
