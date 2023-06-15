@@ -3,23 +3,36 @@
   padding: 0.5rem 1rem;
 }
 
-@mixin page-notification {
-  @include notification;
-  margin: $spacer__unit 15% calc(0.5 * $spacer__unit) 15%;
-
-  @media (max-width: $grid__breakpoint-medium) {
-    margin: auto 0;
-  }
+.page-notification__container {
+  @include container;
 }
 
 .page-notification {
   &--success {
-    @include page-notification;
+    @include notification;
     background-color: $color__success;
   }
 
   &--failure {
-    @include page-notification;
+    @include notification;
+    background-color: $color__failure;
+  }
+}
+
+.inline-notification {
+  &--success {
+    @include notification;
+    background-color: $color__success;
+  }
+
+  &--warning {
+    @include notification;
+    color: $color__black;
+    background-color: $color__warning;
+  }
+
+  &--failure {
+    @include notification;
     background-color: $color__failure;
   }
 }

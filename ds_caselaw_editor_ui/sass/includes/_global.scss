@@ -3,6 +3,10 @@ body {
   font-family: $font__open-sans;
 }
 
+.container {
+  @include container;
+}
+
 textarea {
   font-family: inherit;
   font-size: inherit;
