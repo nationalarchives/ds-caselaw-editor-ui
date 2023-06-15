@@ -13,6 +13,7 @@ $color__aqua-blue: #037091;
 
 /* STARTS – Validation variables */
 $color__success: #336600;
+$color__warning: #f0c560;
 $color__failure: #cc3300;
 
 $color__green: #3bb300;
@@ -36,6 +37,8 @@ $color__link-blue-active: #1e1e2a;
 $color__focus-blue-outline: #1d70b8;
 $color__cta-background: $color__aqua-blue;
 $color__cta-background-hover: $color__dark-blue;
+
+$gutter_unit: 25px;
 
 $grid__breakpoint-small: 576px;
 $grid__breakpoint-medium: 768px;

@@ -3,12 +3,6 @@
   margin: 0 auto;
   padding: 0 calc(#{$spacer__unit} * 2);
 
-  &__container {
-    @include container;
-    text-align: left;
-    padding: 1rem;
-  }
-
   &__panel {
     padding: calc(#{$spacer__unit} / 2) 0;
   }

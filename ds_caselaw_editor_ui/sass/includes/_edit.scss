@@ -3,13 +3,6 @@
 .judgment-info-component {
   padding: 0 $spacer__unit;
 
-  &__container {
-    @include container;
-    text-align: left;
-    margin: 0 auto;
-    padding: 0 calc(#{$spacer__unit} * 2);
-  }
-
   &__header {
     font-size: 1rem;
     line-height: 2.8rem;
