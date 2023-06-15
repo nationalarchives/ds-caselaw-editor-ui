@@ -21,7 +21,6 @@
   </div>
 {% endblock extra_sidebar_content %}
 {% block judgment_content %}
-  {% include "includes/judgment/judgment_validation_messages.html" %}
   <form aria-label="Edit judgment" method="post">
     {% csrf_token %}
     <div class="edit-component__panel">
