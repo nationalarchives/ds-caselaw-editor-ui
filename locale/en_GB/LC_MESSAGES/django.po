@@ -117,8 +117,8 @@ msgid "judgments.sidebar.manage"
 msgstr "Manage"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
-msgid "judgment.movemerge"
-msgstr "Move and merge"
+msgid "judgment.change_ncn"
+msgstr "Change neutral citation number"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
 msgid "judgments.sidebar.tools"
