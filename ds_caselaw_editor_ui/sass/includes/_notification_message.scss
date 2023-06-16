@@ -25,10 +25,10 @@
     background-color: $color__success;
   }
 
-  &--warning {
+  &--info {
     @include notification;
-    color: $color__black;
-    background-color: $color__warning;
+    color: $color__almost-black;
+    background-color: $color__information;
   }
 
   &--failure {
