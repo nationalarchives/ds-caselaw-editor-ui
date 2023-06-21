@@ -5,15 +5,20 @@
 {% endblock judgment_header %}
 {% block judgment_content %}
   <h2>Publish this document</h2>
-  <form aria-label="publish judgment"
-        action="{% url 'publish' %}"
-        method="post">
-    {% csrf_token %}
-    <div class="judgment-component__actions">
-      <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
-      <input class="button-cta"
-             type="submit"
-             value="{% translate "judgment.publish_this_judgment" %}"/>
-    </div>
-  </form>
+  {% if judgment.is_publishable %}
+    <form aria-label="publish judgment"
+          action="{% url 'publish' %}"
+          method="post">
+      {% csrf_token %}
+      <div class="judgment-component__actions">
+        <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
+        <input class="button-cta"
+               type="submit"
+               value="{% translate "judgment.publish_this_judgment" %}"/>
+      </div>
+    </form>
+  {% else %}
+    <span class="judgment-toolbar__button button-secondary"
+          aria-disabled="true">{% translate "judgment.publish_this_judgment" %}</span>
+  {% endif %}
 {% endblock judgment_content %}

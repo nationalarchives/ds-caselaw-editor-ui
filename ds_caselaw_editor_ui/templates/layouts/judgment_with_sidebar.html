@@ -7,6 +7,7 @@
       {% endblock judgment_header %}
       <div class="judgment-component__two-column-container">
         <div class="judgment-component__left-panel">
+          {% include "includes/judgment/judgment_validation_messages.html" %}
           {% block judgment_content %}
           {% endblock judgment_content %}
         </div>
