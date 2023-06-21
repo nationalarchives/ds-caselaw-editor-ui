@@ -54,6 +54,8 @@ msgid "feedback.link"
 msgstr "Report a problem to the digital team"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_form.html
+#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
+#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
 #: ds_caselaw_editor_ui/templates/judgment/edit.html
 msgid "judgment.neutral_citation"
 msgstr "NCN"
@@ -82,11 +84,6 @@ msgstr "Name"
 #: judgments/utils/link_generators.py
 msgid "judgments.consignmentref"
 msgstr "TDR Ref"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
-msgid "judgments.ncn"
-msgstr "NCN"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
@@ -121,18 +118,18 @@ msgid "judgment.change_ncn"
 msgstr "Change neutral citation number"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
+#: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html
+#: judgments/views/unlock.py
+msgid "judgment.unlock_judgment_title"
+msgstr "Unlock judgment"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
 msgid "judgments.sidebar.tools"
 msgstr "External Tools"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
 msgid "judgment.create_in_jira"
 msgstr "Create in Jira"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
-#: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html
-#: judgments/views/unlock.py
-msgid "judgment.unlock_judgment_title"
-msgstr "Unlock document"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
 msgid "judgment.report_blocking_problem"
