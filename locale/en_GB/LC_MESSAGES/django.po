@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-22 16:18+0000\n"
+"POT-Creation-Date: 2023-06-21 11:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -63,6 +63,8 @@ msgid "judgment.email_submitter.issue"
 msgstr "Raise issue(s) to submitter"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_form.html
+#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
+#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
 #: ds_caselaw_editor_ui/templates/judgment/edit.html
 msgid "judgment.neutral_citation"
 msgstr "NCN"
@@ -91,11 +93,6 @@ msgstr "Name"
 #: judgments/utils/link_generators.py
 msgid "judgments.consignmentref"
 msgstr "TDR Ref"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
-msgid "judgments.ncn"
-msgstr "NCN"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
@@ -130,18 +127,18 @@ msgid "judgment.change_ncn"
 msgstr "Change neutral citation number"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
+#: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html
+#: judgments/views/unlock.py
+msgid "judgment.unlock_judgment_title"
+msgstr "Unlock judgment"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
 msgid "judgments.sidebar.tools"
 msgstr "External Tools"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
 msgid "judgment.create_in_jira"
 msgstr "Create in Jira"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
-#: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html
-#: judgments/views/unlock.py
-msgid "judgment.unlock_judgment_title"
-msgstr "Unlock judgment"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
 msgid "judgment.report_blocking_problem"
