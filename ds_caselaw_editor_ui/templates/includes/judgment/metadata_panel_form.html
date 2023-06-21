@@ -12,7 +12,9 @@
           <aside for="neutral_citation" class="metadata-component__main-labels">
             {% translate "judgment.neutral_citation" %}
           </aside>
-          <p id="neutral_citation">{{ judgment.neutral_citation }}</p>
+          <p id="neutral_citation">
+            {{ judgment.neutral_citation }} <a href="{% url 'move-judgment' judgment.uri %}">✎</a>
+          </p>
         </div>
         <div class="metadata-component__court">
           <label for="court" class="metadata-component__main-labels">{% translate "judgment.court" %}</label>
