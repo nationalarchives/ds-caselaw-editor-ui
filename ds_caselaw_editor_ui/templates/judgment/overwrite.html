@@ -16,12 +16,28 @@
     <input type="submit" value="Submit" />
   </form>
   <p>
-    Name: <b>{{ incoming_judgment.name }}</b> → <s>{{ target_judgment.name }}</s>
+    Location: <s>{{ incoming_judgment.uri }}</s> → <b>{{ target_judgment.uri }}</b>
   </p>
   <p>
-    Court: <b>{{ incoming_judgment.court }}</b> → <s>{{ target_judgment.court }}</s>
+    Neutral Citation: <b>{{ target_judgment.neutral_citation }}</b>
   </p>
-  <p>TODO: add more metadata</p>
+  <hr/>
+  <p>
+    Name: <b>{{ incoming_judgment.name|default:"(none)" }}</b> → <s>{{ target_judgment.name|default:"(none)" }}</s>
+  </p>
+  <p>
+    Court: <b>{{ incoming_judgment.court|default:"(none)" }}</b> → <s>{{ target_judgment.court|default:"(none)" }}</s>
+  </p>
+  <p>
+    Judgment date: <b>{{ incoming_judgment.judgment_date_as_string }}</b> → <s>{{ target_judgment.judgment_date_as_string }}</s>
+  </p>
+  <hr/>
+  <p>
+    Submitter name: <b>{{ incoming_judgment.source_name|default:"(none)" }}</b> → <s>{{ target_judgment.source_name|default:"(none)" }}</s>
+  </p>
+  <p>
+    Consignment reference: <b>{{ incoming_judgment.consignment_reference|default:"(none)" }}</b> → <s>{{ target_judgment.consigment_reference|default:"(none)" }}</s>
+  </p>
   <div style="border:1px solid black;
               height:100vh;
               width:48%;
