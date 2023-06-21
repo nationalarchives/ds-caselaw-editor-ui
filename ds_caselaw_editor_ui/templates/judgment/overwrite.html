@@ -9,7 +9,8 @@
     This will <b>create a new version</b> of the judgment at {{ target_judgment.uri }}.
   </p>
   <form action="{% url "overwrite-judgment" incoming_judgment.uri %}"
-        method="post">
+        method="post"
+        class="edit-component">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Submit" />
