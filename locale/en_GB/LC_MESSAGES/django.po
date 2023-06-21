@@ -67,7 +67,7 @@ msgstr "Raise issue(s) to submitter"
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
 #: ds_caselaw_editor_ui/templates/judgment/edit.html
 msgid "judgment.neutral_citation"
-msgstr "NCN"
+msgstr "Neutral citation"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_form.html
 #: ds_caselaw_editor_ui/templates/judgment/edit.html
