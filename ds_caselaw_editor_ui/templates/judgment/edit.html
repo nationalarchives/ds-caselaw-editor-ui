@@ -24,14 +24,6 @@
   <form aria-label="Edit judgment" method="post">
     {% csrf_token %}
     <div class="edit-component__panel">
-      <label class="edit-component__text-field-label" for="metadata_name">{% translate "judgment.judgment_name" %}</label>
-      <input type="text"
-             class="edit-component__metadata_name-input"
-             value="{{ judgment.name }}"
-             name="metadata_name"
-             id="metadata_name"/>
-    </div>
-    <div class="edit-component__panel">
       <label class="edit-component__text-field-label" for="neutral_citation">
         {% translate "judgment.neutral_citation" %}
       </label>
@@ -40,7 +32,16 @@
              value="{{ judgment.neutral_citation }}"
              name="neutral_citation"
              id="neutral_citation"
-             size="30"/>
+             size="30"
+             disabled/>
+    </div>
+    <div class="edit-component__panel">
+      <label class="edit-component__text-field-label" for="metadata_name">{% translate "judgment.judgment_name" %}</label>
+      <input type="text"
+             class="edit-component__metadata_name-input"
+             value="{{ judgment.name }}"
+             name="metadata_name"
+             id="metadata_name"/>
     </div>
     <div class="edit-component__panel">
       <label class="edit-component__text-field-label" for="court">{% translate "judgment.court" %}</label>
