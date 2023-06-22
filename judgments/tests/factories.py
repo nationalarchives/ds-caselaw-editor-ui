@@ -1,9 +1,12 @@
+import datetime
 from typing import Any
 from unittest.mock import Mock
 
 import factory
 from caselawclient.models.judgments import Judgment
+from caselawclient.responses.search_result import SearchResult, SearchResultMetadata
 from django.contrib.auth import get_user_model
+from typing_extensions import TypeAlias
 
 User = get_user_model()
 
@@ -56,3 +59,48 @@ class JudgmentFactory:
                 setattr(judgment_mock.return_value, map_to, map_from[1])
 
         return judgment_mock()
+
+
+class SimpleFactory:
+    # "name_of_attribute": ("name of incoming param", "default value")
+    PARAMS_MAP: dict[str, Any]
+
+    target_class: TypeAlias = object
+
+    @classmethod
+    def build(cls, **kwargs) -> target_class:
+        mock_object = Mock(spec=cls.target_class, autospec=True)
+
+        for param, default in cls.PARAMS_MAP.items():
+            if param in kwargs:
+                setattr(mock_object.return_value, param, kwargs[param])
+            else:
+                setattr(mock_object.return_value, param, default)
+
+        return mock_object()
+
+
+class SearchResultMetadataFactory(SimpleFactory):
+    target_class = SearchResultMetadata
+    # "name_of_attribute": ("name of incoming param", "default value")
+    PARAMS_MAP = {
+        "author": factory.Faker("name"),
+        "author_email": factory.Faker("email"),
+        "consignment_reference": "TDR-2023-ABC",
+        "submission_datetime": datetime.datetime(2023, 2, 3, 9, 12, 34),
+    }
+
+
+class SearchResultFactory(SimpleFactory):
+    target_class = SearchResult
+
+    # "name_of_attribute": ("name of incoming param", "default value")
+    PARAMS_MAP = {
+        "uri": "test/2023/123",
+        "name": "Judgment v Judgement",
+        "neutral_citation": "[2023] Test 123",
+        "court": "Court of Testing",
+        "date": datetime.date(2023, 2, 3),
+        "metadata": SearchResultMetadataFactory.build(),
+        "is_failure": False,
+    }
