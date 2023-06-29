@@ -63,9 +63,9 @@ def get_judgment_root(judgment_xml) -> str:
         return "error"
 
 
-def update_judgment_uri(old_uri, new_citation):
+def update_document_uri(old_uri, new_citation):
     """
-    Move the judgment at old_uri to the correct location based on the neutral citation
+    Move the document at old_uri to the correct location based on the neutral citation
     The new neutral citation *must* not already exist (that is handled elsewhere)
     """
     new_uri = caselawutils.neutral_url(new_citation.strip())
@@ -81,7 +81,7 @@ def update_judgment_uri(old_uri, new_citation):
         )
 
     try:
-        api_client.copy_judgment(old_uri, new_uri)
+        api_client.copy_document(old_uri, new_uri)
         set_metadata(old_uri, new_uri)
         copy_assets(old_uri, new_uri)
         api_client.set_judgment_this_uri(new_uri)

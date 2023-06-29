@@ -15,7 +15,7 @@ from judgments.utils import (
     extract_version,
     get_judgment_root,
     render_versions,
-    update_judgment_uri,
+    update_document_uri,
 )
 from judgments.utils.aws import build_new_key, invalidate_caches
 from judgments.utils.paginator import paginator
@@ -108,75 +108,75 @@ class TestUtils(TestCase):
 
     @patch("judgments.utils.api_client")
     @patch("boto3.session.Session.client")
-    def test_update_judgment_uri_success(self, fake_boto3_client, fake_api_client):
-        """Given the target judgment does not exist,
-        we continue to move the judgment to the new location
+    def test_update_document_uri_success(self, fake_boto3_client, fake_api_client):
+        """Given the target document uri does not exist,
+        we continue to move the document to the new location
         (where moving is copy + delete)"""
         ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
         fake_api_client.judgment_exists.return_value = False
-        fake_api_client.copy_judgment.return_value = True
+        fake_api_client.copy_document.return_value = True
         fake_api_client.delete_judgment.return_value = True
         fake_boto3_client.list_objects.return_value = []
 
-        result = update_judgment_uri("old/uri", "[2002] EAT 1")
+        result = update_document_uri("old/uri", "[2002] EAT 1")
 
-        fake_api_client.copy_judgment.assert_called_with("old/uri", "new/uri")
+        fake_api_client.copy_document.assert_called_with("old/uri", "new/uri")
         fake_api_client.delete_judgment.assert_called_with("old/uri")
         assert result == "new/uri"
 
     @patch("judgments.utils.api_client")
     @patch("boto3.session.Session.client")
     @patch("judgments.utils.get_judgment_by_uri")
-    def test_update_judgment_uri_strips_whitespace(
+    def test_update_document_uri_strips_whitespace(
         self, fake_getter, fake_boto3_client, fake_api_client
     ):
         ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
-        fake_api_client.copy_judgment.return_value = True
+        fake_api_client.copy_document.return_value = True
         fake_api_client.delete_judgment.return_value = True
         fake_api_client.judgment_exists.return_value = False
         fake_boto3_client.list_objects.return_value = []
 
-        update_judgment_uri("old/uri", " [2002] EAT 1 ")
+        update_document_uri("old/uri", " [2002] EAT 1 ")
 
         ds_caselaw_utils.neutral_url.assert_called_with("[2002] EAT 1")
 
     @patch("judgments.utils.api_client")
     @patch("judgments.utils.get_judgment_by_uri")
-    def test_update_judgment_uri_exception_copy(self, fake_judgment, fake_client):
-        """Given a judgment exists at the target, and copy_judgment fails,
+    def test_update_document_uri_exception_copy(self, fake_judgment, fake_client):
+        """Given a document exists at the target uri, and copy_document fails,
         we raise a MoveJudgmentError"""
         fake_judgment.return_value = JudgmentFactory.build()
         ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
-        fake_client.copy_judgment.side_effect = MarklogicAPIError
+        fake_client.copy_document.side_effect = MarklogicAPIError
         fake_client.delete_judgment.side_effect = True
 
         with self.assertRaises(judgments.utils.MoveJudgmentError):
-            update_judgment_uri("old/uri", "[2002] EAT 1")
+            update_document_uri("old/uri", "[2002] EAT 1")
 
     @patch("judgments.utils.api_client")
     @patch("judgments.utils.get_judgment_by_uri")
-    def test_update_judgment_uri_exception_delete(self, fake_getter, fake_client):
-        """If there's a target at the judgment and deleting fails,
+    def test_update_document_uri_exception_delete(self, fake_getter, fake_client):
+        """If there's a target at the document uri and deleting fails,
         raise a MoveJudgmentError"""
         fake_getter.return_value = JudgmentFactory.build()
         ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
-        fake_client.copy_judgment.return_value = True
+        fake_client.copy_document.return_value = True
         fake_client.delete_judgment.side_effect = MarklogicAPIError
 
         with self.assertRaises(judgments.utils.MoveJudgmentError):
-            update_judgment_uri("old/uri", "[2002] EAT 1")
+            update_document_uri("old/uri", "[2002] EAT 1")
 
-    def test_update_judgment_uri_unparseable_citation(self):
+    def test_update_document_uri_unparseable_citation(self):
         ds_caselaw_utils.neutral_url = MagicMock(return_value=None)
 
         with self.assertRaises(judgments.utils.NeutralCitationToUriError):
-            update_judgment_uri("old/uri", "Wrong neutral citation")
+            update_document_uri("old/uri", "Wrong neutral citation")
 
     @patch("judgments.utils.api_client")
-    def test_update_judgment_uri_duplicate_uri(self, fake_client):
+    def test_update_document_uri_duplicate_uri(self, fake_client):
         fake_client.judgment_exists.return_value = True
         with self.assertRaises(judgments.utils.MoveJudgmentError):
-            update_judgment_uri("old/uri", "[2002] EAT 1")
+            update_document_uri("old/uri", "[2002] EAT 1")
 
     def test_build_new_key_docx(self):
         old_key = "failures/TDR-2022-DNWR/failures_TDR-2022-DNWR.docx"

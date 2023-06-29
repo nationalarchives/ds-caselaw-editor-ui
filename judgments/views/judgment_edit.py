@@ -11,7 +11,7 @@ from judgments.utils import (
     MoveJudgmentError,
     NeutralCitationToUriError,
     editors_dict,
-    update_judgment_uri,
+    update_document_uri,
 )
 from judgments.utils.aws import invalidate_caches
 from judgments.utils.link_generators import (
@@ -95,7 +95,7 @@ class EditJudgmentView(View):
 
             # If judgment_uri is a `failure` URI, amend it to match new neutral citation and redirect
             if "failures" in judgment_uri and new_citation is not None:
-                new_judgment_uri = update_judgment_uri(judgment_uri, new_citation)
+                new_judgment_uri = update_document_uri(judgment_uri, new_citation)
                 return redirect(
                     reverse("edit-judgment", kwargs={"judgment_uri": new_judgment_uri})
                 )
