@@ -173,7 +173,7 @@ tools. Version 2 may cause things to explode in unexpected ways, as it's not ful
 Start it up by running from the `ds-caselaw-ingester` repo:
 
 ```console
-docker-compose up -d
+docker compose up -d
 ```
 
 and then, in this repo (on your machine, not the Docker image):
