@@ -1,7 +1,6 @@
 {% load i18n %}
 <div class="metadata-header__block">
   <div class="metadata-component">
-    {% include "includes/judgment/judgment_validation_messages.html" %}
     <form aria-label="Edit judgment"
           method="post"
           action="{% url 'edit-judgment' judgment.uri %}">
