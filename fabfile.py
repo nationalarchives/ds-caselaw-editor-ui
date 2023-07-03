@@ -26,7 +26,7 @@ LOCAL_DB_DUMP_DIR = "database_dumps"
 
 def container_exec(cmd, container_name="django", check_returncode=False):
     result = subprocess.run(
-        ["docker-compose", "exec", "-T", container_name, "bash", "-c", cmd]
+        ["docker", "compose", "exec", "-T", container_name, "bash", "-c", cmd]
     )
     if check_returncode:
         result.check_returncode()
@@ -53,7 +53,7 @@ def build(c):
     """
     Build (or rebuild) local development containers.
     """
-    local("docker-compose build")
+    local("docker compose build")
 
 
 @task
@@ -61,7 +61,7 @@ def start(c, container_name=None):
     """
     Start the local development environment.
     """
-    cmd = "docker-compose up -d"
+    cmd = "docker compose up -d"
     if container_name:
         cmd += f" {container_name}"
     local(cmd)
@@ -102,7 +102,7 @@ def stop(c, container_name=None):
     """
     Stop the local development environment.
     """
-    cmd = "docker-compose stop"
+    cmd = "docker compose stop"
     if container_name:
         cmd += f" {container_name}"
     local(cmd)
@@ -122,7 +122,7 @@ def sh(c):
     """
     Run bash in a local container (with access to dependencies)
     """
-    subprocess.run(["docker-compose", "exec", "django", "bash"])
+    subprocess.run(["docker", "compose", "exec", "django", "bash"])
 
 
 @task
@@ -133,7 +133,8 @@ def test(c):
     # Static analysis
     subprocess.run(
         [
-            "docker-compose",
+            "docker",
+            "compose",
             "exec",
             "django",
             "mypy",
@@ -144,7 +145,8 @@ def test(c):
     # Pytest
     subprocess.run(
         [
-            "docker-compose",
+            "docker",
+            "compose",
             "exec",
             "django",
             "pytest",
@@ -163,7 +165,8 @@ def psql(c, command=None):
     Connect to the local postgres DB using psql
     """
     cmd_list = [
-        "docker-compose",
+        "docker",
+        "compose",
         "exec",
         "postgres",
         "psql",
