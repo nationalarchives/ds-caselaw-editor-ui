@@ -46,15 +46,10 @@
           {% translate "judgment.toolbar.unpublish" %}
         </a>
       {% else %}
-        {% if judgment.is_publishable %}
-          <a class="judgment-toolbar__button {% if view == 'publish_judgment' %}button-cta{% else %}button-secondary{% endif %}"
-             href="{% url 'publish-judgment' judgment.uri %}">
-            {% translate "judgment.toolbar.publish" %}
-          </a>
-        {% else %}
-          <span class="judgment-toolbar__button button-secondary"
-                aria-disabled="true">{% translate "judgment.toolbar.publish" %}</span>
-        {% endif %}
+        <a class="judgment-toolbar__button {% if view == 'publish_judgment' %}button-cta{% else %}button-secondary{% endif %}"
+           href="{% url 'publish-judgment' judgment.uri %}">
+          {% translate "judgment.toolbar.publish" %}
+        </a>
       {% endif %}
       {% if judgment.docx_url %}
         <a class="judgment-toolbar__button button-secondary"

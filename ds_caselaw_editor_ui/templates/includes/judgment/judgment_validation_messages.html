@@ -1,6 +1,6 @@
 {% if not judgment.is_publishable %}
   <div class="inline-notification--info">
-    <p>This judgment cannot be published because:</p>
+    <p>This document cannot be published because:</p>
     <ul>
       {% for message in judgment.validation_failure_messages %}<li>{{ message }}</li>{% endfor %}
     </ul>
