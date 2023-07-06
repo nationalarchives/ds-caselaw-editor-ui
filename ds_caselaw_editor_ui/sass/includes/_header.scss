@@ -1,9 +1,10 @@
 .page-header {
   background-color: $color__almost-black;
-  padding: 0 0 calc($spacer__unit * 1.25);
 
   display: flex;
   flex-direction: row;
+
+  padding: calc($spacer__unit * 0.25) 0;
 
   &__breadcrumb {
     flex-grow: 1;
@@ -13,6 +14,7 @@
     padding: calc($spacer__unit / 2) calc($spacer__unit * 2);
 
     ol {
+      margin: 0 calc($spacer__unit * 0.5);
       list-style-type: none;
       padding: 0;
       font-family: $font__roboto;
@@ -64,16 +66,6 @@
     @include container;
     @media (min-width: $grid__breakpoint-medium) {
       text-align: center;
-    }
-  }
-}
-
-.page-header-slim {
-  padding: calc($spacer__unit * 0.25) 0;
-
-  &__breadcrumb {
-    ol {
-      margin: 0 calc($spacer__unit * 0.5);
     }
   }
 }
