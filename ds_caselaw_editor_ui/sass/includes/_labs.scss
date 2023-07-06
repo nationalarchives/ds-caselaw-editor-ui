@@ -4,7 +4,9 @@
     linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
   align-items: center;
   justify-content: center;
-  padding-right: 1.4rem;
+  padding-right: 1.25 * $spacer__unit;
+  padding-top: 0.75 * $spacer__unit;
+  padding-bottom: 0.75 * $spacer__unit;
 
   font-size: 1.2rem;
   font-weight: bold;
