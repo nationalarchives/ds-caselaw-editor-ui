@@ -40,7 +40,11 @@
 
   &__assignment-input {
     display: block;
-    min-width: 66%;
+    width: 100%;
+    height: calc(2.4 * $spacer__unit);
+    border: solid 2px $color__dark-grey;
+    font-size: 1rem;
+    $font__open-sans: "Open Sans", sans-serif;
   }
 
   &__context-notification {
