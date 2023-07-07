@@ -52,24 +52,6 @@
   }
 }
 
-.create-email-block {
-  border: 2px #ffb952 solid;
-  display: inline-block;
-  padding: 0px 10px 0px 0;
-  margin-left: 15%;
-  &__list-header {
-    padding-left: 10px;
-    margin: 10px 0;
-  }
-  &__list {
-    list-style: none;
-    padding-left: 10px;
-    margin: 5px 0;
-  }
-  &__list-link {
-    padding-bottom: 10px;
-  }
-}
 .email-confirm-publish {
   border: 2px #ffb952 solid;
   display: inline-block;
@@ -112,8 +94,5 @@
 @media (max-width: 800px) {
   .edit-component__actions {
     display: block;
-  }
-  .create-email-block {
-    margin: 20px 0;
   }
 }
