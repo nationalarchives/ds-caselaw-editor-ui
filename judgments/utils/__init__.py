@@ -74,7 +74,7 @@ def update_document_uri(old_uri, new_citation):
             f"Unable to form new URI for {old_uri} from neutral citation: {new_citation}"
         )
 
-    if api_client.judgment_exists(new_uri):
+    if api_client.document_exists(new_uri):
         raise MoveJudgmentError(
             f"The URI {new_uri} generated from {new_citation} already exists, you cannot move this judgment to a"
             f" pre-existing Neutral Citation Number."

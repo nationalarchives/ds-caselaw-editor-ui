@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
 import pytest
-from caselawclient.errors import JudgmentNotFoundError
+from caselawclient.errors import DocumentNotFoundError
 from django.http import Http404
 from factories import JudgmentFactory
 
@@ -23,7 +23,7 @@ class TestGetPublishedJudgment:
 
     @patch(
         "judgments.utils.view_helpers.get_judgment_by_uri",
-        side_effect=JudgmentNotFoundError,
+        side_effect=DocumentNotFoundError,
     )
     def test_judgment_missing(self, mock_judgment):
         with pytest.raises(Http404):
