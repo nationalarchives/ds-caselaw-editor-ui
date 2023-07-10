@@ -113,7 +113,7 @@ class TestUtils(TestCase):
         we continue to move the document to the new location
         (where moving is copy + delete)"""
         ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
-        fake_api_client.judgment_exists.return_value = False
+        fake_api_client.document_exists.return_value = False
         fake_api_client.copy_document.return_value = True
         fake_api_client.delete_judgment.return_value = True
         fake_boto3_client.list_objects.return_value = []
@@ -133,7 +133,7 @@ class TestUtils(TestCase):
         ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
         fake_api_client.copy_document.return_value = True
         fake_api_client.delete_judgment.return_value = True
-        fake_api_client.judgment_exists.return_value = False
+        fake_api_client.document_exists.return_value = False
         fake_boto3_client.list_objects.return_value = []
 
         update_document_uri("old/uri", " [2002] EAT 1 ")
@@ -174,7 +174,7 @@ class TestUtils(TestCase):
 
     @patch("judgments.utils.api_client")
     def test_update_document_uri_duplicate_uri(self, fake_client):
-        fake_client.judgment_exists.return_value = True
+        fake_client.document_exists.return_value = True
         with self.assertRaises(judgments.utils.MoveJudgmentError):
             update_document_uri("old/uri", "[2002] EAT 1")
 
