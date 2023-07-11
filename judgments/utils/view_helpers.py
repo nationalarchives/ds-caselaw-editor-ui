@@ -4,7 +4,7 @@ from caselawclient.Client import api_client
 from caselawclient.client_helpers.search_helpers import (
     search_judgments_and_parse_response,
 )
-from caselawclient.errors import JudgmentNotFoundError
+from caselawclient.errors import DocumentNotFoundError
 from caselawclient.search_parameters import SearchParameters
 from django.http import Http404
 
@@ -51,5 +51,5 @@ def get_search_results(parameters: dict[str, Any]) -> dict[str, Any]:
 def get_judgment_by_uri_or_404(uri: str) -> Judgment:
     try:
         return get_judgment_by_uri(uri)
-    except JudgmentNotFoundError:
+    except DocumentNotFoundError:
         raise Http404(f"Judgment not found at {uri}")
