@@ -2,7 +2,7 @@ from urllib.parse import parse_qs, urlparse
 
 from factories import JudgmentFactory
 
-from judgments.views.judgment_edit import (
+from judgments.utils.link_generators import (
     build_confirmation_email_link,
     build_raise_issue_email_link,
 )

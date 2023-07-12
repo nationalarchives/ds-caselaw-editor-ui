@@ -6,9 +6,8 @@ from django.views.generic import TemplateView
 
 from judgments.utils import editors_dict
 from judgments.utils.aws import invalidate_caches
+from judgments.utils.link_generators import build_raise_issue_email_link
 from judgments.utils.view_helpers import get_judgment_by_uri_or_404
-
-from .judgment_edit import build_raise_issue_email_link
 
 
 class HoldJudgmentView(TemplateView):
