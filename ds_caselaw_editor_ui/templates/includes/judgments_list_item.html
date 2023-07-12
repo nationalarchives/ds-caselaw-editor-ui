@@ -60,7 +60,7 @@
               <input type="hidden" name="judgment_uri" value="{{ item.uri }}" />
               <input type="submit"
                      name="submit"
-                     value="{% if item.metadata.editor_hold == 'true' %}Release{% else %}Hold{% endif %} judgment"/>
+                     value="{% if item.metadata.editor_hold == 'true' %}Release{% else %}Hold{% endif %} judgment" />
             </form>
           {% endif %}
         </span>
@@ -79,7 +79,7 @@
               <input type="submit"
                      class="judgments-list__action-button"
                      name="assign"
-                     value="Assign to me"/>
+                     value="Assign to me" />
             </form>
           {% endif %}
         </span>
@@ -103,7 +103,7 @@
         <input type="submit"
                class="judgments-list__action-button"
                name="assign"
-               value="Assign to me"/>
+               value="Assign to me" />
       </form>
     {% endif %}
   </div>

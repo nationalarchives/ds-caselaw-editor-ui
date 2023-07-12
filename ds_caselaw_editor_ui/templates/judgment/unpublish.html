@@ -9,6 +9,6 @@
     {% csrf_token %}
     <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
     <input type="submit"
-           value="{% translate "judgment.unpublish.unpublish_button" %}"/>
+           value="{% translate "judgment.unpublish.unpublish_button" %}" />
   </form>
 {% endblock judgment_content %}

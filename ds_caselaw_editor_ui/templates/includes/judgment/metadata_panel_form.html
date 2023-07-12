@@ -15,7 +15,7 @@
                  class="metadata-component__neutral_citation-input"
                  value="{{ judgment.neutral_citation }}"
                  name="neutral_citation"
-                 id="neutral_citation"/>
+                 id="neutral_citation" />
         </div>
         <div class="metadata-component__court">
           <label for="court" class="metadata-component__main-labels">{% translate "judgment.court" %}</label>
@@ -24,7 +24,7 @@
                  value="{{ judgment.court }}"
                  name="court"
                  id="court"
-                 list="court-ids"/>
+                 list="court-ids" />
           <datalist id="court-ids">
             {% for court in courts %}<option value="{{ court.code }}">{{ court.name }}</option>{% endfor %}
           </datalist>
@@ -35,7 +35,7 @@
                  class="metadata-component__judgment_date-input"
                  value="{{ judgment.judgment_date_as_string }}"
                  name="judgment_date"
-                 id="judgment_date"/>
+                 id="judgment_date" />
         </div>
       </div>
       <div class="metadata-component__container">
@@ -54,8 +54,8 @@
             <p>{{ judgment.consignment_reference }}</p>
           </div>
           <div class="metadata-component__actions">
-            <input type="hidden" name="judgment_uri" value="{{ judgment_uri }}"/>
-            <input type="submit" value="Save"/>
+            <input type="hidden" name="judgment_uri" value="{{ judgment_uri }}" />
+            <input type="submit" value="Save" />
           </div>
         </div>
       </div>
