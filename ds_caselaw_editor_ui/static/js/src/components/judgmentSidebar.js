@@ -26,7 +26,7 @@ const JudgmentSidebar = {
       const form = $(this);
       const action = form.attr("action");
       const loading = $(
-        "<span class='loading-indicator' role='progressbar' aria-valuetext='Loading' aria-busy='true' aria-live='polite'></span>"
+        "<span class='loading-indicator' role='progressbar' aria-valuetext='Loading' aria-busy='true' aria-live='polite'></span>",
       );
       form.append(loading);
       $.ajax({
@@ -35,7 +35,7 @@ const JudgmentSidebar = {
         data: form.serialize(),
         success: function (data) {
           const successMessage = $(
-            "<div class='context-notification--success judgment-sidebar__context-notification' aria-busy='false' />"
+            "<div class='context-notification--success judgment-sidebar__context-notification' aria-busy='false' />",
           );
           successMessage.text(data["message"]);
           loading.replaceWith(successMessage);

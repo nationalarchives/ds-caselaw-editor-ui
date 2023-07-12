@@ -49,8 +49,8 @@ $(".js-results-facets-wrapper").manage_filters();
 
 $(".judgment-toolbar__delete").click(() =>
   confirm(
-    "Are you sure you want to delete this judgment? Deletion is permanent."
-  )
+    "Are you sure you want to delete this judgment? Deletion is permanent.",
+  ),
 );
 
 $(".judgments-list__judgment-assign-form").on("submit", function (event) {
@@ -59,7 +59,7 @@ $(".judgments-list__judgment-assign-form").on("submit", function (event) {
   const uri = form.find("input[name='judgment_uri']").val();
   const action = form.attr("action");
   const loading = $(
-    "<span class='loading-indicator' role='progressbar' aria-valuetext='Loading' aria-busy='true' aria-live='polite'></span>"
+    "<span class='loading-indicator' role='progressbar' aria-valuetext='Loading' aria-busy='true' aria-live='polite'></span>",
   );
   form.replaceWith(loading);
   $.ajax({
@@ -73,7 +73,7 @@ $(".judgments-list__judgment-assign-form").on("submit", function (event) {
           encodeURIComponent(uri) +
           "/edit#assigned_to'>" +
           assigned_to +
-          "</a>"
+          "</a>",
       );
     },
   });
