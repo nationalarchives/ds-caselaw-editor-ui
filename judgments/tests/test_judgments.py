@@ -36,8 +36,8 @@ class TestJudgmentEdit(TestCase):
         decoded_response = response.content.decode("utf-8")
         self.assertIn("Test v Tested", decoded_response)
         assert response.status_code == 200
-        assert_match(
-            '<option value="UKSC">(\\s+)United Kingdom Supreme Court(\\s+)</option>',
+        self.assertIn(
+            '<option value="UKSC">United Kingdom Supreme Court</option>',
             decoded_response,
         )
 
