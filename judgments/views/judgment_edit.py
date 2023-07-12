@@ -14,11 +14,7 @@ from judgments.utils import (
     update_document_uri,
 )
 from judgments.utils.aws import invalidate_caches
-from judgments.utils.link_generators import (
-    build_confirmation_email_link,
-    build_jira_create_link,
-    build_raise_issue_email_link,
-)
+from judgments.utils.link_generators import build_jira_create_link
 from judgments.utils.view_helpers import get_judgment_by_uri_or_404
 
 
@@ -36,12 +32,6 @@ class EditJudgmentView(View):
 
         context.update({"editors": editors_dict()})
 
-        context["email_raise_issue_link"] = build_raise_issue_email_link(
-            judgment=judgment, signature=request.user.get_full_name()
-        )
-        context["email_confirmation_link"] = build_confirmation_email_link(
-            judgment=judgment, signature=request.user.get_full_name()
-        )
         context["jira_create_link"] = build_jira_create_link(
             judgment=judgment, request=request
         )
