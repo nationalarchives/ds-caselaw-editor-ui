@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n status_tag_css %}
 <div class="metadata-header__block">
   <div class="metadata-component">
     <form aria-label="Edit judgment"
@@ -37,6 +37,22 @@
                  name="judgment_date"
                  id="judgment_date" />
         </div>
+        <div class="metadata-component__top-right-column">
+          <div class="metadata-component__tdr">
+            <aside for="metadata_name" class="metadata-component__main-labels">
+              {% translate "judgments.consignmentref" %}
+            </aside>
+            <p>{{ judgment.consignment_reference }}</p>
+          </div>
+          <div class="metadata-component__status">
+            <aside for="metadata_name" class="metadata-component__main-labels">
+              {% translate "judgments.sidebar.status" %}
+            </aside>
+            <p class="judgment-status-indicator judgment-status-indicator--{{ judgment.status | status_tag_colour }}">
+              {{ judgment.status }}
+            </p>
+          </div>
+        </div>
       </div>
       <div class="metadata-component__container">
         <div class="metadata-component__panel">
@@ -47,11 +63,11 @@
                     rows="2">{{ judgment.name }}</textarea>
         </div>
         <div class="metadata-component__bottom-right-column">
-          <div class="metadata-component__tdr">
+          <div class="metadata-component__type">
             <aside for="metadata_name" class="metadata-component__main-labels">
-              {% translate "judgments.consignmentref" %}
+              {% translate "document.type" %}
             </aside>
-            <p>{{ judgment.consignment_reference }}</p>
+            <p>Judgment or Press Summary BE</p>
           </div>
           <div class="metadata-component__actions">
             <input type="hidden" name="judgment_uri" value="{{ judgment_uri }}" />
