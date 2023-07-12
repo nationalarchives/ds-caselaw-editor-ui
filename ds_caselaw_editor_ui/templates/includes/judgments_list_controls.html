@@ -13,9 +13,7 @@
                 {% if order == "-date" or order is None %}selected='selected'{% endif %}>
           Date received &ndash; Newest
         </option>
-        <option value="date" {% if order == "date" %}selected='selected'{% endif %}>
-          Date received &ndash; Oldest
-        </option>
+        <option value="date" {% if order == "date" %}selected='selected'{% endif %}>Date received &ndash; Oldest</option>
       </select>
     </div>
     <input aria-label="sort unpublished judgments"

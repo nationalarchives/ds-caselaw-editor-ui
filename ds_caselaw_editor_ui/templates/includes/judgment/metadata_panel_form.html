@@ -26,11 +26,7 @@
                  id="court"
                  list="court-ids"/>
           <datalist id="court-ids">
-            {% for court in courts %}
-              <option value="{{ court.code }}">
-                {{ court.name }}
-              </option>
-            {% endfor %}
+            {% for court in courts %}<option value="{{ court.code }}">{{ court.name }}</option>{% endfor %}
           </datalist>
         </div>
         <div class="metadata-component__date">
