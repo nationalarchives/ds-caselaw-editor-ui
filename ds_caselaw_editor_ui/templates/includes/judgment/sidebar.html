@@ -8,21 +8,15 @@
   </ul>
   <h4>{% translate "judgments.sidebar.submission" %}</h4>
   <dl class="items">
-    <dt class="judgment-sidebar__label">
-      {% translate "judgments.submitter" %}
-    </dt>
+    <dt class="judgment-sidebar__label">{% translate "judgments.submitter" %}</dt>
     <dd>
       {{ judgment.source_name }}
     </dd>
-    <dt class="judgment-sidebar__label">
-      {% translate "judgments.submitteremail" %}
-    </dt>
+    <dt class="judgment-sidebar__label">{% translate "judgments.submitteremail" %}</dt>
     <dd>
       <a href="mailto:{{ judgment.source_email }}">{{ judgment.source_email }}</a>
     </dd>
-    <dt class="judgment-sidebar__label">
-      {% translate "judgments.consignmentref" %}
-    </dt>
+    <dt class="judgment-sidebar__label">{% translate "judgments.consignmentref" %}</dt>
     <dd>
       {{ judgment.consignment_reference }}
     </dd>
@@ -56,14 +50,10 @@
     <select class="judgment-sidebar__assignment-input"
             name="assigned_to"
             id="assigned_to">
-      <option value="" {% if judgment.assigned_to == "" %}selected{% endif %}>
-        {% translate "judgments.noone" %}
-      </option>
+      <option value="" {% if judgment.assigned_to == "" %}selected{% endif %}>{% translate "judgments.noone" %}</option>
       {% for editor in editors %}
         <option value="{{ editor.name }}"
-                {% if judgment.assigned_to == editor.name %} selected{% endif %}>
-          {{ editor.print_name }}
-        </option>
+                {% if judgment.assigned_to == editor.name %}selected{% endif %}>{{ editor.print_name }}</option>
       {% endfor %}
     </select>
     <input type="submit"

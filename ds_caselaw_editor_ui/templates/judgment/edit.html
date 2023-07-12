@@ -52,18 +52,12 @@
              list="court-ids"
              size="40"/>
       <datalist id="court-ids">
-        {% for court in courts %}
-          <option value="{{ court.code }}">
-            {{ court.name }}
-          </option>
-        {% endfor %}
+        {% for court in courts %}<option value="{{ court.code }}">{{ court.name }}</option>{% endfor %}
       </datalist>
     </div>
     <div class="edit-component__panel">
       <label class="edit-component__text-field-label"
-             for="judgment_date__text-field-label">
-        {% translate "judgment.judgment_date" %}
-      </label>
+             for="judgment_date__text-field-label">{% translate "judgment.judgment_date" %}</label>
       <input type="text"
              class="edit-component__judgment_date-input"
              value="{{ judgment.judgment_date_as_string }}"
