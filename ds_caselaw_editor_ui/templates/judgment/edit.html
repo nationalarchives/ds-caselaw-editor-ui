@@ -29,7 +29,7 @@
              class="edit-component__metadata_name-input"
              value="{{ judgment.name }}"
              name="metadata_name"
-             id="metadata_name"/>
+             id="metadata_name" />
     </div>
     <div class="edit-component__panel">
       <label class="edit-component__text-field-label" for="neutral_citation">
@@ -40,7 +40,7 @@
              value="{{ judgment.neutral_citation }}"
              name="neutral_citation"
              id="neutral_citation"
-             size="30"/>
+             size="30" />
     </div>
     <div class="edit-component__panel">
       <label class="edit-component__text-field-label" for="court">{% translate "judgment.court" %}</label>
@@ -50,7 +50,7 @@
              name="court"
              id="court"
              list="court-ids"
-             size="40"/>
+             size="40" />
       <datalist id="court-ids">
         {% for court in courts %}<option value="{{ court.code }}">{{ court.name }}</option>{% endfor %}
       </datalist>
@@ -62,11 +62,11 @@
              class="edit-component__judgment_date-input"
              value="{{ judgment.judgment_date_as_string }}"
              name="judgment_date"
-             id="judgment_date"/>
+             id="judgment_date" />
     </div>
     <div class="edit-component__actions">
-      <input type="hidden" name="judgment_uri" value="{{ judgment_uri }}"/>
-      <input type="submit" value="Save"/>
+      <input type="hidden" name="judgment_uri" value="{{ judgment_uri }}" />
+      <input type="submit" value="Save" />
     </div>
   </form>
   {% if judgment.versions %}
