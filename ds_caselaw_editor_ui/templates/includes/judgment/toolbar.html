@@ -58,17 +58,6 @@
         <span class="judgment-toolbar__button button-secondary"
               aria-disabled="true">{% translate "judgment.toolbar.download_docx" %}</span>
       {% endif %}
-      {% if judgment.is_published %}
-        <a class="judgment-toolbar__button button-secondary"
-           href="{{ judgment.public_uri }}"
-           target="_blank"
-           rel="noopener noreferrer">
-          {% translate "judgment.toolbar.view_on_public" %}
-        </a>
-      {% else %}
-        <span class="judgment-toolbar__button button-secondary"
-              aria-disabled="true">{% translate "judgment.toolbar.view_on_public" %}</span>
-      {% endif %}
       {% if judgment.is_failure %}
         <form action="{% url "delete" %}" method="post">
           {% csrf_token %}
