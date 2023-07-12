@@ -4,17 +4,17 @@ import dsCookieConsentBannerAPI from "./api/dsCookieConsentBannerAPI";
 const getBannerElement = document.querySelector(Data.bannerWrapper.id);
 const getCookieForm = document.querySelector(Data.formWrapper.id);
 const getCookieObject = dsCookieConsentBannerAPI.getCookieValue(
-  Data.cookies.cookieTwo
+  Data.cookies.cookieTwo,
 );
 let measureRadioInput = document.querySelector(Data.form.analytics.measure);
 let doNotMeasureRadioInput = document.querySelector(
-  Data.form.analytics.doNotMeasure
+  Data.form.analytics.doNotMeasure,
 );
 let settingsRadioInput = document.querySelector(
-  Data.form.settings.rememberSettings
+  Data.form.settings.rememberSettings,
 );
 let doNotRememberSettingsRadioInput = document.querySelector(
-  Data.form.settings.doNotRememberSettings
+  Data.form.settings.doNotRememberSettings,
 );
 
 // Polyfill the remove() method IE9 and higher
@@ -78,7 +78,7 @@ let doNotRememberSettingsRadioInput = document.querySelector(
         JSON.stringify(cookieValue),
         {
           "max-age": 90 * 24 * 60 * 60,
-        }
+        },
       );
 
       // Delete GA cookies if cookies_policy cookie value is set to false
@@ -138,7 +138,7 @@ let doNotRememberSettingsRadioInput = document.querySelector(
 (function () {
   document.addEventListener("DOMContentLoaded", () => {
     const oldCookieNotice = document.querySelector(
-      Data.oldCookieBannerWrapper.class
+      Data.oldCookieBannerWrapper.class,
     );
     const jsON = document.querySelector(Data.DOM.on);
     const jsOFF = document.querySelector(Data.DOM.off);
@@ -164,14 +164,14 @@ let doNotRememberSettingsRadioInput = document.querySelector(
       dsCookieConsentBannerAPI.createButton(
         Data.buttonAccept.text,
         Data.buttonAccept.id,
-        Data.buttonAccept.class
+        Data.buttonAccept.class,
       );
 
       // Create Reject Optional Cookies
       dsCookieConsentBannerAPI.createButton(
         Data.buttonReject.text,
         Data.buttonReject.id,
-        Data.buttonReject.class
+        Data.buttonReject.class,
       );
 
       // Select the buttons
@@ -201,13 +201,13 @@ let doNotRememberSettingsRadioInput = document.querySelector(
             '{"usage":true,"settings":true,"essential":true}',
             {
               "max-age": 90 * 24 * 60 * 60,
-            }
+            },
           );
 
           dsCookieConsentBannerAPI.createButton(
             Data.hideThisMessage.text,
             Data.hideThisMessage.id,
-            Data.hideThisMessage.class
+            Data.hideThisMessage.class,
           );
 
           if (btnAccept) {
@@ -230,13 +230,13 @@ let doNotRememberSettingsRadioInput = document.querySelector(
             bannerParagraph.innerHTML = Data.acceptMessageAfterInteraction.text;
             getBannerElementContainer.setAttribute(
               "aria-label",
-              Data.acceptMessageAfterInteraction.ariaLabel
+              Data.acceptMessageAfterInteraction.ariaLabel,
             );
           }
 
           // Get the Close This Message DOM element
           const hideThisMessage = document.querySelector(
-            `#${Data.hideThisMessage.id}`
+            `#${Data.hideThisMessage.id}`,
           );
 
           // If Close This Message DOM exists, hide banner
@@ -281,13 +281,13 @@ let doNotRememberSettingsRadioInput = document.querySelector(
             '{"usage":false,"settings":false,"essential":true}',
             {
               "max-age": 90 * 24 * 60 * 60,
-            }
+            },
           );
 
           dsCookieConsentBannerAPI.createButton(
             Data.hideThisMessage.text,
             Data.hideThisMessage.id,
-            Data.hideThisMessage.class
+            Data.hideThisMessage.class,
           );
 
           if (btnAccept) {
@@ -310,13 +310,13 @@ let doNotRememberSettingsRadioInput = document.querySelector(
             bannerParagraph.innerHTML = Data.rejectMessageAfterInteraction.text;
             getBannerElementContainer.setAttribute(
               "aria-label",
-              Data.rejectMessageAfterInteraction.ariaLabel
+              Data.rejectMessageAfterInteraction.ariaLabel,
             );
           }
 
           // Get the Close This Message DOM element
           const hideThisMessage = document.querySelector(
-            `#${Data.hideThisMessage.id}`
+            `#${Data.hideThisMessage.id}`,
           );
 
           // If Close This Message DOM exists, hide banner
