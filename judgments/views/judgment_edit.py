@@ -55,13 +55,6 @@ class EditJudgmentView(View):
 
         return_to = request.POST.get("return_to", None)
 
-        # Default to not performing a subset update to maintain existing behaviour
-        subset = False
-
-        # But if we're going back to HTML or PDF views, this is a subset update
-        if return_to in ("html", "pdf"):
-            subset = True
-
         try:
             # Set name
             new_name = request.POST["metadata_name"]
@@ -79,19 +72,9 @@ class EditJudgmentView(View):
             new_date = request.POST["judgment_date"]
             api_client.set_judgment_date(judgment_uri, new_date)
 
-            if not subset:
-                sensitive = bool(request.POST.get("sensitive", False))
-                supplemental = bool(request.POST.get("supplemental", False))
-                anonymised = bool(request.POST.get("anonymised", False))
-
-                api_client.set_sensitive(judgment_uri, sensitive)
-                api_client.set_supplemental(judgment_uri, supplemental)
-                api_client.set_anonymised(judgment_uri, anonymised)
-
-                # Assignment
-                # TODO consider validating assigned_to is a user?
-                if new_assignment := request.POST.get("assigned_to", False):
-                    api_client.set_property(judgment_uri, "assigned-to", new_assignment)
+            # Editor assignment
+            if new_assignment := request.POST.get("assigned_to", False):
+                api_client.set_property(judgment_uri, "assigned-to", new_assignment)
 
             # If judgment_uri is a `failure` URI, amend it to match new neutral citation and redirect
             if "failures" in judgment_uri and new_citation is not None:

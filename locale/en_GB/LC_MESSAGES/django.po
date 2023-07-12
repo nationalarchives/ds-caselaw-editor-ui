@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-13 15:37+0000\n"
+"POT-Creation-Date: 2023-07-10 17:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -223,6 +223,7 @@ msgid "judgments.assigned_to"
 msgstr "Assigned to:"
 
 #: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html
+#: judgments/tests/test_judgment_list.py
 msgid "home.recent"
 msgstr "Unpublished judgments"
 
@@ -264,18 +265,6 @@ msgstr "Download PDF"
 #: ds_caselaw_editor_ui/templates/judgment/edit.html
 msgid "judgment.download_xml"
 msgstr "Download XML"
-
-#: ds_caselaw_editor_ui/templates/judgment/edit.html
-msgid "judgment.sensitive"
-msgstr "Contains sensitive information?"
-
-#: ds_caselaw_editor_ui/templates/judgment/edit.html
-msgid "judgment.supplemental"
-msgstr "Has supplemental documents?"
-
-#: ds_caselaw_editor_ui/templates/judgment/edit.html
-msgid "judgment.anonymised"
-msgstr "This Judgment has been anonymised"
 
 #: ds_caselaw_editor_ui/templates/judgment/hold-success.html
 msgid "judgment.hold.success"
