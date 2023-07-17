@@ -1,16 +1,20 @@
 {% load i18n %}
-<div class="list-versions-component">
-  <div class="list-versions-component__container">
-    <h2 class="list-versions-component__header">{% translate "judgment.previous_versions" %}</h2>
-    <ul>
+<div>
+  <h2>Document history</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Version</th>
+      </tr>
+    </thead>
+    <tbody>
       {% for version in judgment.versions %}
-        <li>
-          <a class="list-versions__version-title"
-             href="{% url 'full-text-html' judgment_uri %}?version_uri={{ version.uri }}">
-            v{{ version.version }} ( {{ version.uri }} )
-          </a>
-        </li>
+        <tr>
+          <td>
+            <a href="{% url 'full-text-html' judgment_uri %}?version_uri={{ version.uri }}">Version {{ version.version }}</a>
+          </td>
+        </tr>
       {% endfor %}
-    </ul>
-  </div>
+    </tbody>
+  </table>
 </div>
