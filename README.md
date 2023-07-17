@@ -191,9 +191,15 @@ topic and `public-` and `private-asset-buckets` for S3.
 $ fab test
 ```
 
-## Using the pre-push hook (optional)
+## Setting up the pre-commit hooks (strongly advised)
 
-Copy `pre-push.sample` to `.git/hooks/pre-push` to set up the pre-push hook. This will run Python linting and style checks when you push to the repo and alert you to any linting issues that will cause CI to fail. To use this, you will need to install [pre-commit](https://pre-commit.com/) on your development machine, typically using `pip install pre-commit`.
+To use this, you will need to install [pre-commit](https://pre-commit.com/) on your development machine, typically using `pip install pre-commit`.
+
+Install the git hooks configured in `.pre-commit-config.yaml` with:
+
+`pre-commit install`
+
+This will set up various checks including Python linting and style checks when you commit and push to the repo and alert you to any linting issues that will cause CI to fail.
 
 ## Setting up commit signing.
 
