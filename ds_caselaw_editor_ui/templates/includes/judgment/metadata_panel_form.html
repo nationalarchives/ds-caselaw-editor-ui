@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n status_tag_css %}
 <div class="metadata-header__block">
   <div class="metadata-component">
     <form aria-label="Edit judgment"
@@ -6,57 +6,69 @@
           action="{% url 'edit-judgment' judgment.uri %}">
       {% csrf_token %}
       <input type="hidden" name="return_to" value="{{ return_to }}" />
-      <div class="metadata-component__container">
-        <div class="metadata-component__ncn">
-          <label for="neutral_citation" class="metadata-component__main-labels">
-            {% translate "judgment.neutral_citation" %}
-          </label>
-          <input type="text"
-                 class="metadata-component__neutral_citation-input"
-                 value="{{ judgment.neutral_citation }}"
-                 name="neutral_citation"
-                 id="neutral_citation" />
+      <div class="metadata-component__left-column">
+        <div class="metadata-component__top-left-row">
+          <div class="metadata-component__ncn">
+            <label for="neutral_citation" class="metadata-component__main-labels">
+              {% translate "judgment.neutral_citation" %}
+            </label>
+            <input type="text"
+                   class="metadata-component__neutral_citation-input"
+                   value="{{ judgment.neutral_citation }}"
+                   name="neutral_citation"
+                   id="neutral_citation" />
+          </div>
+          <div class="metadata-component__court">
+            <label for="court" class="metadata-component__main-labels">{% translate "judgment.court" %}</label>
+            <input type="text"
+                   class="metadata-component__court-input"
+                   value="{{ judgment.court }}"
+                   name="court"
+                   id="court"
+                   list="court-ids" />
+            <datalist id="court-ids">
+              {% for court in courts %}<option value="{{ court.code }}">{{ court.name }}</option>{% endfor %}
+            </datalist>
+          </div>
+          <div class="metadata-component__date">
+            <label for="judgment_date" class="metadata-component__main-labels">{% translate "judgment.judgment_date" %}</label>
+            <input type="text"
+                   class="metadata-component__judgment_date-input"
+                   value="{{ judgment.judgment_date_as_string }}"
+                   name="judgment_date"
+                   id="judgment_date" />
+          </div>
         </div>
-        <div class="metadata-component__court">
-          <label for="court" class="metadata-component__main-labels">{% translate "judgment.court" %}</label>
-          <input type="text"
-                 class="metadata-component__court-input"
-                 value="{{ judgment.court }}"
-                 name="court"
-                 id="court"
-                 list="court-ids" />
-          <datalist id="court-ids">
-            {% for court in courts %}<option value="{{ court.code }}">{{ court.name }}</option>{% endfor %}
-          </datalist>
-        </div>
-        <div class="metadata-component__date">
-          <label for="judgment_date" class="metadata-component__main-labels">{% translate "judgment.judgment_date" %}</label>
-          <input type="text"
-                 class="metadata-component__judgment_date-input"
-                 value="{{ judgment.judgment_date_as_string }}"
-                 name="judgment_date"
-                 id="judgment_date" />
-        </div>
-      </div>
-      <div class="metadata-component__container">
         <div class="metadata-component__panel">
           <label for="metadata_name" class="metadata-component__main-labels">{% translate "judgment.judgment_name" %}</label>
-          <textarea class="metadata-component__metadata_name-input"
-                    name="metadata_name"
-                    id="metadata_name"
-                    rows="2">{{ judgment.name }}</textarea>
+          <textarea class="metadata-component__metadata_name-input" name="metadata_name" id="metadata_name" rows="2">
+{{ judgment.name }}</textarea>
         </div>
-        <div class="metadata-component__bottom-right-column">
-          <div class="metadata-component__tdr">
-            <aside for="metadata_name" class="metadata-component__main-labels">
-              {% translate "judgments.consignmentref" %}
-            </aside>
-            <p>{{ judgment.consignment_reference }}</p>
-          </div>
-          <div class="metadata-component__actions">
-            <input type="hidden" name="judgment_uri" value="{{ judgment_uri }}" />
-            <input type="submit" value="Save" />
-          </div>
+      </div>
+      <div class="metadata-component__right-column">
+        <div class="metadata-component__tdr">
+          <aside for="metadata_name" class="metadata-component__main-labels">
+            {% translate "judgments.consignmentref" %}
+          </aside>
+          <p>{{ judgment.consignment_reference }}</p>
+        </div>
+        <div class="metadata-component__status">
+          <aside for="metadata_name" class="metadata-component__main-labels">
+            {% translate "judgments.sidebar.status" %}
+          </aside>
+          <p class="judgment-status-indicator judgment-status-indicator--{{ judgment.status | status_tag_colour }}">
+            {{ judgment.status }}
+          </p>
+        </div>
+        <div class="metadata-component__type">
+          <aside for="metadata_name" class="metadata-component__main-labels">
+            {% translate "document.type" %}
+          </aside>
+          <p>{{ judgment.document_noun|capfirst }}</p>
+        </div>
+        <div class="metadata-component__actions">
+          <input type="hidden" name="judgment_uri" value="{{ judgment_uri }}" />
+          <input type="submit" value="Save" />
         </div>
       </div>
     </form>

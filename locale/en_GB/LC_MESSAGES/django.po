@@ -387,3 +387,7 @@ msgstr "Document published"
 #: judgments/views/judgment_publish.py
 msgid "judgment.publish.unpublish_success_flash_message"
 msgstr "Document unpublished"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_form.html
+msgid "document.type"
+msgstr "Type"
