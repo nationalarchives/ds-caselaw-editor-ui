@@ -73,16 +73,16 @@ class EditJudgmentView(View):
                     reverse("edit-judgment", kwargs={"judgment_uri": new_judgment_uri})
                 )
 
-            messages.success(request, "Judgment successfully updated")
+            messages.success(request, "Document successfully updated")
 
         except (MoveJudgmentError, NeutralCitationToUriError) as e:
             messages.error(
                 request,
-                f"There was an error updating the Judgment's neutral citation: {e}",
+                f"There was an error updating the Document's neutral citation: {e}",
             )
 
         except MarklogicAPIError as e:
-            messages.error(request, f"There was an error saving the Judgment: {e}")
+            messages.error(request, f"There was an error saving the Document: {e}")
 
         invalidate_caches(judgment.uri)
 

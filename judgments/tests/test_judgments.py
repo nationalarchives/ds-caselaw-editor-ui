@@ -186,7 +186,7 @@ class TestJudgmentView(TestCase):
         response = self.client.get("/test/1234/pdf")
         decoded_response = response.content.decode("utf-8")
         self.assertIn(
-            "Judgment &quot;JUDGMENT v JUDGEMENT&quot; does not have a PDF.",
+            "Document &quot;JUDGMENT v JUDGEMENT&quot; does not have a PDF.",
             decoded_response,
         )
         self.assertEqual(response.status_code, 404)

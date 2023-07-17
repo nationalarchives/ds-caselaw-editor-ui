@@ -21,7 +21,7 @@ def hold_judgment_button(request):
         word = "held"
     else:
         word = "released"
-    messages.success(request, f"Judgment {word}.")
+    messages.success(request, f"Document {word}.")
     return redirect(ensure_local_referer_url(request))
 
 
@@ -34,7 +34,7 @@ def assign_judgment_button(request):
     elif assigned_to == "":
         msg = "Document unassigned."
     else:
-        msg = f"Judgment assigned to {assigned_to}."
+        msg = f"Document assigned to {assigned_to}."
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return HttpResponse(
             json.dumps({"assigned_to": request.user.username, "message": msg}),
@@ -62,7 +62,7 @@ def prioritise_judgment_button(request):
     if priority:
         api_client.set_property(judgment_uri, "editor-priority", priority)
 
-        messages.success(request, "Judgment priority set.")
+        messages.success(request, "Document priority set.")
         return redirect(ensure_local_referer_url(request))
 
     return HttpResponseBadRequest("Priority string not recognised")

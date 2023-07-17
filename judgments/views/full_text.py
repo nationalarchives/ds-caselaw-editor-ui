@@ -45,7 +45,7 @@ def pdf_view(request, judgment_uri):
     judgment = get_judgment_by_uri_or_404(judgment_uri)
 
     if not judgment.pdf_url:
-        raise Http404(f'Judgment "{judgment.name}" does not have a PDF.')
+        raise Http404(f'Document "{judgment.name}" does not have a PDF.')
 
     context = {
         "judgment_uri": judgment_uri,
