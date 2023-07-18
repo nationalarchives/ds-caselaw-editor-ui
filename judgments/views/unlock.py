@@ -39,8 +39,8 @@ def unlock_post(request):
         api_client.break_checkout(judgment.uri)
     except MarklogicResourceUnmanagedError as exc:
         raise Http404(
-            f"Resource Unmanaged: Judgment '{judgment_uri}' might not exist."
+            f"Resource Unmanaged: Document '{judgment_uri}' might not exist."
         ) from exc
     else:
-        messages.success(request, "Judgment unlocked.")
+        messages.success(request, "Document unlocked.")
         return redirect(reverse("edit-judgment", kwargs={"judgment_uri": judgment.uri}))

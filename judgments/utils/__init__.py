@@ -76,7 +76,7 @@ def update_document_uri(old_uri, new_citation):
 
     if api_client.document_exists(new_uri):
         raise MoveJudgmentError(
-            f"The URI {new_uri} generated from {new_citation} already exists, you cannot move this judgment to a"
+            f"The URI {new_uri} generated from {new_citation} already exists, you cannot move this document to a"
             f" pre-existing Neutral Citation Number."
         )
 
@@ -87,14 +87,14 @@ def update_document_uri(old_uri, new_citation):
         api_client.set_judgment_this_uri(new_uri)
     except MarklogicAPIError as e:
         raise MoveJudgmentError(
-            f"Failure when attempting to copy judgment from {old_uri} to {new_uri}: {e}"
+            f"Failure when attempting to copy document from {old_uri} to {new_uri}: {e}"
         )
 
     try:
         api_client.delete_judgment(old_uri)
     except MarklogicAPIError as e:
         raise MoveJudgmentError(
-            f"Failure when attempting to delete judgment from {old_uri}: {e}"
+            f"Failure when attempting to delete document from {old_uri}: {e}"
         )
 
     return new_uri

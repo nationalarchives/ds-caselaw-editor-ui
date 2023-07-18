@@ -124,7 +124,7 @@ msgstr "Create in Jira"
 #: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html
 #: judgments/views/unlock.py
 msgid "judgment.unlock_judgment_title"
-msgstr "Unlock judgment"
+msgstr "Unlock document"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
 msgid "judgment.report_blocking_problem"
@@ -182,7 +182,7 @@ msgstr "Delete"
 
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_header.html
 msgid "judgments.details"
-msgstr "Judgment details:"
+msgstr "Document details:"
 
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_header.html
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
@@ -208,26 +208,26 @@ msgstr "Assigned to:"
 #: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html
 #: judgments/tests/test_judgment_list.py
 msgid "home.recent"
-msgstr "Unpublished judgments"
+msgstr "Unpublished documents"
 
 #: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html
 #: ds_caselaw_editor_ui/templates/judgment/results.html
 msgid "judgments.allrecent"
-msgstr "See all recent judgments"
+msgstr "See all recent documents"
 
 #: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html
 msgid "judgment.confirm_unlock"
 msgstr ""
-"Forcibly unlock this judgment? This will make any enrichment processes on "
-"the judgment fail."
+"Forcibly unlock this document? This will make any enrichment processes on "
+"the document fail."
 
 #: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html
 msgid "judgment.back_to_judgment"
-msgstr "Back to judgment"
+msgstr "Back to document"
 
 #: ds_caselaw_editor_ui/templates/judgment/deleted.html
 msgid "judgment.deleted"
-msgstr "Judgment successfully deleted"
+msgstr "Document successfully deleted"
 
 #: ds_caselaw_editor_ui/templates/judgment/deleted.html
 msgid "judgment.return_home"
@@ -337,11 +337,11 @@ msgstr ""
 
 #: judgments/tests/test_judgments.py judgments/views/judgment_publish.py
 msgid "judgment.publish.publish_title"
-msgstr "Publish judgment"
+msgstr "Publish document"
 
 #: judgments/tests/test_judgments.py judgments/views/judgment_publish.py
 msgid "judgment.publish.publish_success_title"
-msgstr "Published judgment"
+msgstr "Published document"
 
 #: judgments/tests/test_judgments.py judgments/views/judgment_hold.py
 msgid "judgment.hold.hold_title"
@@ -353,7 +353,7 @@ msgstr "Document on hold"
 
 #: judgments/views/delete.py
 msgid "judgment.delete_a_judgment"
-msgstr "Delete a judgment"
+msgstr "Delete a document"
 
 #: judgments/views/judgment_hold.py
 msgid "judgment.hold.hold_success_flash_message"
