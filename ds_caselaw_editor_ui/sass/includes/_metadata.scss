@@ -96,6 +96,7 @@
       border: 3px solid white;
     }
     margin-bottom: calc($spacer__unit / 2);
+    white-space: nowrap;
   }
 
   &__main-labels {
