@@ -282,4 +282,4 @@ docker/*
 /ds_caselaw_editor_ui/static/js/dist/app.js
 
 # This is pulled in automaically by `fab run` from the ds-caselaw-public-ui repo.
-/ds_caselaw_editor_ui/sass/includes/_document_text.scss
+/ds_caselaw_editor_ui/sass/includes/_judgment_text.scss
