@@ -37,7 +37,7 @@ class MoveJudgmentView(FormView):
             return redirect(new_uri)
 
         # there is an existing document at the URI
-        elif api_client.judgment_exists(new_uri):
+        elif api_client.document_exists(new_uri):
             # TODO: allow editors to see the two judgments and compare notes
             # TODO: tests
             # overwrite_judgment(old_uri, new_citation)
@@ -56,7 +56,7 @@ class MoveJudgmentView(FormView):
 
         else:
             # the new document does not exist, we can just create it, using the existing behaviour
-            update_document_uri(old_uri, new_citation)
+            source_judgment.move(new_citation)
             api_client.set_judgment_citation(new_uri, new_citation)
             # this will fail locally unless localstack is running as it will also update S3.
 
@@ -94,13 +94,13 @@ class OverwriteJudgmentView(FormView):
         source_uri = source_judgment.uri
         target_citation = form.cleaned_data["neutral_citation"]
         target_uri = caselawutils.neutral_url(target_citation)
-        if not api_client.judgment_exists(target_uri):
+        if not api_client.document_exists(target_uri):
             raise RuntimeError("Tried to overwrite something that didn't exist")
         # if both URIs match, just update the neutral citation, there's not need to move.
         if target_uri.strip("/") == source_uri.strip("/"):
             raise RuntimeError("collision: should have been handled in edit")
 
-        overwrite_judgment(source_uri, target_citation)
+        source_judgment.overwrite(target_citation)
         api_client.set_judgment_citation(target_uri, target_citation)
         messages.success(
             self.request, f"Updated {target_uri} with content from {source_uri}"
