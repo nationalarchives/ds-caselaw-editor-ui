@@ -20,6 +20,15 @@ def html_view(request, judgment_uri):
         "courts": caselawutils.courts.get_all(),
     }
 
+    press_summary_suffix = "/press-summary/1"
+    if judgment_uri.endswith(press_summary_suffix):
+        context["document_type"] = "press_summary"
+        context["linked_document_uri"] = judgment_uri.removesuffix(press_summary_suffix)
+
+    else:
+        context["document_type"] = "judgment"
+        context["linked_document_uri"] = judgment_uri + press_summary_suffix
+
     if not judgment.is_editable:
         judgment_content = judgment.content_as_xml()
         metadata_name = judgment_uri
@@ -43,7 +52,6 @@ def pdf_view(request, judgment_uri):
     version_uri = params.get("version_uri", None)
 
     judgment = get_judgment_by_uri_or_404(judgment_uri)
-
     if not judgment.pdf_url:
         raise Http404(f'Document "{judgment.name}" does not have a PDF.')
 
@@ -53,6 +61,15 @@ def pdf_view(request, judgment_uri):
         "page_title": judgment.name,
         "view": "judgment_text",
     }
+
+    press_summary_suffix = "/press-summary/1"
+    if judgment_uri.endswith(press_summary_suffix):
+        context["document_type"] = "press_summary"
+        context["linked_document_uri"] = judgment_uri.removesuffix(press_summary_suffix)
+
+    else:
+        context["document_type"] = "judgment"
+        context["linked_document_uri"] = judgment_uri + press_summary_suffix
 
     if version_uri:
         context["version"] = extract_version(version_uri)

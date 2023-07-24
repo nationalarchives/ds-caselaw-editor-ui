@@ -21,6 +21,7 @@ from judgments.utils.view_helpers import get_judgment_by_uri_or_404
 class EditJudgmentView(View):
     def get(self, request, *args, **kwargs):
         judgment_uri = kwargs["judgment_uri"]
+
         judgment = get_judgment_by_uri_or_404(judgment_uri)
 
         context = {"judgment_uri": judgment_uri}
@@ -36,6 +37,17 @@ class EditJudgmentView(View):
             judgment=judgment, request=request
         )
 
+        press_summary_suffix = "/press-summary/1"
+        if judgment_uri.endswith(press_summary_suffix):
+            context["document_type"] = "press_summary"
+            context["linked_document_uri"] = judgment_uri.removesuffix(
+                press_summary_suffix
+            )
+        else:
+            context["document_type"] = "judgment"
+            context["linked_document_uri"] = judgment_uri + press_summary_suffix
+
+        print(context)
         template = loader.get_template("judgment/edit.html")
         return HttpResponse(template.render(context, request))
 

@@ -1,16 +1,29 @@
-{% load i18n %}
+{% load i18n document_utils %}
 <div class="page-header__breadcrumb">
   <nav class="page-header__breadcrumb-container" aria-label="Breadcrumb">
     <span class="page-header__breadcrumb-you-are-in">You are in:</span>
     <ol>
       <li>
-        {% if current == "home" %}
+        {% if title == "home" %}
           {% translate "common.findcaselaw" %}
         {% else %}
           <a href="{% url 'home' %}">{% translate "common.findcaselaw" %}</a>
         {% endif %}
       </li>
-      {% if title and link %}<li>{{ title }}</li>{% endif %}
+      {% if link %}
+        {% if document_type == "press_summary" %}
+          <li>
+            {% if linked_document_uri %}
+              <a href="{% url 'full-text-html' linked_document_uri %}">{{ title|get_title_to_display_in_html:document_type }}</a>
+            {% else %}
+              <a>{{ title|get_title_to_display_in_html:document_type }}</a>
+            {% endif %}
+          </li>
+          <li>Press Summary</li>
+        {% else %}
+          <li>{{ title }}</li>
+        {% endif %}
+      {% endif %}
     </ol>
   </nav>
 </div>
