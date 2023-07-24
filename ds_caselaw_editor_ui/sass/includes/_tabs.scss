@@ -7,9 +7,9 @@
     margin: 0 0.25rem;
 
     label {
-      background: $color__dark-blue;
+      background: $color__aqua-blue;
       padding-top: 0.75rem;
-      border: 2px solid $color__dark-blue;
+      border: 2px solid $color__aqua-blue;
       border-bottom: none;
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
@@ -28,6 +28,11 @@
           outline-offset: 5px;
         }
       }
+
+      &:hover {
+        background: $color__dark-blue;
+        border-color: $color__dark-blue;
+      }
     }
 
     input[type="radio"] {
@@ -38,12 +43,13 @@
       border-bottom: 2px solid $color__white;
       background: $color__white;
       a {
-        color: $color__dark-blue;
+        color: $color__aqua-blue;
+        cursor: default;
       }
     }
   }
 
   &__divider {
-    border-top: solid 2px $color__dark-blue;
+    border-top: solid 2px $color__aqua-blue;
   }
 }
