@@ -2,7 +2,7 @@
   <div class="tabs-set__item">
     <input type="radio"
            id="tab1"
-           name="tabs-set"
+           name="{{ name|default:"tabs-set" }}"
            value="1"
            {% if selected == 1 %}checked{% endif %} />
     <label for="tab1">
@@ -12,7 +12,7 @@
   <div class="tabs-set__item">
     <input type="radio"
            id="tab2"
-           name="tabs-set"
+           name="{{ name|default:"tabs-set" }}"
            value="2"
            {% if selected == 2 %}checked{% endif %} />
     <label for="tab2">

@@ -2,10 +2,10 @@
 <details>
   <summary>Usage details</summary>
   <p>
-    Tabs are usually used to accommodate sections of content that can share the same space and heirarchy. For example the 'HTML view' and the 'PDF view' on the editor user interface.
+    Tabs are usually used to accommodate sections of content that can share the same space and heirarchy. For example the 'HTML view' and the 'PDF view' on the editor user interface. If for some reason you need to use more than one tab set on a page, you must provide a unique <code>name</code> variable to each. If there's only one tab set on the page, this is optional.
   </p>
 </details>
 <p>
   Use with <code>include "includes/tabs.html" with label1="HTML view" label2="PDF view" url1="#first-tab" url2="#second-tab" selected=1 javascript_enabled=True</code>:
 </p>
-{% include "includes/tabs.html" with label1="HTML view" label2="PDF view" url1="#first-tab" url2="#second-tab" selected=1 javascript_enabled=True %}
+{% include "includes/tabs.html" with label1="HTML view" label2="PDF view" url1="#first-tab" url2="#second-tab" selected=1 name="tab-set-demo" javascript_enabled=True %}
