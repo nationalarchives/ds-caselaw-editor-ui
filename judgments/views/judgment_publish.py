@@ -16,6 +16,17 @@ class PublishJudgmentView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(PublishJudgmentView, self).get_context_data(**kwargs)
         judgment = get_judgment_by_uri_or_404(kwargs["judgment_uri"])
+        judgment_uri = kwargs["judgment_uri"]
+
+        press_summary_suffix = "/press-summary/1"
+        if judgment_uri.endswith(press_summary_suffix):
+            context["document_type"] = "press_summary"
+            context["linked_document_uri"] = judgment_uri.removesuffix(
+                press_summary_suffix
+            )
+        else:
+            context["document_type"] = "judgment"
+            context["linked_document_uri"] = judgment_uri + press_summary_suffix
 
         context.update(
             {
@@ -39,6 +50,17 @@ class PublishJudgmentSuccessView(TemplateView):
         context = super(PublishJudgmentSuccessView, self).get_context_data(**kwargs)
 
         judgment = get_judgment_by_uri_or_404(kwargs["judgment_uri"])
+        judgment_uri = kwargs["judgment_uri"]
+
+        press_summary_suffix = "/press-summary/1"
+        if judgment_uri.endswith(press_summary_suffix):
+            context["document_type"] = "press_summary"
+            context["linked_document_uri"] = judgment_uri.removesuffix(
+                press_summary_suffix
+            )
+        else:
+            context["document_type"] = "judgment"
+            context["linked_document_uri"] = judgment_uri + press_summary_suffix
 
         context.update(
             {
@@ -80,6 +102,17 @@ class UnpublishJudgmentView(TemplateView):
         context = super(UnpublishJudgmentView, self).get_context_data(**kwargs)
 
         judgment = get_judgment_by_uri_or_404(kwargs["judgment_uri"])
+        judgment_uri = kwargs["judgment_uri"]
+
+        press_summary_suffix = "/press-summary/1"
+        if judgment_uri.endswith(press_summary_suffix):
+            context["document_type"] = "press_summary"
+            context["linked_document_uri"] = judgment_uri.removesuffix(
+                press_summary_suffix
+            )
+        else:
+            context["document_type"] = "judgment"
+            context["linked_document_uri"] = judgment_uri + press_summary_suffix
 
         context.update(
             {
@@ -103,6 +136,17 @@ class UnpublishJudgmentSuccessView(TemplateView):
         context = super(UnpublishJudgmentSuccessView, self).get_context_data(**kwargs)
 
         judgment = get_judgment_by_uri_or_404(kwargs["judgment_uri"])
+        judgment_uri = kwargs["judgment_uri"]
+
+        press_summary_suffix = "/press-summary/1"
+        if judgment_uri.endswith(press_summary_suffix):
+            context["document_type"] = "press_summary"
+            context["linked_document_uri"] = judgment_uri.removesuffix(
+                press_summary_suffix
+            )
+        else:
+            context["document_type"] = "judgment"
+            context["linked_document_uri"] = judgment_uri + press_summary_suffix
 
         context.update(
             {
