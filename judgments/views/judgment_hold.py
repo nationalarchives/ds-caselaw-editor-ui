@@ -20,9 +20,7 @@ class HoldJudgmentView(TemplateView):
 
         context.update(
             {
-                "page_title": '{title}: "{judgment}"'.format(
-                    title=gettext("judgment.hold.hold_title"), judgment=judgment.name
-                ),
+                "page_title": "{judgment}".format(judgment=judgment.name),
                 "view": "hold_judgment",
                 "judgment": judgment,
                 "editors": editors_dict(),
@@ -53,8 +51,7 @@ class HoldJudgmentSuccessView(TemplateView):
 
         context.update(
             {
-                "page_title": '{title}: "{judgment}"'.format(
-                    title=gettext("judgment.hold.hold_success_title"),
+                "page_title": "{judgment}".format(
                     judgment=judgment.name,
                 ),
                 "judgment": judgment,
@@ -105,8 +102,7 @@ class UnholdJudgmentView(TemplateView):
 
         context.update(
             {
-                "page_title": '{title}: "{judgment}"'.format(
-                    title=gettext("judgment.hold.unhold_title"),
+                "page_title": "{judgment}".format(
                     judgment=judgment.name,
                 ),
                 "view": "hold_judgment",
@@ -139,8 +135,7 @@ class UnholdJudgmentSuccessView(TemplateView):
 
         context.update(
             {
-                "page_title": '{title}: "{judgment}"'.format(
-                    title=gettext("judgment.hold.unhold_success_title"),
+                "page_title": "{judgment}".format(
                     judgment=judgment.name,
                 ),
                 "judgment": judgment,

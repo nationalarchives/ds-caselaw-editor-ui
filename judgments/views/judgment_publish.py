@@ -30,8 +30,7 @@ class PublishJudgmentView(TemplateView):
 
         context.update(
             {
-                "page_title": '{title}: "{judgment}"'.format(
-                    title=gettext("judgment.publish.publish_title"),
+                "page_title": "{judgment}".format(
                     judgment=judgment.name,
                 ),
                 "view": "publish_judgment",
@@ -64,8 +63,7 @@ class PublishJudgmentSuccessView(TemplateView):
 
         context.update(
             {
-                "page_title": '{title}: "{judgment}"'.format(
-                    title=gettext("judgment.publish.publish_success_title"),
+                "page_title": "{judgment}".format(
                     judgment=judgment.name,
                 ),
                 "judgment": judgment,
@@ -116,8 +114,7 @@ class UnpublishJudgmentView(TemplateView):
 
         context.update(
             {
-                "page_title": '{title}: "{judgment}"'.format(
-                    title=gettext("judgment.publish.unpublish_title"),
+                "page_title": "{judgment}".format(
                     judgment=judgment.name,
                 ),
                 "view": "publish_judgment",
@@ -150,8 +147,7 @@ class UnpublishJudgmentSuccessView(TemplateView):
 
         context.update(
             {
-                "page_title": '{title}: "{judgment}"'.format(
-                    title=gettext("judgment.publish.unpublish_success_title"),
+                "page_title": "{judgment}".format(
                     judgment=judgment.name,
                 ),
                 "judgment": judgment,
