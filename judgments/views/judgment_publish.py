@@ -30,9 +30,7 @@ class PublishJudgmentView(TemplateView):
 
         context.update(
             {
-                "page_title": "{judgment}".format(
-                    judgment=judgment.name,
-                ),
+                "page_title": judgment.name,
                 "view": "publish_judgment",
                 "judgment": judgment,
                 "editors": editors_dict(),
@@ -63,9 +61,7 @@ class PublishJudgmentSuccessView(TemplateView):
 
         context.update(
             {
-                "page_title": "{judgment}".format(
-                    judgment=judgment.name,
-                ),
+                "page_title": judgment.name,
                 "judgment": judgment,
                 "email_confirmation_link": build_confirmation_email_link(
                     judgment=judgment,
@@ -114,9 +110,7 @@ class UnpublishJudgmentView(TemplateView):
 
         context.update(
             {
-                "page_title": "{judgment}".format(
-                    judgment=judgment.name,
-                ),
+                "page_title": judgment.name,
                 "view": "publish_judgment",
                 "judgment": judgment,
                 "editors": editors_dict(),
@@ -147,9 +141,7 @@ class UnpublishJudgmentSuccessView(TemplateView):
 
         context.update(
             {
-                "page_title": "{judgment}".format(
-                    judgment=judgment.name,
-                ),
+                "page_title": judgment.name,
                 "judgment": judgment,
                 "editors": editors_dict(),
             }

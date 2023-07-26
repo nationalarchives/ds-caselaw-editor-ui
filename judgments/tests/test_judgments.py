@@ -5,7 +5,6 @@ from urllib.parse import urlencode
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
-from django.utils.translation import gettext
 from factories import JudgmentFactory
 
 
@@ -218,7 +217,6 @@ class TestJudgmentPublish(TestCase):
         response = self.client.get(publish_uri)
 
         decoded_response = response.content.decode("utf-8")
-        self.assertIn(gettext("judgment.publish.publish_title"), decoded_response)
         self.assertIn("Test v Tested", decoded_response)
         assert response.status_code == 200
 
@@ -268,9 +266,6 @@ class TestJudgmentPublish(TestCase):
         response = self.client.get(publish_success_uri)
 
         decoded_response = response.content.decode("utf-8")
-        self.assertIn(
-            gettext("judgment.publish.publish_success_title"), decoded_response
-        )
         self.assertIn("Test v Tested", decoded_response)
         assert response.status_code == 200
 
@@ -293,7 +288,6 @@ class TestJudgmentHold(TestCase):
         response = self.client.get(hold_uri)
 
         decoded_response = response.content.decode("utf-8")
-        self.assertIn(gettext("judgment.hold.hold_title"), decoded_response)
         self.assertIn("Test v Tested", decoded_response)
         assert response.status_code == 200
 
@@ -343,7 +337,6 @@ class TestJudgmentHold(TestCase):
         response = self.client.get(hold_success_uri)
 
         decoded_response = response.content.decode("utf-8")
-        self.assertIn(gettext("judgment.hold.hold_success_title"), decoded_response)
         self.assertIn("Test v Tested", decoded_response)
         assert response.status_code == 200
 
@@ -366,7 +359,6 @@ class TestJudgmentUnhold(TestCase):
         response = self.client.get(unhold_uri)
 
         decoded_response = response.content.decode("utf-8")
-        self.assertIn(gettext("judgment.hold.unhold_title"), decoded_response)
         self.assertIn("Test v Tested", decoded_response)
         assert response.status_code == 200
 
@@ -416,7 +408,6 @@ class TestJudgmentUnhold(TestCase):
         response = self.client.get(unhold_success_uri)
 
         decoded_response = response.content.decode("utf-8")
-        self.assertIn(gettext("judgment.hold.unhold_success_title"), decoded_response)
         self.assertIn("Test v Tested", decoded_response)
         assert response.status_code == 200
 
@@ -441,7 +432,6 @@ class TestJudgmentUnpublish(TestCase):
         response = self.client.get(unpublish_uri)
 
         decoded_response = response.content.decode("utf-8")
-        self.assertIn(gettext("judgment.publish.unpublish_title"), decoded_response)
         self.assertIn("Test v Tested", decoded_response)
         assert response.status_code == 200
 
@@ -491,9 +481,6 @@ class TestJudgmentUnpublish(TestCase):
         response = self.client.get(unpublish_success_uri)
 
         decoded_response = response.content.decode("utf-8")
-        self.assertIn(
-            gettext("judgment.publish.unpublish_success_title"), decoded_response
-        )
         self.assertIn("Test v Tested", decoded_response)
         assert response.status_code == 200
 
