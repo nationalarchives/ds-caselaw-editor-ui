@@ -271,7 +271,6 @@ msgid "results.search.title"
 msgstr "Search results"
 
 #: ds_caselaw_editor_ui/templates/judgment/unhold-success.html
-#: judgments/tests/test_judgments.py judgments/views/judgment_hold.py
 msgid "judgment.hold.unhold_success_title"
 msgstr "This document has been taken off hold"
 
@@ -280,7 +279,6 @@ msgid "judgment.unhold.success"
 msgstr "This document is no longer on hold."
 
 #: ds_caselaw_editor_ui/templates/judgment/unhold.html
-#: judgments/tests/test_judgments.py judgments/views/judgment_hold.py
 msgid "judgment.hold.unhold_title"
 msgstr "Take this document off hold"
 
@@ -289,12 +287,10 @@ msgid "judgment.unhold.unhold_button"
 msgstr "Unhold document"
 
 #: ds_caselaw_editor_ui/templates/judgment/unpublish-success.html
-#: judgments/tests/test_judgments.py judgments/views/judgment_publish.py
 msgid "judgment.publish.unpublish_success_title"
 msgstr "This document is no longer published"
 
 #: ds_caselaw_editor_ui/templates/judgment/unpublish.html
-#: judgments/tests/test_judgments.py judgments/views/judgment_publish.py
 msgid "judgment.publish.unpublish_title"
 msgstr "Unpublish this document"
 
@@ -335,21 +331,6 @@ msgstr ""
 "a seperate file under the includes/style_guide folder, and include it below "
 "following the example in the template."
 
-#: judgments/tests/test_judgments.py judgments/views/judgment_publish.py
-msgid "judgment.publish.publish_title"
-msgstr "Publish document"
-
-#: judgments/tests/test_judgments.py judgments/views/judgment_publish.py
-msgid "judgment.publish.publish_success_title"
-msgstr "Published document"
-
-#: judgments/tests/test_judgments.py judgments/views/judgment_hold.py
-msgid "judgment.hold.hold_title"
-msgstr "Put on hold"
-
-#: judgments/tests/test_judgments.py judgments/views/judgment_hold.py
-msgid "judgment.hold.hold_success_title"
-msgstr "Document on hold"
 
 #: judgments/views/delete.py
 msgid "judgment.delete_a_judgment"
