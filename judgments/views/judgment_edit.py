@@ -11,6 +11,7 @@ from judgments.utils import (
     MoveJudgmentError,
     NeutralCitationToUriError,
     editors_dict,
+    set_document_type_and_link,
     update_document_uri,
 )
 from judgments.utils.aws import invalidate_caches
@@ -37,17 +38,8 @@ class EditJudgmentView(View):
             judgment=judgment, request=request
         )
 
-        press_summary_suffix = "/press-summary/1"
-        if judgment_uri.endswith(press_summary_suffix):
-            context["document_type"] = "press_summary"
-            context["linked_document_uri"] = judgment_uri.removesuffix(
-                press_summary_suffix
-            )
-        else:
-            context["document_type"] = "judgment"
-            context["linked_document_uri"] = judgment_uri + press_summary_suffix
+        context = set_document_type_and_link(context, judgment_uri)
 
-        print(context)
         template = loader.get_template("judgment/edit.html")
         return HttpResponse(template.render(context, request))
 

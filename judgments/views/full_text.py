@@ -5,7 +5,7 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
 
-from judgments.utils import extract_version
+from judgments.utils import extract_version, set_document_type_and_link
 from judgments.utils.view_helpers import get_judgment_by_uri_or_404
 
 
@@ -20,14 +20,7 @@ def html_view(request, judgment_uri):
         "courts": caselawutils.courts.get_all(),
     }
 
-    press_summary_suffix = "/press-summary/1"
-    if judgment_uri.endswith(press_summary_suffix):
-        context["document_type"] = "press_summary"
-        context["linked_document_uri"] = judgment_uri.removesuffix(press_summary_suffix)
-
-    else:
-        context["document_type"] = "judgment"
-        context["linked_document_uri"] = judgment_uri + press_summary_suffix
+    context = set_document_type_and_link(context, judgment_uri)
 
     if not judgment.is_editable:
         judgment_content = judgment.content_as_xml()
@@ -62,14 +55,7 @@ def pdf_view(request, judgment_uri):
         "view": "judgment_text",
     }
 
-    press_summary_suffix = "/press-summary/1"
-    if judgment_uri.endswith(press_summary_suffix):
-        context["document_type"] = "press_summary"
-        context["linked_document_uri"] = judgment_uri.removesuffix(press_summary_suffix)
-
-    else:
-        context["document_type"] = "judgment"
-        context["linked_document_uri"] = judgment_uri + press_summary_suffix
+    context = set_document_type_and_link(context, judgment_uri)
 
     if version_uri:
         context["version"] = extract_version(version_uri)

@@ -1,20 +1,23 @@
 import os
+from typing import Any, Dict
 from unittest.mock import MagicMock, Mock, patch
 
 import ds_caselaw_utils
 import pytest
-from caselawclient.errors import MarklogicAPIError
+from caselawclient.errors import DocumentNotFoundError, MarklogicAPIError
 from django.contrib.auth.models import Group
 from django.test import TestCase
 from factories import JudgmentFactory, UserFactory
 
 import judgments
 from judgments.utils import (
+    check_document_at_uri_exists,
     editors_dict,
     ensure_local_referer_url,
     extract_version,
     get_judgment_root,
     render_versions,
+    set_document_type_and_link,
     update_document_uri,
 )
 from judgments.utils.aws import build_new_key, invalidate_caches
@@ -316,3 +319,67 @@ class TestEditorsDict:
         assert editors_dict() == [
             {"name": "active_editor", "print_name": "active_editor"},
         ]
+
+
+class TestCheckDocumentAtURIExists:
+    @patch("judgments.utils.get_judgment_by_uri")
+    def test_document_does_not_exist(self, fake_judgment):
+        fake_judgment.side_effect = DocumentNotFoundError
+
+        uri = "/test/uri"
+        response = check_document_at_uri_exists(uri)
+        assert response is None
+
+    @patch("judgments.utils.get_judgment_by_uri")
+    def test_document_exists(self, fake_judgment):
+        fake_judgment.return_value = JudgmentFactory.build()
+
+        uri = "/test/uri"
+        response = check_document_at_uri_exists(uri)
+        assert response == uri
+
+
+class TestSetDocumentTypeAndLink:
+    @patch("judgments.utils.get_judgment_by_uri")
+    def test_document_is_a_press_summary_and_judgment_exists(self, fake_judgment):
+        fake_judgment.return_value = JudgmentFactory.build()
+
+        context: Dict[str, Any] = {}
+        document_uri = "/test/judgment/press-summary/1"
+        set_document_type_and_link(context, document_uri)
+        assert context["document_type"] == "press_summary"
+        assert context["linked_document_uri"] == "/test/judgment"
+
+    @patch("judgments.utils.get_judgment_by_uri")
+    def test_document_is_a_press_summary_and_judgment_does_not_exist(
+        self, fake_judgment
+    ):
+        fake_judgment.side_effect = DocumentNotFoundError
+
+        context: Dict[str, Any] = {}
+        document_uri = "/test/judgment/press-summary/1"
+        set_document_type_and_link(context, document_uri)
+        assert context["document_type"] == "press_summary"
+        assert context["linked_document_uri"] is None
+
+    @patch("judgments.utils.get_judgment_by_uri")
+    def test_document_is_a_judgment_and_press_summary_exists(self, fake_judgment):
+        fake_judgment.return_value = JudgmentFactory.build()
+
+        context: Dict[str, Any] = {}
+        document_uri = "/test/judgment"
+        set_document_type_and_link(context, document_uri)
+        assert context["document_type"] == "judgment"
+        assert context["linked_document_uri"] == "/test/judgment/press-summary/1"
+
+    @patch("judgments.utils.get_judgment_by_uri")
+    def test_document_is_a_judgment_and_press_summary_does_not_exist(
+        self, fake_judgment
+    ):
+        fake_judgment.side_effect = DocumentNotFoundError
+
+        context: Dict[str, Any] = {}
+        document_uri = "/test/judgment"
+        set_document_type_and_link(context, document_uri)
+        assert context["document_type"] == "judgment"
+        assert context["linked_document_uri"] is None

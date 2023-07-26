@@ -1,8 +1,20 @@
 .judgment-sidebar {
   &__block {
-    margin-bottom: 2rem;
+    &:first-child {
+      margin-top: 3rem;
+    }
+
+    margin-bottom: 3rem;
     h4 {
-      margin-bottom: 0.6rem;
+      font-size: 0.8rem;
+      line-height: 1.4rem;
+      margin: 0;
+    }
+
+    p {
+      margin-top: 0;
+      font-size: 0.8rem;
+      line-height: 1.4rem;
     }
 
     a {
@@ -10,31 +22,20 @@
     }
 
     ul {
+      margin-top: 0;
       padding-left: 0;
     }
 
     li {
+      margin-top: 0;
       list-style: none;
-      margin-top: 0.4rem;
       font-size: 0.8rem;
-    }
-
-    dl {
-      margin-top: 1rem;
-      font-size: 0.8rem;
-    }
-
-    dt {
-      font-weight: bold;
-    }
-
-    dd {
-      margin-left: 0;
-      margin-bottom: $spacer__unit;
+      line-height: 1.4rem;
     }
 
     .judgment-status-indicator {
       font-size: 1rem;
+      margin-top: 0.2rem;
     }
   }
 

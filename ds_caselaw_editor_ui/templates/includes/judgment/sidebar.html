@@ -6,21 +6,28 @@
       <span class="judgment-status-indicator judgment-status-indicator--{{ judgment.status | status_tag_colour }}">{{ judgment.status }}</span>
     </li>
   </ul>
-  <h4>{% translate "judgments.sidebar.submission" %}</h4>
-  <dl class="items">
-    <dt class="judgment-sidebar__label">{% translate "judgments.submitter" %}</dt>
-    <dd>
-      {{ judgment.source_name }}
-    </dd>
-    <dt class="judgment-sidebar__label">{% translate "judgments.submitteremail" %}</dt>
-    <dd>
-      <a href="mailto:{{ judgment.source_email }}">{{ judgment.source_email }}</a>
-    </dd>
-    <dt class="judgment-sidebar__label">{% translate "judgments.consignmentref" %}</dt>
-    <dd>
-      {{ judgment.consignment_reference }}
-    </dd>
-  </dl>
+</div>
+<div class="judgment-sidebar__block">
+  <h4>{% translate "judgments.associated_douments" %}</h4>
+  <p>
+    {% if linked_document_uri %}
+      <a href="{% url 'full-text-html' linked_document_uri %}">
+        {% if document_type == "press_summary" %}
+          Judgment
+        {% else %}
+          Press Summary
+        {% endif %}
+      </a>
+    {% else %}
+      None
+    {% endif %}
+  </p>
+</div>
+<div class="judgment-sidebar__block">
+  <h4>{% translate "judgments.submitter" %}</h4>
+  <p>
+    <a href="mailto:{{ judgment.source_email }}">{{ judgment.source_name }}</a>
+  </p>
 </div>
 <div class="judgment-sidebar__block">
   <h4>{% translate "judgments.sidebar.tools" %}</h4>

@@ -2,10 +2,12 @@ import re
 import xml.etree.ElementTree as ET
 from datetime import datetime
 from operator import itemgetter
+from typing import Any, Dict, Optional
 from urllib.parse import urlparse
 
 import ds_caselaw_utils as caselawutils
 from caselawclient.Client import MarklogicApiClient, MarklogicAPIError, api_client
+from caselawclient.errors import DocumentNotFoundError
 from caselawclient.models.judgments import Judgment
 from django.conf import settings
 from django.contrib.auth.models import Group, User
@@ -171,3 +173,29 @@ def get_judgment_by_uri(judgment_uri: str) -> Judgment:
     )
 
     return Judgment(judgment_uri, api_client)
+
+
+def check_document_at_uri_exists(document_uri: str) -> Optional[str]:
+    try:
+        get_judgment_by_uri(document_uri)
+        return document_uri
+    except DocumentNotFoundError:
+        return None
+
+
+def set_document_type_and_link(
+    context: Dict[str, Any], document_uri: str
+) -> Dict[str, Any]:
+    press_summary_suffix = "/press-summary/1"
+
+    if document_uri.endswith(press_summary_suffix):
+        context["document_type"] = "press_summary"
+        context["linked_document_uri"] = check_document_at_uri_exists(
+            document_uri.removesuffix(press_summary_suffix)
+        )
+    else:
+        context["document_type"] = "judgment"
+        context["linked_document_uri"] = check_document_at_uri_exists(
+            document_uri + press_summary_suffix
+        )
+    return context
