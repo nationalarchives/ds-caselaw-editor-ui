@@ -1,6 +1,10 @@
 {% extends "layouts/judgment.html" %}
 {% block content %}
-  {% include "includes/judgment/metadata_panel_form.html" with return_to="pdf" %}
+  {% if document_type == "judgment" %}
+    {% include "includes/judgment/metadata_panel_form.html" with return_to="pdf" %}
+  {% else %}
+    {% include "includes/judgment/metadata_panel_static.html" with return_to="pdf" %}
+  {% endif %}
   {% include "includes/judgment/view_controls.html" with selected_tab=2 %}
   <object data="{{ judgment.pdf_url }}"
           type="application/pdf"

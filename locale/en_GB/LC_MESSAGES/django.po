@@ -1,4 +1,3 @@
-# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
@@ -8,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-26 12:17+0000\n"
+"POT-Creation-Date: 2023-08-02 09:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -104,6 +103,13 @@ msgstr "Court"
 #: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
 msgid "judgments.associated_douments"
 msgstr "Associated documents"
+#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
+msgid "documment.publication_date"
+msgstr "Publication date"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
+msgid "judgment.document.type"
+msgstr "Document type"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
@@ -330,11 +336,14 @@ msgstr ""
 "a seperate file under the includes/style_guide folder, and include it below "
 "following the example in the template."
 
+<<<<<<< HEAD
 
 #: judgments/utils/link_generators.py
 msgid "judgments.submitteremail"
 msgstr "Contact email"
 
+=======
+>>>>>>> a6781ce (update metadata panel review page press summaries)
 #: judgments/views/delete.py
 msgid "judgment.delete_a_judgment"
 msgstr "Delete a document"
