@@ -15,26 +15,24 @@
           <span class="judgment-metadata-panel__key">{% translate "judgments.court" %}</span>
           <span class="judgment-metadata-panel__value">{{ judgment.court }}</span>
         </li>
-        {% if document_type == "judgment" %}
-          <li>
-            <span class="judgment-metadata-panel__key">{% translate "judgment.judgment_date" %}</span>
-            <time class="judgment-metadata-panel__value"
-                  datetime="{{ judgment.judgment_date_as_string }}">{{ judgment.judgment_date_as_string }}</time>
-          </li>
-        {% else %}
-          <li>
-            <span class="judgment-metadata-panel__key">{% translate "document.publication_date" %}</span>
-            <time class="judgment-metadata-panel__value"
-                  datetime="{{ judgment.judgment_date_as_string }}">{{ judgment.judgment_date_as_string }}</time>
-          </li>
-        {% endif %}
+        <li>
+          <span class="judgment-metadata-panel__key">
+            {% if document_type == "judgment" %}
+              {% translate "judgment.judgment_date" %}
+            {% else %}
+              {% translate "document.publication_date" %}
+            {% endif %}
+          </span>
+          <time class="judgment-metadata-panel__value"
+                datetime="{{ judgment.judgment_date_as_string }}">{{ judgment.judgment_date_as_string }}</time>
+        </li>
         <li>
           <span class="judgment-metadata-panel__key">{% translate "judgment.judgment_name" %}</span>
           <span class="judgment-metadata-panel__value">{{ judgment.name }}</span>
         </li>
         <li>
-          <span class="judgment-metadata-panel__key">{% translate "judgment.document.type" %}</span>
-          <span class="judgment-metadata-panel__value">Press Summary</span>
+          <span class="judgment-metadata-panel__key">{% translate "document.type" %}</span>
+          <span class="judgment-metadata-panel__value">{{ judgment.document_noun|capfirst }}</span>
         </li>
       </ul>
     </div>
