@@ -4,14 +4,15 @@ from unittest.mock import MagicMock, Mock, patch
 
 import ds_caselaw_utils
 import pytest
-from caselawclient.errors import DocumentNotFoundError, MarklogicAPIError
+from caselawclient.errors import MarklogicAPIError
+from caselawclient.models.judgments import Judgment
+from caselawclient.models.press_summaries import PressSummary
 from django.contrib.auth.models import Group
 from django.test import TestCase
 from factories import JudgmentFactory, UserFactory
 
 import judgments
 from judgments.utils import (
-    check_document_at_uri_exists,
     editors_dict,
     ensure_local_referer_url,
     extract_version,
@@ -321,28 +322,14 @@ class TestEditorsDict:
         ]
 
 
-class TestCheckDocumentAtURIExists:
-    @patch("judgments.utils.get_judgment_by_uri")
-    def test_document_does_not_exist(self, fake_judgment):
-        fake_judgment.side_effect = DocumentNotFoundError
-
-        uri = "/test/uri"
-        response = check_document_at_uri_exists(uri)
-        assert response is None
-
-    @patch("judgments.utils.get_judgment_by_uri")
-    def test_document_exists(self, fake_judgment):
-        fake_judgment.return_value = JudgmentFactory.build()
-
-        uri = "/test/uri"
-        response = check_document_at_uri_exists(uri)
-        assert response == uri
-
-
 class TestSetDocumentTypeAndLink:
-    @patch("judgments.utils.get_judgment_by_uri")
-    def test_document_is_a_press_summary_and_judgment_exists(self, fake_judgment):
-        fake_judgment.return_value = JudgmentFactory.build()
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_document_is_a_press_summary_and_judgment_exists(
+        self, document_type, document_exists
+    ):
+        document_type.return_value = PressSummary
+        document_exists.return_value = True
 
         context: Dict[str, Any] = {}
         document_uri = "/test/judgment/press-summary/1"
@@ -350,21 +337,27 @@ class TestSetDocumentTypeAndLink:
         assert context["document_type"] == "press_summary"
         assert context["linked_document_uri"] == "/test/judgment"
 
-    @patch("judgments.utils.get_judgment_by_uri")
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
     def test_document_is_a_press_summary_and_judgment_does_not_exist(
-        self, fake_judgment
+        self, document_type, document_exists
     ):
-        fake_judgment.side_effect = DocumentNotFoundError
+        document_type.return_value = PressSummary
+        document_exists.return_value = False
 
         context: Dict[str, Any] = {}
         document_uri = "/test/judgment/press-summary/1"
         set_document_type_and_link(context, document_uri)
         assert context["document_type"] == "press_summary"
-        assert context["linked_document_uri"] is None
+        assert "linked_document_uri" not in context
 
-    @patch("judgments.utils.get_judgment_by_uri")
-    def test_document_is_a_judgment_and_press_summary_exists(self, fake_judgment):
-        fake_judgment.return_value = JudgmentFactory.build()
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_document_is_a_judgment_and_press_summary_exists(
+        self, document_type, document_exists
+    ):
+        document_type.return_value = Judgment
+        document_exists.return_value = True
 
         context: Dict[str, Any] = {}
         document_uri = "/test/judgment"
@@ -372,14 +365,16 @@ class TestSetDocumentTypeAndLink:
         assert context["document_type"] == "judgment"
         assert context["linked_document_uri"] == "/test/judgment/press-summary/1"
 
-    @patch("judgments.utils.get_judgment_by_uri")
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
     def test_document_is_a_judgment_and_press_summary_does_not_exist(
-        self, fake_judgment
+        self, document_type, document_exists
     ):
-        fake_judgment.side_effect = DocumentNotFoundError
+        document_type.return_value = Judgment
+        document_exists.return_value = False
 
         context: Dict[str, Any] = {}
         document_uri = "/test/judgment"
         set_document_type_and_link(context, document_uri)
         assert context["document_type"] == "judgment"
-        assert context["linked_document_uri"] is None
+        assert "linked_document_uri" not in context

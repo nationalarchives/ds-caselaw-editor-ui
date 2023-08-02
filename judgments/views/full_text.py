@@ -23,7 +23,7 @@ def html_view(request, judgment_uri):
     context = set_document_type_and_link(context, judgment_uri)
 
     if not judgment.is_editable:
-        judgment_content = judgment.content_as_xml()
+        judgment_content = judgment.content_as_xml
         metadata_name = judgment_uri
     else:
         judgment_content = judgment.content_as_html(version_uri=version_uri)
@@ -71,7 +71,7 @@ def pdf_view(request, judgment_uri):
 
 def xml_view(request, judgment_uri):
     judgment = get_judgment_by_uri_or_404(judgment_uri)
-    judgment_xml = judgment.content_as_xml()
+    judgment_xml = judgment.content_as_xml
 
     response = HttpResponse(judgment_xml, content_type="application/xml")
     response["Content-Disposition"] = f"attachment; filename={judgment_uri}.xml"
