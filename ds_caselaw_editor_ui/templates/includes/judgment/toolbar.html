@@ -16,8 +16,7 @@
       {% endif %}
       {% if judgment.is_published %}
         <span class="judgment-toolbar__button button-secondary"
-              aria-disabled="t
-              rue">{% translate "judgment.toolbar.hold" %}</span>
+              aria-disabled="t rue">{% translate "judgment.toolbar.hold" %}</span>
       {% else %}
         {% if judgment.is_held %}
           <a class="judgment-toolbar__button {% if view == 'hold_judgment' %}button-cta{% else %}button-secondary{% endif %}"
