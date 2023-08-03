@@ -2,6 +2,7 @@ import re
 from unittest.mock import patch
 from urllib.parse import urlencode
 
+from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
@@ -14,7 +15,12 @@ def assert_match(regex, string):
 
 class TestJudgmentEdit(TestCase):
     @patch("judgments.views.judgment_edit.get_judgment_by_uri_or_404")
-    def test_judgment_edit_view(self, mock_judgment):
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_judgment_edit_view(self, document_type, document_exists, mock_judgment):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
         judgment = JudgmentFactory.build(
             uri="edtest/4321/123",
             name="Test v Tested",
@@ -108,7 +114,12 @@ class TestJudgmentEdit(TestCase):
 
 class TestJudgmentView(TestCase):
     @patch("judgments.views.full_text.get_judgment_by_uri_or_404")
-    def test_judgment_html_view(self, mock_judgment):
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_judgment_html_view(self, document_type, document_exists, mock_judgment):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
         judgment = JudgmentFactory.build(
             uri="hvtest/4321/123",
             name="Test v Tested",
@@ -133,7 +144,14 @@ class TestJudgmentView(TestCase):
         assert response.status_code == 200
 
     @patch("judgments.views.full_text.get_judgment_by_uri_or_404")
-    def test_judgment_html_view_with_failure(self, mock_judgment):
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_judgment_html_view_with_failure(
+        self, document_type, document_exists, mock_judgment
+    ):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
         judgment = JudgmentFactory.build(
             uri="hvtest/4321/123",
             html="<h1>Test Judgment</h1>",
@@ -201,7 +219,12 @@ class TestJudgmentView(TestCase):
 
 class TestJudgmentPublish(TestCase):
     @patch("judgments.views.judgment_publish.get_judgment_by_uri_or_404")
-    def test_judgment_publish_view(self, mock_judgment):
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_judgment_publish_view(self, document_type, document_exists, mock_judgment):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
         judgment = JudgmentFactory.build(
             uri="pubtest/4321/123",
             name="Test v Tested",
@@ -248,7 +271,14 @@ class TestJudgmentPublish(TestCase):
         mock_invalidate_caches.assert_called_once()
 
     @patch("judgments.views.judgment_publish.get_judgment_by_uri_or_404")
-    def test_judgment_publish_success_view(self, mock_judgment):
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_judgment_publish_success_view(
+        self, document_type, document_exists, mock_judgment
+    ):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
         judgment = JudgmentFactory.build(
             uri="pubtest/4321/123",
             name="Test v Tested",
@@ -272,7 +302,12 @@ class TestJudgmentPublish(TestCase):
 
 class TestJudgmentHold(TestCase):
     @patch("judgments.views.judgment_hold.get_judgment_by_uri_or_404")
-    def test_judgment_hold_view(self, mock_judgment):
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_judgment_hold_view(self, document_type, document_exists, mock_judgment):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
         judgment = JudgmentFactory.build(
             uri="holdtest/4321/123",
             name="Test v Tested",
@@ -319,7 +354,14 @@ class TestJudgmentHold(TestCase):
         mock_invalidate_caches.assert_called_once()
 
     @patch("judgments.views.judgment_hold.get_judgment_by_uri_or_404")
-    def test_judgment_hold_success_view(self, mock_judgment):
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_judgment_hold_success_view(
+        self, document_type, document_exists, mock_judgment
+    ):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
         judgment = JudgmentFactory.build(
             uri="holdtest/4321/123",
             name="Test v Tested",
@@ -343,7 +385,12 @@ class TestJudgmentHold(TestCase):
 
 class TestJudgmentUnhold(TestCase):
     @patch("judgments.views.judgment_hold.get_judgment_by_uri_or_404")
-    def test_judgment_unhold_view(self, mock_judgment):
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_judgment_unhold_view(self, document_type, document_exists, mock_judgment):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
         judgment = JudgmentFactory.build(
             uri="unholdtest/4321/123",
             name="Test v Tested",
@@ -390,7 +437,14 @@ class TestJudgmentUnhold(TestCase):
         mock_invalidate_caches.assert_called_once()
 
     @patch("judgments.views.judgment_hold.get_judgment_by_uri_or_404")
-    def test_judgment_hold_success_view(self, mock_judgment):
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_judgment_hold_success_view(
+        self, document_type, document_exists, mock_judgment
+    ):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
         judgment = JudgmentFactory.build(
             uri="unholdtest/4321/123",
             name="Test v Tested",
@@ -414,7 +468,14 @@ class TestJudgmentUnhold(TestCase):
 
 class TestJudgmentUnpublish(TestCase):
     @patch("judgments.views.judgment_publish.get_judgment_by_uri_or_404")
-    def test_judgment_unpublish_view(self, mock_judgment):
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_judgment_unpublish_view(
+        self, document_type, document_exists, mock_judgment
+    ):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
         judgment = JudgmentFactory.build(
             uri="pubtest/4321/123",
             name="Test v Tested",
@@ -463,7 +524,14 @@ class TestJudgmentUnpublish(TestCase):
         mock_invalidate_caches.assert_called_once()
 
     @patch("judgments.views.judgment_publish.get_judgment_by_uri_or_404")
-    def test_judgment_unpublish_success_view(self, mock_judgment):
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_judgment_unpublish_success_view(
+        self, document_type, document_exists, mock_judgment
+    ):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
         judgment = JudgmentFactory.build(
             uri="pubtest/4321/123",
             name="Test v Tested",

@@ -1,9 +1,12 @@
 import os
+from typing import Any, Dict
 from unittest.mock import MagicMock, Mock, patch
 
 import ds_caselaw_utils
 import pytest
 from caselawclient.errors import MarklogicAPIError
+from caselawclient.models.judgments import Judgment
+from caselawclient.models.press_summaries import PressSummary
 from django.contrib.auth.models import Group
 from django.test import TestCase
 from factories import JudgmentFactory, UserFactory
@@ -15,6 +18,7 @@ from judgments.utils import (
     extract_version,
     get_judgment_root,
     render_versions,
+    set_document_type_and_link,
     update_document_uri,
 )
 from judgments.utils.aws import build_new_key, invalidate_caches
@@ -316,3 +320,61 @@ class TestEditorsDict:
         assert editors_dict() == [
             {"name": "active_editor", "print_name": "active_editor"},
         ]
+
+
+class TestSetDocumentTypeAndLink:
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_document_is_a_press_summary_and_judgment_exists(
+        self, document_type, document_exists
+    ):
+        document_type.return_value = PressSummary
+        document_exists.return_value = True
+
+        context: Dict[str, Any] = {}
+        document_uri = "/test/judgment/press-summary/1"
+        set_document_type_and_link(context, document_uri)
+        assert context["document_type"] == "press_summary"
+        assert context["linked_document_uri"] == "/test/judgment"
+
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_document_is_a_press_summary_and_judgment_does_not_exist(
+        self, document_type, document_exists
+    ):
+        document_type.return_value = PressSummary
+        document_exists.return_value = False
+
+        context: Dict[str, Any] = {}
+        document_uri = "/test/judgment/press-summary/1"
+        set_document_type_and_link(context, document_uri)
+        assert context["document_type"] == "press_summary"
+        assert "linked_document_uri" not in context
+
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_document_is_a_judgment_and_press_summary_exists(
+        self, document_type, document_exists
+    ):
+        document_type.return_value = Judgment
+        document_exists.return_value = True
+
+        context: Dict[str, Any] = {}
+        document_uri = "/test/judgment"
+        set_document_type_and_link(context, document_uri)
+        assert context["document_type"] == "judgment"
+        assert context["linked_document_uri"] == "/test/judgment/press-summary/1"
+
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_document_is_a_judgment_and_press_summary_does_not_exist(
+        self, document_type, document_exists
+    ):
+        document_type.return_value = Judgment
+        document_exists.return_value = False
+
+        context: Dict[str, Any] = {}
+        document_uri = "/test/judgment"
+        set_document_type_and_link(context, document_uri)
+        assert context["document_type"] == "judgment"
+        assert "linked_document_uri" not in context

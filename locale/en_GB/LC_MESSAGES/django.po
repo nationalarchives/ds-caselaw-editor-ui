@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-17 14:23+0000\n"
+"POT-Creation-Date: 2023-07-26 12:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,11 +77,19 @@ msgstr "Name"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_form.html
 #: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
-#: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
 #: judgments/utils/link_generators.py
 msgid "judgments.consignmentref"
 msgstr "TDR Ref"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_form.html
+#: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
+msgid "judgments.sidebar.status"
+msgstr "Status"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_form.html
+msgid "document.type"
+msgstr "Type"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
@@ -94,23 +102,14 @@ msgid "judgments.court"
 msgstr "Court"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
-msgid "judgments.sidebar.status"
-msgstr "Status"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
-msgid "judgments.sidebar.submission"
-msgstr "Submission"
+msgid "judgments.associated_douments"
+msgstr "Associated documents"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
 #: judgments/utils/link_generators.py
 msgid "judgments.submitter"
 msgstr "Submitter"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
-#: judgments/utils/link_generators.py
-msgid "judgments.submitteremail"
-msgstr "Contact email"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
 msgid "judgments.sidebar.tools"
@@ -128,7 +127,7 @@ msgstr "Unlock document"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
 msgid "judgment.report_blocking_problem"
-msgstr "Report a publication-blocking problem"
+msgstr "Report a publication-blocking issue"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
 msgid "judgments.sidebar.assigned_to"
@@ -332,6 +331,10 @@ msgstr ""
 "following the example in the template."
 
 
+#: judgments/utils/link_generators.py
+msgid "judgments.submitteremail"
+msgstr "Contact email"
+
 #: judgments/views/delete.py
 msgid "judgment.delete_a_judgment"
 msgstr "Delete a document"
@@ -351,7 +354,3 @@ msgstr "Document published"
 #: judgments/views/judgment_publish.py
 msgid "judgment.publish.unpublish_success_flash_message"
 msgstr "Document unpublished"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_form.html
-msgid "document.type"
-msgstr "Type"
