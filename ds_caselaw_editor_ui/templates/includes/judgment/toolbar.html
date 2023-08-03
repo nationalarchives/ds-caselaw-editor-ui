@@ -8,19 +8,16 @@
     {% endif %}
     <div class="judgment-toolbar__edit">
       {% if judgment.is_editable %}
-        <a class="judgment-toolbar__button {% if view == 'judgment_metadata' %}button-cta{% else %}button-secondary{% endif %}"
-           href="{% url 'edit-judgment' judgment.uri %}">{% translate "judgment.toolbar.edit_metadata" %}</a>
         <a class="judgment-toolbar__button {% if view == 'judgment_text' %}button-cta{% else %}button-secondary{% endif %}"
            href="{% url 'full-text-html' judgment.uri %}">{% translate "judgment.toolbar.review_document" %}</a>
       {% else %}
-        <span class="judgment-toolbar__button button-secondary"
-              aria-disabled="true">{% translate "judgment.toolbar.edit_metadata" %}</span>
         <span class="judgment-toolbar__button button-secondary"
               aria-disabled="true">{% translate "judgment.toolbar.review_document" %}</span>
       {% endif %}
       {% if judgment.is_published %}
         <span class="judgment-toolbar__button button-secondary"
-              aria-disabled="true">{% translate "judgment.toolbar.hold" %}</span>
+              aria-disabled="t
+              rue">{% translate "judgment.toolbar.hold" %}</span>
       {% else %}
         {% if judgment.is_held %}
           <a class="judgment-toolbar__button {% if view == 'hold_judgment' %}button-cta{% else %}button-secondary{% endif %}"
