@@ -79,7 +79,7 @@ urlpatterns = [
     path(
         "<path:judgment_uri>/history",
         JudgmentHistoryView.as_view(),
-        name="judgment-history",
+        name="document-history",
     ),
     path(
         "<path:judgment_uri>/publish",

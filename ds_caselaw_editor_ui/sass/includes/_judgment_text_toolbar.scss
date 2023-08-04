@@ -33,7 +33,7 @@
     font-weight: bold;
   }
 
-  &__container {
+  &__edit {
     margin: auto;
 
     > div {
@@ -45,6 +45,42 @@
 
     @media (min-width: $grid__breakpoint-small) {
       text-align: center;
+    }
+  }
+
+  &__more {
+    &__menu {
+      display: flex;
+      &__group {
+        h4 {
+          font-size: 0.9rem;
+          line-height: 1.4rem;
+          margin: 0;
+        }
+
+        p {
+          margin-top: 0;
+          font-size: 0.8rem;
+          line-height: 1.4rem;
+        }
+
+        a {
+          display: block;
+        }
+
+        ul {
+          margin-top: 0;
+          padding-left: 0;
+        }
+
+        li {
+          margin-top: 0;
+          list-style: none;
+          font-size: 0.8rem;
+          line-height: 1.4rem;
+        }
+        flex-grow: 1;
+      }
     }
   }
 }
