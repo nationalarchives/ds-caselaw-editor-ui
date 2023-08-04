@@ -10,6 +10,37 @@
     padding: calc($spacer__unit / 2) calc($spacer__unit * 1.5) !important;
   }
 
+  &__button-more {
+    margin-left: $spacer__unit * 3 !important;
+    svg {
+      fill: $color__cta-background;
+    }
+
+    &:hover,
+    &:focus {
+      svg {
+        fill: $color__white;
+      }
+    }
+
+    &.toggled {
+      svg {
+        transform: rotate(-180deg);
+      }
+    }
+  }
+
+  &__delete {
+    border-color: $color__red !important;
+    color: $color__red !important;
+    &:focus,
+    &:hover {
+      background-color: $color__red !important;
+      color: $color__white !important;
+      outline-color: $color__red !important;
+    }
+  }
+
   &__return-link {
     display: inline-block;
 
@@ -22,10 +53,6 @@
       display: inline-block;
       text-decoration: none;
     }
-  }
-
-  &__download {
-    display: inline-block;
   }
 
   &__version {
