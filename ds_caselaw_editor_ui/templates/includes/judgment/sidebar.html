@@ -24,12 +24,6 @@
   </p>
 </div>
 <div class="judgment-sidebar__block">
-  <h4>{% translate "judgments.submitter" %}</h4>
-  <p>
-    <a href="mailto:{{ judgment.source_email }}">{{ judgment.source_name }}</a>
-  </p>
-</div>
-<div class="judgment-sidebar__block">
   <h4>{% translate "judgments.sidebar.assigned_to" %}</h4>
   <form action="{% url "assign" %}"
         method="post"

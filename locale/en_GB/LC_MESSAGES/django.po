@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-08 09:02+0000\n"
+"POT-Creation-Date: 2023-08-08 09:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -106,12 +106,6 @@ msgid "judgments.associated_douments"
 msgstr "Associated documents"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
-#: judgments/utils/link_generators.py
-msgid "judgments.submitter"
-msgstr "Submitter"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
 msgid "judgments.sidebar.assigned_to"
 msgstr "Assigned to"
 
@@ -191,6 +185,11 @@ msgstr "Submitted:"
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_header.html
 msgid "judgments.submission_assigned"
 msgstr "Assigned:"
+
+#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
+#: judgments/utils/link_generators.py
+msgid "judgments.submitter"
+msgstr "Submitter"
 
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
 msgid "judgments.editor_priority"
