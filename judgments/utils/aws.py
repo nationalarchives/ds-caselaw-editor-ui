@@ -104,11 +104,6 @@ def delete_from_bucket(uri: str, bucket: str) -> None:
         )
 
 
-def delete_documents(uri: str) -> None:
-    unpublish_documents(uri)
-    delete_from_bucket(uri, env("PRIVATE_ASSET_BUCKET"))
-
-
 def publish_documents(uri: str) -> None:
     client = create_s3_client()
 

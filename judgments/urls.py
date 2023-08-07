@@ -5,7 +5,6 @@ from .views.button_handlers import (
     hold_judgment_button,
     prioritise_judgment_button,
 )
-from .views.delete import delete
 from .views.full_text import (
     html_view,
     html_view_redirect,
@@ -53,7 +52,6 @@ urlpatterns = [
     path("unpublish", unpublish, name="unpublish"),
     path("hold", hold, name="hold"),
     path("unhold", unhold, name="unhold"),
-    path("delete", delete, name="delete"),
     path("unlock", unlock, name="unlock"),
     path("assign", assign_judgment_button, name="assign"),
     path("prioritise", prioritise_judgment_button, name="prioritise"),
