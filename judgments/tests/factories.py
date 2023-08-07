@@ -28,7 +28,7 @@ class JudgmentFactory:
         "name": ("name", "Judgment v Judgement"),
         "neutral_citation": ("neutral_citation", "[2023] Test 123"),
         "court": ("court", "Court of Testing"),
-        "judgment_date_as_string": ("judgment_date_as_string", "2023-02-03"),
+        "document_date_as_string": ("document_date_as_string", "2023-02-03"),
         "is_published": ("is_published", False),
         "is_failure": ("is_failure", False),
         "source_name": ("source_name", "Example Uploader"),
