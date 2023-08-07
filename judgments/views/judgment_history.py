@@ -8,26 +8,29 @@ from judgments.utils.link_generators import build_jira_create_link
 from judgments.utils.view_helpers import get_judgment_by_uri_or_404
 
 
-class JudgmentHistoryView(View):
+class DocumentHistoryView(View):
     def get(self, request, *args, **kwargs):
-        judgment_uri = kwargs["judgment_uri"]
+        document_uri = kwargs["document_uri"]
 
-        judgment = get_judgment_by_uri_or_404(judgment_uri)
+        document = get_judgment_by_uri_or_404(document_uri)
 
-        context = {"judgment_uri": judgment_uri}
+        context = {"document_uri": document_uri}
 
-        context["judgment"] = judgment
-        context["page_title"] = judgment.name
-        context["view"] = "judgment_metadata"
+        context["document"] = document
+
+        # TODO: Remove this once we fully deprecate 'judgment' contexts
+        context["judgment"] = document
+
+        context["page_title"] = document.name
         context["courts"] = caselawutils.courts.get_all()
 
         context.update({"editors": editors_dict()})
 
         context["jira_create_link"] = build_jira_create_link(
-            judgment=judgment, request=request
+            judgment=document, request=request
         )
 
-        context = set_document_type_and_link(context, judgment_uri)
+        context = set_document_type_and_link(context, document_uri)
 
         template = loader.get_template("judgment/history.html")
         return HttpResponse(template.render(context, request))
