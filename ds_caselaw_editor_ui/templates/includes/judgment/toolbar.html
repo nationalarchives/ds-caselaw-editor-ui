@@ -40,16 +40,6 @@
         <span class="judgment-toolbar__button button-secondary"
               aria-disabled="true">{% translate "judgment.toolbar.download_docx" %}</span>
       {% endif %}
-      {% if judgment.is_failure %}
-        <form action="{% url "delete" %}" method="post">
-          {% csrf_token %}
-          <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
-          <input type="submit"
-                 name="assign"
-                 class="button-secondary judgment-toolbar__delete"
-                 value="{% translate "judgment.toolbar.delete" %}" />
-        </form>
-      {% endif %}
     </div>
     {% if version %}
       <div class="judgment-toolbar__version">
