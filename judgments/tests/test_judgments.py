@@ -146,13 +146,20 @@ class TestJudgmentPublish(TestCase):
 
     @patch("judgments.views.judgment_publish.invalidate_caches")
     @patch("judgments.views.judgment_publish.get_document_by_uri_or_404")
-    def test_judgment_publish_flow(self, mock_judgment, mock_invalidate_caches):
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    def test_document_publish_flow(
+        self,
+        mock_judgment,
+        mock_get_judgment_for_publish_action,
+        mock_invalidate_caches,
+    ):
         judgment = JudgmentFactory.build(
             uri="pubtest/4321/123",
             name="Publication Test",
             is_published=False,
         )
         mock_judgment.return_value = judgment
+        mock_get_judgment_for_publish_action.return_value = judgment
 
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
 
@@ -165,16 +172,16 @@ class TestJudgmentPublish(TestCase):
 
         assert response.status_code == 302
         assert response["Location"] == reverse(
-            "publish-judgment-success", kwargs={"judgment_uri": judgment.uri}
+            "publish-document-success", kwargs={"document_uri": judgment.uri}
         )
-        mock_judgment.return_value.publish.assert_called_once()
-        mock_judgment.return_value.unpublish.assert_not_called()
+        mock_get_judgment_for_publish_action.return_value.publish.assert_called_once()
+        mock_get_judgment_for_publish_action.return_value.unpublish.assert_not_called()
         mock_invalidate_caches.assert_called_once()
 
-    @patch("judgments.views.judgment_publish.get_document_by_uri_or_404")
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
-    def test_judgment_publish_success_view(
+    def test_document_publish_success_view(
         self, document_type, document_exists, mock_judgment
     ):
         document_type.return_value = Judgment
@@ -189,7 +196,7 @@ class TestJudgmentPublish(TestCase):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
 
         publish_success_uri = reverse(
-            "publish-judgment-success", kwargs={"judgment_uri": judgment.uri}
+            "publish-document-success", kwargs={"document_uri": judgment.uri}
         )
 
         assert publish_success_uri == "/pubtest/4321/123/published"

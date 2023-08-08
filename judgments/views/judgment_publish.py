@@ -21,31 +21,19 @@ class PublishDocumentView(DocumentView):
         return context
 
 
-class PublishJudgmentSuccessView(TemplateView):
+class PublishDocumentSuccessView(DocumentView):
     template_name = "judgment/publish-success.html"
 
     def get_context_data(self, **kwargs):
-        context = super(PublishJudgmentSuccessView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
 
-        document = get_document_by_uri_or_404(kwargs["judgment_uri"])
-        document_uri = kwargs["judgment_uri"]
-
-        context = set_document_type_and_link(context, document_uri)
-
-        context.update(
-            {
-                "page_title": document.name,
-                "judgment": document,
-                "email_confirmation_link": build_confirmation_email_link(
-                    document=document,
-                    signature=(
-                        self.request.user.get_full_name()
-                        if self.request.user.is_authenticated
-                        else None
-                    ),
-                ),
-                "editors": editors_dict(),
-            }
+        context["email_confirmation_link"] = build_confirmation_email_link(
+            document=context["document"],
+            signature=(
+                self.request.user.get_full_name()
+                if self.request.user.is_authenticated
+                else None
+            ),
         )
 
         return context
@@ -58,7 +46,7 @@ def publish(request):
     invalidate_caches(judgment.uri)
     messages.success(request, gettext("judgment.publish.publish_success_flash_message"))
     return HttpResponseRedirect(
-        reverse("publish-judgment-success", kwargs={"judgment_uri": judgment.uri})
+        reverse("publish-document-success", kwargs={"document_uri": judgment.uri})
     )
 
 
