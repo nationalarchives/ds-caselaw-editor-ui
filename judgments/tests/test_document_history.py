@@ -8,7 +8,7 @@ from factories import JudgmentFactory
 
 
 class TestDocumentHistory(TestCase):
-    @patch("judgments.views.judgment_history.get_document_by_uri_or_404")
+    @patch("judgments.views.document_history.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
     def test_document_history_view(self, document_type, document_exists, mock_document):
