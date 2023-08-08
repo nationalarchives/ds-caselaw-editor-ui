@@ -6,9 +6,9 @@ from .views.button_handlers import (
     prioritise_judgment_button,
 )
 from .views.document_full_text import (
-    html_view,
+    DocumentReviewHTMLView,
+    DocumentReviewPDFView,
     html_view_redirect,
-    pdf_view,
     xml_view,
     xml_view_redirect,
 )
@@ -75,7 +75,7 @@ urlpatterns = [
         name="style_guide_branding",
     ),
     # Different views on judgments
-    path("<path:judgment_uri>/edit", EditJudgmentView.as_view(), name="edit-judgment"),
+    path("<path:document_uri>/edit", EditJudgmentView.as_view(), name="edit-document"),
     path(
         "<path:document_uri>/history",
         DocumentHistoryView.as_view(),
@@ -121,8 +121,12 @@ urlpatterns = [
         UnholdDocumentSuccessView.as_view(),
         name="unhold-document-success",
     ),
-    path("<path:judgment_uri>/pdf", pdf_view, name="full-text-pdf"),
-    path("<path:judgment_uri>/xml", xml_view, name="full-text-xml"),
-    # This 'bare judgment' URL must always go last
-    path("<path:judgment_uri>", html_view, name="full-text-html"),
+    path(
+        "<path:document_uri>/pdf", DocumentReviewPDFView.as_view(), name="full-text-pdf"
+    ),
+    path("<path:document_uri>/xml", xml_view, name="full-text-xml"),
+    # This 'bare document' URL must always go last
+    path(
+        "<path:document_uri>", DocumentReviewHTMLView.as_view(), name="full-text-html"
+    ),
 ]

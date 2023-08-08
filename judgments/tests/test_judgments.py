@@ -9,7 +9,7 @@ from factories import JudgmentFactory
 
 
 class TestJudgmentView(TestCase):
-    @patch("judgments.views.document_full_text.get_document_by_uri_or_404")
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
     def test_judgment_html_view(self, document_type, document_exists, mock_judgment):
@@ -26,12 +26,12 @@ class TestJudgmentView(TestCase):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
 
         assert (
-            reverse("full-text-html", kwargs={"judgment_uri": judgment.uri})
+            reverse("full-text-html", kwargs={"document_uri": judgment.uri})
             == "/hvtest/4321/123"
         )
 
         response = self.client.get(
-            reverse("full-text-html", kwargs={"judgment_uri": judgment.uri})
+            reverse("full-text-html", kwargs={"document_uri": judgment.uri})
         )
 
         decoded_response = response.content.decode("utf-8")
@@ -39,7 +39,7 @@ class TestJudgmentView(TestCase):
         self.assertIn("<h1>Test Judgment</h1>", decoded_response)
         assert response.status_code == 200
 
-    @patch("judgments.views.document_full_text.get_document_by_uri_or_404")
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
     def test_judgment_html_view_with_failure(
@@ -58,7 +58,7 @@ class TestJudgmentView(TestCase):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
 
         response = self.client.get(
-            reverse("full-text-html", kwargs={"judgment_uri": judgment.uri})
+            reverse("full-text-html", kwargs={"document_uri": judgment.uri})
         )
 
         decoded_response = response.content.decode("utf-8")
@@ -70,7 +70,7 @@ class TestJudgmentView(TestCase):
         response = self.client.get("/detail?judgment_uri=ewca/civ/2004/63X")
         assert response.status_code == 302
         assert response["Location"] == reverse(
-            "full-text-html", kwargs={"judgment_uri": "ewca/civ/2004/63X"}
+            "full-text-html", kwargs={"document_uri": "ewca/civ/2004/63X"}
         )
 
     def test_judgment_html_view_redirect_with_version(self):
@@ -80,7 +80,7 @@ class TestJudgmentView(TestCase):
         )
         assert response.status_code == 302
         assert response["Location"] == (
-            reverse("full-text-html", kwargs={"judgment_uri": "ewca/civ/2004/63X"})
+            reverse("full-text-html", kwargs={"document_uri": "ewca/civ/2004/63X"})
             + "?"
             + urlencode(
                 {
@@ -89,8 +89,15 @@ class TestJudgmentView(TestCase):
             )
         )
 
-    @patch("judgments.views.document_full_text.get_document_by_uri_or_404")
-    def test_judgment_pdf_view_no_pdf_response(self, mock_judgment):
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_judgment_pdf_view_no_pdf_response(
+        self, document_type, document_exists, mock_judgment
+    ):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
         mock_judgment.return_value.name = "JUDGMENT v JUDGEMENT"
         mock_judgment.return_value.pdf_url = ""
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
@@ -107,7 +114,7 @@ class TestJudgmentView(TestCase):
         response = self.client.get("/xml?judgment_uri=ewca/civ/2004/63X")
         assert response.status_code == 302
         assert response["Location"] == reverse(
-            "full-text-xml", kwargs={"judgment_uri": "ewca/civ/2004/63X"}
+            "full-text-xml", kwargs={"document_uri": "ewca/civ/2004/63X"}
         )
 
 

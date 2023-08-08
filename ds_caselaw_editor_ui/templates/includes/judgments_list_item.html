@@ -69,7 +69,7 @@
         <span class="judgments-list__judgment-details-meta-key">{% translate "judgments.assigned_to" %}</span>
         <span class="judgments-list__judgment-details-meta-value">
           {% if item.metadata.assigned_to %}
-            <a href="{% url 'edit-judgment' item.uri %}#assigned_to">{{ item.metadata.assigned_to }}</a>
+            <a href="{% url 'edit-document' item.uri %}#assigned_to">{{ item.metadata.assigned_to }}</a>
           {% else %}
             <form action="{% url "assign" %}"
                   method="post"
@@ -93,7 +93,7 @@
   </div>
   <div class="judgments-list__judgment-assigned">
     {% if item.metadata.assigned_to %}
-      <a href="{% url 'edit-judgment' item.uri %}#assigned_to">{{ item.metadata.assigned_to }}</a>
+      <a href="{% url 'edit-document' item.uri %}#assigned_to">{{ item.metadata.assigned_to }}</a>
     {% else %}
       <form action="{% url "assign" %}"
             method="post"

@@ -3,7 +3,7 @@
   <div class="metadata-component">
     <form aria-label="Edit judgment"
           method="post"
-          action="{% url 'edit-judgment' judgment.uri %}">
+          action="{% url 'edit-document' judgment.uri %}">
       {% csrf_token %}
       <input type="hidden" name="return_to" value="{{ return_to }}" />
       <div class="metadata-component__left-column">

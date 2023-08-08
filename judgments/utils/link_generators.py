@@ -78,7 +78,7 @@ def build_jira_create_link(document: Document, request: HttpRequest) -> str:
     )
 
     editor_html_url = request.build_absolute_uri(
-        reverse("full-text-html", kwargs={"judgment_uri": document.uri})
+        reverse("full-text-html", kwargs={"document_uri": document.uri})
     )
 
     description_string = "{editor_html_url}".format(

@@ -12,7 +12,7 @@ class TestDocumentEdit(TestCase):
         response = self.client.get("/ewca/civ/2004/63X/edit")
         assert response.status_code == 302
         assert response["Location"] == reverse(
-            "full-text-html", kwargs={"judgment_uri": "ewca/civ/2004/63X"}
+            "full-text-html", kwargs={"document_uri": "ewca/civ/2004/63X"}
         )
 
     @patch("judgments.views.judgment_edit.api_client")
