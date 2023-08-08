@@ -76,7 +76,7 @@ class DocumentView(TemplateView):
         context["page_title"] = document.name
         context["courts"] = caselawutils.courts.get_all()
 
-        context.update({"editors": editors_dict()})
+        context["editors"] = editors_dict()
 
         context["jira_create_link"] = build_jira_create_link(
             document=document, request=self.request
