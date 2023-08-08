@@ -6,14 +6,14 @@ from django.template import loader
 from django.urls import reverse
 
 from judgments.utils import extract_version, set_document_type_and_link
-from judgments.utils.view_helpers import get_judgment_by_uri_or_404
+from judgments.utils.view_helpers import get_document_by_uri_or_404
 
 
 def html_view(request, judgment_uri):
     params = request.GET
     version_uri = params.get("version_uri", None)
 
-    judgment = get_judgment_by_uri_or_404(judgment_uri)
+    judgment = get_document_by_uri_or_404(judgment_uri)
     context = {
         "judgment_uri": judgment_uri,
         "judgment": judgment,
@@ -44,7 +44,7 @@ def pdf_view(request, judgment_uri):
     params = request.GET
     version_uri = params.get("version_uri", None)
 
-    judgment = get_judgment_by_uri_or_404(judgment_uri)
+    judgment = get_document_by_uri_or_404(judgment_uri)
     if not judgment.pdf_url:
         raise Http404(f'Document "{judgment.name}" does not have a PDF.')
 
@@ -70,7 +70,7 @@ def pdf_view(request, judgment_uri):
 
 
 def xml_view(request, judgment_uri):
-    judgment = get_judgment_by_uri_or_404(judgment_uri)
+    judgment = get_document_by_uri_or_404(judgment_uri)
     judgment_xml = judgment.content_as_xml
 
     response = HttpResponse(judgment_xml, content_type="application/xml")

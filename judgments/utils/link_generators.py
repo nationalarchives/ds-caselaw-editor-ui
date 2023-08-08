@@ -1,7 +1,7 @@
 from typing import Optional
 from urllib.parse import quote, urlencode
 
-from caselawclient.models.judgments import Judgment
+from caselawclient.models.documents import Document
 from django.conf import settings
 from django.http import HttpRequest
 from django.template import loader
@@ -24,17 +24,17 @@ def build_email_link_with_content(
 
 
 def build_confirmation_email_link(
-    judgment: Judgment, signature: Optional[str] = None
+    document: Document, signature: Optional[str] = None
 ) -> str:
     subject_string = "Notification of publication [TDR ref: {reference}]".format(
-        reference=judgment.consignment_reference
+        reference=document.consignment_reference
     )
 
     email_context = {
-        "judgment_name": judgment.name,
-        "reference": judgment.consignment_reference,
-        "public_judgment_url": judgment.public_uri,
-        "submitter": judgment.source_name,
+        "judgment_name": document.name,
+        "reference": document.consignment_reference,
+        "public_judgment_url": document.public_uri,
+        "submitter": document.source_name,
         "user_signature": signature or "XXXXXX",
     }
 
@@ -43,22 +43,22 @@ def build_confirmation_email_link(
     )
 
     return build_email_link_with_content(
-        judgment.source_email, subject_string, body_string
+        document.source_email, subject_string, body_string
     )
 
 
 def build_raise_issue_email_link(
-    judgment: Judgment, signature: Optional[str] = None
+    document: Document, signature: Optional[str] = None
 ) -> str:
     subject_string = "Issue(s) found with {reference}".format(
-        reference=judgment.consignment_reference
+        reference=document.consignment_reference
     )
     email_context = {
-        "judgment_name": judgment.name,
-        "reference": judgment.consignment_reference,
-        "public_judgment_url": judgment.public_uri,
+        "judgment_name": document.name,
+        "reference": document.consignment_reference,
+        "public_judgment_url": document.public_uri,
         "user_signature": signature,
-        "submitter": judgment.source_name or "XXXXXX",
+        "submitter": document.source_name or "XXXXXX",
     }
 
     body_string = loader.render_to_string(
@@ -66,19 +66,19 @@ def build_raise_issue_email_link(
     )
 
     return build_email_link_with_content(
-        judgment.source_email, subject_string, body_string
+        document.source_email, subject_string, body_string
     )
 
 
-def build_jira_create_link(judgment: Judgment, request: HttpRequest) -> str:
+def build_jira_create_link(document: Document, request: HttpRequest) -> str:
     summary_string = "{name} / {ncn} / {tdr}".format(
-        name=judgment.name,
-        ncn=judgment.neutral_citation,
-        tdr=judgment.consignment_reference,
+        name=document.name,
+        ncn=document.best_human_identifier,
+        tdr=document.consignment_reference,
     )
 
     editor_html_url = request.build_absolute_uri(
-        reverse("full-text-html", kwargs={"judgment_uri": judgment.uri})
+        reverse("full-text-html", kwargs={"judgment_uri": document.uri})
     )
 
     description_string = "{editor_html_url}".format(
@@ -89,11 +89,11 @@ def build_jira_create_link(judgment: Judgment, request: HttpRequest) -> str:
 {consignment_ref_label}: {consignment_ref}""".format(
             html_url=editor_html_url,
             source_name_label=gettext("judgments.submitter"),
-            source_name=judgment.source_name,
+            source_name=document.source_name,
             source_email_label=gettext("judgments.submitteremail"),
-            source_email=judgment.source_email,
+            source_email=document.source_email,
             consignment_ref_label=gettext("judgments.consignmentref"),
-            consignment_ref=judgment.consignment_reference,
+            consignment_ref=document.consignment_reference,
         )
     )
 

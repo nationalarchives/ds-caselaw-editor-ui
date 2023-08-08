@@ -7,7 +7,6 @@ from urllib.parse import urlparse
 
 import ds_caselaw_utils as caselawutils
 from caselawclient.Client import MarklogicAPIError, api_client
-from caselawclient.models.judgments import Judgment
 from caselawclient.models.press_summaries import PressSummary
 from django.conf import settings
 from django.contrib.auth.models import Group, User
@@ -162,10 +161,6 @@ def editors_dict():
         ],
         key=itemgetter("print_name"),
     )
-
-
-def get_judgment_by_uri(judgment_uri: str) -> Judgment:
-    return Judgment(judgment_uri, api_client)
 
 
 def related_document_uri(document_type, document_uri):

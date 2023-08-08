@@ -9,7 +9,7 @@ from caselawclient.models.judgments import Judgment
 from caselawclient.models.press_summaries import PressSummary
 from django.contrib.auth.models import Group
 from django.test import TestCase
-from factories import JudgmentFactory, UserFactory
+from factories import UserFactory
 
 import judgments
 from judgments.utils import (
@@ -130,9 +130,8 @@ class TestUtils(TestCase):
 
     @patch("judgments.utils.api_client")
     @patch("boto3.session.Session.client")
-    @patch("judgments.utils.get_judgment_by_uri")
     def test_update_document_uri_strips_whitespace(
-        self, fake_getter, fake_boto3_client, fake_api_client
+        self, fake_boto3_client, fake_api_client
     ):
         ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
         fake_api_client.copy_document.return_value = True
@@ -145,11 +144,9 @@ class TestUtils(TestCase):
         ds_caselaw_utils.neutral_url.assert_called_with("[2002] EAT 1")
 
     @patch("judgments.utils.api_client")
-    @patch("judgments.utils.get_judgment_by_uri")
-    def test_update_document_uri_exception_copy(self, fake_judgment, fake_client):
+    def test_update_document_uri_exception_copy(self, fake_client):
         """Given a document exists at the target uri, and copy_document fails,
         we raise a MoveJudgmentError"""
-        fake_judgment.return_value = JudgmentFactory.build()
         ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
         fake_client.copy_document.side_effect = MarklogicAPIError
         fake_client.delete_judgment.side_effect = True
@@ -158,11 +155,9 @@ class TestUtils(TestCase):
             update_document_uri("old/uri", "[2002] EAT 1")
 
     @patch("judgments.utils.api_client")
-    @patch("judgments.utils.get_judgment_by_uri")
-    def test_update_document_uri_exception_delete(self, fake_getter, fake_client):
+    def test_update_document_uri_exception_delete(self, fake_client):
         """If there's a target at the document uri and deleting fails,
         raise a MoveJudgmentError"""
-        fake_getter.return_value = JudgmentFactory.build()
         ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
         fake_client.copy_document.return_value = True
         fake_client.delete_judgment.side_effect = MarklogicAPIError

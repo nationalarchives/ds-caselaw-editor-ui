@@ -7,7 +7,7 @@ from django.views.generic import TemplateView
 from judgments.utils import editors_dict, set_document_type_and_link
 from judgments.utils.aws import invalidate_caches
 from judgments.utils.link_generators import build_raise_issue_email_link
-from judgments.utils.view_helpers import get_judgment_by_uri_or_404
+from judgments.utils.view_helpers import get_document_by_uri_or_404
 
 
 class HoldJudgmentView(TemplateView):
@@ -16,7 +16,7 @@ class HoldJudgmentView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(HoldJudgmentView, self).get_context_data(**kwargs)
 
-        judgment = get_judgment_by_uri_or_404(kwargs["judgment_uri"])
+        judgment = get_document_by_uri_or_404(kwargs["judgment_uri"])
 
         context.update(
             {
@@ -36,17 +36,17 @@ class HoldJudgmentSuccessView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(HoldJudgmentSuccessView, self).get_context_data(**kwargs)
 
-        judgment = get_judgment_by_uri_or_404(kwargs["judgment_uri"])
-        judgment_uri = kwargs["judgment_uri"]
+        document = get_document_by_uri_or_404(kwargs["judgment_uri"])
+        document_uri = kwargs["judgment_uri"]
 
-        context = set_document_type_and_link(context, judgment_uri)
+        context = set_document_type_and_link(context, document_uri)
 
         context.update(
             {
-                "page_title": judgment.name,
-                "judgment": judgment,
+                "page_title": document.name,
+                "judgment": document,
                 "email_issue_link": build_raise_issue_email_link(
-                    judgment=judgment,
+                    document=document,
                     signature=(
                         self.request.user.get_full_name()
                         if self.request.user.is_authenticated
@@ -62,7 +62,7 @@ class HoldJudgmentSuccessView(TemplateView):
 
 def hold(request):
     judgment_uri = request.POST.get("judgment_uri", None)
-    judgment = get_judgment_by_uri_or_404(judgment_uri)
+    judgment = get_document_by_uri_or_404(judgment_uri)
     judgment.hold()
     invalidate_caches(judgment.uri)
     messages.success(request, gettext("judgment.hold.hold_success_flash_message"))
@@ -77,7 +77,7 @@ class UnholdJudgmentView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(UnholdJudgmentView, self).get_context_data(**kwargs)
 
-        judgment = get_judgment_by_uri_or_404(kwargs["judgment_uri"])
+        judgment = get_document_by_uri_or_404(kwargs["judgment_uri"])
         judgment_uri = kwargs["judgment_uri"]
 
         context = set_document_type_and_link(context, judgment_uri)
@@ -100,7 +100,7 @@ class UnholdJudgmentSuccessView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(UnholdJudgmentSuccessView, self).get_context_data(**kwargs)
 
-        judgment = get_judgment_by_uri_or_404(kwargs["judgment_uri"])
+        judgment = get_document_by_uri_or_404(kwargs["judgment_uri"])
         judgment_uri = kwargs["judgment_uri"]
 
         context = set_document_type_and_link(context, judgment_uri)
@@ -118,7 +118,7 @@ class UnholdJudgmentSuccessView(TemplateView):
 
 def unhold(request):
     judgment_uri = request.POST.get("judgment_uri", "")
-    judgment = get_judgment_by_uri_or_404(judgment_uri)
+    judgment = get_document_by_uri_or_404(judgment_uri)
     judgment.unhold()
     invalidate_caches(judgment.uri)
     messages.success(request, gettext("judgment.hold.unhold_success_flash_message"))
