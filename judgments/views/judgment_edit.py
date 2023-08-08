@@ -11,7 +11,7 @@ from judgments.utils import (
     update_document_uri,
 )
 from judgments.utils.aws import invalidate_caches
-from judgments.utils.view_helpers import get_judgment_by_uri_or_404
+from judgments.utils.view_helpers import get_document_by_uri_or_404
 
 
 class EditJudgmentView(View):
@@ -22,7 +22,7 @@ class EditJudgmentView(View):
 
     def post(self, request, *args, **kwargs):
         judgment_uri = request.POST["judgment_uri"]
-        judgment = get_judgment_by_uri_or_404(judgment_uri)
+        judgment = get_document_by_uri_or_404(judgment_uri)
 
         return_to = request.POST.get("return_to", None)
 

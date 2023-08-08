@@ -22,7 +22,7 @@ def test_break_lock_confirm_page():
 
 
 @pytest.mark.django_db
-@patch("judgments.views.unlock.get_judgment_by_uri_or_404")
+@patch("judgments.views.unlock.get_document_by_uri_or_404")
 @patch("judgments.views.unlock.api_client.break_checkout")
 @patch("judgments.views.unlock.messages")
 def test_break_lock_post(messages, break_checkout, mock_judgment):

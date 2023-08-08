@@ -16,7 +16,7 @@ class TestDocumentEdit(TestCase):
         )
 
     @patch("judgments.views.judgment_edit.api_client")
-    @patch("judgments.views.judgment_edit.get_judgment_by_uri_or_404")
+    @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
     def test_edit_judgment(self, mock_judgment, api_client):
         judgment = JudgmentFactory.build(
             uri="edittest/4321/123",
@@ -56,7 +56,7 @@ class TestDocumentEdit(TestCase):
         )
 
     @patch("judgments.views.judgment_edit.api_client")
-    @patch("judgments.views.judgment_edit.get_judgment_by_uri_or_404")
+    @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
     def test_edit_judgment_without_assignment(self, mock_judgment, api_client):
         judgment = JudgmentFactory.build(
             uri="edittest/4321/123",
