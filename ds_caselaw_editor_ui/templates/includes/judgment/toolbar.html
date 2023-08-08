@@ -31,7 +31,7 @@
            href="{% url 'unpublish-judgment' judgment.uri %}">{% translate "judgment.toolbar.unpublish" %}</a>
       {% else %}
         <a class="judgment-toolbar__button {% if view == 'publish_judgment' %}button-cta{% else %}button-secondary{% endif %}"
-           href="{% url 'publish-judgment' judgment.uri %}">{% translate "judgment.toolbar.publish" %}</a>
+           href="{% url 'publish-document' judgment.uri %}">{% translate "judgment.toolbar.publish" %}</a>
       {% endif %}
       {% if judgment.docx_url %}
         <a class="judgment-toolbar__button button-secondary"

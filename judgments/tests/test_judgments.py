@@ -119,10 +119,10 @@ class TestJudgmentView(TestCase):
 
 
 class TestJudgmentPublish(TestCase):
-    @patch("judgments.views.judgment_publish.get_document_by_uri_or_404")
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
-    def test_judgment_publish_view(self, document_type, document_exists, mock_judgment):
+    def test_document_publish_view(self, document_type, document_exists, mock_judgment):
         document_type.return_value = Judgment
         document_exists.return_value = None
 
@@ -134,7 +134,7 @@ class TestJudgmentPublish(TestCase):
 
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
 
-        publish_uri = reverse("publish-judgment", kwargs={"judgment_uri": judgment.uri})
+        publish_uri = reverse("publish-document", kwargs={"document_uri": judgment.uri})
 
         assert publish_uri == "/pubtest/4321/123/publish"
 

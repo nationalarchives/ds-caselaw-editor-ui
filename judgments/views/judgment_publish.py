@@ -9,26 +9,15 @@ from judgments.utils.aws import invalidate_caches
 from judgments.utils.link_generators import build_confirmation_email_link
 from judgments.utils.view_helpers import get_document_by_uri_or_404
 
+from ..utils.view_helpers import DocumentView
 
-class PublishJudgmentView(TemplateView):
+
+class PublishDocumentView(DocumentView):
     template_name = "judgment/publish.html"
 
     def get_context_data(self, **kwargs):
-        context = super(PublishJudgmentView, self).get_context_data(**kwargs)
-        judgment = get_document_by_uri_or_404(kwargs["judgment_uri"])
-        judgment_uri = kwargs["judgment_uri"]
-
-        context = set_document_type_and_link(context, judgment_uri)
-
-        context.update(
-            {
-                "page_title": judgment.name,
-                "view": "publish_judgment",
-                "judgment": judgment,
-                "editors": editors_dict(),
-            }
-        )
-
+        context = super().get_context_data(**kwargs)
+        context["view"] = "publish_judgment"
         return context
 
 
