@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-07 16:14+0000\n"
+"POT-Creation-Date: 2023-08-08 09:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,24 +53,20 @@ msgid "feedback.link"
 msgstr "Report a problem to the digital team"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_form.html
-#: ds_caselaw_editor_ui/templates/judgment/edit.html
 msgid "judgment.neutral_citation"
 msgstr "NCN"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_form.html
-#: ds_caselaw_editor_ui/templates/judgment/edit.html
 msgid "judgment.court"
 msgstr "Court"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_form.html
 #: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
-#: ds_caselaw_editor_ui/templates/judgment/edit.html
 msgid "judgment.judgment_date"
 msgstr "Judgment date"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_form.html
 #: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
-#: ds_caselaw_editor_ui/templates/judgment/edit.html
 msgid "judgment.judgment_name"
 msgstr "Name"
 
@@ -108,30 +104,6 @@ msgstr "Publication date"
 #: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
 msgid "judgments.associated_douments"
 msgstr "Associated documents"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
-#: judgments/utils/link_generators.py
-msgid "judgments.submitter"
-msgstr "Submitter"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
-msgid "judgments.sidebar.tools"
-msgstr "Tools"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
-msgid "judgment.create_in_jira"
-msgstr "Create in Jira"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
-#: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html
-#: judgments/views/unlock.py
-msgid "judgment.unlock_judgment_title"
-msgstr "Unlock document"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
-msgid "judgment.report_blocking_problem"
-msgstr "Report a publication-blocking issue"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
 msgid "judgments.sidebar.assigned_to"
@@ -175,6 +147,32 @@ msgstr "Publish"
 msgid "judgment.toolbar.download_docx"
 msgstr "Download .docx"
 
+#: ds_caselaw_editor_ui/templates/includes/judgment/toolbar_more.html
+msgid "judgment.create_in_jira"
+msgstr "Create in Jira"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment/toolbar_more.html
+#: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html
+#: judgments/views/unlock.py
+msgid "judgment.unlock_judgment_title"
+msgstr "Unlock document"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment/toolbar_more.html
+msgid "judgment.report_blocking_problem"
+msgstr "Report a publication-blocking issue"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment/toolbar_more.html
+msgid "judgment.download_docx"
+msgstr "Download original .docx"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment/toolbar_more.html
+msgid "judgment.download_pdf"
+msgstr "Download PDF"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment/toolbar_more.html
+msgid "judgment.download_xml"
+msgstr "Download XML"
+
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_header.html
 msgid "judgments.details"
 msgstr "Document details:"
@@ -187,6 +185,11 @@ msgstr "Submitted:"
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_header.html
 msgid "judgments.submission_assigned"
 msgstr "Assigned:"
+
+#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
+#: judgments/utils/link_generators.py
+msgid "judgments.submitter"
+msgstr "Submitter"
 
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
 msgid "judgments.editor_priority"
@@ -227,22 +230,6 @@ msgstr "Document successfully deleted"
 #: ds_caselaw_editor_ui/templates/judgment/deleted.html
 msgid "judgment.return_home"
 msgstr "Return to Find and manage case law"
-
-#: ds_caselaw_editor_ui/templates/judgment/edit.html
-msgid "judgments.sidebar.downloads"
-msgstr "Downloads"
-
-#: ds_caselaw_editor_ui/templates/judgment/edit.html
-msgid "judgment.download_docx"
-msgstr "Download original .docx"
-
-#: ds_caselaw_editor_ui/templates/judgment/edit.html
-msgid "judgment.download_pdf"
-msgstr "Download PDF"
-
-#: ds_caselaw_editor_ui/templates/judgment/edit.html
-msgid "judgment.download_xml"
-msgstr "Download XML"
 
 #: ds_caselaw_editor_ui/templates/judgment/hold-success.html
 msgid "judgment.hold.success"

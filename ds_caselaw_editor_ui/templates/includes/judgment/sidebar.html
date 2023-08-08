@@ -24,30 +24,6 @@
   </p>
 </div>
 <div class="judgment-sidebar__block">
-  <h4>{% translate "judgments.submitter" %}</h4>
-  <p>
-    <a href="mailto:{{ judgment.source_email }}">{{ judgment.source_name }}</a>
-  </p>
-</div>
-<div class="judgment-sidebar__block">
-  <h4>{% translate "judgments.sidebar.tools" %}</h4>
-  <ul>
-    <li>
-      <a href="{{ jira_create_link }}"
-         target="_blank"
-         rel="noopener noreferrer">{% translate "judgment.create_in_jira" %}</a>
-    </li>
-    <li>
-      <a href="{% url 'unlock' %}?judgment_uri={{ judgment_uri }}">{% translate "judgment.unlock_judgment_title" %}</a>
-    </li>
-    <li>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSckmLdeUAEoEoBc55ybFVmOsXPEM7CG2VbN2YNwsX6kL9UZ4Q/viewform?usp=pp_url&entry.2047884653=Yes&entry.6716552=A+specific+judgment+or+decision&entry.481919886={{ request.build_absolute_uri|urlencode }}&entry.350152829={{ judgment.consignment_reference|urlencode }}"
-         target="_blank"
-         rel="noopener noreferrer">{% translate "judgment.report_blocking_problem" %}</a>
-    </li>
-  </ul>
-</div>
-<div class="judgment-sidebar__block">
   <h4>{% translate "judgments.sidebar.assigned_to" %}</h4>
   <form action="{% url "assign" %}"
         method="post"

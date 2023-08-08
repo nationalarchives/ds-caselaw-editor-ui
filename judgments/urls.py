@@ -14,6 +14,7 @@ from .views.full_text import (
 )
 from .views.index import index
 from .views.judgment_edit import EditJudgmentView, edit_view_redirect
+from .views.judgment_history import DocumentHistoryView
 from .views.judgment_hold import (
     HoldJudgmentSuccessView,
     HoldJudgmentView,
@@ -75,6 +76,11 @@ urlpatterns = [
     ),
     # Different views on judgments
     path("<path:judgment_uri>/edit", EditJudgmentView.as_view(), name="edit-judgment"),
+    path(
+        "<path:document_uri>/history",
+        DocumentHistoryView.as_view(),
+        name="document-history",
+    ),
     path(
         "<path:judgment_uri>/publish",
         PublishJudgmentView.as_view(),

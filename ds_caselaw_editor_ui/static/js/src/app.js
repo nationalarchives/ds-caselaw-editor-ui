@@ -53,6 +53,14 @@ $(".judgment-toolbar__delete").click(() =>
   ),
 );
 
+$("#judgment-toolbar__more-button").show();
+$(".judgment-toolbar__more").hide();
+
+$("#judgment-toolbar__more-button").on("click", function () {
+  $(".judgment-toolbar__more").slideToggle();
+  $("#judgment-toolbar__more-button").toggleClass("toggled");
+});
+
 $(".judgments-list__judgment-assign-form").on("submit", function (event) {
   event.preventDefault();
   const form = $(this);
