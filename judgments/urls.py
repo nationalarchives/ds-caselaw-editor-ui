@@ -5,14 +5,14 @@ from .views.button_handlers import (
     hold_judgment_button,
     prioritise_judgment_button,
 )
-from .views.document_history import DocumentHistoryView
-from .views.full_text import (
+from .views.document_full_text import (
     html_view,
     html_view_redirect,
     pdf_view,
     xml_view,
     xml_view_redirect,
 )
+from .views.document_history import DocumentHistoryView
 from .views.index import index
 from .views.judgment_edit import EditJudgmentView, edit_view_redirect
 from .views.judgment_hold import (

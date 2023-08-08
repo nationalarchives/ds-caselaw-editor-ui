@@ -9,7 +9,7 @@ from factories import JudgmentFactory
 
 
 class TestJudgmentView(TestCase):
-    @patch("judgments.views.full_text.get_document_by_uri_or_404")
+    @patch("judgments.views.document_full_text.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
     def test_judgment_html_view(self, document_type, document_exists, mock_judgment):
@@ -39,7 +39,7 @@ class TestJudgmentView(TestCase):
         self.assertIn("<h1>Test Judgment</h1>", decoded_response)
         assert response.status_code == 200
 
-    @patch("judgments.views.full_text.get_document_by_uri_or_404")
+    @patch("judgments.views.document_full_text.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
     def test_judgment_html_view_with_failure(
@@ -89,9 +89,7 @@ class TestJudgmentView(TestCase):
             )
         )
 
-    @patch(
-        "judgments.views.full_text.get_document_by_uri_or_404",
-    )
+    @patch("judgments.views.document_full_text.get_document_by_uri_or_404")
     def test_judgment_pdf_view_no_pdf_response(self, mock_judgment):
         mock_judgment.return_value.name = "JUDGMENT v JUDGEMENT"
         mock_judgment.return_value.pdf_url = ""
