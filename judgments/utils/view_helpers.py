@@ -1,9 +1,7 @@
 from typing import Any
 
 from caselawclient.Client import api_client
-from caselawclient.client_helpers.search_helpers import (
-    search_judgments_and_parse_response,
-)
+from caselawclient.client_helpers.search_helpers import search_and_parse_response
 from caselawclient.errors import DocumentNotFoundError
 from caselawclient.models.documents import Document
 from caselawclient.search_parameters import SearchParameters
@@ -38,7 +36,7 @@ def get_search_results(parameters: dict[str, Any]) -> dict[str, Any]:
         show_unpublished=True,
         page=parameters["page"],
     )
-    search_response = search_judgments_and_parse_response(api_client, search_parameters)
+    search_response = search_and_parse_response(api_client, search_parameters)
     return {
         "query": parameters,
         "total": search_response.total,
