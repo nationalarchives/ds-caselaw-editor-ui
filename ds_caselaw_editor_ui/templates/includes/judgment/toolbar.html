@@ -28,7 +28,7 @@
       {% endif %}
       {% if judgment.is_published %}
         <a class="judgment-toolbar__button {% if view == 'publish_judgment' %}button-cta{% else %}button-secondary{% endif %}"
-           href="{% url 'unpublish-judgment' judgment.uri %}">{% translate "judgment.toolbar.unpublish" %}</a>
+           href="{% url 'unpublish-document' judgment.uri %}">{% translate "judgment.toolbar.unpublish" %}</a>
       {% else %}
         <a class="judgment-toolbar__button {% if view == 'publish_judgment' %}button-cta{% else %}button-secondary{% endif %}"
            href="{% url 'publish-document' judgment.uri %}">{% translate "judgment.toolbar.publish" %}</a>

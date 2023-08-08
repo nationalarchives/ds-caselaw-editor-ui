@@ -2,9 +2,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.translation import gettext
-from django.views.generic import TemplateView
 
-from judgments.utils import editors_dict, set_document_type_and_link
 from judgments.utils.aws import invalidate_caches
 from judgments.utils.link_generators import build_confirmation_email_link
 from judgments.utils.view_helpers import get_document_by_uri_or_404
@@ -50,49 +48,17 @@ def publish(request):
     )
 
 
-class UnpublishJudgmentView(TemplateView):
+class UnpublishDocumentView(DocumentView):
     template_name = "judgment/unpublish.html"
 
     def get_context_data(self, **kwargs):
-        context = super(UnpublishJudgmentView, self).get_context_data(**kwargs)
-
-        judgment = get_document_by_uri_or_404(kwargs["judgment_uri"])
-        judgment_uri = kwargs["judgment_uri"]
-
-        context = set_document_type_and_link(context, judgment_uri)
-
-        context.update(
-            {
-                "page_title": judgment.name,
-                "view": "publish_judgment",
-                "judgment": judgment,
-                "editors": editors_dict(),
-            }
-        )
-
+        context = super().get_context_data(**kwargs)
+        context["view"] = "unpublish_judgment"
         return context
 
 
-class UnpublishJudgmentSuccessView(TemplateView):
+class UnpublishDocumentSuccessView(DocumentView):
     template_name = "judgment/unpublish-success.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(UnpublishJudgmentSuccessView, self).get_context_data(**kwargs)
-
-        judgment = get_document_by_uri_or_404(kwargs["judgment_uri"])
-        judgment_uri = kwargs["judgment_uri"]
-
-        context = set_document_type_and_link(context, judgment_uri)
-
-        context.update(
-            {
-                "page_title": judgment.name,
-                "judgment": judgment,
-                "editors": editors_dict(),
-            }
-        )
-
-        return context
 
 
 def unpublish(request):
@@ -104,5 +70,5 @@ def unpublish(request):
         request, gettext("judgment.publish.unpublish_success_flash_message")
     )
     return HttpResponseRedirect(
-        reverse("unpublish-judgment-success", kwargs={"judgment_uri": judgment.uri})
+        reverse("unpublish-document-success", kwargs={"document_uri": judgment.uri})
     )

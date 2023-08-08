@@ -26,8 +26,8 @@ from .views.judgment_hold import (
 from .views.judgment_publish import (
     PublishDocumentSuccessView,
     PublishDocumentView,
-    UnpublishJudgmentSuccessView,
-    UnpublishJudgmentView,
+    UnpublishDocumentSuccessView,
+    UnpublishDocumentView,
     publish,
     unpublish,
 )
@@ -92,14 +92,14 @@ urlpatterns = [
         name="publish-document-success",
     ),
     path(
-        "<path:judgment_uri>/unpublish",
-        UnpublishJudgmentView.as_view(),
-        name="unpublish-judgment",
+        "<path:document_uri>/unpublish",
+        UnpublishDocumentView.as_view(),
+        name="unpublish-document",
     ),
     path(
-        "<path:judgment_uri>/unpublished",
-        UnpublishJudgmentSuccessView.as_view(),
-        name="unpublish-judgment-success",
+        "<path:document_uri>/unpublished",
+        UnpublishDocumentSuccessView.as_view(),
+        name="unpublish-document-success",
     ),
     path(
         "<path:judgment_uri>/hold",
