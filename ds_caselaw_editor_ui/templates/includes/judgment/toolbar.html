@@ -19,11 +19,11 @@
               aria-disabled="true">{% translate "judgment.toolbar.hold" %}</span>
       {% else %}
         {% if judgment.is_held %}
-          <a class="judgment-toolbar__button {% if view == 'hold_judgment' %}button-cta{% else %}button-secondary{% endif %}"
-             href="{% url 'unhold-judgment' judgment.uri %}">{% translate "judgment.toolbar.unhold" %}</a>
+          <a class="judgment-toolbar__button {% if view == 'unhold_judgment' %}button-cta{% else %}button-secondary{% endif %}"
+             href="{% url 'unhold-document' judgment.uri %}">{% translate "judgment.toolbar.unhold" %}</a>
         {% else %}
           <a class="judgment-toolbar__button {% if view == 'hold_judgment' %}button-cta{% else %}button-secondary{% endif %}"
-             href="{% url 'hold-judgment' judgment.uri %}">{% translate "judgment.toolbar.hold" %}</a>
+             href="{% url 'hold-document' judgment.uri %}">{% translate "judgment.toolbar.hold" %}</a>
         {% endif %}
       {% endif %}
       {% if judgment.is_published %}

@@ -16,10 +16,10 @@ from .views.document_history import DocumentHistoryView
 from .views.index import index
 from .views.judgment_edit import EditJudgmentView, edit_view_redirect
 from .views.judgment_hold import (
-    HoldJudgmentSuccessView,
-    HoldJudgmentView,
-    UnholdJudgmentSuccessView,
-    UnholdJudgmentView,
+    HoldDocumentSuccessView,
+    HoldDocumentView,
+    UnholdDocumentSuccessView,
+    UnholdDocumentView,
     hold,
     unhold,
 )
@@ -102,24 +102,24 @@ urlpatterns = [
         name="unpublish-document-success",
     ),
     path(
-        "<path:judgment_uri>/hold",
-        HoldJudgmentView.as_view(),
-        name="hold-judgment",
+        "<path:document_uri>/hold",
+        HoldDocumentView.as_view(),
+        name="hold-document",
     ),
     path(
-        "<path:judgment_uri>/onhold",
-        HoldJudgmentSuccessView.as_view(),
-        name="hold-judgment-success",
+        "<path:document_uri>/onhold",
+        HoldDocumentSuccessView.as_view(),
+        name="hold-document-success",
     ),
     path(
-        "<path:judgment_uri>/unhold",
-        UnholdJudgmentView.as_view(),
-        name="unhold-judgment",
+        "<path:document_uri>/unhold",
+        UnholdDocumentView.as_view(),
+        name="unhold-document",
     ),
     path(
-        "<path:judgment_uri>/unheld",
-        UnholdJudgmentSuccessView.as_view(),
-        name="unhold-judgment-success",
+        "<path:document_uri>/unheld",
+        UnholdDocumentSuccessView.as_view(),
+        name="unhold-document-success",
     ),
     path("<path:judgment_uri>/pdf", pdf_view, name="full-text-pdf"),
     path("<path:judgment_uri>/xml", xml_view, name="full-text-xml"),
