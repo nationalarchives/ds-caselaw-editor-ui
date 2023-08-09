@@ -7,13 +7,8 @@
       </div>
     {% endif %}
     <div class="judgment-toolbar__edit">
-      {% if document.is_editable %}
-        <a class="judgment-toolbar__button {% if view == 'judgment_text' %}button-cta{% else %}button-secondary{% endif %}"
-           href="{% url 'full-text-html' document.uri %}">{% translate "judgment.toolbar.review_document" %}</a>
-      {% else %}
-        <span class="judgment-toolbar__button button-secondary"
-              aria-disabled="true">{% translate "judgment.toolbar.review_document" %}</span>
-      {% endif %}
+      <a class="judgment-toolbar__button {% if view == 'judgment_text' %}button-cta{% else %}button-secondary{% endif %}"
+         href="{% url 'full-text-html' document.uri %}">{% translate "judgment.toolbar.review_document" %}</a>
       {% if document.is_published %}
         <span class="judgment-toolbar__button button-secondary"
               aria-disabled="true">{% translate "judgment.toolbar.hold" %}</span>
