@@ -29,7 +29,7 @@ class EditJudgmentView(View):
         try:
             # Set name
             new_name = request.POST["metadata_name"]
-            api_client.set_judgment_name(judgment_uri, new_name)
+            api_client.set_document_name(judgment_uri, new_name)
 
             # Set neutral citation
             new_citation = request.POST["neutral_citation"]
@@ -37,7 +37,7 @@ class EditJudgmentView(View):
 
             # Set court
             new_court = request.POST["court"]
-            api_client.set_judgment_court(judgment_uri, new_court)
+            api_client.set_document_court(judgment_uri, new_court)
 
             # Date
             new_date = request.POST["judgment_date"]
