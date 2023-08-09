@@ -3,10 +3,10 @@
   <div class="judgments-list__judgment-details">
     <div class="judgments-list__judgment-details-name">
       <a href="{% url 'full-text-html' item.uri %}">
-        {% if not item.is_failure %}
+        {% if not item.failed_to_parse %}
           {{ item.name | default:"[Untitled Judgment]" }}
         {% else %}
-          <span class="judgments-list__failed">Failed processing:</span> {{ item.uri }}
+          <span class="judgments-list__failed">Failed to parse:</span> {{ item.uri }}
         {% endif %}
       </a>
     </div>

@@ -17,14 +17,10 @@ class DocumentReviewHTMLView(DocumentView):
 
         version_uri = self.request.GET.get("version_uri", None)
 
-        if not context["document"].is_editable:
-            context["judgment_content"] = context["document"].content_as_xml
-            context["metadata_name"] = context["document"].uri
-        else:
-            context["judgment_content"] = context["document"].content_as_html(
+        if not context["document"].failed_to_parse:
+            context["document_html_content"] = context["document"].content_as_html(
                 version_uri=version_uri
             )
-            context["metadata_name"] = context["document"].name
 
         if version_uri:
             context["version"] = extract_version(version_uri)

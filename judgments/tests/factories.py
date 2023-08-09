@@ -30,12 +30,13 @@ class JudgmentFactory:
         "court": ("court", "Court of Testing"),
         "document_date_as_string": ("document_date_as_string", "2023-02-03"),
         "is_published": ("is_published", False),
-        "is_failure": ("is_failure", False),
+        "failed_to_parse": ("failed_to_parse", False),
         "source_name": ("source_name", "Example Uploader"),
         "source_email": ("source_email", "uploader@example.com"),
         "consignment_reference": ("consignment_reference", "TDR-12345"),
         "assigned_to": ("assigned_to", ""),
         "versions": ("versions", []),
+        "content_as_xml": ("xml", "<akomaNtoso>This is a document's XML.</akomaNtoso>"),
     }
 
     @classmethod
@@ -99,5 +100,5 @@ class SearchResultFactory(SimpleFactory):
         "court": "Court of Testing",
         "date": datetime.date(2023, 2, 3),
         "metadata": SearchResultMetadataFactory.build(),
-        "is_failure": False,
+        "failed_to_parse": False,
     }
