@@ -38,6 +38,7 @@
   &__search-term-input {
     @include text_field;
     width: 80%;
+    margin-top: 1rem;
     min-height: calc($spacer__unit * 3);
     font-size: 1.2rem;
 
@@ -52,6 +53,13 @@
     @media (min-width: $grid__breakpoint-extra-large) {
       width: 35rem;
     }
+  }
+
+  form {
+    max-width: 47rem;
+    display: flex;
+    gap: 1rem;
+    margin: 0 auto;
   }
 
   input[type="checkbox"] {
