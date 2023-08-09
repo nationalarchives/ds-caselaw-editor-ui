@@ -12,7 +12,7 @@ def assert_match(regex, string):
 
 
 class TestSearchResults(TestCase):
-    @patch("judgments.utils.view_helpers.search_judgments_and_parse_response")
+    @patch("judgments.utils.view_helpers.search_and_parse_response")
     def test_oldest(self, mock_search):
         mock_search.results.return_value = []
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
@@ -32,7 +32,7 @@ class TestSearchResults(TestCase):
             response.content,
         )
 
-    @patch("judgments.utils.view_helpers.search_judgments_and_parse_response")
+    @patch("judgments.utils.view_helpers.search_and_parse_response")
     def test_newest(self, mock_search):
         mock_search.results.return_value = []
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])

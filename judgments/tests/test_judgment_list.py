@@ -13,7 +13,7 @@ def assert_match(regex, string):
 
 
 class TestJudgmentView(TestCase):
-    @patch("judgments.utils.view_helpers.search_judgments_and_parse_response")
+    @patch("judgments.utils.view_helpers.search_and_parse_response")
     def test_judgment_list_smoketest(self, mock_search_results):
         mock_search_results.return_value.results = []
         mock_search_results.return_value.total = 0
@@ -24,7 +24,7 @@ class TestJudgmentView(TestCase):
 
         assert response.status_code == 200
 
-    @patch("judgments.utils.view_helpers.search_judgments_and_parse_response")
+    @patch("judgments.utils.view_helpers.search_and_parse_response")
     def test_judgment_list_total_count(self, mock_search_results):
         mock_search_results.return_value.results = [
             SearchResultFactory.build(),
@@ -40,7 +40,7 @@ class TestJudgmentView(TestCase):
 
         assert "{}: 2".format(gettext("home.recent")) in decoded_response
 
-    @patch("judgments.utils.view_helpers.search_judgments_and_parse_response")
+    @patch("judgments.utils.view_helpers.search_and_parse_response")
     def test_judgment_list_items(self, mock_search_results):
         mock_search_results.return_value.results = [
             SearchResultFactory.build(
