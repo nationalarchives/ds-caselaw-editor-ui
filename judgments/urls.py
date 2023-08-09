@@ -5,29 +5,29 @@ from .views.button_handlers import (
     hold_judgment_button,
     prioritise_judgment_button,
 )
-from .views.full_text import (
-    html_view,
+from .views.document_full_text import (
+    DocumentReviewHTMLView,
+    DocumentReviewPDFView,
     html_view_redirect,
-    pdf_view,
     xml_view,
     xml_view_redirect,
 )
+from .views.document_history import DocumentHistoryView
 from .views.index import index
 from .views.judgment_edit import EditJudgmentView, edit_view_redirect
-from .views.judgment_history import DocumentHistoryView
 from .views.judgment_hold import (
-    HoldJudgmentSuccessView,
-    HoldJudgmentView,
-    UnholdJudgmentSuccessView,
-    UnholdJudgmentView,
+    HoldDocumentSuccessView,
+    HoldDocumentView,
+    UnholdDocumentSuccessView,
+    UnholdDocumentView,
     hold,
     unhold,
 )
 from .views.judgment_publish import (
-    PublishJudgmentSuccessView,
-    PublishJudgmentView,
-    UnpublishJudgmentSuccessView,
-    UnpublishJudgmentView,
+    PublishDocumentSuccessView,
+    PublishDocumentView,
+    UnpublishDocumentSuccessView,
+    UnpublishDocumentView,
     publish,
     unpublish,
 )
@@ -75,54 +75,58 @@ urlpatterns = [
         name="style_guide_branding",
     ),
     # Different views on judgments
-    path("<path:judgment_uri>/edit", EditJudgmentView.as_view(), name="edit-judgment"),
+    path("<path:document_uri>/edit", EditJudgmentView.as_view(), name="edit-document"),
     path(
         "<path:document_uri>/history",
         DocumentHistoryView.as_view(),
         name="document-history",
     ),
     path(
-        "<path:judgment_uri>/publish",
-        PublishJudgmentView.as_view(),
-        name="publish-judgment",
+        "<path:document_uri>/publish",
+        PublishDocumentView.as_view(),
+        name="publish-document",
     ),
     path(
-        "<path:judgment_uri>/published",
-        PublishJudgmentSuccessView.as_view(),
-        name="publish-judgment-success",
+        "<path:document_uri>/published",
+        PublishDocumentSuccessView.as_view(),
+        name="publish-document-success",
     ),
     path(
-        "<path:judgment_uri>/unpublish",
-        UnpublishJudgmentView.as_view(),
-        name="unpublish-judgment",
+        "<path:document_uri>/unpublish",
+        UnpublishDocumentView.as_view(),
+        name="unpublish-document",
     ),
     path(
-        "<path:judgment_uri>/unpublished",
-        UnpublishJudgmentSuccessView.as_view(),
-        name="unpublish-judgment-success",
+        "<path:document_uri>/unpublished",
+        UnpublishDocumentSuccessView.as_view(),
+        name="unpublish-document-success",
     ),
     path(
-        "<path:judgment_uri>/hold",
-        HoldJudgmentView.as_view(),
-        name="hold-judgment",
+        "<path:document_uri>/hold",
+        HoldDocumentView.as_view(),
+        name="hold-document",
     ),
     path(
-        "<path:judgment_uri>/onhold",
-        HoldJudgmentSuccessView.as_view(),
-        name="hold-judgment-success",
+        "<path:document_uri>/onhold",
+        HoldDocumentSuccessView.as_view(),
+        name="hold-document-success",
     ),
     path(
-        "<path:judgment_uri>/unhold",
-        UnholdJudgmentView.as_view(),
-        name="unhold-judgment",
+        "<path:document_uri>/unhold",
+        UnholdDocumentView.as_view(),
+        name="unhold-document",
     ),
     path(
-        "<path:judgment_uri>/unheld",
-        UnholdJudgmentSuccessView.as_view(),
-        name="unhold-judgment-success",
+        "<path:document_uri>/unheld",
+        UnholdDocumentSuccessView.as_view(),
+        name="unhold-document-success",
     ),
-    path("<path:judgment_uri>/pdf", pdf_view, name="full-text-pdf"),
-    path("<path:judgment_uri>/xml", xml_view, name="full-text-xml"),
-    # This 'bare judgment' URL must always go last
-    path("<path:judgment_uri>", html_view, name="full-text-html"),
+    path(
+        "<path:document_uri>/pdf", DocumentReviewPDFView.as_view(), name="full-text-pdf"
+    ),
+    path("<path:document_uri>/xml", xml_view, name="full-text-xml"),
+    # This 'bare document' URL must always go last
+    path(
+        "<path:document_uri>", DocumentReviewHTMLView.as_view(), name="full-text-html"
+    ),
 ]

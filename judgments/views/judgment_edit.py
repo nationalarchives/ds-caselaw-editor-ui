@@ -17,7 +17,7 @@ from judgments.utils.view_helpers import get_document_by_uri_or_404
 class EditJudgmentView(View):
     def get(self, request, *args, **kwargs):
         return HttpResponseRedirect(
-            reverse("full-text-html", kwargs={"judgment_uri": kwargs["judgment_uri"]})
+            reverse("full-text-html", kwargs={"document_uri": kwargs["document_uri"]})
         )
 
     def post(self, request, *args, **kwargs):
@@ -51,7 +51,7 @@ class EditJudgmentView(View):
             if "failures" in judgment_uri and new_citation is not None:
                 new_judgment_uri = update_document_uri(judgment_uri, new_citation)
                 return redirect(
-                    reverse("edit-judgment", kwargs={"judgment_uri": new_judgment_uri})
+                    reverse("edit-document", kwargs={"document_uri": new_judgment_uri})
                 )
 
             messages.success(request, "Document successfully updated")
@@ -69,15 +69,15 @@ class EditJudgmentView(View):
 
         if return_to == "html":
             return_path = reverse(
-                "full-text-html", kwargs={"judgment_uri": judgment.uri}
+                "full-text-html", kwargs={"document_uri": judgment.uri}
             )
         elif return_to == "pdf":
             return_path = reverse(
-                "full-text-pdf", kwargs={"judgment_uri": judgment.uri}
+                "full-text-pdf", kwargs={"document_uri": judgment.uri}
             )
         else:
             return_path = reverse(
-                "edit-judgment", kwargs={"judgment_uri": judgment.uri}
+                "edit-document", kwargs={"document_uri": judgment.uri}
             )
 
         return HttpResponseRedirect(return_path)
@@ -85,7 +85,7 @@ class EditJudgmentView(View):
 
 def edit_view_redirect(request):
     params = request.GET
-    judgment_uri = params.get("judgment_uri", None)
+    document_uri = params.get("judgment_uri", None)
     return HttpResponseRedirect(
-        reverse("edit-judgment", kwargs={"judgment_uri": judgment_uri})
+        reverse("edit-document", kwargs={"document_uri": document_uri})
     )

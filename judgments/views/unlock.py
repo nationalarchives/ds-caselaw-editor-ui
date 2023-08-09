@@ -43,4 +43,4 @@ def unlock_post(request):
         ) from exc
     else:
         messages.success(request, "Document unlocked.")
-        return redirect(reverse("edit-judgment", kwargs={"judgment_uri": judgment.uri}))
+        return redirect(reverse("edit-document", kwargs={"document_uri": judgment.uri}))
