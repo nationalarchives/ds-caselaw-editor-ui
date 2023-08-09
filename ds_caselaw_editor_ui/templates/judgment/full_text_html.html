@@ -8,9 +8,13 @@
   {% include "includes/judgment/view_controls.html" with selected_tab=1 %}
   {% if judgment_content %}
     {% if judgment.is_failure %}
-      <pre>
-        {{ judgment_content }}
-      </pre>
+      <div class="container">
+        <div class="page-notification--failure">This document is in a 'failure' state.</div>
+        <pre style="white-space:pre-wrap;
+                    background:#F6F6F6;
+                    border:1px solid #AAA;
+                    padding:1em">{{ judgment_content }}</pre>
+      </div>
     {% else %}
       {% autoescape off %}
         {{ judgment_content }}
