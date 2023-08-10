@@ -26,6 +26,11 @@
            target="_blank"
            rel="noopener noreferrer">{% translate "judgment.report_blocking_problem" %}</a>
       </li>
+      {% if document.safe_to_delete %}
+        <li>
+          <a href="{% url 'delete-document' document.uri %}" class="link-danger">Delete document</a>
+        </li>
+      {% endif %}
     </ul>
   </div>
   <div class="judgment-toolbar__more__menu__group">

@@ -153,3 +153,67 @@ class TestJudgmentAssign(TestCase):
             "/assign", {"judgment_uri": "/test/judgment", "assigned_to": ""}
         )
         api_client.set_property.assert_called_with("/test/judgment", "assigned-to", "")
+
+
+class TestJudgmentToolbar(TestCase):
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_delete_link_if_judgment_deletable(
+        self, document_type, document_exists, mock_document
+    ):
+        document_type.return_value = Judgment
+        document_exists.return_value = True
+
+        document = JudgmentFactory.build(
+            uri="hvtest/4321/123",
+            name="Test v Tested",
+            html="<h1>Test Judgment</h1>",
+            published=False,
+        )
+        mock_document.return_value = document
+        mock_document.return_value.safe_to_delete = True
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.get(
+            reverse("full-text-html", kwargs={"document_uri": document.uri})
+        )
+
+        decoded_response = response.content.decode("utf-8")
+        self.assertIn("Delete document", decoded_response)
+        self.assertIn(
+            reverse("delete-document", kwargs={"document_uri": document.uri}),
+            decoded_response,
+        )
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_no_delete_link_if_judgment_not_deletable(
+        self, document_type, document_exists, mock_document
+    ):
+        document_type.return_value = Judgment
+        document_exists.return_value = True
+
+        document = JudgmentFactory.build(
+            uri="hvtest/4321/123",
+            name="Test v Tested",
+            html="<h1>Test Judgment</h1>",
+            published=True,
+        )
+        mock_document.return_value = document
+        mock_document.return_value.safe_to_delete = False
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.get(
+            reverse("full-text-html", kwargs={"document_uri": document.uri})
+        )
+
+        decoded_response = response.content.decode("utf-8")
+        self.assertNotIn("Delete document", decoded_response)
+        self.assertNotIn(
+            reverse("delete-document", kwargs={"document_uri": document.uri}),
+            decoded_response,
+        )

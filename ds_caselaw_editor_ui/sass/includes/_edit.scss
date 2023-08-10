@@ -28,11 +28,6 @@
     display: block;
   }
 
-  input[type="submit"] {
-    @include call-to-action-button;
-    display: block;
-  }
-
   &__metadata_name-input {
     @include text_field;
     width: 80%;

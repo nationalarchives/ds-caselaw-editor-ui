@@ -18,6 +18,16 @@ a {
   &:focus {
     @include focus-default;
   }
+
+  &.link-danger {
+    color: darken($color__red, 10);
+    &:visited {
+      color: darken($color__red, 10);
+    }
+    &:hover {
+      color: darken($color__red, 20);
+    }
+  }
 }
 
 #skip-to-main-content {

@@ -1,0 +1,30 @@
+{% extends "layouts/judgment_with_sidebar.html" %}
+{% load i18n %}
+{% block judgment_header %}
+  {% include "includes/judgment/metadata_panel_static.html" with judgment=judgment %}
+{% endblock judgment_header %}
+{% block judgment_content %}
+  <h2>Delete this {{ document.document_noun }}</h2>
+  {% if document.safe_to_delete %}
+    <p>
+      If this {{ document.document_noun }} has previously been made public, you must follow the process for informing data reusers of a takedown.
+    </p>
+    <p>
+      <b>Deleting this {{ document.document_noun }} cannot be undone.</b>
+    </p>
+    <form aria-label="publish {{ document.document_noun }}"
+          action="{% url 'delete' %}"
+          method="post">
+      {% csrf_token %}
+      <div class="judgment-component__actions">
+        <input type="hidden" name="document_uri" value="{{ document.uri }}" />
+        <input class="button-danger"
+               type="submit"
+               value="Delete {{ document.document_noun }} at {{ document.uri }}" />
+      </div>
+    </form>
+  {% else %}
+    <p>This {{ document.document_noun }} is not safe to delete.</p>
+    <span class="button-danger" aria-disabled="true">Delete {{ document.document_noun }} at URI {{ document.uri }}</span>
+  {% endif %}
+{% endblock judgment_content %}

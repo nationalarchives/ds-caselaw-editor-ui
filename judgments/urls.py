@@ -5,6 +5,7 @@ from .views.button_handlers import (
     hold_judgment_button,
     prioritise_judgment_button,
 )
+from .views.document_delete import DeleteDocumentView, delete
 from .views.document_full_text import (
     DocumentReviewHTMLView,
     DocumentReviewPDFView,
@@ -54,6 +55,7 @@ urlpatterns = [
     path("hold", hold, name="hold"),
     path("unhold", unhold, name="unhold"),
     path("unlock", unlock, name="unlock"),
+    path("delete", delete, name="delete"),
     path("assign", assign_judgment_button, name="assign"),
     path("prioritise", prioritise_judgment_button, name="prioritise"),
     path("hold", hold_judgment_button, name="hold"),
@@ -120,6 +122,11 @@ urlpatterns = [
         "<path:document_uri>/unheld",
         UnholdDocumentSuccessView.as_view(),
         name="unhold-document-success",
+    ),
+    path(
+        "<path:document_uri>/delete",
+        DeleteDocumentView.as_view(),
+        name="delete-document",
     ),
     path(
         "<path:document_uri>/pdf", DocumentReviewPDFView.as_view(), name="full-text-pdf"

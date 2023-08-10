@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-10 11:19+0000\n"
+"POT-Creation-Date: 2023-08-10 14:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -222,14 +222,6 @@ msgstr ""
 #: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html
 msgid "judgment.back_to_judgment"
 msgstr "Back to document"
-
-#: ds_caselaw_editor_ui/templates/judgment/deleted.html
-msgid "judgment.deleted"
-msgstr "Document successfully deleted"
-
-#: ds_caselaw_editor_ui/templates/judgment/deleted.html
-msgid "judgment.return_home"
-msgstr "Return to Find and manage case law"
 
 #: ds_caselaw_editor_ui/templates/judgment/hold-success.html
 msgid "judgment.hold.success"
