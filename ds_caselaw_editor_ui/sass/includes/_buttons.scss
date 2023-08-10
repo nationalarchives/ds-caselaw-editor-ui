@@ -46,3 +46,38 @@
     }
   }
 }
+
+.button-danger {
+  @include call-to-action-button;
+  background-color: $color__white;
+  border: 2px solid $color__red;
+  color: $color__red;
+
+  &:visited {
+    color: $color__cta-background;
+  }
+
+  &:focus,
+  &:hover {
+    background-color: $color__red;
+    color: $color__white;
+    outline-color: $color__red;
+    border-color: $color__red;
+  }
+
+  &:disabled,
+  &[aria-disabled="true"] {
+    $color__desaturated-red: desaturate($color__red, 60%);
+    color: $color__desaturated-red;
+    background-color: $color__white;
+    border-color: lighten($color__desaturated-red, 30%);
+    &:focus,
+    &:hover {
+      outline: none;
+      background-color: $color__white;
+      color: $color__desaturated-red;
+      text-decoration: none;
+      cursor: not-allowed;
+    }
+  }
+}
