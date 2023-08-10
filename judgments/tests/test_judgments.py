@@ -42,7 +42,7 @@ class TestJudgmentView(TestCase):
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
-    def test_judgment_html_view_with_failure(
+    def test_judgment_html_view_with_parser_failure(
         self, document_type, document_exists, mock_judgment
     ):
         document_type.return_value = Judgment
@@ -51,7 +51,8 @@ class TestJudgmentView(TestCase):
         judgment = JudgmentFactory.build(
             uri="hvtest/4321/123",
             html="<h1>Test Judgment</h1>",
-            is_failure=True,
+            xml="<error>Error log</error>",
+            failed_to_parse=True,
         )
         mock_judgment.return_value = judgment
 
@@ -62,7 +63,14 @@ class TestJudgmentView(TestCase):
         )
 
         decoded_response = response.content.decode("utf-8")
-        self.assertIn("&lt;h1&gt;Test Judgment&lt;/h1&gt;", decoded_response)
+        self.assertIn("This document has failed to parse", decoded_response)
+
+        self.assertIn("&lt;error&gt;Error log&lt;/error&gt;", decoded_response)
+        self.assertNotIn("<error>Error log</error>", decoded_response)
+
+        self.assertNotIn("&lt;h1&gt;Test Judgment&lt;/h1&gt;", decoded_response)
+        self.assertNotIn("<h1>Test Judgment</h1>", decoded_response)
+
         assert response.status_code == 200
 
     def test_judgment_html_view_redirect(self):

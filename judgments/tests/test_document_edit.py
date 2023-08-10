@@ -39,13 +39,13 @@ class TestDocumentEdit(TestCase):
             },
         )
 
-        api_client.set_judgment_name.assert_called_with(
+        api_client.set_document_name.assert_called_with(
             "/edittest/4321/123", "New Name"
         )
         api_client.set_judgment_citation.assert_called_with(
             "/edittest/4321/123", "[4321] TEST 123"
         )
-        api_client.set_judgment_court.assert_called_with(
+        api_client.set_document_court.assert_called_with(
             "/edittest/4321/123", "Court of Testing"
         )
         api_client.set_judgment_date.assert_called_with(
