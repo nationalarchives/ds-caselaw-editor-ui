@@ -248,27 +248,13 @@ Included in this repository is:
 - To watch and build the site SASS, run `npm run start-sass`
 - To modify styles, navigate to the `sass` folder in your editor.
 
-#### Note about the Judgment display CSS
+### Working with local copies of shared SASS
 
-The Judgment display CSS should be the same between both
-this application and `ds-caselaw-public-ui`. Ensuring edits to the public UI repository were being
-replicated to this repository was tricky as it relied on the developers
-remembering to make changes in both places.
+To use a local development copy of the shared CSS instead of the latest git main:
 
-Instead, we share the judgment CSS between both apps. `ds-caselaw-public-ui` is the "source of truth".
-The CSS is located in that repository at `ds_judgements_public_ui/sass/includes/_judgment_text.scss`.
-
-Any edits made in `ds-caselaw-public-ui` which are then merged to main and included in a
-production release, will be reflected in `ds-caselaw-editor-ui` (note that the changes have to be included in
-[a release](https://github.com/nationalarchives/ds-caselaw-public-ui/releases) before they are used in the editor).
-
-`_judgment_text.scss` only contains styles for the HTML judgment view. Other CSS styles for the public UI and editor
-UI applications are not shared.
-
-When running the application locally, the CSS is retrieved from `ds-caselaw-public-ui` via the local Dockerfile
-`compose/local/django/Dockerfile`. The Dockerfile retrieves the latest release tag of `ds-caselaw-public-ui`, uses that
-tag to build a URL to `_judgment_text.scss` and downloads the CSS to your local application. If you wish to edit the
-judgment CSS, you **MUST** make those edits in `ds-caselaw-public-ui`.
+```console
+npm link ../path/to/your/copy
+```
 
 ### Working with JavaScript
 

@@ -9,6 +9,9 @@
 @import "includes/footer";
 @import "includes/tables";
 
+// Shared CSS
+@import "../../node_modules/@nationalarchives/ds-caselaw-frontend/src/main.scss";
+
 @import "includes/animations";
 @import "includes/search";
 @import "includes/edit";
@@ -20,7 +23,6 @@
 @import "includes/results_search_component";
 @import "includes/result_controls";
 @import "includes/pagination";
-@import "includes/judgment_text";
 @import "includes/judgment_text_toolbar";
 @import "includes/judgment_text_source";
 @import "includes/judgment_sidebar";
