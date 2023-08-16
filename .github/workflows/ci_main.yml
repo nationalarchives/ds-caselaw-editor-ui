@@ -1,0 +1,32 @@
+name: E2E Tests on new deployments of staging
+
+on:
+  push:
+    # branches:
+    #   - main
+
+jobs:
+  build-deploy-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v3
+
+      # - name: Wait for Deployment
+      #   run: |
+      #     # Poll AWS CodeDeploy status since dxws deployment of EUI
+      #     # to staging is currently triggered when we merge to main
+      #     # and they use AWS CodeDeploy to do it.
+      #     # Example: use AWS CLI to check deployment status
+
+      - name: Install Node.js and npm
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install Cypress
+        run: npm install cypress
+
+      - name: Run Cypress Tests
+        run: CYPRESS_USERNAME=${{secrets.CYPRESS_USERNAME}} CYPRESS_PASSWORD=${{secrets.CYPRESS_PASSWORD}} npx cypress run --headless
