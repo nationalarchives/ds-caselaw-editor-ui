@@ -191,6 +191,29 @@ topic and `public-` and `private-asset-buckets` for S3.
 $ fab test
 ```
 
+### Running cypress E2E tests against staging
+
+We have started adding cypress tests so we have some E2E tests to be happier with critical E2E workflows.
+These should be kept to a minimum since they are slow to run, resource intensive and harder to debug than smaller integration and unit tests.
+
+However, we should try to add all critical editor workflows here to give confidence we don't introduce regressions in new releases.
+
+NOTE: For now we should point the tests to staging, but eventually we may have a dedicated testing set up.
+
+To run them locally, you can run:
+
+`CYPRESS_USERNAME=username CYPRESS_PASSWORD=password npx cypress run --headless`
+
+You can also run the tests interactively with:
+
+`CYPRESS_USERNAME=username CYPRESS_PASSWORD=password npx cypress open`
+
+where `username` and `password` are credentials for accessing EUI staging.
+
+```console
+$ fab test
+```
+
 ## Setting up the pre-commit hooks (strongly advised)
 
 To use this, you will need to install [pre-commit](https://pre-commit.com/) on your development machine, typically using `pip install pre-commit`.
