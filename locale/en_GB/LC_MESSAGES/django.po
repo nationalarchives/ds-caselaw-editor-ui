@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-16 16:46+0000\n"
+"POT-Creation-Date: 2023-08-17 14:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -85,7 +85,7 @@ msgstr "Status"
 #: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_form.html
 #: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
 msgid "document.type"
-msgstr "Type"
+msgstr "Document type"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
@@ -93,13 +93,13 @@ msgid "judgments.ncn"
 msgstr "NCN"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
+msgid "document.publication_date"
+msgstr "Publication date"
+
+#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
 msgid "judgments.court"
 msgstr "Court"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
-msgid "document.publication_date"
-msgstr "Publication date"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
 msgid "judgments.associated_douments"
