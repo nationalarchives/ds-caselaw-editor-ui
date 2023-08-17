@@ -1,5 +1,7 @@
 from django.urls import path
 
+from judgments.views.delete import delete
+
 from .views.button_handlers import (
     assign_judgment_button,
     hold_judgment_button,
@@ -53,6 +55,7 @@ urlpatterns = [
     path("unpublish", unpublish, name="unpublish"),
     path("hold", hold, name="hold"),
     path("unhold", unhold, name="unhold"),
+    path("delete", delete, name="delete"),
     path("unlock", unlock, name="unlock"),
     path("assign", assign_judgment_button, name="assign"),
     path("prioritise", prioritise_judgment_button, name="prioritise"),

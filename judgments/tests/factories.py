@@ -30,6 +30,7 @@ class JudgmentFactory:
         "court": ("court", "Court of Testing"),
         "document_date_as_string": ("document_date_as_string", "2023-02-03"),
         "is_published": ("is_published", False),
+        "is_failure": ("is_failure", False),
         "failed_to_parse": ("failed_to_parse", False),
         "source_name": ("source_name", "Example Uploader"),
         "source_email": ("source_email", "uploader@example.com"),
@@ -100,5 +101,6 @@ class SearchResultFactory(SimpleFactory):
         "court": "Court of Testing",
         "date": datetime.date(2023, 2, 3),
         "metadata": SearchResultMetadataFactory.build(),
+        "is_failure": False,
         "failed_to_parse": False,
     }

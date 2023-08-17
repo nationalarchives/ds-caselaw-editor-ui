@@ -223,14 +223,6 @@ msgstr ""
 msgid "judgment.back_to_judgment"
 msgstr "Back to document"
 
-#: ds_caselaw_editor_ui/templates/judgment/deleted.html
-msgid "judgment.deleted"
-msgstr "Document successfully deleted"
-
-#: ds_caselaw_editor_ui/templates/judgment/deleted.html
-msgid "judgment.return_home"
-msgstr "Return to Find and manage case law"
-
 #: ds_caselaw_editor_ui/templates/judgment/hold-success.html
 msgid "judgment.hold.success"
 msgstr "This document has been put on hold"
