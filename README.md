@@ -191,7 +191,7 @@ topic and `public-` and `private-asset-buckets` for S3.
 $ fab test
 ```
 
-### Running cypress E2E tests against staging
+### Running cypress E2E tests
 
 We have started adding cypress tests so we have some E2E tests to be happier with critical E2E workflows.
 These should be kept to a minimum since they are slow to run, resource intensive and harder to debug than smaller integration and unit tests.
@@ -209,10 +209,6 @@ You can also run the tests interactively with:
 `CYPRESS_baseUrl=base_eui_url CYPRESS_USERNAME=username CYPRESS_PASSWORD=password npx cypress open`
 
 where `username` and `password` are credentials for accessing the EUI deployment at `base_eui_url`.
-
-```console
-CYPRESS_baseUrl=editor_url CYPRESS_USERNAME=username CYPRESS_PASSWORD=password npx cypress run --headlessbutton
-```
 
 ## Setting up the pre-commit hooks (strongly advised)
 
