@@ -31,13 +31,13 @@
   }
 
   &__delete {
-    border-color: $color__red !important;
-    color: $color__red !important;
+    border-color: $color__failure !important;
+    color: $color__failure !important;
     &:focus,
     &:hover {
-      background-color: $color__red !important;
+      background-color: $color__failure !important;
       color: $color__white !important;
-      outline-color: $color__red !important;
+      outline-color: $color__failure !important;
     }
   }
 

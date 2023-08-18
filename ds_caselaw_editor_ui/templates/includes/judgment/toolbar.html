@@ -44,6 +44,16 @@
           <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
         </svg>
       </a>
+      {% if judgment.is_failure %}
+        <form action="{% url 'delete' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
+          <input type="submit"
+                 name="assign"
+                 class="button-secondary judgment-toolbar__delete"
+                 value="Delete" />
+        </form>
+      {% endif %}
     </div>
     <div class="judgment-toolbar__more">{% include "includes/judgment/toolbar_more.html" %}</div>
     {% if version %}
