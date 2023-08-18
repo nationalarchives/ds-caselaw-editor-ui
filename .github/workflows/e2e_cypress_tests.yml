@@ -2,6 +2,10 @@ name: E2E Cypress Tests
 
 on:
   workflow_call:
+    inputs:
+      CYPRESS_BASE_URL:
+        required: true
+        type: string
     secrets:
       CYPRESS_USERNAME:
         required: true
@@ -25,4 +29,4 @@ jobs:
         run: npm install cypress
 
       - name: Run Cypress Tests
-        run: CYPRESS_USERNAME=${{secrets.CYPRESS_USERNAME}} CYPRESS_PASSWORD=${{secrets.CYPRESS_PASSWORD}} npx cypress run --headless
+        run: CYPRESS_BASE_URL=${{inputs.CYPRESS_BASE_URL}} CYPRESS_USERNAME=${{secrets.CYPRESS_USERNAME}} CYPRESS_PASSWORD=${{secrets.CYPRESS_PASSWORD}} npx cypress run --headless

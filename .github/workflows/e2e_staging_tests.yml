@@ -9,6 +9,8 @@ jobs:
   deploy_staging:
     name: Run Staging E2E Cypress Tests
     uses: ./.github/workflows/e2e_cypress_tests.yml
+    with:
+      CYPRESS_BASE_URL: "https://editor.staging.caselaw.nationalarchives.gov.uk"
     secrets:
       CYPRESS_USERNAME: ${{ secrets.CYPRESS_USERNAME }}
       CYPRESS_PASSWORD: ${{ secrets.CYPRESS_PASSWORD }}

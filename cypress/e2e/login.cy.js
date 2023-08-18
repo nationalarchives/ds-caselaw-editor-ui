@@ -1,9 +1,7 @@
 describe("Login Test", () => {
   it("should successfully log in", () => {
     // Visit the login page
-    cy.visit(
-      "https://editor.staging.caselaw.nationalarchives.gov.uk/accounts/login/",
-    );
+    cy.visit(`/accounts/login/`);
 
     // Enter the username and password
     cy.get("#id_login").type(Cypress.env("USERNAME"));
