@@ -1,0 +1,14 @@
+name: E2E Staging Tests
+
+on:
+  push:
+  schedule:
+    - cron: "0 8 * * *"
+
+jobs:
+  deploy_staging:
+    name: Run Staging E2E Cypress Tests
+    uses: ./.github/workflows/e2e_cypress_tests.yml
+    secrets:
+      CYPRESS_USERNAME: ${{ secrets.CYPRESS_USERNAME }}
+      CYPRESS_PASSWORD: ${{ secrets.CYPRESS_PASSWORD }}
