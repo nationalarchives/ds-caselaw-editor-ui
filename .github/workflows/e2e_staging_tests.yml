@@ -4,9 +4,15 @@ on:
   push:
   schedule:
     - cron: "0 8 * * *"
+  workflow_call:
+    secrets:
+      CYPRESS_USERNAME:
+        required: true
+      CYPRESS_PASSWORD:
+        required: true
 
 jobs:
-  deploy_staging:
+  qa_e2e_tests_on_staging:
     name: Run Staging E2E Cypress Tests
     uses: ./.github/workflows/e2e_cypress_tests.yml
     with:
