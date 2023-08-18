@@ -202,11 +202,11 @@ NOTE: For now we should point the tests to staging, but eventually we may have a
 
 To run them locally, you can run:
 
-`CYPRESS_baseUrl=base_eui_url CYPRESS_USERNAME=username CYPRESS_PASSWORD=password npx cypress run --headless`
+`CYPRESS_BASE_URL=base_eui_url CYPRESS_USERNAME=username CYPRESS_PASSWORD=password npx cypress run --headless`
 
 You can also run the tests interactively with:
 
-`CYPRESS_baseUrl=base_eui_url CYPRESS_USERNAME=username CYPRESS_PASSWORD=password npx cypress open`
+`CYPRESS_BASE_URL=base_eui_url CYPRESS_USERNAME=username CYPRESS_PASSWORD=password npx cypress open`
 
 where `username` and `password` are credentials for accessing the EUI deployment at `base_eui_url`.
 
