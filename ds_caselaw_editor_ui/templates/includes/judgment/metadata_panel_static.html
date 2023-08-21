@@ -4,16 +4,8 @@
     <div class="judgment-metadata-panel">
       <ul class="judgment-metadata-panel__details">
         <li>
-          <span class="judgment-metadata-panel__key">{% translate "judgments.consignmentref" %}</span>
-          <span class="judgment-metadata-panel__value">{{ judgment.consignment_reference }}</span>
-        </li>
-        <li>
           <span class="judgment-metadata-panel__key">{% translate "judgments.ncn" %}</span>
           <span class="judgment-metadata-panel__value">{{ judgment.best_human_identifier }}</span>
-        </li>
-        <li>
-          <span class="judgment-metadata-panel__key">{% translate "judgments.court" %}</span>
-          <span class="judgment-metadata-panel__value">{{ judgment.court }}</span>
         </li>
         <li>
           <span class="judgment-metadata-panel__key">
@@ -27,12 +19,20 @@
                 datetime="{{ judgment.document_date_as_string }}">{{ judgment.document_date_as_string }}</time>
         </li>
         <li>
-          <span class="judgment-metadata-panel__key">{% translate "judgment.judgment_name" %}</span>
-          <span class="judgment-metadata-panel__value">{{ judgment.name }}</span>
+          <span class="judgment-metadata-panel__key">{% translate "judgments.court" %}</span>
+          <span class="judgment-metadata-panel__value">{{ judgment.court }}</span>
         </li>
         <li>
           <span class="judgment-metadata-panel__key">{% translate "document.type" %}</span>
           <span class="judgment-metadata-panel__value">{{ judgment.document_noun|capfirst }}</span>
+        </li>
+        <li>
+          <span class="judgment-metadata-panel__key">{% translate "judgment.judgment_name" %}</span>
+          <span class="judgment-metadata-panel__value">{{ judgment.name }}</span>
+        </li>
+        <li>
+          <span class="judgment-metadata-panel__key">{% translate "judgments.consignmentref" %}</span>
+          <span class="judgment-metadata-panel__value">{{ judgment.consignment_reference }}</span>
         </li>
       </ul>
     </div>
