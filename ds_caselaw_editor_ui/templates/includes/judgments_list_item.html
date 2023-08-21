@@ -89,7 +89,7 @@
   <div class="judgments-list__judgment-submitted">
     {{ item.metadata.submission_datetime|date:"d M Y" }}
     <br />
-    {{ item.metadata.submission_datetime|time:"h:i a" }}
+    {{ item.metadata.submission_datetime|time:"h:i A"|lower }}
   </div>
   <div class="judgments-list__judgment-assigned">
     {% if item.metadata.assigned_to %}
