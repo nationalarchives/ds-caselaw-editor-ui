@@ -64,7 +64,7 @@
           <aside for="metadata_name" class="metadata-component__main-labels">
             {% translate "document.type" %}
           </aside>
-          <p>{{ judgment.document_noun|capfirst }}</p>
+          <p>{{ judgment.document_noun|title }}</p>
         </div>
         <div class="metadata-component__actions">
           <input type="hidden" name="judgment_uri" value="{{ document_uri }}" />
