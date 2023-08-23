@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-23 11:05+0000\n"
+"POT-Creation-Date: 2023-08-17 14:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,6 +24,12 @@ msgstr ""
 #: ds_caselaw_editor_ui/templates/account/login.html
 msgid "Forgot Password?"
 msgstr ""
+
+#: ds_caselaw_editor_ui/templates/includes/breadcrumbs.html
+#: ds_caselaw_editor_ui/templates/judgment/results.html
+#: ds_caselaw_editor_ui/templates/layouts/base.html
+msgid "common.findcaselaw"
+msgstr "Find and manage case law"
 
 #: ds_caselaw_editor_ui/templates/includes/email_confirm_hold.html
 #: ds_caselaw_editor_ui/templates/includes/email_confirm_publication.html
@@ -237,11 +243,6 @@ msgstr "Publish this document"
 #: judgments/views/results.py
 msgid "results.search.title"
 msgstr "Search results"
-
-#: ds_caselaw_editor_ui/templates/judgment/results.html
-#: ds_caselaw_editor_ui/templates/layouts/base.html
-msgid "common.findcaselaw"
-msgstr "Find and manage case law"
 
 #: ds_caselaw_editor_ui/templates/judgment/unhold-success.html
 msgid "judgment.hold.unhold_success_title"
