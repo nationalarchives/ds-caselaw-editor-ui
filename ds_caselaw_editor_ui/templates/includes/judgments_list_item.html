@@ -4,7 +4,7 @@
     <div class="judgments-list__judgment-details-name">
       <a href="{% url 'full-text-html' item.uri %}">
         {% if not item.failed_to_parse %}
-          {{ item.name | default:"[Untitled Judgment]" }}
+          {{ item.name | default:"[Untitled Document]" }}
         {% else %}
           <span class="judgments-list__failed">Failed to parse:</span> {{ item.uri }}
         {% endif %}
