@@ -276,21 +276,6 @@ msgstr "Unpublish document"
 msgid "skiplink"
 msgstr "Skip to Main Content"
 
-#: ds_caselaw_editor_ui/templates/pages/no_results.html
-#, python-format
-msgid "No results for '%(data)s'"
-msgstr ""
-
-#: ds_caselaw_editor_ui/templates/pages/no_results.html
-msgid "search.noresults"
-msgstr "There are no results for your search"
-
-#: ds_caselaw_editor_ui/templates/pages/no_results.html
-msgid "search.improvesearch"
-msgstr ""
-"Improve your search results by removing filters, double-checking your "
-"spelling, using fewer keywords or searching for something less specific."
-
 #: ds_caselaw_editor_ui/templates/pages/style_guide_branding.html
 #: ds_caselaw_editor_ui/templates/pages/style_guide_components.html
 msgid "style_guide.title"
