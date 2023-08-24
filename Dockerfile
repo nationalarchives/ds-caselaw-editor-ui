@@ -79,11 +79,6 @@ COPY --chown=django:django . ${APP_HOME}
 # make django owner of the WORKDIR directory as well.
 RUN chown django:django ${APP_HOME}
 
-# Use Github API to get latest tag for public-ui, then use the tag to get the Judgment CSS
-# This Judgment CSS is the "source of truth" for displaying judgments
-RUN apt-get update && apt-get install -y jq curl
-RUN curl https://raw.githubusercontent.com/nationalarchives/ds-caselaw-public-ui/$(curl -H "Accept: application/vnd.github+json" https://api.github.com/repos/nationalarchives/ds-caselaw-public-ui/releases/latest | jq -r .tag_name)/ds_judgements_public_ui/sass/includes/_judgment_text.scss -o ds_caselaw_editor_ui/sass/includes/_judgment_text.scss
-
 USER django
 
 ENTRYPOINT ["/entrypoint"]
