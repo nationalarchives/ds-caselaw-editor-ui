@@ -1,6 +1,7 @@
 from unittest.mock import patch
 
 from django.contrib.auth.models import User
+from django.contrib.messages import get_messages
 from django.test import TestCase
 from django.urls import reverse
 from factories import JudgmentFactory
@@ -34,7 +35,7 @@ class TestDocumentEdit(TestCase):
                 "metadata_name": "New Name",
                 "neutral_citation": "[4321] TEST 123",
                 "court": "Court of Testing",
-                "judgment_date": "2023-01-02",
+                "judgment_date": "2 Jan 2023",
                 "assigned_to": "testuser2",
             },
         )
@@ -74,8 +75,34 @@ class TestDocumentEdit(TestCase):
                 "metadata_name": "New Name",
                 "neutral_citation": "[4321] TEST 123",
                 "court": "Court of Testing",
-                "judgment_date": "2023-01-02",
+                "judgment_date": "02 Jan 2023",
             },
         )
 
         api_client.set_property.assert_not_called()
+
+    @patch("judgments.views.judgment_edit.api_client")
+    @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
+    def test_date_error(self, mock_judgment, api_client):
+        judgment = JudgmentFactory.build(
+            uri="edittest/4321/123",
+            name="Test v Tested",
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        User.objects.get_or_create(username="testuser2")
+
+        response = self.client.post(
+            "/pubtest/4321/123/edit",
+            {
+                "judgment_uri": "/edittest/4321/123",
+                "metadata_name": "New Name",
+                "neutral_citation": "[4321] TEST 123",
+                "court": "Court of Testing",
+                "judgment_date": "Kittens",
+            },
+        )
+
+        messages = [msg for msg in get_messages(response.wsgi_request)]
+        assert "Could not parse the date" in messages[0].message

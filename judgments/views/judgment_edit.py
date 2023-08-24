@@ -1,3 +1,5 @@
+import datetime
+
 from caselawclient.Client import MarklogicAPIError, api_client
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -41,7 +43,21 @@ class EditJudgmentView(View):
 
             # Date
             new_date = request.POST["judgment_date"]
-            api_client.set_judgment_date(judgment_uri, new_date)
+            try:
+                new_date_as_date = datetime.datetime.strptime(new_date, r"%d %b %Y")
+            except ValueError:
+                messages.error(
+                    request,
+                    f"Could not parse the date '{new_date}', should be like '2 Jan 2024'.",
+                )
+                return HttpResponseRedirect(
+                    reverse(
+                        "full-text-html",
+                        kwargs={"document_uri": kwargs["document_uri"]},
+                    )
+                )
+            new_date_as_iso = new_date_as_date.strftime(r"%Y-%m-%d")
+            api_client.set_judgment_date(judgment_uri, new_date_as_iso)
 
             # Editor assignment
             if new_assignment := request.POST.get("assigned_to", False):
