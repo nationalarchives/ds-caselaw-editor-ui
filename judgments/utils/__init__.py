@@ -2,11 +2,12 @@ import re
 import xml.etree.ElementTree as ET
 from datetime import datetime
 from operator import itemgetter
-from typing import Any, Dict
+from typing import Optional
 from urllib.parse import urlparse
 
 import ds_caselaw_utils as caselawutils
 from caselawclient.Client import MarklogicAPIError, api_client
+from caselawclient.models.documents import Document
 from caselawclient.models.press_summaries import PressSummary
 from django.conf import settings
 from django.contrib.auth.models import Group, User
@@ -163,20 +164,13 @@ def editors_dict():
     )
 
 
-def related_document_uri(document_type, document_uri):
+def get_linked_document_uri(document: Document) -> Optional[str]:
+    related_uri = _build_related_document_uri(document)
+    return related_uri if api_client.document_exists(related_uri) else None
+
+
+def _build_related_document_uri(document: Document) -> str:
     press_summary_suffix = "/press-summary/1"
-    if document_type == PressSummary:
-        return document_uri.removesuffix(press_summary_suffix)
-    else:
-        return document_uri + press_summary_suffix
-
-
-def set_document_type_and_link(
-    context: Dict[str, Any], document_uri: str
-) -> Dict[str, Any]:
-    document_type = api_client.get_document_type_from_uri(document_uri)
-    related_uri = related_document_uri(document_type, document_uri)
-    if api_client.document_exists(related_uri):
-        context["linked_document_uri"] = related_uri
-    context["document_type"] = document_type.document_noun.replace(" ", "_")
-    return context
+    if isinstance(document, PressSummary):
+        return document.uri.removesuffix(press_summary_suffix)
+    return document.uri + press_summary_suffix

@@ -26,6 +26,7 @@ class JudgmentFactory:
     PARAMS_MAP: dict[str, tuple[str, Any]] = {
         "uri": ("uri", "test/2023/123"),
         "name": ("name", "Judgment v Judgement"),
+        "document_noun": ("document_noun", "judgment"),
         "neutral_citation": ("neutral_citation", "[2023] Test 123"),
         "court": ("court", "Court of Testing"),
         "document_date_as_string": ("document_date_as_string", "2023-02-03"),
