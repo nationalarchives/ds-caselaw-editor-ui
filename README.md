@@ -244,7 +244,6 @@ Included in this repository is:
 ### Working with SASS/CSS
 
 - Ensure you have NodeJS & NPM installed.
-- Install SASS globally by running `npm install -g sass`.
 - To watch and build the site SASS, run `npm run start-sass`
 - To modify styles, navigate to the `sass` folder in your editor.
 
