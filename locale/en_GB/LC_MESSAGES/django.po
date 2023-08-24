@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-23 11:05+0000\n"
+"POT-Creation-Date: 2023-08-24 15:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -186,12 +186,12 @@ msgid "judgments.submitter"
 msgstr "Submitter"
 
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
-msgid "judgments.editor_priority"
-msgstr "Priority:"
+msgid "judgments.editor_status"
+msgstr "Status"
 
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
-msgid "judgments.editor_status"
-msgstr "Status:"
+msgid "judgments.editor_priority"
+msgstr "Priority"
 
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
 msgid "judgments.assigned_to"
