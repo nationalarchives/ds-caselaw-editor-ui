@@ -1,4 +1,4 @@
-from caselawclient.Client import MarklogicResourceUnmanagedError, api_client
+from caselawclient.Client import MarklogicResourceUnmanagedError
 from django.contrib import messages
 from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.utils.translation import gettext
 from django.views.decorators.http import require_http_methods
 
+from judgments.utils import api_client
 from judgments.utils.view_helpers import get_document_by_uri_or_404
 
 

@@ -1,6 +1,6 @@
 import datetime
 
-from caselawclient.Client import MarklogicAPIError, api_client
+from caselawclient.Client import MarklogicAPIError
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
@@ -10,6 +10,7 @@ from django.views.generic import View
 from judgments.utils import (
     MoveJudgmentError,
     NeutralCitationToUriError,
+    api_client,
     update_document_uri,
 )
 from judgments.utils.aws import invalidate_caches

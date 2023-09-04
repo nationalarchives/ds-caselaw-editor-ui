@@ -9,6 +9,7 @@ from django.test import TestCase
 from factories import UserFactory
 
 import judgments
+from judgments.utils import api_client as api_client_real
 from judgments.utils import (
     editors_dict,
     ensure_local_referer_url,
@@ -311,3 +312,8 @@ class TestEditorsDict:
         assert editors_dict() == [
             {"name": "active_editor", "print_name": "active_editor"},
         ]
+
+
+class TestApiClient:
+    def test_user_agent(self):
+        assert "ds-caselaw-editor" in api_client_real.session.headers["User-Agent"]
