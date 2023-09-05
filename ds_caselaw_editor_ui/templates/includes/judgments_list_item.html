@@ -13,7 +13,7 @@
     <ul class="judgments-list__judgment-details-meta">
       <li class="judgments-list__judgment-details-submitted-mobile">
         <span class="judgments-list__judgment-details-meta-key">{% translate "judgments.submission_datetime" %}</span>
-        <span class="judgments-list__judgment-details-meta-value">{{ item.metadata.submission_datetime }}</span>
+        <span class="judgments-list__judgment-details-meta-value">{{ item.metadata.submission_datetime |date:"j M Y H:i" }}</span>
       </li>
       <li>
         <span class="judgments-list__judgment-details-meta-key">{% translate "judgments.ncn" %}</span>
@@ -87,7 +87,7 @@
     </ul>
   </div>
   <div class="judgments-list__judgment-submitted">
-    {{ item.metadata.submission_datetime|date:"d M Y" }}
+    {{ item.metadata.submission_datetime|date:"j M Y" }}
     <br />
     {{ item.metadata.submission_datetime|time:"H:i" }}
   </div>
