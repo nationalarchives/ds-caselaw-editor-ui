@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v4.7.0
@@ -40,7 +40,7 @@ jobs:
     needs: linter
     steps:
       - name: Checkout Code Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Copy .env.example file
         uses: canastro/copy-file-action@master
@@ -60,7 +60,7 @@ jobs:
     needs: linter
     steps:
       - name: Checkout Code Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Copy .env.example file
         uses: canastro/copy-file-action@master
