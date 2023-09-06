@@ -21,9 +21,10 @@
     {% include "includes/gtm/gtm_head.html" %}
   </head>
   <body>
-    {% include "includes/cookie_consent/cookie_banner.html" %}
     {% include "includes/gtm/gtm_body.html" %}
+    {% include "includes/cookie_consent/cookie_banner.html" %}
     <a id="skip-to-main-content" href="#main-content">{% translate "skiplink" %}</a>
+    {% include "includes/environment_banner.html" %}
     <header class="page-header">
       {% include "includes/breadcrumbs.html" with current=page_title title=page_title link=request.get_full_path %}
     </header>
