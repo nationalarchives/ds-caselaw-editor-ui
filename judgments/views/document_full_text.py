@@ -4,9 +4,7 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 
 from judgments.utils import extract_version
-from judgments.utils.view_helpers import get_document_by_uri_or_404
-
-from ..utils.view_helpers import DocumentView
+from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_404
 
 
 class DocumentReviewHTMLView(DocumentView):
@@ -19,7 +17,7 @@ class DocumentReviewHTMLView(DocumentView):
 
         if not context["document"].failed_to_parse:
             context["document_html_content"] = context["document"].content_as_html(
-                version_uri=version_uri
+                version_uri=version_uri,
             )
 
         if version_uri:
@@ -37,8 +35,9 @@ class DocumentReviewPDFView(DocumentView):
         context = super().get_context_data(**kwargs)
 
         if not context["document"].pdf_url:
+            msg = f"Document \"{context['document'].name}\" does not have a PDF."
             raise Http404(
-                f"Document \"{context['document'].name}\" does not have a PDF."
+                msg,
             )
 
         version_uri = self.request.GET.get("version_uri", None)
@@ -74,7 +73,7 @@ def html_view_redirect(request):
             + urlencode(
                 {
                     "version_uri": version_uri,
-                }
+                },
             )
         )
 
@@ -85,5 +84,5 @@ def xml_view_redirect(request):
     params = request.GET
     judgment_uri = params.get("judgment_uri", None)
     return HttpResponseRedirect(
-        reverse("full-text-xml", kwargs={"document_uri": judgment_uri})
+        reverse("full-text-xml", kwargs={"document_uri": judgment_uri}),
     )

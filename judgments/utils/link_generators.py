@@ -1,4 +1,3 @@
-from typing import Optional
 from urllib.parse import quote, urlencode
 
 from caselawclient.models.documents import Document
@@ -10,24 +9,22 @@ from django.utils.translation import gettext
 
 
 def build_email_link_with_content(
-    address: str, subject: str, body: Optional[str] = None
+    address: str, subject: str, body: str | None = None,
 ) -> str:
     """Given a destination address, subject, and (optionally) body for an email build a mailto link for it."""
-    params = {"subject": "Find Case Law – {subject}".format(subject=subject)}
+    params = {"subject": f"Find Case Law - {subject}"}
 
     if body:
         params["body"] = body
 
-    return "mailto:{address}?{params}".format(
-        address=address, params=urlencode(params, quote_via=quote)
-    )
+    return f"mailto:{address}?{urlencode(params, quote_via=quote)}"
 
 
 def build_confirmation_email_link(
-    document: Document, signature: Optional[str] = None
+    document: Document, signature: str | None = None,
 ) -> str:
     subject_string = "Notification of publication [TDR ref: {reference}]".format(
-        reference=document.consignment_reference
+        reference=document.consignment_reference,
     )
 
     email_context = {
@@ -39,20 +36,18 @@ def build_confirmation_email_link(
     }
 
     body_string = loader.render_to_string(
-        "emails/confirmation_to_submitter.txt", email_context
+        "emails/confirmation_to_submitter.txt", email_context,
     )
 
     return build_email_link_with_content(
-        document.source_email, subject_string, body_string
+        document.source_email, subject_string, body_string,
     )
 
 
 def build_raise_issue_email_link(
-    document: Document, signature: Optional[str] = None
+    document: Document, signature: str | None = None,
 ) -> str:
-    subject_string = "Issue(s) found with {reference}".format(
-        reference=document.consignment_reference
-    )
+    subject_string = f"Issue(s) found with {document.consignment_reference}"
     email_context = {
         "judgment_name": document.name,
         "reference": document.consignment_reference,
@@ -62,11 +57,11 @@ def build_raise_issue_email_link(
     }
 
     body_string = loader.render_to_string(
-        "emails/raise_issue_with_submitter.txt", email_context
+        "emails/raise_issue_with_submitter.txt", email_context,
     )
 
     return build_email_link_with_content(
-        document.source_email, subject_string, body_string
+        document.source_email, subject_string, body_string,
     )
 
 
@@ -78,7 +73,7 @@ def build_jira_create_link(document: Document, request: HttpRequest) -> str:
     )
 
     editor_html_url = request.build_absolute_uri(
-        reverse("full-text-html", kwargs={"document_uri": document.uri})
+        reverse("full-text-html", kwargs={"document_uri": document.uri}),
     )
 
     description_string = "{editor_html_url}".format(
@@ -94,7 +89,7 @@ def build_jira_create_link(document: Document, request: HttpRequest) -> str:
             source_email=document.source_email,
             consignment_ref_label=gettext("judgments.consignmentref"),
             consignment_ref=document.consignment_reference,
-        )
+        ),
     )
 
     params = {
@@ -106,6 +101,6 @@ def build_jira_create_link(document: Document, request: HttpRequest) -> str:
     }
     return (
         "https://{jira_instance}/secure/CreateIssueDetails!init.jspa?{params}".format(
-            jira_instance=settings.JIRA_INSTANCE, params=urlencode(params)
+            jira_instance=settings.JIRA_INSTANCE, params=urlencode(params),
         )
     )

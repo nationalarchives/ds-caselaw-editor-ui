@@ -42,7 +42,7 @@ class TestInvalidation:
         assert first.kwargs["InvalidationBatch"]["Paths"]["Items"] == ["/*"]
         assert second.kwargs["DistributionId"] == "ASSETS"
         assert second.kwargs["InvalidationBatch"]["Paths"]["Items"] == [
-            "/ewhc/2022/1/*"
+            "/ewhc/2022/1/*",
         ]
         assert third.kwargs["DistributionId"] == "EDITOR"
         assert third.kwargs["InvalidationBatch"]["Paths"]["Items"] == ["/*"]
@@ -128,7 +128,7 @@ class TestUtils(TestCase):
     @patch("judgments.utils.api_client")
     @patch("boto3.session.Session.client")
     def test_update_document_uri_strips_whitespace(
-        self, fake_boto3_client, fake_api_client
+        self, fake_boto3_client, fake_api_client,
     ):
         ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
         fake_api_client.copy_document.return_value = True
@@ -148,7 +148,7 @@ class TestUtils(TestCase):
         fake_client.copy_document.side_effect = MarklogicAPIError
         fake_client.delete_judgment.side_effect = True
 
-        with self.assertRaises(judgments.utils.MoveJudgmentError):
+        with pytest.raises(judgments.utils.MoveJudgmentError):
             update_document_uri("old/uri", "[2002] EAT 1")
 
     @patch("judgments.utils.api_client")
@@ -159,19 +159,19 @@ class TestUtils(TestCase):
         fake_client.copy_document.return_value = True
         fake_client.delete_judgment.side_effect = MarklogicAPIError
 
-        with self.assertRaises(judgments.utils.MoveJudgmentError):
+        with pytest.raises(judgments.utils.MoveJudgmentError):
             update_document_uri("old/uri", "[2002] EAT 1")
 
     def test_update_document_uri_unparseable_citation(self):
         ds_caselaw_utils.neutral_url = MagicMock(return_value=None)
 
-        with self.assertRaises(judgments.utils.NeutralCitationToUriError):
+        with pytest.raises(judgments.utils.NeutralCitationToUriError):
             update_document_uri("old/uri", "Wrong neutral citation")
 
     @patch("judgments.utils.api_client")
     def test_update_document_uri_duplicate_uri(self, fake_client):
         fake_client.document_exists.return_value = True
-        with self.assertRaises(judgments.utils.MoveJudgmentError):
+        with pytest.raises(judgments.utils.MoveJudgmentError):
             update_document_uri("old/uri", "[2002] EAT 1")
 
     def test_build_new_key_docx(self):
@@ -244,13 +244,13 @@ class TestVersionUtils:
 
 
 class TestEditorsDict:
-    @pytest.mark.django_db
+    @pytest.mark.django_db()
     def test_print_name_sorting(self, settings):
         settings.EDITORS_GROUP_ID = None
 
         UserFactory.create(username="joe_bloggs", first_name="", last_name="")
         UserFactory.create(
-            username="ann_example", first_name="Ann", last_name="Example"
+            username="ann_example", first_name="Ann", last_name="Example",
         )
 
         assert editors_dict() == [
@@ -258,7 +258,7 @@ class TestEditorsDict:
             {"name": "joe_bloggs", "print_name": "joe_bloggs"},
         ]
 
-    @pytest.mark.django_db
+    @pytest.mark.django_db()
     def test_exclude_non_editors(self, settings):
         group = Group.objects.create(name="Editors")
         settings.EDITORS_GROUP_ID = group.id
@@ -272,38 +272,38 @@ class TestEditorsDict:
             {"name": "editor", "print_name": "editor"},
         ]
 
-    @pytest.mark.django_db
+    @pytest.mark.django_db()
     def test_exclude_inactive_without_editor_group(self, settings):
         settings.EDITORS_GROUP_ID = None
 
         UserFactory.create(
-            username="active_user", first_name="", last_name="", is_active=True
+            username="active_user", first_name="", last_name="", is_active=True,
         )
         UserFactory.create(
-            username="inactive_user", first_name="", last_name="", is_active=False
+            username="inactive_user", first_name="", last_name="", is_active=False,
         )
 
         assert editors_dict() == [
             {"name": "active_user", "print_name": "active_user"},
         ]
 
-    @pytest.mark.django_db
+    @pytest.mark.django_db()
     def test_exclude_inactive_with_editor_group(self, settings):
         group = Group.objects.create(name="Editors")
         settings.EDITORS_GROUP_ID = group.id
 
         UserFactory.create(
-            username="active_non_editor", first_name="", last_name="", is_active=True
+            username="active_non_editor", first_name="", last_name="", is_active=True,
         )
         UserFactory.create(
-            username="inactive_non_editor", first_name="", last_name="", is_active=False
+            username="inactive_non_editor", first_name="", last_name="", is_active=False,
         )
 
         active_editor = UserFactory.create(
-            username="active_editor", first_name="", last_name="", is_active=True
+            username="active_editor", first_name="", last_name="", is_active=True,
         )
         inactive_editor = UserFactory.create(
-            username="inactive_editor", first_name="", last_name="", is_active=False
+            username="inactive_editor", first_name="", last_name="", is_active=False,
         )
 
         active_editor.groups.add(group)

@@ -5,9 +5,7 @@ from django.utils.translation import gettext
 
 from judgments.utils.aws import invalidate_caches
 from judgments.utils.link_generators import build_confirmation_email_link
-from judgments.utils.view_helpers import get_document_by_uri_or_404
-
-from ..utils.view_helpers import DocumentView
+from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_404
 
 
 class PublishDocumentView(DocumentView):
@@ -44,7 +42,7 @@ def publish(request):
     invalidate_caches(judgment.uri)
     messages.success(request, gettext("judgment.publish.publish_success_flash_message"))
     return HttpResponseRedirect(
-        reverse("publish-document-success", kwargs={"document_uri": judgment.uri})
+        reverse("publish-document-success", kwargs={"document_uri": judgment.uri}),
     )
 
 
@@ -67,8 +65,8 @@ def unpublish(request):
     judgment.unpublish()
     invalidate_caches(judgment.uri)
     messages.success(
-        request, gettext("judgment.publish.unpublish_success_flash_message")
+        request, gettext("judgment.publish.unpublish_success_flash_message"),
     )
     return HttpResponseRedirect(
-        reverse("unpublish-document-success", kwargs={"document_uri": judgment.uri})
+        reverse("unpublish-document-success", kwargs={"document_uri": judgment.uri}),
     )

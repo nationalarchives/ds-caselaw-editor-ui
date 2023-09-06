@@ -20,7 +20,7 @@ from judgments.utils.view_helpers import get_document_by_uri_or_404
 class EditJudgmentView(View):
     def get(self, request, *args, **kwargs):
         return HttpResponseRedirect(
-            reverse("full-text-html", kwargs={"document_uri": kwargs["document_uri"]})
+            reverse("full-text-html", kwargs={"document_uri": kwargs["document_uri"]}),
         )
 
     def post(self, request, *args, **kwargs):
@@ -55,7 +55,7 @@ class EditJudgmentView(View):
                     reverse(
                         "full-text-html",
                         kwargs={"document_uri": kwargs["document_uri"]},
-                    )
+                    ),
                 )
             new_date_as_iso = new_date_as_date.strftime(r"%Y-%m-%d")
             api_client.set_judgment_date(judgment_uri, new_date_as_iso)
@@ -68,7 +68,7 @@ class EditJudgmentView(View):
             if "failures" in judgment_uri and new_citation is not None:
                 new_judgment_uri = update_document_uri(judgment_uri, new_citation)
                 return redirect(
-                    reverse("edit-document", kwargs={"document_uri": new_judgment_uri})
+                    reverse("edit-document", kwargs={"document_uri": new_judgment_uri}),
                 )
 
             messages.success(request, "Document successfully updated")
@@ -86,15 +86,15 @@ class EditJudgmentView(View):
 
         if return_to == "html":
             return_path = reverse(
-                "full-text-html", kwargs={"document_uri": judgment.uri}
+                "full-text-html", kwargs={"document_uri": judgment.uri},
             )
         elif return_to == "pdf":
             return_path = reverse(
-                "full-text-pdf", kwargs={"document_uri": judgment.uri}
+                "full-text-pdf", kwargs={"document_uri": judgment.uri},
             )
         else:
             return_path = reverse(
-                "edit-document", kwargs={"document_uri": judgment.uri}
+                "edit-document", kwargs={"document_uri": judgment.uri},
             )
 
         return HttpResponseRedirect(return_path)
@@ -104,5 +104,5 @@ def edit_view_redirect(request):
     params = request.GET
     document_uri = params.get("judgment_uri", None)
     return HttpResponseRedirect(
-        reverse("edit-document", kwargs={"document_uri": document_uri})
+        reverse("edit-document", kwargs={"document_uri": document_uri}),
     )

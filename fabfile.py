@@ -1,3 +1,4 @@
+import contextlib
 import os
 import subprocess
 
@@ -7,7 +8,7 @@ from invoke.tasks import task
 
 # Process .env file
 if os.path.exists(".env"):
-    with open(".env", "r") as f:
+    with open(".env") as f:
         for line in f.readlines():
             if not line or line.startswith("#") or "=" not in line:
                 continue
@@ -26,7 +27,7 @@ LOCAL_DB_DUMP_DIR = "database_dumps"
 
 def container_exec(cmd, container_name="django", check_returncode=False):
     result = subprocess.run(
-        ["docker", "compose", "exec", "-T", container_name, "bash", "-c", cmd]
+        ["docker", "compose", "exec", "-T", container_name, "bash", "-c", cmd],
     )
     if check_returncode:
         result.check_returncode()
@@ -81,10 +82,9 @@ def run(c):
     except UnexpectedExit:
         print("Unable to collect MarkLogic logs!")
         pass
-    try:
+    with contextlib.suppress(KeyboardInterrupt):
         django_exec("python manage.py runserver 0.0.0.0:3000")
-    except KeyboardInterrupt:
-        pass
+
     stop(c, "django")
 
 
@@ -131,7 +131,7 @@ def test(c):
             "mypy",
             "ds_caselaw_editor_ui",
             "judgments",
-        ]
+        ],
     )
     # Pytest
     subprocess.run(
@@ -141,7 +141,7 @@ def test(c):
             "exec",
             "django",
             "pytest",
-        ]
+        ],
     )
 
 
@@ -172,10 +172,10 @@ def psql(c, command=None):
 
 def delete_db(c):
     postgres_exec(
-        f"dropdb --if-exists --host db --username={LOCAL_DATABASE_USERNAME} {LOCAL_DATABASE_NAME}"
+        f"dropdb --if-exists --host db --username={LOCAL_DATABASE_USERNAME} {LOCAL_DATABASE_NAME}",
     )
     postgres_exec(
-        f"createdb --host db --username={LOCAL_DATABASE_USERNAME} {LOCAL_DATABASE_NAME}"
+        f"createdb --host db --username={LOCAL_DATABASE_USERNAME} {LOCAL_DATABASE_NAME}",
     )
 
 
@@ -185,7 +185,7 @@ def dump_db(c, filename):
     if not filename.endswith(".dmp"):
         filename += ".dmp"
     postgres_exec(
-        f"pg_dump -d {LOCAL_DATABASE_NAME} -U {LOCAL_DATABASE_USERNAME} > {filename}"
+        f"pg_dump -d {LOCAL_DATABASE_NAME} -U {LOCAL_DATABASE_USERNAME} > {filename}",
     )
     print(f"Database dumped to: {filename}")
 
