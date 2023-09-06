@@ -15,6 +15,7 @@ def results(request):
             "query_string": f"query={query['query']}",
         }
     except MarklogicAPIError as e:
-        raise Http404(f"Search error, {e}")  # TODO: This should be something else!
+        msg = f"Search error, {e}"
+        raise Http404(msg)  # TODO: This should be something else!
     template = loader.get_template("judgment/results.html")
     return HttpResponse(template.render(context, request))

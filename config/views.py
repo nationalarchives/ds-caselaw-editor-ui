@@ -8,8 +8,8 @@ class TemplateViewWithContext(TemplateView):
     def get_context_data(self, **kwargs):
         return {
             "context": {
-                "page_title": gettext(self.page_title) if self.page_title else None
-            }
+                "page_title": gettext(self.page_title) if self.page_title else None,
+            },
         }
 
 
