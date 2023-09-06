@@ -72,7 +72,8 @@ def generate_signed_asset_url(key: str):
     client = create_s3_client()
 
     return client.generate_presigned_url(
-        "get_object", Params={"Bucket": bucket, "Key": key},
+        "get_object",
+        Params={"Bucket": bucket, "Key": key},
     )
 
 
@@ -169,7 +170,8 @@ def invalidate_caches(uri: str) -> None:
     aws = boto3.session.Session(
         aws_access_key_id=env("CLOUDFRONT_INVALIDATION_ACCESS_KEY_ID", default=None),
         aws_secret_access_key=env(
-            "CLOUDFRONT_INVALIDATION_ACCESS_SECRET", default=None,
+            "CLOUDFRONT_INVALIDATION_ACCESS_SECRET",
+            default=None,
         ),
     )
     cloudfront = aws.client("cloudfront")

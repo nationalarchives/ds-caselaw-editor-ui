@@ -65,11 +65,11 @@ class SimpleFactory:
     # "name_of_attribute": ("name of incoming param", "default value")
     PARAMS_MAP: dict[str, Any]
 
-    target_class: TypeAlias = object
+    TargetClass: TypeAlias = object
 
     @classmethod
-    def build(cls, **kwargs) -> target_class:
-        mock_object = Mock(spec=cls.target_class, autospec=True)
+    def build(cls, **kwargs) -> TargetClass:
+        mock_object = Mock(spec=cls.TargetClass, autospec=True)
 
         for param, default in cls.PARAMS_MAP.items():
             if param in kwargs:

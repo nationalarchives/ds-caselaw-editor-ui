@@ -9,7 +9,9 @@ from django.utils.translation import gettext
 
 
 def build_email_link_with_content(
-    address: str, subject: str, body: str | None = None,
+    address: str,
+    subject: str,
+    body: str | None = None,
 ) -> str:
     """Given a destination address, subject, and (optionally) body for an email build a mailto link for it."""
     params = {"subject": f"Find Case Law - {subject}"}
@@ -21,7 +23,8 @@ def build_email_link_with_content(
 
 
 def build_confirmation_email_link(
-    document: Document, signature: str | None = None,
+    document: Document,
+    signature: str | None = None,
 ) -> str:
     subject_string = "Notification of publication [TDR ref: {reference}]".format(
         reference=document.consignment_reference,
@@ -36,16 +39,20 @@ def build_confirmation_email_link(
     }
 
     body_string = loader.render_to_string(
-        "emails/confirmation_to_submitter.txt", email_context,
+        "emails/confirmation_to_submitter.txt",
+        email_context,
     )
 
     return build_email_link_with_content(
-        document.source_email, subject_string, body_string,
+        document.source_email,
+        subject_string,
+        body_string,
     )
 
 
 def build_raise_issue_email_link(
-    document: Document, signature: str | None = None,
+    document: Document,
+    signature: str | None = None,
 ) -> str:
     subject_string = f"Issue(s) found with {document.consignment_reference}"
     email_context = {
@@ -57,11 +64,14 @@ def build_raise_issue_email_link(
     }
 
     body_string = loader.render_to_string(
-        "emails/raise_issue_with_submitter.txt", email_context,
+        "emails/raise_issue_with_submitter.txt",
+        email_context,
     )
 
     return build_email_link_with_content(
-        document.source_email, subject_string, body_string,
+        document.source_email,
+        subject_string,
+        body_string,
     )
 
 
@@ -101,6 +111,7 @@ def build_jira_create_link(document: Document, request: HttpRequest) -> str:
     }
     return (
         "https://{jira_instance}/secure/CreateIssueDetails!init.jspa?{params}".format(
-            jira_instance=settings.JIRA_INSTANCE, params=urlencode(params),
+            jira_instance=settings.JIRA_INSTANCE,
+            params=urlencode(params),
         )
     )

@@ -20,6 +20,7 @@ def delete(request):
     invalidate_caches(document.uri)
 
     messages.success(
-        request, f"The document at URI {document.uri} was successfully deleted.",
+        request,
+        f"The document at URI {document.uri} was successfully deleted.",
     )
     return HttpResponseRedirect(reverse("home"))

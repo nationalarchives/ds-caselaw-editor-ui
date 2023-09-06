@@ -35,6 +35,7 @@ unfixable = ["ERA"]
                "T201"]  # OK to have prints here
 "merge_production_dotenvs_in_dotenv.py" = ["S101"]  # TODO: fix this
 "*.*" = ["DTZ001", "DTZ007", "INP001", "PTH123", "PTH110"] # TODO: fix
+"judgments/*" = ["FIX002"] # TODOs, should fix
 "conftest.py" = ["PT004"] # not even sure what this code is doing.
 
 [tool.ruff.isort]

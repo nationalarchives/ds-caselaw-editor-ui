@@ -13,7 +13,8 @@ class TestDocumentEdit(TestCase):
         response = self.client.get("/ewca/civ/2004/63X/edit")
         assert response.status_code == 302
         assert response["Location"] == reverse(
-            "full-text-html", kwargs={"document_uri": "ewca/civ/2004/63X"},
+            "full-text-html",
+            kwargs={"document_uri": "ewca/civ/2004/63X"},
         )
 
     @patch("judgments.views.judgment_edit.api_client")
@@ -41,19 +42,25 @@ class TestDocumentEdit(TestCase):
         )
 
         api_client.set_document_name.assert_called_with(
-            "/edittest/4321/123", "New Name",
+            "/edittest/4321/123",
+            "New Name",
         )
         api_client.set_judgment_citation.assert_called_with(
-            "/edittest/4321/123", "[4321] TEST 123",
+            "/edittest/4321/123",
+            "[4321] TEST 123",
         )
         api_client.set_document_court.assert_called_with(
-            "/edittest/4321/123", "Court of Testing",
+            "/edittest/4321/123",
+            "Court of Testing",
         )
         api_client.set_judgment_date.assert_called_with(
-            "/edittest/4321/123", "2023-01-02",
+            "/edittest/4321/123",
+            "2023-01-02",
         )
         api_client.set_property.assert_called_with(
-            "/edittest/4321/123", "assigned-to", "testuser2",
+            "/edittest/4321/123",
+            "assigned-to",
+            "testuser2",
         )
 
     @patch("judgments.views.judgment_edit.api_client")

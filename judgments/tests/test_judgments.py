@@ -43,7 +43,10 @@ class TestJudgmentView(TestCase):
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
     def test_judgment_html_view_with_parser_failure(
-        self, document_type, document_exists, mock_judgment,
+        self,
+        document_type,
+        document_exists,
+        mock_judgment,
     ):
         document_type.return_value = Judgment
         document_exists.return_value = None
@@ -78,7 +81,8 @@ class TestJudgmentView(TestCase):
         response = self.client.get("/detail?judgment_uri=ewca/civ/2004/63X")
         assert response.status_code == 302
         assert response["Location"] == reverse(
-            "full-text-html", kwargs={"document_uri": "ewca/civ/2004/63X"},
+            "full-text-html",
+            kwargs={"document_uri": "ewca/civ/2004/63X"},
         )
 
     def test_judgment_html_view_redirect_with_version(self):
@@ -101,7 +105,10 @@ class TestJudgmentView(TestCase):
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
     def test_judgment_pdf_view_no_pdf_response(
-        self, document_type, document_exists, mock_judgment,
+        self,
+        document_type,
+        document_exists,
+        mock_judgment,
     ):
         document_type.return_value = Judgment
         document_exists.return_value = None
@@ -111,7 +118,10 @@ class TestJudgmentView(TestCase):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
         response = self.client.get("/test/1234/pdf")
         decoded_response = response.content.decode("utf-8")
-        assert "Document &quot;JUDGMENT v JUDGEMENT&quot; does not have a PDF." in decoded_response
+        assert (
+            "Document &quot;JUDGMENT v JUDGEMENT&quot; does not have a PDF."
+            in decoded_response
+        )
         assert response.status_code == 404
 
     def test_judgment_xml_view_redirect(self):
@@ -119,7 +129,8 @@ class TestJudgmentView(TestCase):
         response = self.client.get("/xml?judgment_uri=ewca/civ/2004/63X")
         assert response.status_code == 302
         assert response["Location"] == reverse(
-            "full-text-xml", kwargs={"document_uri": "ewca/civ/2004/63X"},
+            "full-text-xml",
+            kwargs={"document_uri": "ewca/civ/2004/63X"},
         )
 
 
@@ -129,10 +140,13 @@ class TestJudgmentAssign(TestCase):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
         User.objects.get_or_create(username="testuser2")
         self.client.post(
-            "/assign", {"judgment_uri": "/test/judgment", "assigned_to": "testuser2"},
+            "/assign",
+            {"judgment_uri": "/test/judgment", "assigned_to": "testuser2"},
         )
         api_client.set_property.assert_called_with(
-            "/test/judgment", "assigned-to", "testuser2",
+            "/test/judgment",
+            "assigned-to",
+            "testuser2",
         )
 
     @patch("judgments.views.button_handlers.api_client")
@@ -140,13 +154,16 @@ class TestJudgmentAssign(TestCase):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
         self.client.post("/assign", {"judgment_uri": "/test/judgment"})
         api_client.set_property.assert_called_with(
-            "/test/judgment", "assigned-to", "testuser",
+            "/test/judgment",
+            "assigned-to",
+            "testuser",
         )
 
     @patch("judgments.views.button_handlers.api_client")
     def test_judgment_assignment_handles_explicit_unassignment(self, api_client):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
         self.client.post(
-            "/assign", {"judgment_uri": "/test/judgment", "assigned_to": ""},
+            "/assign",
+            {"judgment_uri": "/test/judgment", "assigned_to": ""},
         )
         api_client.set_property.assert_called_with("/test/judgment", "assigned-to", "")
