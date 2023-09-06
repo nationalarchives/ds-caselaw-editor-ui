@@ -71,9 +71,9 @@ def format_date(date):
 def get_judgment_root(judgment_xml) -> str:
     try:
         parsed_xml = ET.XML(bytes(judgment_xml, encoding="utf-8"))
-        return parsed_xml.tag
     except ET.ParseError:
         return "error"
+    return parsed_xml.tag
 
 
 def update_document_uri(old_uri, new_citation):
@@ -100,10 +100,12 @@ def update_document_uri(old_uri, new_citation):
         copy_assets(old_uri, new_uri)
         api_client.set_judgment_this_uri(new_uri)
     except MarklogicAPIError as e:
-        msg = f"Failure when attempting to copy document from {old_uri} to {new_uri}: {e}"
+        msg = (
+            f"Failure when attempting to copy document from {old_uri} to {new_uri}: {e}"
+        )
         raise MoveJudgmentError(
             msg,
-        )
+        ) from e
 
     try:
         api_client.delete_judgment(old_uri)
@@ -111,7 +113,7 @@ def update_document_uri(old_uri, new_citation):
         msg = f"Failure when attempting to delete document from {old_uri}: {e}"
         raise MoveJudgmentError(
             msg,
-        )
+        ) from e
 
     return new_uri
 
@@ -121,7 +123,8 @@ def set_metadata(old_uri, new_uri):
     source_name = api_client.get_property(old_uri, "source-name")
     source_email = api_client.get_property(old_uri, "source-email")
     transfer_consignment_reference = api_client.get_property(
-        old_uri, "transfer-consignment-reference",
+        old_uri,
+        "transfer-consignment-reference",
     )
     transfer_received_at = api_client.get_property(old_uri, "transfer-received-at")
     for key, value in [
