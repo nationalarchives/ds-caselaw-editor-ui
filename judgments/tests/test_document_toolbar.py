@@ -15,7 +15,11 @@ class TestDocumentToolbar(TestCase):
     @patch("judgments.utils.api_client.get_document_type_from_uri")
     @patch("django.template.context_processors.get_token")
     def test_delete_button_when_failure(
-        self, mock_get_token, document_type, document_exists, mock_judgment,
+        self,
+        mock_get_token,
+        document_type,
+        document_exists,
+        mock_judgment,
     ):
         mock_get_token.return_value = "predicabletoken"
         document_type.return_value = Judgment
@@ -44,14 +48,20 @@ class TestDocumentToolbar(TestCase):
             value="Delete" />
         </form>
         """
-        assert self.preprocess_html(delete_button_html) in self.preprocess_html(decoded_response)
+        assert self.preprocess_html(delete_button_html) in self.preprocess_html(
+            decoded_response,
+        )
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
     @patch("django.template.context_processors.get_token")
     def test_no_delete_button_when_not_failure(
-        self, mock_get_token, document_type, document_exists, mock_judgment,
+        self,
+        mock_get_token,
+        document_type,
+        document_exists,
+        mock_judgment,
     ):
         mock_get_token.return_value = "predicabletoken"
         document_type.return_value = Judgment
@@ -80,7 +90,9 @@ class TestDocumentToolbar(TestCase):
             value="Delete" />
         </form>
         """
-        assert self.preprocess_html(delete_button_html) not in self.preprocess_html(decoded_response)
+        assert self.preprocess_html(delete_button_html) not in self.preprocess_html(
+            decoded_response,
+        )
 
     def preprocess_html(self, html):
         """Removes leading and trailing whitespace, tabs, and line breaks"""

@@ -65,7 +65,8 @@ def unpublish(request):
     judgment.unpublish()
     invalidate_caches(judgment.uri)
     messages.success(
-        request, gettext("judgment.publish.unpublish_success_flash_message"),
+        request,
+        gettext("judgment.publish.unpublish_success_flash_message"),
     )
     return HttpResponseRedirect(
         reverse("unpublish-document-success", kwargs={"document_uri": judgment.uri}),

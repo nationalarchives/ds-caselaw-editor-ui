@@ -85,15 +85,18 @@ class EditJudgmentView(View):
 
         if return_to == "html":
             return_path = reverse(
-                "full-text-html", kwargs={"document_uri": judgment.uri},
+                "full-text-html",
+                kwargs={"document_uri": judgment.uri},
             )
         elif return_to == "pdf":
             return_path = reverse(
-                "full-text-pdf", kwargs={"document_uri": judgment.uri},
+                "full-text-pdf",
+                kwargs={"document_uri": judgment.uri},
             )
         else:
             return_path = reverse(
-                "edit-document", kwargs={"document_uri": judgment.uri},
+                "edit-document",
+                kwargs={"document_uri": judgment.uri},
             )
 
         return HttpResponseRedirect(return_path)

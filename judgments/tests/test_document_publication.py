@@ -58,7 +58,8 @@ class TestJudgmentPublish(TestCase):
 
         assert response.status_code == 302
         assert response["Location"] == reverse(
-            "publish-document-success", kwargs={"document_uri": judgment.uri},
+            "publish-document-success",
+            kwargs={"document_uri": judgment.uri},
         )
         mock_judgment.return_value.publish.assert_called_once()
         mock_judgment.return_value.unpublish.assert_not_called()
@@ -68,7 +69,10 @@ class TestJudgmentPublish(TestCase):
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
     def test_document_publish_success_view(
-        self, document_type, document_exists, mock_judgment,
+        self,
+        document_type,
+        document_exists,
+        mock_judgment,
     ):
         document_type.return_value = Judgment
         document_exists.return_value = None
@@ -82,7 +86,8 @@ class TestJudgmentPublish(TestCase):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
 
         publish_success_uri = reverse(
-            "publish-document-success", kwargs={"document_uri": judgment.uri},
+            "publish-document-success",
+            kwargs={"document_uri": judgment.uri},
         )
 
         assert publish_success_uri == "/pubtest/4321/123/published"
@@ -99,7 +104,10 @@ class TestJudgmentUnpublish(TestCase):
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
     def test_document_unpublish_view(
-        self, document_type, document_exists, mock_judgment,
+        self,
+        document_type,
+        document_exists,
+        mock_judgment,
     ):
         document_type.return_value = Judgment
         document_exists.return_value = None
@@ -113,7 +121,8 @@ class TestJudgmentUnpublish(TestCase):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
 
         unpublish_uri = reverse(
-            "unpublish-document", kwargs={"document_uri": judgment.uri},
+            "unpublish-document",
+            kwargs={"document_uri": judgment.uri},
         )
 
         assert unpublish_uri == "/pubtest/4321/123/unpublish"
@@ -145,7 +154,8 @@ class TestJudgmentUnpublish(TestCase):
 
         assert response.status_code == 302
         assert response["Location"] == reverse(
-            "unpublish-document-success", kwargs={"document_uri": judgment.uri},
+            "unpublish-document-success",
+            kwargs={"document_uri": judgment.uri},
         )
         mock_judgment.return_value.publish.assert_not_called()
         mock_judgment.return_value.unpublish.assert_called_once()
@@ -155,7 +165,10 @@ class TestJudgmentUnpublish(TestCase):
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
     def test_document_unpublish_success_view(
-        self, document_type, document_exists, mock_judgment,
+        self,
+        document_type,
+        document_exists,
+        mock_judgment,
     ):
         document_type.return_value = Judgment
         document_exists.return_value = None
@@ -169,7 +182,8 @@ class TestJudgmentUnpublish(TestCase):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
 
         unpublish_success_uri = reverse(
-            "unpublish-document-success", kwargs={"document_uri": judgment.uri},
+            "unpublish-document-success",
+            kwargs={"document_uri": judgment.uri},
         )
 
         assert unpublish_success_uri == "/pubtest/4321/123/unpublished"
