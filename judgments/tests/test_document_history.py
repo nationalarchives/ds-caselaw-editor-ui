@@ -29,7 +29,7 @@ class TestDocumentHistory(TestCase):
         )
 
         response = self.client.get(
-            reverse("document-history", kwargs={"document_uri": document.uri})
+            reverse("document-history", kwargs={"document_uri": document.uri}),
         )
 
         assert response.status_code == 200

@@ -5,9 +5,7 @@ from django.utils.translation import gettext
 
 from judgments.utils.aws import invalidate_caches
 from judgments.utils.link_generators import build_raise_issue_email_link
-from judgments.utils.view_helpers import get_document_by_uri_or_404
-
-from ..utils.view_helpers import DocumentView
+from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_404
 
 
 class HoldDocumentView(DocumentView):
@@ -42,7 +40,7 @@ def hold(request):
     invalidate_caches(judgment.uri)
     messages.success(request, gettext("judgment.hold.hold_success_flash_message"))
     return HttpResponseRedirect(
-        reverse("hold-document-success", kwargs={"document_uri": judgment.uri})
+        reverse("hold-document-success", kwargs={"document_uri": judgment.uri}),
     )
 
 
@@ -67,5 +65,5 @@ def unhold(request):
     invalidate_caches(judgment.uri)
     messages.success(request, gettext("judgment.hold.unhold_success_flash_message"))
     return HttpResponseRedirect(
-        reverse("unhold-document-success", kwargs={"document_uri": judgment.uri})
+        reverse("unhold-document-success", kwargs={"document_uri": judgment.uri}),
     )

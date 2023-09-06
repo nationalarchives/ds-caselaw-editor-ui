@@ -2,7 +2,6 @@ import re
 import xml.etree.ElementTree as ET
 from datetime import datetime
 from operator import itemgetter
-from typing import Optional
 from urllib.parse import urlparse
 
 import ds_caselaw_utils as caselawutils
@@ -72,14 +71,15 @@ def update_document_uri(old_uri, new_citation):
     """
     new_uri = caselawutils.neutral_url(new_citation.strip())
     if new_uri is None:
+        msg = f"Unable to form new URI for {old_uri} from neutral citation: {new_citation}"
         raise NeutralCitationToUriError(
-            f"Unable to form new URI for {old_uri} from neutral citation: {new_citation}"
+            msg,
         )
 
     if api_client.document_exists(new_uri):
+        msg = f"The URI {new_uri} generated from {new_citation} already exists, you cannot move this document to a pre-existing Neutral Citation Number."
         raise MoveJudgmentError(
-            f"The URI {new_uri} generated from {new_citation} already exists, you cannot move this document to a"
-            f" pre-existing Neutral Citation Number."
+            msg,
         )
 
     try:
@@ -88,15 +88,17 @@ def update_document_uri(old_uri, new_citation):
         copy_assets(old_uri, new_uri)
         api_client.set_judgment_this_uri(new_uri)
     except MarklogicAPIError as e:
+        msg = f"Failure when attempting to copy document from {old_uri} to {new_uri}: {e}"
         raise MoveJudgmentError(
-            f"Failure when attempting to copy document from {old_uri} to {new_uri}: {e}"
+            msg,
         )
 
     try:
         api_client.delete_judgment(old_uri)
     except MarklogicAPIError as e:
+        msg = f"Failure when attempting to delete document from {old_uri}: {e}"
         raise MoveJudgmentError(
-            f"Failure when attempting to delete document from {old_uri}: {e}"
+            msg,
         )
 
     return new_uri
@@ -107,7 +109,7 @@ def set_metadata(old_uri, new_uri):
     source_name = api_client.get_property(old_uri, "source-name")
     source_email = api_client.get_property(old_uri, "source-email")
     transfer_consignment_reference = api_client.get_property(
-        old_uri, "transfer-consignment-reference"
+        old_uri, "transfer-consignment-reference",
     )
     transfer_received_at = api_client.get_property(old_uri, "transfer-received-at")
     for key, value in [
@@ -136,8 +138,7 @@ def render_versions(decoded_versions):
         }
         for part in decoded_versions
     ]
-    sorted_versions = sorted(versions, key=lambda d: -d["version"])
-    return sorted_versions
+    return sorted(versions, key=lambda d: -d["version"])
 
 
 def extract_version(version_string: str) -> int:
@@ -164,7 +165,7 @@ def editors_dict():
     )
 
 
-def get_linked_document_uri(document: Document) -> Optional[str]:
+def get_linked_document_uri(document: Document) -> str | None:
     related_uri = _build_related_document_uri(document)
     return related_uri if api_client.document_exists(related_uri) else None
 

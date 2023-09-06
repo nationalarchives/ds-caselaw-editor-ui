@@ -17,7 +17,7 @@ ALLOWED_ORDERS = ["date", "-date"]
 
 
 def get_search_parameters(
-    params, default_page=1, default_order="-date", only_unpublished=False
+    params, default_page=1, default_order="-date", only_unpublished=False,
 ):
     query = params.get("query")
     page = int(params.get("page", default_page))
@@ -54,7 +54,8 @@ def get_document_by_uri_or_404(uri: str) -> Document:
     try:
         return api_client.get_document_by_uri(uri)
     except DocumentNotFoundError:
-        raise Http404(f"Document not found at {uri}")
+        msg = f"Document not found at {uri}"
+        raise Http404(msg)
 
 
 class DocumentView(TemplateView):
@@ -75,7 +76,7 @@ class DocumentView(TemplateView):
         context["editors"] = editors_dict()
 
         context["jira_create_link"] = build_jira_create_link(
-            document=document, request=self.request
+            document=document, request=self.request,
         )
 
         context["linked_document_uri"] = get_linked_document_uri(document)

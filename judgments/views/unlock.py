@@ -38,8 +38,9 @@ def unlock_post(request):
         judgment = get_document_by_uri_or_404(judgment_uri)
         api_client.break_checkout(judgment.uri)
     except MarklogicResourceUnmanagedError as exc:
+        msg = f"Resource Unmanaged: Document '{judgment_uri}' might not exist."
         raise Http404(
-            f"Resource Unmanaged: Document '{judgment_uri}' might not exist."
+            msg,
         ) from exc
     else:
         messages.success(request, "Document unlocked.")

@@ -25,7 +25,7 @@ class TestMetadataPanel(TestCase):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
 
         response = self.client.get(
-            reverse("full-text-html", kwargs={"document_uri": judgment.uri})
+            reverse("full-text-html", kwargs={"document_uri": judgment.uri}),
         )
 
         assert (

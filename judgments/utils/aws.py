@@ -26,14 +26,14 @@ def copy_assets(old_uri, new_uri):
                 client.copy(source, bucket, new_key)
             except botocore.client.ClientError as e:
                 logging.warning(
-                    f"Unable to copy file {old_key} to new location {new_key}, error: {e}"
+                    f"Unable to copy file {old_key} to new location {new_key}, error: {e}",
                 )
 
 
 def build_new_key(old_key, new_uri):
     old_filename = old_key.rsplit("/", 1)[-1]
 
-    if old_filename.endswith(".docx") or old_filename.endswith(".pdf"):
+    if old_filename.endswith((".docx", ".pdf")):
         new_filename = new_uri.replace("/", "_")
         return f"{new_uri}/{new_filename}.{old_filename.split('.')[-1]}"
     else:
@@ -72,7 +72,7 @@ def generate_signed_asset_url(key: str):
     client = create_s3_client()
 
     return client.generate_presigned_url(
-        "get_object", Params={"Bucket": bucket, "Key": key}
+        "get_object", Params={"Bucket": bucket, "Key": key},
     )
 
 
@@ -122,7 +122,7 @@ def publish_documents(uri: str) -> None:
                 client.copy(source, public_bucket, key, extra_args)
             except botocore.client.ClientError as e:
                 logging.warning(
-                    f"Unable to copy file {key} to new location {public_bucket}, error: {e}"
+                    f"Unable to copy file {key} to new location {public_bucket}, error: {e}",
                 )
 
 
@@ -162,14 +162,14 @@ def invalidate_caches(uri: str) -> None:
         and env("CLOUDFRONT_INVALIDATION_ACCESS_SECRET", default=None) is None
     ):
         logging.warning(
-            "Cannot invalidate cache: no cloudfront environment variables set"
+            "Cannot invalidate cache: no cloudfront environment variables set",
         )
         return
 
     aws = boto3.session.Session(
         aws_access_key_id=env("CLOUDFRONT_INVALIDATION_ACCESS_KEY_ID", default=None),
         aws_secret_access_key=env(
-            "CLOUDFRONT_INVALIDATION_ACCESS_SECRET", default=None
+            "CLOUDFRONT_INVALIDATION_ACCESS_SECRET", default=None,
         ),
     )
     cloudfront = aws.client("cloudfront")
