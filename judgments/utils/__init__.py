@@ -1,17 +1,22 @@
+from __future__ import annotations
+
 import re
 import xml.etree.ElementTree as ET
 from datetime import datetime
 from operator import itemgetter
+from typing import TYPE_CHECKING
 from urllib.parse import urlparse
 
 import ds_caselaw_utils as caselawutils
 from caselawclient.Client import MarklogicAPIError, api_client
-from caselawclient.models.documents import Document
 from caselawclient.models.press_summaries import PressSummary
 from django.conf import settings
 from django.contrib.auth.models import Group, User
 
 from .aws import copy_assets
+
+if TYPE_CHECKING:
+    from caselawclient.models.documents import Document
 
 VERSION_REGEX = r"xml_versions/(\d{1,10})-(\d{1,10}|TDR)"
 # Here we limit the number of digits in the version and document reference to 10 on purpose, see
