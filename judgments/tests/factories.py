@@ -1,11 +1,14 @@
 import datetime
-from typing import Any, TypeAlias
 from unittest.mock import Mock
 
 import factory
 from caselawclient.models.judgments import Judgment
 from caselawclient.responses.search_result import SearchResult, SearchResultMetadata
 from django.contrib.auth import get_user_model
+from typing_extensions import (
+    Any,
+    TypeAlias,
+)
 
 User = get_user_model()
 

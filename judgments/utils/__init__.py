@@ -1,7 +1,10 @@
+from __future__ import annotations
+
 import re
 import xml.etree.ElementTree as ET
 from datetime import datetime
 from operator import itemgetter
+from typing import TYPE_CHECKING
 from urllib.parse import urlparse
 
 import ds_caselaw_utils as caselawutils
@@ -11,6 +14,7 @@ from caselawclient.Client import (
     MarklogicAPIError,
 )
 from caselawclient.models.documents import Document, DocumentURIString
+from caselawclient.Client import MarklogicAPIError, api_client
 from caselawclient.models.press_summaries import PressSummary
 from django.conf import settings
 from django.contrib.auth.models import Group, User
@@ -24,6 +28,8 @@ api_client = MarklogicApiClient(
     use_https=settings.MARKLOGIC_USE_HTTPS,
     user_agent=f"ds-caselaw-editor/unknown {DEFAULT_USER_AGENT}",
 )
+if TYPE_CHECKING:
+    from caselawclient.models.documents import Document
 
 VERSION_REGEX = r"xml_versions/(\d{1,10})-(\d{1,10}|TDR)"
 # Here we limit the number of digits in the version and document reference to 10 on purpose, see

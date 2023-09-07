@@ -1,11 +1,16 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 from urllib.parse import quote, urlencode
 
-from caselawclient.models.documents import Document
 from django.conf import settings
-from django.http import HttpRequest
 from django.template import loader
 from django.urls import reverse
 from django.utils.translation import gettext
+
+if TYPE_CHECKING:
+    from caselawclient.models.documents import Document
+    from django.http import HttpRequest
 
 
 def build_email_link_with_content(
