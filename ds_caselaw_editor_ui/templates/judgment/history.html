@@ -1,23 +1,27 @@
 {% extends "layouts/judgment_with_sidebar.html" %}
-{% load i18n %}
+{% load i18n document_utils %}
 {% block judgment_header %}
   {% include "includes/judgment/metadata_panel_static.html" with judgment=document %}
 {% endblock judgment_header %}
 {% block judgment_content %}
-  <div>
-    <h2>Document history</h2>
-    <table class="table">
+  <div class="document-version-history">
+    <h2>Document version history</h2>
+    <table class="document-version-history__table table">
       <thead>
         <tr>
           <th scope="col">Version</th>
+          <th scope="col">Date submitted</th>
+          <th scope="col">Time</th>
         </tr>
       </thead>
       <tbody>
-        {% for version in document.versions %}
+        {% for version in document.versions_as_documents %}
           <tr>
             <td>
-              <a href="{% url 'full-text-html' document_uri %}?version_uri={{ version.uri }}">Version {{ version.version }}</a>
+              <a href="{% url 'full-text-html' document_uri %}?version_uri={{ version.uri }}">Version {{ version.version_number }}</a>
             </td>
+            <td>{{ version.get_latest_manifestation_datetime|display_datetime_date }}</td>
+            <td>{{ version.get_latest_manifestation_datetime|display_datetime_time }}</td>
           </tr>
         {% endfor %}
       </tbody>

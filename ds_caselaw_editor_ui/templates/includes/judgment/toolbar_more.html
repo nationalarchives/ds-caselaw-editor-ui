@@ -16,7 +16,7 @@
            rel="noopener noreferrer">{% translate "judgment.create_in_jira" %}</a>
       </li>
       <li>
-        <a href="{% url 'document-history' document.uri %}">Document history</a>
+        <a href="{% url 'document-history' document.uri %}">Document version history</a>
       </li>
       <li>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSckmLdeUAEoEoBc55ybFVmOsXPEM7CG2VbN2YNwsX6kL9UZ4Q/viewform?usp=pp_url&entry.2047884653=Yes&entry.6716552=A+specific+judgment+or+decision&entry.481919886={{ request.build_absolute_uri|urlencode }}&entry.350152829={{ document.consignment_reference|urlencode }}"
