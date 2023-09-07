@@ -343,6 +343,11 @@ msgstr "This is the new tranlation text I have edited"
 python manage.py compilemessages
 ```
 
+### Debugging Templates
+
+By default, When encountering an undefined variable in a template, Django will return an empty string, which is useful in production to avoid unnecessary 500 errors, but not so useful in development, as it makes things difficult to debug.
+In order to debug template problems, you can add `TEMPLATE_DEBUG=1` to your .env file, and undefined variables will show up as eg `{{ variable_name }}`.
+
 ## Authentication
 
 To login or signup to the staging application, go to `http://localhost:3000/accounts/login`. From there you will be able to log in to an existing account.
