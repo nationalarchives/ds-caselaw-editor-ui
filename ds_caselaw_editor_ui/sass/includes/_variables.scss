@@ -1,42 +1,14 @@
-$spacer__unit: 1rem;
+@import "../../../node_modules/@nationalarchives/ds-caselaw-frontend/src/includes/variables/colours";
 
-$color__almost-black: #121212;
-$color__white: #fff;
-$color__light-grey: #efefef;
-$color__dark-blue: #134571;
-$color__grey: #ddd;
-$color__dark-grey: #555;
-$color__black: #000;
-$color__highlight-blue: #0066cc;
-$color__yellow: #ffb952;
-$color__aqua-blue: #037091;
-
-/* STARTS – Validation variables */
-$color__success: #336600;
-$color__information: #96d2f8;
-$color__failure: #cc3300;
-
-$color__green: #3bb300;
-$color__red: #ff0000;
-/* ENDS – Validation variables */
-
-/* STARTS – Document tag variables */
+// EUI-specific colours
 $colour__in-progress: #dbd5e9;
 $colour__on-hold: #fcd6c3;
 $colour__published: #bfe3e0;
 $colour__in-progress-text: #3d2375;
 $colour__on-hold-text: #942514;
 $colour__published-text: #10403c;
-/* ENDS – Document tag variables */
 
-$color__link-blue: #1d70b8;
-$color__link-blue-hover: #003078;
-$color__link-blue-visited: #4c2c92;
-$color__link-blue-active: #1e1e2a;
-
-$color__focus-blue-outline: #1d70b8;
-$color__cta-background: $color__aqua-blue;
-$color__cta-background-hover: $color__dark-blue;
+$spacer__unit: 1rem;
 
 $gutter_unit: 25px;
 
