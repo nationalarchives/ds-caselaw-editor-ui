@@ -46,4 +46,17 @@
       </li>
     </ul>
   </div>
+  {% if user.is_superuser %}
+    <div class="judgment-toolbar__more__menu__group">
+      <h4>Superuser tools</h4>
+      <form action="{% url 'delete' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
+        <input type="submit"
+               name="assign"
+               class="judgment-toolbar__delete"
+               value="Delete document" />
+      </form>
+    </div>
+  {% endif %}
 </div>
