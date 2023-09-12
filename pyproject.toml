@@ -10,12 +10,13 @@ extend-select = ["W", "B", "Q", "C90", "I", "UP", "YTT", "ASYNC", "S", "BLE", "A
                  "ISC", "ICN", "G", "INP", "PIE", "T20", "PYI", "PT", "Q", "RSE", "RET", "SLF", "SLOT", "SIM", "TID", "TCH", "INT", "PTH",
                  "FIX", "PGH", "PL", "TRY", "FLY", "PERF", "FURB", "RUF"]
 unfixable = ["ERA"]
+
+# things skipped:
 # N: naming, possibly good
 # D: docstrings missing throughout
 # ANN: annotations missing throughout
 # FBT: not convinced boolean trap worth auto-banning.
 # CPY: copyright at top of each file
-# FA: future annotations -- could s
 # G: logging warnings -- fstrings bad?
 # ARG: sometimes you need to accept arguments.
 # TD: somewhat finicky details about formatting TODOs
