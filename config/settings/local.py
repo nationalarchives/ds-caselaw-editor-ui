@@ -1,5 +1,5 @@
 from .base import *  # noqa
-from .base import env
+from .base import TEMPLATES, env
 
 # GENERAL
 # ------------------------------------------------------------------------------
@@ -8,6 +8,9 @@ DEBUG = True
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ["*"]
+
+if env("TEMPLATE_DEBUG", default=None):
+    TEMPLATES[0]["OPTIONS"]["string_if_invalid"] = "{{ %s }}"
 
 # CACHES
 # ------------------------------------------------------------------------------
