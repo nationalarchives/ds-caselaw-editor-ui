@@ -1,7 +1,6 @@
 from typing import Any
 
 import ds_caselaw_utils as caselawutils
-from caselawclient.Client import api_client
 from caselawclient.client_helpers.search_helpers import search_and_parse_response
 from caselawclient.errors import DocumentNotFoundError
 from caselawclient.models.documents import Document
@@ -9,7 +8,7 @@ from caselawclient.search_parameters import SearchParameters
 from django.http import Http404
 from django.views.generic import TemplateView
 
-from judgments.utils import editors_dict, get_linked_document_uri
+from judgments.utils import api_client, editors_dict, get_linked_document_uri
 from judgments.utils.link_generators import build_jira_create_link
 from judgments.utils.paginator import paginator
 

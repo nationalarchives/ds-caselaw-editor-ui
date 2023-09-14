@@ -1,13 +1,12 @@
 import json
 from typing import Optional
 
-from caselawclient.Client import api_client
 from caselawclient.responses.search_result import EditorPriority
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import redirect
 
-from judgments.utils import ensure_local_referer_url
+from judgments.utils import api_client, ensure_local_referer_url
 
 
 def hold_judgment_button(request):

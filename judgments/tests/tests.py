@@ -1,10 +1,11 @@
 import re
 from unittest.mock import patch
 
-from caselawclient.Client import api_client
 from caselawclient.search_parameters import SearchParameters
 from django.contrib.auth.models import User
 from django.test import TestCase
+
+from judgments.utils import api_client
 
 
 def assert_match(regex, string):
