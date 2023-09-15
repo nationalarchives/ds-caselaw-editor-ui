@@ -43,6 +43,7 @@ class JudgmentFactory:
         "versions": ("versions", []),
         "versions_as_documents": ("versions_as_documents", []),
         "content_as_xml": ("xml", "<akomaNtoso>This is a document's XML.</akomaNtoso>"),
+        "safe_to_delete": ("safe_to_delete", False),
     }
 
     @classmethod

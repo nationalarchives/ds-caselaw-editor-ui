@@ -2,7 +2,7 @@ import re
 from unittest.mock import patch
 
 from caselawclient.models.judgments import Judgment
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Group, User
 from django.test import TestCase
 from django.urls import reverse
 
@@ -10,6 +10,45 @@ from judgments.tests.factories import JudgmentFactory
 
 
 class TestDocumentToolbar(TestCase):
+    def setUp(self):
+        editor_group = Group(name="Editors")
+        editor_group.save()
+        self.editor_user = User.objects.get_or_create(username="ed")[0]
+        self.editor_user.groups.add(editor_group)
+        self.editor_user.save()
+        self.standard_user = User.objects.get_or_create(username="alice")[0]
+        self.super_user = User.objects.create_superuser(username="clark")
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    @patch("judgments.utils.api_client.document_exists")
+    def test_editor_tools_if_editor(self, document_exists, mock_judgment):
+        mock_judgment.return_value = JudgmentFactory.build(
+            uri="failures/TDR-ref",
+            is_failure=True,
+        )
+        self.client.force_login(self.editor_user)
+        response = self.client.get(
+            reverse("full-text-html", kwargs={"document_uri": mock_judgment.uri}),
+        )
+        assert b"Editor tools" in response.content
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    @patch("judgments.utils.api_client.document_exists")
+    def test_no_editor_tools_if_not_priviledged(
+        self,
+        document_exists,
+        mock_judgment,
+    ):
+        mock_judgment.return_value = JudgmentFactory.build(
+            uri="failures/TDR-ref",
+            is_failure=True,
+        )
+        self.client.force_login(self.standard_user)
+        response = self.client.get(
+            reverse("full-text-html", kwargs={"document_uri": mock_judgment.uri}),
+        )
+        assert b"Editor tools" not in response.content
+
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
