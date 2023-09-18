@@ -11,7 +11,7 @@ from caselawclient.Client import (
     MarklogicApiClient,
     MarklogicAPIError,
 )
-from caselawclient.models.documents import Document
+from caselawclient.models.documents import Document, DocumentURIString
 from caselawclient.models.press_summaries import PressSummary
 from django.conf import settings
 from django.contrib.auth.models import Group, User
@@ -178,7 +178,11 @@ def editors_dict():
 
 def get_linked_document_uri(document: Document) -> Optional[str]:
     related_uri = _build_related_document_uri(document)
-    return related_uri if api_client.document_exists(related_uri) else None
+    return (
+        related_uri
+        if api_client.document_exists(DocumentURIString(related_uri))
+        else None
+    )
 
 
 def _build_related_document_uri(document: Document) -> str:

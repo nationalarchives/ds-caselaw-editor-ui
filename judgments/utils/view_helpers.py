@@ -3,7 +3,7 @@ from typing import Any
 import ds_caselaw_utils as caselawutils
 from caselawclient.client_helpers.search_helpers import search_and_parse_response
 from caselawclient.errors import DocumentNotFoundError
-from caselawclient.models.documents import Document
+from caselawclient.models.documents import Document, DocumentURIString
 from caselawclient.search_parameters import SearchParameters
 from django.http import Http404
 from django.views.generic import TemplateView
@@ -51,7 +51,7 @@ def get_search_results(parameters: dict[str, Any]) -> dict[str, Any]:
 
 def get_document_by_uri_or_404(uri: str) -> Document:
     try:
-        return api_client.get_document_by_uri(uri)
+        return api_client.get_document_by_uri(DocumentURIString(uri))
     except DocumentNotFoundError:
         raise Http404(f"Document not found at {uri}")
 
