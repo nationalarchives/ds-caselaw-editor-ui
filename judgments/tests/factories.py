@@ -39,6 +39,7 @@ class JudgmentFactory:
         "consignment_reference": ("consignment_reference", "TDR-12345"),
         "assigned_to": ("assigned_to", ""),
         "versions": ("versions", []),
+        "versions_as_documents": ("versions_as_documents", []),
         "content_as_xml": ("xml", "<akomaNtoso>This is a document's XML.</akomaNtoso>"),
     }
 
