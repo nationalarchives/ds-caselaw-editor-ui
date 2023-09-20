@@ -1,5 +1,5 @@
 {% extends "layouts/judgment_with_sidebar.html" %}
-{% load i18n %}
+{% load i18n waffle_tags %}
 {% block judgment_header %}
   {% include "includes/judgment/metadata_panel_static.html" with judgment=judgment %}
 {% endblock judgment_header %}
@@ -13,13 +13,16 @@
       {% csrf_token %}
       <div class="judgment-component__actions">
         <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
-        <input class="button-cta"
-               type="submit"
-               value="{% translate "judgment.publish_this_judgment" %}" />
-      </div>
-    </form>
-  {% else %}
-    <span class="judgment-toolbar__button button-secondary"
-          aria-disabled="true">{% translate "judgment.publish_this_judgment" %}</span>
-  {% endif %}
+        {% flag "notes_on_state_change" %}
+        {% include "includes/note-form.html" %}
+      {% endflag %}
+      <input class="button-cta"
+             type="submit"
+             value="{% translate "judgment.publish_this_judgment" %}" />
+    </div>
+  </form>
+{% else %}
+  <span class="judgment-toolbar__button button-secondary"
+        aria-disabled="true">{% translate "judgment.publish_this_judgment" %}</span>
+{% endif %}
 {% endblock judgment_content %}

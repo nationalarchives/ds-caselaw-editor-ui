@@ -1,14 +1,20 @@
 .note-form {
   &__label {
-    margin-bottom: 1rem;
+    display: block;
+    margin-bottom: calc($spacer__unit / 4);
+    font-size: 0.9rem;
+    line-height: 1.2rem;
+    color: $color__dark-grey;
   }
 
   &__text-area {
     @include text_field;
+    margin-top: 0;
     display: block;
-    width: 100%;
+    width: calc(100% - $spacer__unit);
     font-size: 1rem;
     line-height: 1.25rem;
     border: 2px solid $color__almost-black;
+    box-sizing: border-box;
   }
 }
