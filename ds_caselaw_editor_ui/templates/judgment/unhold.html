@@ -1,4 +1,5 @@
 {% extends "layouts/judgment_with_sidebar.html" %}
+{% load waffle_tags %}
 {% block judgment_header %}
   {% include "includes/judgment/metadata_panel_static.html" with judgment=judgment %}
 {% endblock judgment_header %}
@@ -10,9 +11,12 @@
     <div class="judgment-component__actions">
       <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
       <input type="hidden" name="unhold" value="false" />
-      <input class="button-cta"
-             type="submit"
-             value="{% translate "judgment.unhold.unhold_button" %}" />
-    </div>
-  </form>
+      {% flag "notes_on_state_change" %}
+      {% include "includes/note-form.html" %}
+    {% endflag %}
+    <input class="button-cta"
+           type="submit"
+           value="{% translate "judgment.unhold.unhold_button" %}" />
+  </div>
+</form>
 {% endblock judgment_content %}
