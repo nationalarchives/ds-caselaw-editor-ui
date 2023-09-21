@@ -67,8 +67,8 @@ class JudgmentFactory:
         version.version_number = 1
         version.get_latest_manifestation_datetime = datetime.datetime(2023, 9, 26, 12)
         uri = judgment.uri
-        id = uri.split("/")[-1]
-        version.uri.return_value = "%s/_xml_versions/1-%s.xml" % (uri, id)
+        _id = uri.split("/")[-1]
+        version.uri.return_value = f"{uri}/_xml_versions/1-{_id}.xml"
         judgment.versions_as_documents.append(version)
 
         return judgment
