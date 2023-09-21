@@ -10,5 +10,5 @@ class TestStaticViews(TestCase):
         response = self.client.get(reverse("labs"))
 
         decoded_response = response.content.decode("utf-8")
-        self.assertIn("Labs", decoded_response)
+        assert "Labs" in decoded_response
         assert response.status_code == 200

@@ -1,4 +1,4 @@
-from ..utils.view_helpers import DocumentView
+from judgments.utils.view_helpers import DocumentView
 
 
 class DocumentHistoryView(DocumentView):

@@ -7,7 +7,7 @@ from django.test import Client
 from judgments.tests.factories import JudgmentFactory, User
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db()
 class TestBreadcrumbs:
     client = Client(raise_request_exception=False)
 
@@ -80,7 +80,9 @@ class TestBreadcrumbs:
     @patch("judgments.utils.view_helpers.get_linked_document_uri")
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     def test_breadcrumb_when_press_summary(
-        self, mock_get_document_by_uri, mock_get_linked_document_uri
+        self,
+        mock_get_document_by_uri,
+        mock_get_linked_document_uri,
     ):
         """
         GIVEN a press summary
@@ -117,7 +119,9 @@ class TestBreadcrumbs:
     @patch("judgments.utils.view_helpers.get_linked_document_uri")
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     def test_breadcrumb_when_judgment(
-        self, mock_get_document_by_uri, mock_get_linked_document_uri
+        self,
+        mock_get_document_by_uri,
+        mock_get_linked_document_uri,
     ):
         """
         GIVEN a judgment
@@ -127,7 +131,9 @@ class TestBreadcrumbs:
         """
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
         mock_get_document_by_uri.return_value = JudgmentFactory.build(
-            uri="/eat/2023/1", name="Judgment A", document_noun="judgment"
+            uri="/eat/2023/1",
+            name="Judgment A",
+            document_noun="judgment",
         )
         response = self.client.get("/eat/2023/1")
         breadcrumb_html = """
@@ -148,7 +154,9 @@ class TestBreadcrumbs:
     @patch("judgments.utils.view_helpers.get_linked_document_uri")
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     def test_breadcrumb_when_unnamed_document(
-        self, mock_get_document_by_uri, mock_get_linked_document_uri
+        self,
+        mock_get_document_by_uri,
+        mock_get_linked_document_uri,
     ):
         """
         GIVEN a document with an empty string for the name
@@ -157,7 +165,9 @@ class TestBreadcrumbs:
         """
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
         mock_get_document_by_uri.return_value = JudgmentFactory.build(
-            uri="/eat/2023/1", name="", document_noun="judgment"
+            uri="/eat/2023/1",
+            name="",
+            document_noun="judgment",
         )
         response = self.client.get("/eat/2023/1")
         breadcrumb_html = """
@@ -177,7 +187,7 @@ class TestBreadcrumbs:
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @pytest.mark.parametrize(
-        "http_error,expected_breadcrumb",
+        ("http_error", "expected_breadcrumb"),
         [
             (Http404, "Page not found"),
             (Exception, "Server Error"),
@@ -197,7 +207,7 @@ class TestBreadcrumbs:
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
 
         def get_document_by_uri_side_effect(document_uri):
-            raise http_error()
+            raise http_error
 
         mock_get_document_by_uri.side_effect = get_document_by_uri_side_effect
 
@@ -226,5 +236,6 @@ def assert_contains_html(response, html):
         AssertionError: If the HTML is not found in the response content.
     """
     assert html.replace(" ", "").replace("\n", "") in response.content.decode().replace(
-        " ", ""
+        " ",
+        "",
     ).replace("\n", "")

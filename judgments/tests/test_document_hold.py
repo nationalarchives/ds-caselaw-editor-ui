@@ -30,7 +30,7 @@ class TestDocumentHold(TestCase):
         response = self.client.get(hold_uri)
 
         decoded_response = response.content.decode("utf-8")
-        self.assertIn("Test v Tested", decoded_response)
+        assert "Test v Tested" in decoded_response
         assert response.status_code == 200
 
     @patch("judgments.views.judgment_hold.invalidate_caches")
@@ -54,7 +54,8 @@ class TestDocumentHold(TestCase):
 
         assert response.status_code == 302
         assert response["Location"] == reverse(
-            "hold-document-success", kwargs={"document_uri": judgment.uri}
+            "hold-document-success",
+            kwargs={"document_uri": judgment.uri},
         )
         mock_judgment.return_value.hold.assert_called_once()
         mock_judgment.return_value.unhold.assert_not_called()
@@ -64,7 +65,10 @@ class TestDocumentHold(TestCase):
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
     def test_document_hold_success_view(
-        self, document_type, document_exists, mock_judgment
+        self,
+        document_type,
+        document_exists,
+        mock_judgment,
     ):
         document_type.return_value = Judgment
         document_exists.return_value = None
@@ -78,7 +82,8 @@ class TestDocumentHold(TestCase):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
 
         hold_success_uri = reverse(
-            "hold-document-success", kwargs={"document_uri": judgment.uri}
+            "hold-document-success",
+            kwargs={"document_uri": judgment.uri},
         )
 
         assert hold_success_uri == "/holdtest/4321/123/onhold"
@@ -86,7 +91,7 @@ class TestDocumentHold(TestCase):
         response = self.client.get(hold_success_uri)
 
         decoded_response = response.content.decode("utf-8")
-        self.assertIn("Test v Tested", decoded_response)
+        assert "Test v Tested" in decoded_response
         assert response.status_code == 200
 
 
@@ -113,7 +118,7 @@ class TestJudgmentUnhold(TestCase):
         response = self.client.get(unhold_uri)
 
         decoded_response = response.content.decode("utf-8")
-        self.assertIn("Test v Tested", decoded_response)
+        assert "Test v Tested" in decoded_response
         assert response.status_code == 200
 
     @patch("judgments.views.judgment_hold.invalidate_caches")
@@ -137,7 +142,8 @@ class TestJudgmentUnhold(TestCase):
 
         assert response.status_code == 302
         assert response["Location"] == reverse(
-            "unhold-document-success", kwargs={"document_uri": judgment.uri}
+            "unhold-document-success",
+            kwargs={"document_uri": judgment.uri},
         )
         mock_judgment.return_value.unhold.assert_called_once()
         mock_judgment.return_value.hold.assert_not_called()
@@ -147,7 +153,10 @@ class TestJudgmentUnhold(TestCase):
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
     def test_document_hold_success_view(
-        self, document_type, document_exists, mock_judgment
+        self,
+        document_type,
+        document_exists,
+        mock_judgment,
     ):
         document_type.return_value = Judgment
         document_exists.return_value = None
@@ -161,7 +170,8 @@ class TestJudgmentUnhold(TestCase):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
 
         unhold_success_uri = reverse(
-            "unhold-document-success", kwargs={"document_uri": judgment.uri}
+            "unhold-document-success",
+            kwargs={"document_uri": judgment.uri},
         )
 
         assert unhold_success_uri == "/unholdtest/4321/123/unheld"
@@ -169,5 +179,5 @@ class TestJudgmentUnhold(TestCase):
         response = self.client.get(unhold_success_uri)
 
         decoded_response = response.content.decode("utf-8")
-        self.assertIn("Test v Tested", decoded_response)
+        assert "Test v Tested" in decoded_response
         assert response.status_code == 200

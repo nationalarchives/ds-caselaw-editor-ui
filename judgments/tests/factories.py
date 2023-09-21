@@ -1,12 +1,14 @@
 import datetime
-from typing import Any
 from unittest.mock import Mock
 
 import factory
 from caselawclient.models.judgments import Judgment
 from caselawclient.responses.search_result import SearchResult, SearchResultMetadata
 from django.contrib.auth import get_user_model
-from typing_extensions import TypeAlias
+from typing_extensions import (
+    Any,
+    TypeAlias,
+)
 
 User = get_user_model()
 
@@ -67,11 +69,11 @@ class SimpleFactory:
     # "name_of_attribute": ("name of incoming param", "default value")
     PARAMS_MAP: dict[str, Any]
 
-    target_class: TypeAlias = object
+    TargetClass: TypeAlias = object
 
     @classmethod
-    def build(cls, **kwargs) -> target_class:
-        mock_object = Mock(spec=cls.target_class, autospec=True)
+    def build(cls, **kwargs) -> TargetClass:
+        mock_object = Mock(spec=cls.TargetClass, autospec=True)
 
         for param, default in cls.PARAMS_MAP.items():
             if param in kwargs:

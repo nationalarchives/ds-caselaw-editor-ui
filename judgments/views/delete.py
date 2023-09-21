@@ -11,14 +11,16 @@ def delete(request):
     document_uri = request.POST.get("judgment_uri", None)
     document = get_document_by_uri_or_404(document_uri)
     if not document.safe_to_delete:
+        msg = f"The document at URI {document.uri} is not safe to delete."
         raise PermissionDenied(
-            f"The document at URI {document.uri} is not safe to delete."
+            msg,
         )
 
     document.delete()
     invalidate_caches(document.uri)
 
     messages.success(
-        request, f"The document at URI {document.uri} was successfully deleted."
+        request,
+        f"The document at URI {document.uri} was successfully deleted.",
     )
     return HttpResponseRedirect(reverse("home"))

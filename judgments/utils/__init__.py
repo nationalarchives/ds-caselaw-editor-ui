@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 import re
 import xml.etree.ElementTree as ET
 from datetime import datetime
 from operator import itemgetter
-from typing import Optional
+from typing import TYPE_CHECKING
 from urllib.parse import urlparse
 
 import ds_caselaw_utils as caselawutils
@@ -12,6 +14,7 @@ from caselawclient.Client import (
     MarklogicAPIError,
 )
 from caselawclient.models.documents import Document, DocumentURIString
+from caselawclient.Client import MarklogicAPIError, api_client
 from caselawclient.models.press_summaries import PressSummary
 from django.conf import settings
 from django.contrib.auth.models import Group, User
@@ -25,6 +28,8 @@ api_client = MarklogicApiClient(
     use_https=settings.MARKLOGIC_USE_HTTPS,
     user_agent=f"ds-caselaw-editor/unknown {DEFAULT_USER_AGENT}",
 )
+if TYPE_CHECKING:
+    from caselawclient.models.documents import Document
 
 VERSION_REGEX = r"xml_versions/(\d{1,10})-(\d{1,10}|TDR)"
 # Here we limit the number of digits in the version and document reference to 10 on purpose, see
@@ -72,9 +77,9 @@ def format_date(date):
 def get_judgment_root(judgment_xml) -> str:
     try:
         parsed_xml = ET.XML(bytes(judgment_xml, encoding="utf-8"))
-        return parsed_xml.tag
     except ET.ParseError:
         return "error"
+    return parsed_xml.tag
 
 
 def update_document_uri(old_uri, new_citation):
@@ -84,14 +89,15 @@ def update_document_uri(old_uri, new_citation):
     """
     new_uri = caselawutils.neutral_url(new_citation.strip())
     if new_uri is None:
+        msg = f"Unable to form new URI for {old_uri} from neutral citation: {new_citation}"
         raise NeutralCitationToUriError(
-            f"Unable to form new URI for {old_uri} from neutral citation: {new_citation}"
+            msg,
         )
 
     if api_client.document_exists(new_uri):
+        msg = f"The URI {new_uri} generated from {new_citation} already exists, you cannot move this document to a pre-existing Neutral Citation Number."
         raise MoveJudgmentError(
-            f"The URI {new_uri} generated from {new_citation} already exists, you cannot move this document to a"
-            f" pre-existing Neutral Citation Number."
+            msg,
         )
 
     try:
@@ -100,16 +106,20 @@ def update_document_uri(old_uri, new_citation):
         copy_assets(old_uri, new_uri)
         api_client.set_judgment_this_uri(new_uri)
     except MarklogicAPIError as e:
-        raise MoveJudgmentError(
+        msg = (
             f"Failure when attempting to copy document from {old_uri} to {new_uri}: {e}"
         )
+        raise MoveJudgmentError(
+            msg,
+        ) from e
 
     try:
         api_client.delete_judgment(old_uri)
     except MarklogicAPIError as e:
+        msg = f"Failure when attempting to delete document from {old_uri}: {e}"
         raise MoveJudgmentError(
-            f"Failure when attempting to delete document from {old_uri}: {e}"
-        )
+            msg,
+        ) from e
 
     return new_uri
 
@@ -119,7 +129,8 @@ def set_metadata(old_uri, new_uri):
     source_name = api_client.get_property(old_uri, "source-name")
     source_email = api_client.get_property(old_uri, "source-email")
     transfer_consignment_reference = api_client.get_property(
-        old_uri, "transfer-consignment-reference"
+        old_uri,
+        "transfer-consignment-reference",
     )
     transfer_received_at = api_client.get_property(old_uri, "transfer-received-at")
     for key, value in [
@@ -148,8 +159,7 @@ def render_versions(decoded_versions):
         }
         for part in decoded_versions
     ]
-    sorted_versions = sorted(versions, key=lambda d: -d["version"])
-    return sorted_versions
+    return sorted(versions, key=lambda d: -d["version"])
 
 
 def extract_version(version_string: str) -> int:
@@ -176,7 +186,7 @@ def editors_dict():
     )
 
 
-def get_linked_document_uri(document: Document) -> Optional[str]:
+def get_linked_document_uri(document: Document) -> str | None:
     related_uri = _build_related_document_uri(document)
     return (
         related_uri

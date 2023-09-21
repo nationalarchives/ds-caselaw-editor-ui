@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 import json
-from typing import Optional
 
 from caselawclient.responses.search_result import EditorPriority
 from django.contrib import messages
@@ -14,12 +15,10 @@ def hold_judgment_button(request):
     # we probably shouldn't hold if the judgment isn't assigned but we won't check
     hold = request.POST["hold"]
     if hold not in ["false", "true"]:
-        raise RuntimeError("Hold value must be '0' or '1'")
+        msg = "Hold value must be '0' or '1'"
+        raise RuntimeError(msg)
     api_client.set_property(judgment_uri, "editor-hold", hold)
-    if hold == "true":
-        word = "held"
-    else:
-        word = "released"
+    word = "held" if hold == "true" else "released"
     messages.success(request, f"Document {word}.")
     return redirect(ensure_local_referer_url(request))
 
@@ -47,7 +46,7 @@ def assign_judgment_button(request):
 def prioritise_judgment_button(request):
     """Editors can let other editors know that some judgments are more important than others."""
 
-    def parse_priority(priority: str) -> Optional[str]:
+    def parse_priority(priority: str) -> str | None:
         priorities = {
             "low": EditorPriority.LOW.value,
             "medium": EditorPriority.MEDIUM.value,

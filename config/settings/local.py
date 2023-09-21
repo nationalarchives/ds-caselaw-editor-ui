@@ -19,14 +19,15 @@ CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
         "LOCATION": "",
-    }
+    },
 }
 
 # EMAIL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
 EMAIL_BACKEND = env(
-    "DJANGO_EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend"
+    "DJANGO_EMAIL_BACKEND",
+    default="django.core.mail.backends.console.EmailBackend",
 )
 
 # WhiteNoise
@@ -34,7 +35,7 @@ EMAIL_BACKEND = env(
 # http://whitenoise.evans.io/en/latest/django.html#using-whitenoise-in-development
 INSTALLED_APPS = ["whitenoise.runserver_nostatic"] + INSTALLED_APPS  # noqa F405
 
-SECRET_KEY = "not-secret-whatsoever"
+SECRET_KEY = "not-secret-whatsoever"  # noqa: S105
 
 
 # django-debug-toolbar
@@ -45,7 +46,7 @@ def show_debug_toolbar(request):
 
 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#prerequisites
 if DEBUG:
-    INSTALLED_APPS += ["debug_toolbar"]  # noqa F405
+    INSTALLED_APPS += ["debug_toolbar"]  # F405
     # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#middleware
     MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]  # noqa F405
     # https://django-debug-toolbar.readthedocs.io/en/latest/configuration.html#debug-toolbar-config
@@ -58,7 +59,7 @@ if DEBUG:
 # django-extensions
 # ------------------------------------------------------------------------------
 # https://django-extensions.readthedocs.io/en/latest/installation_instructions.html#configuration
-INSTALLED_APPS += ["django_extensions"]  # noqa F405
+INSTALLED_APPS += ["django_extensions"]  # F405
 
 # Your stuff...
 # ------------------------------------------------------------------------------

@@ -125,11 +125,15 @@ urlpatterns = [
         name="unhold-document-success",
     ),
     path(
-        "<path:document_uri>/pdf", DocumentReviewPDFView.as_view(), name="full-text-pdf"
+        "<path:document_uri>/pdf",
+        DocumentReviewPDFView.as_view(),
+        name="full-text-pdf",
     ),
     path("<path:document_uri>/xml", xml_view, name="full-text-xml"),
     # This 'bare document' URL must always go last
     path(
-        "<path:document_uri>", DocumentReviewHTMLView.as_view(), name="full-text-html"
+        "<path:document_uri>",
+        DocumentReviewHTMLView.as_view(),
+        name="full-text-html",
     ),
 ]

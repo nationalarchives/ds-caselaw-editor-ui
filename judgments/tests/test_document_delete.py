@@ -35,7 +35,9 @@ class TestDocumentDelete(TestCase):
     @patch("judgments.views.delete.invalidate_caches")
     @patch("judgments.views.delete.get_document_by_uri_or_404")
     def test_document_delete_flow_if_not_safe(
-        self, mock_document, mock_invalidate_caches
+        self,
+        mock_document,
+        mock_invalidate_caches,
     ):
         document = JudgmentFactory.build(
             uri="deltest/4321/123",
