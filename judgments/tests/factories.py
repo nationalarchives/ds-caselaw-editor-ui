@@ -62,7 +62,16 @@ class JudgmentFactory:
             else:
                 setattr(judgment_mock.return_value, map_to, map_from[1])
 
-        return judgment_mock()
+        judgment = judgment_mock()
+        version = judgment.copy()
+        version.version_number = 1
+        version.get_latest_manifestation_datetime = datetime.datetime(2023, 9, 26, 12)
+        uri = judgment.uri
+        id = uri.split("/")[-1]
+        version.uri.return_value = "%s/_xml_versions/1-%s.xml" % (uri, id)
+        judgment.versions_as_documents.append(version)
+
+        return judgment
 
 
 class SimpleFactory:

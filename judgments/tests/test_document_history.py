@@ -33,3 +33,10 @@ class TestDocumentHistory(TestCase):
         )
 
         assert response.status_code == 200
+
+        decoded_response = response.content.decode("utf-8")
+        dt = document.versions_as_documents[0].get_latest_manifestation_datetime
+
+        assert "Version 1" in decoded_response
+        assert dt.strftime("%d %b %Y") in decoded_response
+        assert dt.strftime("%H:%M") in decoded_response
