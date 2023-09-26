@@ -9,12 +9,7 @@ class Labs(TemplateView):
     #     "title": "Embedded PDF",
     #     "description": "View PDFs directly in the browser without needing to download them.",
     # },
-    EXPERIMENTS: dict[str, dict] = {
-        "notes_on_state_change": {
-            "title": "Add a note (on holding/publishing)",
-            "description": "Allow editors to add an explanatory note when holding or publishing a judgment.",
-        },
-    }
+    EXPERIMENTS: dict[str, dict] = {}
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
