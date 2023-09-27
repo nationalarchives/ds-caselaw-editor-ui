@@ -10,7 +10,7 @@
 @import "includes/tables";
 
 // Shared CSS
-@import "../../node_modules/@nationalarchives/ds-caselaw-frontend/src/main";
+@import "../../node_modules/@nationalarchives/ds-caselaw-frontend/src/styles/main";
 
 @import "includes/animations";
 @import "includes/search";
@@ -18,7 +18,6 @@
 @import "includes/judgments_list";
 @import "includes/browse_by_court";
 @import "includes/links";
-@import "includes/document_navigation_links";
 @import "includes/structured_search";
 @import "includes/results";
 @import "includes/results_search_component";

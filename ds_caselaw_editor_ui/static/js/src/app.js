@@ -1,8 +1,8 @@
 import $ from "jquery";
+import "@nationalarchives/ds-caselaw-frontend";
 
 import TabSet from "./components/tabSet";
 import JudgmentSidebar from "./components/judgmentSidebar";
-import "./components/document_navigation_links";
 
 (function ($) {
   $.fn.manage_filters = function (options) {
