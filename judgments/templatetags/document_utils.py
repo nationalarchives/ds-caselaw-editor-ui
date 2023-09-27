@@ -18,3 +18,13 @@ def display_datetime_date(datetime):
 @register.filter
 def display_datetime_time(datetime):
     return datetime.strftime("%H:%M")
+
+
+@register.filter
+def display_friendly_version_type(string):
+    if string == "transform":
+        return "Submission"
+    elif string == "tna-enriched":
+        return "Enrichment"
+    else:
+        return ""

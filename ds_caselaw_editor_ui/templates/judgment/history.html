@@ -23,7 +23,7 @@
             </td>
             <td>{{ version.get_latest_manifestation_datetime|display_datetime_date }}</td>
             <td>{{ version.get_latest_manifestation_datetime|display_datetime_time }}</td>
-            <td>{{ judgment.document_noun|title }}</td>
+            <td>{{ version.get_latest_manifestation_type|display_friendly_version_type }}</td>
           </tr>
         {% endfor %}
       </tbody>

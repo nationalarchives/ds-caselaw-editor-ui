@@ -40,3 +40,4 @@ class TestDocumentHistory(TestCase):
         assert "Version 1" in decoded_response
         assert dt.strftime("%d %b %Y") in decoded_response
         assert dt.strftime("%H:%M") in decoded_response
+        assert "Submission" in decoded_response

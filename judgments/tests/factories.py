@@ -67,6 +67,7 @@ class JudgmentFactory:
         version = judgment.copy()
         version.version_number = 1
         version.get_latest_manifestation_datetime = datetime.datetime(2023, 9, 26, 12)
+        version.get_latest_manifestation_type = "transform"
         uri = judgment.uri
         _id = uri.split("/")[-1]
         version.uri.return_value = f"{uri}/_xml_versions/1-{_id}.xml"
