@@ -15,6 +15,15 @@ from judgments.utils.paginator import paginator
 ALLOWED_ORDERS = ["date", "-date"]
 
 
+def user_is_superuser_or_editor(user):
+    """
+    return: True if the User is an editor or superuser
+    """
+    editor = user.groups.filter(name="Editors").exists()
+    superuser = user.is_superuser
+    return editor or superuser
+
+
 def get_search_parameters(
     params,
     default_page=1,

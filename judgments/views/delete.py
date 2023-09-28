@@ -4,10 +4,17 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 from judgments.utils.aws import invalidate_caches
-from judgments.utils.view_helpers import get_document_by_uri_or_404
+from judgments.utils.view_helpers import (
+    get_document_by_uri_or_404,
+    user_is_superuser_or_editor,
+)
 
 
 def delete(request):
+    if not user_is_superuser_or_editor(request.user):
+        msg = "Only superusers and editors can delete documents"
+        raise PermissionDenied(msg)
+
     document_uri = request.POST.get("judgment_uri", None)
     document = get_document_by_uri_or_404(document_uri)
     if not document.safe_to_delete:
