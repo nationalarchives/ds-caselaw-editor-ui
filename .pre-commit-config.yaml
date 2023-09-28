@@ -43,8 +43,7 @@ repos:
     rev: v0.0.291
     hooks:
       - id: ruff
-        args: [--exit-non-zero-on-fix]
-        stages: [manual]
+        args: [--fix, --exit-non-zero-on-fix]
 
 # sets up .pre-commit-ci.yaml to ensure pre-commit dependencies stay up to date
 ci:

@@ -13,8 +13,7 @@ from caselawclient.Client import (
     MarklogicApiClient,
     MarklogicAPIError,
 )
-from caselawclient.models.documents import Document, DocumentURIString
-from caselawclient.Client import MarklogicAPIError, api_client
+from caselawclient.models.documents import DocumentURIString
 from caselawclient.models.press_summaries import PressSummary
 from django.conf import settings
 from django.contrib.auth.models import Group, User

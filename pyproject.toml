@@ -8,7 +8,7 @@ ignore = ["E501", "G004", "PLR2004", "RUF005", "RUF012"] # long lines, fstrings 
 target-version = "py39"
 extend-select = ["W", "B", "Q", "C90", "I", "UP", "YTT", "ASYNC", "S", "BLE", "A", "COM", "C4", "DTZ", "T10", "DJ", "EM", "EXE", "FA",
                  "ISC", "ICN", "G", "INP", "PIE", "T20", "PYI", "PT", "Q", "RSE", "RET", "SLF", "SLOT", "SIM", "TID", "TCH", "INT", "PTH",
-                 "FIX", "PGH", "PL", "TRY", "FLY", "PERF", "FURB", "RUF"]
+                 "FIX", "PGH", "PL", "TRY", "FLY", "PERF", "RUF"]
 unfixable = ["ERA"]
 
 # things skipped:
@@ -23,6 +23,7 @@ unfixable = ["ERA"]
 # FIX: flags todos: possible to add -- skipped for now
 # ERA: lots of false positives, not a good autofix
 # PD, NPY, AIR: ignored, panda / numpy / airflow specific
+# FURB: not yet out of preview
 
 
 
