@@ -1,4 +1,3 @@
-import json
 import logging
 import time
 
@@ -77,86 +76,6 @@ def generate_signed_asset_url(key: str):
     )
 
 
-def generate_docx_url(uri: str):
-    key = f'{uri}/{uri.replace("/", "_")}.docx'
-
-    return generate_signed_asset_url(key)
-
-
-def generate_pdf_url(uri: str):
-    key = f'{uri}/{uri.replace("/", "_")}.pdf'
-
-    return generate_signed_asset_url(key)
-
-
-def delete_from_bucket(uri: str, bucket: str) -> None:
-    client = create_s3_client()
-    response = client.list_objects(Bucket=bucket, Prefix=uri)
-
-    if response.get("Contents"):
-        objects_to_delete = [
-            {"Key": obj["Key"]} for obj in response.get("Contents", [])
-        ]
-        client.delete_objects(
-            Bucket=bucket,
-            Delete={
-                "Objects": objects_to_delete,
-            },
-        )
-
-
-def publish_documents(uri: str) -> None:
-    client = create_s3_client()
-
-    public_bucket = env("PUBLIC_ASSET_BUCKET")
-    private_bucket = env("PRIVATE_ASSET_BUCKET")
-
-    response = client.list_objects(Bucket=private_bucket, Prefix=uri)
-
-    for result in response.get("Contents", []):
-        key = str(result["Key"])
-
-        if not key.endswith("parser.log") and not key.endswith(".tar.gz"):
-            source = {"Bucket": private_bucket, "Key": key}
-            extra_args = {"ACL": "public-read"}
-            try:
-                client.copy(source, public_bucket, key, extra_args)
-            except botocore.client.ClientError as e:
-                logging.warning(
-                    f"Unable to copy file {key} to new location {public_bucket}, error: {e}",
-                )
-
-
-def unpublish_documents(uri: str) -> None:
-    delete_from_bucket(uri, env("PUBLIC_ASSET_BUCKET"))
-
-
-def notify_changed(uri: str, status: str, enrich: bool = False) -> None:
-    client = create_aws_client("sns")
-
-    message_attributes = {}
-    message_attributes["update_type"] = {
-        "DataType": "String",
-        "StringValue": status,
-    }
-    message_attributes["uri_reference"] = {
-        "DataType": "String",
-        "StringValue": uri,
-    }
-    if enrich:
-        message_attributes["trigger_enrichment"] = {
-            "DataType": "String",
-            "StringValue": "1",
-        }
-
-    client.publish(
-        TopicArn=env("SNS_TOPIC"),
-        Message=json.dumps({"uri_reference": uri, "status": status}),
-        Subject=f"Updated: {uri} {status}",
-        MessageAttributes=message_attributes,
-    )
-
-
 def invalidate_caches(uri: str) -> None:
     if (
         env("CLOUDFRONT_INVALIDATION_ACCESS_KEY_ID", default=None) is None
@@ -196,17 +115,3 @@ def invalidate_caches(uri: str) -> None:
             "CallerReference": str(time.time()),
         },
     )
-
-
-def get_parser_log(uri: str) -> str:
-    s3 = create_s3_client()
-    private_bucket = env("PRIVATE_ASSET_BUCKET", None)
-    # Locally, we may not have an S3 bucket set up; continue as best we can.
-    if not private_bucket:
-        return ""
-
-    try:
-        parser_log = s3.get_object(Bucket=private_bucket, Key=f"{uri}/parser.log")
-        return parser_log["Body"].read().decode("utf-8")
-    except KeyError:
-        return ""
