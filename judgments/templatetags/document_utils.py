@@ -11,20 +11,8 @@ def get_title_to_display_in_html(document_title, document_type):
 
 
 @register.filter
-def display_datetime_date(datetime):
-    return datetime.strftime("%d %b %Y")
-
-
-@register.filter
-def display_datetime_time(datetime):
-    return datetime.strftime("%H:%M")
-
-
-@register.filter
-def display_friendly_version_type(string):
-    if string == "transform":
-        return "Submission"
-    elif string == "tna-enriched":
-        return "Enrichment"
+def display_datetime(dt):
+    if dt is not None:
+        return dt.strftime("%d %b %Y %H:%M")
     else:
-        return ""
+        return None

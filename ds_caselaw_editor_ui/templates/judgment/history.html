@@ -10,9 +10,8 @@
       <thead>
         <tr>
           <th scope="col">Version</th>
-          <th scope="col">Date submitted</th>
-          <th scope="col">Time</th>
-          <th scope="col">Type</th>
+          <th scope="col">Date created</th>
+          <th scope="col">Details</th>
         </tr>
       </thead>
       <tbody>
@@ -21,9 +20,16 @@
             <td>
               <a href="{% url 'full-text-html' document_uri %}?version_uri={{ version.uri }}">Version {{ version.version_number }}</a>
             </td>
-            <td>{{ version.get_latest_manifestation_datetime|display_datetime_date }}</td>
-            <td>{{ version.get_latest_manifestation_datetime|display_datetime_time }}</td>
-            <td>{{ version.get_latest_manifestation_type|display_friendly_version_type }}</td>
+            <td>{{ version.version_created_datetime|display_datetime }}</td>
+            <td>
+              {% with annotation=version.annotation %}
+                {% if annotation %}
+                  {{ annotation }}
+                {% else %}
+                  <span class="muted">Unknown</span>
+                {% endif %}
+              {% endwith %}
+            </td>
           </tr>
         {% endfor %}
       </tbody>
