@@ -24,7 +24,7 @@
             <td>
               {% with annotation=version.annotation %}
                 {% if annotation %}
-                  {{ annotation }}
+                  {{ annotation|display_annotation_type }}
                 {% else %}
                   <span class="muted">Unknown</span>
                 {% endif %}

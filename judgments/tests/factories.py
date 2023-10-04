@@ -2,6 +2,7 @@ import datetime
 from unittest.mock import Mock
 
 import factory
+from caselawclient.client_helpers import VersionAnnotation, VersionType
 from caselawclient.models.judgments import Judgment
 from caselawclient.responses.search_result import SearchResult, SearchResultMetadata
 from django.contrib.auth import get_user_model
@@ -65,9 +66,11 @@ class JudgmentFactory:
 
         judgment = judgment_mock()
         version = judgment.copy()
+        annotation = VersionAnnotation(VersionType.SUBMISSION)
+        annotation.set_calling_function("factory build")
         version.version_number = 1
         version.version_created_datetime = datetime.datetime(2023, 9, 26, 12)
-        version.annotation = "edited by save_judgment_xml"
+        version.annotation = annotation.as_json
         uri = judgment.uri
         _id = uri.split("/")[-1]
         version.uri.return_value = f"{uri}/_xml_versions/1-{_id}.xml"
