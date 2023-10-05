@@ -1,3 +1,5 @@
+import json
+
 from django import template
 
 register = template.Library()
@@ -11,10 +13,22 @@ def get_title_to_display_in_html(document_title, document_type):
 
 
 @register.filter
-def display_datetime_date(datetime):
-    return datetime.strftime("%d %b %Y")
+def display_datetime(dt):
+    return dt.strftime("%d %b %Y %H:%M")
+
+
+VERSION_TYPE_LABELS = {
+    "submission": "Submitted",
+    "enrichment": "Enriched",
+    "edit": "Edited",
+}
 
 
 @register.filter
-def display_datetime_time(datetime):
-    return datetime.strftime("%H:%M")
+def display_annotation_type(annotation):
+    try:
+        annotation_data = json.loads(annotation)
+        version_type = annotation_data.get("type")
+        return VERSION_TYPE_LABELS.get(version_type, version_type)
+    except (TypeError, json.JSONDecodeError):
+        return annotation

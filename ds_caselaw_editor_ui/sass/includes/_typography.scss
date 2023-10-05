@@ -19,3 +19,7 @@ a {
     @include focus-default;
   }
 }
+
+.muted {
+  color: $color__dark-grey;
+}
