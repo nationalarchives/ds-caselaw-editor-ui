@@ -81,7 +81,6 @@ def run(c):
         local("docker logs marklogic > marklogic.log")
     except UnexpectedExit:
         print("Unable to collect MarkLogic logs!")
-        pass
     with contextlib.suppress(KeyboardInterrupt):
         django_exec("python manage.py runserver 0.0.0.0:3000")
 
