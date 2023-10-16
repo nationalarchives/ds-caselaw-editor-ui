@@ -62,6 +62,10 @@ $("#judgment-toolbar__more-button").on("click", function () {
   $("#judgment-toolbar__more-button").toggleClass("toggled");
 });
 
+$(".document-timeline__debug-toggle").on("click", function () {
+  $("#debug-v" + $(this).data("target-version")).toggle();
+});
+
 $(".judgments-list__judgment-assign-form").on("submit", function (event) {
   event.preventDefault();
   const form = $(this);

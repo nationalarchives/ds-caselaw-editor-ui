@@ -7,7 +7,10 @@ from caselawclient.models.documents import (
 )
 from django.test import TestCase
 
-from judgments.templatetags.document_utils import display_annotation_type
+from judgments.templatetags.document_utils import (
+    display_annotation_type,
+    unpack_structured_annotation,
+)
 from judgments.templatetags.status_tag_css import status_tag_colour
 
 
@@ -23,6 +26,19 @@ class TestStatusTagColour:
 
     def test_colour_undefined(self):
         assert status_tag_colour("undefined") == "grey"
+
+
+class TestUnpackStructuredAnnotation(TestCase):
+    def test_allows_empty_annotation(self):
+        assert unpack_structured_annotation(None) is None
+
+    def test_displays_string_annotation(self):
+        annotation = "This is an annotation"
+        assert unpack_structured_annotation(annotation) is None
+
+    def test_displays_submission_type(self):
+        annotation = json.dumps({"type": "submission"})
+        assert unpack_structured_annotation(annotation) == {"type": "submission"}
 
 
 class TestDisplayAnnotationType(TestCase):
