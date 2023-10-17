@@ -1,3 +1,11 @@
+.button {
+  &-small {
+    padding: 0.4rem 0.5rem !important;
+    margin-top: 0.5em !important;
+    font-size: 0.8rem !important;
+  }
+}
+
 .button-cta {
   @include call-to-action-button;
   border: 2px solid $color__cta-background;
