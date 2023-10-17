@@ -54,8 +54,9 @@
         <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
         <input type="submit"
                name="assign"
-               class="judgment-toolbar__delete"
-               value="Delete document" />
+               class="button-danger button-small"
+               value="Delete document"
+               {% if not document.safe_to_delete %}disabled{% endif %} />
       </form>
     </div>
   {% endif %}
