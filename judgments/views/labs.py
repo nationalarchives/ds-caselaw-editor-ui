@@ -9,7 +9,12 @@ class Labs(TemplateView):
     #     "title": "Embedded PDF",
     #     "description": "View PDFs directly in the browser without needing to download them.",
     # },
-    EXPERIMENTS: dict[str, dict] = {}
+    EXPERIMENTS: dict[str, dict] = {
+        "history_timeline": {
+            "title": "Document history timeline",
+            "description": "Display information about versions of a document as a timeline rather than a table",
+        },
+    }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

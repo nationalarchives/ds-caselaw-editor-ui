@@ -1,0 +1,62 @@
+.document-timeline {
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 32px 32px;
+  border-left: 2px solid $color__dark-grey;
+
+  &__item {
+    display: flex;
+    gap: 24px;
+    margin-top: 24px;
+
+    &__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-left: -52px;
+      flex-shrink: 0;
+      overflow: hidden;
+      box-shadow: 0 0 0 6px #fff;
+      svg {
+        width: 20px;
+        height: 20px;
+
+        &.small {
+          width: 10px;
+          height: 10px;
+        }
+      }
+
+      background-color: $color__light-grey;
+      color: $color__dark-grey;
+    }
+
+    &__description {
+      display: flex;
+      padding-top: 6px;
+      gap: 8px;
+
+      img {
+        flex-shrink: 0;
+      }
+
+      a {
+        font-weight: bold;
+      }
+    }
+
+    &__comment {
+      margin-top: 12px;
+      border: 1px solid $color__light-grey;
+      box-shadow: 0 4px 4px 0 $color__light-grey;
+      border-radius: 6px;
+      padding: 16px;
+      font-size: 1rem;
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{% load document_utils user_permissions %}
+{% with annotation=version.annotation structured_annotation=version.annotation|unpack_structured_annotation %}
+  <li class="document-timeline__item">
+    <span class="document-timeline__item__icon">
+      {% if not annotation or not structured_annotation %}
+        <svg class="small"
+             xmlns="http://www.w3.org/2000/svg"
+             height="1em"
+             viewBox="0 0 512 512">
+          <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+          <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
+        </svg>
+      {% elif structured_annotation.type == "submission" %}
+        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+          <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+          <path d="M121 32C91.6 32 66 52 58.9 80.5L1.9 308.4C.6 313.5 0 318.7 0 323.9V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V323.9c0-5.2-.6-10.4-1.9-15.5l-57-227.9C446 52 420.4 32 391 32H121zm0 64H391l48 192H387.8c-12.1 0-23.2 6.8-28.6 17.7l-14.3 28.6c-5.4 10.8-16.5 17.7-28.6 17.7H195.8c-12.1 0-23.2-6.8-28.6-17.7l-14.3-28.6c-5.4-10.8-16.5-17.7-28.6-17.7H73L121 96z" />
+        </svg>
+      {% else %}
+        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512">
+          <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+          <path d="M80 160c0-35.3 28.7-64 64-64h32c35.3 0 64 28.7 64 64v3.6c0 21.8-11.1 42.1-29.4 53.8l-42.2 27.1c-25.2 16.2-40.4 44.1-40.4 74V320c0 17.7 14.3 32 32 32s32-14.3 32-32v-1.4c0-8.2 4.2-15.8 11-20.2l42.2-27.1c36.6-23.6 58.8-64.1 58.8-107.7V160c0-70.7-57.3-128-128-128H144C73.3 32 16 89.3 16 160c0 17.7 14.3 32 32 32s32-14.3 32-32zm80 320a40 40 0 1 0 0-80 40 40 0 1 0 0 80z" />
+        </svg>
+      {% endif %}
+    </span>
+    <div>
+      <div class="document-timeline__item__description">
+      <span><a href="{% url 'full-text-html' document_uri %}?version_uri={{ version.uri }}">Version {{ version.version_number }}</a>
+      {% if structured_annotation.type == "submission" %}
+        submitted
+      {% elif structured_annotation.type == "enrichment" %}
+        enriched
+      {% elif structured_annotation.type == "edit" %}
+        edited
+      {% endif %}
+      <span class="muted">on</span> <time datetime="{{ version.version_created_datetime|date:"c" }}">{{ version.version_created_datetime|display_datetime }}</time></span>
+    </div>
+    {% if structured_annotation %}
+      <div class="document-timeline__item__comment">
+        {% if structured_annotation.message %}<p>{{ structured_annotation.message }}</p>{% endif %}
+        {% if structured_annotation.type == "submission" %}
+          {% include "includes/timeline/submission_structured_data.html" %}
+        {% endif %}
+        {% if user|is_developer %}
+          <p>
+            <small>
+              {% if structured_annotation.calling_agent %}
+                {{ structured_annotation.calling_agent }}
+              {% else %}
+                Unknown agent
+              {% endif %}
+            • <a href="#"
+    class="document-timeline__debug-toggle"
+    data-target-version="{{ version.version_number }}">Debug</a></small>
+          </p>
+          <div id="debug-v{{ version.version_number }}" hidden>
+            <pre class="muted">{{ annotation|render_structured_annotation }}</pre>
+          </div>
+        {% endif %}
+      </div>
+    {% elif annotation %}
+      <div class="document-timeline__item__comment">
+        <p>
+          <small class="muted">Legacy annotation:</small>
+          <br>
+          {{ annotation }}
+        </p>
+      </div>
+    {% endif %}
+  </div>
+</li>
+{% endwith %}

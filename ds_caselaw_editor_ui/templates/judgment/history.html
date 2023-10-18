@@ -1,9 +1,17 @@
 {% extends "layouts/judgment_with_sidebar.html" %}
-{% load i18n document_utils %}
+{% load i18n document_utils waffle_tags %}
 {% block judgment_header %}
   {% include "includes/judgment/metadata_panel_static.html" with judgment=document %}
 {% endblock judgment_header %}
 {% block judgment_content %}
+  {% flag history_timeline %}
+  <h2>Document history</h2>
+  <ol class="document-timeline">
+    {% for version in document.versions_as_documents %}
+      {% include "includes/timeline/timeline_item.html" %}
+    {% endfor %}
+  </ol>
+{% else %}
   <div class="document-version-history">
     <h2>Document version history</h2>
     <table class="document-version-history__table table">
@@ -35,4 +43,5 @@
       </tbody>
     </table>
   </div>
+{% endflag %}
 {% endblock judgment_content %}

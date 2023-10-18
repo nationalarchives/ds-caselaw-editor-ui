@@ -24,6 +24,13 @@ def user_is_superuser_or_editor(user):
     return editor or superuser
 
 
+def user_is_developer(user):
+    """
+    return: True if the User is a developer
+    """
+    return user.groups.filter(name="Developers").exists()
+
+
 def get_search_parameters(
     params,
     default_page=1,
