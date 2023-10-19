@@ -6,21 +6,27 @@
   }
 }
 
+@mixin button-disabled {
+  color: $color__dark-grey;
+  background-color: transparent;
+  border-color: $color__grey;
+  &:focus,
+  &:hover {
+    outline: none;
+    background-color: transparent;
+    color: $color__dark-grey;
+    text-decoration: none;
+    cursor: not-allowed;
+  }
+}
+
 .button-cta {
   @include call-to-action-button;
   border: 2px solid $color__cta-background;
 
   &:disabled,
   &[aria-disabled="true"] {
-    background-color: $color__dark-grey;
-    &:focus,
-    &:hover {
-      outline: none;
-      background-color: $color__dark-grey;
-      color: $color__white;
-      text-decoration: none;
-      cursor: not-allowed;
-    }
+    @include button-disabled;
   }
 }
 
@@ -41,17 +47,7 @@
 
   &:disabled,
   &[aria-disabled="true"] {
-    color: $color__dark-grey;
-    background-color: transparent;
-    border-color: $color__grey;
-    &:focus,
-    &:hover {
-      outline: none;
-      background-color: transparent;
-      color: $color__dark-grey;
-      text-decoration: none;
-      cursor: not-allowed;
-    }
+    @include button-disabled;
   }
 }
 
@@ -75,17 +71,6 @@
 
   &:disabled,
   &[aria-disabled="true"] {
-    $color__desaturated-red: desaturate($color__red, 60%);
-    color: $color__desaturated-red;
-    background-color: $color__white;
-    border-color: lighten($color__desaturated-red, 30%);
-    &:focus,
-    &:hover {
-      outline: none;
-      background-color: $color__white;
-      color: $color__desaturated-red;
-      text-decoration: none;
-      cursor: not-allowed;
-    }
+    @include button-disabled;
   }
 }
