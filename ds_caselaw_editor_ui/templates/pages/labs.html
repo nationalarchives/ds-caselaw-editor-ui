@@ -4,6 +4,10 @@
   <div class="standard-text-template">
     <h1>Labs</h1>
     <p>Labs let you try out new features. We're always open to your feedback on them - good or bad!</p>
+    <p>
+      Toggling these features will set a session cookie starting with "dwft_" with a value of True
+      or False to let us know whether you want a particular lab feature or not.
+    </p>
     <h2>Current experiments</h2>
     {% for experiment in experiments %}
       <h3>{{ experiment.title }}</h3>
