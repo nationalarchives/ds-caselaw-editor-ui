@@ -8,6 +8,8 @@
     {% endif %}
   </li>
   <li>Press Summary</li>
-{% else %}
+{% elif document_type == "judgment" %}
   <li>{{ title|default:"[Untitled Document]" }}</li>
+{% elif title %}
+  <li>{{ title }}</li>
 {% endif %}

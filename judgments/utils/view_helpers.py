@@ -33,7 +33,7 @@ def user_is_developer(user):
     """
     return: True if the User is part of the "Developers" group
     """
-    return user.groups.filter(name="Developers").exists()
+    return user.groups.filter(name="Developers").exists() if user else None
 
 
 def get_search_parameters(
