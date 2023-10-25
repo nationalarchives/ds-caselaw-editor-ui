@@ -46,7 +46,7 @@
       </li>
     </ul>
   </div>
-  {% if user|is_superuser_or_editor %}
+  {% if user|is_superuser or user|is_editor %}
     <div class="judgment-toolbar__more__menu__group">
       <h4>Editor tools</h4>
       <form action="{% url 'delete' %}" method="post">
