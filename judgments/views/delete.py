@@ -6,12 +6,13 @@ from django.urls import reverse
 from judgments.utils.aws import invalidate_caches
 from judgments.utils.view_helpers import (
     get_document_by_uri_or_404,
-    user_is_superuser_or_editor,
+    user_is_editor,
+    user_is_superuser,
 )
 
 
 def delete(request):
-    if not user_is_superuser_or_editor(request.user):
+    if not user_is_superuser(request.user) or not user_is_editor(request.user):
         msg = "Only superusers and editors can delete documents"
         raise PermissionDenied(msg)
 
