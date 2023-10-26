@@ -15,20 +15,25 @@ from judgments.utils.paginator import paginator
 ALLOWED_ORDERS = ["date", "-date"]
 
 
-def user_is_superuser_or_editor(user):
+def user_is_superuser(user):
     """
-    return: True if the User is an editor or superuser
+    return: True if the User is a superuser
     """
-    editor = user.groups.filter(name="Editors").exists()
-    superuser = user.is_superuser
-    return editor or superuser
+    return user.is_superuser if user else None
+
+
+def user_is_editor(user):
+    """
+    return: True if the User is part of the "Editors" group
+    """
+    return user.groups.filter(name="Editors").exists() if user else None
 
 
 def user_is_developer(user):
     """
-    return: True if the User is a developer
+    return: True if the User is part of the "Developers" group
     """
-    return user.groups.filter(name="Developers").exists()
+    return user.groups.filter(name="Developers").exists() if user else None
 
 
 def get_search_parameters(

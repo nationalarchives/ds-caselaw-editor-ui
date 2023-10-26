@@ -10,7 +10,8 @@ from factories import JudgmentFactory
 from judgments.utils.view_helpers import (
     get_document_by_uri_or_404,
     user_is_developer,
-    user_is_superuser_or_editor,
+    user_is_editor,
+    user_is_superuser,
 )
 
 
@@ -51,13 +52,19 @@ class TestGroupCheck(TestCase):
         self.standard_user = User.objects.get_or_create(username="alice")[0]
         self.super_user = User.objects.create_superuser(username="clark")
 
-    def test_editor_or_superuser(self):
-        assert user_is_superuser_or_editor(self.standard_user) is False
-        assert user_is_superuser_or_editor(self.super_user) is True
-        assert user_is_superuser_or_editor(self.editor_user) is True
-        assert user_is_superuser_or_editor(self.developer_user) is False
+    def test_is_superuser(self):
+        assert user_is_superuser(self.standard_user) is False
+        assert user_is_superuser(self.super_user) is True
+        assert user_is_superuser(self.editor_user) is False
+        assert user_is_superuser(self.developer_user) is False
 
-    def test_developer(self):
+    def test_is_editor(self):
+        assert user_is_editor(self.standard_user) is False
+        assert user_is_editor(self.super_user) is False
+        assert user_is_editor(self.editor_user) is True
+        assert user_is_editor(self.developer_user) is False
+
+    def test_is_developer(self):
         assert user_is_developer(self.standard_user) is False
         assert user_is_developer(self.super_user) is False
         assert user_is_developer(self.editor_user) is False

@@ -2,13 +2,13 @@ from unittest.mock import patch
 
 import pytest
 from django.http import Http404
-from django.test import Client
+from django.test import Client, TestCase
 
 from judgments.tests.factories import JudgmentFactory, User
 
 
 @pytest.mark.django_db()
-class TestBreadcrumbs:
+class TestBreadcrumbs(TestCase):
     client = Client(raise_request_exception=False)
 
     @patch("judgments.views.index.get_search_results")
@@ -29,18 +29,16 @@ class TestBreadcrumbs:
         }
         response = self.client.get("/")
         breadcrumb_html = """
-        <div class="page-header__breadcrumb">
-            <nav class="page-header__breadcrumb-container"aria-label="Breadcrumb">
-                <span class="page-header__breadcrumb-you-are-in">You are in:</span>
-                <ol>
-                    <li>
-                        <a href="/">Find and manage case law</a>
-                    </li>
-                </ol>
-            </nav>
-        </div>
+        <nav class="page-header__breadcrumbs-container" aria-label="Breadcrumb">
+            <span class="page-header__breadcrumbs-you-are-in">You are in:</span>
+            <ol>
+                <li>
+                    <a href="/">Find and manage case law</a>
+                </li>
+            </ol>
+        </nav>
         """
-        assert_contains_html(response, breadcrumb_html)
+        self.assertContains(response, breadcrumb_html, html=True)
 
     @patch("judgments.views.results.get_search_results")
     def test_breadcrumb_when_search_results(self, mock_get_search_results):
@@ -61,21 +59,19 @@ class TestBreadcrumbs:
         }
         response = self.client.get("/results?foo")
         breadcrumb_html = """
-        <div class="page-header__breadcrumb">
-            <nav class="page-header__breadcrumb-container"aria-label="Breadcrumb">
-                <span class="page-header__breadcrumb-you-are-in">You are in:</span>
-                <ol>
-                    <li>
-                        <a href="/">Find and manage case law</a>
-                    </li>
-                    <li>
-                        Search results
-                    </li>
-                </ol>
-            </nav>
-        </div>
+        <nav class="page-header__breadcrumbs-container" aria-label="Breadcrumb">
+            <span class="page-header__breadcrumbs-you-are-in">You are in:</span>
+            <ol>
+                <li>
+                    <a href="/">Find and manage case law</a>
+                </li>
+                <li>
+                    Search results
+                </li>
+            </ol>
+        </nav>
         """
-        assert_contains_html(response, breadcrumb_html)
+        self.assertContains(response, breadcrumb_html, html=True)
 
     @patch("judgments.utils.view_helpers.get_linked_document_uri")
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
@@ -99,22 +95,20 @@ class TestBreadcrumbs:
         )
         response = self.client.get("/eat/2023/1/press-summary/1/")
         breadcrumb_html = """
-        <div class="page-header__breadcrumb">
-            <nav class="page-header__breadcrumb-container"aria-label="Breadcrumb">
-                <span class="page-header__breadcrumb-you-are-in">You are in:</span>
-                <ol>
-                    <li>
-                        <a href="/">Find and manage case law</a>
-                    </li>
-                    <li>
-                        <a href="/my_related_document_uri">Judgment A</a>
-                    </li>
-                    <li>Press Summary</li>
-                </ol>
-            </nav>
-        </div>
+        <nav class="page-header__breadcrumbs-container" aria-label="Breadcrumb">
+            <span class="page-header__breadcrumbs-you-are-in">You are in:</span>
+            <ol>
+                <li>
+                    <a href="/">Find and manage case law</a>
+                </li>
+                <li>
+                    <a href="/my_related_document_uri">Judgment A</a>
+                </li>
+                <li>Press Summary</li>
+            </ol>
+        </nav>
         """
-        assert_contains_html(response, breadcrumb_html)
+        self.assertContains(response, breadcrumb_html, html=True)
 
     @patch("judgments.utils.view_helpers.get_linked_document_uri")
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
@@ -137,19 +131,17 @@ class TestBreadcrumbs:
         )
         response = self.client.get("/eat/2023/1")
         breadcrumb_html = """
-        <div class="page-header__breadcrumb">
-            <nav class="page-header__breadcrumb-container"aria-label="Breadcrumb">
-                <span class="page-header__breadcrumb-you-are-in">You are in:</span>
-                <ol>
-                    <li>
-                        <a href="/">Find and manage case law</a>
-                    </li>
-                    <li>Judgment A</li>
-                </ol>
-            </nav>
-        </div>
+        <nav class="page-header__breadcrumbs-container" aria-label="Breadcrumb">
+            <span class="page-header__breadcrumbs-you-are-in">You are in:</span>
+            <ol>
+                <li>
+                    <a href="/">Find and manage case law</a>
+                </li>
+                <li>Judgment A</li>
+            </ol>
+        </nav>
         """
-        assert_contains_html(response, breadcrumb_html)
+        self.assertContains(response, breadcrumb_html, html=True)
 
     @patch("judgments.utils.view_helpers.get_linked_document_uri")
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
@@ -171,33 +163,22 @@ class TestBreadcrumbs:
         )
         response = self.client.get("/eat/2023/1")
         breadcrumb_html = """
-        <div class="page-header__breadcrumb">
-            <nav class="page-header__breadcrumb-container"aria-label="Breadcrumb">
-                <span class="page-header__breadcrumb-you-are-in">You are in:</span>
-                <ol>
-                    <li>
-                        <a href="/">Find and manage case law</a>
-                    </li>
-                    <li>[Untitled Document]</li>
-                </ol>
-            </nav>
-        </div>
+        <nav class="page-header__breadcrumbs-container" aria-label="Breadcrumb">
+            <span class="page-header__breadcrumbs-you-are-in">You are in:</span>
+            <ol>
+                <li>
+                    <a href="/">Find and manage case law</a>
+                </li>
+                <li>[Untitled Document]</li>
+            </ol>
+        </nav>
         """
-        assert_contains_html(response, breadcrumb_html)
+        self.assertContains(response, breadcrumb_html, html=True)
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
-    @pytest.mark.parametrize(
-        ("http_error", "expected_breadcrumb"),
-        [
-            (Http404, "Page not found"),
-            (Exception, "Server Error"),
-        ],
-    )
-    def test_breadcrumb_when_errors(
+    def test_breadcrumb_when_404(
         self,
         mock_get_document_by_uri,
-        http_error,
-        expected_breadcrumb,
     ):
         """
         GIVEN an URI matching the detail URI structure but does not match a valid document
@@ -206,36 +187,47 @@ class TestBreadcrumbs:
         """
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
 
-        def get_document_by_uri_side_effect(document_uri):
-            raise http_error
-
-        mock_get_document_by_uri.side_effect = get_document_by_uri_side_effect
+        mock_get_document_by_uri.side_effect = Http404
 
         response = self.client.get("/eat/2023/1/")
-        breadcrumb_html = f"""
-        <div class="page-header__breadcrumb">
-            <nav class="page-header__breadcrumb-container"aria-label="Breadcrumb">
-                <span class="page-header__breadcrumb-you-are-in">You are in:</span>
-                <ol>
-                    <li>
-                        <a href="/">Find and manage case law</a>
-                    </li>
-                    <li>{expected_breadcrumb}</li>
-                </ol>
-            </nav>
-        </div>
+        breadcrumb_html = """
+        <nav class="page-header__breadcrumbs-container" aria-label="Breadcrumb">
+            <span class="page-header__breadcrumbs-you-are-in">You are in:</span>
+            <ol>
+                <li>
+                    <a href="/">Find and manage case law</a>
+                </li>
+                <li>Page not found</li>
+            </ol>
+        </nav>
         """
-        assert_contains_html(response, breadcrumb_html)
+        self.assertContains(response, breadcrumb_html, html=True, status_code=404)
 
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    def test_breadcrumb_when_server_error(
+        self,
+        mock_get_document_by_uri,
+    ):
+        """
+        GIVEN an URI causing a server error
+        WHEN a request is made with the URI
+        THEN the response should contain breadcrumbs including the appropriate error reference
+        """
+        self.client.raise_request_exception = False
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
 
-def assert_contains_html(response, html):
-    """
-    Asserts that the given HTML is contained within the response content.
+        mock_get_document_by_uri.side_effect = Exception
 
-    Raises:
-        AssertionError: If the HTML is not found in the response content.
-    """
-    assert html.replace(" ", "").replace("\n", "") in response.content.decode().replace(
-        " ",
-        "",
-    ).replace("\n", "")
+        response = self.client.get("/eat/2023/1/")
+        breadcrumb_html = """
+        <nav class="page-header__breadcrumbs-container" aria-label="Breadcrumb">
+            <span class="page-header__breadcrumbs-you-are-in">You are in:</span>
+            <ol>
+                <li>
+                    <a href="/">Find and manage case law</a>
+                </li>
+                <li>Server Error</li>
+            </ol>
+        </nav>
+        """
+        self.assertContains(response, breadcrumb_html, html=True, status_code=500)

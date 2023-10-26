@@ -7,7 +7,7 @@
 
   padding: 0;
 
-  &__breadcrumb {
+  &__navbar {
     flex-grow: 1;
 
     display: block;
@@ -32,7 +32,15 @@
       position: relative;
       margin-right: calc($spacer__unit / 2);
       color: $color__white;
+    }
 
+    &-right {
+      text-align: right;
+    }
+  }
+
+  &__breadcrumbs {
+    li {
       &:not(:nth-child(1)) {
         padding-left: $spacer__unit;
 
