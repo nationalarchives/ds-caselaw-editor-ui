@@ -1,0 +1,14 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% block content %}
+  <div class="standard-text-template">
+    <h1>Stats</h1>
+    <p>
+      <b>Stats is a labs feature, and may change at any time without warning. Please let the devs know what works and doesn't work!</b>
+    </p>
+    <h2>Combined statistics</h2>
+    <p>
+      <a href="{% url 'stats_combined_csv' %}" class="button-cta">Download combined statistics CSV</a>
+    </p>
+  </div>
+{% endblock content %}

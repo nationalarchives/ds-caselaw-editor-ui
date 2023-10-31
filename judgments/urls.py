@@ -36,6 +36,7 @@ from .views.judgment_publish import (
 from .views.labs import Labs
 from .views.results import results
 from .views.signed_asset import redirect_to_signed_asset
+from .views.stats import Stats, stream_combined_stats_table_as_csv
 from .views.style_guide import (
     StyleGuideBranding,
     StyleGuideComponents,
@@ -66,6 +67,14 @@ urlpatterns = [
     path("xml", xml_view_redirect),
     # Labs
     path("labs", Labs.as_view(), name="labs"),
+    # Stats
+    path("stats", Stats.as_view(), name="stats"),
+    path(
+        "stats/combined-csv",
+        stream_combined_stats_table_as_csv,
+        name="stats_combined_csv",
+    ),
+    # Style guide
     path("style_guide", style_guide_redirect, name="style_guide"),
     path(
         "style_guide/components",
