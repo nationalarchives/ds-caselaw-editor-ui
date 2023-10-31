@@ -41,7 +41,7 @@ SECRET_KEY = "not-secret-whatsoever"  # noqa: S105
 # django-debug-toolbar
 # ------------------------------------------------------------------------------
 def show_debug_toolbar(request):
-    return True
+    return False
 
 
 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#prerequisites
