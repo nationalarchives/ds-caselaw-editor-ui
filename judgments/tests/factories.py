@@ -66,8 +66,9 @@ class JudgmentFactory:
 
         judgment = judgment_mock()
         version = judgment.copy()
-        annotation = VersionAnnotation(VersionType.SUBMISSION)
+        annotation = VersionAnnotation(VersionType.SUBMISSION, automated=True)
         annotation.set_calling_function("factory build")
+        annotation.set_calling_agent("EUI Test")
         version.version_number = 1
         version.version_created_datetime = datetime.datetime(2023, 9, 26, 12)
         version.annotation = annotation.as_json
