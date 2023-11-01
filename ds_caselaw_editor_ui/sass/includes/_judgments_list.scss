@@ -13,6 +13,7 @@
     font-weight: normal;
     font-size: 1.8rem;
     margin: 0 0 calc($spacer__unit);
+    margin-left: 0.5rem;
   }
 
   &__table-header {
@@ -123,7 +124,7 @@
       }
       span:nth-child(even) {
         float: left;
-        width: 66%;
+        width: 72%;
       }
     }
   }

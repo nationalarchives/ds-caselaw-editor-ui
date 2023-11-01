@@ -6,6 +6,7 @@
   box-sizing: border-box;
   padding: 0 calc($spacer__unit / 2);
   border-bottom: 1px solid $color__almost-black;
+  margin-left: -1.5rem;
 
   &__details {
     list-style-type: none;
