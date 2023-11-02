@@ -25,11 +25,13 @@
       box-sizing: border-box;
       span:nth-child(odd) {
         float: left;
-        width: 27%;
+        width: 19%;
+        margin-right: 0rem;
       }
       span:nth-child(even) {
         float: left;
         width: 66%;
+        margin-left: 0rem;
       }
     }
   }
