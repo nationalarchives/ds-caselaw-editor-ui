@@ -4,7 +4,6 @@ from unittest.mock import patch
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
-from django.utils.translation import gettext
 from factories import SearchResultFactory, SearchResultMetadataFactory
 
 
