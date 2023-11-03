@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.utils.translation import gettext
 
 from judgments.utils.aws import invalidate_caches
 from judgments.utils.link_generators import build_confirmation_email_link
@@ -40,7 +39,7 @@ def publish(request):
     judgment = get_document_by_uri_or_404(judgment_uri)
     judgment.publish()
     invalidate_caches(judgment.uri)
-    messages.success(request, gettext("Document successfully published"))
+    messages.success(request, "Document successfully published")
     return HttpResponseRedirect(
         reverse("publish-document-success", kwargs={"document_uri": judgment.uri}),
     )
@@ -66,7 +65,7 @@ def unpublish(request):
     invalidate_caches(judgment.uri)
     messages.success(
         request,
-        gettext("Document successfully unpublished"),
+        "Document successfully unpublished",
     )
     return HttpResponseRedirect(
         reverse("unpublish-document-success", kwargs={"document_uri": judgment.uri}),

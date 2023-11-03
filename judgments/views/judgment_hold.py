@@ -38,7 +38,7 @@ def hold(request):
     judgment = get_document_by_uri_or_404(judgment_uri)
     judgment.hold()
     invalidate_caches(judgment.uri)
-    messages.success(request, gettext("Document successfully put on hold"))
+    messages.success(request, "Document successfully put on hold")
     return HttpResponseRedirect(
         reverse("hold-document-success", kwargs={"document_uri": judgment.uri}),
     )
