@@ -40,7 +40,7 @@ def publish(request):
     judgment = get_document_by_uri_or_404(judgment_uri)
     judgment.publish()
     invalidate_caches(judgment.uri)
-    messages.success(request, gettext("judgment.publish.publish_success_flash_message"))
+    messages.success(request, gettext("Document successfully published"))
     return HttpResponseRedirect(
         reverse("publish-document-success", kwargs={"document_uri": judgment.uri}),
     )
@@ -66,7 +66,7 @@ def unpublish(request):
     invalidate_caches(judgment.uri)
     messages.success(
         request,
-        gettext("judgment.publish.unpublish_success_flash_message"),
+        gettext("Document successfully unpublished"),
     )
     return HttpResponseRedirect(
         reverse("unpublish-document-success", kwargs={"document_uri": judgment.uri}),

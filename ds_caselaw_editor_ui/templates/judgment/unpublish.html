@@ -4,14 +4,13 @@
   {% include "includes/judgment/metadata_panel_static.html" with judgment=judgment %}
 {% endblock judgment_header %}
 {% block judgment_content %}
-  <h2>{% translate "judgment.publish.unpublish_title" %}</h2>
+  <h2>Unpublish {{ judgment.name }}?</h2>
   <form action="{% url 'unpublish' %}" method="post">
     {% csrf_token %}
     <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
     {% flag "notes_on_state_change" %}
     {% include "includes/note-form.html" %}
   {% endflag %}
-  <input type="submit"
-         value="{% translate "judgment.unpublish.unpublish_button" %}" />
+  <input type="submit" value="Confirm" />
 </form>
 {% endblock judgment_content %}
