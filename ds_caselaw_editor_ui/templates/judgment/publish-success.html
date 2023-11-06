@@ -4,7 +4,7 @@
   {% include "includes/judgment/metadata_panel_static.html" with judgment=judgment %}
 {% endblock judgment_header %}
 {% block judgment_content %}
-  <h2>Success - this document has been published</h2>
+  <h2>{{ judgment.name }} has been published</h2>
   <p class="judgment-component__live-link">
     <a href="{{ judgment.public_uri }}"
        target="_blank"

@@ -4,7 +4,6 @@ from unittest.mock import patch
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
-from django.utils.translation import gettext
 from factories import SearchResultFactory, SearchResultMetadataFactory
 
 
@@ -37,8 +36,7 @@ class TestJudgmentView(TestCase):
         response = self.client.get(reverse("home"))
 
         decoded_response = response.content.decode("utf-8")
-
-        assert "{}: 2".format(gettext("home.recent")) in decoded_response
+        assert "2 unpublished documents" in decoded_response
 
     @patch("judgments.utils.view_helpers.search_and_parse_response")
     def test_judgment_list_items(self, mock_search_results):

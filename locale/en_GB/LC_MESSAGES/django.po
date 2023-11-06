@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-31 10:26+0000\n"
+"POT-Creation-Date: 2023-11-03 16:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -167,18 +167,11 @@ msgstr "Download PDF"
 msgid "judgment.download_xml"
 msgstr "Download XML"
 
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_header.html
-msgid "judgments.details"
-msgstr "Document details:"
-
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_header.html
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
+#, fuzzy
+#| msgid "judgments.submitter"
 msgid "judgments.submission_datetime"
-msgstr "Submitted:"
-
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_header.html
-msgid "judgments.submission_assigned"
-msgstr "Assigned:"
+msgstr "Submitter"
 
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
 #: judgments/utils/link_generators.py
@@ -198,11 +191,6 @@ msgid "judgments.assigned_to"
 msgstr "Assigned to:"
 
 #: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html
-#: judgments/tests/test_judgment_list.py
-msgid "home.recent"
-msgstr "Unpublished documents"
-
-#: ds_caselaw_editor_ui/templates/includes/unpublished_judgments.html
 #: ds_caselaw_editor_ui/templates/judgment/results.html
 msgid "judgments.allrecent"
 msgstr "See all recent documents"
@@ -217,21 +205,11 @@ msgstr ""
 msgid "judgment.back_to_judgment"
 msgstr "Back to document"
 
-#: ds_caselaw_editor_ui/templates/judgment/hold-success.html
-msgid "judgment.hold.success"
-msgstr "This document has been put on hold"
-
-#: ds_caselaw_editor_ui/templates/judgment/hold.html
-msgid "judgment.put.on.hold"
-msgstr "Put this document on hold"
-
-#: ds_caselaw_editor_ui/templates/judgment/hold.html
-msgid "judgment.hold_this_judgment"
-msgstr "Put document on hold"
-
 #: ds_caselaw_editor_ui/templates/judgment/publish.html
+#, fuzzy
+#| msgid "judgment.hold_this_judgment"
 msgid "judgment.publish_this_judgment"
-msgstr "Publish this document"
+msgstr "Put document on hold"
 
 #: ds_caselaw_editor_ui/templates/judgment/results.html
 #: judgments/views/results.py
@@ -242,34 +220,6 @@ msgstr "Search results"
 #: ds_caselaw_editor_ui/templates/layouts/base.html
 msgid "common.findcaselaw"
 msgstr "Find and manage case law"
-
-#: ds_caselaw_editor_ui/templates/judgment/unhold-success.html
-msgid "judgment.hold.unhold_success_title"
-msgstr "This document has been taken off hold"
-
-#: ds_caselaw_editor_ui/templates/judgment/unhold-success.html
-msgid "judgment.unhold.success"
-msgstr "This document is no longer on hold."
-
-#: ds_caselaw_editor_ui/templates/judgment/unhold.html
-msgid "judgment.hold.unhold_title"
-msgstr "Take this document off hold"
-
-#: ds_caselaw_editor_ui/templates/judgment/unhold.html
-msgid "judgment.unhold.unhold_button"
-msgstr "Unhold document"
-
-#: ds_caselaw_editor_ui/templates/judgment/unpublish-success.html
-msgid "judgment.publish.unpublish_success_title"
-msgstr "This document is no longer published"
-
-#: ds_caselaw_editor_ui/templates/judgment/unpublish.html
-msgid "judgment.publish.unpublish_title"
-msgstr "Unpublish this document"
-
-#: ds_caselaw_editor_ui/templates/judgment/unpublish.html
-msgid "judgment.unpublish.unpublish_button"
-msgstr "Unpublish document"
 
 #: ds_caselaw_editor_ui/templates/layouts/base.html
 msgid "skiplink"
@@ -294,17 +244,5 @@ msgid "judgments.submitteremail"
 msgstr "Contact email"
 
 #: judgments/views/judgment_hold.py
-msgid "judgment.hold.hold_success_flash_message"
-msgstr "Document on hold"
-
-#: judgments/views/judgment_hold.py
-msgid "judgment.hold.unhold_success_flash_message"
-msgstr "Document unheld"
-
-#: judgments/views/judgment_publish.py
-msgid "judgment.publish.publish_success_flash_message"
-msgstr "Document published"
-
-#: judgments/views/judgment_publish.py
-msgid "judgment.publish.unpublish_success_flash_message"
-msgstr "Document unpublished"
+msgid "Document successfully taken off hold"
+msgstr ""

@@ -4,7 +4,7 @@
   {% include "includes/judgment/metadata_panel_static.html" with judgment=judgment %}
 {% endblock judgment_header %}
 {% block judgment_content %}
-  <h2>Publish this document</h2>
+  <h2>Publish {{ judgment.name }}?</h2>
   {% include "includes/judgment/judgment_validation_messages.html" %}
   {% if judgment.is_publishable %}
     <form aria-label="publish judgment"
@@ -16,9 +16,7 @@
         {% flag "notes_on_state_change" %}
         {% include "includes/note-form.html" %}
       {% endflag %}
-      <input class="button-cta"
-             type="submit"
-             value="{% translate "judgment.publish_this_judgment" %}" />
+      <input class="button-cta" type="submit" value="Confirm" />
     </div>
   </form>
 {% else %}
