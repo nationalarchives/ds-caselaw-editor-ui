@@ -14,13 +14,13 @@
       <div class="judgment-component__actions">
         <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
         {% flag "notes_on_state_change" %}
-        {% include "includes/note-form.html" %}
-      {% endflag %}
-      <input class="button-cta" type="submit" value="Confirm" />
-    </div>
-  </form>
-{% else %}
-  <span class="judgment-toolbar__button button-secondary"
-        aria-disabled="true">{% translate "judgment.publish_this_judgment" %}</span>
-{% endif %}
+          {% include "includes/note-form.html" %}
+        {% endflag %}
+        <input class="button-cta" type="submit" value="Confirm" />
+      </div>
+    </form>
+  {% else %}
+    <span class="judgment-toolbar__button button-secondary"
+          aria-disabled="true">{% translate "judgment.publish_this_judgment" %}</span>
+  {% endif %}
 {% endblock judgment_content %}
