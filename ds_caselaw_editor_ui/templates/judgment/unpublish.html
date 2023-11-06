@@ -9,8 +9,8 @@
     {% csrf_token %}
     <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
     {% flag "notes_on_state_change" %}
-    {% include "includes/note-form.html" %}
-  {% endflag %}
-  <input type="submit" value="Confirm" />
-</form>
+      {% include "includes/note-form.html" %}
+    {% endflag %}
+    <input type="submit" value="Confirm" />
+  </form>
 {% endblock judgment_content %}

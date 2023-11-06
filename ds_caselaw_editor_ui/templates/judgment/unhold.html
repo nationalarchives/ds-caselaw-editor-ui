@@ -12,9 +12,9 @@
       <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
       <input type="hidden" name="unhold" value="false" />
       {% flag "notes_on_state_change" %}
-      {% include "includes/note-form.html" %}
-    {% endflag %}
-    <input class="button-cta" type="submit" value="Confirm" />
-  </div>
-</form>
+        {% include "includes/note-form.html" %}
+      {% endflag %}
+      <input class="button-cta" type="submit" value="Confirm" />
+    </div>
+  </form>
 {% endblock judgment_content %}
