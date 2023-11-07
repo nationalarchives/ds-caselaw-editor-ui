@@ -5,6 +5,9 @@
       <div class="results__result-header">
         <p id="recently-published-judgments" class="judgments-list__header">{{ total }} unpublished documents</p>
       </div>
+      <div class="judgments-list__more-info">
+        <a href="{% url 'results' %}">{% translate "judgments.allrecent" %}</a>
+      </div>
       {% include "includes/judgments_list_controls.html" %}
     </div>
     <div class="judgments-list__table">

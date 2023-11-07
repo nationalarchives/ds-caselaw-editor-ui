@@ -14,6 +14,13 @@
     font-size: 1.8rem;
     margin: 0 0 calc($spacer__unit);
     margin-left: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  &__more-info {
+    display: inline-block;
+    margin-bottom: 1.2rem;
+    margin-right: 12rem;
   }
 
   &__table-header {

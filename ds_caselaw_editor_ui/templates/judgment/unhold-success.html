@@ -5,5 +5,7 @@
 {% block judgment_content %}
   {% load i18n %}
   <h2>{{ judgment.name }} has been taken off hold</h2>
-  p
+  <div class="judgment-component__back-button-unpublished">
+    <a href="{% url 'results' %}">Go back to unpublished documents</a>
+  </div>
 {% endblock judgment_content %}
