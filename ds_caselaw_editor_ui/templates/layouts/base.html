@@ -42,27 +42,33 @@
       <div class="page-header__navbar page-header__navbar-right">
         <nav>
           <ol>
-            <li>
-              {% if user.first_name %}
-                {{ user.first_name }}
-              {% else %}
-                {{ user.username }}
-              {% endif %}
-            </li>
-            {% if user|is_superuser %}
+            {% if user.is_authenticated %}
               <li>
-                <a href="{% url 'admin:index' %}">Admin</a>
+                {% if user.first_name %}
+                  {{ user.first_name }}
+                {% else %}
+                  {{ user.username }}
+                {% endif %}
               </li>
+              {% if user|is_superuser %}
+                <li>
+                  <a href="{% url 'admin:index' %}">Admin</a>
+                </li>
+              {% endif %}
+              {% flag "stats" %}
+                <li>
+                  <a href="{% url 'stats' %}">Stats</a>
+                </li>
+              {% endflag %}
             {% endif %}
-            <li>
-              <a href="{% url 'stats' %}">Stats</a>
-            </li>
             <li>
               <a href="{% url 'labs' %}">Labs</a>
             </li>
-            <li>
-              <a href="{% url 'admin:logout' %}">Sign out</a>
-            </li>
+            {% if user.is_authenticated %}
+              <li>
+                <a href="{% url 'admin:logout' %}">Sign out</a>
+              </li>
+            {% endif %}
           </ol>
         </nav>
       </div>
