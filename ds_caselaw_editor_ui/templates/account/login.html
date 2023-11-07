@@ -1,22 +1,38 @@
 {% extends "account/base.html" %}
-{% load i18n %}
-{% block title %}
-  {% trans "Sign In" %}
-{% endblock title %}
+{% load i18n widget_tweaks %}
 {% block content %}
-  <div class="standard-text-template">
-    <h1>{% trans "Sign In" %}</h1>
-    <form class="login" method="post" action="{% url 'account_login' %}">
-      {% csrf_token %}
-      {{ form.as_p }}
-      {% if redirect_field_value %}
-        <input type="hidden"
-               name="{{ redirect_field_name }}"
-               value="{{ redirect_field_value }}" />
-      {% endif %}
-      <a class="button secondaryAction"
-         href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-      <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
-    </form>
+  <div class="login-background">
+    <div class="login-container">
+      <h1>
+        Sign in to
+        <br>
+        Find Case Law
+      </h1>
+      <form class="login" method="post" action="{% url 'account_login' %}">
+        {% csrf_token %}
+        {% if redirect_field_value %}
+          <input type="hidden"
+                 name="{{ redirect_field_name }}"
+                 value="{{ redirect_field_value }}" />
+        {% endif %}
+        {{ form.non_field_errors }}
+        <div class="login-container__form-group">
+          <label class="login-container__label" for="{{ form.login.id_for_label }}">Username</label>
+          <br>
+          {{ form.login|add_class:'login-container__text-field' }}
+          {{ form.login.errors }}
+        </div>
+        <div class="login-container__form-group">
+          <label class="login-container__label" for="{{ form.password.id_for_label }}">Password</label>
+          <br>
+          {{ form.password|add_class:'login-container__text-field' }}
+          {{ form.password.errors }}
+        </div>
+        <button class="button-cta button-block" type="submit">Sign in</button>
+        <p>
+          <a href="{% url 'account_reset_password' %}">Forgotten password</a>
+        </p>
+      </form>
+    </div>
   </div>
 {% endblock content %}
