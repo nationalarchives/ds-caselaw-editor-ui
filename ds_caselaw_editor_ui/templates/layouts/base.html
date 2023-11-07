@@ -54,11 +54,9 @@
                 <a href="{% url 'admin:index' %}">Admin</a>
               </li>
             {% endif %}
-            {% flag "stats" %}
-              <li>
-                <a href="{% url 'stats' %}">Stats</a>
-              </li>
-            {% endflag %}
+            <li>
+              <a href="{% url 'stats' %}">Stats</a>
+            </li>
             <li>
               <a href="{% url 'labs' %}">Labs</a>
             </li>
