@@ -12,10 +12,10 @@
       <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
       <input type="hidden" name="unhold" value="false" />
       {% flag "notes_on_state_change" %}
-      {% include "includes/note-form.html" %}
-    {% endflag %}
-    <input class="button-cta" type="submit" value="Confirm" />
-    <span class="judgment-component__back-button"><a href="{% url 'full-text-html' document.uri %}">Go back to review</a> </span>
-  </div>
-</form>
+        {% include "includes/note-form.html" %}
+      {% endflag %}
+      <input class="button-cta" type="submit" value="Confirm" />
+      <span class="judgment-component__back-button"><a href="{% url 'full-text-html' document.uri %}">Go back to review</a> </span>
+    </div>
+  </form>
 {% endblock judgment_content %}
