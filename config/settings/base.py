@@ -75,6 +75,7 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount",
     "stronghold",
     "waffle",
+    "widget_tweaks",
 ]
 
 LOCAL_APPS = [

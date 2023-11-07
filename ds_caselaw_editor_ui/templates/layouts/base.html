@@ -1,4 +1,4 @@
-{% load static i18n user_permissions %}
+{% load static i18n user_permissions waffle_tags %}
 <!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
 <html lang="{{ LANGUAGE_CODE }}">
@@ -54,6 +54,11 @@
                 <a href="{% url 'admin:index' %}">Admin</a>
               </li>
             {% endif %}
+            {% flag "stats" %}
+              <li>
+                <a href="{% url 'stats' %}">Stats</a>
+              </li>
+            {% endflag %}
             <li>
               <a href="{% url 'labs' %}">Labs</a>
             </li>
