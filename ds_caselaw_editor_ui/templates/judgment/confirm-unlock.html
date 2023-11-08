@@ -1,14 +1,13 @@
 {% extends "layouts/base.html" %}
 {% load static i18n %}
 {% block content %}
-  <div class="unlock-judgment">
-    <p>{{ judgment_uri }}</p>
-    <p class="unlock-judgment__confirmation">{% translate "judgment.confirm_unlock" %}</p>
+  <div class="judgment-unlock">
+    <h2>Unlock {{ judgment_uri }}? This will make any enrichment processes on the document fail.</h2>
     <form method="post">
       {% csrf_token %}
       <input type="hidden" name="judgment_uri" value="{{ judgment_uri }}" />
-      <button type="submit">{% translate "judgment.unlock_judgment_title" %}</button>
-    </form>
-    <a href="{% url 'full-text-html' judgment_uri %}">{% translate "judgment.back_to_judgment" %}</a>
-  </div>
+      <button class="button-cta" type="submit">{% translate "judgment.unlock_judgment_title" %}</button>
+    <span class="judgment-unlock__back-button"><a href="{% url 'full-text-html' judgment_uri %}">{% translate "judgment.back_to_judgment" %}</a>
+  </form>
+</div>
 {% endblock content %}
