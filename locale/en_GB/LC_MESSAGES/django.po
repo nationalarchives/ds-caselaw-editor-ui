@@ -188,12 +188,6 @@ msgid "judgments.allrecent"
 msgstr "See all recent documents"
 
 #: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html
-msgid "judgment.confirm_unlock"
-msgstr ""
-"Forcibly unlock this document? This will make any enrichment processes on "
-"the document fail."
-
-#: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html
 msgid "judgment.back_to_judgment"
 msgstr "Back to document"
 
