@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-07 12:09+0000\n"
+"POT-Creation-Date: 2023-11-09 16:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -196,12 +196,6 @@ msgstr ""
 #: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html
 msgid "judgment.back_to_judgment"
 msgstr "Back to document"
-
-#: ds_caselaw_editor_ui/templates/judgment/publish.html
-#, fuzzy
-#| msgid "judgment.hold_this_judgment"
-msgid "judgment.publish_this_judgment"
-msgstr "Put document on hold"
 
 #: ds_caselaw_editor_ui/templates/judgment/results.html
 #: judgments/views/results.py
