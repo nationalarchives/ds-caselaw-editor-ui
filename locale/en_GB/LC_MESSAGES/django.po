@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-07 12:09+0000\n"
+"POT-Creation-Date: 2023-11-08 14:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -186,12 +186,6 @@ msgstr "Assigned to:"
 #: ds_caselaw_editor_ui/templates/judgment/results.html
 msgid "judgments.allrecent"
 msgstr "See all recent documents"
-
-#: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html
-msgid "judgment.confirm_unlock"
-msgstr ""
-"Forcibly unlock this document? This will make any enrichment processes on "
-"the document fail."
 
 #: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html
 msgid "judgment.back_to_judgment"
