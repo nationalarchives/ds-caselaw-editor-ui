@@ -62,7 +62,7 @@
       {% endif %}
       <span class="muted">on</span> <time datetime="{{ version.version_created_datetime|date:"c" }}">{{ version.version_created_datetime|display_datetime }}</time></span>
     </div>
-    {% if structured_annotation %}
+    {% if structured_annotation.message or user|is_developer %}
       <div class="document-timeline__item__comment">
         {% if structured_annotation.message %}<p>{{ structured_annotation.message }}</p>{% endif %}
         {% if structured_annotation.type == "submission" %}
