@@ -1,7 +1,7 @@
 {% extends "layouts/base.html" %}
 {% load static i18n %}
 {% block content %}
-  <div class="judgment-component__judgment-unlock">
+  <div class="judgment-component__left-panel">
     <h2>Unlock {{ judgment_uri }}? This will make any enrichment processes on the document fail.</h2>
     <form method="post">
       {% csrf_token %}
