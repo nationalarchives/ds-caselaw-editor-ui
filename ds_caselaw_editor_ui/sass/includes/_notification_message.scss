@@ -3,11 +3,6 @@
   padding: 0.5rem 1rem;
 }
 
-.page-notification__container {
-  @include container;
-  margin-top: calc(1.5 * $spacer__unit);
-}
-
 .page-notification {
   &--success {
     @include notification;
