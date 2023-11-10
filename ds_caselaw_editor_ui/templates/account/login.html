@@ -1,5 +1,8 @@
-{% extends "account/base.html" %}
-{% load i18n widget_tweaks %}
+{% extends "layouts/base.html" %}
+{% load widget_tweaks %}
+{% block breadcrumbs %}
+  <li>Sign in</li>
+{% endblock breadcrumbs %}
 {% block content %}
   <div class="login-background">
     <div class="login-container">

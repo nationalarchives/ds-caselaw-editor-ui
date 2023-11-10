@@ -1,0 +1,15 @@
+{% extends "layouts/base.html" %}
+{% block breadcrumbs %}
+  <li>Signed out</li>
+{% endblock breadcrumbs %}
+{% block content %}
+  <div class="login-background">
+    <div class="login-container">
+      <h1>Signed out</h1>
+      <p>You have been signed out of the Find Case Law service.</p>
+      <p>
+        <a href="{% url 'home' %}">Sign in again</a>
+      </p>
+    </div>
+  </div>
+{% endblock content %}
