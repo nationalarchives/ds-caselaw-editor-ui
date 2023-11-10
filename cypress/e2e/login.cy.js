@@ -8,7 +8,7 @@ describe("Login Test", () => {
     cy.get("#id_password").type(Cypress.env("PASSWORD"));
 
     // Click the login button
-    cy.get('button.primaryAction:contains("Sign In")').click();
+    cy.get('button.button-cta:contains("Sign in")').click();
 
     // Verify successful login
     cy.url().should("not.include", "/login");
