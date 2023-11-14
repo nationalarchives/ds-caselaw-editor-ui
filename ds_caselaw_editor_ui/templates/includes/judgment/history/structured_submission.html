@@ -1,0 +1,32 @@
+{% load document_utils %}
+<div class="document-history__submission-header">
+  <div class="document-history__submission-header__title">
+    <h2>Submission {{ submission.sequence_number }}</h2>
+  </div>
+  <div class="document-history__submission-header__show-link">
+    <p>
+      <a class="document-history__submission-toggle"
+         data-target-submission="{{ submission.sequence_number }}">Show</a>
+    </p>
+  </div>
+  {% if submission.submission_data.payload.tdr_reference %}
+    <div class="document-history__submission-header__reference">
+      <p>
+        <b>TDR ref</b> {{ submission.submission_data.payload.tdr_reference }}
+      </p>
+    </div>
+  {% endif %}
+</div>
+<div id="submission-{{ submission.sequence_number }}"
+     {% if not expand %}hidden{% endif %}>
+  <table class="table document-history__event-table">
+    <tr>
+      <th>Change made</th>
+      <th>Changed at</th>
+      <th>Changed by</th>
+      {% for event in submission.events reversed %}
+        {% include "includes/judgment/history/event_line.html" %}
+      {% endfor %}
+    </tr>
+  </table>
+</div>

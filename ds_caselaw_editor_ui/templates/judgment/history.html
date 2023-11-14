@@ -1,16 +1,38 @@
 {% extends "layouts/judgment_with_sidebar.html" %}
-{% load i18n document_utils waffle_tags %}
+{% load i18n document_utils waffle_tags user_permissions %}
 {% block judgment_header %}
-  {% include "includes/judgment/metadata_panel_static.html" with judgment=document %}
+  {% flag history_timeline %}
+    <h1>
+      <small class="muted">Document history</small>
+      <br>
+      {{ document.name }}
+    </h1>
+    {% include "includes/judgment/history/document_data.html" %}
+  {% else %}
+    {% include "includes/judgment/metadata_panel_static.html" with judgment=document %}
+  {% endflag %}
 {% endblock judgment_header %}
 {% block judgment_content %}
   {% flag history_timeline %}
-    <h2>Document history</h2>
-    <ol class="document-timeline">
-      {% for version in document.versions_as_documents %}
-        {% include "includes/timeline/timeline_item.html" %}
+    <div class="document-history">
+      {% for submission in structured_history reversed %}
+        {% if submission.type == 'structured' %}
+          <div class="document-history__submission my-3">
+            {% include "includes/judgment/history/structured_submission.html" with expand=forloop.first %}
+          </div>
+        {% else %}
+          <div class="document-history__submission my-3">
+            <h2>Legacy version {{ submission.marklogic_version }}</h2>
+            {% if submission.annotation %}<p>{{ submission.annotation }}</p>{% endif %}
+            {% if user|is_developer %}
+              <p>
+                <small class="muted">Event #{{ submission.sequence_number }} • MarkLogic version #{{ submission.marklogic_version }}</small>
+              </p>
+            </div>
+          {% endif %}
+        {% endif %}
       {% endfor %}
-    </ol>
+    </div>
   {% else %}
     <div class="document-version-history">
       <h2>Document version history</h2>
@@ -45,3 +67,9 @@
     </div>
   {% endflag %}
 {% endblock judgment_content %}
+{% block sidebar %}
+  {% flag history_timeline %}
+  {% else %}
+    {{ block.super }}
+  {% endflag %}
+{% endblock sidebar %}

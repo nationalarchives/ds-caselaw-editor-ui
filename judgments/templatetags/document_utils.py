@@ -25,16 +25,8 @@ VERSION_TYPE_LABELS = {
 
 
 @register.filter
-def unpack_structured_annotation(annotation):
-    try:
-        return json.loads(annotation)
-    except (TypeError, json.JSONDecodeError):
-        return None
-
-
-@register.filter
-def render_structured_annotation(annotation):
-    return json.dumps(unpack_structured_annotation(annotation), indent=2)
+def render_json(json_string):
+    return json.dumps(json_string, indent=2)
 
 
 @register.filter
