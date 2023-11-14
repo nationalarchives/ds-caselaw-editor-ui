@@ -11,17 +11,18 @@ class Labs(TemplateView):
     # },
     EXPERIMENTS: dict[str, dict] = {
         "history_timeline": {
-            "title": "Document history timeline",
-            "description": "Display information about versions of a document as a timeline rather than a table",
+            "title": "Improved document history",
+            "description": "Display structured information about the history of a document, instead of just versions in the database.",
         },
     }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context = {"page_title": "Labs"}
-
-        context["experiments"] = []
+        context = {
+            "page_title": "Labs",
+            "experiments": [],
+        }
 
         for flag, data in self.EXPERIMENTS.items():
             data["flag"] = flag
