@@ -7,9 +7,7 @@ from caselawclient.models.documents import (
 )
 from django.test import TestCase
 
-from judgments.templatetags.document_utils import (
-    display_annotation_type,
-)
+from judgments.templatetags.document_utils import display_annotation_type, render_json
 from judgments.templatetags.status_tag_css import status_tag_colour
 
 
@@ -55,3 +53,11 @@ class TestDisplayAnnotationType(TestCase):
     def test_returns_none_for_json_with_no_type(self):
         annotation = json.dumps({})
         assert display_annotation_type(annotation) is None
+
+
+class TestRenderJson:
+    def test_render_json(self):
+        assert (
+            render_json({"string": "stringValue", "array": ["one", "two"]})
+            == '{\n  "string": "stringValue",\n  "array": [\n    "one",\n    "two"\n  ]\n}'
+        )
