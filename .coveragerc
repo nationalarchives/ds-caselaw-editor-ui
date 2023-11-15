@@ -1,6 +1,7 @@
 [run]
 branch = True
-include = judgments/**/*.py, judgments/*.py, ds_caselaw_editor_ui/**/*.py, ds_caselaw_editor_ui/*.py
+omit = */migrations/*, config/*
+plugins = django_coverage_plugin
 
 [report]
 omit =
