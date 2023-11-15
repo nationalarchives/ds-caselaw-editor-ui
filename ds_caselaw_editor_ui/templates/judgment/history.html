@@ -16,7 +16,7 @@
   {% flag history_timeline %}
     <div class="document-history">
       {% for submission in structured_history reversed %}
-        {% if submission.type == 'structured' %}
+        {% if submission.submission_type == 'structured' %}
           <div class="document-history__submission my-3">
             {% include "includes/judgment/history/structured_submission.html" with expand=forloop.first %}
           </div>
