@@ -1,3 +1,6 @@
+[project]
+requires-python = ">=3.12"
+
 [tool.djlint]
 ignore="H021,H023,H030,H031"
 profile="django"
@@ -5,8 +8,7 @@ indent=2
 custom_blocks="flag"
 
 [tool.ruff]
-ignore = ["E501", "G004", "PLR2004", "RUF005", "RUF012"] # long lines, fstrings in logs, magic values, consider not concat, mutable classbits
-target-version = "py39"
+ignore = ["E501", "G004", "PLR2004", "RUF005", "RUF012", "UP040"] # long lines, fstrings in logs, magic values, consider not concat, mutable classbits, type instead of TypeAlias
 extend-select = ["W", "B", "Q", "C90", "I", "UP", "YTT", "ASYNC", "S", "BLE", "A", "COM", "C4", "DTZ", "T10", "DJ", "EM", "EXE", "FA",
                  "ISC", "ICN", "G", "INP", "PIE", "T20", "PYI", "PT", "Q", "RSE", "RET", "SLF", "SLOT", "SIM", "TID", "TCH", "INT", "PTH",
                  "FIX", "PGH", "PL", "TRY", "FLY", "PERF", "RUF"]

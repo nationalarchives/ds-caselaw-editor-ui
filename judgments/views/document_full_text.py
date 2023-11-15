@@ -35,7 +35,9 @@ class DocumentReviewPDFView(DocumentView):
         context = super().get_context_data(**kwargs)
 
         if not context["document"].pdf_url:
-            msg = f"Document \"{context['document'].name}\" does not have a PDF."
+            msg = 'Document "{document_name}" does not have a PDF.'.format(
+                document_name=context["document"].name,
+            )
             raise Http404(
                 msg,
             )
