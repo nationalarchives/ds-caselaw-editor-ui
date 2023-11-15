@@ -45,6 +45,26 @@ class LegacySubmissionDict(SubmissionDict):
     sequence_number: int
 
 
+def build_event_object(
+    event_sequence_number: int,
+    event_data: VersionAnnotationDict,
+    event_document: Document,
+) -> EventDict:
+    event_object: EventDict = {
+        "data": event_data,
+        "datetime": event_document.version_created_datetime,
+        "document": event_document,
+        "sequence_number": event_sequence_number,
+        "marklogic_version": event_document.version_number,
+    }
+
+    if "payload" in event_data and "submitter" in event_data["payload"]:
+        event_object["agent"] = event_data["payload"]["submitter"]["name"]
+        event_object["agent_email"] = event_data["payload"]["submitter"]["email"]
+
+    return event_object
+
+
 def structure_document_history_by_submissions(
     history: list[Document],
 ) -> list[SubmissionDict]:
@@ -103,24 +123,13 @@ def structure_document_history_by_submissions(
 
             # At this point we've started a new submission if we need to, so go ahead and assemble the event object
             # and push it into the submission's event stack
-            event_object: EventDict = {
-                "data": structured_data,
-                "datetime": version.version_created_datetime,
-                "document": version,
-                "sequence_number": event_sequence_number,
-                "marklogic_version": version.version_number,
-            }
-
-            if (
-                "payload" in structured_data
-                and "submitter" in structured_data["payload"]
-            ):
-                event_object["agent"] = structured_data["payload"]["submitter"]["name"]
-                event_object["agent_email"] = structured_data["payload"]["submitter"][
-                    "email"
-                ]
-
-            submission["events"].append(event_object)
+            submission["events"].append(
+                build_event_object(
+                    event_sequence_number=event_sequence_number,
+                    event_data=structured_data,
+                    event_document=version,
+                ),
+            )
 
         # Catch both a TypeError (this thing has no annotation) and JSON Decode (it's not structured)
         except (TypeError, json.JSONDecodeError):
