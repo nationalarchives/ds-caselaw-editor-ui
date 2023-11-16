@@ -1,11 +1,16 @@
+import json
+from datetime import datetime
 from unittest.mock import patch
 
+from caselawclient.client_helpers import VersionAnnotation, VersionType
 from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 from factories import JudgmentFactory
 from waffle.testutils import override_flag
+
+from judgments.views import document_history
 
 
 class TestDocumentHistory(TestCase):
@@ -44,7 +49,79 @@ class TestDocumentHistory(TestCase):
 
 
 @override_flag("history_timeline", active=True)
-class TestStructuredDocumentHistory(TestCase):
+class TestStructuredDocumentHistoryLogic(TestCase):
+    def test_build_event_object_without_submitter(self):
+        document = JudgmentFactory.build(
+            uri="test/4321/123",
+            name="Test v Tested",
+            version_created_datetime=datetime(2023, 9, 26, 12),
+        )
+
+        version_document = document.versions_as_documents[
+            0
+        ]  # The factory assembles a full version as part of versions_as_documents, so just use that one.
+
+        annotation = VersionAnnotation(
+            VersionType.SUBMISSION,
+            automated=True,
+        )
+        annotation.set_calling_function("factory build")
+        annotation.set_calling_agent("EUI Test")
+
+        annotation_as_dict = json.loads(annotation.as_json)
+
+        assert document_history.build_event_object(
+            event_sequence_number=123,
+            event_data=annotation_as_dict,
+            event_document=version_document,
+        ) == {
+            "data": annotation_as_dict,
+            "datetime": datetime(2023, 9, 26, 12),
+            "document": version_document,
+            "marklogic_version": 1,
+            "sequence_number": 123,
+        }
+
+    def test_build_event_object_with_submitter(self):
+        document = JudgmentFactory.build(
+            uri="test/4321/123",
+            name="Test v Tested",
+            version_created_datetime=datetime(2023, 9, 26, 12),
+        )
+
+        version_document = document.versions_as_documents[
+            0
+        ]  # The factory assembles a full version as part of versions_as_documents, so just use that one.
+
+        annotation = VersionAnnotation(
+            VersionType.SUBMISSION,
+            automated=True,
+            payload={
+                "submitter": {"name": "Agent Name", "email": "agent@example.com"},
+            },
+        )
+        annotation.set_calling_function("factory build")
+        annotation.set_calling_agent("EUI Test")
+
+        annotation_as_dict = json.loads(annotation.as_json)
+
+        assert document_history.build_event_object(
+            event_sequence_number=123,
+            event_data=annotation_as_dict,
+            event_document=version_document,
+        ) == {
+            "data": annotation_as_dict,
+            "datetime": datetime(2023, 9, 26, 12),
+            "document": version_document,
+            "marklogic_version": 1,
+            "sequence_number": 123,
+            "agent": "Agent Name",
+            "agent_email": "agent@example.com",
+        }
+
+
+@override_flag("history_timeline", active=True)
+class TestStructuredDocumentHistoryView(TestCase):
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
