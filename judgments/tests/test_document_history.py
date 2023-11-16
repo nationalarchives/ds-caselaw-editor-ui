@@ -105,6 +105,255 @@ class TestStructuredDocumentHistoryLogic(TestCase):
             "agent_email": "agent@example.com",
         }
 
+    def test_structure_document_history_by_submissions(self):
+        legacy_1 = DocumentVersionFactory.build(
+            uri="test/4321/123",
+            name="Document with legacy annotation",
+            annotation="Legacy annotation 1",
+            version_number=1,
+            version_created_datetime=datetime(2023, 1, 1),
+        )
+        legacy_2 = DocumentVersionFactory.build(
+            uri="test/4321/123",
+            name="Document with legacy annotation",
+            annotation="Legacy annotation 2",
+            version_number=2,
+            version_created_datetime=datetime(2023, 1, 2),
+        )
+        submission_1 = DocumentVersionFactory.build(
+            uri="test/4321/123",
+            name="Document submission",
+            annotation=VersionAnnotation(
+                VersionType.SUBMISSION,
+                automated=False,
+                message="Submission 1",
+            ),
+            version_number=3,
+            version_created_datetime=datetime(2023, 1, 3),
+        )
+        edit_1 = DocumentVersionFactory.build(
+            uri="test/4321/123",
+            name="Document edit",
+            annotation=VersionAnnotation(
+                VersionType.EDIT,
+                automated=False,
+                message="Edit 1",
+            ),
+            version_number=4,
+            version_created_datetime=datetime(2023, 1, 4),
+        )
+        submission_2 = DocumentVersionFactory.build(
+            uri="test/4321/123",
+            name="Document submission",
+            annotation=VersionAnnotation(
+                VersionType.SUBMISSION,
+                automated=False,
+                message="Submission 2",
+            ),
+            version_number=5,
+            version_created_datetime=datetime(2023, 1, 5),
+        )
+        enrichment_1 = DocumentVersionFactory.build(
+            uri="test/4321/123",
+            name="Document enrichment",
+            annotation=VersionAnnotation(
+                VersionType.ENRICHMENT,
+                automated=True,
+                message="Enrichment 1",
+            ),
+            version_number=6,
+            version_created_datetime=datetime(2023, 1, 6),
+        )
+        legacy_3 = DocumentVersionFactory.build(
+            uri="test/4321/123",
+            name="Document with legacy annotation",
+            annotation="Legacy annotation 3",
+            version_number=7,
+            version_created_datetime=datetime(2023, 1, 7),
+        )
+        edit_2 = DocumentVersionFactory.build(
+            uri="test/4321/123",
+            name="Document edit",
+            annotation=VersionAnnotation(
+                VersionType.EDIT,
+                automated=False,
+                message="Edit 2",
+            ),
+            version_number=8,
+            version_created_datetime=datetime(2023, 1, 8),
+        )
+        submission_3 = DocumentVersionFactory.build(
+            uri="test/4321/123",
+            name="Document submission",
+            annotation=VersionAnnotation(
+                VersionType.SUBMISSION,
+                automated=False,
+                message="Submission 3",
+            ),
+            version_number=9,
+            version_created_datetime=datetime(2023, 1, 9),
+        )
+
+        history = [
+            legacy_1,
+            legacy_2,
+            submission_1,
+            edit_1,
+            submission_2,
+            enrichment_1,
+            legacy_3,  # Test that legacy events correctly close a submission out
+            edit_2,  # This should be an orphaned edit with no matching submission
+            submission_3,  # Make sure the logic to close open submissions at the end of the loop is good
+        ]
+        assert document_history.structure_document_history_by_submissions(history) == [
+            {
+                "annotation": "Legacy annotation 1",
+                "marklogic_version": 1,
+                "sequence_number": 1,
+                "submission_type": "legacy",
+            },
+            {
+                "annotation": "Legacy annotation 2",
+                "marklogic_version": 2,
+                "sequence_number": 2,
+                "submission_type": "legacy",
+            },
+            {
+                "document": submission_1,
+                "events": [
+                    {
+                        "data": {
+                            "automated": False,
+                            "calling_agent": "EUI Test",
+                            "calling_function": "factory build",
+                            "type": "submission",
+                            "message": "Submission 1",
+                        },
+                        "datetime": datetime(2023, 1, 3, 0, 0),
+                        "document": submission_1,
+                        "marklogic_version": 3,
+                        "sequence_number": 3,
+                    },
+                    {
+                        "data": {
+                            "automated": False,
+                            "calling_agent": "EUI Test",
+                            "calling_function": "factory build",
+                            "type": "edit",
+                            "message": "Edit 1",
+                        },
+                        "datetime": datetime(2023, 1, 4, 0, 0),
+                        "document": edit_1,
+                        "marklogic_version": 4,
+                        "sequence_number": 4,
+                    },
+                ],
+                "marklogic_version": 3,
+                "sequence_number": 3,
+                "submission_type": "structured",
+                "submission_data": {
+                    "automated": False,
+                    "calling_agent": "EUI Test",
+                    "calling_function": "factory build",
+                    "type": "submission",
+                    "message": "Submission 1",
+                },
+            },
+            {
+                "document": submission_2,
+                "events": [
+                    {
+                        "data": {
+                            "automated": False,
+                            "calling_agent": "EUI Test",
+                            "calling_function": "factory build",
+                            "type": "submission",
+                            "message": "Submission 2",
+                        },
+                        "datetime": datetime(2023, 1, 5, 0, 0),
+                        "document": submission_2,
+                        "marklogic_version": 5,
+                        "sequence_number": 5,
+                    },
+                    {
+                        "data": {
+                            "automated": True,
+                            "calling_agent": "EUI Test",
+                            "calling_function": "factory build",
+                            "type": "enrichment",
+                            "message": "Enrichment 1",
+                        },
+                        "datetime": datetime(2023, 1, 6, 0, 0),
+                        "document": enrichment_1,
+                        "marklogic_version": 6,
+                        "sequence_number": 6,
+                    },
+                ],
+                "marklogic_version": 5,
+                "sequence_number": 4,
+                "submission_type": "structured",
+                "submission_data": {
+                    "automated": False,
+                    "calling_agent": "EUI Test",
+                    "calling_function": "factory build",
+                    "type": "submission",
+                    "message": "Submission 2",
+                },
+            },
+            {
+                "annotation": "Legacy annotation 3",
+                "marklogic_version": 7,
+                "sequence_number": 5,
+                "submission_type": "legacy",
+            },
+            {
+                "events": [
+                    {
+                        "data": {
+                            "automated": False,
+                            "calling_agent": "EUI Test",
+                            "calling_function": "factory build",
+                            "message": "Edit 2",
+                            "type": "edit",
+                        },
+                        "datetime": datetime(2023, 1, 8, 0, 0),
+                        "document": edit_2,
+                        "marklogic_version": 8,
+                        "sequence_number": 8,
+                    },
+                ],
+                "submission_type": "orphan",
+            },
+            {
+                "document": submission_3,
+                "events": [
+                    {
+                        "data": {
+                            "automated": False,
+                            "calling_agent": "EUI Test",
+                            "calling_function": "factory build",
+                            "message": "Submission 3",
+                            "type": "submission",
+                        },
+                        "datetime": datetime(2023, 1, 9, 0, 0),
+                        "document": submission_3,
+                        "marklogic_version": 9,
+                        "sequence_number": 9,
+                    },
+                ],
+                "marklogic_version": 9,
+                "sequence_number": 6,
+                "submission_data": {
+                    "automated": False,
+                    "calling_agent": "EUI Test",
+                    "calling_function": "factory build",
+                    "message": "Submission 3",
+                    "type": "submission",
+                },
+                "submission_type": "structured",
+            },
+        ]
+
 
 @override_flag("history_timeline", active=True)
 class TestStructuredDocumentHistoryView(TestCase):

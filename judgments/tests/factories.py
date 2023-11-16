@@ -91,13 +91,16 @@ class DocumentVersionFactory(DocumentFactory):
 
         version = document
 
-        annotation: VersionAnnotation = kwargs.get(
+        annotation: VersionAnnotation | str = kwargs.get(
             "annotation",
             VersionAnnotation(VersionType.SUBMISSION, automated=True),
         )
-        annotation.set_calling_function("factory build")
-        annotation.set_calling_agent("EUI Test")
-        version.annotation = annotation.as_json
+        if isinstance(annotation, VersionAnnotation):
+            annotation.set_calling_function("factory build")
+            annotation.set_calling_agent("EUI Test")
+            version.annotation = annotation.as_json
+        else:
+            version.annotation = annotation
 
         version.version_number = kwargs.get("version_number", 1)
         version.version_created_datetime = kwargs.get(
