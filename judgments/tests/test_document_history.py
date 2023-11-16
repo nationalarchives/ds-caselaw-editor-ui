@@ -7,7 +7,7 @@ from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
-from factories import JudgmentFactory
+from factories import DocumentVersionFactory, JudgmentFactory
 from waffle.testutils import override_flag
 
 from judgments.views import document_history
@@ -51,24 +51,17 @@ class TestDocumentHistory(TestCase):
 @override_flag("history_timeline", active=True)
 class TestStructuredDocumentHistoryLogic(TestCase):
     def test_build_event_object_without_submitter(self):
-        document = JudgmentFactory.build(
+        version_document = DocumentVersionFactory.build(
             uri="test/4321/123",
             name="Test v Tested",
+            annotation=VersionAnnotation(
+                VersionType.SUBMISSION,
+                automated=True,
+            ),
             version_created_datetime=datetime(2023, 9, 26, 12),
         )
 
-        version_document = document.versions_as_documents[
-            0
-        ]  # The factory assembles a full version as part of versions_as_documents, so just use that one.
-
-        annotation = VersionAnnotation(
-            VersionType.SUBMISSION,
-            automated=True,
-        )
-        annotation.set_calling_function("factory build")
-        annotation.set_calling_agent("EUI Test")
-
-        annotation_as_dict = json.loads(annotation.as_json)
+        annotation_as_dict = json.loads(version_document.annotation)
 
         assert document_history.build_event_object(
             event_sequence_number=123,
@@ -83,27 +76,20 @@ class TestStructuredDocumentHistoryLogic(TestCase):
         }
 
     def test_build_event_object_with_submitter(self):
-        document = JudgmentFactory.build(
+        version_document = DocumentVersionFactory.build(
             uri="test/4321/123",
             name="Test v Tested",
+            annotation=VersionAnnotation(
+                VersionType.SUBMISSION,
+                automated=True,
+                payload={
+                    "submitter": {"name": "Agent Name", "email": "agent@example.com"},
+                },
+            ),
             version_created_datetime=datetime(2023, 9, 26, 12),
         )
 
-        version_document = document.versions_as_documents[
-            0
-        ]  # The factory assembles a full version as part of versions_as_documents, so just use that one.
-
-        annotation = VersionAnnotation(
-            VersionType.SUBMISSION,
-            automated=True,
-            payload={
-                "submitter": {"name": "Agent Name", "email": "agent@example.com"},
-            },
-        )
-        annotation.set_calling_function("factory build")
-        annotation.set_calling_agent("EUI Test")
-
-        annotation_as_dict = json.loads(annotation.as_json)
+        annotation_as_dict = json.loads(version_document.annotation)
 
         assert document_history.build_event_object(
             event_sequence_number=123,
