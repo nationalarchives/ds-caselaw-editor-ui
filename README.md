@@ -25,7 +25,7 @@ building of the project's containers, one for each each service:
 ### `django`
 
 Our custom container responsible for running the application. Built from the
-official [python 3.9](https://hub.docker.com/_/python/) base image
+official [python 3.12](https://hub.docker.com/_/python/) base image
 
 ### `postgres`
 
