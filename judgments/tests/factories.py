@@ -4,6 +4,7 @@ from unittest.mock import Mock
 
 import factory
 from caselawclient.client_helpers import VersionAnnotation, VersionType
+from caselawclient.models.documents import Document, DocumentURIString
 from caselawclient.models.judgments import Judgment
 from caselawclient.responses.search_result import SearchResult, SearchResultMetadata
 from django.contrib.auth import get_user_model
@@ -21,7 +22,8 @@ class UserFactory(factory.django.DjangoModelFactory):
     last_name = factory.Faker("last_name")
 
 
-class JudgmentFactory:
+class DocumentFactory:
+    DocumentClass: TypeAlias = Document
     # "name_of_attribute": ("name of incoming param", "default value")
     PARAMS_MAP: dict[str, tuple[str, Any]] = {
         "uri": ("uri", "test/2023/123"),
@@ -45,36 +47,75 @@ class JudgmentFactory:
     }
 
     @classmethod
-    def build(cls, **kwargs) -> Judgment:
-        judgment_mock = Mock(spec=Judgment, autospec=True)
+    def build(cls, **kwargs) -> DocumentClass:
+        document_mock = Mock(spec=cls.DocumentClass, autospec=True)
+
+        original_kwargs = kwargs
 
         if "html" in kwargs:
-            judgment_mock.return_value.content_as_html.return_value = kwargs.pop("html")
+            document_mock.return_value.content_as_html.return_value = kwargs.pop("html")
         else:
-            judgment_mock.return_value.content_as_html.return_value = (
+            document_mock.return_value.content_as_html.return_value = (
                 "<p>This is a judgment.</p>"
             )
 
         for map_to, map_from in cls.PARAMS_MAP.items():
             if map_from[0] in kwargs:
-                setattr(judgment_mock.return_value, map_to, kwargs[map_from[0]])
+                setattr(document_mock.return_value, map_to, kwargs[map_from[0]])
             else:
-                setattr(judgment_mock.return_value, map_to, map_from[1])
+                setattr(document_mock.return_value, map_to, map_from[1])
 
-        judgment = judgment_mock()
-        version = judgment.copy()
-        annotation = VersionAnnotation(VersionType.SUBMISSION, automated=True)
+        document = document_mock()
+
+        # By default, documents should have at least one version. Create one unless either we've been explicitly
+        # provided a list, or we've been told not to.
+        if not document.versions_as_documents and kwargs.get("populate_versions", True):
+            version = DocumentVersionFactory.build(
+                populate_versions=False,
+                **original_kwargs,
+            )
+            document.versions_as_documents.append(version)
+
+        return document
+
+
+class DocumentVersionFactory(DocumentFactory):
+    DocumentClass: TypeAlias = Document
+
+    @classmethod
+    def build(cls, **kwargs) -> DocumentClass:
+        kwargs["populate_versions"] = False
+        document = super().build(
+            **kwargs,
+        )  # We don't need to strip version-specific kwargs here, because they're ditched by `DocumentFactory` anyway.
+
+        version = document
+
+        annotation: VersionAnnotation = kwargs.get(
+            "annotation",
+            VersionAnnotation(VersionType.SUBMISSION, automated=True),
+        )
         annotation.set_calling_function("factory build")
         annotation.set_calling_agent("EUI Test")
-        version.version_number = 1
-        version.version_created_datetime = datetime.datetime(2023, 9, 26, 12)
         version.annotation = annotation.as_json
-        uri = judgment.uri
-        _id = uri.split("/")[-1]
-        version.uri.return_value = f"{uri}/_xml_versions/1-{_id}.xml"
-        judgment.versions_as_documents.append(version)
 
-        return judgment
+        version.version_number = kwargs.get("version_number", 1)
+        version.version_created_datetime = kwargs.get(
+            "version_created_datetime",
+            datetime.datetime(2023, 9, 26, 12),
+        )
+
+        uri = document.uri
+        _id = uri.split("/")[-1]
+        version.uri = DocumentURIString(
+            f"{uri}/_xml_versions/{version.version_number}-{_id}.xml",
+        )
+
+        return version
+
+
+class JudgmentFactory(DocumentFactory):
+    DocumentClass = Judgment
 
 
 class SimpleFactory:
