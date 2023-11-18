@@ -4,10 +4,10 @@ from unittest.mock import patch
 
 from caselawclient.client_helpers import VersionAnnotation, VersionType
 from caselawclient.models.judgments import Judgment
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Group, User
 from django.test import TestCase
 from django.urls import reverse
-from factories import DocumentVersionFactory, JudgmentFactory
+from factories import DocumentFactory, DocumentVersionFactory, JudgmentFactory
 from waffle.testutils import override_flag
 
 from judgments.views import document_history
@@ -357,10 +357,17 @@ class TestStructuredDocumentHistoryLogic(TestCase):
 
 @override_flag("history_timeline", active=True)
 class TestStructuredDocumentHistoryView(TestCase):
+    def sign_in_developer_user(self):
+        developer_user = User.objects.get_or_create(username="testuser")[0]
+        developer_group = Group.objects.get_or_create(name="Developers")[0]
+        developer_user.groups.add(developer_group)
+        developer_user.save()
+        self.client.force_login(developer_user)
+
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
-    def test_structured_history_flag(
+    def test_structured_history_with_legacy(
         self,
         document_type,
         document_exists,
@@ -369,17 +376,26 @@ class TestStructuredDocumentHistoryView(TestCase):
         document_type.return_value = Judgment
         document_exists.return_value = None
 
-        document = JudgmentFactory.build(
-            uri="edtest/4321/123",
+        document = DocumentFactory.build(
+            uri="test/4321/123",
             name="Test v Tested",
+            versions_as_documents=[
+                DocumentVersionFactory.build(
+                    uri="test/4321/123",
+                    name="Test v Tested",
+                    annotation="Legacy annotation 1",
+                    version_number=123,
+                    version_created_datetime=datetime(2023, 1, 1),
+                ),
+            ],
         )
         mock_document.return_value = document
 
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        self.sign_in_developer_user()
 
         assert (
             reverse("document-history", kwargs={"document_uri": document.uri})
-            == "/edtest/4321/123/history"
+            == "/test/4321/123/history"
         )
 
         response = self.client.get(
@@ -388,5 +404,104 @@ class TestStructuredDocumentHistoryView(TestCase):
 
         assert response.status_code == 200
 
-        decoded_response = response.content.decode("utf-8")
-        assert "Document history" in decoded_response
+        self.assertContains(response, "Legacy version 123")
+        self.assertContains(response, "Legacy annotation 1")
+        self.assertContains(response, "Event #1 • MarkLogic version #123")
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_structured_history(
+        self,
+        document_type,
+        document_exists,
+        mock_document,
+    ):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
+        document = DocumentFactory.build(
+            uri="test/4321/123",
+            name="Test v Tested",
+            versions_as_documents=[
+                DocumentVersionFactory.build(
+                    uri="test/4321/123",
+                    name="Test v Tested",
+                    annotation=VersionAnnotation(
+                        VersionType.SUBMISSION,
+                        automated=False,
+                        message="Submission message 1",
+                        payload={
+                            "tdr_reference": "TDR-1234-ABC",
+                            "submitter": {
+                                "name": "Test Clerk",
+                                "email": "clerk@example.com",
+                            },
+                        },
+                    ),
+                    version_number=123,
+                    version_created_datetime=datetime(2023, 1, 1, 12, 1),
+                ),
+                DocumentVersionFactory.build(
+                    uri="test/4321/123",
+                    name="Test v Tested",
+                    annotation=VersionAnnotation(
+                        VersionType.EDIT,
+                        automated=False,
+                        message="Edit message 1",
+                    ),
+                    version_number=124,
+                    version_created_datetime=datetime(2023, 1, 2, 12, 2),
+                ),
+                DocumentVersionFactory.build(
+                    uri="test/4321/123",
+                    name="Test v Tested",
+                    annotation=VersionAnnotation(
+                        VersionType.ENRICHMENT,
+                        automated=True,
+                        message="Enrichment message 1",
+                    ),
+                    version_number=125,
+                    version_created_datetime=datetime(2023, 1, 3, 12, 3),
+                ),
+            ],
+        )
+        mock_document.return_value = document
+
+        self.sign_in_developer_user()
+
+        assert (
+            reverse("document-history", kwargs={"document_uri": document.uri})
+            == "/test/4321/123/history"
+        )
+
+        response = self.client.get(
+            reverse("document-history", kwargs={"document_uri": document.uri}),
+        )
+
+        assert response.status_code == 200
+
+        self.assertContains(response, "Submission 1")
+        self.assertContains(response, "TDR-1234-ABC")
+        self.assertContains(response, "Submitted")
+        self.assertContains(response, "Submission message 1")
+        self.assertContains(response, "1 Jan 2023 12:01")
+        self.assertContains(response, "Test Clerk")
+        self.assertContains(response, "clerk@example.com")
+        self.assertContains(response, "Event #1 • MarkLogic version #123")
+
+        self.assertContains(response, "Edited")
+        self.assertContains(response, "Edit message 1")
+        self.assertContains(response, "2 Jan 2023 12:02")
+        self.assertContains(response, "Event #2 • MarkLogic version #124")
+
+        self.assertContains(response, "Enriched")
+        self.assertContains(response, "Enrichment message 1")
+        self.assertContains(response, "3 Jan 2023 12:03")
+        self.assertContains(response, "Automated")
+        self.assertContains(response, "Event #3 • MarkLogic version #125")
+
+        self.assertNotContains(
+            response,
+            "Submission 2",
+        )  # Validates we've not broken the submission stack somewhere
