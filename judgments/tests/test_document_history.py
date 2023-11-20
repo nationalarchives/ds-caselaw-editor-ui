@@ -11,6 +11,7 @@ from factories import DocumentFactory, DocumentVersionFactory, JudgmentFactory
 from waffle.testutils import override_flag
 
 from judgments.views import document_history
+from judgments.views.document_history import DocumentHistorySequencer
 
 
 class TestDocumentHistory(TestCase):
@@ -105,7 +106,7 @@ class TestStructuredDocumentHistoryLogic(TestCase):
             "agent_email": "agent@example.com",
         }
 
-    def test_structure_document_history_by_submissions(self):
+    def test_document_history_sequencer(self):
         legacy_1 = DocumentVersionFactory.build(
             uri="test/4321/123",
             name="Document with legacy annotation",
@@ -205,7 +206,7 @@ class TestStructuredDocumentHistoryLogic(TestCase):
             edit_2,  # This should be an orphaned edit with no matching submission
             submission_3,  # Make sure the logic to close open submissions at the end of the loop is good
         ]
-        assert document_history.structure_document_history_by_submissions(history) == [
+        assert DocumentHistorySequencer(history).structured_history == [
             {
                 "annotation": "Legacy annotation 1",
                 "marklogic_version": 1,
