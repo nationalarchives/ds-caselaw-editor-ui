@@ -90,6 +90,7 @@ def structure_document_history_by_submissions(
 
             # If we're here, we can unpack the structured data and that means we can figure out what next.
 
+            # The event being a submission is one of two cases where we need to open a new submission.
             if structured_data["type"] == VersionType.SUBMISSION.value:
                 # This version is a submission
 
@@ -97,8 +98,8 @@ def structure_document_history_by_submissions(
                 if submission:
                     structured_history.append(submission)
 
+                # Open a new submission ready for events.
                 submission_sequence_number += 1
-
                 submission = StructuredSubmissionDict(
                     {
                         "submission_type": "structured",
@@ -110,10 +111,10 @@ def structure_document_history_by_submissions(
                     },
                 )
 
+            # The second case for opening a new submission is if we reach a structured event which _isn't_ a submission
+            # (which would have been caught by the first case) _and_ there isn't already an open submission. If that's
+            # the case, open a new 'orphan' submission.
             elif not submission:
-                # This isn't a submission, it's an event causing a new version. There's also a possibility that the
-                # first structured event we see happens outside a submission, in which case it gets its own special
-                # orphan submission.
                 submission = OrphanSubmissionDict(
                     {
                         "submission_type": "orphan",
