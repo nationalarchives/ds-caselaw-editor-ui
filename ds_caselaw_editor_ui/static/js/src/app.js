@@ -62,8 +62,12 @@ $("#judgment-toolbar__more-button").on("click", function () {
   $("#judgment-toolbar__more-button").toggleClass("toggled");
 });
 
-$(".document-timeline__debug-toggle").on("click", function () {
-  $("#debug-v" + $(this).data("target-version")).toggle();
+$(".document-history__event-debug-toggle").on("click", function () {
+  $("#event-debug-v" + $(this).data("target-event")).toggle();
+});
+
+$(".document-history__submission-toggle").on("click", function () {
+  $("#submission-" + $(this).data("target-submission")).toggle();
 });
 
 $(".judgments-list__judgment-assign-form").on("submit", function (event) {
