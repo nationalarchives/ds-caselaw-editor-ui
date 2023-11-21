@@ -41,6 +41,7 @@ class LegacySubmissionDict(SubmissionDict):
     annotation: str
     marklogic_version: int
     sequence_number: int
+    datetime: datetime
 
 
 class DocumentHistorySequencer:
@@ -141,6 +142,7 @@ class DocumentHistorySequencer:
                         "annotation": event.annotation,
                         "marklogic_version": event.version_number,
                         "sequence_number": self.submission_sequence_number,
+                        "datetime": event.version_created_datetime,
                     },
                 ),
             )

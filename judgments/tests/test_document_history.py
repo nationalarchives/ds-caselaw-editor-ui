@@ -209,12 +209,14 @@ class TestStructuredDocumentHistoryLogic(TestCase):
         assert DocumentHistorySequencer(history).structured_history == [
             {
                 "annotation": "Legacy annotation 1",
+                "datetime": datetime(2023, 1, 1, 0, 0),
                 "marklogic_version": 1,
                 "sequence_number": 1,
                 "submission_type": "legacy",
             },
             {
                 "annotation": "Legacy annotation 2",
+                "datetime": datetime(2023, 1, 2, 0, 0),
                 "marklogic_version": 2,
                 "sequence_number": 2,
                 "submission_type": "legacy",
@@ -303,6 +305,7 @@ class TestStructuredDocumentHistoryLogic(TestCase):
             },
             {
                 "annotation": "Legacy annotation 3",
+                "datetime": datetime(2023, 1, 7, 0, 0),
                 "marklogic_version": 7,
                 "sequence_number": 5,
                 "submission_type": "legacy",

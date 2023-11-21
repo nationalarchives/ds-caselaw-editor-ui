@@ -21,6 +21,9 @@
             {% include "includes/judgment/history/structured_submission.html" with expand=forloop.first %}
           {% else %}
             <h2>Legacy version {{ submission.marklogic_version }}</h2>
+            <p>
+              <time datetime="{{ submission.datetime|date:"c" }}">{{ submission.datetime|display_datetime }}</time>
+            </p>
             {% if submission.annotation %}<p>{{ submission.annotation }}</p>{% endif %}
             {% if user|is_developer %}
               <p>
