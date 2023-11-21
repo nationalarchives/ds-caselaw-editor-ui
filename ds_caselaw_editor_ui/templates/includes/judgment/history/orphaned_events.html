@@ -1,23 +1,19 @@
 {% load document_utils %}
 <div class="document-history__submission-header">
   <div class="document-history__submission-header__title">
-    <h2>Submission {{ submission.submission_sequence_number }}</h2>
+    <h2>Orphaned events</h2>
   </div>
   <div class="document-history__submission-header__show-link">
     <p>
       <a class="document-history__submission-toggle"
-         data-target-submission="{{ submission.submission_sequence_number }}">Show</a>
+         data-target-submission="{{ submission.orphan_submission_identifier }}">Show</a>
     </p>
   </div>
-  {% if submission.submission_data.payload.tdr_reference %}
-    <div class="document-history__submission-header__reference">
-      <p>
-        <b>TDR ref</b> {{ submission.submission_data.payload.tdr_reference }}
-      </p>
-    </div>
-  {% endif %}
 </div>
-<div id="submission-{{ submission.submission_sequence_number }}"
+<p>
+  <small>These events contain structured data, but cannot be attached to a previous submission due to a break in the structured history of this document.</small>
+</p>
+<div id="submission-{{ submission.orphan_submission_identifier }}"
      {% if not expand %}hidden{% endif %}>
   <table class="table document-history__event-table">
     <tr>
