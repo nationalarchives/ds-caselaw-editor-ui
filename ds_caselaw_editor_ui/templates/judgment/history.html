@@ -16,21 +16,19 @@
   {% flag history_timeline %}
     <div class="document-history">
       {% for submission in structured_history reversed %}
-        {% if submission.submission_type == 'structured' %}
-          <div class="document-history__submission my-3">
+        <div class="document-history__submission my-3">
+          {% if submission.submission_type == 'structured' %}
             {% include "includes/judgment/history/structured_submission.html" with expand=forloop.first %}
-          </div>
-        {% else %}
-          <div class="document-history__submission my-3">
+          {% else %}
             <h2>Legacy version {{ submission.marklogic_version }}</h2>
             {% if submission.annotation %}<p>{{ submission.annotation }}</p>{% endif %}
             {% if user|is_developer %}
               <p>
                 <small class="muted">Event #{{ submission.sequence_number }} • MarkLogic version #{{ submission.marklogic_version }}</small>
               </p>
-            </div>
+            {% endif %}
           {% endif %}
-        {% endif %}
+        </div>
       {% endfor %}
     </div>
   {% else %}
