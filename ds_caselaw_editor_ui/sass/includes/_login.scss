@@ -1,37 +1,37 @@
 .login-background {
-  background-color: $color__light-grey;
-  padding-top: $spacer__unit * 2;
-  padding-bottom: $spacer__unit * 2;
+  background-color: $color-light-grey;
+  padding-top: $spacer-unit * 2;
+  padding-bottom: $spacer-unit * 2;
 
-  @media (min-width: $grid__breakpoint-small) {
-    padding-top: $spacer__unit * 5;
-    padding-bottom: $spacer__unit * 5;
+  @media (min-width: $grid-breakpoint-small) {
+    padding-top: $spacer-unit * 5;
+    padding-bottom: $spacer-unit * 5;
   }
 
-  @media (min-width: $grid__breakpoint-large) {
-    padding-top: $spacer__unit * 8;
-    padding-bottom: $spacer__unit * 8;
+  @media (min-width: $grid-breakpoint-large) {
+    padding-top: $spacer-unit * 8;
+    padding-bottom: $spacer-unit * 8;
   }
 }
 
 .login-container {
   background-color: #fff;
-  border: 5px solid $color__yellow;
+  border: 5px solid $color-yellow;
   border-radius: 8px;
 
   margin: auto;
 
   max-width: 20rem;
   width: 80%;
-  padding: $spacer__unit * 2;
+  padding: $spacer-unit * 2;
 
   h1 {
     margin: 0;
   }
 
   &__form-group {
-    margin-top: $spacer__unit;
-    margin-bottom: $spacer__unit;
+    margin-top: $spacer-unit;
+    margin-bottom: $spacer-unit;
   }
 
   &__label {
@@ -42,6 +42,6 @@
     box-sizing: border-box;
     width: 100%;
     font-size: 1.4em;
-    margin-top: $spacer__unit * 0.5;
+    margin-top: $spacer-unit * 0.5;
   }
 }

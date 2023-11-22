@@ -7,14 +7,14 @@
 }
 
 @mixin button-disabled {
-  color: $color__dark-grey;
+  color: $color-dark-grey;
   background-color: transparent;
-  border-color: $color__grey;
+  border-color: $color-grey;
   &:focus,
   &:hover {
     outline: none;
     background-color: transparent;
-    color: $color__dark-grey;
+    color: $color-dark-grey;
     text-decoration: none;
     cursor: not-allowed;
   }
@@ -22,7 +22,7 @@
 
 .button-cta {
   @include call-to-action-button;
-  border: 2px solid $color__cta-background;
+  border: 2px solid $color-cta-background;
 
   &:disabled,
   &[aria-disabled="true"] {
@@ -32,12 +32,12 @@
 
 .button-secondary {
   @include call-to-action-button;
-  background-color: $color__white;
-  color: $color__cta-background;
-  border: 2px solid $color__cta-background;
+  background-color: $color-white;
+  color: $color-cta-background;
+  border: 2px solid $color-cta-background;
 
   &:visited {
-    color: $color__cta-background;
+    color: $color-cta-background;
   }
 
   &:focus,
@@ -53,20 +53,20 @@
 
 .button-danger {
   @include call-to-action-button;
-  background-color: $color__white;
-  border: 2px solid $color__red;
-  color: $color__red;
+  background-color: $color-white;
+  border: 2px solid $color-red;
+  color: $color-red;
 
   &:visited {
-    color: $color__cta-background;
+    color: $color-cta-background;
   }
 
   &:focus,
   &:hover {
-    background-color: $color__red;
-    color: $color__white;
-    outline-color: $color__red;
-    border-color: $color__red;
+    background-color: $color-red;
+    color: $color-white;
+    outline-color: $color-red;
+    border-color: $color-red;
   }
 
   &:disabled,

@@ -1,25 +1,25 @@
 @import "../../../node_modules/@nationalarchives/ds-caselaw-frontend/src/includes/variables/colours";
 
 // EUI-specific colours
-$colour__in-progress: #dbd5e9;
-$colour__on-hold: #fcd6c3;
-$colour__published: #bfe3e0;
-$colour__in-progress-text: #3d2375;
-$colour__on-hold-text: #942514;
-$colour__published-text: #10403c;
+$colour-in-progress: #dbd5e9;
+$colour-on-hold: #fcd6c3;
+$colour-published: #bfe3e0;
+$colour-in-progress-text: #3d2375;
+$colour-on-hold-text: #942514;
+$colour-published-text: #10403c;
 
-$spacer__unit: 1rem;
+$spacer-unit: 1rem;
 
 $gutter_unit: 25px;
 
-$grid__breakpoint-small: 576px;
-$grid__breakpoint-medium: 768px;
-$grid__breakpoint-large: 992px;
-$grid__breakpoint-extra-large: 1200px;
+$grid-breakpoint-small: 576px;
+$grid-breakpoint-medium: 768px;
+$grid-breakpoint-large: 992px;
+$grid-breakpoint-extra-large: 1200px;
 
-$font__roboto: "Roboto", sans-serif;
-$font__open-sans: "Open Sans", sans-serif;
-$font__serif: serif;
+$font-roboto: "Roboto", sans-serif;
+$font-open-sans: "Open Sans", sans-serif;
+$font-serif: serif;
 
 // Paths
 $fa_path: "/static/fontawesome-svgs/";

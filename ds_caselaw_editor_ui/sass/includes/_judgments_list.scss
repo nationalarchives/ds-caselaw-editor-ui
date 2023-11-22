@@ -1,18 +1,18 @@
 .judgments-list {
   &__judgments-list-controls-container {
-    margin-bottom: calc(1 * $spacer__unit);
+    margin-bottom: calc(1 * $spacer-unit);
   }
 
   &__container {
     @include container;
-    padding: calc($spacer__unit * 1) 0;
+    padding: calc($spacer-unit * 1) 0;
   }
 
   &__header {
-    font-family: $font__roboto;
+    font-family: $font-roboto;
     font-weight: normal;
     font-size: 1.8rem;
-    margin: 0 0 calc($spacer__unit);
+    margin: 0 0 calc($spacer-unit);
     margin-left: 0.5rem;
     margin-bottom: 1rem;
   }
@@ -27,7 +27,7 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
-    padding: $spacer__unit calc($spacer__unit / 2);
+    padding: $spacer-unit calc($spacer-unit / 2);
     flex-grow: 0;
     width: 100%;
     border-bottom: 1px solid black;
@@ -36,7 +36,7 @@
   &__table-header-details {
     flex-basis: 100%;
     font-weight: bold;
-    @media (min-width: $grid__breakpoint-medium) {
+    @media (min-width: $grid-breakpoint-medium) {
       flex-basis: 75%;
     }
   }
@@ -45,7 +45,7 @@
     flex-basis: 12.5%;
     font-weight: bold;
     display: none;
-    @media (min-width: $grid__breakpoint-medium) {
+    @media (min-width: $grid-breakpoint-medium) {
       display: block;
     }
   }
@@ -54,7 +54,7 @@
     flex-basis: 12.5%;
     font-weight: bold;
     display: none;
-    @media (min-width: $grid__breakpoint-medium) {
+    @media (min-width: $grid-breakpoint-medium) {
       display: block;
     }
   }
@@ -71,8 +71,8 @@
     flex-grow: 0;
     width: 100%;
     box-sizing: border-box;
-    padding: $spacer__unit calc($spacer__unit / 2);
-    border-bottom: 1px solid $color__dark-grey;
+    padding: $spacer-unit calc($spacer-unit / 2);
+    border-bottom: 1px solid $color-dark-grey;
     &:last-child {
       border-bottom: none;
     }
@@ -80,7 +80,7 @@
 
   &__judgment-details {
     flex-basis: 100%;
-    @media (min-width: $grid__breakpoint-medium) {
+    @media (min-width: $grid-breakpoint-medium) {
       flex-basis: 75%;
     }
   }
@@ -88,7 +88,7 @@
   &__judgment-submitted {
     flex-basis: 12.5%;
     display: none;
-    @media (min-width: $grid__breakpoint-medium) {
+    @media (min-width: $grid-breakpoint-medium) {
       display: block;
     }
   }
@@ -96,19 +96,19 @@
   &__judgment-assigned {
     flex-basis: 12.5%;
     display: none;
-    @media (min-width: $grid__breakpoint-medium) {
+    @media (min-width: $grid-breakpoint-medium) {
       display: block;
     }
   }
 
   &__judgment-details-submitted-mobile {
-    @media (min-width: $grid__breakpoint-medium) {
+    @media (min-width: $grid-breakpoint-medium) {
       display: none;
     }
   }
 
   &__judgment-details-assigned-mobile {
-    @media (min-width: $grid__breakpoint-medium) {
+    @media (min-width: $grid-breakpoint-medium) {
       display: none;
     }
   }
@@ -124,7 +124,7 @@
     li {
       float: left;
       width: 100%;
-      @media (min-width: $grid__breakpoint-medium) {
+      @media (min-width: $grid-breakpoint-medium) {
         width: 50%;
       }
       box-sizing: border-box;
@@ -145,13 +145,13 @@
 
   &__action-button {
     @include call-to-action-button;
-    outline-color: $color__dark-blue;
+    outline-color: $color-dark-blue;
     font-weight: normal;
     margin-top: 0;
     padding: 0.5rem;
     font-size: 0.9rem;
     &:hover {
-      background-color: $color__link-blue-hover;
+      background-color: $color-link-blue-hover;
       cursor: grab;
     }
   }

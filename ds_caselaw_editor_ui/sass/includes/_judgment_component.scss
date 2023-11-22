@@ -1,13 +1,13 @@
 .judgment-component {
-  margin-top: $spacer__unit;
+  margin-top: $spacer-unit;
 
   &__panel {
-    padding: calc(#{$spacer__unit} / 2) 0;
+    padding: calc(#{$spacer-unit} / 2) 0;
   }
 
   &__two-column-container {
     display: flex;
-    gap: $spacer__unit;
+    gap: $spacer-unit;
   }
 
   &__left-panel {
@@ -46,15 +46,15 @@
   &__metadata_name-input {
     @include text_field;
     width: 80%;
-    min-height: calc(#{$spacer__unit} * 3);
+    min-height: calc(#{$spacer-unit} * 3);
     font-size: 1.2rem;
-    @media (min-width: $grid__breakpoint-small) {
+    @media (min-width: $grid-breakpoint-small) {
       width: 20rem;
     }
-    @media (min-width: $grid__breakpoint-medium) {
+    @media (min-width: $grid-breakpoint-medium) {
       width: 25rem;
     }
-    @media (min-width: $grid__breakpoint-extra-large) {
+    @media (min-width: $grid-breakpoint-extra-large) {
       width: 35rem;
     }
   }
@@ -97,7 +97,7 @@
 .edit-component__actions {
   display: inline-block;
   width: auto;
-  padding: calc(#{$spacer__unit} / 2) 0;
+  padding: calc(#{$spacer-unit} / 2) 0;
 }
 @media (max-width: 800px) {
   .edit-component__actions {

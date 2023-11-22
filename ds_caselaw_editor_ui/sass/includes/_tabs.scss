@@ -7,13 +7,13 @@
     margin: 0 0.25rem;
 
     label {
-      background: $color__aqua-blue;
+      background: $color-aqua-blue;
       padding-top: 0.75rem;
-      border: 2px solid $color__aqua-blue;
+      border: 2px solid $color-aqua-blue;
       border-bottom: none;
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
-      color: $color__white;
+      color: $color-white;
       font-family: "Open Sans", sans-serif;
       font-weight: 600;
       font-size: 1rem;
@@ -23,15 +23,15 @@
         top: -0.33rem;
         display: inline-block;
         text-decoration: none;
-        color: $color__white;
+        color: $color-white;
         &:focus {
           outline-offset: 5px;
         }
       }
 
       &:hover {
-        background: $color__dark-blue;
-        border-color: $color__dark-blue;
+        background: $color-dark-blue;
+        border-color: $color-dark-blue;
       }
     }
 
@@ -40,16 +40,16 @@
     }
 
     input[type="radio"]:checked ~ label {
-      border-bottom: 2px solid $color__white;
-      background: $color__white;
+      border-bottom: 2px solid $color-white;
+      background: $color-white;
       a {
-        color: $color__aqua-blue;
+        color: $color-aqua-blue;
         cursor: default;
       }
     }
   }
 
   &__divider {
-    border-top: solid 2px $color__aqua-blue;
+    border-top: solid 2px $color-aqua-blue;
   }
 }

@@ -1,23 +1,23 @@
 .edit-component,
 .judgment-info-component {
-  padding: 0 $spacer__unit;
+  padding: 0 $spacer-unit;
 
   &__header {
     font-size: 1rem;
     line-height: 2.8rem;
     display: inline-block;
-    font-family: $font__roboto;
+    font-family: $font-roboto;
     font-weight: normal;
-    color: $color__almost-black;
-    margin: 0 calc(#{$spacer__unit} * 1.5);
+    color: $color-almost-black;
+    margin: 0 calc(#{$spacer-unit} * 1.5);
   }
 
   &__more-options {
-    margin-top: calc($spacer__unit * 2);
+    margin-top: calc($spacer-unit * 2);
   }
 
   &__panel {
-    padding: calc(#{$spacer__unit} / 2) 0;
+    padding: calc(#{$spacer-unit} / 2) 0;
   }
 
   label {
@@ -38,15 +38,15 @@
     width: 80%;
     font-size: 1.2rem;
 
-    @media (min-width: $grid__breakpoint-small) {
+    @media (min-width: $grid-breakpoint-small) {
       width: 20rem;
     }
 
-    @media (min-width: $grid__breakpoint-medium) {
+    @media (min-width: $grid-breakpoint-medium) {
       width: 25rem;
     }
 
-    @media (min-width: $grid__breakpoint-extra-large) {
+    @media (min-width: $grid-breakpoint-extra-large) {
       width: 35rem;
     }
   }
@@ -63,7 +63,7 @@
 .edit-component__actions {
   display: inline-block;
   width: auto;
-  padding: calc(#{$spacer__unit} / 2) 0;
+  padding: calc(#{$spacer-unit} / 2) 0;
 }
 
 @media (max-width: 800px) {

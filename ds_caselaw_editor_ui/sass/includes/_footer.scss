@@ -1,17 +1,17 @@
 .sub-footer {
-  background-color: $color__light-grey;
+  background-color: $color-light-grey;
 
   &__container {
     @include container;
     text-align: center;
-    padding: calc($spacer__unit * 0.8);
+    padding: calc($spacer-unit * 0.8);
   }
 }
 
 .judgments-footer {
-  background-color: $color__almost-black;
-  color: $color__white;
-  padding: $spacer__unit;
+  background-color: $color-almost-black;
+  color: $color-white;
+  padding: $spacer-unit;
   font-size: 0.8em;
 
   &__heading {

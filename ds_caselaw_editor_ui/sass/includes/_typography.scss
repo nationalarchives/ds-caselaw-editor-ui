@@ -1,18 +1,18 @@
 a {
-  color: $color__link-blue;
+  color: $color-link-blue;
   text-decoration: underline;
 
   &:hover {
-    color: $color__link-blue-hover;
+    color: $color-link-blue-hover;
     text-decoration: none;
   }
 
   &:visited {
-    color: $color__link-blue-visited;
+    color: $color-link-blue-visited;
   }
 
   &:active {
-    color: $color__link-blue-active;
+    color: $color-link-blue-active;
   }
 
   &:focus {
@@ -21,5 +21,5 @@ a {
 }
 
 .muted {
-  color: $color__dark-grey;
+  color: $color-dark-grey;
 }
