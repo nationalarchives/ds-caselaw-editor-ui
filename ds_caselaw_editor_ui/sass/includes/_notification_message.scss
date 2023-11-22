@@ -1,35 +1,35 @@
 @mixin notification {
-  color: $color__white;
+  color: $color-white;
   padding: 0.5rem 1rem;
 }
 
 .page-notification {
   &--success {
     @include notification;
-    background-color: $color__success;
+    background-color: $color-success;
   }
 
   &--failure {
     @include notification;
-    background-color: $color__failure;
+    background-color: $color-failure;
   }
 }
 
 .inline-notification {
   &--success {
     @include notification;
-    background-color: $color__success;
+    background-color: $color-success;
   }
 
   &--info {
     @include notification;
-    color: $color__almost-black;
-    background-color: $color__information;
+    color: $color-almost-black;
+    background-color: $color-information;
   }
 
   &--failure {
     @include notification;
-    background-color: $color__failure;
+    background-color: $color-failure;
   }
 }
 
@@ -53,11 +53,11 @@
 .context-notification {
   &--success {
     @include context-notification;
-    background-color: $color__success;
+    background-color: $color-success;
   }
 
   &--failure {
     @include context-notification;
-    background-color: $color__failure;
+    background-color: $color-failure;
   }
 }

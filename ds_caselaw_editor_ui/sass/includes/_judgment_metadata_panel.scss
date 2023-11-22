@@ -4,8 +4,8 @@
   flex-grow: 0;
   width: 100%;
   box-sizing: border-box;
-  padding: 0 calc($spacer__unit / 2);
-  border-bottom: 1px solid $color__almost-black;
+  padding: 0 calc($spacer-unit / 2);
+  border-bottom: 1px solid $color-almost-black;
   margin-left: -1.5rem;
 
   &__details {
@@ -19,7 +19,7 @@
     li {
       float: left;
       width: 100%;
-      @media (min-width: $grid__breakpoint-medium) {
+      @media (min-width: $grid-breakpoint-medium) {
         width: 50%;
       }
       box-sizing: border-box;

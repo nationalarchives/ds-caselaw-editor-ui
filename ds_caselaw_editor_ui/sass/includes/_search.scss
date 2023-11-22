@@ -1,20 +1,20 @@
 .search-component {
-  background-color: $color__light-grey;
+  background-color: $color-light-grey;
 
   &__container {
     @include container;
     text-align: center;
-    padding: calc($spacer__unit * 2);
+    padding: calc($spacer-unit * 2);
   }
 
   &__header {
     font-size: 1rem;
     line-height: 2.8rem;
     display: inline-block;
-    font-family: $font__roboto;
+    font-family: $font-roboto;
     font-weight: normal;
-    color: $color__almost-black;
-    margin: 0 calc($spacer__unit * 1.5);
+    color: $color-almost-black;
+    margin: 0 calc($spacer-unit * 1.5);
 
     &--sr-only {
       @include sr-only;
@@ -22,13 +22,13 @@
   }
 
   &__more-options {
-    margin-top: calc($spacer__unit * 2);
+    margin-top: calc($spacer-unit * 2);
   }
 
   input[type="submit"] {
     @include call-to-action-button;
-    padding-left: calc($spacer__unit * 3);
-    padding-right: calc($spacer__unit * 3);
+    padding-left: calc($spacer-unit * 3);
+    padding-right: calc($spacer-unit * 3);
   }
 
   &__search-term-label {
@@ -39,18 +39,18 @@
     @include text_field;
     width: 80%;
     margin-top: 1rem;
-    min-height: calc($spacer__unit * 3);
+    min-height: calc($spacer-unit * 3);
     font-size: 1.2rem;
 
-    @media (min-width: $grid__breakpoint-small) {
+    @media (min-width: $grid-breakpoint-small) {
       width: 20rem;
     }
 
-    @media (min-width: $grid__breakpoint-medium) {
+    @media (min-width: $grid-breakpoint-medium) {
       width: 25rem;
     }
 
-    @media (min-width: $grid__breakpoint-extra-large) {
+    @media (min-width: $grid-breakpoint-extra-large) {
       width: 35rem;
     }
   }

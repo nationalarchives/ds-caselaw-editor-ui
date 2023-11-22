@@ -9,7 +9,7 @@
 
     td {
       border: none;
-      border-top: 1px solid $color__dark-grey;
+      border-top: 1px solid $color-dark-grey;
     }
   }
 
@@ -21,8 +21,8 @@
     display: flex;
     flex-direction: row;
     width: 100%;
-    column-gap: $spacer__unit;
-    margin-bottom: $spacer__unit;
+    column-gap: $spacer-unit;
+    margin-bottom: $spacer-unit;
 
     h2,
     p {
@@ -48,8 +48,8 @@
     flex-direction: row;
     width: 100%;
     box-sizing: border-box;
-    background-color: $color__light-grey;
-    padding: $spacer__unit;
+    background-color: $color-light-grey;
+    padding: $spacer-unit;
 
     &__details {
       list-style-type: none;
@@ -62,7 +62,7 @@
       li {
         float: left;
         width: 100%;
-        @media (min-width: $grid__breakpoint-medium) {
+        @media (min-width: $grid-breakpoint-medium) {
           width: 50%;
         }
         box-sizing: border-box;

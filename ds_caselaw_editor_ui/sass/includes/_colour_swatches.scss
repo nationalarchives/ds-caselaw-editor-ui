@@ -9,7 +9,7 @@
   @include label;
 
   p {
-    color: $color__white;
+    color: $color-white;
   }
 }
 
@@ -17,7 +17,7 @@
   @include label;
 
   p {
-    color: $color__black;
+    color: $color-black;
   }
 }
 
@@ -28,72 +28,72 @@
   padding: 0;
 
   &--yellow {
-    background-color: $color__yellow;
+    background-color: $color-yellow;
     @include label-dark;
   }
 
   &--almost-black {
-    background-color: $color__almost-black;
+    background-color: $color-almost-black;
     @include label-light;
   }
 
   &--aqua-blue {
-    background-color: $color__aqua-blue;
+    background-color: $color-aqua-blue;
     @include label-light;
   }
 
   &--dark-blue {
-    background-color: $color__dark-blue;
+    background-color: $color-dark-blue;
     @include label-light;
   }
 
   &--light-grey {
-    background-color: $color__light-grey;
+    background-color: $color-light-grey;
     @include label-dark;
   }
 
   &--grey {
-    background-color: $color__grey;
+    background-color: $color-grey;
     @include label-dark;
   }
 
   &--dark-grey {
-    background-color: $color__dark-grey;
+    background-color: $color-dark-grey;
     @include label-light;
   }
 
   &--success {
-    background-color: $color__success;
+    background-color: $color-success;
     @include label-light;
   }
 
   &--failure {
-    background-color: $color__failure;
+    background-color: $color-failure;
     @include label-light;
   }
 
   &--green {
-    background-color: $color__green;
+    background-color: $color-green;
     @include label-light;
   }
 
   &--red {
-    background-color: $color__red;
+    background-color: $color-red;
     @include label-light;
   }
 
   &--in-progress {
-    background-color: $colour__in-progress;
+    background-color: $colour-in-progress;
     @include label-dark;
   }
 
   &--on-hold {
-    background-color: $colour__on-hold;
+    background-color: $colour-on-hold;
     @include label-dark;
   }
 
   &--published {
-    background-color: $colour__published;
+    background-color: $colour-published;
     @include label-dark;
   }
 }

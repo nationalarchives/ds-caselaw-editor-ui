@@ -2,7 +2,7 @@
   text-align: left;
   display: inline-block;
 
-  @media (min-width: $grid__breakpoint-extra-large) {
+  @media (min-width: $grid-breakpoint-extra-large) {
     margin: 0;
     margin-right: 3.5rem;
   }
@@ -10,7 +10,7 @@
   form {
     display: flex;
     flex-direction: row;
-    gap: $spacer__unit;
+    gap: $spacer-unit;
 
     > div {
       display: flex;
@@ -20,7 +20,7 @@
   }
 
   &__label {
-    font-family: $font__roboto;
+    font-family: $font-roboto;
     font-size: 1rem;
     display: block;
   }
@@ -29,28 +29,28 @@
     @include select;
     min-width: auto;
     width: auto;
-    padding-right: calc(1.5 * $spacer__unit);
+    padding-right: calc(1.5 * $spacer-unit);
     display: inline-block;
   }
 
   &__button {
     @include call-to-action-button;
-    margin: calc(1.7 * $spacer__unit) 0 1rem 0;
+    margin: calc(1.7 * $spacer-unit) 0 1rem 0;
     font-size: 0.85rem;
-    outline-color: $color__dark-blue;
+    outline-color: $color-dark-blue;
     padding: 0.625rem;
     font-weight: normal;
     vertical-align: 1px;
 
     &:hover {
-      background-color: $color__link-blue-hover;
+      background-color: $color-link-blue-hover;
       cursor: grab;
     }
   }
 }
 
 .judgments-list__judgments-list-controls-container {
-  @media (min-width: $grid__breakpoint-large) {
+  @media (min-width: $grid-breakpoint-large) {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;

@@ -1,5 +1,5 @@
 .page-header {
-  background-color: $color__almost-black;
+  background-color: $color-almost-black;
 
   display: flex;
   flex-direction: row;
@@ -12,26 +12,26 @@
 
     display: block;
     position: relative;
-    padding: calc($spacer__unit / 2) calc($spacer__unit * 2);
+    padding: calc($spacer-unit / 2) calc($spacer-unit * 2);
 
     ol {
-      margin: 0 calc($spacer__unit * 0.5);
+      margin: 0 calc($spacer-unit * 0.5);
       list-style-type: none;
       padding: 0;
-      font-family: $font__roboto;
+      font-family: $font-roboto;
       display: inline-block;
       font-size: 0.9rem;
 
       a {
-        color: $color__white;
+        color: $color-white;
       }
     }
 
     li {
       display: inline-block;
       position: relative;
-      margin-right: calc($spacer__unit / 2);
-      color: $color__white;
+      margin-right: calc($spacer-unit / 2);
+      color: $color-white;
     }
 
     &-right {
@@ -42,7 +42,7 @@
   &__breadcrumbs {
     li {
       &:not(:nth-child(1)) {
-        padding-left: $spacer__unit;
+        padding-left: $spacer-unit;
 
         &::before {
           content: "";
@@ -59,21 +59,21 @@
           transform: rotate(45deg);
           border: solid;
           border-width: 0.125rem 0.125rem 0 0;
-          border-color: $color__white;
+          border-color: $color-white;
         }
       }
     }
 
     &-you-are-in {
-      color: $color__white;
+      color: $color-white;
       font-size: 0.9rem;
-      margin-right: calc($spacer__unit / 2);
+      margin-right: calc($spacer-unit / 2);
     }
   }
 
   &__container {
     @include container;
-    @media (min-width: $grid__breakpoint-medium) {
+    @media (min-width: $grid-breakpoint-medium) {
       text-align: center;
     }
   }

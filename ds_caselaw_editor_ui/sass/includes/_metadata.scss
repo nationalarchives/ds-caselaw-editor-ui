@@ -1,8 +1,8 @@
 .metadata-component {
-  background-color: $color__light-grey;
+  background-color: $color-light-grey;
   border-style: solid;
   border-color: #ffffff;
-  padding: $spacer__unit;
+  padding: $spacer-unit;
 
   @media (min-width: 1500px) {
     width: 65%;
@@ -13,7 +13,7 @@
   }
   form {
     display: flex;
-    gap: calc(2 * $spacer__unit);
+    gap: calc(2 * $spacer-unit);
   }
   &__left-column {
     width: 80%;
@@ -27,24 +27,24 @@
     flex-direction: column;
     align-items: start;
     > div {
-      @media (min-width: $grid__breakpoint-large) {
-        height: calc(1.8 * $spacer__unit);
+      @media (min-width: $grid-breakpoint-large) {
+        height: calc(1.8 * $spacer-unit);
       }
     }
 
     .metadata-component__main-labels {
-      @media (min-width: $grid__breakpoint-large) {
+      @media (min-width: $grid-breakpoint-large) {
         display: inline-block;
         margin: 0;
-        width: calc(4 * $spacer__unit);
+        width: calc(4 * $spacer-unit);
       }
     }
 
     p {
-      @media (min-width: $grid__breakpoint-large) {
+      @media (min-width: $grid-breakpoint-large) {
         display: inline-block;
         margin: 0;
-        line-height: $spacer__unit;
+        line-height: $spacer-unit;
       }
     }
   }
@@ -52,7 +52,7 @@
   &__top-left-row {
     display: flex;
     flex-direction: row;
-    gap: $spacer__unit;
+    gap: $spacer-unit;
   }
 
   &__ncn {
@@ -64,7 +64,7 @@
 
   &__court {
     width: 33%;
-    @media (min-width: $grid__breakpoint-large) {
+    @media (min-width: $grid-breakpoint-large) {
       width: 50%;
     }
     input {
@@ -74,7 +74,7 @@
 
   &__date {
     width: 33%;
-    @media (min-width: $grid__breakpoint-large) {
+    @media (min-width: $grid-breakpoint-large) {
       width: 16.67%;
     }
     input {
@@ -95,30 +95,30 @@
     p {
       border: 3px solid white;
     }
-    margin-bottom: calc($spacer__unit / 2);
+    margin-bottom: calc($spacer-unit / 2);
     white-space: nowrap;
   }
 
   &__main-labels {
     display: block;
-    margin-bottom: calc($spacer__unit / 4);
+    margin-bottom: calc($spacer-unit / 4);
     font-size: 0.9rem;
     line-height: 1.2rem;
-    color: $color__dark-grey;
+    color: $color-dark-grey;
   }
 
   &__more-options {
-    margin-top: calc($spacer__unit * 2);
+    margin-top: calc($spacer-unit * 2);
   }
   &__success {
-    background-color: $color__green;
+    background-color: $color-green;
     width: fit-content;
-    padding: calc(#{$spacer__unit} / 2);
+    padding: calc(#{$spacer-unit} / 2);
   }
   &__error {
-    background-color: $color__red;
+    background-color: $color-red;
     width: fit-content;
-    padding: calc(#{$spacer__unit} / 2);
+    padding: calc(#{$spacer-unit} / 2);
   }
 
   input[type="submit"] {
@@ -134,9 +134,9 @@
     left: 2rem;
     min-height: 2rem;
     font-size: 1rem;
-    $font__open-sans: "Open Sans", sans-serif;
+    $font-open-sans: "Open Sans", sans-serif;
     padding: 0.5rem;
-    border: 2px solid $color__dark-grey;
+    border: 2px solid $color-dark-grey;
     margin: 0;
   }
 
@@ -144,13 +144,13 @@
     width: 80%;
     min-height: 2rem;
     font-size: 1rem;
-    @media (min-width: $grid__breakpoint-small) {
+    @media (min-width: $grid-breakpoint-small) {
       width: 4rem;
     }
-    @media (min-width: $grid__breakpoint-medium) {
+    @media (min-width: $grid-breakpoint-medium) {
       width: 2rem;
     }
-    @media (min-width: $grid__breakpoint-extra-large) {
+    @media (min-width: $grid-breakpoint-extra-large) {
       width: 2rem;
     }
   }
@@ -171,9 +171,9 @@
     width: 95%;
     min-height: 2rem;
     font-size: 1rem;
-    $font__open-sans: "Open Sans", sans-serif;
+    $font-open-sans: "Open Sans", sans-serif;
     padding: 0.5rem;
-    border: 2px solid $color__dark-grey;
+    border: 2px solid $color-dark-grey;
     margin: 0;
   }
 

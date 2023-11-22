@@ -2,12 +2,12 @@
   .container {
     @include container;
 
-    padding: $spacer__unit calc($spacer__unit * 2);
+    padding: $spacer-unit calc($spacer-unit * 2);
   }
 }
 
 #ds-cookie-consent-banner a {
-  color: $color__white;
+  color: $color-white;
 }
 
 #ds-cookie-consent-banner .container #btn_preferences:hover,

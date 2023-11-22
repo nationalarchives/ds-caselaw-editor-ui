@@ -6,8 +6,8 @@
   outline: 2px solid transparent;
   outline-offset: -2px;
 
-  color: $color__white;
-  background-color: $color__dark-blue;
+  color: $color-white;
+  background-color: $color-dark-blue;
 
   text-decoration: none;
   text-transform: uppercase;
@@ -15,21 +15,21 @@
 }
 
 .judgment-status-indicator--grey {
-  color: mix(black, $color__dark-grey, 30%);
-  background: mix(white, $color__dark-grey, 90%);
+  color: mix(black, $color-dark-grey, 30%);
+  background: mix(white, $color-dark-grey, 90%);
 }
 
 .judgment-status-indicator--light-blue {
-  color: mix(black, $color__highlight-blue, 30%);
-  background: mix(white, $color__highlight-blue, 90%);
+  color: mix(black, $color-highlight-blue, 30%);
+  background: mix(white, $color-highlight-blue, 90%);
 }
 
 .judgment-status-indicator--green {
-  color: mix(black, $color__green, 30%);
-  background: mix(white, $color__green, 90%);
+  color: mix(black, $color-green, 30%);
+  background: mix(white, $color-green, 90%);
 }
 
 .judgment-status-indicator--red {
-  color: mix(black, $color__red, 30%);
-  background: mix(white, $color__red, 90%);
+  color: mix(black, $color-red, 30%);
+  background: mix(white, $color-red, 90%);
 }

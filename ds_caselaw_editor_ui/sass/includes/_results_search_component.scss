@@ -1,7 +1,7 @@
 .results-search-component {
-  background-color: $color__light-grey;
-  padding: calc($spacer__unit * 1.5) 0 calc($spacer__unit * 2);
-  margin: 0 0 calc($spacer__unit * 3);
+  background-color: $color-light-grey;
+  padding: calc($spacer-unit * 1.5) 0 calc($spacer-unit * 2);
+  margin: 0 0 calc($spacer-unit * 3);
 
   &__container {
     @include container;
@@ -12,9 +12,9 @@
     font-size: 1.75rem;
     line-height: 3.4rem;
     display: inline-block;
-    font-family: $font__roboto;
+    font-family: $font-roboto;
     font-weight: normal;
-    color: $color__almost-black;
+    color: $color-almost-black;
     margin: 0 0 0 0;
   }
 
@@ -22,10 +22,10 @@
     font-size: 1rem;
     line-height: 2.8rem;
     display: inline-block;
-    font-family: $font__roboto;
+    font-family: $font-roboto;
     font-weight: normal;
-    color: $color__almost-black;
-    margin: 0 calc($spacer__unit * 1.5);
+    color: $color-almost-black;
+    margin: 0 calc($spacer-unit * 1.5);
 
     &--sr-only {
       @include sr-only;
@@ -33,9 +33,9 @@
   }
 
   &__full-text-panel {
-    margin: calc($spacer__unit / 2) 0 0;
-    @media (min-width: $grid__breakpoint-medium) {
-      padding: calc($spacer__unit / 4) calc($spacer__unit * 1);
+    margin: calc($spacer-unit / 2) 0 0;
+    @media (min-width: $grid-breakpoint-medium) {
+      padding: calc($spacer-unit / 4) calc($spacer-unit * 1);
     }
   }
 
@@ -46,66 +46,66 @@
   &__full-text-input {
     @include text_field;
     width: 90%;
-    min-height: calc($spacer__unit * 3);
+    min-height: calc($spacer-unit * 3);
 
-    @media (min-width: $grid__breakpoint-medium) {
+    @media (min-width: $grid-breakpoint-medium) {
       width: 27rem;
     }
 
-    @media (min-width: $grid__breakpoint-extra-large) {
+    @media (min-width: $grid-breakpoint-extra-large) {
       width: 35rem;
     }
   }
 
   &__search-submit-button {
     @include call-to-action-button;
-    padding-left: calc($spacer__unit * 3);
-    padding-right: calc($spacer__unit * 3);
+    padding-left: calc($spacer-unit * 3);
+    padding-right: calc($spacer-unit * 3);
   }
 
   &__facet-outer-container {
-    margin: calc($spacer__unit * 2) 0;
-    padding: calc($spacer__unit * 1) calc($spacer__unit * 3);
+    margin: calc($spacer-unit * 2) 0;
+    padding: calc($spacer-unit * 1) calc($spacer-unit * 3);
     text-align: center;
   }
 
   &__facet-inner-container {
-    margin: 0 0 calc($spacer__unit * 2);
+    margin: 0 0 calc($spacer-unit * 2);
     text-align: left;
 
-    @media (min-width: $grid__breakpoint-medium) {
+    @media (min-width: $grid-breakpoint-medium) {
       display: grid;
       grid-auto-columns: 1fr;
       grid-template-columns: 1fr 1fr;
       gap: 1rem;
     }
 
-    @media (min-width: $grid__breakpoint-extra-large) {
+    @media (min-width: $grid-breakpoint-extra-large) {
       grid-template-columns: 1fr 1fr 1fr;
     }
   }
 
   &__fieldset {
     border: 0;
-    padding: calc($spacer__unit * 2);
+    padding: calc($spacer-unit * 2);
     margin: 0.25rem;
-    background: $color__yellow;
-    color: $color__black;
+    background: $color-yellow;
+    color: $color-black;
   }
 
   &__legend {
     font-size: 1.25rem;
-    padding: $spacer__unit;
+    padding: $spacer-unit;
     text-align: center;
-    font-family: $font__roboto;
+    font-family: $font-roboto;
     float: left;
-    margin: 0 0 calc($spacer__unit / 2);
+    margin: 0 0 calc($spacer-unit / 2);
     width: 100%;
   }
 
   &__multi-fields-panel {
-    margin-top: $spacer__unit;
-    margin-bottom: $spacer__unit;
+    margin-top: $spacer-unit;
+    margin-bottom: $spacer-unit;
   }
 
   &__name-label {
@@ -142,14 +142,14 @@
 
   &__name-container {
     border-left-width: 0.375rem;
-    padding: 0 $spacer__unit;
-    margin-bottom: $spacer__unit;
+    padding: 0 $spacer-unit;
+    margin-bottom: $spacer-unit;
   }
 
   &__limit-to-container {
     border-left-width: 0.375rem;
-    padding: 0 $spacer__unit;
-    margin-bottom: $spacer__unit;
+    padding: 0 $spacer-unit;
+    margin-bottom: $spacer-unit;
   }
 
   &__removable-options {
@@ -162,7 +162,7 @@
       margin: 0.25rem 0.5rem;
       padding: 0rem 0.75rem 0rem 1rem;
       display: inline-block;
-      background: $color__yellow;
+      background: $color-yellow;
       font-size: 0.85rem;
     }
   }
@@ -182,7 +182,7 @@
 
   &__removable-options-link {
     display: inline-block;
-    color: $color__black;
+    color: $color-black;
     text-decoration: none;
     padding: 0.5rem;
     font-size: 0.85em;
@@ -193,8 +193,8 @@
     }
 
     &:hover {
-      color: $color__white;
-      background: $color__black;
+      color: $color-white;
+      background: $color-black;
     }
   }
 
@@ -210,13 +210,13 @@
       background-color: transparent;
       font-size: 1rem;
       position: relative;
-      padding: calc($spacer__unit / 2) 0;
-      border-bottom: 0.125rem solid $color__yellow;
+      padding: calc($spacer-unit / 2) 0;
+      border-bottom: 0.125rem solid $color-yellow;
       display: block;
-      margin: calc($spacer__unit * 1.5) auto 0;
+      margin: calc($spacer-unit * 1.5) auto 0;
       font-weight: bold;
 
-      @media (min-width: $grid__breakpoint-medium) {
+      @media (min-width: $grid-breakpoint-medium) {
         padding-right: 1rem;
         padding-left: 2rem;
       }
@@ -232,7 +232,7 @@
       }
 
       &::after {
-        @media (min-width: $grid__breakpoint-medium) {
+        @media (min-width: $grid-breakpoint-medium) {
           content: "";
           display: block;
           position: absolute;
@@ -247,7 +247,7 @@
           transform: rotate(313deg);
           border: solid;
           border-width: 0.125rem 0.125rem 0 0;
-          border-color: $color__dark-grey;
+          border-color: $color-dark-grey;
         }
       }
 
