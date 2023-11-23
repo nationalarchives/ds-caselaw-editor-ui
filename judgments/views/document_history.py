@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
 from typing import Any, Literal, NotRequired, TypedDict
+from uuid import uuid4
 
 from caselawclient.client_helpers import VersionType
 from caselawclient.models.documents import Document
@@ -15,7 +16,7 @@ class EventDict(TypedDict):
     datetime: datetime
     document: Document
     marklogic_version: int
-    sequence_number: int
+    event_sequence_number: int
     agent: NotRequired[str]
     agent_email: NotRequired[str]
 
@@ -29,18 +30,21 @@ class StructuredSubmissionDict(SubmissionDict):
     submission_data: VersionAnnotationDict
     document: Document
     marklogic_version: int
-    sequence_number: int
+    submission_sequence_number: int
 
 
 class OrphanSubmissionDict(SubmissionDict):
     submission_type: Literal["orphan"]
+    orphan_submission_identifier: str
 
 
 class LegacySubmissionDict(SubmissionDict):
     submission_type: Literal["legacy"]
     annotation: str
     marklogic_version: int
-    sequence_number: int
+    submission_sequence_number: int
+    event_sequence_number: int
+    datetime: datetime
 
 
 class DocumentHistorySequencer:
@@ -96,7 +100,7 @@ class DocumentHistorySequencer:
                         "submission_data": structured_data,
                         "document": event,
                         "events": [],
-                        "sequence_number": self.submission_sequence_number,
+                        "submission_sequence_number": self.submission_sequence_number,
                         "marklogic_version": event.version_number,
                     },
                 )
@@ -108,6 +112,7 @@ class DocumentHistorySequencer:
                 self.submission = OrphanSubmissionDict(
                     {
                         "submission_type": "orphan",
+                        "orphan_submission_identifier": str(uuid4()),
                         "events": [],
                     },
                 )
@@ -133,6 +138,7 @@ class DocumentHistorySequencer:
 
             # Pop a new submission onto the stack for the legacy. Don't use the submission variable in the process,
             # since this will upset the next loop.
+
             self.submission_sequence_number += 1
             self.structured_history.append(
                 LegacySubmissionDict(
@@ -140,7 +146,9 @@ class DocumentHistorySequencer:
                         "submission_type": "legacy",
                         "annotation": event.annotation,
                         "marklogic_version": event.version_number,
-                        "sequence_number": self.submission_sequence_number,
+                        "submission_sequence_number": self.submission_sequence_number,
+                        "event_sequence_number": self.event_sequence_number,
+                        "datetime": event.version_created_datetime,
                     },
                 ),
             )
@@ -162,7 +170,7 @@ def build_event_object(
         "data": event_data,
         "datetime": event_document.version_created_datetime,
         "document": event_document,
-        "sequence_number": event_sequence_number,
+        "event_sequence_number": event_sequence_number,
         "marklogic_version": event_document.version_number,
     }
 

@@ -18,7 +18,7 @@
     </p>
     {% if user|is_developer %}
       <p>
-        <small class="muted">Event #{{ event.sequence_number }} • MarkLogic version #{{ event.marklogic_version }}
+        <small class="muted">Event #{{ event.event_sequence_number }} • MarkLogic version #{{ event.marklogic_version }}
           <br>
           {% if event.data.calling_agent %}
             {{ event.data.calling_agent }}
@@ -26,9 +26,9 @@
             Unknown agent
           {% endif %}
         • <a class="document-history__event-debug-toggle"
-    data-target-event="{{ event.sequence_number }}">Debug</a></small>
+    data-target-event="{{ event.event_sequence_number }}">Debug</a></small>
       </p>
-      <div id="event-debug-v{{ event.sequence_number }}" hidden>
+      <div id="event-debug-v{{ event.event_sequence_number }}" hidden>
         <pre class="muted">{{ event.data|render_json }}</pre>
       </div>
     {% endif %}

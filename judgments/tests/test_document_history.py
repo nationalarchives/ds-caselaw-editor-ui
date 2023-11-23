@@ -73,7 +73,7 @@ class TestStructuredDocumentHistoryLogic(TestCase):
             "datetime": datetime(2023, 9, 26, 12),
             "document": version_document,
             "marklogic_version": 1,
-            "sequence_number": 123,
+            "event_sequence_number": 123,
         }
 
     def test_build_event_object_with_submitter(self):
@@ -101,12 +101,16 @@ class TestStructuredDocumentHistoryLogic(TestCase):
             "datetime": datetime(2023, 9, 26, 12),
             "document": version_document,
             "marklogic_version": 1,
-            "sequence_number": 123,
+            "event_sequence_number": 123,
             "agent": "Agent Name",
             "agent_email": "agent@example.com",
         }
 
-    def test_document_history_sequencer(self):
+    @patch(
+        "judgments.views.document_history.uuid4",
+        return_value="94bd7c80-08d4-4093-8755-45d14ce61618",
+    )
+    def test_document_history_sequencer(self, mock_uuid):
         legacy_1 = DocumentVersionFactory.build(
             uri="test/4321/123",
             name="Document with legacy annotation",
@@ -209,14 +213,18 @@ class TestStructuredDocumentHistoryLogic(TestCase):
         assert DocumentHistorySequencer(history).structured_history == [
             {
                 "annotation": "Legacy annotation 1",
+                "datetime": datetime(2023, 1, 1, 0, 0),
                 "marklogic_version": 1,
-                "sequence_number": 1,
+                "submission_sequence_number": 1,
+                "event_sequence_number": 1,
                 "submission_type": "legacy",
             },
             {
                 "annotation": "Legacy annotation 2",
+                "datetime": datetime(2023, 1, 2, 0, 0),
                 "marklogic_version": 2,
-                "sequence_number": 2,
+                "submission_sequence_number": 2,
+                "event_sequence_number": 2,
                 "submission_type": "legacy",
             },
             {
@@ -233,7 +241,7 @@ class TestStructuredDocumentHistoryLogic(TestCase):
                         "datetime": datetime(2023, 1, 3, 0, 0),
                         "document": submission_1,
                         "marklogic_version": 3,
-                        "sequence_number": 3,
+                        "event_sequence_number": 3,
                     },
                     {
                         "data": {
@@ -246,11 +254,11 @@ class TestStructuredDocumentHistoryLogic(TestCase):
                         "datetime": datetime(2023, 1, 4, 0, 0),
                         "document": edit_1,
                         "marklogic_version": 4,
-                        "sequence_number": 4,
+                        "event_sequence_number": 4,
                     },
                 ],
                 "marklogic_version": 3,
-                "sequence_number": 3,
+                "submission_sequence_number": 3,
                 "submission_type": "structured",
                 "submission_data": {
                     "automated": False,
@@ -274,7 +282,7 @@ class TestStructuredDocumentHistoryLogic(TestCase):
                         "datetime": datetime(2023, 1, 5, 0, 0),
                         "document": submission_2,
                         "marklogic_version": 5,
-                        "sequence_number": 5,
+                        "event_sequence_number": 5,
                     },
                     {
                         "data": {
@@ -287,11 +295,11 @@ class TestStructuredDocumentHistoryLogic(TestCase):
                         "datetime": datetime(2023, 1, 6, 0, 0),
                         "document": enrichment_1,
                         "marklogic_version": 6,
-                        "sequence_number": 6,
+                        "event_sequence_number": 6,
                     },
                 ],
                 "marklogic_version": 5,
-                "sequence_number": 4,
+                "submission_sequence_number": 4,
                 "submission_type": "structured",
                 "submission_data": {
                     "automated": False,
@@ -303,8 +311,10 @@ class TestStructuredDocumentHistoryLogic(TestCase):
             },
             {
                 "annotation": "Legacy annotation 3",
+                "datetime": datetime(2023, 1, 7, 0, 0),
                 "marklogic_version": 7,
-                "sequence_number": 5,
+                "submission_sequence_number": 5,
+                "event_sequence_number": 7,
                 "submission_type": "legacy",
             },
             {
@@ -320,10 +330,11 @@ class TestStructuredDocumentHistoryLogic(TestCase):
                         "datetime": datetime(2023, 1, 8, 0, 0),
                         "document": edit_2,
                         "marklogic_version": 8,
-                        "sequence_number": 8,
+                        "event_sequence_number": 8,
                     },
                 ],
                 "submission_type": "orphan",
+                "orphan_submission_identifier": mock_uuid.return_value,
             },
             {
                 "document": submission_3,
@@ -339,11 +350,11 @@ class TestStructuredDocumentHistoryLogic(TestCase):
                         "datetime": datetime(2023, 1, 9, 0, 0),
                         "document": submission_3,
                         "marklogic_version": 9,
-                        "sequence_number": 9,
+                        "event_sequence_number": 9,
                     },
                 ],
                 "marklogic_version": 9,
-                "sequence_number": 6,
+                "submission_sequence_number": 6,
                 "submission_data": {
                     "automated": False,
                     "calling_agent": "EUI Test",
@@ -407,7 +418,10 @@ class TestStructuredDocumentHistoryView(TestCase):
 
         self.assertContains(response, "Legacy version 123")
         self.assertContains(response, "Legacy annotation 1")
-        self.assertContains(response, "Event #1 • MarkLogic version #123")
+        self.assertContains(
+            response,
+            "Event #1 • Submission #1 • MarkLogic version #123",
+        )
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
@@ -465,6 +479,24 @@ class TestStructuredDocumentHistoryView(TestCase):
                     version_number=125,
                     version_created_datetime=datetime(2023, 1, 3, 12, 3),
                 ),
+                DocumentVersionFactory.build(
+                    uri="test/4321/123",
+                    name="Test v Tested",
+                    annotation="Legacy annotation 1",
+                    version_number=126,
+                    version_created_datetime=datetime(2023, 1, 4, 12, 4),
+                ),
+                DocumentVersionFactory.build(
+                    uri="test/4321/123",
+                    name="Test v Tested",
+                    annotation=VersionAnnotation(
+                        VersionType.EDIT,
+                        automated=False,
+                        message="Edit message 2",
+                    ),
+                    version_number=127,
+                    version_created_datetime=datetime(2023, 1, 5, 12, 5),
+                ),
             ],
         )
         mock_document.return_value = document
@@ -501,6 +533,19 @@ class TestStructuredDocumentHistoryView(TestCase):
         self.assertContains(response, "3 Jan 2023 12:03")
         self.assertContains(response, "Automated")
         self.assertContains(response, "Event #3 • MarkLogic version #125")
+
+        self.assertContains(response, "Legacy version 126")
+        self.assertContains(response, "4 Jan 2023 12:04")
+        self.assertContains(response, "Legacy annotation 1")
+        self.assertContains(
+            response,
+            "Event #4 • Submission #2 • MarkLogic version #126",
+        )
+
+        self.assertContains(response, "Orphaned events")
+        self.assertContains(response, "Edit message 2")
+        self.assertContains(response, "5 Jan 2023 12:05")
+        self.assertContains(response, "Event #5 • MarkLogic version #127")
 
         self.assertNotContains(
             response,
