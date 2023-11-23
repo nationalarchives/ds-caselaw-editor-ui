@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import re
-import xml.etree.ElementTree as ET
 from datetime import datetime
 from operator import itemgetter
 from typing import TYPE_CHECKING
@@ -71,14 +70,6 @@ def format_date(date):
 
     time = datetime.strptime(date, "%Y-%m-%d")
     return time.strftime("%d-%m-%Y")
-
-
-def get_judgment_root(judgment_xml) -> str:
-    try:
-        parsed_xml = ET.XML(bytes(judgment_xml, encoding="utf-8"))
-    except ET.ParseError:
-        return "error"
-    return parsed_xml.tag
 
 
 def update_document_uri(old_uri, new_citation):

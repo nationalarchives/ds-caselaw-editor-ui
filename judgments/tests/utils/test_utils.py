@@ -14,7 +14,6 @@ from judgments.utils import (
     editors_dict,
     ensure_local_referer_url,
     extract_version,
-    get_judgment_root,
     render_versions,
     update_document_uri,
 )
@@ -88,25 +87,6 @@ class TestPaginator:
 
 
 class TestUtils(TestCase):
-    def test_get_judgment_root_error(self):
-        xml = "<error>parser.log contents</error>"
-        assert get_judgment_root(xml) == "error"
-
-    def test_get_judgment_root_akomantoso(self):
-        xml = (
-            "<akomaNtoso xmlns:uk='https://caselaw.nationalarchives.gov.uk/akn' "
-            "xmlns='http://docs.oasis-open.org/legaldocml/ns/akn/3.0'>judgment</akomaNtoso>"
-        )
-        assert (
-            get_judgment_root(xml)
-            == "{http://docs.oasis-open.org/legaldocml/ns/akn/3.0}akomaNtoso"
-        )
-
-    def test_get_judgment_root_malformed_xml(self):
-        # Should theoretically never happen but test anyway
-        xml = "<error>malformed xml"
-        assert get_judgment_root(xml) == "error"
-
     @patch("judgments.utils.api_client")
     @patch("boto3.session.Session.client")
     def test_update_document_uri_success(self, fake_boto3_client, fake_api_client):
