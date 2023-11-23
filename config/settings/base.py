@@ -143,6 +143,7 @@ MIDDLEWARE = [
     "stronghold.middleware.LoginRequiredMiddleware",
     "django.middleware.cache.FetchFromCacheMiddleware",
     "waffle.middleware.WaffleMiddleware",
+    "allauth.account.middleware.AccountMiddleware",  # required by allauth => 0.56
 ]
 
 # STATIC
