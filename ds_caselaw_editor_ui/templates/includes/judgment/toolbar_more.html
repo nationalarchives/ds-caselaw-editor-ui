@@ -49,6 +49,14 @@
   {% if user|is_superuser or user|is_editor %}
     <div class="judgment-toolbar__more__menu__group">
       <h4>Editor tools</h4>
+      <form action="{% url 'enrich' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="document_uri" value="{{ document.uri }}" />
+        <input type="submit"
+               name="enrich"
+               class="button-secondary button-small"
+               value="Request enrichment" />
+      </form>
       <form action="{% url 'delete' %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
