@@ -1,6 +1,7 @@
 from django.urls import path
 
 from judgments.views.delete import delete
+from judgments.views.enrich import enrich
 
 from .views.button_handlers import (
     assign_judgment_button,
@@ -57,6 +58,7 @@ urlpatterns = [
     path("hold", hold, name="hold"),
     path("unhold", unhold, name="unhold"),
     path("delete", delete, name="delete"),
+    path("enrich", enrich, name="enrich"),
     path("unlock", unlock, name="unlock"),
     path("assign", assign_judgment_button, name="assign"),
     path("prioritise", prioritise_judgment_button, name="prioritise"),
