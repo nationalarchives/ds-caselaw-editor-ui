@@ -2,4 +2,14 @@
 {% load static %}
 {% block precontent %}
   {% include "includes/judgment/toolbar.html" %}
+  {% if judgment.is_locked %}
+    <div class="page-notification--info">
+      <div class="container">
+        <p>This document is locked: "{{ document.checkout_message }}"</p>
+        <p>
+          <a href="{% url 'unlock' %}?judgment_uri={{ document.uri }}">Unlock it</a>
+        </p>
+      </div>
+    </div>
+  {% endif %}
 {% endblock precontent %}

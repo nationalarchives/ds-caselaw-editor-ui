@@ -133,6 +133,52 @@ class TestDocumentToolbar(TestCase):
             decoded_response,
         )
 
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    @patch("judgments.utils.api_client.document_exists")
+    def test_get_locked_banner_if_locked(
+        self,
+        document_exists,
+        mock_judgment,
+    ):
+        document_exists.return_value = None
+
+        judgment = JudgmentFactory.build(
+            uri="good-document",
+            is_failure=False,
+        )
+        judgment.is_locked = True
+
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.get(
+            reverse("full-text-html", kwargs={"document_uri": judgment.uri}),
+        )
+        self.assertContains(response, "is locked")
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    @patch("judgments.utils.api_client.document_exists")
+    def test_get_no_locked_banner_if_not_locked(
+        self,
+        document_exists,
+        mock_judgment,
+    ):
+        document_exists.return_value = None
+
+        judgment = JudgmentFactory.build(
+            uri="good-document",
+            is_failure=False,
+        )
+        judgment.is_locked = False
+        mock_judgment.return_value = judgment
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.get(
+            reverse("full-text-html", kwargs={"document_uri": judgment.uri}),
+        )
+        self.assertNotContains(response, "is locked")
+
     def preprocess_html(self, html):
         """Removes leading and trailing whitespace, tabs, and line breaks"""
         return re.sub(r"\s+", " ", html).strip()

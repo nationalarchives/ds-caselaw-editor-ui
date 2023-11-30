@@ -13,6 +13,15 @@
     @include notification;
     background-color: $color-failure;
   }
+
+  &--info {
+    @include notification;
+    background-color: $color-information;
+    color: $color-almost-black;
+    a {
+      color: $color-dark-blue;
+    }
+  }
 }
 
 .inline-notification {

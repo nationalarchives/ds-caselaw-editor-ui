@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-15 17:07+0000\n"
+"POT-Creation-Date: 2023-11-30 16:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -147,12 +147,6 @@ msgid "judgment.report_blocking_problem"
 msgstr "Report a technical issue"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/toolbar_more.html
-#: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html
-#: judgments/views/unlock.py
-msgid "judgment.unlock_judgment_title"
-msgstr "Unlock document"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/toolbar_more.html
 msgid "judgment.download_docx"
 msgstr "Download original .docx"
 
@@ -191,6 +185,11 @@ msgstr "Assigned to:"
 #: ds_caselaw_editor_ui/templates/judgment/results.html
 msgid "judgments.allrecent"
 msgstr "See all recent documents"
+
+#: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html
+#: judgments/views/unlock.py
+msgid "judgment.unlock_judgment_title"
+msgstr "Unlock document"
 
 #: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html
 msgid "judgment.back_to_judgment"
