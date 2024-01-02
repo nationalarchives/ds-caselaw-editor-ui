@@ -15,7 +15,7 @@ repos:
       - id: black
 
   - repo: https://github.com/Riverside-Healthcare/djLint
-    rev: v1.34.0
+    rev: v1.34.1
     hooks:
       - id: djlint-django
         name: djLint Reformatting for Django
@@ -24,7 +24,7 @@ repos:
         language: python
 
   - repo: https://github.com/Riverside-Healthcare/djLint
-    rev: v1.34.0
+    rev: v1.34.1
     hooks:
       - id: djlint-django
         name: djLint Checks for Django
