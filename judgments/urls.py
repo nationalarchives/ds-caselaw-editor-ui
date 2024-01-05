@@ -3,6 +3,7 @@ from django.urls import path
 from judgments.views.delete import delete
 from judgments.views.enrich import enrich
 
+from .views import reports
 from .views.button_handlers import (
     assign_judgment_button,
     hold_judgment_button,
@@ -69,6 +70,13 @@ urlpatterns = [
     path("xml", xml_view_redirect),
     # Labs
     path("labs", Labs.as_view(), name="labs"),
+    # Reports
+    path("reports", reports.Index.as_view(), name="reports"),
+    path(
+        "reports/awaiting-enrichment",
+        reports.AwaitingEnrichment.as_view(),
+        name="report_awaiting_enrichment",
+    ),
     # Stats
     path("stats", Stats.as_view(), name="stats"),
     path(

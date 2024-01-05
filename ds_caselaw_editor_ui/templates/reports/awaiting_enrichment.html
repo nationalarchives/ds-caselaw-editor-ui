@@ -1,0 +1,27 @@
+{% extends "layouts/base.html" %}
+{% load i18n humanize %}
+{% block content %}
+  <div class="standard-text-template">
+    <h1>Documents awaiting enrichment</h1>
+    <p>
+      These documents have not yet been enriched with the target version of the enrichment engine, version {{ target_enrichment_version }}.
+    </p>
+    <p>
+      There are <b>{{ documents|length|intcomma }}</b> documents waiting.
+    </p>
+    <table class="table">
+      <tr>
+        <th>#</th>
+        <th>Document</th>
+        <th>Enriched with</th>
+        <th>Last sent for enrichment</th>
+      </tr>
+      {% for document in documents %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          {% for cell in document %}<td>{{ cell }}</td>{% endfor %}
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+{% endblock content %}

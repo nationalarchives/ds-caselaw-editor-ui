@@ -55,6 +55,11 @@
                   <a href="{% url 'admin:index' %}">Admin</a>
                 </li>
               {% endif %}
+              {% flag "reports" %}
+                <li>
+                  <a href="{% url 'reports' %}">Reports</a>
+                </li>
+              {% endflag %}
               {% flag "stats" %}
                 <li>
                   <a href="{% url 'stats' %}">Stats</a>
