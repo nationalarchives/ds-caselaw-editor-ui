@@ -1,0 +1,12 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% block content %}
+  <div class="standard-text-template">
+    <h1>Reports</h1>
+    <ul>
+      <li>
+        <a href="{% url 'report_awaiting_enrichment' %}">Awaiting enrichment</a>
+      </li>
+    </ul>
+  </div>
+{% endblock content %}
