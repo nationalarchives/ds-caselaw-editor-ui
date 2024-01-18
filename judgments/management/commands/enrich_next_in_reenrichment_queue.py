@@ -7,7 +7,7 @@ NUMBER_TO_ENRICH = 1
 
 
 class Command(BaseCommand):
-    help = "Sends the next document in the re-enrichment queue to be enriched"  ## noqa: A003
+    help = "Sends the next document in the re-enrichment queue to be enriched"
 
     def handle(self, *args, **options):
         document_details_to_enrich = api_client.get_pending_enrichment_for_version(
