@@ -58,7 +58,7 @@
         {% csrf_token %}
         <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
         <input type="submit"
-               name="assign"
+               name="delete"
                class="button-danger button-small"
                value="Delete document"
                {% if not document.safe_to_delete %}disabled{% endif %} />
