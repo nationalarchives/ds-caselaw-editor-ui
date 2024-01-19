@@ -1,4 +1,4 @@
-{% load i18n user_permissions %}
+{% load i18n user_permissions waffle_tags %}
 <hr>
 <div class="judgment-toolbar__more__menu">
   <div class="judgment-toolbar__more__menu__group">
@@ -63,6 +63,16 @@
                value="Delete document"
                {% if not document.safe_to_delete %}disabled{% endif %} />
       </form>
+      {% flag "reparse" %}
+        <form action="{% url 'reparse' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="document_uri" value="{{ document.uri }}" />
+          <input type="submit"
+                 name="reparse"
+                 class="button-secondary button-small"
+                 value="Reparse document" />
+        </form>
+      {% endflag %}
     </div>
   {% endif %}
 </div>
