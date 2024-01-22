@@ -61,6 +61,7 @@ urlpatterns = [
     path("unhold", unhold, name="unhold"),
     path("delete", delete, name="delete"),
     path("enrich", enrich, name="enrich"),
+    path("reparse", reparse, name="reparse"),
     path("unlock", unlock, name="unlock"),
     path("assign", assign_judgment_button, name="assign"),
     path("prioritise", prioritise_judgment_button, name="prioritise"),
