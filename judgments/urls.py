@@ -17,6 +17,7 @@ from .views.document_full_text import (
     xml_view_redirect,
 )
 from .views.document_history import DocumentHistoryView
+from .views.document_reparse import reparse
 from .views.index import index
 from .views.judgment_edit import EditJudgmentView, edit_view_redirect
 from .views.judgment_hold import (
@@ -60,6 +61,7 @@ urlpatterns = [
     path("unhold", unhold, name="unhold"),
     path("delete", delete, name="delete"),
     path("enrich", enrich, name="enrich"),
+    path("reparse", reparse, name="reparse"),
     path("unlock", unlock, name="unlock"),
     path("assign", assign_judgment_button, name="assign"),
     path("prioritise", prioritise_judgment_button, name="prioritise"),
