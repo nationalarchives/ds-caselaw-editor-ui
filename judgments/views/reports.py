@@ -20,7 +20,7 @@ class AwaitingEnrichment(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        target_enrichment_version = 6
+        target_enrichment_version = api_client.get_highest_enrichment_version()
 
         context["page_title"] = "Documents awaiting enrichment"
         context["target_enrichment_version"] = target_enrichment_version
