@@ -75,6 +75,11 @@ urlpatterns = [
     # Reports
     path("reports", reports.Index.as_view(), name="reports"),
     path(
+        "reports/awaiting-parse",
+        reports.AwaitingParse.as_view(),
+        name="report_awaiting_parse",
+    ),
+    path(
         "reports/awaiting-enrichment",
         reports.AwaitingEnrichment.as_view(),
         name="report_awaiting_enrichment",

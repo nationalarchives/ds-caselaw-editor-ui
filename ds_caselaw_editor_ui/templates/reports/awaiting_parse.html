@@ -2,9 +2,9 @@
 {% load i18n humanize %}
 {% block content %}
   <div class="standard-text-template">
-    <h1>Documents awaiting enrichment</h1>
+    <h1>Documents awaiting parsing</h1>
     <p>
-      These documents have not yet been enriched with the latest version of the enrichment engine, version <b>{{ target_enrichment_version }}</b>, and have not recently had an enrichment attempt.
+      These documents have not yet been parsed with the latest version of the parser, version <b>{{ target_parser_version }}</b>, and have not recently had an parsing attempt.
     </p>
     <p>
       There are <b>{{ documents|length|intcomma }}</b> documents waiting.
@@ -13,8 +13,8 @@
       <tr>
         <th>#</th>
         <th>Document</th>
-        <th>Enriched with</th>
-        <th>Last sent for enrichment</th>
+        <th>Parsed with</th>
+        <th>Last sent for parsing</th>
       </tr>
       {% for document in documents %}
         <tr>
