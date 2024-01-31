@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
+from judgments.views.reports import get_rows_from_result
+
 
 class TestReports(TestCase):
     def test_index_view(self):
@@ -58,3 +60,10 @@ class TestReports(TestCase):
         assert "parser_version_string" not in decoded_response
 
         assert response.status_code == 200
+
+    def test_get_rows_from_result(self):
+        assert get_rows_from_result(["header 1", "header 2"]) == []
+
+        assert get_rows_from_result(
+            [["header 1", "header 2"], ["value 1", "value 2"]],
+        ) == [["value 1", "value 2"]]
