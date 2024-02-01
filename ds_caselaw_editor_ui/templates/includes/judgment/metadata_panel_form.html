@@ -22,7 +22,7 @@
             <label for="court" class="metadata-component__main-labels">{% translate "judgment.court" %}</label>
             <input type="text"
                    class="metadata-component__court-input"
-                   value="{{ judgment.court }}"
+                   value="{{ judgment.court_and_jurisdiction_identifier_string }}"
                    name="court"
                    id="court"
                    list="court-ids" />
