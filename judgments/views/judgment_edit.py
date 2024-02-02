@@ -40,7 +40,7 @@ class EditJudgmentView(View):
 
             # Set court
             new_court = request.POST["court"]
-            api_client.set_document_court(judgment_uri, new_court)
+            api_client.set_document_court_and_jurisdiction(judgment_uri, new_court)
 
             # Date
             new_date = request.POST["judgment_date"]

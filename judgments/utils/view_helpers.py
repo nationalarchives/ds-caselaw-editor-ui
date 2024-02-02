@@ -94,7 +94,7 @@ class DocumentView(TemplateView):
         context["judgment"] = document
 
         context["page_title"] = document.name
-        context["courts"] = caselawutils.courts.get_all()
+        context["courts"] = caselawutils.courts.get_all(with_jurisdictions=True)
 
         context["editors"] = editors_dict()
 

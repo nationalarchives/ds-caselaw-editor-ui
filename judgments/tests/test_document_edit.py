@@ -49,7 +49,7 @@ class TestDocumentEdit(TestCase):
             "/edittest/4321/123",
             "[4321] TEST 123",
         )
-        api_client.set_document_court.assert_called_with(
+        api_client.set_document_court_and_jurisdiction.assert_called_with(
             "/edittest/4321/123",
             "Court of Testing",
         )
