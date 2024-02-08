@@ -34,6 +34,11 @@ def container_exec(cmd, container_name="django", check_returncode=False):
     return result
 
 
+def background_exec(cmd, logfile):
+    "Run a command in the background and capture logs."
+    local(f"nohup {cmd} &> {logfile}.log &")
+
+
 def postgres_exec(cmd, check_returncode=False):
     "Execute something in the 'postgres' Docker container."
     return container_exec(cmd, "postgres", check_returncode)
@@ -69,13 +74,31 @@ def start(c, container_name=None):
 
 
 @task
+def npm_install(c):
+    """
+    Install NPM packages
+    """
+    local("npm install")
+
+
+@task
+def collectstatic(c):
+    """
+    Update static assets
+    """
+    django_exec("rm -rf /app/staticfiles")
+    django_exec("python manage.py collectstatic")
+
+
+@task
 def run(c):
     start(c, "django")
+    npm_install(c)
+    background_exec("npm run watch", "assets")
     django_exec("pip install -r requirements/local.txt -U")
     django_exec("DJANGO_SETTINGS_MODULE= django-admin compilemessages")
     django_exec("python manage.py migrate")
-    django_exec("rm -rf /app/staticfiles")
-    django_exec("python manage.py collectstatic")
+    collectstatic(c)
     # Piping Marklogic logs to marklogic.log
     try:
         local("docker logs marklogic > marklogic.log")
