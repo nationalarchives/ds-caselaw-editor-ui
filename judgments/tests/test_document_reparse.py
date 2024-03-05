@@ -49,7 +49,7 @@ class TestDocumentReparse(TestCase):
         """If the flag is set and the user is allowed, they can see the reparse
         button but it is disabled if it can't be reparsed"""
         uri = "test/4321/123"
-        document = DocumentFactory.build(uri=uri, name="Enrichment Test")
+        document = DocumentFactory.build(uri=uri, name="Reparse Button Test")
         mock_document.return_value = document
         document.can_reparse.return_value = False
         self.client.force_login(self.admin)
@@ -66,7 +66,7 @@ class TestDocumentReparse(TestCase):
         """If the flag is set and the user is allowed, they can see the reparse
         button and it is enabled if it can be reparsed"""
         uri = "test/4321/123"
-        document = DocumentFactory.build(uri=uri, name="Enrichment Test")
+        document = DocumentFactory.build(uri=uri, name="Reparse Button Test")
         mock_document.return_value = document
         document.can_reparse.return_value = True
         self.client.force_login(self.admin)
