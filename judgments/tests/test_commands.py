@@ -1,11 +1,13 @@
 from unittest.mock import call, patch
 
+import pytest
 from django.core.management import call_command
 from django.test import TestCase
 from factories import DocumentFactory
 
 
 class CommandsTestCase(TestCase):
+    @pytest.mark.xfail(reason="disabled reenrichment queue")
     @patch("judgments.management.commands.enrich_next_in_reenrichment_queue.api_client")
     @patch(
         "judgments.management.commands.enrich_next_in_reenrichment_queue.NUMBER_TO_ENRICH",
@@ -32,6 +34,7 @@ class CommandsTestCase(TestCase):
         document_1.enrich.assert_called_once()
         document_2.enrich.assert_called_once()
 
+    @pytest.mark.xfail(reason="disabled reenrichment queue")
     @patch("judgments.management.commands.enrich_next_in_reenrichment_queue.api_client")
     @patch(
         "judgments.management.commands.enrich_next_in_reenrichment_queue.NUMBER_TO_ENRICH",
