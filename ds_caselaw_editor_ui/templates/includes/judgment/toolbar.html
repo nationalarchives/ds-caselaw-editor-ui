@@ -30,7 +30,8 @@
       {% endif %}
       {% if document.docx_url %}
         <a class="judgment-toolbar__button button-secondary"
-           href="{{ document.docx_url }}">{% translate "judgment.toolbar.download_docx" %}</a>
+           href="{{ document.docx_url }}"
+           download>{% translate "judgment.toolbar.download_docx" %}</a>
       {% else %}
         <span class="judgment-toolbar__button button-secondary"
               aria-disabled="true">{% translate "judgment.toolbar.download_docx" %}</span>
