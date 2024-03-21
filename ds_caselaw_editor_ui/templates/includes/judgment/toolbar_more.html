@@ -30,7 +30,7 @@
     <ul>
       {% if document.docx_url %}
         <li>
-          <a href="{{ document.docx_url }}">{% translate "judgment.download_docx" %}</a>
+          <a href="{{ document.docx_url }}" download>{% translate "judgment.download_docx" %}</a>
         </li>
       {% endif %}
       {% if document.pdf_url %}
