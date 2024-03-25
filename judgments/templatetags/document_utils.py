@@ -37,3 +37,13 @@ def display_annotation_type(annotation):
         return VERSION_TYPE_LABELS.get(version_type, version_type)
     except (TypeError, json.JSONDecodeError):
         return annotation
+
+
+@register.filter
+def can_enrich(document):
+    return document.can_enrich()
+
+
+@register.filter
+def can_reparse(document):
+    return document.can_reparse()

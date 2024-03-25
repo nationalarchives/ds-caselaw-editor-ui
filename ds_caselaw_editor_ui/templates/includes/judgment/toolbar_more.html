@@ -1,4 +1,4 @@
-{% load i18n user_permissions waffle_tags %}
+{% load i18n user_permissions waffle_tags document_utils %}
 <hr>
 <div class="judgment-toolbar__more__menu">
   <div class="judgment-toolbar__more__menu__group">
@@ -52,7 +52,8 @@
         <input type="submit"
                name="enrich"
                class="button-secondary button-small"
-               value="Request enrichment" />
+               value="Request enrichment"
+               {% if not document|can_enrich %}disabled{% endif %} />
       </form>
       <form action="{% url 'delete' %}" method="post">
         {% csrf_token %}
@@ -70,7 +71,8 @@
           <input type="submit"
                  name="reparse"
                  class="button-secondary button-small"
-                 value="Reparse document" />
+                 value="Reparse document"
+                 {% if not document|can_reparse %}disabled{% endif %} />
         </form>
       {% endflag %}
     </div>
