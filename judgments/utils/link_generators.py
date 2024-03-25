@@ -31,8 +31,8 @@ def build_confirmation_email_link(
     document: Document,
     signature: str | None = None,
 ) -> str:
-    subject_string = "Notification of publication [TDR ref: {reference}]".format(
-        reference=document.consignment_reference,
+    subject_string = (
+        f"Notification of publication [TDR ref: {document.consignment_reference}]"
     )
 
     email_context = {
@@ -81,11 +81,7 @@ def build_raise_issue_email_link(
 
 
 def build_jira_create_link(document: Document, request: HttpRequest) -> str:
-    summary_string = "{name} / {ncn} / {tdr}".format(
-        name=document.name,
-        ncn=document.best_human_identifier,
-        tdr=document.consignment_reference,
-    )
+    summary_string = f"{document.name} / {document.best_human_identifier} / {document.consignment_reference}"
 
     editor_html_url = request.build_absolute_uri(
         reverse("full-text-html", kwargs={"document_uri": document.uri}),
@@ -114,9 +110,4 @@ def build_jira_create_link(document: Document, request: HttpRequest) -> str:
         "summary": summary_string,
         "description": description_string,
     }
-    return (
-        "https://{jira_instance}/secure/CreateIssueDetails!init.jspa?{params}".format(
-            jira_instance=settings.JIRA_INSTANCE,
-            params=urlencode(params),
-        )
-    )
+    return f"https://{settings.JIRA_INSTANCE}/secure/CreateIssueDetails!init.jspa?{urlencode(params)}"
