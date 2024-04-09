@@ -25,6 +25,6 @@ class Command(BaseCommand):
 
             self.stdout.write(f"Attempting to reparse document {document.name}...")
             if document.reparse():
-                self.stdout.write("Success!")
+                self.stdout.write("Reparse request sent.")
             else:
-                self.stdout.write("Failed.")
+                self.stdout.write("Reparse not sent.")
