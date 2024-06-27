@@ -103,7 +103,7 @@ jobs:
         run: docker-compose run django coverage xml
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
 
       - name: Upload coverage to CodeClimate
         uses: paambaati/codeclimate-action@v5.0.0
