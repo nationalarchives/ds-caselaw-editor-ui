@@ -6,10 +6,10 @@ psycopg2==2.9.9  # https://github.com/psycopg/psycopg2
 
 # Testing
 # ------------------------------------------------------------------------------
-mypy==1.10.0  # https://github.com/python/mypy
+mypy==1.10.1  # https://github.com/python/mypy
 django-stubs==4.2.6  # https://github.com/typeddjango/django-stubs
 pytest==8.2.2  # https://github.com/pytest-dev/pytest
-pytest-sugar==0.9.7  # https://github.com/Frozenball/pytest-sugar
+pytest-sugar==1.0.0  # https://github.com/Frozenball/pytest-sugar
 pytest-socket==0.7.0  # https://github.com/miketheman/pytest-socket
 
 # Code quality
@@ -26,5 +26,5 @@ django-debug-toolbar==4.4.2  # https://github.com/jazzband/django-debug-toolbar
 django-extensions==3.2.3  # https://github.com/django-extensions/django-extensions
 django-coverage-plugin==3.1.0  # https://github.com/nedbat/django_coverage_plugin
 pytest-django==4.8.0  # https://github.com/pytest-dev/pytest-django
-pytest-cov==4.1.0
+pytest-cov==5.0.0
 pytest-timeout==2.3.1
