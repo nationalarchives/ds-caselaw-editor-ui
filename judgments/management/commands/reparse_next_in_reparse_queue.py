@@ -18,7 +18,8 @@ class Command(BaseCommand):
             ),
         )
 
-        for document_details in document_details_to_parse[:NUMBER_TO_PARSE]:
+        counter = 0
+        for document_details in document_details_to_parse:
             document_uri = document_details[0]
 
             document = api_client.get_document_by_uri(document_uri.replace(".xml", ""))
@@ -26,5 +27,9 @@ class Command(BaseCommand):
             self.stdout.write(f"Attempting to reparse document {document.name}...")
             if document.reparse():
                 self.stdout.write("Reparse request sent.")
+                counter += 1
             else:
                 self.stdout.write("Reparse not sent.")
+
+            if counter >= NUMBER_TO_PARSE:
+                break
