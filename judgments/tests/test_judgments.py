@@ -25,10 +25,7 @@ class TestJudgmentView(TestCase):
 
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
 
-        assert (
-            reverse("full-text-html", kwargs={"document_uri": judgment.uri})
-            == "/hvtest/4321/123"
-        )
+        assert reverse("full-text-html", kwargs={"document_uri": judgment.uri}) == "/hvtest/4321/123"
 
         response = self.client.get(
             reverse("full-text-html", kwargs={"document_uri": judgment.uri}),
@@ -118,10 +115,7 @@ class TestJudgmentView(TestCase):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
         response = self.client.get("/test/1234/pdf")
         decoded_response = response.content.decode("utf-8")
-        assert (
-            "Document &quot;JUDGMENT v JUDGEMENT&quot; does not have a PDF."
-            in decoded_response
-        )
+        assert "Document &quot;JUDGMENT v JUDGEMENT&quot; does not have a PDF." in decoded_response
         assert response.status_code == 404
 
     def test_judgment_xml_view_redirect(self):

@@ -31,9 +31,7 @@ def build_confirmation_email_link(
     document: Document,
     signature: str | None = None,
 ) -> str:
-    subject_string = (
-        f"Notification of publication [TDR ref: {document.consignment_reference}]"
-    )
+    subject_string = f"Notification of publication [TDR ref: {document.consignment_reference}]"
 
     email_context = {
         "judgment_name": document.name,

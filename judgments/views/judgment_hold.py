@@ -24,11 +24,7 @@ class HoldDocumentSuccessView(DocumentView):
         context = super().get_context_data(**kwargs)
         context["email_issue_link"] = build_raise_issue_email_link(
             document=context["document"],
-            signature=(
-                self.request.user.get_full_name()
-                if self.request.user.is_authenticated
-                else None
-            ),
+            signature=(self.request.user.get_full_name() if self.request.user.is_authenticated else None),
         )
         return context
 

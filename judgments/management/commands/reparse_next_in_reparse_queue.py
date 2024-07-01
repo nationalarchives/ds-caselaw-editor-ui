@@ -9,6 +9,7 @@ from judgments.views.reports import get_rows_from_result
 NUMBER_TO_PARSE = 1
 MAX_DOCUMENTS_TO_TRY = 200
 
+
 class Command(BaseCommand):
     help = "Sends the next document in the reparse queue to be reparsed"
 

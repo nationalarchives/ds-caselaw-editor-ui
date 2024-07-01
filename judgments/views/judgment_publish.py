@@ -24,11 +24,7 @@ class PublishDocumentSuccessView(DocumentView):
 
         context["email_confirmation_link"] = build_confirmation_email_link(
             document=context["document"],
-            signature=(
-                self.request.user.get_full_name()
-                if self.request.user.is_authenticated
-                else None
-            ),
+            signature=(self.request.user.get_full_name() if self.request.user.is_authenticated else None),
         )
 
         return context

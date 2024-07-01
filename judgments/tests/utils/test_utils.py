@@ -182,10 +182,7 @@ class TestReferrerUrlHelper(TestCase):
     def test_when_referrer_is_absolute_and_local(self, request):
         request.META = {"HTTP_REFERER": "https://www.example.com/foo/bar"}
         request.get_host.return_value = "www.example.com"
-        assert (
-            ensure_local_referer_url(request, "/default")
-            == "https://www.example.com/foo/bar"
-        )
+        assert ensure_local_referer_url(request, "/default") == "https://www.example.com/foo/bar"
 
     @patch("django.http.request.HttpRequest")
     def test_when_referrer_is_absolute_and_remote(self, request):

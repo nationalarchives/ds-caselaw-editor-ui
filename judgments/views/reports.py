@@ -37,9 +37,7 @@ class AwaitingParse(TemplateView):
         target_parser_version = api_client.get_highest_parser_version()
 
         context["page_title"] = "Documents awaiting parsing"
-        context["target_parser_version"] = (
-            f"{target_parser_version[0]}.{target_parser_version[1]}"
-        )
+        context["target_parser_version"] = f"{target_parser_version[0]}.{target_parser_version[1]}"
 
         context["documents"] = get_rows_from_result(
             api_client.get_pending_parse_for_version(
@@ -60,12 +58,8 @@ class AwaitingEnrichment(TemplateView):
         target_parser_version = api_client.get_highest_parser_version()
 
         context["page_title"] = "Documents awaiting enrichment"
-        context["target_enrichment_version"] = (
-            f"{target_enrichment_version[0]}.{target_enrichment_version[1]}"
-        )
-        context["target_parser_version"] = (
-            f"{target_parser_version[0]}.{target_parser_version[1]}"
-        )
+        context["target_enrichment_version"] = f"{target_enrichment_version[0]}.{target_enrichment_version[1]}"
+        context["target_parser_version"] = f"{target_parser_version[0]}.{target_parser_version[1]}"
 
         context["documents"] = get_rows_from_result(
             api_client.get_pending_enrichment_for_version(
