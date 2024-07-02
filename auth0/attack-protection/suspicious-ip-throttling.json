@@ -1,9 +1,6 @@
 {
   "enabled": true,
-  "shields": [
-    "admin_notification",
-    "block"
-  ],
+  "shields": ["admin_notification", "block"],
   "allowlist": [],
   "stage": {
     "pre-login": {

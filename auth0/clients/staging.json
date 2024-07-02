@@ -33,6 +33,6 @@
   "custom_login_page_on": true,
   "web_origins": [
     "https://editor.staging.caselaw.nationalarchives.gov.uk",
-		"https://editor.staging.caselaw-stg.dalmatian.dxw.net"
-	]
+    "https://editor.staging.caselaw-stg.dalmatian.dxw.net"
+  ]
 }
