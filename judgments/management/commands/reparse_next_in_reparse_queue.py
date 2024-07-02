@@ -1,10 +1,13 @@
+import sys
+import time
+
 from django.core.management.base import BaseCommand
 
 from judgments.utils import api_client
 from judgments.views.reports import get_rows_from_result
 
 NUMBER_TO_PARSE = 1
-
+MAX_DOCUMENTS_TO_TRY = 200
 
 class Command(BaseCommand):
     help = "Sends the next document in the reparse queue to be reparsed"
@@ -19,17 +22,22 @@ class Command(BaseCommand):
         )
 
         counter = 0
-        for document_details in document_details_to_parse:
+        # Limit the number of documents so that when we run this job again
+        # this one should have finished, no matter what.
+        for document_details in document_details_to_parse[:MAX_DOCUMENTS_TO_TRY]:
             document_uri = document_details[0]
 
             document = api_client.get_document_by_uri(document_uri.replace(".xml", ""))
 
-            self.stdout.write(f"Attempting to reparse document {document.name}...")
+            sys.stdout.write(f"Attempting to reparse document {document.name}...\n")
             if document.reparse():
-                self.stdout.write("Reparse request sent.")
+                sys.stdout.write("Reparse request sent.\n")
                 counter += 1
             else:
-                self.stdout.write("Reparse not sent.")
+                sys.stdout.write("Reparse not sent.\n")
 
             if counter >= NUMBER_TO_PARSE:
                 break
+
+            # Give other things a chance to run
+            time.sleep(3)
