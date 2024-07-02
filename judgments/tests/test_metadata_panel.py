@@ -28,8 +28,5 @@ class TestMetadataPanel(TestCase):
             reverse("full-text-html", kwargs={"document_uri": judgment.uri}),
         )
 
-        assert (
-            b'<input type="hidden" name="judgment_uri" value="hvtest/4321/123" />'
-            in response.content
-        )
+        assert b'<input type="hidden" name="judgment_uri" value="hvtest/4321/123" />' in response.content
         assert response.status_code == 200

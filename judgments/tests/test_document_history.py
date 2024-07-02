@@ -30,10 +30,7 @@ class TestDocumentHistory(TestCase):
 
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
 
-        assert (
-            reverse("document-history", kwargs={"document_uri": document.uri})
-            == "/edtest/4321/123/history"
-        )
+        assert reverse("document-history", kwargs={"document_uri": document.uri}) == "/edtest/4321/123/history"
 
         response = self.client.get(
             reverse("document-history", kwargs={"document_uri": document.uri}),
@@ -405,10 +402,7 @@ class TestStructuredDocumentHistoryView(TestCase):
 
         self.sign_in_developer_user()
 
-        assert (
-            reverse("document-history", kwargs={"document_uri": document.uri})
-            == "/test/4321/123/history"
-        )
+        assert reverse("document-history", kwargs={"document_uri": document.uri}) == "/test/4321/123/history"
 
         response = self.client.get(
             reverse("document-history", kwargs={"document_uri": document.uri}),
@@ -503,10 +497,7 @@ class TestStructuredDocumentHistoryView(TestCase):
 
         self.sign_in_developer_user()
 
-        assert (
-            reverse("document-history", kwargs={"document_uri": document.uri})
-            == "/test/4321/123/history"
-        )
+        assert reverse("document-history", kwargs={"document_uri": document.uri}) == "/test/4321/123/history"
 
         response = self.client.get(
             reverse("document-history", kwargs={"document_uri": document.uri}),

@@ -8,6 +8,7 @@ indent=2
 custom_blocks="flag"
 
 [tool.ruff]
+line-length = 120
 
 [tool.ruff.lint]
 ignore = ["E501", "G004", "PLR2004", "RUF005", "RUF012", "UP040"] # long lines, fstrings in logs, magic values, consider not concat, mutable classbits, type instead of TypeAlias
@@ -17,8 +18,8 @@ extend-select = ["W", "B", "Q", "C90", "I", "UP", "YTT", "ASYNC", "S", "BLE", "A
 unfixable = ["ERA"]
 
 # things skipped:
-# N: naming, possibly good
-# D: docstrings missing throughout
+# N: naming, possibly good
+# D: docstrings missing throughout
 # ANN: annotations missing throughout
 # FBT: not convinced boolean trap worth auto-banning.
 # CPY: copyright at top of each file
@@ -40,10 +41,5 @@ unfixable = ["ERA"]
                "T201"]  # OK to have prints here
 "merge_production_dotenvs_in_dotenv.py" = ["S101"]  # TODO: fix this
 "*.*" = ["DTZ001", "DTZ007", "INP001", "PTH123", "PTH110"] # TODO: fix
-"judgments/*" = ["FIX002"] # TODOs, should fix
-"conftest.py" = ["PT004"] # not even sure what this code is doing.
-
-[tool.ruff.lint.isort]
-known-first-party = ["ds-caselaw-editor-ui", "config"]
-
-[tool.ruff.lint.pycodestyle]
+"judgments/*" = ["FIX002"] # TODOs, should fix
+"conftest.py" = ["PT004"] # not even sure what this code is doing.

@@ -29,7 +29,4 @@ class TestStats(TestCase):
         decoded_response = response.content.decode("utf-8")
 
         assert response.status_code == 200
-        assert (
-            decoded_response
-            == "Column 1,Column 2,Column 3,Column 4\r\nValue 1,Value 2,,7\r\n"
-        )
+        assert decoded_response == "Column 1,Column 2,Column 3,Column 4\r\nValue 1,Value 2,,7\r\n"

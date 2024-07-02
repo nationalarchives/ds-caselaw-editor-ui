@@ -44,9 +44,7 @@ def get_search_parameters(
 ):
     query = params.get("query")
     page = int(params.get("page", default_page))
-    order = (
-        params.get("order") if params.get("order") in ALLOWED_ORDERS else default_order
-    )
+    order = params.get("order") if params.get("order") in ALLOWED_ORDERS else default_order
     return {
         "query": query,
         "page": page,

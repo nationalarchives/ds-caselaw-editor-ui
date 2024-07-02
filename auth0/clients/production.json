@@ -31,7 +31,5 @@
     "client_credentials"
   ],
   "custom_login_page_on": true,
-  "web_origins": [
-    "https://editor.caselaw.nationalarchives.gov.uk"
-	]
+  "web_origins": ["https://editor.caselaw.nationalarchives.gov.uk"]
 }

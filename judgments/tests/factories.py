@@ -55,9 +55,7 @@ class DocumentFactory:
         if "html" in kwargs:
             document_mock.return_value.content_as_html.return_value = kwargs.pop("html")
         else:
-            document_mock.return_value.content_as_html.return_value = (
-                "<p>This is a judgment.</p>"
-            )
+            document_mock.return_value.content_as_html.return_value = "<p>This is a judgment.</p>"
 
         for map_to, map_from in cls.PARAMS_MAP.items():
             if map_from[0] in kwargs:

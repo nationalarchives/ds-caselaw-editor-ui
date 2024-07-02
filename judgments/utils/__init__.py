@@ -96,9 +96,7 @@ def update_document_uri(old_uri, new_citation):
         copy_assets(old_uri, new_uri)
         api_client.set_judgment_this_uri(new_uri)
     except MarklogicAPIError as e:
-        msg = (
-            f"Failure when attempting to copy document from {old_uri} to {new_uri}: {e}"
-        )
+        msg = f"Failure when attempting to copy document from {old_uri} to {new_uri}: {e}"
         raise MoveJudgmentError(
             msg,
         ) from e
@@ -178,11 +176,7 @@ def editors_dict():
 
 def get_linked_document_uri(document: Document) -> str | None:
     related_uri = _build_related_document_uri(document)
-    return (
-        related_uri
-        if api_client.document_exists(DocumentURIString(related_uri))
-        else None
-    )
+    return related_uri if api_client.document_exists(DocumentURIString(related_uri)) else None
 
 
 def _build_related_document_uri(document: Document) -> str:
