@@ -1,23 +1,23 @@
 .edit-component,
 .judgment-info-component {
-  padding: 0 $spacer-unit;
+  padding: 0 $space-4;
 
   &__header {
-    font-size: 1rem;
+    font-size: $typography-md-text-size;
     line-height: 2.8rem;
     display: inline-block;
     font-family: $font-roboto;
     font-weight: normal;
     color: $color-almost-black;
-    margin: 0 calc(#{$spacer-unit} * 1.5);
+    margin: 0 $space-6;
   }
 
   &__more-options {
-    margin-top: calc($spacer-unit * 2);
+    margin-top: $space-8;
   }
 
   &__panel {
-    padding: calc(#{$spacer-unit} / 2) 0;
+    padding: $space-2 0;
   }
 
   label {
@@ -36,7 +36,7 @@
   &__metadata_name-input {
     @include text_field;
     width: 80%;
-    font-size: 1.2rem;
+    font-size: $typography-lg-text-size;
 
     @media (min-width: $grid-breakpoint-small) {
       width: 20rem;
@@ -63,7 +63,7 @@
 .edit-component__actions {
   display: inline-block;
   width: auto;
-  padding: calc(#{$spacer-unit} / 2) 0;
+  padding: $space-2 0;
 }
 
 @media (max-width: 800px) {

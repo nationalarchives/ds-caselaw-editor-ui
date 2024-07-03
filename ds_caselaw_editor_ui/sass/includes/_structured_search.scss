@@ -1,19 +1,19 @@
 .structured-search {
   &__main-search {
     background-color: $color-light-grey;
-    padding: calc($spacer-unit * 1.5) 0 calc($spacer-unit * 2);
-    margin: 0 0 calc($spacer-unit * 3);
+    padding: $space-6 0 $space-8;
+    margin: 0 0 $space-12;
     text-align: center;
   }
 
   &__main-search-header {
-    font-size: 2.4rem;
+    font-size: $typography-2xl-text-size;
     line-height: 2rem;
     display: inline-block;
     font-family: $font-roboto;
     font-weight: normal;
     color: $color-almost-black;
-    margin: calc($spacer-unit * 3) 0 0 0;
+    margin: $space-12 0 0 0;
   }
 
   &__container {
@@ -21,10 +21,10 @@
   }
 
   &__full-text-panel {
-    margin-top: $spacer-unit;
-    margin-bottom: $spacer-unit;
+    margin-top: $space-4;
+    margin-bottom: $space-4;
     @media (min-width: $grid-breakpoint-medium) {
-      padding: calc($spacer-unit * 1.5) calc($spacer-unit * 2);
+      padding: $space-6 $space-8;
     }
   }
 
@@ -48,13 +48,13 @@
   &__filter-options {
     legend {
       font-family: $font-roboto;
-      font-size: 1.5rem;
+      font-size: $typography-lg-text-size;
       font-weight: normal;
     }
   }
 
   &__name-label {
-    font-size: 1.1rem;
+    font-size: $typography-md-text-size;
   }
 
   &__name-input {
@@ -64,8 +64,8 @@
 
   &__limit-to-label {
     display: block;
-    margin-bottom: calc($spacer-unit / 2);
-    font-size: 1.1rem;
+    margin-bottom: $space-2;
+    font-size: $typography-md-text-size;
   }
 
   &__limit-to-input {
@@ -73,22 +73,22 @@
   }
 
   &__multi-fields-panel {
-    padding-top: $spacer-unit;
-    margin-top: $spacer-unit;
-    margin-bottom: $spacer-unit;
+    padding-top: $space-4;
+    margin-top: $space-4;
+    margin-bottom: $space-4;
 
     @media (min-width: $grid-breakpoint-medium) {
       display: grid;
       grid-auto-columns: 1fr;
       grid-template-columns: 1fr 1fr;
-      gap: $spacer-unit;
+      gap: $space-4;
     }
   }
 
   &__name-container {
     background-color: $color-yellow;
-    padding: calc($spacer-unit * 2) calc($spacer-unit * 3);
-    margin-bottom: $spacer-unit;
+    padding: $space-8 $space-12;
+    margin-bottom: $space-4;
     min-height: 10rem;
     display: flex;
     flex-direction: column;
@@ -97,8 +97,8 @@
 
   &__limit-to-container {
     background-color: $color-yellow;
-    padding: calc($spacer-unit * 2) calc($spacer-unit * 3);
-    margin-bottom: $spacer-unit;
+    padding: $space-8 $space-12;
+    margin-bottom: $space-4;
     min-height: 10rem;
     display: flex;
     flex-direction: column;
@@ -106,11 +106,11 @@
   }
 
   &__submit-container {
-    margin-bottom: calc($spacer-unit * 3);
+    margin-bottom: $space-12;
   }
 
   &__help-text {
-    margin-bottom: calc($spacer-unit / 2);
+    margin-bottom: $space-2;
   }
 
   &__select {
@@ -124,13 +124,13 @@
   fieldset {
     border: none;
     padding: 0;
-    margin-top: $spacer-unit;
+    margin-top: $space-4;
   }
 
   input[type="submit"] {
     @include call-to-action-button;
-    padding-right: calc($spacer-unit * 3);
-    padding-left: calc($spacer-unit * 3);
+    padding-right: $space-12;
+    padding-left: $space-12;
   }
 
   input[type="checkbox"] {

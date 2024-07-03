@@ -1,19 +1,19 @@
 .judgment-sidebar {
   &__block {
     &:first-child {
-      margin-top: 3rem;
+      margin-top: $space-12;
     }
 
-    margin-bottom: 3rem;
+    margin-bottom: $space-12;
     h4 {
-      font-size: 0.8rem;
+      font-size: $typography-sm-text-size;
       line-height: 1.4rem;
       margin: 0;
     }
 
     p {
       margin-top: 0;
-      font-size: 0.8rem;
+      font-size: $typography-sm-text-size;
       line-height: 1.4rem;
     }
 
@@ -29,12 +29,12 @@
     li {
       margin-top: 0;
       list-style: none;
-      font-size: 0.8rem;
+      font-size: $typography-sm-text-size;
       line-height: 1.4rem;
     }
 
     .judgment-status-indicator {
-      font-size: 1rem;
+      font-size: $typography-md-text-size;
       margin-top: 0.2rem;
     }
   }
@@ -42,17 +42,17 @@
   &__assignment-input {
     display: block;
     width: 100%;
-    height: calc(2.4 * $spacer-unit);
+    height: $space-10;
     border: solid 2px $color-dark-grey;
-    font-size: 1rem;
+    font-size: $typography-md-text-size;
     $font-open-sans: "Open Sans", sans-serif;
   }
 
   &__context-notification {
-    margin-top: calc(0.5 * $spacer-unit);
+    margin-top: $space-2;
   }
 
   .loading-indicator {
-    margin-top: calc(0.5 * $spacer-unit);
+    margin-top: $space-2;
   }
 }

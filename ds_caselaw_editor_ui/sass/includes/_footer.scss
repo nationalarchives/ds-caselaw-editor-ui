@@ -4,15 +4,15 @@
   &__container {
     @include container;
     text-align: center;
-    padding: calc($spacer-unit * 0.8);
+    padding: $space-3;
   }
 }
 
 .judgments-footer {
   background-color: $color-almost-black;
   color: $color-white;
-  padding: $spacer-unit;
-  font-size: 0.8em;
+  padding: $space-4;
+  font-size: $typography-sm-text-size;
 
   &__heading {
     @include sr-only;

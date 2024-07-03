@@ -1,17 +1,17 @@
 .judgment-toolbar {
   background-color: $color-light-grey;
   color: $color-black;
-  padding: calc(0.5 * $spacer-unit) $spacer-unit;
+  padding: $space-2 $space-4;
   border-bottom: 0.125rem solid $color-grey;
 
   &__button {
     display: inline-block;
-    margin: calc(0.5 * $spacer-unit) calc(0.33 * $spacer-unit) !important;
-    padding: calc($spacer-unit / 2) calc($spacer-unit * 1.5) !important;
+    margin: $space-2 $space-1 !important;
+    padding: $space-2 $space-6 !important;
   }
 
   &__button-more {
-    margin-left: $spacer-unit * 3 !important;
+    margin-left: $space-12 !important;
     svg {
       fill: $color-cta-background;
     }
@@ -48,15 +48,15 @@
       background: $color-aqua-blue url($fa_chevron_left_white) 0.8rem 0.6rem
         no-repeat;
       background-size: 0.75rem;
-      padding: calc($spacer-unit / 2) calc($spacer-unit * 1.5)
-        calc($spacer-unit / 2) calc($spacer-unit * 2.5);
+      padding: $space-2 $space-6
+        $space-2 $space-10;
       display: inline-block;
       text-decoration: none;
     }
   }
 
   &__version {
-    margin-top: $spacer-unit;
+    margin-top: $space-4;
     font-weight: bold;
   }
 
@@ -66,7 +66,7 @@
     > div {
       @media (max-width: $grid-breakpoint-small) {
         text-align: center;
-        padding: $spacer-unit;
+        padding: $space-4;
       }
     }
 
@@ -80,14 +80,14 @@
       display: flex;
       &__group {
         h4 {
-          font-size: 0.9rem;
+          font-size: $typography-sm-text-size;
           line-height: 1.4rem;
           margin: 0;
         }
 
         p {
           margin-top: 0;
-          font-size: 0.8rem;
+          font-size: $typography-sm-text-size;
           line-height: 1.4rem;
         }
 
@@ -103,7 +103,7 @@
         li {
           margin-top: 0;
           list-style: none;
-          font-size: 0.8rem;
+          font-size: $typography-sm-text-size;
           line-height: 1.8rem;
         }
         flex-grow: 1;

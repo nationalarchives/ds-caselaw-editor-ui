@@ -1,25 +1,25 @@
 .judgments-list {
   &__judgments-list-controls-container {
-    margin-bottom: calc(1 * $spacer-unit);
+    margin-bottom: $space-4;
   }
 
   &__container {
     @include container;
-    padding: calc($spacer-unit * 1) 0;
+    padding: $space-4 0;
   }
 
   &__header {
     font-family: $font-roboto;
     font-weight: normal;
-    font-size: 1.8rem;
-    margin: 0 0 calc($spacer-unit);
-    margin-left: 0.5rem;
-    margin-bottom: 1rem;
+    font-size: $typography-xl-text-size;
+    margin: 0 0 $space-4;
+    margin-left: $space-2;
+    margin-bottom: $space-4;
   }
 
   &__more-info {
     display: inline-block;
-    margin-bottom: 1.2rem;
+    margin-bottom: $space-5;
     margin-right: 12rem;
   }
 
@@ -27,7 +27,7 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
-    padding: $spacer-unit calc($spacer-unit / 2);
+    padding: $space-4 $space-2;
     flex-grow: 0;
     width: 100%;
     border-bottom: 1px solid black;
@@ -71,7 +71,7 @@
     flex-grow: 0;
     width: 100%;
     box-sizing: border-box;
-    padding: $spacer-unit calc($spacer-unit / 2);
+    padding: $space-4 $space-2;
     border-bottom: 1px solid $color-dark-grey;
     &:last-child {
       border-bottom: none;
@@ -119,8 +119,8 @@
     float: left;
     width: 100%;
     line-height: 22px;
-    margin-top: 1em;
-    font-size: 0.8em;
+    margin-top: $space-4;
+    font-size: $typography-sm-text-size;
     li {
       float: left;
       width: 100%;
@@ -148,8 +148,8 @@
     outline-color: $color-dark-blue;
     font-weight: normal;
     margin-top: 0;
-    padding: 0.5rem;
-    font-size: 0.9rem;
+    padding: $space-2;
+    font-size: $typography-sm-text-size;
     &:hover {
       background-color: $color-link-blue-hover;
       cursor: grab;
@@ -157,6 +157,6 @@
   }
 
   &__judgment-details-name {
-    font-size: 19px;
+    font-size: $typography-lg-text-size;
   }
 }

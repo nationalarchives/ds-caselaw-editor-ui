@@ -1,7 +1,7 @@
 .results-search-component {
   background-color: $color-light-grey;
-  padding: calc($spacer-unit * 1.5) 0 calc($spacer-unit * 2);
-  margin: 0 0 calc($spacer-unit * 3);
+  padding: $space-6 0 $space-8;
+  margin: 0 0 $space-12;
 
   &__container {
     @include container;
@@ -9,23 +9,23 @@
   }
 
   &__header {
-    font-size: 1.75rem;
+    font-size: $typography-xl-text-size;
     line-height: 3.4rem;
     display: inline-block;
     font-family: $font-roboto;
     font-weight: normal;
     color: $color-almost-black;
-    margin: 0 0 0 0;
+    margin: 0;
   }
 
   &__sub-header {
-    font-size: 1rem;
+    font-size: $typography-md-text-size;
     line-height: 2.8rem;
     display: inline-block;
     font-family: $font-roboto;
     font-weight: normal;
     color: $color-almost-black;
-    margin: 0 calc($spacer-unit * 1.5);
+    margin: 0 $space-6;
 
     &--sr-only {
       @include sr-only;
@@ -33,9 +33,9 @@
   }
 
   &__full-text-panel {
-    margin: calc($spacer-unit / 2) 0 0;
+    margin: $space-2 0 0;
     @media (min-width: $grid-breakpoint-medium) {
-      padding: calc($spacer-unit / 4) calc($spacer-unit * 1);
+      padding: $space-1 $space-4;
     }
   }
 
@@ -46,7 +46,7 @@
   &__full-text-input {
     @include text_field;
     width: 90%;
-    min-height: calc($spacer-unit * 3);
+    min-height: $space-12;
 
     @media (min-width: $grid-breakpoint-medium) {
       width: 27rem;
@@ -59,25 +59,25 @@
 
   &__search-submit-button {
     @include call-to-action-button;
-    padding-left: calc($spacer-unit * 3);
-    padding-right: calc($spacer-unit * 3);
+    padding-left: $space-12;
+    padding-right: $space-12;
   }
 
   &__facet-outer-container {
-    margin: calc($spacer-unit * 2) 0;
-    padding: calc($spacer-unit * 1) calc($spacer-unit * 3);
+    margin: $space-8 0;
+    padding: $space-4 $space-12;
     text-align: center;
   }
 
   &__facet-inner-container {
-    margin: 0 0 calc($spacer-unit * 2);
+    margin: 0 0 $space-8;
     text-align: left;
 
     @media (min-width: $grid-breakpoint-medium) {
       display: grid;
       grid-auto-columns: 1fr;
       grid-template-columns: 1fr 1fr;
-      gap: 1rem;
+      gap: $space-4;
     }
 
     @media (min-width: $grid-breakpoint-extra-large) {
@@ -87,25 +87,25 @@
 
   &__fieldset {
     border: 0;
-    padding: calc($spacer-unit * 2);
-    margin: 0.25rem;
+    padding: $space-8;
+    margin: $space-1;
     background: $color-yellow;
     color: $color-black;
   }
 
   &__legend {
-    font-size: 1.25rem;
-    padding: $spacer-unit;
+    font-size: $typography-lg-text-size;
+    padding: $space-4;
     text-align: center;
     font-family: $font-roboto;
     float: left;
-    margin: 0 0 calc($spacer-unit / 2);
+    margin: 0 0 $space-2;
     width: 100%;
   }
 
   &__multi-fields-panel {
-    margin-top: $spacer-unit;
-    margin-bottom: $spacer-unit;
+    margin-top: $space-4;
+    margin-bottom: $space-4;
   }
 
   &__name-label {
@@ -132,7 +132,7 @@
   &__date-input {
     @include text_field;
     margin-top: 0;
-    padding: 0.375rem;
+    padding: $space-2;
   }
 
   &__filter-submit-button {
@@ -142,28 +142,28 @@
 
   &__name-container {
     border-left-width: 0.375rem;
-    padding: 0 $spacer-unit;
-    margin-bottom: $spacer-unit;
+    padding: 0 $space-4;
+    margin-bottom: $space-4;
   }
 
   &__limit-to-container {
     border-left-width: 0.375rem;
-    padding: 0 $spacer-unit;
-    margin-bottom: $spacer-unit;
+    padding: 0 $space-4;
+    margin-bottom: $space-4;
   }
 
   &__removable-options {
-    font-size: 0.9rem;
+    font-size: $typography-sm-text-size;
     padding: 0;
     list-style-type: none;
     display: inline-block;
 
     li {
-      margin: 0.25rem 0.5rem;
-      padding: 0rem 0.75rem 0rem 1rem;
+      margin: $space-1 $space-2;
+      padding: 0rem $space-3 0rem $space-4;
       display: inline-block;
       background: $color-yellow;
-      font-size: 0.85rem;
+      font-size: $typography-sm-text-size;
     }
   }
 
@@ -177,19 +177,19 @@
   }
 
   &__removable-options-value-text {
-    padding: 0 0.75rem 0 0.5rem;
+    padding: 0 $space-3 0 $space-2;
   }
 
   &__removable-options-link {
     display: inline-block;
     color: $color-black;
     text-decoration: none;
-    padding: 0.5rem;
-    font-size: 0.85em;
+    padding: $space-2;
+    font-size: $typography-sm-text-size;
 
     &::after {
       content: "x";
-      font-size: 1rem;
+      font-size: $typography-md-text-size;
     }
 
     &:hover {
@@ -208,17 +208,17 @@
     &__toggle-control {
       border: none;
       background-color: transparent;
-      font-size: 1rem;
+      font-size: $typography-md-text-size;
       position: relative;
-      padding: calc($spacer-unit / 2) 0;
+      padding: $space-2 0;
       border-bottom: 0.125rem solid $color-yellow;
       display: block;
-      margin: calc($spacer-unit * 1.5) auto 0;
+      margin: $space-6 auto 0;
       font-weight: bold;
 
       @media (min-width: $grid-breakpoint-medium) {
-        padding-right: 1rem;
-        padding-left: 2rem;
+        padding-right: $space-4;
+        padding-left: $space-8;
       }
 
       &:focus {
