@@ -17,7 +17,7 @@
 
     p {
       font-size: $typography-lg-text-size;
-      line-height: 2.4rem;
+      line-height: $typography-xl-line-height;
       font-family: $font-roboto;
     }
     a {

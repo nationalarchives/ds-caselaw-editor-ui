@@ -44,7 +44,7 @@
       @media (min-width: $grid-breakpoint-large) {
         display: inline-block;
         margin: 0;
-        line-height: 1rem;
+        line-height: $typography-sm-line-height;
       }
     }
   }
@@ -108,7 +108,7 @@
     display: block;
     margin-bottom: $space-1;
     font-size: $typography-sm-text-size;
-    line-height: 1.2rem;
+    line-height: $typography-lg-line-height;
     color: $color-dark-grey;
   }
 

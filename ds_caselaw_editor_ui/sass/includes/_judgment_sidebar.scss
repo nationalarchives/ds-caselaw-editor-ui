@@ -7,14 +7,14 @@
     margin-bottom: $space-12;
     h4 {
       font-size: $typography-sm-text-size;
-      line-height: 1.4rem;
+      line-height: $typography-lg-line-height;
       margin: 0;
     }
 
     p {
       margin-top: 0;
       font-size: $typography-sm-text-size;
-      line-height: 1.4rem;
+      line-height: $typography-lg-line-height;
     }
 
     a {
@@ -30,7 +30,7 @@
       margin-top: 0;
       list-style: none;
       font-size: $typography-sm-text-size;
-      line-height: 1.4rem;
+      line-height: $typography-lg-line-height;
     }
 
     .judgment-status-indicator {

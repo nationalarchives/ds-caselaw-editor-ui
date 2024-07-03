@@ -3,7 +3,7 @@
     display: block;
     margin-bottom: $space-1;
     font-size: $typography-sm-text-size;
-    line-height: 1.2rem;
+    line-height: $typography-lg-line-height;
     color: $color-dark-grey;
   }
 
@@ -13,7 +13,7 @@
     display: block;
     width: calc(100% - $space-4);
     font-size: $typography-md-text-size;
-    line-height: 1.25rem;
+    line-height: $typography-md-line-height;
     border: 2px solid $color-almost-black;
     box-sizing: border-box;
   }

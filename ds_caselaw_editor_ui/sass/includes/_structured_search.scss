@@ -8,7 +8,7 @@
 
   &__main-search-header {
     font-size: $typography-2xl-text-size;
-    line-height: 2rem;
+    line-height: $typography-xs-line-height;
     display: inline-block;
     font-family: $font-roboto;
     font-weight: normal;

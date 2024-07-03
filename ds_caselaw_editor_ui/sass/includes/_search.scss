@@ -9,7 +9,7 @@
 
   &__header {
     font-size: $typography-md-text-size;
-    line-height: 2.8rem;
+    line-height: $typography-3xl-line-height;
     display: inline-block;
     font-family: $font-roboto;
     font-weight: normal;

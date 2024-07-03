@@ -134,7 +134,7 @@
 @mixin select {
   font-size: $typography-md-text-size;
   color: #444;
-  line-height: 1.3;
+  line-height: $typography-md-line-height;
   padding: $space-2;
   margin-top: $space-2;
   margin-bottom: $space-4;
