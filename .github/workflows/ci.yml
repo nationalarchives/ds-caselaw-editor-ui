@@ -48,6 +48,8 @@ jobs:
 
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
+        env:
+          SKIP: no-commit-to-branch
 
   static-analysis:
     runs-on: ubuntu-latest
