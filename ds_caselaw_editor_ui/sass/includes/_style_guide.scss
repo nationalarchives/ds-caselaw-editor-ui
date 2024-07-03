@@ -1,10 +1,10 @@
 .style-guide {
   max-width: 1024px;
   margin: 0 auto;
-  padding: 1rem 0;
+  padding: $space-4 0;
 
   hr {
-    margin: 3rem 0;
+    margin: $space-12 0;
     height: 1rem;
     background-color: $color-light-grey;
     border: none;

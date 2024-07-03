@@ -28,13 +28,13 @@
       span:nth-child(odd) {
         float: left;
         width: 19%;
-        margin-right: 0rem;
+        margin-right: 0;
       }
 
       span:nth-child(even) {
         float: left;
         width: 66%;
-        margin-left: 0rem;
+        margin-left: 0;
       }
     }
   }

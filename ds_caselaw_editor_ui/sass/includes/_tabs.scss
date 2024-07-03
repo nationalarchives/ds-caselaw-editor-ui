@@ -1,14 +1,14 @@
 .tabs-set {
-  margin: 1.5rem auto 0.5rem;
+  margin: $space-6 auto $space-2;
   text-align: center;
 
   &__item {
     display: inline-block;
-    margin: 0 0.25rem;
+    margin: 0 $space-1;
 
     label {
       background: $color-aqua-blue;
-      padding-top: 0.75rem;
+      padding-top: $space-3;
       border: 2px solid $color-aqua-blue;
       border-bottom: none;
       border-top-left-radius: 10px;
@@ -16,9 +16,9 @@
       color: $color-white;
       font-family: "Open Sans", sans-serif;
       font-weight: 600;
-      font-size: 1rem;
+      font-size: $typography-md-text-size;
       a {
-        padding: 0.75rem 2rem 0 2rem;
+        padding: $space-3 $space-8 0 $space-8;
         position: relative;
         top: -0.33rem;
         display: inline-block;
