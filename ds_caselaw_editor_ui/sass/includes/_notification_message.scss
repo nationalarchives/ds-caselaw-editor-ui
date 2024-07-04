@@ -1,6 +1,6 @@
 @mixin notification {
   color: $color-white;
-  padding: 0.5rem 1rem;
+  padding: $space-2 $space-4;
 }
 
 .page-notification {

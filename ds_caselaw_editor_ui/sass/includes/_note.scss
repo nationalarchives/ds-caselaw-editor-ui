@@ -1,9 +1,9 @@
 .note-form {
   &__label {
     display: block;
-    margin-bottom: calc($spacer-unit / 4);
-    font-size: 0.9rem;
-    line-height: 1.2rem;
+    margin-bottom: $space-1;
+    font-size: $typography-sm-text-size;
+    line-height: $typography-lg-line-height;
     color: $color-dark-grey;
   }
 
@@ -11,9 +11,9 @@
     @include text_field;
     margin-top: 0;
     display: block;
-    width: calc(100% - $spacer-unit);
-    font-size: 1rem;
-    line-height: 1.25rem;
+    width: calc(100% - $space-4);
+    font-size: $typography-md-text-size;
+    line-height: $typography-md-line-height;
     border: 2px solid $color-almost-black;
     box-sizing: border-box;
   }

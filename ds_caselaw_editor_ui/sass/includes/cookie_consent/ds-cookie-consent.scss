@@ -1,6 +1,6 @@
 #ds-cookie-consent-form {
   input[type="radio"] {
-    margin-right: 7px;
+    margin-right: $space-2;
     + label {
       cursor: pointer;
       @media only screen and (max-width: 818px) {
@@ -15,45 +15,49 @@
   }
 
   .form-group {
-    margin-bottom: 10px;
+    margin-bottom: $space-2;
   }
 
   .reduced-margin {
-    margin-bottom: 1rem;
+    margin-bottom: $space-4;
   }
 }
 
 #ds-cookie-consent-banner {
   z-index: 999;
-  padding: 10px 10px 20px 10px;
+  padding: $space-2 $space-2 $space-4 $space-2;
   position: fixed;
   display: block;
   bottom: 0px;
-  font-size: 14px;
+  font-size: $typography-sm-text-size;
   width: 100%;
   color: #fff;
+
   .container {
     background: #134571;
-    padding: 10px 25px 25px 40px;
+    padding: $space-2 $space-5 $space-5 $space-8;
     box-sizing: border-box;
     border-radius: 5px;
+
     .cookie_head {
       font-family: "Roboto Mono";
       font-style: normal;
       font-weight: normal;
-      font-size: 20.8px;
+      font-size: $typography-lg-text-size;
       line-height: inherit;
       color: #ffffff;
-      margin-top: 10px;
+      margin-top: $space-2;
       margin-bottom: 0;
     }
+
     .cookie-p {
       font-family: "Open Sans";
-      font-size: 16px;
+      font-size: $typography-md-text-size;
       line-height: inherit;
       color: #ffffff;
-      margin-bottom: 15px;
-      margin-top: 10px;
+      margin-bottom: $space-3;
+      margin-top: $space-2;
+
       br {
         content: "";
         display: block;
@@ -61,9 +65,11 @@
         height: 0.25em;
         display: block;
       }
+
       a {
         color: #fff;
         text-decoration: underline;
+
         &:hover {
           color: #000;
           outline-offset: 0;
@@ -71,11 +77,13 @@
           background-color: #fff;
           outline: 5px solid #1d70b8;
         }
+
         &:focus {
           color: #000;
         }
       }
     }
+
     #hide_this_message,
     #reject_optional_cookies,
     #accept_optional_cookies {
@@ -83,33 +91,38 @@
       color: #000;
       border: #eee;
       text-decoration: none;
-      margin-right: 20px;
+      margin-right: $space-4;
       border: 2px solid #fff;
       font-family: "Roboto Mono", monospace;
-      padding: 0.5em 0.9em;
+      padding: $space-2 $space-4;
       display: inline-block;
       min-width: 24px;
       text-align: center;
+
       &:hover,
       &:focus {
         background: #000;
         color: #fff;
         border: 2px solid #fff;
       }
+
       &:focus {
         outline: 5px solid #fff;
       }
+
       @media (max-width: 560px) {
         display: block;
-        margin-bottom: 15px;
+        margin-bottom: $space-3;
         width: 100%;
       }
     }
+
     #btn_preferences {
       background: none;
       border: none;
       border: 2px solid transparent;
       text-decoration: underline;
+
       &:hover,
       &:focus {
         background: #000;
@@ -117,18 +130,22 @@
         text-decoration: none;
         border: 2px solid #fff;
       }
+
       &:focus {
         outline: 5px solid #fff;
       }
+
       @media (max-width: 675px) {
-        margin-top: 5px;
+        margin-top: $space-1;
       }
+
       @media (max-width: 560px) {
         display: block;
       }
     }
+
     @media (max-width: 560px) {
-      padding: 10px 30px 25px 30px;
+      padding: $space-2 $space-6 $space-5 $space-6;
     }
   }
 }

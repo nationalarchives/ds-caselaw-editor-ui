@@ -12,15 +12,15 @@
 
     display: block;
     position: relative;
-    padding: calc($spacer-unit / 2) calc($spacer-unit * 2);
+    padding: $space-2 $space-8;
 
     ol {
-      margin: 0 calc($spacer-unit * 0.5);
+      margin: 0 $space-2;
       list-style-type: none;
       padding: 0;
       font-family: $font-roboto;
       display: inline-block;
-      font-size: 0.9rem;
+      font-size: $typography-sm-text-size;
 
       a {
         color: $color-white;
@@ -30,7 +30,7 @@
     li {
       display: inline-block;
       position: relative;
-      margin-right: calc($spacer-unit / 2);
+      margin-right: $space-2;
       color: $color-white;
     }
 
@@ -42,7 +42,7 @@
   &__breadcrumbs {
     li {
       &:not(:nth-child(1)) {
-        padding-left: $spacer-unit;
+        padding-left: $space-4;
 
         &::before {
           content: "";
@@ -66,8 +66,8 @@
 
     &-you-are-in {
       color: $color-white;
-      font-size: 0.9rem;
-      margin-right: calc($spacer-unit / 2);
+      font-size: $typography-sm-text-size;
+      margin-right: $space-2;
     }
   }
 

@@ -1,9 +1,9 @@
 .result-controls {
   &__order-by-label {
     font-family: $font-roboto;
-    font-size: 1.4rem;
+    font-size: $typography-lg-text-size;
     display: block;
-    margin-bottom: $spacer-unit;
+    margin-bottom: $space-4;
   }
 
   &__order-by {

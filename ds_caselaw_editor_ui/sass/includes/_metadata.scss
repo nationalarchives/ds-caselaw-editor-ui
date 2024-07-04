@@ -2,18 +2,18 @@
   background-color: $color-light-grey;
   border-style: solid;
   border-color: #ffffff;
-  padding: $spacer-unit;
+  padding: $space-4;
 
   @media (min-width: 1500px) {
     width: 65%;
-    border-width: 1rem 20rem 1rem 20rem;
+    border-width: $space-4 20rem;
     position: relative;
     left: 50%;
     transform: translate(-50%);
   }
   form {
     display: flex;
-    gap: calc(2 * $spacer-unit);
+    gap: $space-8;
   }
   &__left-column {
     width: 80%;
@@ -28,7 +28,7 @@
     align-items: start;
     > div {
       @media (min-width: $grid-breakpoint-large) {
-        height: calc(1.8 * $spacer-unit);
+        height: 1.8rem;
       }
     }
 
@@ -36,7 +36,7 @@
       @media (min-width: $grid-breakpoint-large) {
         display: inline-block;
         margin: 0;
-        width: calc(4 * $spacer-unit);
+        width: 4rem;
       }
     }
 
@@ -44,7 +44,7 @@
       @media (min-width: $grid-breakpoint-large) {
         display: inline-block;
         margin: 0;
-        line-height: $spacer-unit;
+        line-height: $typography-sm-line-height;
       }
     }
   }
@@ -52,11 +52,12 @@
   &__top-left-row {
     display: flex;
     flex-direction: row;
-    gap: $spacer-unit;
+    gap: $space-4;
   }
 
   &__ncn {
     width: 33.33%;
+
     input {
       width: 100% !important;
     }
@@ -67,6 +68,7 @@
     @media (min-width: $grid-breakpoint-large) {
       width: 50%;
     }
+
     input {
       width: 100% !important;
     }
@@ -77,6 +79,7 @@
     @media (min-width: $grid-breakpoint-large) {
       width: 16.67%;
     }
+
     input {
       width: 100% !important;
     }
@@ -86,6 +89,7 @@
     margin-top: auto;
     width: 100%;
     height: auto !important;
+
     input {
       margin: 0;
     }
@@ -95,30 +99,31 @@
     p {
       border: 3px solid white;
     }
-    margin-bottom: calc($spacer-unit / 2);
+
+    margin-bottom: $space-2;
     white-space: nowrap;
   }
 
   &__main-labels {
     display: block;
-    margin-bottom: calc($spacer-unit / 4);
-    font-size: 0.9rem;
-    line-height: 1.2rem;
+    margin-bottom: $space-1;
+    font-size: $typography-sm-text-size;
+    line-height: $typography-lg-line-height;
     color: $color-dark-grey;
   }
 
   &__more-options {
-    margin-top: calc($spacer-unit * 2);
+    margin-top: $space-8;
   }
   &__success {
     background-color: $color-green;
     width: fit-content;
-    padding: calc(#{$spacer-unit} / 2);
+    padding: $space-2;
   }
   &__error {
     background-color: $color-red;
     width: fit-content;
-    padding: calc(#{$spacer-unit} / 2);
+    padding: $space-2;
   }
 
   input[type="submit"] {
@@ -133,9 +138,9 @@
     width: 50%;
     left: 2rem;
     min-height: 2rem;
-    font-size: 1rem;
+    font-size: $typography-md-text-size;
     $font-open-sans: "Open Sans", sans-serif;
-    padding: 0.5rem;
+    padding: $space-2;
     border: 2px solid $color-dark-grey;
     margin: 0;
   }
@@ -143,7 +148,7 @@
   &__judgment_date-input {
     width: 80%;
     min-height: 2rem;
-    font-size: 1rem;
+    font-size: $typography-md-text-size;
     @media (min-width: $grid-breakpoint-small) {
       width: 4rem;
     }
@@ -160,8 +165,8 @@
     width: 100%;
     margin-top: 0;
     box-sizing: border-box;
-    height: calc(100% - 1rem);
-    font-size: 1rem;
+    height: calc(100% - $space-4);
+    font-size: $typography-md-text-size;
     resize: none;
   }
 
@@ -170,15 +175,15 @@
     box-sizing: border-box;
     width: 95%;
     min-height: 2rem;
-    font-size: 1rem;
+    font-size: $typography-md-text-size;
     $font-open-sans: "Open Sans", sans-serif;
-    padding: 0.5rem;
+    padding: $space-2;
     border: 2px solid $color-dark-grey;
     margin: 0;
   }
 
   input[type="submit"] {
     width: 85%;
-    margin-left: 0.5rem;
+    margin-left: $space-2;
   }
 }

@@ -21,8 +21,8 @@
     display: flex;
     flex-direction: row;
     width: 100%;
-    column-gap: $spacer-unit;
-    margin-bottom: $spacer-unit;
+    column-gap: $space-4;
+    margin-bottom: $space-4;
 
     h2,
     p {
@@ -49,16 +49,16 @@
     width: 100%;
     box-sizing: border-box;
     background-color: $color-light-grey;
-    padding: $spacer-unit;
+    padding: $space-4;
 
     &__details {
       list-style-type: none;
       padding: 0;
       float: left;
       width: 100%;
-      line-height: 22px;
-      margin-top: 1em;
-      font-size: 0.8em;
+      line-height: $typography-lg-line-height;
+      margin-top: $space-4;
+      font-size: $typography-sm-text-size;
       li {
         float: left;
         width: 100%;
@@ -69,12 +69,12 @@
         span:nth-child(odd) {
           float: left;
           width: 19%;
-          margin-right: 0rem;
+          margin-right: 0;
         }
         span:nth-child(even) {
           float: left;
           width: 66%;
-          margin-left: 0rem;
+          margin-left: 0;
         }
       }
     }

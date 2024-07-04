@@ -4,17 +4,17 @@
   &__container {
     @include container;
     text-align: center;
-    padding: calc($spacer-unit * 2);
+    padding: $space-8;
   }
 
   &__header {
-    font-size: 1rem;
-    line-height: 2.8rem;
+    font-size: $typography-md-text-size;
+    line-height: $typography-3xl-line-height;
     display: inline-block;
     font-family: $font-roboto;
     font-weight: normal;
     color: $color-almost-black;
-    margin: 0 calc($spacer-unit * 1.5);
+    margin: 0 $space-6;
 
     &--sr-only {
       @include sr-only;
@@ -22,13 +22,13 @@
   }
 
   &__more-options {
-    margin-top: calc($spacer-unit * 2);
+    margin-top: $space-8;
   }
 
   input[type="submit"] {
     @include call-to-action-button;
-    padding-left: calc($spacer-unit * 3);
-    padding-right: calc($spacer-unit * 3);
+    padding-left: $space-12;
+    padding-right: $space-12;
   }
 
   &__search-term-label {
@@ -38,9 +38,9 @@
   &__search-term-input {
     @include text_field;
     width: 80%;
-    margin-top: 1rem;
-    min-height: calc($spacer-unit * 3);
-    font-size: 1.2rem;
+    margin-top: $space-4;
+    min-height: $space-12;
+    font-size: $typography-lg-text-size;
 
     @media (min-width: $grid-breakpoint-small) {
       width: 20rem;
@@ -58,7 +58,7 @@
   form {
     max-width: 47rem;
     display: flex;
-    gap: 1rem;
+    gap: $space-4;
     margin: 0 auto;
   }
 

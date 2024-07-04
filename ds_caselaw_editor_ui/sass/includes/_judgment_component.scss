@@ -1,13 +1,13 @@
 .judgment-component {
-  margin-top: $spacer-unit;
+  margin-top: $space-4;
 
   &__panel {
-    padding: calc(#{$spacer-unit} / 2) 0;
+    padding: $space-2 0;
   }
 
   &__two-column-container {
     display: flex;
-    gap: $spacer-unit;
+    gap: $space-4;
   }
 
   &__left-panel {
@@ -15,26 +15,27 @@
   }
 
   &__back-button {
-    margin-left: 2rem;
+    margin-left: $space-8;
   }
 
   &__back-button-unpublished {
-    margin-left: 0rem;
+    margin-left: 0;
   }
 
   &__live-link {
     margin-top: 0;
-    margin-bottom: 2rem;
+    margin-bottom: $space-8;
   }
 
   &__minor-issues-options {
     input[type="checkbox"] {
       transform: scale(2);
     }
+
     label {
       display: inline-block;
       position: relative;
-      left: 2rem;
+      left: $space-8;
     }
   }
 
@@ -46,14 +47,16 @@
   &__metadata_name-input {
     @include text_field;
     width: 80%;
-    min-height: calc(#{$spacer-unit} * 3);
-    font-size: 1.2rem;
+    min-height: $space-12;
+    font-size: $typography-lg-text-size;
     @media (min-width: $grid-breakpoint-small) {
       width: 20rem;
     }
+
     @media (min-width: $grid-breakpoint-medium) {
       width: 25rem;
     }
+
     @media (min-width: $grid-breakpoint-extra-large) {
       width: 35rem;
     }
@@ -63,42 +66,51 @@
 .email-confirm-publish {
   border: 2px #ffb952 solid;
   display: inline-block;
-  padding: 0px 10px 0px 0;
+  padding: 0px $space-2 0px 0;
+
   &__list-header {
-    padding-left: 10px;
-    margin: 10px 0;
+    padding-left: $space-2;
+    margin: $space-2 0;
   }
+
   &__list {
     list-style: none;
-    padding-left: 10px;
-    margin: 5px 0;
+    padding-left: $space-2;
+    margin: $space-1 0;
   }
+
   &__list-link {
-    padding-bottom: 10px;
+    padding-bottom: $space-2;
   }
 }
+
 .email-hold-publish {
   border: 2px #ffb952 solid;
   display: inline-block;
-  padding: 0px 10px 0px 0;
+  padding: 0px $space-2 0px 0;
+
   &__list-header {
-    padding-left: 10px;
-    margin: 10px 0;
+    padding-left: $space-2;
+    margin: $space-2 0;
   }
+
   &__list {
     list-style: none;
-    padding-left: 10px;
-    margin: 5px 0;
+    padding-left: $space-2;
+    margin: $space-1 0;
   }
+
   &__list-link {
-    padding-bottom: 10px;
+    padding-bottom: $space-2;
   }
 }
+
 .edit-component__actions {
   display: inline-block;
   width: auto;
-  padding: calc(#{$spacer-unit} / 2) 0;
+  padding: $space-2 0;
 }
+
 @media (max-width: 800px) {
   .edit-component__actions {
     display: block;

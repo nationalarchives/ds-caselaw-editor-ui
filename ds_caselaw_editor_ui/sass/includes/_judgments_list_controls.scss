@@ -4,13 +4,13 @@
 
   @media (min-width: $grid-breakpoint-extra-large) {
     margin: 0;
-    margin-right: 3.5rem;
+    margin-right: $space-16;
   }
 
   form {
     display: flex;
     flex-direction: row;
-    gap: $spacer-unit;
+    gap: $space-4;
 
     > div {
       display: flex;
@@ -21,7 +21,7 @@
 
   &__label {
     font-family: $font-roboto;
-    font-size: 1rem;
+    font-size: $typography-md-text-size;
     display: block;
   }
 
@@ -29,16 +29,16 @@
     @include select;
     min-width: auto;
     width: auto;
-    padding-right: calc(1.5 * $spacer-unit);
+    padding-right: $space-6;
     display: inline-block;
   }
 
   &__button {
     @include call-to-action-button;
-    margin: calc(1.7 * $spacer-unit) 0 1rem 0;
-    font-size: 0.85rem;
+    margin: $space-7 0 $space-4 0;
+    font-size: $typography-sm-text-size;
     outline-color: $color-dark-blue;
-    padding: 0.625rem;
+    padding: $space-3;
     font-weight: normal;
     vertical-align: 1px;
 

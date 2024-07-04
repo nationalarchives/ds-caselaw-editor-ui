@@ -1,16 +1,16 @@
 .login-background {
   background-color: $color-light-grey;
-  padding-top: $spacer-unit * 2;
-  padding-bottom: $spacer-unit * 2;
+  padding-top: $space-8;
+  padding-bottom: $space-8;
 
   @media (min-width: $grid-breakpoint-small) {
-    padding-top: $spacer-unit * 5;
-    padding-bottom: $spacer-unit * 5;
+    padding-top: $space-20;
+    padding-bottom: $space-20;
   }
 
   @media (min-width: $grid-breakpoint-large) {
-    padding-top: $spacer-unit * 8;
-    padding-bottom: $spacer-unit * 8;
+    padding-top: $space-32;
+    padding-bottom: $space-32;
   }
 }
 
@@ -23,15 +23,15 @@
 
   max-width: 20rem;
   width: 80%;
-  padding: $spacer-unit * 2;
+  padding: $space-8;
 
   h1 {
     margin: 0;
   }
 
   &__form-group {
-    margin-top: $spacer-unit;
-    margin-bottom: $spacer-unit;
+    margin-top: $space-4;
+    margin-bottom: $space-4;
   }
 
   &__label {
@@ -41,7 +41,7 @@
   &__text-field {
     box-sizing: border-box;
     width: 100%;
-    font-size: 1.4em;
-    margin-top: $spacer-unit * 0.5;
+    font-size: $typography-lg-text-size;
+    margin-top: $space-2;
   }
 }

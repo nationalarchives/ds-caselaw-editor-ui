@@ -1,6 +1,6 @@
 .judgment-text-source {
   background-color: $color-light-grey;
-  padding: calc($spacer-unit / 2);
+  padding: $space-2;
   border-bottom: 0.125rem solid $color-grey;
 
   &__container {
@@ -16,8 +16,8 @@
     }
 
     p {
-      font-size: 1.3rem;
-      line-height: 2.4rem;
+      font-size: $typography-lg-text-size;
+      line-height: $typography-xl-line-height;
       font-family: $font-roboto;
     }
     a {

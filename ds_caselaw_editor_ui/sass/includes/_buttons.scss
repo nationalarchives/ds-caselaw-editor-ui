@@ -1,9 +1,9 @@
 .button {
   &-small {
-    padding: 0.4rem 0.5rem !important;
-    margin-top: 0.5em !important;
-    font-size: 0.8rem !important;
-    margin-bottom: 0.5rem !important;
+    padding: $space-1 $space-2 !important;
+    margin-top: $space-2 !important;
+    font-size: $typography-sm-text-size !important;
+    margin-bottom: $space-2 !important;
   }
 }
 

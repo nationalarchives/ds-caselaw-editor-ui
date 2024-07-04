@@ -14,7 +14,7 @@
       display: grid;
       grid-auto-columns: 1fr;
       grid-template-columns: 3fr 1fr;
-      gap: 1rem;
+      gap: $space-4;
     }
   }
 
@@ -37,8 +37,8 @@
 
   &__results-intro {
     font-family: $font-roboto;
-    font-size: 1.8rem;
-    margin: 0 0 calc($spacer-unit * 1.25);
+    font-size: $typography-xl-text-size;
+    margin: 0 0 $space-5;
   }
 
   &__filter-heading {
@@ -50,14 +50,13 @@
     list-style-type: none;
 
     li {
-      padding: calc($spacer-unit * 2) calc($spacer-unit * 2)
-        calc($spacer-unit * 2) 0;
+      padding: $space-8 $space-8 $space-8 0;
       border-bottom: 0.125rem solid $color-grey;
     }
   }
 
   &__result-title {
-    font-size: 1.5rem;
+    font-size: $typography-lg-text-size;
     font-family: $font-roboto;
   }
 
@@ -66,7 +65,7 @@
   }
 
   &__result-neutral-citation {
-    margin-top: calc($spacer-unit / 2);
+    margin-top: $space-2;
   }
 
   &__result-terms {
@@ -82,9 +81,9 @@
   }
 
   &__result-term-matching {
-    margin: $spacer-unit 0 calc($spacer-unit / 2) 0;
+    margin: $space-4 0 $space-2 0;
     color: $color-dark-grey;
-    font-size: small;
+    font-size: $typography-sm-text-size;
   }
 
   fieldset {
@@ -94,13 +93,13 @@
 
   legend {
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: $typography-lg-text-size;
   }
 
   &__container-extend-search-option {
     background-color: $color-light-grey;
-    padding: $spacer-unit calc($spacer-unit * 2);
-    margin: $spacer-unit 0;
+    padding: $space-4 $space-8;
+    margin: $space-4 0;
   }
 
   &__result-failed {
