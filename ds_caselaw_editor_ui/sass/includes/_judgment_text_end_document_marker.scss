@@ -5,7 +5,7 @@
   height: $space-4;
   max-width: 90%;
   margin: auto;
-  margin-bottom: calc($space-4 * 7);
+  margin-bottom: $space-28;
   text-align: center;
   @media (min-width: $grid-breakpoint-medium) {
     max-width: 40rem;
