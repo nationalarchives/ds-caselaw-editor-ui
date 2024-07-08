@@ -280,3 +280,6 @@ docker/*
 /ds_caselaw_editor_ui/static/css/main.css
 /ds_caselaw_editor_ui/static/css/main.css.map
 /ds_caselaw_editor_ui/static/js/dist/app.js
+
+# Cypress end-to-end tests create screenshots
+/cypress/screenshots
