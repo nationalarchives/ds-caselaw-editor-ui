@@ -1,14 +1,37 @@
-from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 
-class StyleGuideComponents(TemplateView):
-    template_name = "pages/style_guide_components.html"
+class StyleGuide(TemplateView):
+    template_name = "pages/style_guide.html"
 
-
-class StyleGuideBranding(TemplateView):
-    template_name = "pages/style_guide_branding.html"
-
-
-def style_guide_redirect(_request):
-    return redirect("style_guide_components")
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["menu_items"] = [
+            {"label": "Colours", "href": "#colours"},
+            {
+                "label": "Components",
+                "href": "#components",
+                "children": [
+                    {"label": "Buttons", "href": "#buttons"},
+                    {"label": "Note", "href": "#note"},
+                    {"label": "Notification messaging", "href": "#notification-messaging"},
+                    {"label": "Summary panels", "href": "#summary-panels"},
+                    {"label": "Tabs", "href": "#tabs"},
+                ],
+            },
+            {
+                "label": "Spacing",
+                "href": "#spacing",
+            },
+            {
+                "label": "Typography",
+                "href": "#typography",
+                "children": [
+                    {"label": "Font family", "href": "#font-family"},
+                    {"label": "Font sizes", "href": "#font-sizes"},
+                    {"label": "Font weights", "href": "#font-weights"},
+                    {"label": "Line heights", "href": "#line-heights"},
+                ],
+            },
+        ]
+        return context

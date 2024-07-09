@@ -39,7 +39,7 @@
     font-size: $typography-sm-text-size;
     outline-color: $color-dark-blue;
     padding: $space-3;
-    font-weight: normal;
+    font-weight: $typography-normal-font-weight;
     vertical-align: 1px;
 
     &:hover {

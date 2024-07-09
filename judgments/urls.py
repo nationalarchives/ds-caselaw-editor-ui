@@ -41,9 +41,7 @@ from .views.results import results
 from .views.signed_asset import redirect_to_signed_asset
 from .views.stats import Stats, stream_combined_stats_table_as_csv
 from .views.style_guide import (
-    StyleGuideBranding,
-    StyleGuideComponents,
-    style_guide_redirect,
+    StyleGuide,
 )
 from .views.unlock import unlock
 
@@ -92,17 +90,7 @@ urlpatterns = [
         name="stats_combined_csv",
     ),
     # Style guide
-    path("style_guide", style_guide_redirect, name="style_guide"),
-    path(
-        "style_guide/components",
-        StyleGuideComponents.as_view(),
-        name="style_guide_components",
-    ),
-    path(
-        "style_guide/branding",
-        StyleGuideBranding.as_view(),
-        name="style_guide_branding",
-    ),
+    path("style-guide", StyleGuide.as_view(), name="style_guide"),
     # Different views on judgments
     path("<path:document_uri>/edit", EditJudgmentView.as_view(), name="edit-document"),
     path(

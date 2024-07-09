@@ -1,9 +1,0 @@
-{% extends "layouts/base.html" %}
-{% load i18n %}
-{% block content %}
-  <div class="style-guide">
-    <h2>{% translate "style_guide.title" %}</h2>
-    <p>{% translate "style_guide.description" %}</p>
-    {% include "includes/tabs.html" with label1="Components" label2="Branding" url1="/style_guide/components" url2="/style_guide/branding" selected=2 %}
-  </div>
-{% endblock content %}
