@@ -10,7 +10,7 @@
 
   &__header {
     font-family: $font-roboto;
-    font-weight: normal;
+    font-weight: $typography-normal-font-weight;
     font-size: $typography-xl-text-size;
     margin: 0 0 $space-4;
     margin-left: $space-2;
@@ -35,7 +35,7 @@
 
   &__table-header-details {
     flex-basis: 100%;
-    font-weight: bold;
+    font-weight: $typography-bold-font-weight;
     @media (min-width: $grid-breakpoint-medium) {
       flex-basis: 75%;
     }
@@ -43,7 +43,7 @@
 
   &__table-header-submitted {
     flex-basis: 12.5%;
-    font-weight: bold;
+    font-weight: $typography-bold-font-weight;
     display: none;
     @media (min-width: $grid-breakpoint-medium) {
       display: block;
@@ -52,7 +52,7 @@
 
   &__table-header-assigned {
     flex-basis: 12.5%;
-    font-weight: bold;
+    font-weight: $typography-bold-font-weight;
     display: none;
     @media (min-width: $grid-breakpoint-medium) {
       display: block;
@@ -140,13 +140,13 @@
   }
 
   &__judgment-details-meta-key {
-    font-weight: bold;
+    font-weight: $typography-bold-font-weight;
   }
 
   &__action-button {
     @include call-to-action-button;
     outline-color: $color-dark-blue;
-    font-weight: normal;
+    font-weight: $typography-normal-font-weight;
     margin-top: 0;
     padding: $space-2;
     font-size: $typography-sm-text-size;

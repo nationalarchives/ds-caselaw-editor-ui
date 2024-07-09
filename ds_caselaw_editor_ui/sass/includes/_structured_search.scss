@@ -11,7 +11,7 @@
     line-height: $typography-xs-line-height;
     display: inline-block;
     font-family: $font-roboto;
-    font-weight: normal;
+    font-weight: $typography-normal-font-weight;
     color: $color-almost-black;
     margin: $space-12 0 0 0;
   }
@@ -49,7 +49,7 @@
     legend {
       font-family: $font-roboto;
       font-size: $typography-lg-text-size;
-      font-weight: normal;
+      font-weight: $typography-normal-font-weight;
     }
   }
 

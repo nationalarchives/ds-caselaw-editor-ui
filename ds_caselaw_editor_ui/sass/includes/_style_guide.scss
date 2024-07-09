@@ -3,10 +3,58 @@
   margin: 0 auto;
   padding: $space-4 0;
 
+  &__container {
+    display: flex;
+  }
+
+  &__menu {
+    flex: 33%;
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+
+      a:visited {
+        color: $color-link-blue;
+      }
+    }
+  }
+
+  &__content {
+    flex: 77%;
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+  }
+
   hr {
     margin: $space-12 0;
     height: 1rem;
     background-color: $color-light-grey;
     border: none;
+  }
+
+  &__spacing-container {
+    background: $color-light-pink;
+    margin-bottom: $space-4;
+  }
+
+  &__spacing-item {
+    background: $color-white;
+    text-align: center;
+  }
+
+  &__line-heights {
+    display: flex;
+    flex-direction: column;
+    gap: $space-4;
+
+    > div {
+      border: 1px solid $color-grey;
+    }
   }
 }
