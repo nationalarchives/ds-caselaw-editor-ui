@@ -3,51 +3,61 @@
 @import "includes/mixins";
 
 // Core
+@import "includes/animations";
+@import "includes/buttons";
 @import "includes/layout";
+@import "includes/links";
 @import "includes/spacing";
-@import "includes/header";
-@import "includes/footer";
 @import "includes/tables";
 @import "includes/typography";
 
-// Shared CSS
+// Vendor imports
 @import "../../node_modules/@nationalarchives/ds-caselaw-frontend/src/main";
 
-@import "includes/animations";
-@import "includes/search";
-@import "includes/edit";
-@import "includes/judgments_list";
-@import "includes/links";
+// Base
+@import "includes/standard-text-template";
+@import "includes/loading_indicator";
+@import "includes/summary-panels";
+@import "includes/notification_message";
+@import "includes/note";
+@import "includes/login";
+
+// Cookies
+@import "includes/cookie_consent/ds-cookie-consent";
+@import "includes/cookie_consent/cookie-consent";
+
+// Navigation
 @import "includes/document_navigation_links";
+@import "includes/footer";
+@import "includes/header";
+@import "includes/pagination";
+@import "includes/sticky_menu";
+@import "includes/tabs";
+
+// Search
+@import "includes/basic_search_form";
 @import "includes/structured_search";
 @import "includes/results";
 @import "includes/results_search_component";
 @import "includes/result_controls";
-@import "includes/pagination";
+
+// Judgments
+@import "includes/edit";
+@import "includes/judgments_list";
 @import "includes/judgment_text_end_document_marker";
 @import "includes/judgment_text_toolbar";
 @import "includes/judgment_text_source";
 @import "includes/judgment_sidebar";
 @import "includes/judgment_metadata_panel";
-@import "includes/standard-text-template";
 @import "includes/judgments_list_controls";
-@import "includes/loading_indicator";
-@import "includes/cookie_consent/ds-cookie-consent";
-@import "includes/cookie_consent/cookie-consent";
 @import "includes/metadata";
-@import "includes/buttons";
 @import "includes/components/judgment_status_indicator";
 @import "includes/judgment_component";
-@import "includes/colour_swatches";
-@import "includes/summary-panels";
-@import "includes/environment_banner";
-@import "includes/style_guide";
-@import "includes/tabs";
-@import "includes/notification_message";
-@import "includes/judgment_view_controls";
-@import "includes/note";
 @import "includes/document_version_history";
 @import "includes/document_history";
-@import "includes/sticky_menu";
+@import "includes/judgment_view_controls";
 
-@import "includes/login";
+// Dev
+@import "includes/colour_swatches";
+@import "includes/style_guide";
+@import "includes/environment_banner";
