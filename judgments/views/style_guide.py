@@ -13,6 +13,7 @@ class StyleGuide(TemplateView):
                 "href": "#components",
                 "children": [
                     {"label": "Buttons", "href": "#buttons"},
+                    {"label": "List controls", "href": "#list-controls"},
                     {"label": "Note", "href": "#note"},
                     {"label": "Notification messaging", "href": "#notification-messaging"},
                     {"label": "Search form", "href": "#search-form"},
