@@ -4,7 +4,6 @@
 
   @media (min-width: $grid-breakpoint-extra-large) {
     margin: 0;
-    margin-right: $space-16;
   }
 
   form {
@@ -54,5 +53,6 @@
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
+    gap: $space-4;
   }
 }
