@@ -10,6 +10,10 @@ class StyleGuide(TemplateView):
         context = super().get_context_data(**kwargs)
         judgment = SearchResultFactory.build()
         context["judgment"] = judgment
+        judgment_failed_to_parse = SearchResultFactory.build(failed_to_parse=True)
+        judgment_assigned = SearchResultFactory.build(metadata={"assigned_to": "An editor"})
+        judgment_on_hold = SearchResultFactory.build(metadata={"assigned_to": "An editor", "editor_hold": "true"})
+        context["judgments"] = [judgment, judgment_failed_to_parse, judgment_assigned, judgment_on_hold]
         context["menu_items"] = [
             {"label": "Colours", "href": "#colours"},
             {
@@ -18,6 +22,7 @@ class StyleGuide(TemplateView):
                 "children": [
                     {"label": "Buttons", "href": "#buttons"},
                     {"label": "Judgment metadata form", "href": "#judgment-metadata-form"},
+                    {"label": "Judgments list", "href": "#judgments-list"},
                     {"label": "List controls", "href": "#list-controls"},
                     {"label": "Note", "href": "#note"},
                     {"label": "Notification messaging", "href": "#notification-messaging"},

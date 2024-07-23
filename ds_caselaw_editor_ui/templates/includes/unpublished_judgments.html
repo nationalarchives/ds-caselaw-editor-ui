@@ -12,11 +12,7 @@
     </div>
     <div class="judgments-list__table">
       {% include "includes/judgments_list_header.html" %}
-      <ul class="judgments-list__list">
-        {% for item in judgments %}
-          {% include "includes/judgments_list_item.html" %}
-        {% endfor %}
-      </ul>
+      {% include "includes/judgments_list.html" with judgments=judgments %}
       {% include "includes/pagination.html" %}
       <p class="judgments-list__more-info">
         <a href="{% url 'results' %}">{% translate "judgments.allrecent" %}</a>
