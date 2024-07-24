@@ -1,7 +1,7 @@
 {% extends "layouts/judgment.html" %}
 {% block content %}
   {% if document_type == "judgment" %}
-    {% include "includes/judgment/metadata_panel_form.html" with return_to="html" %}
+    {% include "includes/judgment/judgment_metadata_form.html" with return_to="html" %}
   {% else %}
     {% include "includes/judgment/metadata_panel_static.html" with return_to="html" %}
   {% endif %}

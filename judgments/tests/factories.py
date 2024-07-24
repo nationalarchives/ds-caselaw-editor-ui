@@ -8,6 +8,7 @@ from caselawclient.models.documents import Document, DocumentURIString
 from caselawclient.models.judgments import Judgment
 from caselawclient.responses.search_result import SearchResult, SearchResultMetadata
 from django.contrib.auth import get_user_model
+from factory.faker import faker
 
 User = get_user_model()
 
@@ -139,27 +140,37 @@ class SimpleFactory:
 
 
 class SearchResultMetadataFactory(SimpleFactory):
+    fake = faker.Faker()
     target_class = SearchResultMetadata
     # "name_of_attribute": ("name of incoming param", "default value")
     PARAMS_MAP = {
-        "author": factory.Faker("name"),
-        "author_email": factory.Faker("email"),
+        "author": fake.name(),
+        "author_email": fake.email(),
         "consignment_reference": "TDR-2023-ABC",
         "submission_datetime": datetime.datetime(2023, 2, 3, 9, 12, 34),
+        "editor_status": "published",
+        "assigned_to": None,
     }
 
 
 class SearchResultFactory(SimpleFactory):
+    fake = faker.Faker()
     target_class = SearchResult
 
     # "name_of_attribute": ("name of incoming param", "default value")
     PARAMS_MAP = {
         "uri": "test/2023/123",
-        "name": "Judgment v Judgement",
+        "name": f"{fake.name()} v {fake.name()}",
         "neutral_citation": "[2023] Test 123",
-        "court": "Court of Testing",
+        "court": {"name": "Court of Testing"},
         "date": datetime.date(2023, 2, 3),
+        "document_date_as_date": datetime.date(2023, 2, 3),
         "metadata": SearchResultMetadataFactory.build(),
         "is_failure": False,
         "failed_to_parse": False,
+        "status": "NEW",
+        "consignment_reference": "TDR-2023-ABC",
+        "document_noun": "Judgment",
+        "best_human_identifier": "[2023] Test 123",
+        "court_and_jurisdiction_identifier_string": "Court of Testing",
     }
