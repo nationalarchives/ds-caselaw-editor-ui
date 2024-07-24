@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-09 09:22+0000\n"
+"POT-Creation-Date: 2024-07-24 12:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,7 +45,6 @@ msgid "judgments.ncn"
 msgstr "NCN"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/history/document_data.html
-#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_form.html
 #: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
 msgid "judgment.judgment_date"
 msgstr "Judgment date"
@@ -62,32 +61,20 @@ msgid "judgments.court"
 msgstr "Court"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/history/document_data.html
-#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_form.html
 #: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
 msgid "document.type"
 msgstr "Type"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_form.html
-msgid "judgment.neutral_citation"
-msgstr "NCN"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_form.html
-msgid "judgment.court"
-msgstr "Court"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_form.html
 #: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
 msgid "judgment.judgment_name"
 msgstr "Name"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_form.html
 #: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
 #: judgments/utils/link_generators.py
 msgid "judgments.consignmentref"
 msgstr "TDR Ref"
 
-#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_form.html
 #: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
 msgid "judgments.sidebar.status"
 msgstr "Status"

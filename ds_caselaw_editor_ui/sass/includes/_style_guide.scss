@@ -23,6 +23,7 @@
 
   &__content {
     flex: 77%;
+    max-width: 77%;
 
     ul {
       margin: 0;
@@ -55,6 +56,14 @@
 
     > div {
       border: 1px solid $color-grey;
+    }
+  }
+
+  &__component-wrapper--large {
+    overflow: scroll;
+
+    > * {
+      width: 1200px;
     }
   }
 }

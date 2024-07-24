@@ -1,11 +1,15 @@
 from django.views.generic import TemplateView
 
+from judgments.tests.factories import SearchResultFactory
+
 
 class StyleGuide(TemplateView):
     template_name = "pages/style_guide.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        judgment = SearchResultFactory.build()
+        context["judgment"] = judgment
         context["menu_items"] = [
             {"label": "Colours", "href": "#colours"},
             {
@@ -13,6 +17,7 @@ class StyleGuide(TemplateView):
                 "href": "#components",
                 "children": [
                     {"label": "Buttons", "href": "#buttons"},
+                    {"label": "Judgment metadata form", "href": "#judgment-metadata-form"},
                     {"label": "List controls", "href": "#list-controls"},
                     {"label": "Note", "href": "#note"},
                     {"label": "Notification messaging", "href": "#notification-messaging"},

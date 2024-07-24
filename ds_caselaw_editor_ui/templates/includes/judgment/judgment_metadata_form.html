@@ -1,4 +1,4 @@
-{% load i18n status_tag_css %}
+{% load status_tag_css %}
 <div class="metadata-header__block">
   <div class="metadata-component">
     <form aria-label="Edit judgment"
@@ -9,9 +9,7 @@
       <div class="metadata-component__left-column">
         <div class="metadata-component__top-left-row">
           <div class="metadata-component__ncn">
-            <label for="neutral_citation" class="metadata-component__main-labels">
-              {% translate "judgment.neutral_citation" %}
-            </label>
+            <label for="neutral_citation" class="metadata-component__main-labels">NCN</label>
             <input type="text"
                    class="metadata-component__neutral_citation-input"
                    value="{{ judgment.best_human_identifier }}"
@@ -19,7 +17,7 @@
                    id="neutral_citation" />
           </div>
           <div class="metadata-component__court">
-            <label for="court" class="metadata-component__main-labels">{% translate "judgment.court" %}</label>
+            <label for="court" class="metadata-component__main-labels">Court</label>
             <input type="text"
                    class="metadata-component__court-input"
                    value="{{ judgment.court_and_jurisdiction_identifier_string }}"
@@ -31,7 +29,7 @@
             </datalist>
           </div>
           <div class="metadata-component__date">
-            <label for="judgment_date" class="metadata-component__main-labels">{% translate "judgment.judgment_date" %}</label>
+            <label for="judgment_date" class="metadata-component__main-labels">Judgment date</label>
             <input type="text"
                    class="metadata-component__judgment_date-input"
                    value="{{ judgment.document_date_as_date | date:'j M Y' }}"
@@ -40,21 +38,23 @@
           </div>
         </div>
         <div class="metadata-component__panel">
-          <label for="metadata_name" class="metadata-component__main-labels">{% translate "judgment.judgment_name" %}</label>
-          <textarea class="metadata-component__metadata_name-input" name="metadata_name" id="metadata_name" rows="2">
-{{ judgment.name }}</textarea>
+          <label for="metadata_name" class="metadata-component__main-labels">Name</label>
+          <textarea class="metadata-component__metadata_name-input"
+                    name="metadata_name"
+                    id="metadata_name"
+                    rows="2">{{ judgment.name }}</textarea>
         </div>
       </div>
       <div class="metadata-component__right-column">
         <div class="metadata-component__tdr">
           <aside for="metadata_name" class="metadata-component__main-labels">
-            {% translate "judgments.consignmentref" %}
+            TDR Ref
           </aside>
           <p>{{ judgment.consignment_reference }}</p>
         </div>
         <div class="metadata-component__status">
           <aside for="metadata_name" class="metadata-component__main-labels">
-            {% translate "judgments.sidebar.status" %}
+            Status
           </aside>
           <p class="judgment-status-indicator judgment-status-indicator--{{ judgment.status | status_tag_colour }}">
             {{ judgment.status }}
@@ -62,7 +62,7 @@
         </div>
         <div class="metadata-component__type">
           <aside for="metadata_name" class="metadata-component__main-labels">
-            {% translate "document.type" %}
+            Type
           </aside>
           <p>{{ judgment.document_noun|title }}</p>
         </div>
