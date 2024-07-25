@@ -1,0 +1,9 @@
+<h3 id="judgment-toolbar-button">Judgment toolbar button</h3>
+<p>This can be used to add a button to the judgment toolbar. It shows differently depending on the view.</p>
+<p>
+  Use with <code>include "includes/judgment/toolbar_button.html" with label="Label" active_view="view_name" url_name="url-name" url_params=document.uri</code>
+</p>
+<div class="style-guide__component-wrapper">
+  {% include "includes/judgment/toolbar_button.html" with label="Active button" active_view=view url_name="publish-document" url_params="test" %}
+  {% include "includes/judgment/toolbar_button.html" with label="Inactive button" url_name="publish-document" url_params="test" %}
+</div>

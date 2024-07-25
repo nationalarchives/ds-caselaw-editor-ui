@@ -14,6 +14,7 @@ class StyleGuide(TemplateView):
         judgment_assigned = SearchResultFactory.build(metadata={"assigned_to": "An editor"})
         judgment_on_hold = SearchResultFactory.build(metadata={"assigned_to": "An editor", "editor_hold": "true"})
         context["judgments"] = [judgment, judgment_failed_to_parse, judgment_assigned, judgment_on_hold]
+        context["document"] = judgment
         context["menu_items"] = [
             {"label": "Colours", "href": "#colours"},
             {
@@ -23,6 +24,8 @@ class StyleGuide(TemplateView):
                     {"label": "Buttons", "href": "#buttons"},
                     {"label": "Judgment metadata form", "href": "#judgment-metadata-form"},
                     {"label": "Judgments list", "href": "#judgments-list"},
+                    {"label": "Judgment toolbar", "href": "#judgment-toolbar"},
+                    {"label": "Judgment toolbar button", "href": "#judgment-toolbar-button"},
                     {"label": "List controls", "href": "#list-controls"},
                     {"label": "Note", "href": "#note"},
                     {"label": "Notification messaging", "href": "#notification-messaging"},
