@@ -1,40 +1,34 @@
-{% load i18n %}
 <div class="judgment-toolbar">
   <div class="judgment-toolbar__container container">
     {% if request.args.origin == 'results' %}
       <div class="judgment-toolbar__return-link">
-        <a href="{{ request.args.return_link }}">{% translate "judgment.toolbar.back" %}</a>
+        <a href="{{ request.args.return_link }}">Back to search results</a>
       </div>
     {% endif %}
     <div class="judgment-toolbar__edit">
-      <a class="judgment-toolbar__button {% if view == 'judgment_text' %}button-cta{% else %}button-secondary{% endif %}"
-         href="{% url 'full-text-html' document.uri %}">{% translate "judgment.toolbar.review_document" %}</a>
+      {% include "./toolbar_button.html" with active_view="judgment_text" label="Review" url_name="full-text-html" url_params=document.uri %}
       {% if document.is_published %}
         <span class="judgment-toolbar__button button-secondary"
-              aria-disabled="true">{% translate "judgment.toolbar.hold" %}</span>
+              aria-disabled="true">Put on hold</span>
       {% else %}
         {% if document.is_held %}
-          <a class="judgment-toolbar__button {% if view == 'unhold_judgment' %}button-cta{% else %}button-secondary{% endif %}"
-             href="{% url 'unhold-document' document.uri %}">{% translate "judgment.toolbar.unhold" %}</a>
+          {% include "./toolbar_button.html" with active_view="unhold_judgment" label="Take off hold" url_name="unhold-document" url_params=document.uri %}
         {% else %}
-          <a class="judgment-toolbar__button {% if view == 'hold_judgment' %}button-cta{% else %}button-secondary{% endif %}"
-             href="{% url 'hold-document' document.uri %}">{% translate "judgment.toolbar.hold" %}</a>
+          {% include "./toolbar_button.html" with active_view="hold_judgment" label="Put on hold" url_name="hold-document" url_params=document.uri %}
         {% endif %}
       {% endif %}
       {% if document.is_published %}
-        <a class="judgment-toolbar__button {% if view == 'publish_judgment' %}button-cta{% else %}button-secondary{% endif %}"
-           href="{% url 'unpublish-document' document.uri %}">{% translate "judgment.toolbar.unpublish" %}</a>
+        {% include "./toolbar_button.html" with active_view="publish_judgment" label="Unpublish" url_name="unpublish-document" url_params=document.uri %}
       {% else %}
-        <a class="judgment-toolbar__button {% if view == 'publish_judgment' %}button-cta{% else %}button-secondary{% endif %}"
-           href="{% url 'publish-document' document.uri %}">{% translate "judgment.toolbar.publish" %}</a>
+        {% include "./toolbar_button.html" with active_view="publish_judgment" label="Publish" url_name="publish-document" url_params=document.uri %}
       {% endif %}
       {% if document.docx_url %}
         <a class="judgment-toolbar__button button-secondary"
            href="{{ document.docx_url }}"
-           download>{% translate "judgment.toolbar.download_docx" %}</a>
+           download>Download .docx</a>
       {% else %}
         <span class="judgment-toolbar__button button-secondary"
-              aria-disabled="true">{% translate "judgment.toolbar.download_docx" %}</span>
+              aria-disabled="true">Download .docx</span>
       {% endif %}
       <a id="judgment-toolbar__more-button"
          class="judgment-toolbar__button judgment-toolbar__button-more button-secondary"
@@ -56,7 +50,7 @@
         </form>
       {% endif %}
     </div>
-    <div class="judgment-toolbar__more">{% include "includes/judgment/toolbar_more.html" %}</div>
+    {% include "includes/judgment/toolbar_more.html" %}
     {% if version %}
       <div class="judgment-toolbar__version">
         <b>You are viewing version {{ version }} of this document.</b>

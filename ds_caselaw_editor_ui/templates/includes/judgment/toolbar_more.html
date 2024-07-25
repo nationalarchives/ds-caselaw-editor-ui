@@ -1,78 +1,80 @@
-{% load i18n user_permissions waffle_tags %}
-<hr>
-<div class="judgment-toolbar__more__menu">
-  <div class="judgment-toolbar__more__menu__group">
-    <h4>Submitter</h4>
-    <p>
-      <a href="mailto:{{ document.source_email }}">{{ document.source_name }}</a>
-    </p>
-  </div>
-  <div class="judgment-toolbar__more__menu__group">
-    <h4>Tools</h4>
-    <ul>
-      <li>
-        <a href="{{ jira_create_link }}"
-           target="_blank"
-           rel="noopener noreferrer">{% translate "judgment.create_in_jira" %}</a>
-      </li>
-      <li>
-        <a href="{% url 'document-history' document.uri %}">Document version history</a>
-      </li>
-      <li>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSckmLdeUAEoEoBc55ybFVmOsXPEM7CG2VbN2YNwsX6kL9UZ4Q/viewform?usp=pp_url&entry.2047884653=Yes&entry.6716552=A+specific+judgment+or+decision&entry.481919886={{ request.build_absolute_uri|urlencode }}&entry.350152829={{ document.consignment_reference|urlencode }}"
-           target="_blank"
-           rel="noopener noreferrer">{% translate "judgment.report_blocking_problem" %}</a>
-      </li>
-    </ul>
-  </div>
-  <div class="judgment-toolbar__more__menu__group">
-    <h4>Downloads</h4>
-    <ul>
-      {% if document.docx_url %}
-        <li>
-          <a href="{{ document.docx_url }}" download>{% translate "judgment.download_docx" %}</a>
-        </li>
-      {% endif %}
-      {% if document.pdf_url %}
-        <li>
-          <a href="{{ document.pdf_url }}">{% translate "judgment.download_pdf" %}</a>
-        </li>
-      {% endif %}
-      <li>
-        <a href="{% url 'full-text-xml' document.uri %}">{% translate "judgment.download_xml" %}</a>
-      </li>
-    </ul>
-  </div>
-  {% if user|is_superuser or user|is_editor %}
+{% load user_permissions waffle_tags %}
+<div class="judgment-toolbar__more">
+  <hr>
+  <div class="judgment-toolbar__more__menu">
     <div class="judgment-toolbar__more__menu__group">
-      <h4>Editor tools</h4>
-      <form action="{% url 'enrich' %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="document_uri" value="{{ document.uri }}" />
-        <input type="submit"
-               name="enrich"
-               class="button-secondary button-small"
-               value="Request enrichment" />
-      </form>
-      <form action="{% url 'delete' %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
-        <input type="submit"
-               name="delete"
-               class="button-danger button-small"
-               value="Delete document"
-               {% if not document.safe_to_delete %}disabled{% endif %} />
-      </form>
-      {% flag "reparse" %}
-        <form action="{% url 'reparse' %}" method="post">
+      <h4>Submitter</h4>
+      <p>
+        <a href="mailto:{{ document.source_email }}">{{ document.source_name }}</a>
+      </p>
+    </div>
+    <div class="judgment-toolbar__more__menu__group">
+      <h4>Tools</h4>
+      <ul>
+        <li>
+          <a href="{{ jira_create_link }}"
+             target="_blank"
+             rel="noopener noreferrer">Create in Jira</a>
+        </li>
+        <li>
+          <a href="{% url 'document-history' document.uri %}">Document version history</a>
+        </li>
+        <li>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSckmLdeUAEoEoBc55ybFVmOsXPEM7CG2VbN2YNwsX6kL9UZ4Q/viewform?usp=pp_url&entry.2047884653=Yes&entry.6716552=A+specific+judgment+or+decision&entry.481919886={{ request.build_absolute_uri|urlencode }}&entry.350152829={{ document.consignment_reference|urlencode }}"
+             target="_blank"
+             rel="noopener noreferrer">Report a technical issue</a>
+        </li>
+      </ul>
+    </div>
+    <div class="judgment-toolbar__more__menu__group">
+      <h4>Downloads</h4>
+      <ul>
+        {% if document.docx_url %}
+          <li>
+            <a href="{{ document.docx_url }}" download>Download .docx</a>
+          </li>
+        {% endif %}
+        {% if document.pdf_url %}
+          <li>
+            <a href="{{ document.pdf_url }}">Download PDF</a>
+          </li>
+        {% endif %}
+        <li>
+          <a href="{% url 'full-text-xml' document.uri %}">Download XML</a>
+        </li>
+      </ul>
+    </div>
+    {% if user|is_superuser or user|is_editor %}
+      <div class="judgment-toolbar__more__menu__group">
+        <h4>Editor tools</h4>
+        <form action="{% url 'enrich' %}" method="post">
           {% csrf_token %}
           <input type="hidden" name="document_uri" value="{{ document.uri }}" />
           <input type="submit"
-                 name="reparse"
+                 name="enrich"
                  class="button-secondary button-small"
-                 value="Reparse document" />
+                 value="Request enrichment" />
         </form>
-      {% endflag %}
-    </div>
-  {% endif %}
+        <form action="{% url 'delete' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
+          <input type="submit"
+                 name="delete"
+                 class="button-danger button-small"
+                 value="Delete document"
+                 {% if not document.safe_to_delete %}disabled{% endif %} />
+        </form>
+        {% flag "reparse" %}
+          <form action="{% url 'reparse' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="document_uri" value="{{ document.uri }}" />
+            <input type="submit"
+                   name="reparse"
+                   class="button-secondary button-small"
+                   value="Reparse document" />
+          </form>
+        {% endflag %}
+      </div>
+    {% endif %}
+  </div>
 </div>
