@@ -27,6 +27,7 @@ class StyleGuide(TemplateView):
                     {"label": "Note", "href": "#note"},
                     {"label": "Notification messaging", "href": "#notification-messaging"},
                     {"label": "Search form", "href": "#search-form"},
+                    {"label": "Sidebar", "href": "#sidebar"},
                     {"label": "Summary panels", "href": "#summary-panels"},
                     {"label": "Tabs", "href": "#tabs"},
                 ],
