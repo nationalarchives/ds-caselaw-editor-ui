@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-24 12:03+0000\n"
+"POT-Creation-Date: 2024-07-26 10:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,28 +74,6 @@ msgstr "Name"
 #: judgments/utils/link_generators.py
 msgid "judgments.consignmentref"
 msgstr "TDR Ref"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
-msgid "judgments.sidebar.status"
-msgstr "Status"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
-msgid "judgments.associated_douments"
-msgstr "Associated documents"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
-msgid "judgments.sidebar.assigned_to"
-msgstr "Assigned to"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
-msgid "judgments.noone"
-msgstr "No one"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/sidebar.html
-#, fuzzy
-#| msgid "judgment.assigned_to"
-msgid "judgment.assign_cta"
-msgstr "Assign"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/toolbar.html
 msgid "judgment.toolbar.back"
