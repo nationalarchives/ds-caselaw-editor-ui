@@ -1,0 +1,13 @@
+<h3 id="judgments-list">Judgments list</h3>
+<p>
+  This is a list of judgments that is used to show judgments on the homepage and on the search page. Judgments can be in various states - below shows:
+</p>
+<ol>
+  <li>A generic judgment</li>
+  <li>A judgment that failed to parse</li>
+  <li>A judgment assigned to an editor</li>
+  <li>A judgment on hold</li>
+</ol>
+<div class="style-guide__component-wrapper--large">
+  {% include "includes/judgments_list.html" with judgments=judgments %}
+</div>
