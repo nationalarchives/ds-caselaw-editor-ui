@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-26 10:39+0000\n"
+"POT-Creation-Date: 2024-07-30 14:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,54 +74,6 @@ msgstr "Name"
 #: judgments/utils/link_generators.py
 msgid "judgments.consignmentref"
 msgstr "TDR Ref"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/toolbar.html
-msgid "judgment.toolbar.back"
-msgstr "Back to search results"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/toolbar.html
-msgid "judgment.toolbar.review_document"
-msgstr "Review"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/toolbar.html
-msgid "judgment.toolbar.hold"
-msgstr "Put on hold"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/toolbar.html
-msgid "judgment.toolbar.unhold"
-msgstr "Take off hold"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/toolbar.html
-msgid "judgment.toolbar.unpublish"
-msgstr "Unpublish"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/toolbar.html
-msgid "judgment.toolbar.publish"
-msgstr "Publish"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/toolbar.html
-msgid "judgment.toolbar.download_docx"
-msgstr "Download .docx"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/toolbar_more.html
-msgid "judgment.create_in_jira"
-msgstr "Create in Jira"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/toolbar_more.html
-msgid "judgment.report_blocking_problem"
-msgstr "Report a technical issue"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/toolbar_more.html
-msgid "judgment.download_docx"
-msgstr "Download original .docx"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/toolbar_more.html
-msgid "judgment.download_pdf"
-msgstr "Download PDF"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/toolbar_more.html
-msgid "judgment.download_xml"
-msgstr "Download XML"
 
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
 #, fuzzy
