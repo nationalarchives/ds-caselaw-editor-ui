@@ -10,6 +10,7 @@ django-model-utils==4.5.1  # https://github.com/jazzband/django-model-utils
 django-allauth==0.63.6  # https://github.com/pennersr/django-allauth
 django-waffle==4.1.0  # https://github.com/django-waffle/django-waffle
 django-widget-tweaks==1.5.0  # https://github.com/jazzband/django-widget-tweaks
+factory-boy==3.3.0  # https://github.com/FactoryBoy/factory_boy
 
 requests~=2.32.3
 xmltodict~=0.13.0
