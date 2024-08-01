@@ -65,10 +65,10 @@ jobs:
           target: ".env"
 
       - name: Build the Stack
-        run: docker-compose build django postgres
+        run: docker compose build django postgres
 
       - name: Run mypy
-        run: docker-compose run django mypy ds_caselaw_editor_ui judgments
+        run: docker compose run django mypy ds_caselaw_editor_ui judgments
 
   # With no caching at all the entire ci process takes 4m 30s to complete!
   pytest:
