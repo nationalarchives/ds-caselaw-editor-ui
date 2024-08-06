@@ -19,7 +19,7 @@ manager or [download a `.deb` or
 `.rpm`](https://docs.docker.com/engine/install/)
 
 Once installed, we need to build our containers. We use
-[`docker-compose`](https://docs.docker.com/compose/) to orchestrate the
+[`docker compose`](https://docs.docker.com/compose/) to orchestrate the
 building of the project's containers, one for each each service:
 
 ### `django`
@@ -86,7 +86,7 @@ follow this step.
 Switch to the location of `ds-find-caselaw-docs/marklogic` and run:
 
 ```console
-$ docker-compose up
+$ docker compose up
 ```
 
 ### 5. Start Docker containers
@@ -361,7 +361,7 @@ To set up the first administrator account or recreate an account if the login cr
 2. Check that the Fab Build is also running by opening a terminal window and typing `fab start`, this should return a message to say it's up to date.
 3. Now open a new terminal window and create a new superuser account by running the following commands:
 
-- Type `docker-compose exec django bash` and hit return
+- Type `docker compose exec django bash` and hit return
 - Now type `python manage.py createsuperuser`and hit return, This will show the set username of `root`. You can change this to something else to make it more personal – but it can be left as it is. If you want to change it, type in your new username and hit return if you are happy with leaving it as `root` also just hit return.
 - It will now ask you for your email address, type this in and hit return.
 - Lastly, you will require a password, There are no rules to follow so it can be what you want. You will need to re-type your password so that it is validated.
