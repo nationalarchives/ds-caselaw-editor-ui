@@ -1,5 +1,3 @@
-version: "3"
-
 volumes:
   ds_caselaw_editor_ui_local_postgres_data: {}
   ds_caselaw_editor_ui_local_postgres_data_backups: {}
