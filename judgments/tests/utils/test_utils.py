@@ -235,7 +235,7 @@ class TestVersionUtils:
 
 
 class TestEditorsDict:
-    @pytest.mark.django_db()
+    @pytest.mark.django_db
     def test_print_name_sorting(self, settings):
         settings.EDITORS_GROUP_ID = None
 
@@ -251,7 +251,7 @@ class TestEditorsDict:
             {"name": "joe_bloggs", "print_name": "joe_bloggs"},
         ]
 
-    @pytest.mark.django_db()
+    @pytest.mark.django_db
     def test_exclude_non_editors(self, settings):
         group = Group.objects.create(name="Editors")
         settings.EDITORS_GROUP_ID = group.id
@@ -265,7 +265,7 @@ class TestEditorsDict:
             {"name": "editor", "print_name": "editor"},
         ]
 
-    @pytest.mark.django_db()
+    @pytest.mark.django_db
     def test_exclude_inactive_without_editor_group(self, settings):
         settings.EDITORS_GROUP_ID = None
 
@@ -286,7 +286,7 @@ class TestEditorsDict:
             {"name": "active_user", "print_name": "active_user"},
         ]
 
-    @pytest.mark.django_db()
+    @pytest.mark.django_db
     def test_exclude_inactive_with_editor_group(self, settings):
         group = Group.objects.create(name="Editors")
         settings.EDITORS_GROUP_ID = group.id

@@ -7,7 +7,7 @@ from django.urls import reverse
 from factories import JudgmentFactory
 
 
-@pytest.mark.django_db()
+@pytest.mark.django_db
 def test_break_lock_confirm_page():
     client = Client()
     client.force_login(User.objects.get_or_create(username="testuser")[0])
@@ -18,7 +18,7 @@ def test_break_lock_confirm_page():
     assert response.status_code == 200
 
 
-@pytest.mark.django_db()
+@pytest.mark.django_db
 @patch("judgments.views.unlock.get_document_by_uri_or_404")
 @patch("judgments.views.unlock.api_client.break_checkout")
 @patch("judgments.views.unlock.messages")
