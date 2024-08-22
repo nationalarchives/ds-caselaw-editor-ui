@@ -7,7 +7,7 @@ from django.test import Client, TestCase
 from judgments.tests.factories import JudgmentFactory, User
 
 
-@pytest.mark.django_db()
+@pytest.mark.django_db
 class TestBreadcrumbs(TestCase):
     client = Client(raise_request_exception=False)
 
