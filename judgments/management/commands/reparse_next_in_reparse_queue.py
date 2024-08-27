@@ -6,7 +6,7 @@ from django.core.management.base import BaseCommand
 from judgments.utils import api_client
 from judgments.views.reports import get_rows_from_result
 
-NUMBER_TO_PARSE = 1
+NUMBER_TO_PARSE = 8
 MAX_DOCUMENTS_TO_TRY = 200
 
 
