@@ -91,8 +91,11 @@ class TestDocumentEdit(TestCase):
             "testuser2",
         )
 
-        # TODO DRAGON
-        # assert "Document moved from /edittest/4321/1234 to <MagicMock" in str(messages.success.call_args)
+        assert messages.error.call_args is None
+        assert messages.success.call_args is None
+
+        # TODO: why no success message
+        # TODO: not save_and_move gets error
 
     @patch("judgments.views.judgment_edit.update_document_uri")
     @patch("judgments.views.judgment_edit.api_client")
@@ -145,8 +148,6 @@ class TestDocumentEdit(TestCase):
 
         assert "Document moved from /edittest/4321/1234 to <MagicMock" in str(messages.success.call_args)
         update.assert_called_with("/edittest/4321/1234", "[4321] UKSC 567")
-
-        # DRAGON: this succeeds with [4321] TEST 1 and that's bad.
 
     @patch("judgments.views.judgment_edit.api_client")
     @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
