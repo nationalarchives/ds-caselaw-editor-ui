@@ -34,6 +34,12 @@ class EditJudgmentView(View):
         # Does the NCN match the current URI?
         new_citation = request.POST["neutral_citation"]
         new_uri = caselawutils.neutral_url(new_citation.strip())
+        if not new_uri:
+            # maybe this should be a validation
+            messages.error(request, "NCN is not valid")
+            return redirect(
+                reverse("edit-document", kwargs={"document_uri": judgment_uri}),
+            )
 
         try:
             # Set name

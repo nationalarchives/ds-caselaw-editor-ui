@@ -19,7 +19,8 @@ class TestDocumentEdit(TestCase):
 
     @patch("judgments.views.judgment_edit.api_client")
     @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
-    def test_edit_judgment(self, mock_judgment, api_client):
+    @patch("judgments.views.judgment_edit.messages")
+    def test_edit_judgment_bad_name(self, messages, mock_judgment, api_client):
         judgment = JudgmentFactory.build(
             uri="edittest/4321/123",
             name="Test v Tested",
@@ -41,13 +42,40 @@ class TestDocumentEdit(TestCase):
             },
         )
 
+        assert "NCN is not valid" in str(messages.error.call_args)
+
+    @patch("judgments.views.judgment_edit.api_client")
+    @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
+    @patch("judgments.views.judgment_edit.messages")
+    def test_edit_judgment_good_name(self, messages, mock_judgment, api_client):
+        judgment = JudgmentFactory.build(
+            uri="edittest/4321/123",
+            name="Test v Tested",
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        User.objects.get_or_create(username="testuser2")
+
+        self.client.post(
+            "/pubtest/4321/123/edit",
+            {
+                "judgment_uri": "/edittest/4321/123",
+                "metadata_name": "New Name",
+                "neutral_citation": "[4321] UKSC 123",
+                "court": "Court of Testing",
+                "judgment_date": "2 Jan 2023",
+                "assigned_to": "testuser2",
+            },
+        )
+
         api_client.set_document_name.assert_called_with(
             "/edittest/4321/123",
             "New Name",
         )
         api_client.set_judgment_citation.assert_called_with(
             "/edittest/4321/123",
-            "[4321] TEST 123",
+            "[4321] UKSC 123",
         )
         api_client.set_document_court_and_jurisdiction.assert_called_with(
             "/edittest/4321/123",
@@ -62,6 +90,9 @@ class TestDocumentEdit(TestCase):
             "assigned-to",
             "testuser2",
         )
+
+        # TODO DRAGON
+        # assert "Document moved from /edittest/4321/1234 to <MagicMock" in str(messages.success.call_args)
 
     @patch("judgments.views.judgment_edit.update_document_uri")
     @patch("judgments.views.judgment_edit.api_client")
@@ -159,7 +190,7 @@ class TestDocumentEdit(TestCase):
             {
                 "judgment_uri": "/edittest/4321/123",
                 "metadata_name": "New Name",
-                "neutral_citation": "[4321] TEST 123",
+                "neutral_citation": "[4321] UKSC 123",
                 "court": "Court of Testing",
                 "judgment_date": "Kittens",
             },
