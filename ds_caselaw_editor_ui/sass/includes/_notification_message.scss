@@ -22,6 +22,11 @@
       color: $color-dark-blue;
     }
   }
+
+  &--warning {
+    @include notification;
+    background-color: #ff7900;
+  }
 }
 
 .inline-notification {

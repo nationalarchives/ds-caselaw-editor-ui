@@ -1,5 +1,6 @@
 import datetime
 
+import ds_caselaw_utils as caselawutils
 from caselawclient.Client import MarklogicAPIError
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -28,6 +29,11 @@ class EditJudgmentView(View):
         judgment = get_document_by_uri_or_404(judgment_uri)
 
         return_to = request.POST.get("return_to", None)
+        save_and_move = bool(request.POST.get("save_and_move", False))
+
+        # Does the NCN match the current URI?
+        new_citation = request.POST["neutral_citation"]
+        new_uri = caselawutils.neutral_url(new_citation.strip())
 
         try:
             # Set name
@@ -35,7 +41,6 @@ class EditJudgmentView(View):
             api_client.set_document_name(judgment_uri, new_name)
 
             # Set neutral citation
-            new_citation = request.POST["neutral_citation"]
             api_client.set_judgment_citation(judgment_uri, new_citation)
 
             # Set court
@@ -64,14 +69,26 @@ class EditJudgmentView(View):
             if new_assignment := request.POST.get("assigned_to", False):
                 api_client.set_property(judgment_uri, "assigned-to", new_assignment)
 
-            # If judgment_uri is a `failure` URI, amend it to match new neutral citation and redirect
-            if "failures" in judgment_uri and new_citation is not None:
-                new_judgment_uri = update_document_uri(judgment_uri, new_citation)
-                return redirect(
-                    reverse("edit-document", kwargs={"document_uri": new_judgment_uri}),
-                )
+            invalidate_caches(judgment.uri)
 
-            messages.success(request, "Document successfully updated")
+            if new_uri and new_uri.strip("/") != judgment_uri:
+                # the document URI is wrong
+                if not save_and_move:
+                    messages.warning(
+                        request,
+                        f"Document metadata updated, but this document is at /{judgment_uri} but should probably be at {new_uri}.",
+                    )
+                    return redirect(
+                        reverse("edit-document", kwargs={"document_uri": judgment_uri}),
+                    )
+                else:
+                    new_judgment_uri = update_document_uri(judgment_uri, new_citation)
+                    messages.success(request, f"Document moved from {judgment_uri} to {new_judgment_uri}")
+                    return redirect(
+                        reverse("edit-document", kwargs={"document_uri": new_judgment_uri}),
+                    )
+
+            messages.success(request, "Document metadata updated in place")
 
         except (MoveJudgmentError, NeutralCitationToUriError) as e:
             messages.error(
@@ -81,8 +98,6 @@ class EditJudgmentView(View):
 
         except MarklogicAPIError as e:
             messages.error(request, f"There was an error saving the Document: {e}")
-
-        invalidate_caches(judgment.uri)
 
         if return_to == "html":
             return_path = reverse(
