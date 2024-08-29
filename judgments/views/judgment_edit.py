@@ -26,6 +26,11 @@ class EditJudgmentView(View):
     def post(self, request, *args, **kwargs):
         judgment_uri = request.POST["judgment_uri"]
         judgment = get_document_by_uri_or_404(judgment_uri)
+        if request.POST.get("move_document", False):
+            new_judgment_uri = update_document_uri(judgment_uri, judgment.best_human_identifier)
+            return redirect(
+                reverse("edit-document", kwargs={"document_uri": new_judgment_uri}),
+            )
 
         return_to = request.POST.get("return_to", None)
 

@@ -2,6 +2,7 @@ from urllib.parse import urlencode
 
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from ds_caselaw_utils import neutral_url
 
 from judgments.utils import extract_version
 from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_404
@@ -24,6 +25,10 @@ class DocumentReviewHTMLView(DocumentView):
             context["version"] = extract_version(version_uri)
 
         context["view"] = "judgment_text"
+
+        ncn_uri = neutral_url(context["judgment"].neutral_citation)
+        if "/" + context["judgment"].uri != ncn_uri:
+            context["corrected_ncn_url"] = ncn_uri
 
         return context
 
