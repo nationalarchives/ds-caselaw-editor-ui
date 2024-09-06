@@ -14,20 +14,17 @@ def assert_match(regex, string):
 
 class TestSearchResults(TestCase):
     @patch("judgments.utils.view_helpers.search_and_parse_response")
-    def test_results(self, mock_search):
+    def test_oldest(self, mock_search):
         mock_search.results.return_value = []
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
-        response = self.client.get()
+        self.client.get("/")
         mock_search.assert_called_with(
             api_client,
             SearchParameters(
                 query=None,
+                order="-date",
                 only_unpublished=True,
                 show_unpublished=True,
                 page=1,
             ),
-        )
-        assert_match(
-            b"<option(\\s+)value=\"-date\"(\\s+)selected='selected'(\\s*)>",
-            response.content,
         )
