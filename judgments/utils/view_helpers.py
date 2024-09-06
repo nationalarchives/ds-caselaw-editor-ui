@@ -12,7 +12,7 @@ from judgments.utils import api_client, editors_dict, get_linked_document_uri
 from judgments.utils.link_generators import build_jira_create_link
 from judgments.utils.paginator import paginator
 
-ALLOWED_ORDERS = ["date", "-date"]
+RESULTS_ORDER = "-date"
 
 
 def user_is_superuser(user):
@@ -39,16 +39,14 @@ def user_is_developer(user):
 def get_search_parameters(
     params,
     default_page=1,
-    default_order="-date",
     only_unpublished=False,
 ):
     query = params.get("query")
     page = int(params.get("page", default_page))
-    order = params.get("order") if params.get("order") in ALLOWED_ORDERS else default_order
     return {
         "query": query,
         "page": page,
-        "order": order,
+        "order": RESULTS_ORDER,
         "only_unpublished": only_unpublished,
     }
 
@@ -56,7 +54,7 @@ def get_search_parameters(
 def get_search_results(parameters: dict[str, Any]) -> dict[str, Any]:
     search_parameters = SearchParameters(
         query=parameters["query"],
-        order=parameters["order"],
+        order=RESULTS_ORDER,
         only_unpublished=parameters["only_unpublished"],
         show_unpublished=True,
         page=parameters["page"],
@@ -66,7 +64,7 @@ def get_search_results(parameters: dict[str, Any]) -> dict[str, Any]:
         "query": parameters,
         "total": search_response.total,
         "judgments": search_response.results,
-        "order": parameters["order"],
+        "order": RESULTS_ORDER,
         "paginator": paginator(parameters["page"], search_response.total),
     }
 
