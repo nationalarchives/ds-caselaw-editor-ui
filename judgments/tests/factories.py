@@ -40,7 +40,6 @@ class DocumentFactory:
         "source_name": ("source_name", "Example Uploader"),
         "source_email": ("source_email", "uploader@example.com"),
         "consignment_reference": ("consignment_reference", "TDR-12345"),
-        "assigned_to": ("assigned_to", ""),
         "versions": ("versions", []),
         "versions_as_documents": ("versions_as_documents", []),
         "content_as_xml": ("xml", "<akomaNtoso>This is a document's XML.</akomaNtoso>"),
@@ -149,7 +148,6 @@ class SearchResultMetadataFactory(SimpleFactory):
         "consignment_reference": "TDR-2023-ABC",
         "submission_datetime": datetime.datetime(2023, 2, 3, 9, 12, 34),
         "editor_status": "published",
-        "assigned_to": None,
     }
 
 

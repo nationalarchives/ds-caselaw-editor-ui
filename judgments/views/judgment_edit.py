@@ -60,10 +60,6 @@ class EditJudgmentView(View):
             new_date_as_iso = new_date_as_date.strftime(r"%Y-%m-%d")
             api_client.set_judgment_date(judgment_uri, new_date_as_iso)
 
-            # Editor assignment
-            if new_assignment := request.POST.get("assigned_to", False):
-                api_client.set_property(judgment_uri, "assigned-to", new_assignment)
-
             # If judgment_uri is a `failure` URI, amend it to match new neutral citation and redirect
             if "failures" in judgment_uri and new_citation is not None:
                 new_judgment_uri = update_document_uri(judgment_uri, new_citation)

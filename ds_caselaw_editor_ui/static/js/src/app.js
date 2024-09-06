@@ -1,7 +1,6 @@
 import $ from "jquery";
 
 import TabSet from "./components/tabSet";
-import JudgmentSidebar from "./components/judgmentSidebar";
 import "./components/document_navigation_links";
 
 (function ($) {
@@ -70,31 +69,4 @@ $(".document-history__submission-toggle").on("click", function () {
   $("#submission-" + $(this).data("target-submission")).toggle();
 });
 
-$(".judgments-list__judgment-assign-form").on("submit", function (event) {
-  event.preventDefault();
-  const form = $(this);
-  const uri = form.find("input[name='judgment_uri']").val();
-  const action = form.attr("action");
-  const loading = $(
-    "<span class='loading-indicator' role='progressbar' aria-valuetext='Loading' aria-busy='true' aria-live='polite'></span>",
-  );
-  form.replaceWith(loading);
-  $.ajax({
-    type: "POST",
-    url: action,
-    data: form.serialize(),
-    success: function (data) {
-      const assigned_to = data["assigned_to"];
-      loading.replaceWith(
-        "<a aria-busy='false' href='/" +
-          encodeURIComponent(uri) +
-          "/edit#assigned_to'>" +
-          assigned_to +
-          "</a>",
-      );
-    },
-  });
-});
-
 TabSet.init();
-JudgmentSidebar.init();
