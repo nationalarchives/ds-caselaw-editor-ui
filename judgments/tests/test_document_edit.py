@@ -138,3 +138,29 @@ class TestDocumentBadURIWarning(TestCase):
         message = lxml.html.tostring(root.xpath("//div[@class='page-notification--warning']")[0])
         assert b'This document is at uksc/1234/123 but has an NCN of <a href="/uksc/1234/321">' in message
         assert b'<input type="hidden" name="judgment_uri" value="uksc/1234/123">' in message
+
+    @patch("judgments.views.judgment_edit.api_client")
+    @patch("judgments.views.judgment_edit.update_document_uri")
+    @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
+    def test_update_uri_called(self, mock_judgment, update_document_uri, api_client):
+        judgment = JudgmentFactory.build(
+            uri="uksc/4321/123",
+            name="Test v Tested",
+            neutral_citation="[1234] UKSC 321",
+            best_human_identifier="[1234] UKSC 321",
+        )
+        judgment.document_noun = "judgment"
+
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        self.client.post(
+            "/uksc/4321/123/edit",
+            {
+                "move_document": "yes",
+                "judgment_uri": "uksc/4321/123",
+            },
+        )
+
+        update_document_uri.assert_called_with("uksc/4321/123", "[1234] UKSC 321")
