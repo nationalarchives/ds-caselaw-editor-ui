@@ -164,3 +164,31 @@ class TestDocumentBadURIWarning(TestCase):
         )
 
         update_document_uri.assert_called_with("uksc/4321/123", "[1234] UKSC 321")
+
+    @patch("judgments.views.judgment_edit.api_client")
+    @patch("judgments.views.judgment_edit.update_document_uri")
+    @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
+    def test_update_uri_not_called_for_press_summary(self, mock_judgment, update_document_uri, api_client):
+        judgment = JudgmentFactory.build(
+            uri="uksc/4321/123",
+            name="Test v Tested",
+            neutral_citation="[1234] UKSC 321",
+            best_human_identifier="[1234] UKSC 321",
+        )
+        judgment.document_noun = "press-summary"
+
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.post(
+            "/uksc/4321/123/edit",
+            {
+                "move_document": "yes",
+                "judgment_uri": "uksc/4321/123",
+            },
+        )
+
+        update_document_uri.assert_not_called()
+        messages = list(get_messages(response.wsgi_request))
+        assert "Unable to move non-judgments at this time" in messages[0].message
