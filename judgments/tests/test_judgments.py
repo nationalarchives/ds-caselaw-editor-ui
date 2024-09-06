@@ -126,38 +126,3 @@ class TestJudgmentView(TestCase):
             "full-text-xml",
             kwargs={"document_uri": "ewca/civ/2004/63X"},
         )
-
-
-class TestJudgmentAssign(TestCase):
-    @patch("judgments.views.button_handlers.api_client")
-    def test_judgment_assigns_to_user(self, api_client):
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
-        User.objects.get_or_create(username="testuser2")
-        self.client.post(
-            "/assign",
-            {"judgment_uri": "/test/judgment", "assigned_to": "testuser2"},
-        )
-        api_client.set_property.assert_called_with(
-            "/test/judgment",
-            "assigned-to",
-            "testuser2",
-        )
-
-    @patch("judgments.views.button_handlers.api_client")
-    def test_judgment_assignment_defaults_to_current_user(self, api_client):
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
-        self.client.post("/assign", {"judgment_uri": "/test/judgment"})
-        api_client.set_property.assert_called_with(
-            "/test/judgment",
-            "assigned-to",
-            "testuser",
-        )
-
-    @patch("judgments.views.button_handlers.api_client")
-    def test_judgment_assignment_handles_explicit_unassignment(self, api_client):
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
-        self.client.post(
-            "/assign",
-            {"judgment_uri": "/test/judgment", "assigned_to": ""},
-        )
-        api_client.set_property.assert_called_with("/test/judgment", "assigned-to", "")

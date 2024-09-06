@@ -39,15 +39,6 @@
     }
   }
 
-  &__assignment-input {
-    display: block;
-    width: 100%;
-    height: $space-10;
-    border: solid 2px $color-dark-grey;
-    font-size: $typography-md-text-size;
-    $font-open-sans: "Open Sans", sans-serif;
-  }
-
   &__context-notification {
     margin-top: $space-2;
   }
