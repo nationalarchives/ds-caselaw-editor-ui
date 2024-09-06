@@ -163,6 +163,7 @@ def test(c):
             "exec",
             "django",
             "pytest",
+            "-v",
         ],
     )
 

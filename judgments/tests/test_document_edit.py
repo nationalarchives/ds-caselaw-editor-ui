@@ -1,5 +1,6 @@
 from unittest.mock import patch
 
+import lxml.html
 from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
 from django.test import TestCase
@@ -113,3 +114,27 @@ class TestDocumentEdit(TestCase):
 
         messages = list(get_messages(response.wsgi_request))
         assert "Could not parse the date" in messages[0].message
+
+
+class TestDocumentBadURIWarning(TestCase):
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    @patch("judgments.utils.view_helpers.get_linked_document_uri")
+    def test_bad_ncn_has_banner(self, linked_document_uri, mock_judgment):
+        judgment = JudgmentFactory.build(
+            uri="uksc/1234/123",
+            neutral_citation="[1234] UKSC 321",
+            best_human_identifier="[1234] UKSC 321",
+            name="Test v Tested",
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.get(
+            "/uksc/1234/123",
+        )
+
+        root = lxml.html.fromstring(response.content)
+        message = lxml.html.tostring(root.xpath("//div[@class='page-notification--warning']")[0])
+        assert b'This document is at uksc/1234/123 but has an NCN of <a href="/uksc/1234/321">' in message
+        assert b'<input type="hidden" name="judgment_uri" value="uksc/1234/123">' in message
