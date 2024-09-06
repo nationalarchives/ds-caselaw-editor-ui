@@ -1,6 +1,13 @@
 .judgments-list {
   &__judgments-list-controls-container {
-    margin-bottom: $space-4;
+    margin-top: $space-4;
+
+    @media (min-width: $grid-breakpoint-large) {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: $space-4;
+    }
   }
 
   &__container {
