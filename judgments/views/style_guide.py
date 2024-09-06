@@ -25,7 +25,6 @@ class StyleGuide(TemplateView):
                     {"label": "Judgments list", "href": "#judgments-list"},
                     {"label": "Judgment toolbar", "href": "#judgment-toolbar"},
                     {"label": "Judgment toolbar button", "href": "#judgment-toolbar-button"},
-                    {"label": "List controls", "href": "#list-controls"},
                     {"label": "Note", "href": "#note"},
                     {"label": "Notification messaging", "href": "#notification-messaging"},
                     {"label": "Search form", "href": "#search-form"},
