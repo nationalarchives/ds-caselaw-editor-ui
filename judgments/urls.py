@@ -5,7 +5,6 @@ from judgments.views.enrich import enrich
 
 from .views import reports
 from .views.button_handlers import (
-    assign_judgment_button,
     hold_judgment_button,
     prioritise_judgment_button,
 )
@@ -61,7 +60,6 @@ urlpatterns = [
     path("enrich", enrich, name="enrich"),
     path("reparse", reparse, name="reparse"),
     path("unlock", unlock, name="unlock"),
-    path("assign", assign_judgment_button, name="assign"),
     path("prioritise", prioritise_judgment_button, name="prioritise"),
     path("hold", hold_judgment_button, name="hold"),
     # Redirects for legacy judgment URIs

@@ -38,7 +38,6 @@ class TestDocumentEdit(TestCase):
                 "neutral_citation": "[4321] TEST 123",
                 "court": "Court of Testing",
                 "judgment_date": "2 Jan 2023",
-                "assigned_to": "testuser2",
             },
         )
 
@@ -58,36 +57,6 @@ class TestDocumentEdit(TestCase):
             "/edittest/4321/123",
             "2023-01-02",
         )
-        api_client.set_property.assert_called_with(
-            "/edittest/4321/123",
-            "assigned-to",
-            "testuser2",
-        )
-
-    @patch("judgments.views.judgment_edit.api_client")
-    @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
-    def test_edit_judgment_without_assignment(self, mock_judgment, api_client):
-        judgment = JudgmentFactory.build(
-            uri="edittest/4321/123",
-            name="Test v Tested",
-        )
-        mock_judgment.return_value = judgment
-
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
-        User.objects.get_or_create(username="testuser2")
-
-        self.client.post(
-            "/pubtest/4321/123/edit",
-            {
-                "judgment_uri": "/edittest/4321/123",
-                "metadata_name": "New Name",
-                "neutral_citation": "[4321] TEST 123",
-                "court": "Court of Testing",
-                "judgment_date": "02 Jan 2023",
-            },
-        )
-
-        api_client.set_property.assert_not_called()
 
     @patch("judgments.views.judgment_edit.api_client")
     @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")

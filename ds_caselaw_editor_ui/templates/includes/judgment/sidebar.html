@@ -23,22 +23,3 @@
     {% endif %}
   </p>
 </div>
-<div class="judgment-sidebar__block">
-  <h4>Assigned to</h4>
-  <form action="{% url "assign" %}"
-        method="post"
-        class="judgment-sidebar__judgment-assign-form">
-    {% csrf_token %}
-    <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
-    <select class="judgment-sidebar__assignment-input"
-            name="assigned_to"
-            id="assigned_to">
-      <option value="" {% if judgment.assigned_to == "" %}selected{% endif %}>No one</option>
-      {% for editor in editors %}
-        <option value="{{ editor.name }}"
-                {% if judgment.assigned_to == editor.name %}selected{% endif %}>{{ editor.print_name }}</option>
-      {% endfor %}
-    </select>
-    <input type="submit" class="button-cta" name="assign" value="Assign" />
-  </form>
-</div>
