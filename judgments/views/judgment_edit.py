@@ -1,6 +1,7 @@
 import datetime
 
 from caselawclient.Client import MarklogicAPIError
+from caselawclient.models.judgments import Judgment
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
@@ -27,7 +28,10 @@ class EditJudgmentView(View):
         judgment_uri = request.POST["judgment_uri"]
         judgment = get_document_by_uri_or_404(judgment_uri)
         if request.POST.get("move_document", False):
-            new_judgment_uri = update_document_uri(judgment_uri, judgment.best_human_identifier)
+            if isinstance(judgment, Judgment):
+                new_judgment_uri = update_document_uri(judgment_uri, judgment.best_human_identifier)
+            else:
+                messages.error(request, "Unable to move non-judgments at this time.")
             return redirect(
                 reverse("edit-document", kwargs={"document_uri": new_judgment_uri}),
             )
