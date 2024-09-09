@@ -31,6 +31,7 @@ class DocumentFactory:
         "name": ("name", "Judgment v Judgement"),
         "document_noun": ("document_noun", "judgment"),
         "neutral_citation": ("neutral_citation", "[2023] Test 123"),
+        "best_human_identifier": ("best_human_identifier", "[2023] Test 123"),
         "court": ("court", "Court of Testing"),
         "document_date_as_string": ("document_date_as_string", "2023-02-03"),
         "document_date_as_date": ("document_date_as_date", datetime.date(2023, 2, 3)),

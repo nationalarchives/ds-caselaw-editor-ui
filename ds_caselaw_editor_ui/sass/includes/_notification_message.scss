@@ -22,6 +22,15 @@
       color: $color-dark-blue;
     }
   }
+
+  &--warning {
+    @include notification;
+    background-color: $color-yellow;
+    color: $color-almost-black;
+    a {
+      color: $color-dark-blue;
+    }
+  }
 }
 
 .inline-notification {

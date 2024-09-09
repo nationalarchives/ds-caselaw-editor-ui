@@ -1,4 +1,16 @@
 {% load status_tag_css %}
+<form aria-label="Edit judgment"
+      method="post"
+      action="{% url 'edit-document' judgment.uri %}">
+  {% csrf_token %}
+  {% if corrected_ncn_url %}
+    <div class="page-notification--warning">
+      This document is at {{ judgment.uri }} but has an NCN of <a href="{{ corrected_ncn_url }}">{{ judgment.best_human_identifier }}</a>. Move it to {{ corrected_ncn_url }} ?
+      <input type="hidden" name="judgment_uri" value="{{ document_uri }}" />
+      <input type="submit" name="move_document" value="Move it" />
+    </div>
+  {% endif %}
+</form>
 <div class="metadata-header__block">
   <div class="metadata-component">
     <form aria-label="Edit judgment"
