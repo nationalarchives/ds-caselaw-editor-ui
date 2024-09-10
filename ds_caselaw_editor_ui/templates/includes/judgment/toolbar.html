@@ -38,7 +38,6 @@
                value="Delete document"
                {% if not document.safe_to_delete %}disabled{% endif %} />
       </form>
-      {% include "./toolbar_more_button.html" %}
       {% if judgment.is_failure %}
         <form action="{% url 'delete' %}" method="post">
           {% csrf_token %}
@@ -50,7 +49,6 @@
         </form>
       {% endif %}
     </div>
-    {% include "includes/judgment/toolbar_more.html" %}
     {% if version %}
       <div class="judgment-toolbar__version">
         <b>You are viewing version {{ version }} of this document.</b>

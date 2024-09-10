@@ -8,6 +8,7 @@ from .views.button_handlers import (
     hold_judgment_button,
     prioritise_judgment_button,
 )
+from .views.document_downloads import DocumentDownloadsView
 from .views.document_full_text import (
     DocumentReviewHTMLView,
     DocumentReviewPDFView,
@@ -140,6 +141,11 @@ urlpatterns = [
         "<path:document_uri>/pdf",
         DocumentReviewPDFView.as_view(),
         name="full-text-pdf",
+    ),
+    path(
+        "<path:document_uri>/downloads",
+        DocumentDownloadsView.as_view(),
+        name="document-downloads",
     ),
     path("<path:document_uri>/xml", xml_view, name="full-text-xml"),
     # This 'bare document' URL must always go last
