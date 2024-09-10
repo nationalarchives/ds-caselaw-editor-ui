@@ -1,14 +1,5 @@
-.sub-footer {
-  background-color: $color-light-grey;
-
-  &__container {
-    @include container;
-    text-align: center;
-    padding: $space-3;
-  }
-}
-
 .judgments-footer {
+  margin-top: auto;
   background-color: $color-almost-black;
   color: $color-white;
   padding: $space-4;
