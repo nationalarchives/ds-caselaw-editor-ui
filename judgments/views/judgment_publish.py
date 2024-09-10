@@ -4,6 +4,7 @@ from django.urls import reverse
 
 from judgments.utils.aws import invalidate_caches
 from judgments.utils.link_generators import build_confirmation_email_link
+from judgments.utils.tabs import get_toolbar_tabs
 from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_404
 
 
@@ -13,6 +14,7 @@ class PublishDocumentView(DocumentView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["view"] = "publish_judgment"
+        context["toolbar_tabs"] = get_toolbar_tabs(context)
         return context
 
 
@@ -26,6 +28,8 @@ class PublishDocumentSuccessView(DocumentView):
             document=context["document"],
             signature=(self.request.user.get_full_name() if self.request.user.is_authenticated else None),
         )
+        context["view"] = "publish_judgment"
+        context["toolbar_tabs"] = get_toolbar_tabs(context)
 
         return context
 
@@ -47,11 +51,18 @@ class UnpublishDocumentView(DocumentView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["view"] = "unpublish_judgment"
+        context["toolbar_tabs"] = get_toolbar_tabs(context)
         return context
 
 
 class UnpublishDocumentSuccessView(DocumentView):
     template_name = "judgment/unpublish-success.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["view"] = "unpublish_judgment"
+        context["toolbar_tabs"] = get_toolbar_tabs(context)
+        return context
 
 
 def unpublish(request):
