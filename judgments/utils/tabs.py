@@ -62,6 +62,15 @@ def get_review_toolbar_tab(view, document):
     }
 
 
+def get_history_toolbar_tab(view, document):
+    return {
+        "id": "history",
+        "selected": view == "document_history",
+        "label": "History",
+        "url": get_document_url("document-history", document),
+    }
+
+
 def get_toolbar_tabs(context):
     view, document = context["view"], context["document"]
 
@@ -69,6 +78,7 @@ def get_toolbar_tabs(context):
         get_review_toolbar_tab(view, document),
         get_hold_toolbar_tab(view, document),
         get_publishing_toolbar_tab(view, document),
+        get_history_toolbar_tab(view, document),
         get_download_toolbar_tab(view, document),
     ]
 

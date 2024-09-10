@@ -6,6 +6,7 @@ from uuid import uuid4
 from caselawclient.client_helpers import VersionType
 from caselawclient.models.documents import Document
 
+from judgments.utils.tabs import get_toolbar_tabs
 from judgments.utils.view_helpers import DocumentView
 
 VersionAnnotationDict = dict[str, Any]
@@ -195,6 +196,9 @@ class DocumentHistoryView(DocumentView):
         context["structured_history"] = DocumentHistorySequencer(
             sorted_ml_versions,
         ).structured_history
+
+        context["view"] = "document_history"
+        context["toolbar_tabs"] = get_toolbar_tabs(context)
 
         return context
 
