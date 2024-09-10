@@ -39,6 +39,11 @@
       display: none;
     }
 
+    input[type="radio"]:disabled ~ label {
+      pointer-events: none;
+      opacity: 0.4;
+    }
+
     input[type="radio"]:checked ~ label {
       border-bottom: 2px solid $color-white;
       background: $color-white;

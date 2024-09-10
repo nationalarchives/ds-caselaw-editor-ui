@@ -1,3 +1,4 @@
+{% include "includes/tabs.html" with tabs=toolbar_tabs %}
 <div class="judgment-toolbar">
   <div class="judgment-toolbar__container container">
     {% if request.args.origin == 'results' %}
@@ -6,30 +7,6 @@
       </div>
     {% endif %}
     <div class="judgment-toolbar__edit">
-      {% include "./toolbar_button.html" with active_view="judgment_text" label="Review" url_name="full-text-html" url_params=document.uri %}
-      {% if document.is_published %}
-        <span class="judgment-toolbar__button button-secondary"
-              aria-disabled="true">Put on hold</span>
-      {% else %}
-        {% if document.is_held %}
-          {% include "./toolbar_button.html" with active_view="unhold_judgment" label="Take off hold" url_name="unhold-document" url_params=document.uri %}
-        {% else %}
-          {% include "./toolbar_button.html" with active_view="hold_judgment" label="Put on hold" url_name="hold-document" url_params=document.uri %}
-        {% endif %}
-      {% endif %}
-      {% if document.is_published %}
-        {% include "./toolbar_button.html" with active_view="publish_judgment" label="Unpublish" url_name="unpublish-document" url_params=document.uri %}
-      {% else %}
-        {% include "./toolbar_button.html" with active_view="publish_judgment" label="Publish" url_name="publish-document" url_params=document.uri %}
-      {% endif %}
-      {% if document.docx_url %}
-        <a class="judgment-toolbar__button button-secondary"
-           href="{{ document.docx_url }}"
-           download>Download .docx</a>
-      {% else %}
-        <span class="judgment-toolbar__button button-secondary"
-              aria-disabled="true">Download .docx</span>
-      {% endif %}
       {% include "./toolbar_more_button.html" %}
       {% if judgment.is_failure %}
         <form action="{% url 'delete' %}" method="post">
