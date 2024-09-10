@@ -47,9 +47,10 @@ def get_publishing_toolbar_tab(view, document):
 
 def get_download_toolbar_tab(view, document):
     return {
-        "id": "document-docx",
-        "label": "Download .docx",
-        "url": document.docx_url,
+        "id": "downloads",
+        "selected": view == "document_downloads",
+        "label": "Downloads",
+        "url": get_document_url("document-downloads", document),
     }
 
 
