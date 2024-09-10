@@ -1,23 +1,15 @@
 <div class="tabs-set {% if javascript_enabled %}with-js{% endif %}">
-  <div class="tabs-set__item">
-    <input type="radio"
-           id="tab1"
-           name="{{ name|default:"tabs-set" }}"
-           value="1"
-           {% if selected == 1 %}checked{% endif %} />
-    <label for="tab1">
-      <a href="{{ url1 }}">{{ label1 }}</a>
-    </label>
-  </div>
-  <div class="tabs-set__item">
-    <input type="radio"
-           id="tab2"
-           name="{{ name|default:"tabs-set" }}"
-           value="2"
-           {% if selected == 2 %}checked{% endif %} />
-    <label for="tab2">
-      <a href="{{ url2 }}">{{ label2 }}</a>
-    </label>
-  </div>
+  {% for tab in tabs %}
+    <div class="tabs-set__item">
+      <input type="radio"
+             id="tab{{ forloop.counter }}"
+             name="{{ name|default:"tabs-set" }}"
+             value="{{ forloop.counter }}"
+             {% if tab.selected %}checked{% endif %} />
+      <label for="tab{{ forloop.counter }}">
+        <a href="{{ tab.url }}">{{ tab.label }}</a>
+      </label>
+    </div>
+  {% endfor %}
   <div class="tabs-set__divider"></div>
 </div>

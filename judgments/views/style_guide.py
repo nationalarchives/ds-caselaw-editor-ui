@@ -12,6 +12,18 @@ class StyleGuide(TemplateView):
         context["judgment"] = judgment
         judgment_failed_to_parse = SearchResultFactory.build(failed_to_parse=True)
         judgment_on_hold = SearchResultFactory.build(metadata={"editor_hold": "true"})
+        context["tabs"] = [
+            {
+                "selected": True,
+                "label": "HTML view",
+                "url": "#first-tab",
+            },
+            {
+                "selected": False,
+                "label": "PDF view",
+                "url": "#second-tab",
+            },
+        ]
         context["judgments"] = [judgment, judgment_failed_to_parse, judgment_on_hold]
         context["document"] = judgment
         context["menu_items"] = [
