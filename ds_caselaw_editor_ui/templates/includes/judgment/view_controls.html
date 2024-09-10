@@ -1,5 +1,1 @@
-<div class="judgment-view-controls">
-  {% url 'full-text-html' judgment.uri as url1 %}
-  {% url 'full-text-pdf' judgment.uri as url2 %}
-  {% include "includes/tabs.html" with label1="HTML view" label2="PDF view" url1=url1 url2=url2 selected=selected_tab %}
-</div>
+<div class="judgment-view-controls">{% include "includes/tabs.html" with tabs=view_control_tabs %}</div>
