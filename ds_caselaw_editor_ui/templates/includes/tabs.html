@@ -1,4 +1,4 @@
-<div class="tabs-set {% if javascript_enabled %}with-js{% endif %}">
+<div class="tabs-set {% if primary_tabs %}tabs-set--primary{% endif %} {% if javascript_enabled %}with-js{% endif %}">
   <form>
     {% for tab in tabs %}
       <div class="tabs-set__item">

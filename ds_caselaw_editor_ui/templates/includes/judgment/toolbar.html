@@ -1,4 +1,4 @@
-{% include "includes/tabs.html" with tabs=toolbar_tabs %}
+{% include "includes/tabs.html" with tabs=toolbar_tabs primary_tabs=True %}
 <div class="judgment-toolbar">
   <div class="judgment-toolbar__container container">
     {% if request.args.origin == 'results' %}
@@ -7,6 +7,37 @@
       </div>
     {% endif %}
     <div class="judgment-toolbar__edit">
+      <div class="judgment-toolbar__submitter">
+        <h4>Submitter</h4>
+        <p>
+          {% if document.source_name and document.source_email %}
+            <a href="mailto:{{ document.source_email }}">{{ document.source_name }}</a>
+          {% else %}
+            Unknown
+          {% endif %}
+        </p>
+      </div>
+      <a class="button-cta button-small"
+         href="{{ jira_create_link }}"
+         target="_blank"
+         rel="noopener noreferrer">Create in Jira</a>
+      <form action="{% url 'enrich' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="document_uri" value="{{ document.uri }}" />
+        <input type="submit"
+               name="enrich"
+               class="button-cta button-small"
+               value="Request enrichment" />
+      </form>
+      <form action="{% url 'delete' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
+        <input type="submit"
+               name="delete"
+               class="button-danger button-small"
+               value="Delete document"
+               {% if not document.safe_to_delete %}disabled{% endif %} />
+      </form>
       {% include "./toolbar_more_button.html" %}
       {% if judgment.is_failure %}
         <form action="{% url 'delete' %}" method="post">

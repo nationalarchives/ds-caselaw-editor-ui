@@ -1,7 +1,6 @@
 .metadata-component {
   background-color: $color-light-grey;
-  border-style: solid;
-  border-color: #ffffff;
+  border-top: 1px solid $color-white;
   padding: $space-4;
 
   @media (min-width: 1500px) {
