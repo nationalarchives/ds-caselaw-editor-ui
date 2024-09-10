@@ -4,6 +4,7 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 
 from judgments.utils import extract_version
+from judgments.utils.tabs import get_toolbar_tabs, get_view_control_tabs
 from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_404
 
 
@@ -25,18 +26,8 @@ class DocumentReviewHTMLView(DocumentView):
 
         context["view"] = "judgment_text"
 
-        context["view_control_tabs"] = [
-            {
-                "selected": True,
-                "label": "HTML view",
-                "url": reverse("full-text-html", kwargs={"document_uri": context["document"].uri}),
-            },
-            {
-                "selected": False,
-                "label": "PDF view",
-                "url": reverse("full-text-pdf", kwargs={"document_uri": context["document"].uri}),
-            },
-        ]
+        context["toolbar_tabs"] = get_toolbar_tabs(context)
+        context["view_control_tabs"] = get_view_control_tabs("full-text-html", context["document"])
 
         return context
 
@@ -61,19 +52,7 @@ class DocumentReviewPDFView(DocumentView):
             context["version"] = extract_version(version_uri)
 
         context["view"] = "judgment_text"
-
-        context["view_control_tabs"] = [
-            {
-                "selected": False,
-                "label": "HTML view",
-                "url": reverse("full-text-html", kwargs={"document_uri": context["document"].uri}),
-            },
-            {
-                "selected": True,
-                "label": "PDF view",
-                "url": reverse("full-text-pdf", kwargs={"document_uri": context["document"].uri}),
-            },
-        ]
+        context["view_control_tabs"] = get_view_control_tabs("full-text-pdf", context["document"])
 
         return context
 
