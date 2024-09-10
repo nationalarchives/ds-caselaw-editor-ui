@@ -29,6 +29,18 @@ class DocumentReviewHTMLView(DocumentView):
         ncn_uri = neutral_url(context["judgment"].neutral_citation)
         if "/" + context["judgment"].uri != ncn_uri:
             context["corrected_ncn_url"] = ncn_uri
+        context["view_control_tabs"] = [
+            {
+                "selected": True,
+                "label": "HTML view",
+                "url": reverse("full-text-html", kwargs={"document_uri": context["document"].uri}),
+            },
+            {
+                "selected": False,
+                "label": "PDF view",
+                "url": reverse("full-text-pdf", kwargs={"document_uri": context["document"].uri}),
+            },
+        ]
 
         return context
 
@@ -53,6 +65,19 @@ class DocumentReviewPDFView(DocumentView):
             context["version"] = extract_version(version_uri)
 
         context["view"] = "judgment_text"
+
+        context["view_control_tabs"] = [
+            {
+                "selected": False,
+                "label": "HTML view",
+                "url": reverse("full-text-html", kwargs={"document_uri": context["document"].uri}),
+            },
+            {
+                "selected": True,
+                "label": "PDF view",
+                "url": reverse("full-text-pdf", kwargs={"document_uri": context["document"].uri}),
+            },
+        ]
 
         return context
 
