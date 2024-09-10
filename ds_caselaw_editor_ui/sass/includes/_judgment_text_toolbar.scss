@@ -61,16 +61,20 @@
 
   &__edit {
     margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $space-4;
+  }
 
-    > div {
-      @media (max-width: $grid-breakpoint-small) {
-        text-align: center;
-        padding: $space-4;
-      }
-    }
+  &__submitter {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    padding-right: $space-4;
 
-    @media (min-width: $grid-breakpoint-small) {
-      text-align: center;
+    h4 {
+      margin: 0;
     }
   }
 
