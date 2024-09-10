@@ -55,6 +55,7 @@
 }
 
 @mixin call-to-action-button {
+  all: unset;
   background-color: $color-cta-background;
   text-decoration: none;
   font-weight: $typography-bold-font-weight;
