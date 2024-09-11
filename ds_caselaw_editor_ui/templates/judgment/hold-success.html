@@ -10,7 +10,5 @@
   <h3 class="judgment-component__confirmation-title">
     <strong>{{ judgment.name }}</strong> is now on hold
   </h3>
-  <div class="judgment-component__actions">
-    <p>{% include "includes/email_confirm_hold.html" %}</p>
-  </div>
+  <a class="button-cta button-small" href="{{ email_issue_link }}">Email the submitter</a>
 {% endblock judgment_content %}
