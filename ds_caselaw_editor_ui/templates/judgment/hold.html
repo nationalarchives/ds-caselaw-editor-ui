@@ -4,7 +4,9 @@
   {% include "includes/judgment/metadata_panel_static.html" with judgment=judgment %}
 {% endblock judgment_header %}
 {% block judgment_content %}
-  <h2>Put {{ judgment.name }} on hold?</h2>
+  <h3 class="judgment-component__confirmation-title">
+    Are you sure you want to put <strong>"{{ judgment.name }}"</strong> on hold?
+  </h3>
   <form action="{% url 'hold' %}" method="post">
     {% csrf_token %}
     <div class="judgment-component__actions">
