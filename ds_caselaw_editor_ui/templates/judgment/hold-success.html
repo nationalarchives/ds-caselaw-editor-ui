@@ -4,7 +4,12 @@
   {% include "includes/judgment/metadata_panel_static.html" with judgment=judgment %}
 {% endblock judgment_header %}
 {% block judgment_content %}
-  <h2>{{ judgment.name }} has been put on hold</h2>
+  <h1>
+    <span class="icon icon--dark icon--lg icon__circle-check"></span> Document successfully put on hold
+  </h1>
+  <h3 class="judgment-component__confirmation-title">
+    <strong>{{ judgment.name }}</strong> is now on hold
+  </h3>
   <div class="judgment-component__actions">
     <p>{% include "includes/email_confirm_hold.html" %}</p>
   </div>
