@@ -1,13 +1,26 @@
 import sys
 import time
 
+import environ
 from django.core.management.base import BaseCommand
 
 from judgments.utils import api_client
 from judgments.views.reports import get_rows_from_result
 
-NUMBER_TO_PARSE = 8
-MAX_DOCUMENTS_TO_TRY = 200
+env = environ.Env()
+
+# How many documents should we successfully parse each time?
+try:
+    NUMBER_TO_PARSE = int(env("NUMBER_OF_DOCUMENTS_TO_REPARSE", default="8"))
+except ValueError:
+    NUMBER_TO_PARSE = 8
+
+# How many documents should we look at before deciding none of them can be parsed
+# and giving up?
+try:
+    MAX_DOCUMENTS_TO_TRY = int(env("MAX_DOCUMENTS_TO_REPARSE", default="200"))
+except ValueError:
+    MAX_DOCUMENTS_TO_TRY = 200
 
 
 class Command(BaseCommand):
