@@ -65,6 +65,7 @@
   display: inline-block;
   margin-top: $space-4;
   font-size: $typography-md-text-size;
+  cursor: pointer;
 
   &:visited {
     color: $color-white;
