@@ -1,3 +1,4 @@
+{% load user_permissions waffle_tags %}
 {% include "includes/tabs.html" with tabs=toolbar_tabs primary_tabs=True %}
 <div class="judgment-toolbar">
   <div class="judgment-toolbar__container container">
@@ -21,32 +22,45 @@
          href="{{ jira_create_link }}"
          target="_blank"
          rel="noopener noreferrer">Create in Jira</a>
-      <form action="{% url 'enrich' %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="document_uri" value="{{ document.uri }}" />
-        <input type="submit"
-               name="enrich"
-               class="button-cta button-small"
-               value="Request enrichment" />
-      </form>
-      <form action="{% url 'delete' %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
-        <input type="submit"
-               name="delete"
-               class="button-danger button-small"
-               value="Delete document"
-               {% if not document.safe_to_delete %}disabled{% endif %} />
-      </form>
-      {% if judgment.is_failure %}
+      {% if user|is_superuser or user|is_editor %}
+        <form action="{% url 'enrich' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="document_uri" value="{{ document.uri }}" />
+          <input type="submit"
+                 name="enrich"
+                 class="button-cta button-small"
+                 value="Request enrichment" />
+        </form>
         <form action="{% url 'delete' %}" method="post">
           {% csrf_token %}
           <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
           <input type="submit"
-                 name="assign"
-                 class="button-secondary judgment-toolbar__delete"
-                 value="Delete" />
+                 name="delete"
+                 class="button-danger button-small"
+                 value="Delete document"
+                 {% if not document.safe_to_delete %}disabled{% endif %} />
         </form>
+        {% flag "reparse" %}
+          <form action="{% url 'reparse' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="document_uri" value="{{ document.uri }}" />
+            <input type="submit"
+                   name="reparse"
+                   class="button-secondary button-small"
+                   value="Reparse document" />
+          </form>
+        {% endflag %}
+      {% else %}
+        {% if judgment.is_failure %}
+          <form action="{% url 'delete' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
+            <input type="submit"
+                   name="assign"
+                   class="button-danger button-small"
+                   value="Delete" />
+          </form>
+        {% endif %}
       {% endif %}
     </div>
     {% if version %}
