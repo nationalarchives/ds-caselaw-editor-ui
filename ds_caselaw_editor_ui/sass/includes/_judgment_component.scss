@@ -1,6 +1,10 @@
 .judgment-component {
   margin-top: $space-4;
 
+  &__confirmation-title {
+    font-weight: $typography-normal-font-weight;
+  }
+
   &__panel {
     padding: $space-2 0;
   }
