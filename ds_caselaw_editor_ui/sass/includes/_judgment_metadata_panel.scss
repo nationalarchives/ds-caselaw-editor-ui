@@ -11,17 +11,19 @@
   &__details {
     list-style-type: none;
     padding: 0;
-    float: left;
     width: 100%;
     line-height: $typography-lg-line-height;
     margin-top: $space-4;
     font-size: $typography-sm-text-size;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: $space-8;
+    row-gap: $space-2;
 
     li {
-      float: left;
       width: 100%;
       @media (min-width: $grid-breakpoint-medium) {
-        width: 50%;
+        width: 48%;
       }
       box-sizing: border-box;
 
