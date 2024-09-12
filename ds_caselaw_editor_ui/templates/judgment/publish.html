@@ -4,24 +4,35 @@
   {% include "includes/judgment/metadata_panel_static.html" with judgment=judgment %}
 {% endblock judgment_header %}
 {% block judgment_content %}
-  <h2>Publish {{ judgment.name }}?</h2>
-  {% include "includes/judgment/judgment_validation_messages.html" %}
   {% if judgment.is_publishable %}
+    <h3 class="judgment-component__confirmation-title">
+      Are you sure you want to publish <strong>"{{ judgment.name }}"</strong>?
+    </h3>
     <form aria-label="publish judgment"
           action="{% url 'publish' %}"
           method="post">
       {% csrf_token %}
-      <div class="judgment-component__actions">
+      {% flag "notes_on_state_change" %}
+        {% include "includes/note-form.html" %}
+      {% endflag %}
+      <div class="judgment-component__button-actions">
         <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
-        {% flag "notes_on_state_change" %}
-          {% include "includes/note-form.html" %}
-        {% endflag %}
-        <input class="button-cta" type="submit" value="Confirm" />
         <span class="judgment-component__back-button"><a href="{% url 'full-text-html' document.uri %}">Go back to review</a> </span>
+        <input class="button-cta" type="submit" value="Publish document" />
       </div>
     </form>
   {% else %}
-    <span class="judgment-toolbar__button button-secondary"
-          aria-disabled="true">Publish this document</span>
+    <div class="page-notification--warning">
+      <div class="container">
+        <h3>
+          <span class="icon icon__triangle-exclamation"></span>
+          This document is not publishable due to the following reason(s):
+        </h3>
+        <ul>
+          {% for message in judgment.validation_failure_messages %}<li>{{ message }}</li>{% endfor %}
+        </ul>
+      </div>
+    </div>
+    <p>To publish this document, first action the issues above then try again.</p>
   {% endif %}
 {% endblock judgment_content %}
