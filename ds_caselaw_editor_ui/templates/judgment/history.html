@@ -51,7 +51,13 @@
           {% for version in document.versions_as_documents %}
             <tr>
               <td>
-                <a href="{% url 'full-text-html' document_uri %}?version_uri={{ version.uri }}">Version {{ version.version_number }}</a>
+                <a href="{% url 'full-text-html' document_uri %}?version_uri={{ version.uri }}">
+                  {% if forloop.first %}
+                    <strong>Latest version</strong>
+                  {% else %}
+                    Version {{ version.version_number }}
+                  {% endif %}
+                </a>
               </td>
               <td>{{ version.version_created_datetime|display_datetime }}</td>
               <td>
