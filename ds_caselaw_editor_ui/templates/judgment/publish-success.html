@@ -4,14 +4,17 @@
   {% include "includes/judgment/metadata_panel_static.html" with judgment=judgment %}
 {% endblock judgment_header %}
 {% block judgment_content %}
-  <h2>{{ judgment.name }} has been published</h2>
-  <p class="judgment-component__live-link">
+  <h1>
+    <span class="icon icon--lg icon__circle-check"></span> Document successfully published
+  </h1>
+  <h3 class="judgment-component__confirmation-title">
+    <strong>{{ judgment.name }}</strong> has been published
+  </h3>
+  <div class="judgment-component__button-actions">
     <a href="{{ judgment.public_uri }}"
        target="_blank"
-       rel="noopener noreferrer">{{ judgment.name }}</a>
-  </p>
-  <div class="judgment-component__actions">
-    <p>{% include "includes/email_confirm_publication.html" %}</p>
+       rel="noopener noreferrer">View the published document <span class="icon icon--sm icon--link icon__arrow-up-right-square"></span></a>
+    <a class="button-cta button-small" href="{{ email_confirmation_link }}">Email the submitter</a>
   </div>
 {% endblock judgment_content %}
 {% block footer_javascript %}
