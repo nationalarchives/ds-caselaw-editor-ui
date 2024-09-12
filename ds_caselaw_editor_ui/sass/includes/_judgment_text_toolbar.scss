@@ -49,6 +49,21 @@
     gap: $space-2;
   }
 
+  &__corrected-ncn-notification {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+    h3 {
+      display: flex;
+      align-items: center;
+      gap: $space-2;
+    }
+    p,
+    h3 {
+      margin: 0;
+    }
+  }
+
   &__edit {
     margin: auto;
     display: flex;
