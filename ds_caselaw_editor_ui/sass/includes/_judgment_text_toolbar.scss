@@ -55,8 +55,11 @@
   }
 
   &__version {
-    margin-top: $space-4;
-    font-weight: $typography-bold-font-weight;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $space-2;
   }
 
   &__edit {

@@ -40,4 +40,9 @@
     -webkit-mask-image: url($fa_arrow_up_right_square);
     mask-image: url($fa_arrow_up_right_square);
   }
+
+  &__circle-info {
+    -webkit-mask-image: url($fa_circle_info);
+    mask-image: url($fa_circle_info);
+  }
 }

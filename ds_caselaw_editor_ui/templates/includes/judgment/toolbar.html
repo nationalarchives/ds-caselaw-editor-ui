@@ -1,4 +1,14 @@
 {% load user_permissions waffle_tags %}
+{% if version %}
+  <div class="page-notification--info">
+    <div class="judgment-toolbar__version">
+      <span class="icon icon__circle-info"></span>
+      <span>
+        You are viewing <strong>version {{ version }}</strong> of this document.
+      </span>
+    </div>
+  </div>
+{% endif %}
 {% include "includes/tabs.html" with tabs=toolbar_tabs primary_tabs=True %}
 <div class="judgment-toolbar">
   <div class="judgment-toolbar__container container">
@@ -63,10 +73,5 @@
         {% endif %}
       {% endif %}
     </div>
-    {% if version %}
-      <div class="judgment-toolbar__version">
-        <b>You are viewing version {{ version }} of this document.</b>
-      </div>
-    {% endif %}
   </div>
 </div>
