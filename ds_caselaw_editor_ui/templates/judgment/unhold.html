@@ -5,7 +5,9 @@
 {% endblock judgment_header %}
 {% block judgment_content %}
   {% load i18n %}
-  <h2>Take {{ judgment.name }} off hold?</h2>
+  <h3 class="judgment-component__confirmation-title">
+    Are you sure you want to take <strong>{{ judgment.name }}</strong> off hold?
+  </h3>
   <form action="{% url 'unhold' %}" method="post">
     {% csrf_token %}
     <div class="judgment-component__actions">
@@ -14,8 +16,10 @@
       {% flag "notes_on_state_change" %}
         {% include "includes/note-form.html" %}
       {% endflag %}
-      <input class="button-cta" type="submit" value="Confirm" />
-      <span class="judgment-component__back-button"><a href="{% url 'full-text-html' document.uri %}">Go back to review</a> </span>
+      <div class="judgment-component__button-actions">
+        <a href="{% url 'full-text-html' document.uri %}">Go back to review</a>
+        <input class="button-cta" type="submit" value="Confirm take off hold" />
+      </div>
     </div>
   </form>
 {% endblock judgment_content %}

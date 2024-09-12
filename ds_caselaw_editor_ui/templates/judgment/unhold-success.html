@@ -4,7 +4,12 @@
 {% endblock judgment_header %}
 {% block judgment_content %}
   {% load i18n %}
-  <h2>{{ judgment.name }} has been taken off hold</h2>
+  <h1>
+    <span class="icon icon--dark icon--lg icon__circle-check"></span> Document successfully taken off hold
+  </h1>
+  <h3 class="judgment-component__confirmation-title">
+    <strong>{{ judgment.name }}</strong> has been taken off hold
+  </h3>
   <div class="judgment-component__back-button-unpublished">
     <a href="{% url 'results' %}">Go back to unpublished documents</a>
   </div>
