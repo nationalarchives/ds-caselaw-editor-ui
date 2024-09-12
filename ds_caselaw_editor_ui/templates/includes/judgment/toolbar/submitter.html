@@ -1,0 +1,10 @@
+<div class="judgment-toolbar__submitter">
+  <h4>Submitter</h4>
+  <p>
+    {% if submitter_name and submitter_email %}
+      <a href="mailto:{{ submitter_email }}">{{ submitter_name }}</a>
+    {% else %}
+      Unknown
+    {% endif %}
+  </p>
+</div>
