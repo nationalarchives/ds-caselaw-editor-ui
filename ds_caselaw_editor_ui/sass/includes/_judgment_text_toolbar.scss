@@ -57,7 +57,8 @@
     gap: $space-4;
   }
 
-  &__submitter {
+  &__submitter,
+  &__status {
     display: flex;
     align-items: center;
     gap: $space-2;

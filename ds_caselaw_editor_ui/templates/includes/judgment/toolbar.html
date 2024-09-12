@@ -8,6 +8,7 @@
         {% include "includes/judgment/toolbar/back_to_results_link.html" with return_link=request.args.return_link %}
       {% endif %}
       {% include "includes/judgment/toolbar/submitter.html" with submitter_name=document.source_name submitter_email=document.source_email %}
+      {% include "includes/judgment/toolbar/status.html" with status=document.status %}
       {% include "includes/judgment/toolbar/create_jira_button.html" %}
       {% include "includes/judgment/toolbar/editor_tools.html" %}
     </div>
