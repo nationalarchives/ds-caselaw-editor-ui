@@ -105,7 +105,9 @@ class TestDocumentBadURIWarning(TestCase):
 
         root = lxml.html.fromstring(response.content)
         message = lxml.html.tostring(root.xpath("//div[@class='page-notification--warning']")[0])
-        assert b'This document is at uksc/1234/123 but has an NCN of <a href="/uksc/1234/321">' in message
+        assert b"Document URI/NCN mismatch" in message
+        assert b'This document is located at <a href="/uksc/1234/123">' in message
+        assert b'but has an NCN of <a href="/uksc/1234/321">' in message
         assert b'<input type="hidden" name="judgment_uri" value="uksc/1234/123">' in message
 
     @patch("judgments.views.judgment_edit.api_client")
