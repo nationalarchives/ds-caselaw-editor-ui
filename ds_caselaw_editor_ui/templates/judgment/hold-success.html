@@ -1,14 +1,14 @@
-{% extends "layouts/judgment_with_sidebar.html" %}
+{% extends "layouts/judgment.html" %}
 {% load i18n %}
-{% block judgment_header %}
+{% block content %}
   {% include "includes/judgment/metadata_panel_static.html" with judgment=judgment %}
-{% endblock judgment_header %}
-{% block judgment_content %}
-  <h1>
-    <span class="icon icon--lg icon__circle-check"></span> Document successfully put on hold
-  </h1>
-  <h3 class="judgment-component__confirmation-title">
-    <strong>{{ judgment.name }}</strong> is now on hold
-  </h3>
-  <a class="button-cta button-small" href="{{ email_issue_link }}">Email the submitter</a>
-{% endblock judgment_content %}
+  <div class="container">
+    <h1>
+      <span class="icon icon--lg icon__circle-check"></span> Document successfully put on hold
+    </h1>
+    <h3 class="judgment-component__confirmation-title">
+      <strong>{{ judgment.name }}</strong> is now on hold
+    </h3>
+    <a class="button-cta button-small" href="{{ email_issue_link }}">Email the submitter</a>
+  </div>
+{% endblock content %}

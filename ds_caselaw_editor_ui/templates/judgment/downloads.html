@@ -1,24 +1,23 @@
-{% extends "layouts/judgment_with_sidebar.html" %}
+{% extends "layouts/judgment.html" %}
 {% load static i18n %}
 {% block content %}
-  <div class="container edit-component">
-    <div class="judgment-component__left-panel">
-      <h1>Downloads for {{ document.name }}</h1>
-      <ul>
-        {% if document.docx_url %}
-          <li>
-            <a href="{{ document.docx_url }}" download>Download .docx</a>
-          </li>
-        {% endif %}
-        {% if document.pdf_url %}
-          <li>
-            <a href="{{ document.pdf_url }}">Download PDF</a>
-          </li>
-        {% endif %}
+  {% include "includes/judgment/metadata_panel_static.html" with judgment=document %}
+  <div class="container">
+    <h1>Downloads for {{ document.name }}</h1>
+    <ul>
+      {% if document.docx_url %}
         <li>
-          <a href="{% url 'full-text-xml' document.uri %}">Download XML</a>
+          <a href="{{ document.docx_url }}" download>Download .docx</a>
         </li>
-      </ul>
-    </div>
+      {% endif %}
+      {% if document.pdf_url %}
+        <li>
+          <a href="{{ document.pdf_url }}">Download PDF</a>
+        </li>
+      {% endif %}
+      <li>
+        <a href="{% url 'full-text-xml' document.uri %}">Download XML</a>
+      </li>
+    </ul>
   </div>
 {% endblock content %}
