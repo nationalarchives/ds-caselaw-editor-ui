@@ -4,6 +4,11 @@
   height: 1rem;
   background: $color-black;
 
+  &--sm {
+    width: 0.8rem;
+    height: 0.8rem;
+  }
+
   &--lg {
     width: 1.5rem;
     height: 1.5rem;
@@ -11,6 +16,14 @@
 
   &--light {
     background: $color-white;
+  }
+
+  &--link {
+    background: $color-aqua-blue;
+
+    &:hover {
+      background: $color-black;
+    }
   }
 
   &__circle-check {
@@ -21,5 +34,10 @@
   &__triangle-exclamation {
     -webkit-mask-image: url($fa_triangle_exclamation);
     mask-image: url($fa_triangle_exclamation);
+  }
+
+  &__arrow-up-right-square {
+    -webkit-mask-image: url($fa_arrow_up_right_square);
+    mask-image: url($fa_arrow_up_right_square);
   }
 }
