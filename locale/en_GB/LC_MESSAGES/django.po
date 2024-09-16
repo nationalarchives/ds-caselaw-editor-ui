@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-06 15:09+0000\n"
+"POT-Creation-Date: 2024-09-16 10:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,19 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: ds_caselaw_editor_ui/templates/includes/email_confirm_hold.html
-#: ds_caselaw_editor_ui/templates/includes/email_confirm_publication.html
-msgid "judgment.publish_email_header"
-msgstr "Send an email template"
-
-#: ds_caselaw_editor_ui/templates/includes/email_confirm_hold.html
-msgid "judgment.email_hold.confirm"
-msgstr "Open submitter email"
-
-#: ds_caselaw_editor_ui/templates/includes/email_confirm_publication.html
-msgid "judgment.email_submitter.confirm"
-msgstr "Confirm publication"
 
 #: ds_caselaw_editor_ui/templates/includes/footer.html
 msgid "feedback.prompt"
