@@ -32,10 +32,7 @@
   .login {
     display: flex;
     flex-direction: column;
-  }
-
-  &__form-group {
-    margin-top: $space-4;
+    gap: $space-4;
   }
 
   &__label {
