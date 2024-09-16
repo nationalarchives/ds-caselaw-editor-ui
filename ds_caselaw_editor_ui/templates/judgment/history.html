@@ -43,7 +43,7 @@
                 <td>
                   <a href="{% url 'full-text-html' document_uri %}?version_uri={{ version.uri }}">
                     {% if forloop.first %}
-                      <strong>Latest version</strong>
+                      <strong>Version {{ version.version_number }} (Latest)</strong>
                     {% else %}
                       Version {{ version.version_number }}
                     {% endif %}
