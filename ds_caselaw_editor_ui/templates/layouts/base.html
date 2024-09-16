@@ -22,6 +22,7 @@
   </head>
   <body>
     {% include "includes/gtm/gtm_body.html" %}
+    {% include "includes/notifications.html" %}
     {% include "includes/cookie_consent/cookie_banner.html" %}
     <a id="skip-to-main-content" href="#main-content">{% translate "skiplink" %}</a>
     {% include "includes/environment_banner.html" %}
@@ -80,7 +81,6 @@
     </header>
     {% block precontent %}
     {% endblock precontent %}
-    {% include "includes/notifications.html" %}
     <main id="main-content">
       {% block content %}
       {% endblock content %}

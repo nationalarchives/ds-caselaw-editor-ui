@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.translation import gettext
 
+from judgments.utils import get_corrected_ncn_url
 from judgments.utils.aws import invalidate_caches
 from judgments.utils.link_generators import build_raise_issue_email_link
 from judgments.utils.tabs import get_toolbar_tabs
@@ -15,7 +16,7 @@ class HoldDocumentView(DocumentView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["view"] = "hold_judgment"
-
+        context["corrected_ncn_url"] = get_corrected_ncn_url(context["judgment"])
         context["toolbar_tabs"] = get_toolbar_tabs(context)
         return context
 
@@ -30,6 +31,7 @@ class HoldDocumentSuccessView(DocumentView):
             signature=(self.request.user.get_full_name() if self.request.user.is_authenticated else None),
         )
         context["view"] = "hold_judgment"
+        context["corrected_ncn_url"] = get_corrected_ncn_url(context["judgment"])
         context["toolbar_tabs"] = get_toolbar_tabs(context)
         return context
 
@@ -51,6 +53,7 @@ class UnholdDocumentView(DocumentView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["view"] = "unhold_judgment"
+        context["corrected_ncn_url"] = get_corrected_ncn_url(context["judgment"])
         context["toolbar_tabs"] = get_toolbar_tabs(context)
 
         return context
@@ -62,6 +65,7 @@ class UnholdDocumentSuccessView(DocumentView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["view"] = "unhold_judgment"
+        context["corrected_ncn_url"] = get_corrected_ncn_url(context["judgment"])
         context["toolbar_tabs"] = get_toolbar_tabs(context)
 
         return context

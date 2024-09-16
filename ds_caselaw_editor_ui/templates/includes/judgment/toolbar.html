@@ -1,72 +1,17 @@
 {% load user_permissions waffle_tags %}
+{% include "includes/judgment/toolbar/corrected_ncn_notification.html" %}
+{% include "includes/judgment/toolbar/version.html" with version=version %}
 {% include "includes/tabs.html" with tabs=toolbar_tabs primary_tabs=True %}
 <div class="judgment-toolbar">
   <div class="judgment-toolbar__container container">
-    {% if request.args.origin == 'results' %}
-      <div class="judgment-toolbar__return-link">
-        <a href="{{ request.args.return_link }}">Back to search results</a>
-      </div>
-    {% endif %}
     <div class="judgment-toolbar__edit">
-      <div class="judgment-toolbar__submitter">
-        <h4>Submitter</h4>
-        <p>
-          {% if document.source_name and document.source_email %}
-            <a href="mailto:{{ document.source_email }}">{{ document.source_name }}</a>
-          {% else %}
-            Unknown
-          {% endif %}
-        </p>
-      </div>
-      <a class="button-cta button-small"
-         href="{{ jira_create_link }}"
-         target="_blank"
-         rel="noopener noreferrer">Create in Jira</a>
-      {% if user|is_superuser or user|is_editor %}
-        <form action="{% url 'enrich' %}" method="post">
-          {% csrf_token %}
-          <input type="hidden" name="document_uri" value="{{ document.uri }}" />
-          <input type="submit"
-                 name="enrich"
-                 class="button-cta button-small"
-                 value="Request enrichment" />
-        </form>
-        <form action="{% url 'delete' %}" method="post">
-          {% csrf_token %}
-          <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
-          <input type="submit"
-                 name="delete"
-                 class="button-danger button-small"
-                 value="Delete document"
-                 {% if not document.safe_to_delete %}disabled{% endif %} />
-        </form>
-        {% flag "reparse" %}
-          <form action="{% url 'reparse' %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="document_uri" value="{{ document.uri }}" />
-            <input type="submit"
-                   name="reparse"
-                   class="button-secondary button-small"
-                   value="Reparse document" />
-          </form>
-        {% endflag %}
-      {% else %}
-        {% if judgment.is_failure %}
-          <form action="{% url 'delete' %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
-            <input type="submit"
-                   name="assign"
-                   class="button-danger button-small"
-                   value="Delete" />
-          </form>
-        {% endif %}
+      {% if request.args.origin == 'results' %}
+        {% include "includes/judgment/toolbar/back_to_results_link.html" with return_link=request.args.return_link %}
       {% endif %}
+      {% include "includes/judgment/toolbar/submitter.html" with submitter_name=document.source_name submitter_email=document.source_email %}
+      {% include "includes/judgment/toolbar/status.html" with status=document.status %}
+      {% include "includes/judgment/toolbar/create_jira_button.html" %}
+      {% include "includes/judgment/toolbar/editor_tools.html" %}
     </div>
-    {% if version %}
-      <div class="judgment-toolbar__version">
-        <b>You are viewing version {{ version }} of this document.</b>
-      </div>
-    {% endif %}
   </div>
 </div>
