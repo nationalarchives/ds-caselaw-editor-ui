@@ -1,0 +1,21 @@
+{% extends "layouts/judgment.html" %}
+{% load waffle_tags %}
+{% block content %}
+  {% load i18n %}
+  {% include "includes/judgment/metadata_panel_static.html" with judgment=judgment %}
+  <div class="container">
+    <h3 class="judgment-component__confirmation-title">
+      Are you sure you want to delete <strong>{{ judgment.name }}</strong>?
+    </h3>
+    <form action="{% url 'delete' %}" method="post">
+      {% csrf_token %}
+      <div class="judgment-component__actions">
+        <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
+        <div class="judgment-component__button-actions">
+          <a href="{% url 'full-text-html' document.uri %}">Go back to review</a>
+          <input class="button-danger" type="submit" value="Delete document" />
+        </div>
+      </div>
+    </form>
+  </div>
+{% endblock content %}
