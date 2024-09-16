@@ -8,15 +8,8 @@
            class="button-cta button-small"
            value="Request enrichment" />
   </form>
-  <form action="{% url 'delete' %}" method="post">
-    {% csrf_token %}
-    <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
-    <input type="submit"
-           name="delete"
-           class="button-danger button-small"
-           value="Delete document"
-           {% if not document.safe_to_delete %}disabled{% endif %} />
-  </form>
+  <a class="button-danger button-small"
+     href="{% url 'delete-document' document.uri %}">Delete document</a>
   {% flag "reparse" %}
     <form action="{% url 'reparse' %}" method="post">
       {% csrf_token %}
