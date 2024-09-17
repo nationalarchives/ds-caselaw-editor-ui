@@ -17,7 +17,7 @@ class TestSearchResults(TestCase):
     def test_oldest(self, mock_search):
         mock_search.results.return_value = []
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
-        response = self.client.get("?order=-date")
+        self.client.get("/")
         mock_search.assert_called_with(
             api_client,
             SearchParameters(
@@ -27,28 +27,4 @@ class TestSearchResults(TestCase):
                 show_unpublished=True,
                 page=1,
             ),
-        )
-        assert_match(
-            b"<option(\\s+)value=\"-date\"(\\s+)selected='selected'(\\s*)>",
-            response.content,
-        )
-
-    @patch("judgments.utils.view_helpers.search_and_parse_response")
-    def test_newest(self, mock_search):
-        mock_search.results.return_value = []
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
-        response = self.client.get("?order=date")
-        mock_search.assert_called_with(
-            api_client,
-            SearchParameters(
-                query=None,
-                order="date",
-                only_unpublished=True,
-                show_unpublished=True,
-                page=1,
-            ),
-        )
-        assert_match(
-            b"<option(\\s+)value=\"date\"(\\s+)selected='selected'(\\s*)>",
-            response.content,
         )

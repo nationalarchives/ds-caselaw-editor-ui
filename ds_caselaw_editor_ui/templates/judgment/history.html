@@ -1,78 +1,69 @@
-{% extends "layouts/judgment_with_sidebar.html" %}
+{% extends "layouts/judgment.html" %}
 {% load i18n document_utils waffle_tags user_permissions %}
-{% block judgment_header %}
-  {% flag history_timeline %}
-    <h1>
-      <small class="muted">Document history</small>
-      <br>
-      {{ document.name }}
-    </h1>
-    {% include "includes/judgment/history/document_data.html" %}
-  {% else %}
-    {% include "includes/judgment/metadata_panel_static.html" with judgment=document %}
-  {% endflag %}
-{% endblock judgment_header %}
-{% block judgment_content %}
-  {% flag history_timeline %}
-    <div class="document-history">
-      {% for submission in structured_history reversed %}
-        <div class="document-history__submission my-3">
-          {% if submission.submission_type == 'structured' %}
-            {% include "includes/judgment/history/structured_submission.html" with expand=forloop.first %}
-          {% elif submission.submission_type == 'orphan' %}
-            {% include "includes/judgment/history/orphaned_events.html" with expand=forloop.first %}
-          {% else %}
-            <h2>Legacy version {{ submission.marklogic_version }}</h2>
-            <p>
-              <time datetime="{{ submission.datetime|date:"c" }}">{{ submission.datetime|display_datetime }}</time>
-            </p>
-            {% if submission.annotation %}<p>{{ submission.annotation }}</p>{% endif %}
-            {% if user|is_developer %}
+{% block content %}
+  {% include "includes/judgment/metadata_panel_static.html" with judgment=document %}
+  <div class="container">
+    {% flag history_timeline %}
+      <div class="document-history">
+        {% for submission in structured_history reversed %}
+          <div class="document-history__submission my-3">
+            {% if submission.submission_type == 'structured' %}
+              {% include "includes/judgment/history/structured_submission.html" with expand=forloop.first %}
+            {% elif submission.submission_type == 'orphan' %}
+              {% include "includes/judgment/history/orphaned_events.html" with expand=forloop.first %}
+            {% else %}
+              <h2>Legacy version {{ submission.marklogic_version }}</h2>
               <p>
-                <small class="muted">Event #{{ submission.event_sequence_number }} • Submission #{{ submission.submission_sequence_number }} • MarkLogic version #{{ submission.marklogic_version }}</small>
+                <time datetime="{{ submission.datetime|date:"c" }}">{{ submission.datetime|display_datetime }}</time>
               </p>
+              {% if submission.annotation %}<p>{{ submission.annotation }}</p>{% endif %}
+              {% if user|is_developer %}
+                <p>
+                  <small class="muted">Event #{{ submission.event_sequence_number }} • Submission #{{ submission.submission_sequence_number }} • MarkLogic version #{{ submission.marklogic_version }}</small>
+                </p>
+              {% endif %}
             {% endif %}
-          {% endif %}
-        </div>
-      {% endfor %}
-    </div>
-  {% else %}
-    <div class="document-version-history">
-      <h2>Document version history</h2>
-      <table class="document-version-history__table table">
-        <thead>
-          <tr>
-            <th scope="col">Version</th>
-            <th scope="col">Date created</th>
-            <th scope="col">Details</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for version in document.versions_as_documents %}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="document-version-history">
+        <h2>Document version history</h2>
+        <table class="document-version-history__table table">
+          <thead>
             <tr>
-              <td>
-                <a href="{% url 'full-text-html' document_uri %}?version_uri={{ version.uri }}">Version {{ version.version_number }}</a>
-              </td>
-              <td>{{ version.version_created_datetime|display_datetime }}</td>
-              <td>
-                {% with annotation=version.annotation %}
-                  {% if annotation %}
-                    {{ annotation|display_annotation_type }}
-                  {% else %}
-                    <span class="muted">Unknown</span>
-                  {% endif %}
-                {% endwith %}
-              </td>
+              <th scope="col">Version</th>
+              <th scope="col">Date created</th>
+              <th scope="col">Details</th>
             </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  {% endflag %}
-{% endblock judgment_content %}
-{% block sidebar %}
-  {% flag history_timeline %}
-  {% else %}
-    {{ block.super }}
-  {% endflag %}
-{% endblock sidebar %}
+          </thead>
+          <tbody>
+            {% for version in document.versions_as_documents %}
+              <tr>
+                <td>
+                  <a href="{% url 'full-text-html' document_uri %}?version_uri={{ version.uri }}">
+                    {% if forloop.first %}
+                      <strong>Version {{ version.version_number }} (Latest)</strong>
+                    {% else %}
+                      Version {{ version.version_number }}
+                    {% endif %}
+                  </a>
+                </td>
+                <td>{{ version.version_created_datetime|display_datetime }}</td>
+                <td>
+                  {% with annotation=version.annotation %}
+                    {% if annotation %}
+                      {{ annotation|display_annotation_type }}
+                    {% else %}
+                      <span class="muted">Unknown</span>
+                    {% endif %}
+                  {% endwith %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endflag %}
+  </div>
+{% endblock content %}

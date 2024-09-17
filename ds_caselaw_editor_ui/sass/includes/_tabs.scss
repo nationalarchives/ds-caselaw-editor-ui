@@ -1,6 +1,18 @@
 .tabs-set {
-  margin: $space-6 auto $space-2;
+  width: 100%;
+  padding: $space-6 0 0;
+  margin: auto;
   text-align: center;
+  background: $color-light-grey;
+
+  &.tabs-set--primary {
+    background: $color-white;
+
+    input[type="radio"]:checked ~ label {
+      background: $color-light-grey;
+      border-bottom-color: $color-light-grey;
+    }
+  }
 
   &__item {
     display: inline-block;
@@ -37,6 +49,11 @@
 
     input[type="radio"] {
       display: none;
+    }
+
+    input[type="radio"]:disabled ~ label {
+      pointer-events: none;
+      opacity: 0.4;
     }
 
     input[type="radio"]:checked ~ label {

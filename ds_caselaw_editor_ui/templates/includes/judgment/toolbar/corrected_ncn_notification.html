@@ -1,0 +1,25 @@
+<form aria-label="Edit judgment"
+      method="post"
+      action="{% url 'edit-document' judgment.uri %}">
+  {% csrf_token %}
+  {% if corrected_ncn_url %}
+    <div class="page-notification--warning">
+      <div class="container judgment-toolbar__corrected-ncn-notification">
+        <h3>
+          <span class="icon icon__triangle-exclamation"></span>
+          Document URI/NCN mismatch
+        </h3>
+        <p>
+          This document is located at <a href="{% url 'full-text-html' judgment.uri %}"><strong>/{{ judgment.uri }}</strong></a> but has an NCN of <a href="{{ corrected_ncn_url }}"><strong>{{ judgment.best_human_identifier }}</strong></a>
+        </p>
+        <input type="hidden" name="judgment_uri" value="{{ document_uri }}" />
+        <div>
+          <input type="submit"
+                 name="move_document"
+                 value="Move to {{ corrected_ncn_url }}"
+                 class="button-cta button-small" />
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</form>

@@ -1,52 +1,17 @@
+{% load user_permissions waffle_tags %}
+{% include "includes/judgment/toolbar/corrected_ncn_notification.html" %}
+{% include "includes/judgment/toolbar/version.html" with version=version %}
+{% include "includes/tabs.html" with tabs=toolbar_tabs primary_tabs=True %}
 <div class="judgment-toolbar">
   <div class="judgment-toolbar__container container">
-    {% if request.args.origin == 'results' %}
-      <div class="judgment-toolbar__return-link">
-        <a href="{{ request.args.return_link }}">Back to search results</a>
-      </div>
-    {% endif %}
     <div class="judgment-toolbar__edit">
-      {% include "./toolbar_button.html" with active_view="judgment_text" label="Review" url_name="full-text-html" url_params=document.uri %}
-      {% if document.is_published %}
-        <span class="judgment-toolbar__button button-secondary"
-              aria-disabled="true">Put on hold</span>
-      {% else %}
-        {% if document.is_held %}
-          {% include "./toolbar_button.html" with active_view="unhold_judgment" label="Take off hold" url_name="unhold-document" url_params=document.uri %}
-        {% else %}
-          {% include "./toolbar_button.html" with active_view="hold_judgment" label="Put on hold" url_name="hold-document" url_params=document.uri %}
-        {% endif %}
+      {% if request.args.origin == 'results' %}
+        {% include "includes/judgment/toolbar/back_to_results_link.html" with return_link=request.args.return_link %}
       {% endif %}
-      {% if document.is_published %}
-        {% include "./toolbar_button.html" with active_view="publish_judgment" label="Unpublish" url_name="unpublish-document" url_params=document.uri %}
-      {% else %}
-        {% include "./toolbar_button.html" with active_view="publish_judgment" label="Publish" url_name="publish-document" url_params=document.uri %}
-      {% endif %}
-      {% if document.docx_url %}
-        <a class="judgment-toolbar__button button-secondary"
-           href="{{ document.docx_url }}"
-           download>Download .docx</a>
-      {% else %}
-        <span class="judgment-toolbar__button button-secondary"
-              aria-disabled="true">Download .docx</span>
-      {% endif %}
-      {% include "./toolbar_more_button.html" %}
-      {% if judgment.is_failure %}
-        <form action="{% url 'delete' %}" method="post">
-          {% csrf_token %}
-          <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
-          <input type="submit"
-                 name="assign"
-                 class="button-secondary judgment-toolbar__delete"
-                 value="Delete" />
-        </form>
-      {% endif %}
+      {% include "includes/judgment/toolbar/submitter.html" with submitter_name=document.source_name submitter_email=document.source_email %}
+      {% include "includes/judgment/toolbar/status.html" with status=document.status %}
+      {% include "includes/judgment/toolbar/create_jira_button.html" %}
+      {% include "includes/judgment/toolbar/editor_tools.html" %}
     </div>
-    {% include "includes/judgment/toolbar_more.html" %}
-    {% if version %}
-      <div class="judgment-toolbar__version">
-        <b>You are viewing version {{ version }} of this document.</b>
-      </div>
-    {% endif %}
   </div>
 </div>

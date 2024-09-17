@@ -1,6 +1,14 @@
 body {
   margin: 0;
   font-family: $font-open-sans;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+  padding-bottom: $space-4;
 }
 
 .container {

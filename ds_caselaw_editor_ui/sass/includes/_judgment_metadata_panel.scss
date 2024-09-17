@@ -1,39 +1,37 @@
 .judgment-metadata-panel {
   display: flex;
   flex-direction: row;
-  flex-grow: 0;
-  width: 100%;
-  box-sizing: border-box;
   padding: 0 $space-2;
   border-bottom: 1px solid $color-almost-black;
-  margin-left: -1.5rem;
 
   &__details {
     list-style-type: none;
     padding: 0;
-    float: left;
     width: 100%;
     line-height: $typography-lg-line-height;
     margin-top: $space-4;
     font-size: $typography-sm-text-size;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: $space-8;
+    row-gap: $space-2;
 
     li {
-      float: left;
       width: 100%;
       @media (min-width: $grid-breakpoint-medium) {
-        width: 50%;
+        width: 48%;
       }
       box-sizing: border-box;
 
       span:nth-child(odd) {
         float: left;
-        width: 19%;
+        width: 25%;
         margin-right: 0;
       }
 
       span:nth-child(even) {
         float: left;
-        width: 66%;
+        width: 75%;
         margin-left: 0;
       }
     }

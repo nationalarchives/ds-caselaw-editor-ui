@@ -1,14 +1,14 @@
 from django.urls import path
 
-from judgments.views.delete import delete
+from judgments.views.delete import DeleteDocumentView, delete
 from judgments.views.enrich import enrich
 
 from .views import reports
 from .views.button_handlers import (
-    assign_judgment_button,
     hold_judgment_button,
     prioritise_judgment_button,
 )
+from .views.document_downloads import DocumentDownloadsView
 from .views.document_full_text import (
     DocumentReviewHTMLView,
     DocumentReviewPDFView,
@@ -61,7 +61,6 @@ urlpatterns = [
     path("enrich", enrich, name="enrich"),
     path("reparse", reparse, name="reparse"),
     path("unlock", unlock, name="unlock"),
-    path("assign", assign_judgment_button, name="assign"),
     path("prioritise", prioritise_judgment_button, name="prioritise"),
     path("hold", hold_judgment_button, name="hold"),
     # Redirects for legacy judgment URIs
@@ -92,6 +91,7 @@ urlpatterns = [
     # Style guide
     path("style-guide", StyleGuide.as_view(), name="style_guide"),
     # Different views on judgments
+    path("<path:document_uri>/delete", DeleteDocumentView.as_view(), name="delete-document"),
     path("<path:document_uri>/edit", EditJudgmentView.as_view(), name="edit-document"),
     path(
         "<path:document_uri>/history",
@@ -142,6 +142,11 @@ urlpatterns = [
         "<path:document_uri>/pdf",
         DocumentReviewPDFView.as_view(),
         name="full-text-pdf",
+    ),
+    path(
+        "<path:document_uri>/downloads",
+        DocumentDownloadsView.as_view(),
+        name="document-downloads",
     ),
     path("<path:document_uri>/xml", xml_view, name="full-text-xml"),
     # This 'bare document' URL must always go last

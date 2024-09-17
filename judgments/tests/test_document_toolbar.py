@@ -30,7 +30,8 @@ class TestDocumentToolbar(TestCase):
         response = self.client.get(
             reverse("full-text-html", kwargs={"document_uri": mock_judgment.uri}),
         )
-        assert b"Editor tools" in response.content
+        assert b"Request enrichment" in response.content
+        assert b"Delete document" in response.content
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
@@ -47,7 +48,8 @@ class TestDocumentToolbar(TestCase):
         response = self.client.get(
             reverse("full-text-html", kwargs={"document_uri": mock_judgment.uri}),
         )
-        assert b"Editor tools" not in response.content
+        assert b"Request enrichment" not in response.content
+        assert b"Delete document" not in response.content
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
@@ -83,7 +85,7 @@ class TestDocumentToolbar(TestCase):
             <input type="hidden" name="judgment_uri" value="failures/TDR-ref" />
             <input type="submit"
             name="assign"
-            class="button-secondary judgment-toolbar__delete"
+            class="button-danger button-small"
             value="Delete" />
         </form>
         """

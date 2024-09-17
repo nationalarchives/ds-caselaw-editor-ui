@@ -1,6 +1,21 @@
 .judgment-component {
   margin-top: $space-4;
 
+  &__confirmation-title {
+    font-weight: $typography-normal-font-weight;
+  }
+
+  &__button-actions {
+    display: flex;
+    gap: $space-8;
+    align-items: center;
+    padding-top: 1rem;
+
+    input.button-cta[type="submit"] {
+      margin: 0;
+    }
+  }
+
   &__panel {
     padding: $space-2 0;
   }
@@ -12,10 +27,6 @@
 
   &__left-panel {
     flex: 1;
-  }
-
-  &__back-button {
-    margin-left: $space-8;
   }
 
   &__back-button-unpublished {

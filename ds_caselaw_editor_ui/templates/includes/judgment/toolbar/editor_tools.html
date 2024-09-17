@@ -1,0 +1,34 @@
+{% load user_permissions waffle_tags %}
+{% if user|is_superuser or user|is_editor %}
+  <form action="{% url 'enrich' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="document_uri" value="{{ document.uri }}" />
+    <input type="submit"
+           name="enrich"
+           class="button-cta button-small"
+           value="Request enrichment" />
+  </form>
+  <a class="button-danger button-small"
+     href="{% url 'delete-document' document.uri %}">Delete document</a>
+  {% flag "reparse" %}
+    <form action="{% url 'reparse' %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="document_uri" value="{{ document.uri }}" />
+      <input type="submit"
+             name="reparse"
+             class="button-secondary button-small"
+             value="Reparse document" />
+    </form>
+  {% endflag %}
+{% else %}
+  {% if judgment.is_failure %}
+    <form action="{% url 'delete' %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
+      <input type="submit"
+             name="assign"
+             class="button-danger button-small"
+             value="Delete" />
+    </form>
+  {% endif %}
+{% endif %}

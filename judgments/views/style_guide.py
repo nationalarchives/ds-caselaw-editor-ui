@@ -11,9 +11,20 @@ class StyleGuide(TemplateView):
         judgment = SearchResultFactory.build()
         context["judgment"] = judgment
         judgment_failed_to_parse = SearchResultFactory.build(failed_to_parse=True)
-        judgment_assigned = SearchResultFactory.build(metadata={"assigned_to": "An editor"})
-        judgment_on_hold = SearchResultFactory.build(metadata={"assigned_to": "An editor", "editor_hold": "true"})
-        context["judgments"] = [judgment, judgment_failed_to_parse, judgment_assigned, judgment_on_hold]
+        judgment_on_hold = SearchResultFactory.build(metadata={"editor_hold": "true"})
+        context["tabs"] = [
+            {
+                "selected": True,
+                "label": "HTML view",
+                "url": "#first-tab",
+            },
+            {
+                "selected": False,
+                "label": "PDF view",
+                "url": "#second-tab",
+            },
+        ]
+        context["judgments"] = [judgment, judgment_failed_to_parse, judgment_on_hold]
         context["document"] = judgment
         context["menu_items"] = [
             {"label": "Colours", "href": "#colours"},
@@ -26,7 +37,6 @@ class StyleGuide(TemplateView):
                     {"label": "Judgments list", "href": "#judgments-list"},
                     {"label": "Judgment toolbar", "href": "#judgment-toolbar"},
                     {"label": "Judgment toolbar button", "href": "#judgment-toolbar-button"},
-                    {"label": "List controls", "href": "#list-controls"},
                     {"label": "Note", "href": "#note"},
                     {"label": "Notification messaging", "href": "#notification-messaging"},
                     {"label": "Search form", "href": "#search-form"},

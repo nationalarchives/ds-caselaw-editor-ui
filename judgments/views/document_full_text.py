@@ -2,9 +2,9 @@ from urllib.parse import urlencode
 
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from ds_caselaw_utils import neutral_url
 
-from judgments.utils import extract_version
+from judgments.utils import extract_version, get_corrected_ncn_url
+from judgments.utils.tabs import get_toolbar_tabs, get_view_control_tabs
 from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_404
 
 
@@ -26,9 +26,9 @@ class DocumentReviewHTMLView(DocumentView):
 
         context["view"] = "judgment_text"
 
-        ncn_uri = neutral_url(context["judgment"].neutral_citation)
-        if "/" + context["judgment"].uri != ncn_uri:
-            context["corrected_ncn_url"] = ncn_uri
+        context["corrected_ncn_url"] = get_corrected_ncn_url(context["judgment"])
+        context["toolbar_tabs"] = get_toolbar_tabs(context)
+        context["view_control_tabs"] = get_view_control_tabs("full-text-html", context["document"])
 
         return context
 
@@ -53,6 +53,10 @@ class DocumentReviewPDFView(DocumentView):
             context["version"] = extract_version(version_uri)
 
         context["view"] = "judgment_text"
+
+        context["corrected_ncn_url"] = get_corrected_ncn_url(context["judgment"])
+        context["toolbar_tabs"] = get_toolbar_tabs(context)
+        context["view_control_tabs"] = get_view_control_tabs("full-text-pdf", context["document"])
 
         return context
 

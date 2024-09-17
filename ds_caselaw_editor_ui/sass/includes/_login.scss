@@ -29,9 +29,10 @@
     margin: 0;
   }
 
-  &__form-group {
-    margin-top: $space-4;
-    margin-bottom: $space-4;
+  .login {
+    display: flex;
+    flex-direction: column;
+    gap: $space-4;
   }
 
   &__label {
@@ -43,5 +44,9 @@
     width: 100%;
     font-size: $typography-lg-text-size;
     margin-top: $space-2;
+  }
+
+  .button-cta {
+    text-align: center;
   }
 }

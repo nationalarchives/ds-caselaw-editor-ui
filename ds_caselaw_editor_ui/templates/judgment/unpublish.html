@@ -1,17 +1,22 @@
-{% extends "layouts/judgment_with_sidebar.html" %}
+{% extends "layouts/judgment.html" %}
 {% load i18n waffle_tags %}
-{% block judgment_header %}
+{% block content %}
   {% include "includes/judgment/metadata_panel_static.html" with judgment=judgment %}
-{% endblock judgment_header %}
-{% block judgment_content %}
-  <h2>Unpublish {{ judgment.name }}?</h2>
-  <form action="{% url 'unpublish' %}" method="post">
-    {% csrf_token %}
-    <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
-    {% flag "notes_on_state_change" %}
-      {% include "includes/note-form.html" %}
-    {% endflag %}
-    <input type="submit" value="Confirm" />
-    <span class="judgment-component__back-button"><a href="{% url 'full-text-html' document.uri %}">Go back to review</a> </span>
-  </form>
-{% endblock judgment_content %}
+  <div class="container">
+    <h3 class="judgment-component__confirmation-title">
+      Are you sure you want to unpublish <strong>"{{ judgment.name }}"</strong>?
+    </h3>
+    <form action="{% url 'unpublish' %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
+      {% flag "notes_on_state_change" %}
+        {% include "includes/note-form.html" %}
+      {% endflag %}
+      <div class="judgment-component__button-actions">
+        <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
+        <span class="judgment-component__back-button"><a href="{% url 'full-text-html' document.uri %}">Go back to review</a> </span>
+        <input class="button-cta" type="submit" value="Unpublish document" />
+      </div>
+    </form>
+  </div>
+{% endblock content %}

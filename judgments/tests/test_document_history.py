@@ -40,7 +40,7 @@ class TestDocumentHistory(TestCase):
 
         decoded_response = response.content.decode("utf-8")
         dt = document.versions_as_documents[0].version_created_datetime
-        assert "Version 1" in decoded_response
+        assert "Version 1 (Latest)" in decoded_response
         assert dt.strftime("%d %b %Y") in decoded_response
         assert dt.strftime("%H:%M") in decoded_response
         assert "Submitted" in decoded_response
