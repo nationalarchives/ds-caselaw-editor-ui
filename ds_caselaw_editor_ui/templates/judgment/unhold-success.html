@@ -3,13 +3,9 @@
   {% include "includes/judgment/metadata_panel_static.html" with judgment=judgment %}
   {% load i18n %}
   <div class="container">
-    <h1>
-      <span class="icon icon--lg icon__circle-check"></span> Document successfully taken off hold
-    </h1>
-    <h3 class="judgment-component__confirmation-title">
-      <strong>{{ judgment.name }}</strong> has been taken off hold
-    </h3>
-    <div class="judgment-component__back-button-unpublished">
+    <h1 class="judgment-component__confirmation-title">Confirmation this has been taken off hold:</h1>
+    <h2 class="judgment-component__confirmation-subtitle">{{ judgment.name }}</h2>
+    <div class="judgment-component__button-actions">
       <a href="{% url 'home' %}">Go back to unpublished documents</a>
     </div>
   </div>
