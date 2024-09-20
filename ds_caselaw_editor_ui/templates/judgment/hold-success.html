@@ -3,12 +3,8 @@
 {% block content %}
   {% include "includes/judgment/metadata_panel_static.html" with judgment=judgment %}
   <div class="container">
-    <h1>
-      <span class="icon icon--lg icon__circle-check"></span> Document successfully put on hold
-    </h1>
-    <h3 class="judgment-component__confirmation-title">
-      <strong>{{ judgment.name }}</strong> is now on hold
-    </h3>
-    <a class="button-cta button-small" href="{{ email_issue_link }}">Email the submitter</a>
+    <h1 class="judgment-component__confirmation-title">Confirmation this has been put on hold:</h1>
+    <h2 class="judgment-component__confirmation-subtitle">{{ judgment.name }}</h2>
+    <a href="{{ email_issue_link }}">Email the submitter</a>
   </div>
 {% endblock content %}
