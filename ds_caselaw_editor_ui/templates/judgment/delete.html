@@ -4,16 +4,15 @@
   {% load i18n %}
   {% include "includes/judgment/metadata_panel_static.html" with judgment=judgment %}
   <div class="container">
-    <h3 class="judgment-component__confirmation-title">
-      Are you sure you want to delete <strong>{{ judgment.name }}</strong>?
-    </h3>
+    <h1 class="judgment-component__confirmation-title">I want to delete:</h1>
+    <h2 class="judgment-component__confirmation-subtitle">{{ judgment.name }}</h2>
     <form action="{% url 'delete' %}" method="post">
       {% csrf_token %}
       <div class="judgment-component__actions">
         <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
         <div class="judgment-component__button-actions">
-          <a href="{% url 'full-text-html' document.uri %}">Go back to review</a>
           <input class="button-danger" type="submit" value="Delete document" />
+          <a href="{% url 'full-text-html' document.uri %}">Go back to review</a>
         </div>
       </div>
     </form>
