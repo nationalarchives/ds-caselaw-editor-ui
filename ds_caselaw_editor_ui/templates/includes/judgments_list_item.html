@@ -30,7 +30,7 @@
       <li>
         <span class="judgments-list__judgment-details-meta-key">{% translate "judgments.editor_status" %}</span>
         <span class="judgments-list__judgment-details-meta-value">
-          {% include "includes/status_tag.html" with status=item.metadata.editor_status %}
+          {% include "includes/status_tag.html" with status=item.metadata.editor_status compact=True %}
         </span>
       </li>
       <li>

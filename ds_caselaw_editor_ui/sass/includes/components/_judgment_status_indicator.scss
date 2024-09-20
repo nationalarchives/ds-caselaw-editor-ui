@@ -13,20 +13,25 @@
   text-decoration: none;
   font-weight: $typography-bold-font-weight;
   text-transform: capitalize;
-}
 
-.judgment-status-indicator--new,
-.judgment-status-indicator--in-progress {
-  color: mix(black, $govuk-blue, 60%);
-  background: mix(white, $govuk-blue, 70%);
-}
+  &--compact {
+    border: 0;
+    padding: 0 $space-1;
+  }
 
-.judgment-status-indicator--published {
-  color: mix(black, $govuk-green, 60%);
-  background: mix(white, $govuk-green, 70%);
-}
+  &--new,
+  &--in-progress {
+    color: mix(black, $govuk-blue, 60%);
+    background: mix(white, $govuk-blue, 70%);
+  }
 
-.judgment-status-indicator--on-hold {
-  color: mix(black, $govuk-red, 60%);
-  background: mix(white, $govuk-red, 70%);
+  &--published {
+    color: mix(black, $govuk-green, 60%);
+    background: mix(white, $govuk-green, 70%);
+  }
+
+  &--on-hold {
+    color: mix(black, $govuk-red, 60%);
+    background: mix(white, $govuk-red, 70%);
+  }
 }
