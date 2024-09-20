@@ -1,0 +1,4 @@
+{% load status_tag_css %}
+<div class="judgment-status-indicator {% if compact %}judgment-status-indicator--compact{% endif %} judgment-status-indicator--{{ status | status_tag }}">
+  {{ status }}
+</div>

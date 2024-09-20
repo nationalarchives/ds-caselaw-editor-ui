@@ -3,13 +3,9 @@
   {% load i18n %}
   {% include "includes/judgment/metadata_panel_static.html" with judgment=judgment %}
   <div class="container">
-    <h1>
-      <span class="icon icon--lg icon__circle-check"></span> Document unpublished
-    </h1>
-    <h3 class="judgment-component__confirmation-title">
-      <strong>{{ judgment.name }}</strong> has been unpublished
-    </h3>
-    <div class="judgment-component__back-button-unpublished">
+    <h1 class="judgment-component__confirmation-title">Confirmation this has been unpublished:</h1>
+    <h2 class="judgment-component__confirmation-subtitle">{{ judgment.name }}</h2>
+    <div class="judgment-component__button-actions">
       <a href="{% url 'home' %}">Go back to unpublished documents</a>
     </div>
   </div>

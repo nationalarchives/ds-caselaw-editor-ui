@@ -1,4 +1,4 @@
-{% load static i18n %}
+{% load static i18n status_tag_css %}
 <li class="judgments-list__judgment">
   <div class="judgments-list__judgment-details">
     <div class="judgments-list__judgment-details-name">
@@ -29,24 +29,8 @@
       </li>
       <li>
         <span class="judgments-list__judgment-details-meta-key">{% translate "judgments.editor_status" %}</span>
-        <span class="judgments-list__judgment-details-meta-value">{{ item.metadata.editor_status }}</span>
-      </li>
-      <li>
-        <span class="judgments-list__judgment-details-meta-key">{% translate "judgments.editor_priority" %}</span>
         <span class="judgments-list__judgment-details-meta-value">
-          <form action="{% url "prioritise" %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="judgment_uri" value="{{ item.uri }}" />
-            <select name="priority" id="editor_priority">
-              <option value="low"
-                      {% if item.metadata.editor_priority == "10" %}selected{% endif %}>Low</option>
-              <option value="medium"
-                      {% if item.metadata.editor_priority == "20" %}selected{% endif %}>Medium</option>
-              <option value="high"
-                      {% if item.metadata.editor_priority == "30" %}selected{% endif %}>High</option>
-            </select>
-            <input type="submit" name="submit" value="set priority" />
-          </form>
+          {% include "includes/status_tag.html" with status=item.metadata.editor_status compact=True %}
         </span>
       </li>
       <li>

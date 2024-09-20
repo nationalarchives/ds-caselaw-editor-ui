@@ -102,6 +102,7 @@
     li {
       float: left;
       width: 100%;
+      margin-bottom: $space-1;
       @media (min-width: $grid-breakpoint-medium) {
         width: 50%;
       }

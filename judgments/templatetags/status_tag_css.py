@@ -11,11 +11,12 @@ register = template.Library()
 
 @register.filter
 @stringfilter
-def status_tag_colour(status):
-    if status == DOCUMENT_STATUS_IN_PROGRESS:
-        return "light-blue"
-    if status == DOCUMENT_STATUS_HOLD:
-        return "red"
-    if status == DOCUMENT_STATUS_PUBLISHED:
-        return "green"
-    return "grey"
+def status_tag(status):
+    if status.lower() == DOCUMENT_STATUS_IN_PROGRESS.lower():
+        return "in-progress"
+    if status.lower() == DOCUMENT_STATUS_HOLD.lower():
+        return "on-hold"
+    if status.lower() == DOCUMENT_STATUS_PUBLISHED.lower():
+        return "published"
+
+    return "new"

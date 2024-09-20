@@ -2,7 +2,7 @@
   border: 3px solid $color-white;
   display: inline-block;
 
-  padding: $space-1;
+  padding: $space-1 $space-2;
 
   outline: 2px solid transparent;
   outline-offset: -2px;
@@ -11,26 +11,27 @@
   background-color: $color-dark-blue;
 
   text-decoration: none;
-  text-transform: uppercase;
   font-weight: $typography-bold-font-weight;
-}
+  text-transform: capitalize;
 
-.judgment-status-indicator--grey {
-  color: mix(black, $color-dark-grey, 30%);
-  background: mix(white, $color-dark-grey, 90%);
-}
+  &--compact {
+    border: 0;
+    padding: 0 $space-1;
+  }
 
-.judgment-status-indicator--light-blue {
-  color: mix(black, $color-highlight-blue, 30%);
-  background: mix(white, $color-highlight-blue, 90%);
-}
+  &--new,
+  &--in-progress {
+    color: mix(black, $govuk-blue, 60%);
+    background: mix(white, $govuk-blue, 70%);
+  }
 
-.judgment-status-indicator--green {
-  color: mix(black, $color-green, 30%);
-  background: mix(white, $color-green, 90%);
-}
+  &--published {
+    color: mix(black, $govuk-green, 60%);
+    background: mix(white, $govuk-green, 70%);
+  }
 
-.judgment-status-indicator--red {
-  color: mix(black, $color-red, 30%);
-  background: mix(white, $color-red, 90%);
+  &--on-hold {
+    color: mix(black, $govuk-red, 60%);
+    background: mix(white, $govuk-red, 70%);
+  }
 }

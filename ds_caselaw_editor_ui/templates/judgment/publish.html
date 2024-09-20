@@ -4,9 +4,8 @@
   {% include "includes/judgment/metadata_panel_static.html" with judgment=judgment %}
   <div class="container">
     {% if judgment.is_publishable %}
-      <h3 class="judgment-component__confirmation-title">
-        Are you sure you want to publish <strong>"{{ judgment.name }}"</strong>?
-      </h3>
+      <h1 class="judgment-component__confirmation-title">I want to publish:</h1>
+      <h2 class="judgment-component__confirmation-subtitle">{{ judgment.name }}</h2>
       <form aria-label="publish judgment"
             action="{% url 'publish' %}"
             method="post">
@@ -16,8 +15,8 @@
         {% endflag %}
         <div class="judgment-component__button-actions">
           <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
+          <input class="button-cta" type="submit" value="Publish" />
           <span class="judgment-component__back-button"><a href="{% url 'full-text-html' document.uri %}">Go back to review</a> </span>
-          <input class="button-cta" type="submit" value="Publish document" />
         </div>
       </form>
     {% else %}

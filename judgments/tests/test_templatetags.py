@@ -3,26 +3,30 @@ import json
 from caselawclient.models.documents import (
     DOCUMENT_STATUS_HOLD,
     DOCUMENT_STATUS_IN_PROGRESS,
+    DOCUMENT_STATUS_NEW,
     DOCUMENT_STATUS_PUBLISHED,
 )
 from django.test import TestCase
 
 from judgments.templatetags.document_utils import display_annotation_type, render_json
-from judgments.templatetags.status_tag_css import status_tag_colour
+from judgments.templatetags.status_tag_css import status_tag
 
 
 class TestStatusTagColour:
     def test_colour_in_progress(self):
-        assert status_tag_colour(DOCUMENT_STATUS_IN_PROGRESS) == "light-blue"
+        assert status_tag(DOCUMENT_STATUS_IN_PROGRESS) == "in-progress"
 
     def test_colour_published(self):
-        assert status_tag_colour(DOCUMENT_STATUS_PUBLISHED) == "green"
+        assert status_tag(DOCUMENT_STATUS_PUBLISHED) == "published"
 
     def test_colour_hold(self):
-        assert status_tag_colour(DOCUMENT_STATUS_HOLD) == "red"
+        assert status_tag(DOCUMENT_STATUS_HOLD) == "on-hold"
+
+    def test_colour_new(self):
+        assert status_tag(DOCUMENT_STATUS_NEW) == "new"
 
     def test_colour_undefined(self):
-        assert status_tag_colour("undefined") == "grey"
+        assert status_tag("undefined") == "new"
 
 
 class TestDisplayAnnotationType(TestCase):
