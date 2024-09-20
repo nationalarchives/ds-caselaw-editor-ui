@@ -1,5 +1,4 @@
-{% load status_tag_css %}
 <div class="judgment-toolbar__status">
   <h4>Status</h4>
-  <span class="judgment-status-indicator judgment-status-indicator--{{ status | status_tag_colour }}">{{ status }}</span>
+  {% include "includes/status_tag.html" with status=status %}
 </div>

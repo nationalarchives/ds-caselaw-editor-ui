@@ -1,4 +1,4 @@
-{% load static i18n %}
+{% load static i18n status_tag_css %}
 <li class="judgments-list__judgment">
   <div class="judgments-list__judgment-details">
     <div class="judgments-list__judgment-details-name">
@@ -29,7 +29,9 @@
       </li>
       <li>
         <span class="judgments-list__judgment-details-meta-key">{% translate "judgments.editor_status" %}</span>
-        <span class="judgments-list__judgment-details-meta-value">{{ item.metadata.editor_status }}</span>
+        <span class="judgments-list__judgment-details-meta-value">
+          {% include "includes/status_tag.html" with status=item.metadata.editor_status %}
+        </span>
       </li>
       <li>
         <span class="judgments-list__judgment-details-meta-key">{% translate "judgments.consignmentref" %}</span>
