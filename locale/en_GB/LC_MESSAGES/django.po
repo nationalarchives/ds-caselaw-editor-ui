@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-16 10:24+0000\n"
+"POT-Creation-Date: 2024-09-20 13:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -76,10 +76,6 @@ msgstr "Submitter"
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
 msgid "judgments.editor_status"
 msgstr "Status"
-
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
-msgid "judgments.editor_priority"
-msgstr "Priority"
 
 #: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html
 #: judgments/views/unlock.py
