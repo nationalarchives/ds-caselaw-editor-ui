@@ -60,7 +60,7 @@ msgstr "Name"
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
 #: judgments/utils/link_generators.py
 msgid "judgments.consignmentref"
-msgstr "TDR Ref"
+msgstr "TDR ref"
 
 #: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
 #, fuzzy
