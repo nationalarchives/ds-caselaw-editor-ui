@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-20 13:57+0000\n"
+"POT-Creation-Date: 2024-09-23 15:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,56 +26,24 @@ msgid "feedback.link"
 msgstr "Report a problem to the digital team"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/history/document_data.html
-#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
 msgid "judgments.ncn"
 msgstr "NCN"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/history/document_data.html
-#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
 msgid "judgment.judgment_date"
 msgstr "Judgment date"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/history/document_data.html
-#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
 msgid "document.publication_date"
 msgstr "Publication date"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/history/document_data.html
-#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
 msgid "judgments.court"
 msgstr "Court"
 
 #: ds_caselaw_editor_ui/templates/includes/judgment/history/document_data.html
-#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
 msgid "document.type"
 msgstr "Type"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
-msgid "judgment.judgment_name"
-msgstr "Name"
-
-#: ds_caselaw_editor_ui/templates/includes/judgment/metadata_panel_static.html
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
-#: judgments/utils/link_generators.py
-msgid "judgments.consignmentref"
-msgstr "TDR ref"
-
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
-#, fuzzy
-#| msgid "judgments.submitter"
-msgid "judgments.submission_datetime"
-msgstr "Submitter"
-
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
-#: judgments/utils/link_generators.py
-msgid "judgments.submitter"
-msgstr "Submitter"
-
-#: ds_caselaw_editor_ui/templates/includes/judgments_list_item.html
-msgid "judgments.editor_status"
-msgstr "Status"
 
 #: ds_caselaw_editor_ui/templates/judgment/confirm-unlock.html
 #: judgments/views/unlock.py
@@ -113,8 +81,16 @@ msgstr ""
 "following the example in the template."
 
 #: judgments/utils/link_generators.py
+msgid "judgments.submitter"
+msgstr "Submitter"
+
+#: judgments/utils/link_generators.py
 msgid "judgments.submitteremail"
 msgstr "Contact email"
+
+#: judgments/utils/link_generators.py
+msgid "judgments.consignmentref"
+msgstr "TDR ref"
 
 #: judgments/views/judgment_hold.py
 msgid "Document successfully taken off hold"
