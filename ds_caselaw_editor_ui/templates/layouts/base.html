@@ -72,7 +72,10 @@
             </li>
             {% if user.is_authenticated %}
               <li>
-                <a href="{% url 'admin:logout' %}">Sign out</a>
+                <form action="{% url 'admin:logout' %}" method="post">
+                  {% csrf_token %}
+                  <button type="submit">Sign out</button>
+                </form>
               </li>
             {% endif %}
           </ol>
