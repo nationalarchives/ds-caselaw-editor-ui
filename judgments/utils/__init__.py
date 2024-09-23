@@ -189,7 +189,8 @@ def _build_related_document_uri(document: Document) -> str:
 def get_corrected_ncn_url(document) -> str | None:
     ncn_uri = caselawutils.neutral_url(document.neutral_citation)
 
+    if "press-summary" in document.uri:
+        return None
     if "/" + document.uri != ncn_uri:
         return ncn_uri
-    else:
-        return None
+    return None
