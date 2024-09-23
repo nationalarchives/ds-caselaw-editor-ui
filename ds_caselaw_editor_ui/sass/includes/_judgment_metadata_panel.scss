@@ -1,39 +1,48 @@
 .judgment-metadata-panel {
   display: flex;
+  gap: $space-4;
   flex-direction: row;
   padding: 0 $space-2;
   border-bottom: 1px solid $color-almost-black;
 
-  &__details {
+  &__primary-details {
+    flex: 60%;
+
+    li {
+      span:nth-child(odd) {
+        text-align: right;
+        width: 55px;
+      }
+    }
+  }
+
+  &__secondary-details {
+    flex: 40%;
+
+    li {
+      span:nth-child(odd) {
+        text-align: right;
+        width: 110px;
+      }
+    }
+  }
+
+  &__primary-details,
+  &__secondary-details {
     list-style-type: none;
-    padding: 0;
+    padding: 0 0 $space-4 0;
+    margin: 0;
     width: 100%;
     line-height: $typography-lg-line-height;
-    margin-top: $space-4;
     font-size: $typography-sm-text-size;
     display: flex;
-    flex-wrap: wrap;
-    column-gap: $space-8;
+    flex-direction: column;
     row-gap: $space-2;
 
     li {
       width: 100%;
-      @media (min-width: $grid-breakpoint-medium) {
-        width: 48%;
-      }
-      box-sizing: border-box;
-
-      span:nth-child(odd) {
-        float: left;
-        width: 25%;
-        margin-right: 0;
-      }
-
-      span:nth-child(even) {
-        float: left;
-        width: 75%;
-        margin-left: 0;
-      }
+      display: flex;
+      gap: $space-4;
     }
   }
 

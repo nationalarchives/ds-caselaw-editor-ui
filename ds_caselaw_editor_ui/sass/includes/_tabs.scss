@@ -3,11 +3,8 @@
   padding: $space-6 0 0;
   margin: auto;
   text-align: center;
-  background: $color-light-grey;
 
   &.tabs-set--primary {
-    background: $color-white;
-
     input[type="radio"]:checked ~ label {
       background: $color-light-grey;
       border-bottom-color: $color-light-grey;

@@ -12,29 +12,29 @@
     </div>
     <ul class="judgments-list__judgment-details-meta">
       <li class="judgments-list__judgment-details-submitted-mobile">
-        <span class="judgments-list__judgment-details-meta-key">{% translate "judgments.submission_datetime" %}</span>
+        <span class="judgments-list__judgment-details-meta-key">Submitted</span>
         <span class="judgments-list__judgment-details-meta-value">{{ item.metadata.submission_datetime |date:"j M Y H:i" }}</span>
       </li>
       <li>
-        <span class="judgments-list__judgment-details-meta-key">{% translate "judgments.ncn" %}</span>
+        <span class="judgments-list__judgment-details-meta-key">NCN</span>
         <span class="judgments-list__judgment-details-meta-value">{{ item.neutral_citation }}</span>
       </li>
       <li>
-        <span class="judgments-list__judgment-details-meta-key">{% translate "judgments.submitter" %}</span>
+        <span class="judgments-list__judgment-details-meta-key">Submitter</span>
         <span class="judgments-list__judgment-details-meta-value">{{ item.metadata.author }}</span>
       </li>
       <li>
-        <span class="judgments-list__judgment-details-meta-key">{% translate "judgments.court" %}</span>
+        <span class="judgments-list__judgment-details-meta-key">Court</span>
         <span class="judgments-list__judgment-details-meta-value">{{ item.court.name }}</span>
       </li>
       <li>
-        <span class="judgments-list__judgment-details-meta-key">{% translate "judgments.editor_status" %}</span>
+        <span class="judgments-list__judgment-details-meta-key">Status</span>
         <span class="judgments-list__judgment-details-meta-value">
           {% include "includes/status_tag.html" with status=item.metadata.editor_status compact=True %}
         </span>
       </li>
       <li>
-        <span class="judgments-list__judgment-details-meta-key">{% translate "judgments.consignmentref" %}</span>
+        <span class="judgments-list__judgment-details-meta-key">TDR ref</span>
         <span class="judgments-list__judgment-details-meta-value">{{ item.metadata.consignment_reference }}</span>
       </li>
     </ul>
