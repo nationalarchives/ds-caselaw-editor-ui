@@ -1,6 +1,6 @@
 .judgments-list {
   &__judgments-list-controls-container {
-    margin-top: $space-4;
+    margin-bottom: $space-4;
 
     @media (min-width: $grid-breakpoint-large) {
       display: flex;
@@ -22,6 +22,12 @@
     margin: 0 0 $space-4;
     margin-left: $space-2;
     margin-bottom: $space-4;
+  }
+
+  &__more-info {
+    display: inline-block;
+    margin-bottom: $space-5;
+    flex: 1;
   }
 
   &__table-header {
@@ -99,14 +105,23 @@
     line-height: $typography-lg-line-height;
     margin-top: $space-4;
     font-size: $typography-sm-text-size;
+
     li {
       float: left;
       width: 100%;
-      margin-bottom: $space-1;
       @media (min-width: $grid-breakpoint-medium) {
         width: 50%;
       }
       box-sizing: border-box;
+
+      &:nth-child(odd) {
+        width: 40%;
+      }
+
+      &:nth-child(even) {
+        width: 60%;
+      }
+
       span:nth-child(odd) {
         float: left;
         width: 22%;
