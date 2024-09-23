@@ -1,15 +1,12 @@
-.metadata-component {
+.metadata-header__block {
   background-color: $color-light-grey;
-  border-top: 1px solid $color-white;
-  padding: $space-4;
+  padding: $space-8 0;
+  margin-top: $space-4;
+}
 
-  @media (min-width: 1500px) {
-    width: 65%;
-    border-width: $space-4 20rem;
-    position: relative;
-    left: 50%;
-    transform: translate(-50%);
-  }
+.metadata-component {
+  @include container;
+  background-color: $color-light-grey;
 
   form {
     display: flex;
