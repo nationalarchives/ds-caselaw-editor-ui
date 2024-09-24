@@ -7,7 +7,7 @@ from caselawclient.client_helpers import VersionType
 from caselawclient.models.documents import Document
 
 from judgments.utils import get_corrected_ncn_url
-from judgments.utils.tabs import get_toolbar_tabs
+from judgments.utils.navigation import get_navigation_items
 from judgments.utils.view_helpers import DocumentView
 
 VersionAnnotationDict = dict[str, Any]
@@ -200,7 +200,7 @@ class DocumentHistoryView(DocumentView):
 
         context["corrected_ncn_url"] = get_corrected_ncn_url(context["judgment"])
         context["view"] = "document_history"
-        context["toolbar_tabs"] = get_toolbar_tabs(context)
+        context["navigation_items"] = get_navigation_items(context)
 
         return context
 

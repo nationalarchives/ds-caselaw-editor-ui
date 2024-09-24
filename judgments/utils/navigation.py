@@ -5,7 +5,7 @@ def get_document_url(view, document):
     return reverse(view, kwargs={"document_uri": document.uri})
 
 
-def get_hold_toolbar_tab(view, document):
+def get_hold_navigation_item(view, document):
     if document.is_published:
         return {
             "id": "put-on-hold",
@@ -28,7 +28,7 @@ def get_hold_toolbar_tab(view, document):
         }
 
 
-def get_publishing_toolbar_tab(view, document):
+def get_publishing_navigation_item(view, document):
     if document.is_published:
         return {
             "id": "unpublish",
@@ -45,7 +45,7 @@ def get_publishing_toolbar_tab(view, document):
         }
 
 
-def get_download_toolbar_tab(view, document):
+def get_download_navigation_item(view, document):
     return {
         "id": "downloads",
         "selected": view == "document_downloads",
@@ -54,7 +54,7 @@ def get_download_toolbar_tab(view, document):
     }
 
 
-def get_review_toolbar_tab(view, document):
+def get_review_navigation_item(view, document):
     return {
         "id": "review",
         "selected": view == "judgment_text",
@@ -63,7 +63,7 @@ def get_review_toolbar_tab(view, document):
     }
 
 
-def get_history_toolbar_tab(view, document):
+def get_history_navigation_item(view, document):
     return {
         "id": "history",
         "selected": view == "document_history",
@@ -72,15 +72,15 @@ def get_history_toolbar_tab(view, document):
     }
 
 
-def get_toolbar_tabs(context):
+def get_navigation_items(context):
     view, document = context["view"], context["document"]
 
     return [
-        get_review_toolbar_tab(view, document),
-        get_hold_toolbar_tab(view, document),
-        get_publishing_toolbar_tab(view, document),
-        get_history_toolbar_tab(view, document),
-        get_download_toolbar_tab(view, document),
+        get_review_navigation_item(view, document),
+        get_hold_navigation_item(view, document),
+        get_publishing_navigation_item(view, document),
+        get_history_navigation_item(view, document),
+        get_download_navigation_item(view, document),
     ]
 
 

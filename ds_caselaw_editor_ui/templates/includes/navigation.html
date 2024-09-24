@@ -1,0 +1,9 @@
+<ul class="judgment-navigation">
+  {% for item in navigation_items %}
+    {% if item.url %}
+      <li class="judgment-navigation__item {% if item.selected %}judgment-navigation__item--active{% endif %}">
+        <a href="{{ item.url }}">{{ item.label }}</a>
+      </li>
+    {% endif %}
+  {% endfor %}
+</ul>

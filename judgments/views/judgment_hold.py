@@ -6,7 +6,7 @@ from django.utils.translation import gettext
 from judgments.utils import get_corrected_ncn_url
 from judgments.utils.aws import invalidate_caches
 from judgments.utils.link_generators import build_raise_issue_email_link
-from judgments.utils.tabs import get_toolbar_tabs
+from judgments.utils.navigation import get_navigation_items
 from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_404
 
 
@@ -17,7 +17,7 @@ class HoldDocumentView(DocumentView):
         context = super().get_context_data(**kwargs)
         context["view"] = "hold_judgment"
         context["corrected_ncn_url"] = get_corrected_ncn_url(context["judgment"])
-        context["toolbar_tabs"] = get_toolbar_tabs(context)
+        context["navigation_items"] = get_navigation_items(context)
         return context
 
 
@@ -32,7 +32,7 @@ class HoldDocumentSuccessView(DocumentView):
         )
         context["view"] = "hold_judgment"
         context["corrected_ncn_url"] = get_corrected_ncn_url(context["judgment"])
-        context["toolbar_tabs"] = get_toolbar_tabs(context)
+        context["navigation_items"] = get_navigation_items(context)
         return context
 
 
@@ -54,7 +54,7 @@ class UnholdDocumentView(DocumentView):
         context = super().get_context_data(**kwargs)
         context["view"] = "unhold_judgment"
         context["corrected_ncn_url"] = get_corrected_ncn_url(context["judgment"])
-        context["toolbar_tabs"] = get_toolbar_tabs(context)
+        context["navigation_items"] = get_navigation_items(context)
 
         return context
 
@@ -66,7 +66,7 @@ class UnholdDocumentSuccessView(DocumentView):
         context = super().get_context_data(**kwargs)
         context["view"] = "unhold_judgment"
         context["corrected_ncn_url"] = get_corrected_ncn_url(context["judgment"])
-        context["toolbar_tabs"] = get_toolbar_tabs(context)
+        context["navigation_items"] = get_navigation_items(context)
 
         return context
 
