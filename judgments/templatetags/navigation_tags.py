@@ -1,4 +1,7 @@
+from django import template
 from django.urls import reverse
+
+register = template.Library()
 
 
 def get_document_url(view, document):
@@ -57,7 +60,7 @@ def get_download_navigation_item(view, document):
 def get_review_navigation_item(view, document):
     return {
         "id": "review",
-        "selected": view == "judgment_text",
+        "selected": view in ("judgment_html", "judgment_pdf"),
         "label": "Review",
         "url": get_document_url("full-text-html", document),
     }
@@ -72,6 +75,7 @@ def get_history_navigation_item(view, document):
     }
 
 
+@register.simple_tag(takes_context=True)
 def get_navigation_items(context):
     view, document = context["view"], context["document"]
 
@@ -84,17 +88,20 @@ def get_navigation_items(context):
     ]
 
 
-def get_view_control_tabs(view, document):
+@register.simple_tag(takes_context=True)
+def get_view_control_tabs(context):
+    view, document = context["view"], context["document"]
+
     return [
         {
             "id": "html-view",
-            "selected": view == "full-text-html",
+            "selected": view == "judgment_html",
             "label": "HTML view",
             "url": get_document_url("full-text-html", document),
         },
         {
             "id": "pdf-view",
-            "selected": view == "full-text-pdf",
+            "selected": view == "judgment_pdf",
             "label": "PDF view",
             "url": get_document_url("full-text-pdf", document),
         },

@@ -1,3 +1,5 @@
+{% load navigation_tags %}
+{% get_navigation_items as navigation_items %}
 <ul class="judgment-navigation">
   {% for item in navigation_items %}
     {% if item.url %}

@@ -5,7 +5,6 @@ from django.urls import reverse
 
 from judgments.utils import get_corrected_ncn_url
 from judgments.utils.aws import invalidate_caches
-from judgments.utils.navigation import get_navigation_items
 from judgments.utils.view_helpers import (
     DocumentView,
     get_document_by_uri_or_404,
@@ -21,7 +20,6 @@ class DeleteDocumentView(DocumentView):
         context = super().get_context_data(**kwargs)
         context["view"] = "delete_judgment"
         context["corrected_ncn_url"] = get_corrected_ncn_url(context["judgment"])
-        context["navigation_items"] = get_navigation_items(context)
         return context
 
 

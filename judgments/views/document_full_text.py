@@ -4,7 +4,6 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 
 from judgments.utils import extract_version, get_corrected_ncn_url
-from judgments.utils.navigation import get_navigation_items, get_view_control_tabs
 from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_404
 
 
@@ -24,11 +23,9 @@ class DocumentReviewHTMLView(DocumentView):
         if version_uri:
             context["version"] = extract_version(version_uri)
 
-        context["view"] = "judgment_text"
+        context["view"] = "judgment_html"
 
         context["corrected_ncn_url"] = get_corrected_ncn_url(context["judgment"])
-        context["navigation_items"] = get_navigation_items(context)
-        context["view_control_tabs"] = get_view_control_tabs("full-text-html", context["document"])
 
         return context
 
@@ -52,11 +49,9 @@ class DocumentReviewPDFView(DocumentView):
         if version_uri:
             context["version"] = extract_version(version_uri)
 
-        context["view"] = "judgment_text"
+        context["view"] = "judgment_pdf"
 
         context["corrected_ncn_url"] = get_corrected_ncn_url(context["judgment"])
-        context["navigation_items"] = get_navigation_items(context)
-        context["view_control_tabs"] = get_view_control_tabs("full-text-pdf", context["document"])
 
         return context
 
