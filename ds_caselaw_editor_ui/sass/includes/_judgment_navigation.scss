@@ -1,0 +1,33 @@
+.judgment-navigation {
+  all: unset;
+  background: $color-light-grey;
+  border-bottom: 1px solid $color-dark-grey;
+  display: flex;
+  justify-content: center;
+  gap: $space-4;
+
+  &__item {
+    all: unset;
+    padding: $space-4;
+    border-bottom: 5px solid transparent;
+    font-size: $typography-md-text-size;
+
+    a {
+      text-decoration: none;
+
+      &:visited {
+        color: $color-link-blue;
+      }
+
+      &:hover {
+        text-decoration: underline;
+        text-decoration-thickness: max(3px, 0.1875rem, 0.12em);
+      }
+    }
+  }
+
+  &__item--active {
+    border-bottom-color: $color-link-blue;
+    font-weight: $typography-bold-font-weight;
+  }
+}

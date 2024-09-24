@@ -1,11 +1,14 @@
+from django import template
 from django.urls import reverse
+
+register = template.Library()
 
 
 def get_document_url(view, document):
     return reverse(view, kwargs={"document_uri": document.uri})
 
 
-def get_hold_toolbar_tab(view, document):
+def get_hold_navigation_item(view, document):
     if document.is_published:
         return {
             "id": "put-on-hold",
@@ -28,7 +31,7 @@ def get_hold_toolbar_tab(view, document):
         }
 
 
-def get_publishing_toolbar_tab(view, document):
+def get_publishing_navigation_item(view, document):
     if document.is_published:
         return {
             "id": "unpublish",
@@ -45,7 +48,7 @@ def get_publishing_toolbar_tab(view, document):
         }
 
 
-def get_download_toolbar_tab(view, document):
+def get_download_navigation_item(view, document):
     return {
         "id": "downloads",
         "selected": view == "document_downloads",
@@ -54,16 +57,16 @@ def get_download_toolbar_tab(view, document):
     }
 
 
-def get_review_toolbar_tab(view, document):
+def get_review_navigation_item(view, document):
     return {
         "id": "review",
-        "selected": view == "judgment_text",
+        "selected": view in ("judgment_html", "judgment_pdf"),
         "label": "Review",
         "url": get_document_url("full-text-html", document),
     }
 
 
-def get_history_toolbar_tab(view, document):
+def get_history_navigation_item(view, document):
     return {
         "id": "history",
         "selected": view == "document_history",
@@ -72,29 +75,33 @@ def get_history_toolbar_tab(view, document):
     }
 
 
-def get_toolbar_tabs(context):
+@register.simple_tag(takes_context=True)
+def get_navigation_items(context):
     view, document = context["view"], context["document"]
 
     return [
-        get_review_toolbar_tab(view, document),
-        get_hold_toolbar_tab(view, document),
-        get_publishing_toolbar_tab(view, document),
-        get_history_toolbar_tab(view, document),
-        get_download_toolbar_tab(view, document),
+        get_review_navigation_item(view, document),
+        get_hold_navigation_item(view, document),
+        get_publishing_navigation_item(view, document),
+        get_history_navigation_item(view, document),
+        get_download_navigation_item(view, document),
     ]
 
 
-def get_view_control_tabs(view, document):
+@register.simple_tag(takes_context=True)
+def get_view_control_tabs(context):
+    view, document = context["view"], context["document"]
+
     return [
         {
             "id": "html-view",
-            "selected": view == "full-text-html",
+            "selected": view == "judgment_html",
             "label": "HTML view",
             "url": get_document_url("full-text-html", document),
         },
         {
             "id": "pdf-view",
-            "selected": view == "full-text-pdf",
+            "selected": view == "judgment_pdf",
             "label": "PDF view",
             "url": get_document_url("full-text-pdf", document),
         },
