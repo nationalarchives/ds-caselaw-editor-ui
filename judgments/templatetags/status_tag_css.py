@@ -12,9 +12,9 @@ register = template.Library()
 @register.filter
 @stringfilter
 def status_tag(status):
-    if status.lower() == DOCUMENT_STATUS_IN_PROGRESS.lower():
+    if status.lower() in (DOCUMENT_STATUS_IN_PROGRESS.lower(), "in progress"):
         return "in-progress"
-    if status.lower() == DOCUMENT_STATUS_HOLD.lower():
+    if status.lower() in (DOCUMENT_STATUS_HOLD.lower(), "hold"):
         return "on-hold"
     if status.lower() == DOCUMENT_STATUS_PUBLISHED.lower():
         return "published"
