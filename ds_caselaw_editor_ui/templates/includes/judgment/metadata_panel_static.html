@@ -1,42 +1,40 @@
 {% load i18n %}
 <div class="container edit-component">
-  <div class="judgment-component pb-2">
-    <div class="judgment-metadata-panel">
-      <ul class="judgment-metadata-panel__primary-details">
-        <li>
-          <span class="judgment-metadata-panel__key">NCN</span>
-          <span class="judgment-metadata-panel__value">{{ judgment.best_human_identifier }}</span>
-        </li>
-        <li>
-          <span class="judgment-metadata-panel__key">Court</span>
-          <span class="judgment-metadata-panel__value">{{ judgment.court }}</span>
-        </li>
-        <li>
-          <span class="judgment-metadata-panel__key">Name</span>
-          <span class="judgment-metadata-panel__value">{{ judgment.name }}</span>
-        </li>
-      </ul>
-      <ul class="judgment-metadata-panel__secondary-details">
-        <li>
-          <span class="judgment-metadata-panel__key">
-            {% if document_type == "judgment" %}
-              Judgment date
-            {% else %}
-              Publication date
-            {% endif %}
-          </span>
-          <time class="judgment-metadata-panel__value"
-                datetime="{{ judgment.document_date_as_string }}">{{ judgment.document_date_as_string }}</time>
-        </li>
-        <li>
-          <span class="judgment-metadata-panel__key">Type</span>
-          <span class="judgment-metadata-panel__value">{{ judgment.document_noun|title }}</span>
-        </li>
-        <li>
-          <span class="judgment-metadata-panel__key">TDR ref</span>
-          <span class="judgment-metadata-panel__value">{{ judgment.consignment_reference }}</span>
-        </li>
-      </ul>
-    </div>
+  <div class="judgment-metadata-panel">
+    <ul class="judgment-metadata-panel__primary-details">
+      <li>
+        <span class="judgment-metadata-panel__key">NCN</span>
+        <span class="judgment-metadata-panel__value">{{ judgment.best_human_identifier }}</span>
+      </li>
+      <li>
+        <span class="judgment-metadata-panel__key">Court</span>
+        <span class="judgment-metadata-panel__value">{{ judgment.court }}</span>
+      </li>
+      <li>
+        <span class="judgment-metadata-panel__key">Name</span>
+        <span class="judgment-metadata-panel__value">{{ judgment.name }}</span>
+      </li>
+    </ul>
+    <ul class="judgment-metadata-panel__secondary-details">
+      <li>
+        <span class="judgment-metadata-panel__key">
+          {% if document_type == "judgment" %}
+            Judgment date
+          {% else %}
+            Publication date
+          {% endif %}
+        </span>
+        <time class="judgment-metadata-panel__value"
+              datetime="{{ judgment.document_date_as_string }}">{{ judgment.document_date_as_string }}</time>
+      </li>
+      <li>
+        <span class="judgment-metadata-panel__key">Type</span>
+        <span class="judgment-metadata-panel__value">{{ judgment.document_noun|title }}</span>
+      </li>
+      <li>
+        <span class="judgment-metadata-panel__key">TDR ref</span>
+        <span class="judgment-metadata-panel__value">{{ judgment.consignment_reference }}</span>
+      </li>
+    </ul>
   </div>
 </div>

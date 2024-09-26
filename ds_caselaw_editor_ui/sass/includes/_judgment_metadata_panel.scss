@@ -2,8 +2,9 @@
   display: flex;
   gap: $space-4;
   flex-direction: row;
-  padding: 0 $space-2;
+  padding: $space-4 $space-2 0;
   border-bottom: 1px solid $color-almost-black;
+  border-top: 1px solid $color-almost-black;
 
   &__primary-details {
     flex: 60%;
