@@ -16,11 +16,17 @@ class TestStatusTagColour:
     def test_colour_in_progress(self):
         assert status_tag(DOCUMENT_STATUS_IN_PROGRESS) == "in-progress"
 
+    def test_colour_in_progress_editor_status(self):
+        assert status_tag("In Progress") == "in-progress"
+
     def test_colour_published(self):
         assert status_tag(DOCUMENT_STATUS_PUBLISHED) == "published"
 
     def test_colour_hold(self):
         assert status_tag(DOCUMENT_STATUS_HOLD) == "on-hold"
+
+    def test_colour_hold_editor_status(self):
+        assert status_tag("Hold") == "on-hold"
 
     def test_colour_new(self):
         assert status_tag(DOCUMENT_STATUS_NEW) == "new"
