@@ -75,17 +75,35 @@ def get_history_navigation_item(view, document):
     }
 
 
+def get_associated_documents_navigation_item(view, document):
+    return {
+        "id": "associated_documents",
+        "selected": view == "associated_documents",
+        "label": "Associated documents",
+        "url": get_document_url("associated-documents", document),
+    }
+
+
 @register.simple_tag(takes_context=True)
 def get_navigation_items(context):
-    view, document = context["view"], context["document"]
+    view, document, linked_document_uri = (
+        context.get("view"),
+        context.get("document"),
+        context.get("linked_document_uri"),
+    )
 
-    return [
+    base_navigation = [
         get_review_navigation_item(view, document),
         get_hold_navigation_item(view, document),
         get_publishing_navigation_item(view, document),
         get_history_navigation_item(view, document),
         get_download_navigation_item(view, document),
     ]
+
+    if linked_document_uri:
+        return [*base_navigation, get_associated_documents_navigation_item(view, document)]
+
+    return base_navigation
 
 
 @register.simple_tag(takes_context=True)

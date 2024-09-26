@@ -1,5 +1,6 @@
 from django.urls import path
 
+from judgments.views.associated_documents import AssociatedDocumentsView
 from judgments.views.delete import DeleteDocumentView, delete
 from judgments.views.enrich import enrich
 
@@ -90,6 +91,7 @@ urlpatterns = [
     path("style-guide", StyleGuide.as_view(), name="style_guide"),
     # Different views on judgments
     path("<path:document_uri>/delete", DeleteDocumentView.as_view(), name="delete-document"),
+    path("<path:document_uri>/associated-documents", AssociatedDocumentsView.as_view(), name="associated-documents"),
     path("<path:document_uri>/edit", EditJudgmentView.as_view(), name="edit-document"),
     path(
         "<path:document_uri>/history",
