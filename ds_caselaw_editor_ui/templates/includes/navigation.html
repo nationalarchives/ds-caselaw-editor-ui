@@ -2,10 +2,12 @@
 {% get_navigation_items as navigation_items %}
 <ul class="judgment-navigation">
   {% for item in navigation_items %}
-    {% if item.url %}
-      <li class="judgment-navigation__item {% if item.selected %}judgment-navigation__item--active{% endif %}">
+    <li class="judgment-navigation__item {% if item.selected %}judgment-navigation__item--active{% endif %} {% if not item.url %}judgment-navigation__item--disabled{% endif %}">
+      {% if item.url %}
         <a href="{{ item.url }}">{{ item.label }}</a>
-      </li>
-    {% endif %}
+      {% else %}
+        <span>{{ item.label }}</span>
+      {% endif %}
+    </li>
   {% endfor %}
 </ul>

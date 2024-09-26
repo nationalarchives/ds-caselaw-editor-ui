@@ -30,4 +30,8 @@
     border-bottom-color: $color-link-blue;
     font-weight: $typography-bold-font-weight;
   }
+
+  &__item--disabled {
+    color: $color-dark-grey;
+  }
 }
