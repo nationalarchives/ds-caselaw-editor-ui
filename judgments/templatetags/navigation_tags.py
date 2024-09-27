@@ -5,47 +5,38 @@ register = template.Library()
 
 
 def get_document_url(view, document):
-    return reverse(view, kwargs={"document_uri": document.uri})
+    if view:
+        return reverse(view, kwargs={"document_uri": document.uri})
+    else:
+        return None
 
 
 def get_hold_navigation_item(view, document):
-    if document.is_published:
-        return {
-            "id": "put-on-hold",
-            "selected": view == "hold_judgment",
-            "label": "Put on hold",
-        }
-    elif document.is_held:
-        return {
-            "id": "take-off-hold",
-            "selected": view == "unhold_judgment",
-            "label": "Take off hold",
-            "url": get_document_url("unhold-document", document),
-        }
-    else:
-        return {
-            "id": "put-on-hold",
-            "selected": view == "hold_judgment",
-            "label": "Put on hold",
-            "url": get_document_url("hold-document", document),
-        }
+    identifier = "take-off-hold" if document.is_held else "put-on-hold"
+    label = "Take off hold" if document.is_held else "Put on hold"
+    selected = view in ("hold_judgment", "unhold_judgment")
+    path = None if document.is_published else "unhold-document" if document.is_held else "hold-document"
+
+    return {
+        "id": identifier,
+        "selected": selected,
+        "label": label,
+        "url": get_document_url(path, document),
+    }
 
 
 def get_publishing_navigation_item(view, document):
-    if document.is_published:
-        return {
-            "id": "unpublish",
-            "selected": view == "unpublish_judgment",
-            "label": "Unpublish",
-            "url": get_document_url("unpublish-document", document),
-        }
-    else:
-        return {
-            "id": "publish",
-            "selected": view == "publish_judgment",
-            "label": "Publish",
-            "url": get_document_url("publish-document", document),
-        }
+    selected = view in ("unpublish_judgment", "publish_judgment")
+    label = "Unpublish" if document.is_published else "Publish"
+    identifier = "unpublished" if document.is_published else "publish"
+    path = "unpublish-document" if document.is_published else "publish-document"
+
+    return {
+        "id": identifier,
+        "selected": selected,
+        "label": label,
+        "url": get_document_url(path, document),
+    }
 
 
 def get_download_navigation_item(view, document):
