@@ -4,11 +4,11 @@
   border-bottom: 1px solid $color-dark-grey;
   display: flex;
   justify-content: center;
-  gap: $space-4;
+  gap: $space-10;
 
   &__item {
     all: unset;
-    padding: $space-4;
+    padding: $space-4 0;
     border-bottom: 5px solid transparent;
     font-size: $typography-md-text-size;
 
