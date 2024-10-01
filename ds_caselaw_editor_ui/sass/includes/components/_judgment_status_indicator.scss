@@ -25,12 +25,12 @@
   }
 
   &--published {
-    color: mix(black, $govuk-green, 60%);
-    background: mix(white, $govuk-green, 70%);
+    color: mix(black, $govuk-green, 20%);
+    background: mix(white, $govuk-green, 80%);
   }
 
   &--on-hold {
-    color: mix(black, $govuk-red, 60%);
-    background: mix(white, $govuk-red, 70%);
+    color: mix(black, $govuk-red, 80%);
+    background: mix(white, $govuk-red, 75%);
   }
 }
