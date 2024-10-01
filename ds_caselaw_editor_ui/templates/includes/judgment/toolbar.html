@@ -4,12 +4,11 @@
 {% include "includes/navigation.html" %}
 <div class="judgment-toolbar">
   <div class="judgment-toolbar__container container">
-    <div class="judgment-toolbar__edit">
-      {% if request.args.origin == 'results' %}
-        {% include "includes/judgment/toolbar/back_to_results_link.html" with return_link=request.args.return_link %}
-      {% endif %}
+    <div class="judgment-toolbar__info">
       {% include "includes/judgment/toolbar/submitter.html" with submitter_name=document.source_name submitter_email=document.source_email %}
       {% include "includes/judgment/toolbar/status.html" with status=document.status %}
+    </div>
+    <div class="judgment-toolbar__actions">
       {% include "includes/judgment/toolbar/create_jira_button.html" %}
       {% include "includes/judgment/toolbar/editor_tools.html" %}
     </div>
