@@ -5,18 +5,10 @@
   <div class="container">
     <h1 class="judgment-component__confirmation-title">Download documents for:</h1>
     <h2 class="judgment-component__confirmation-subtitle">{{ document.name }}</h2>
-    {% if document.docx_url %}
-      <p>
-        <a href="{{ document.docx_url }}" download>Download .DOCX</a>
-      </p>
-    {% endif %}
-    {% if document.pdf_url %}
-      <p>
-        <a href="{{ document.pdf_url }}">Download PDF</a>
-      </p>
-    {% endif %}
-    <p>
+    <div class="judgment-component__button-actions">
+      {% if document.docx_url %}<a href="{{ document.docx_url }}" download>Download .DOCX</a>{% endif %}
+      {% if document.pdf_url %}<a href="{{ document.pdf_url }}">Download PDF</a>{% endif %}
       <a href="{% url 'full-text-xml' document.uri %}">Download XML</a>
-    </p>
+    </div>
   </div>
 {% endblock content %}
