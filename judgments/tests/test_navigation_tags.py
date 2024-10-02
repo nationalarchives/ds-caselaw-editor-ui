@@ -33,9 +33,8 @@ class TestNavigationTags(TestCase):
 
         navigation_items = get_navigation_items(context)
 
-        for item in navigation_items:
-            if item["id"] == "take-off-hold":
-                assert item["url"] is None
+        assert not any(item["id"] == "take-off-hold" for item in navigation_items)
+        assert not any(item["id"] == "put-on-hold" for item in navigation_items)
 
     def test_get_navigation_items_selected_pages(self):
         judgment = JudgmentFactory.build(is_published=False)
