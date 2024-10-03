@@ -12,10 +12,13 @@ def get_document_url(view, document):
 
 
 def get_hold_navigation_item(view, document):
+    if document.is_published:
+        return None
+
     identifier = "take-off-hold" if document.is_held else "put-on-hold"
     label = "Take off hold" if document.is_held else "Put on hold"
     selected = view in ("hold_judgment", "unhold_judgment")
-    path = None if document.is_published else "unhold-document" if document.is_held else "hold-document"
+    path = "unhold-document" if document.is_held else "hold-document"
 
     return {
         "id": identifier,
@@ -91,10 +94,12 @@ def get_navigation_items(context):
         get_download_navigation_item(view, document),
     ]
 
-    if linked_document_uri:
-        return [*base_navigation, get_associated_documents_navigation_item(view, document)]
+    filtered_navigation = [item for item in base_navigation if item is not None]
 
-    return base_navigation
+    if linked_document_uri:
+        return [*filtered_navigation, get_associated_documents_navigation_item(view, document)]
+
+    return filtered_navigation
 
 
 @register.simple_tag(takes_context=True)
