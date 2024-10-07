@@ -15,20 +15,14 @@
       <input type="submit"
              name="reparse"
              class="button-cta button-small"
-             value="Reparse document" />
+             value="Reparse" />
     </form>
   {% endflag %}
   <a class="button-danger button-small"
-     href="{% url 'delete-document' document.uri %}">Delete document</a>
+     href="{% url 'delete-document' document.uri %}">Delete</a>
 {% else %}
   {% if judgment.is_failure %}
-    <form action="{% url 'delete' %}" method="post">
-      {% csrf_token %}
-      <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
-      <input type="submit"
-             name="assign"
-             class="button-danger button-small"
-             value="Delete" />
-    </form>
+    <a class="button-danger button-small"
+       href="{% url 'delete-document' document.uri %}">Delete</a>
   {% endif %}
 {% endif %}

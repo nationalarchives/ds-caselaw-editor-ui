@@ -31,7 +31,7 @@ class TestDocumentToolbar(TestCase):
             reverse("full-text-html", kwargs={"document_uri": mock_judgment.uri}),
         )
         assert b"Request enrichment" in response.content
-        assert b"Delete document" in response.content
+        assert b"Delete" in response.content
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
@@ -49,7 +49,6 @@ class TestDocumentToolbar(TestCase):
             reverse("full-text-html", kwargs={"document_uri": mock_judgment.uri}),
         )
         assert b"Request enrichment" not in response.content
-        assert b"Delete document" not in response.content
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
@@ -80,14 +79,7 @@ class TestDocumentToolbar(TestCase):
 
         decoded_response = response.content.decode("utf-8")
         delete_button_html = """
-        <form action="/delete" method="post">
-            <input type="hidden" name="csrfmiddlewaretoken" value="predicabletoken">
-            <input type="hidden" name="judgment_uri" value="failures/TDR-ref" />
-            <input type="submit"
-            name="assign"
-            class="button-danger button-small"
-            value="Delete" />
-        </form>
+        <a class="button-danger button-small" href="/failures/TDR-ref/delete">Delete</a>
         """
         assert self.preprocess_html(delete_button_html) in self.preprocess_html(
             decoded_response,
@@ -122,14 +114,7 @@ class TestDocumentToolbar(TestCase):
 
         decoded_response = response.content.decode("utf-8")
         delete_button_html = """
-        <form action="/delete" method="post">
-            <input type="hidden" name="csrfmiddlewaretoken" value="predicabletoken">
-            <input type="hidden" name="judgment_uri" value="good-document" />
-            <input type="submit"
-            name="assign"
-            class="button-secondary judgment-toolbar__delete"
-            value="Delete" />
-        </form>
+        <a class="button-danger button-small" href="/good-document/delete">Delete</a>
         """
         assert self.preprocess_html(delete_button_html) not in self.preprocess_html(
             decoded_response,

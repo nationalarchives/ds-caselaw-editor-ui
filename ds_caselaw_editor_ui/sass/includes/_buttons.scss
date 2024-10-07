@@ -54,9 +54,9 @@
 
 .button-danger {
   @include call-to-action-button;
-  background-color: $color-white;
+  background-color: $color-red;
   border: 2px solid $color-red;
-  color: $color-red;
+  color: $color-white;
 
   &:visited,
   &:focus,
