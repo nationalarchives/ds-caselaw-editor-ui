@@ -1,12 +1,11 @@
 import re
 from unittest.mock import patch
 
+from caselawclient.factories import JudgmentFactory
 from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import Group, User
 from django.test import TestCase
 from django.urls import reverse
-
-from judgments.tests.factories import JudgmentFactory
 
 
 class TestDocumentToolbar(TestCase):

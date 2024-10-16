@@ -1,6 +1,6 @@
+from caselawclient.factories import JudgmentFactory
 from django.test.client import RequestFactory
 
-from judgments.tests.factories import JudgmentFactory
 from judgments.utils.link_generators import (
     build_confirmation_email_link,
     build_email_link_with_content,

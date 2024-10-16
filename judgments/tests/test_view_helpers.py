@@ -2,10 +2,10 @@ from unittest.mock import patch
 
 import pytest
 from caselawclient.errors import DocumentNotFoundError
+from caselawclient.factories import JudgmentFactory
 from django.contrib.auth.models import Group, User
 from django.http import Http404
 from django.test import TestCase
-from factories import JudgmentFactory
 
 from judgments.utils.view_helpers import (
     get_document_by_uri_or_404,

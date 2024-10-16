@@ -1,10 +1,10 @@
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
+from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
 from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
-from factories import JudgmentFactory
 
 
 class TestDocumentHold(TestCase):
@@ -17,7 +17,7 @@ class TestDocumentHold(TestCase):
 
         judgment = JudgmentFactory.build(
             uri="holdtest/4321/123",
-            name="Test v Tested",
+            body=DocumentBodyFactory.build(name="Test v Tested"),
         )
         mock_judgment.return_value = judgment
 
@@ -38,9 +38,11 @@ class TestDocumentHold(TestCase):
     def test_document_hold_flow(self, mock_judgment, mock_invalidate_caches):
         judgment = JudgmentFactory.build(
             uri="holdtest/4321/123",
-            name="Hold Test",
+            body=DocumentBodyFactory.build(name="Hold Test"),
             is_published=False,
         )
+        judgment.hold = Mock()  # type: ignore[method-assign]
+        judgment.unhold = Mock()  # type: ignore[method-assign]
         mock_judgment.return_value = judgment
 
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
@@ -75,7 +77,7 @@ class TestDocumentHold(TestCase):
 
         judgment = JudgmentFactory.build(
             uri="holdtest/4321/123",
-            name="Test v Tested",
+            body=DocumentBodyFactory.build(name="Test v Tested"),
         )
         mock_judgment.return_value = judgment
 
@@ -105,7 +107,7 @@ class TestJudgmentUnhold(TestCase):
 
         judgment = JudgmentFactory.build(
             uri="unholdtest/4321/123",
-            name="Test v Tested",
+            body=DocumentBodyFactory.build(name="Test v Tested"),
         )
         mock_judgment.return_value = judgment
 
@@ -126,9 +128,11 @@ class TestJudgmentUnhold(TestCase):
     def test_document_unhold_flow(self, mock_judgment, mock_invalidate_caches):
         judgment = JudgmentFactory.build(
             uri="unholdtest/4321/123",
-            name="Unhold Test",
+            body=DocumentBodyFactory.build(name="Unhold Test"),
             is_published=False,
         )
+        judgment.unhold = Mock()
+        judgment.hold = Mock()
         mock_judgment.return_value = judgment
 
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
@@ -163,7 +167,7 @@ class TestJudgmentUnhold(TestCase):
 
         judgment = JudgmentFactory.build(
             uri="unholdtest/4321/123",
-            name="Test v Tested",
+            body=DocumentBodyFactory.build(name="Test v Tested"),
         )
         mock_judgment.return_value = judgment
 

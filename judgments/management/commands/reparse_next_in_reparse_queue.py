@@ -43,7 +43,7 @@ class Command(BaseCommand):
 
             document = api_client.get_document_by_uri(document_uri.replace(".xml", ""))
 
-            sys.stdout.write(f"Attempting to reparse document {document.name}...\n")
+            sys.stdout.write(f"Attempting to reparse document {document.body.name}...\n")
             if document.reparse():
                 sys.stdout.write("Reparse request sent.\n")
                 counter += 1

@@ -5,7 +5,7 @@
   <div class="container">
     {% if judgment.is_publishable %}
       <h1 class="judgment-component__confirmation-title">I want to publish:</h1>
-      <h2 class="judgment-component__confirmation-subtitle">{{ judgment.name }}</h2>
+      <h2 class="judgment-component__confirmation-subtitle">{{ judgment.body.name }}</h2>
       <form aria-label="publish judgment"
             action="{% url 'publish' %}"
             method="post">

@@ -12,7 +12,7 @@ def enrich(request):
 
     messages.success(
         request,
-        f"Enrichment requested for {document.name}.",
+        f"Enrichment requested for {document.body.name}.",
     )
     return HttpResponseRedirect(
         reverse("full-text-html", kwargs={"document_uri": document.uri}),

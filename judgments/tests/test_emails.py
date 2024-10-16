@@ -1,6 +1,6 @@
 from urllib.parse import parse_qs, urlparse
 
-from factories import JudgmentFactory
+from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
 
 from judgments.utils.link_generators import (
     build_confirmation_email_link,
@@ -10,8 +10,8 @@ from judgments.utils.link_generators import (
 
 def the_judgment():
     return JudgmentFactory.build(
-        name="R v G & B",
         source_name="Darwin Núñez",
+        body=DocumentBodyFactory.build(name="R v G & B"),
     )
 
 
