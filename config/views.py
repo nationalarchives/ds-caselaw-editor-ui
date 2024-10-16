@@ -1,4 +1,3 @@
-from django.utils.translation import gettext
 from django.views.generic import TemplateView
 
 
@@ -8,7 +7,7 @@ class TemplateViewWithContext(TemplateView):
     def get_context_data(self, **kwargs):
         return {
             "context": {
-                "page_title": gettext(self.page_title) if self.page_title else None,
+                "page_title": self.page_title or None,
             },
         }
 
