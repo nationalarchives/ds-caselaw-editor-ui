@@ -14,8 +14,7 @@ class DocumentReviewHTMLView(DocumentView):
         context = super().get_context_data(**kwargs)
 
         version_uri = self.request.GET.get("version_uri", None)
-
-        if not context["document"].failed_to_parse:
+        if not context["document"].body.failed_to_parse:
             context["document_html_content"] = context["document"].content_as_html(
                 version_uri=version_uri,
             )
