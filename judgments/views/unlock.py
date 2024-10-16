@@ -4,7 +4,6 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
 from django.template import loader
 from django.urls import reverse
-from django.utils.translation import gettext
 from django.views.decorators.http import require_http_methods
 
 from judgments.utils import api_client
@@ -25,7 +24,7 @@ def unlock_get(request):
     judgment_uri = request.GET["judgment_uri"]
     context = {
         "judgment_uri": judgment_uri,
-        "page_title": gettext("judgment.unlock_judgment_title"),
+        "page_title": "Unlock document",
     }
     template = loader.get_template("judgment/confirm-unlock.html")
     return HttpResponse(template.render(context, request))
