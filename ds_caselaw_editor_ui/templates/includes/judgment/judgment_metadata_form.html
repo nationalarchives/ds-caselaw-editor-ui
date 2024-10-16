@@ -31,7 +31,7 @@
             <label for="judgment_date" class="metadata-component__main-labels">Judgment date</label>
             <input type="text"
                    class="metadata-component__judgment_date-input"
-                   value="{{ judgment.document_date_as_date | date:'j M Y' }}"
+                   value="{{ judgment.body.document_date_as_date | date:'j M Y' }}"
                    name="judgment_date"
                    id="judgment_date" />
           </div>
