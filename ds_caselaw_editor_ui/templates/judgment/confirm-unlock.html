@@ -7,8 +7,8 @@
       <form method="post">
         {% csrf_token %}
         <input type="hidden" name="judgment_uri" value="{{ judgment_uri }}" />
-        <button class="button-cta" type="submit">{% translate "judgment.unlock_judgment_title" %}</button>
-        <span class="judgment-component__back-button"><a href="{% url 'full-text-html' judgment_uri %}">{% translate "judgment.back_to_judgment" %}</a></span>
+        <button class="button-cta" type="submit">Unlock document</button>
+        <span class="judgment-component__back-button"><a href="{% url 'full-text-html' judgment_uri %}">Back to document</a></span>
       </form>
     </div>
   </div>
