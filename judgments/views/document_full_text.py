@@ -58,7 +58,7 @@ class DocumentReviewPDFView(DocumentView):
 
 def xml_view(request, document_uri):
     document = get_document_by_uri_or_404(document_uri)
-    document_xml = document.content_as_xml
+    document_xml = document.body.content_as_xml
 
     response = HttpResponse(document_xml, content_type="application/xml")
     response["Content-Disposition"] = f"attachment; filename={document.uri}.xml"
