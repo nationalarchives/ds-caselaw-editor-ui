@@ -77,12 +77,14 @@ def update_document_uri(old_uri, new_citation):
     Move the document at old_uri to the correct location based on the neutral citation
     The new neutral citation *must* not already exist (that is handled elsewhere)
     """
-    new_uri = caselawutils.neutral_url(new_citation.strip())
-    if new_uri is None:
+    new_uri_raw = caselawutils.neutral_url(new_citation.strip())
+    if new_uri_raw is None:
         msg = f"Unable to form new URI for {old_uri} from neutral citation: {new_citation}"
         raise NeutralCitationToUriError(
             msg,
         )
+
+    new_uri = DocumentURIString(new_uri_raw)
 
     if api_client.document_exists(new_uri):
         msg = f"The URI {new_uri} generated from {new_citation} already exists, you cannot move this document to a pre-existing Neutral Citation Number."
