@@ -1,10 +1,11 @@
 from unittest.mock import patch
 
 import pytest
+from caselawclient.factories import DocumentBodyFactory, JudgmentFactory, PressSummaryFactory
 from django.http import Http404
 from django.test import Client, TestCase
 
-from judgments.tests.factories import JudgmentFactory, User
+from judgments.tests.factories import User
 
 
 @pytest.mark.django_db
@@ -88,11 +89,13 @@ class TestBreadcrumbs(TestCase):
         """
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
         mock_get_linked_document_uri.return_value = "my_related_document_uri"
-        mock_get_document_by_uri.return_value = JudgmentFactory.build(
+        judgment = PressSummaryFactory.build(
             uri="/eat/2023/1/press-summary/1/",
-            name="Press Summary of Judgment A",
             document_noun="press summary",
+            body=DocumentBodyFactory.build(name="Press Summary of Judgment A"),
         )
+
+        mock_get_document_by_uri.return_value = judgment
         response = self.client.get("/eat/2023/1/press-summary/1/")
         breadcrumb_html = """
         <nav class="page-header__breadcrumbs-container" aria-label="Breadcrumb">
@@ -126,8 +129,8 @@ class TestBreadcrumbs(TestCase):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
         mock_get_document_by_uri.return_value = JudgmentFactory.build(
             uri="/eat/2023/1",
-            name="Judgment A",
             document_noun="judgment",
+            body=DocumentBodyFactory.build(name="Judgment A"),
         )
         response = self.client.get("/eat/2023/1")
         breadcrumb_html = """
@@ -156,11 +159,13 @@ class TestBreadcrumbs(TestCase):
         THEN the response should contain breadcrumbs including the `[Untitled Document]`
         """
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
-        mock_get_document_by_uri.return_value = JudgmentFactory.build(
+        judgment = JudgmentFactory.build(
             uri="/eat/2023/1",
             name="",
             document_noun="judgment",
         )
+        judgment.body.name = ""
+        mock_get_document_by_uri.return_value = judgment
         response = self.client.get("/eat/2023/1")
         breadcrumb_html = """
         <nav class="page-header__breadcrumbs-container" aria-label="Breadcrumb">
@@ -171,8 +176,7 @@ class TestBreadcrumbs(TestCase):
                 </li>
                 <li>[Untitled Document]</li>
             </ol>
-        </nav>
-        """
+        </nav>"""
         self.assertContains(response, breadcrumb_html, html=True)
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")

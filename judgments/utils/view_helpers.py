@@ -89,7 +89,7 @@ class DocumentView(TemplateView):
         # TODO: Remove this once we fully deprecate 'judgment' contexts
         context["judgment"] = document
 
-        context["page_title"] = document.name
+        context["page_title"] = document.body.name
         context["courts"] = caselawutils.courts.get_all(with_jurisdictions=True)
 
         context["editors"] = editors_dict()

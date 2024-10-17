@@ -1,11 +1,11 @@
 from unittest.mock import patch
 from urllib.parse import urlencode
 
+from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
 from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
-from factories import JudgmentFactory
 
 
 class TestJudgmentView(TestCase):
@@ -18,8 +18,8 @@ class TestJudgmentView(TestCase):
 
         judgment = JudgmentFactory.build(
             uri="hvtest/4321/123",
-            name="Test v Tested",
             html="<h1>Test Judgment</h1>",
+            body=DocumentBodyFactory.build(name="Test v Tested"),
         )
         mock_judgment.return_value = judgment
 
@@ -51,9 +51,11 @@ class TestJudgmentView(TestCase):
         judgment = JudgmentFactory.build(
             uri="hvtest/4321/123",
             html="<h1>Test Judgment</h1>",
-            xml="<error>Error log</error>",
-            failed_to_parse=True,
+            body=DocumentBodyFactory.build(html="<h1>Test Judgment</h1>", xml_string="<error>Error log</error>"),
         )
+
+        assert judgment.body.failed_to_parse
+
         mock_judgment.return_value = judgment
 
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
