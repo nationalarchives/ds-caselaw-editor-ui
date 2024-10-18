@@ -5,4 +5,6 @@
 <p>
   Use with <code>include "includes/judgment/toolbar.html"</code>
 </p>
-<div class="style-guide__component-wrapper--large">{% include "includes/judgment/toolbar.html" %}</div>
+<div class="style-guide__component-wrapper--large">
+  {% include "includes/judgment/toolbar.html" with document=judgment %}
+</div>
