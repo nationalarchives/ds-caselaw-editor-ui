@@ -1,10 +1,10 @@
 import re
 from unittest.mock import patch
 
+from caselawclient.factories import SearchResultFactory, SearchResultMetadataFactory
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
-from factories import SearchResultFactory, SearchResultMetadataFactory
 
 
 def assert_match(regex, string):
@@ -65,7 +65,6 @@ class TestJudgmentView(TestCase):
         response = self.client.get(reverse("home"))
 
         decoded_response = response.content.decode("utf-8")
-
         assert "Test Judgment 1" in decoded_response
         assert "Author One" in decoded_response
         assert "TDR-2023-AB1" in decoded_response
