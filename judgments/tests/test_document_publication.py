@@ -17,7 +17,7 @@ class TestJudgmentPublish(TestCase):
 
         judgment = JudgmentFactory.build(
             uri="pubtest/4321/123",
-            name="Test v Tested",
+            body=DocumentBodyFactory.build(name="Test v Tested"),
         )
         mock_judgment.return_value = judgment
 
@@ -42,9 +42,11 @@ class TestJudgmentPublish(TestCase):
     ):
         judgment = JudgmentFactory.build(
             uri="pubtest/4321/123",
-            name="Publication Test",
+            body=DocumentBodyFactory.build(name="Publication Test"),
             is_published=False,
         )
+        judgment.publish = Mock()
+        judgment.unpublish = Mock()
         mock_judgment.return_value = judgment
 
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
@@ -79,7 +81,7 @@ class TestJudgmentPublish(TestCase):
 
         judgment = JudgmentFactory.build(
             uri="pubtest/4321/123",
-            name="Test v Tested",
+            body=DocumentBodyFactory.build(name="Test v Tested"),
         )
         mock_judgment.return_value = judgment
 
