@@ -1,5 +1,6 @@
 from unittest.mock import patch
 
+import lxml.html
 from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
 from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
@@ -28,5 +29,8 @@ class TestMetadataPanel(TestCase):
             reverse("full-text-html", kwargs={"document_uri": judgment.uri}),
         )
 
+        root = lxml.html.fromstring(response.content)
+
         assert b'<input type="hidden" name="judgment_uri" value="hvtest/4321/123" />' in response.content
+        assert root.xpath("//textarea[@class='metadata-component__metadata_name-input']")[0].text == "Test v Tested"
         assert response.status_code == 200
