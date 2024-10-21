@@ -4,7 +4,7 @@
   {% include "includes/judgment/metadata_panel_static.html" with judgment=document %}
   <div class="container">
     <h1 class="judgment-component__confirmation-title">Download documents for:</h1>
-    <h2 class="judgment-component__confirmation-subtitle">{{ document.name }}</h2>
+    <h2 class="judgment-component__confirmation-subtitle">{{ document.body.name }}</h2>
     <div class="judgment-component__button-actions">
       {% if document.docx_url %}<a href="{{ document.docx_url }}" download>Download .DOCX</a>{% endif %}
       {% if document.pdf_url %}<a href="{{ document.pdf_url }}">Download PDF</a>{% endif %}
