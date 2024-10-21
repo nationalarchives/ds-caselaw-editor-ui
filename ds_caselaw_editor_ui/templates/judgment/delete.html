@@ -5,7 +5,7 @@
   {% include "includes/judgment/metadata_panel_static.html" with judgment=judgment %}
   <div class="container">
     <h1 class="judgment-component__confirmation-title">I want to delete:</h1>
-    <h2 class="judgment-component__confirmation-subtitle">{{ judgment.name }}</h2>
+    <h2 class="judgment-component__confirmation-subtitle">{{ judgment.body.name }}</h2>
     <form action="{% url 'delete' %}" method="post">
       {% csrf_token %}
       <div class="judgment-component__actions">
