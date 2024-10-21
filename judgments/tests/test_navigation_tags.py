@@ -1,5 +1,5 @@
+from caselawclient.factories import JudgmentFactory
 from django.test import TestCase
-from factories import JudgmentFactory
 
 from judgments.templatetags.navigation_tags import get_navigation_items
 
@@ -17,7 +17,7 @@ class TestNavigationTags(TestCase):
 
         assert navigation_items == [
             {"id": "review", "selected": True, "label": "Review", "url": "/test/2023/123"},
-            {"id": "take-off-hold", "selected": False, "label": "Take off hold", "url": "/test/2023/123/unhold"},
+            {"id": "put-on-hold", "selected": False, "label": "Put on hold", "url": "/test/2023/123/hold"},
             {"id": "publish", "selected": False, "label": "Publish", "url": "/test/2023/123/publish"},
             {"id": "history", "selected": False, "label": "History", "url": "/test/2023/123/history"},
             {"id": "downloads", "selected": False, "label": "Downloads", "url": "/test/2023/123/downloads"},
