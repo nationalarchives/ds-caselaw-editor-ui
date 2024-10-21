@@ -1,10 +1,10 @@
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
+from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
 from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
-from factories import JudgmentFactory
 
 
 class TestJudgmentPublish(TestCase):
@@ -114,7 +114,7 @@ class TestJudgmentUnpublish(TestCase):
 
         judgment = JudgmentFactory.build(
             uri="pubtest/4321/123",
-            name="Test v Tested",
+            body=DocumentBodyFactory.build(name="Test v Tested"),
         )
         mock_judgment.return_value = judgment
 
@@ -138,9 +138,11 @@ class TestJudgmentUnpublish(TestCase):
     def test_document_unpublish_flow(self, mock_judgment, mock_invalidate_caches):
         judgment = JudgmentFactory.build(
             uri="pubtest/4321/123",
-            name="Publication Test",
+            body=DocumentBodyFactory.build(name="Publication Test"),
             is_published=True,
         )
+        judgment.publish = Mock()
+        judgment.unpublish = Mock()
         mock_judgment.return_value = judgment
 
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
@@ -175,7 +177,7 @@ class TestJudgmentUnpublish(TestCase):
 
         judgment = JudgmentFactory.build(
             uri="pubtest/4321/123",
-            name="Test v Tested",
+            body=DocumentBodyFactory.build(name="Test v Tested"),
         )
         mock_judgment.return_value = judgment
 

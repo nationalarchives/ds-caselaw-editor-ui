@@ -1,9 +1,9 @@
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
+from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
 from django.contrib.auth.models import Group, User
 from django.test import TestCase
 from django.urls import reverse
-from factories import JudgmentFactory
 
 
 class TestDocumentDelete(TestCase):
@@ -21,10 +21,11 @@ class TestDocumentDelete(TestCase):
     def test_document_delete_flow_if_safe(self, mock_document, mock_invalidate_caches):
         document = JudgmentFactory.build(
             uri="deltest/4321/123",
-            name="Hold Test",
+            body=DocumentBodyFactory.build(name="Hold Test"),
             is_published=False,
             safe_to_delete=True,
         )
+        document.delete = Mock()
         mock_document.return_value = document
 
         self.client.force_login(self.editor_user)
@@ -38,6 +39,7 @@ class TestDocumentDelete(TestCase):
 
         assert response.status_code == 302
         assert response["Location"] == reverse("home")
+
         mock_document.return_value.delete.assert_called_once()
         mock_invalidate_caches.assert_called_once()
 
@@ -50,10 +52,11 @@ class TestDocumentDelete(TestCase):
     ):
         document = JudgmentFactory.build(
             uri="deltest/4321/123",
-            name="Hold Test",
+            body=DocumentBodyFactory.build(name="Hold Test"),
             is_published=False,
             safe_to_delete=True,
         )
+        document.delete = Mock()
         mock_document.return_value = document
 
         self.client.force_login(self.standard_user)
@@ -82,6 +85,7 @@ class TestDocumentDelete(TestCase):
             is_published=True,
             safe_to_delete=False,
         )
+        document.delete = Mock()
         mock_document.return_value = document
 
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
