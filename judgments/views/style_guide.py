@@ -1,6 +1,5 @@
+from caselawclient.factories import JudgmentFactory, SearchResultFactory
 from django.views.generic import TemplateView
-
-from judgments.tests.factories import SearchResultFactory
 
 
 class StyleGuide(TemplateView):
@@ -8,10 +7,7 @@ class StyleGuide(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        judgment = SearchResultFactory.build()
-        context["judgment"] = judgment
-        judgment_failed_to_parse = SearchResultFactory.build(failed_to_parse=True)
-        judgment_on_hold = SearchResultFactory.build(metadata={"editor_hold": "true"})
+
         context["tabs"] = [
             {
                 "selected": True,
@@ -24,8 +20,14 @@ class StyleGuide(TemplateView):
                 "url": "#second-tab",
             },
         ]
-        context["judgments"] = [judgment, judgment_failed_to_parse, judgment_on_hold]
-        context["document"] = judgment
+        context["search_judgments"] = [
+            SearchResultFactory.build(),
+            SearchResultFactory.build(failed_to_parse=True),
+            SearchResultFactory.build(metadata={"editor_hold": "true"}),
+        ]
+
+        context["judgment"] = JudgmentFactory.build()
+
         context["menu_items"] = [
             {"label": "Colours", "href": "#colours"},
             {

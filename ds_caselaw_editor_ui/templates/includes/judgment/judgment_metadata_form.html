@@ -19,7 +19,7 @@
             <label for="court" class="metadata-component__main-labels">Court</label>
             <input type="text"
                    class="metadata-component__court-input"
-                   value="{{ judgment.court_and_jurisdiction_identifier_string }}"
+                   value="{{ judgment.body.court_and_jurisdiction_identifier_string }}"
                    name="court"
                    id="court"
                    list="court-ids" />
@@ -31,7 +31,7 @@
             <label for="judgment_date" class="metadata-component__main-labels">Judgment date</label>
             <input type="text"
                    class="metadata-component__judgment_date-input"
-                   value="{{ judgment.document_date_as_date | date:'j M Y' }}"
+                   value="{{ judgment.body.document_date_as_date | date:'j M Y' }}"
                    name="judgment_date"
                    id="judgment_date" />
           </div>
@@ -41,7 +41,7 @@
           <textarea class="metadata-component__metadata_name-input"
                     name="metadata_name"
                     id="metadata_name"
-                    rows="2">{{ judgment.name }}</textarea>
+                    rows="2">{{ judgment.body.name }}</textarea>
         </div>
       </div>
       <div class="metadata-component__right-column">

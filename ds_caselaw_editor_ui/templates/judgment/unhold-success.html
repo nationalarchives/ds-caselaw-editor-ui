@@ -4,7 +4,7 @@
   {% load i18n %}
   <div class="container">
     <h1 class="judgment-component__confirmation-title">Confirmation this has been taken off hold:</h1>
-    <h2 class="judgment-component__confirmation-subtitle">{{ judgment.name }}</h2>
+    <h2 class="judgment-component__confirmation-subtitle">{{ judgment.body.name }}</h2>
     <div class="judgment-component__button-actions">
       <a href="{% url 'home' %}">Go back to unpublished documents</a>
     </div>

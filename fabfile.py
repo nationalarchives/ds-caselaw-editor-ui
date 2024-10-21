@@ -139,6 +139,25 @@ def sh(c):
 
 
 @task
+def type(c):  # noqa: A001
+    """
+    Run python tests in the web container
+    """
+    # Static analysis
+    subprocess.run(
+        [
+            "docker",
+            "compose",
+            "exec",
+            "django",
+            "mypy",
+            "ds_caselaw_editor_ui",
+            "judgments",
+        ],
+    )
+
+
+@task
 def test(c):
     """
     Run python tests in the web container
