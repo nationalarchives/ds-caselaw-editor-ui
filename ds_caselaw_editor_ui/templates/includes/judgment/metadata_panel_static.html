@@ -8,11 +8,11 @@
       </li>
       <li>
         <span class="judgment-metadata-panel__key">Court</span>
-        <span class="judgment-metadata-panel__value">{{ judgment.court }}</span>
+        <span class="judgment-metadata-panel__value">{{ judgment.body.court }}</span>
       </li>
       <li>
         <span class="judgment-metadata-panel__key">Name</span>
-        <span class="judgment-metadata-panel__value">{{ judgment.name }}</span>
+        <span class="judgment-metadata-panel__value">{{ judgment.body.name }}</span>
       </li>
     </ul>
     <ul class="judgment-metadata-panel__secondary-details">
@@ -25,7 +25,7 @@
           {% endif %}
         </span>
         <time class="judgment-metadata-panel__value"
-              datetime="{{ judgment.document_date_as_string }}">{{ judgment.document_date_as_string }}</time>
+              datetime="{{ judgment.document_date_as_string }}">{{ judgment.body.document_date_as_string }}</time>
       </li>
       <li>
         <span class="judgment-metadata-panel__key">Type</span>
