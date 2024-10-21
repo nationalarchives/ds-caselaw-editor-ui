@@ -1,9 +1,9 @@
 from unittest.mock import call, patch
 
 import pytest
+from caselawclient.factories import DocumentFactory
 from django.core.management import call_command
 from django.test import TestCase
-from factories import DocumentFactory
 
 
 class CommandsTestCase(TestCase):

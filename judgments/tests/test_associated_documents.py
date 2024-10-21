@@ -1,10 +1,10 @@
 from unittest.mock import patch
 
+from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
 from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
-from factories import JudgmentFactory
 
 
 class TestAssociatedDocuments(TestCase):
@@ -17,7 +17,7 @@ class TestAssociatedDocuments(TestCase):
 
         judgment = JudgmentFactory.build(
             uri="associateddocumentstest/4321/123",
-            name="Test v Tested",
+            body=DocumentBodyFactory.build(name="Test v Tested"),
         )
         mock_judgment.return_value = judgment
 
