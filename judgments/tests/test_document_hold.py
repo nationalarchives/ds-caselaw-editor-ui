@@ -36,13 +36,8 @@ class TestDocumentHold(TestCase):
     @patch("judgments.views.judgment_hold.invalidate_caches")
     @patch("judgments.views.judgment_hold.get_document_by_uri_or_404")
     def test_document_hold_flow(self, mock_judgment, mock_invalidate_caches):
-        judgment = JudgmentFactory.build(
-            uri="holdtest/4321/123",
-            body=DocumentBodyFactory.build(name="Hold Test"),
-            is_published=False,
-        )
-        judgment.hold = Mock()  # type: ignore[method-assign]
-        judgment.unhold = Mock()  # type: ignore[method-assign]
+        judgment = Mock()
+        judgment.uri = "a uri"
         mock_judgment.return_value = judgment
 
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
@@ -126,13 +121,8 @@ class TestJudgmentUnhold(TestCase):
     @patch("judgments.views.judgment_hold.invalidate_caches")
     @patch("judgments.views.judgment_hold.get_document_by_uri_or_404")
     def test_document_unhold_flow(self, mock_judgment, mock_invalidate_caches):
-        judgment = JudgmentFactory.build(
-            uri="unholdtest/4321/123",
-            body=DocumentBodyFactory.build(name="Unhold Test"),
-            is_published=False,
-        )
-        judgment.unhold = Mock()
-        judgment.hold = Mock()
+        judgment = Mock()
+        judgment.uri = "a uri"
         mock_judgment.return_value = judgment
 
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])

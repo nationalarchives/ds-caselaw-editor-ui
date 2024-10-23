@@ -40,13 +40,8 @@ class TestJudgmentPublish(TestCase):
         mock_judgment,
         mock_invalidate_caches,
     ):
-        judgment = JudgmentFactory.build(
-            uri="pubtest/4321/123",
-            body=DocumentBodyFactory.build(name="Publication Test"),
-            is_published=False,
-        )
-        judgment.publish = Mock()
-        judgment.unpublish = Mock()
+        judgment = Mock()
+        judgment.uri = "pubtest/4321/123"
         mock_judgment.return_value = judgment
 
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
@@ -138,13 +133,8 @@ class TestJudgmentUnpublish(TestCase):
     @patch("judgments.views.judgment_publish.invalidate_caches")
     @patch("judgments.views.judgment_publish.get_document_by_uri_or_404")
     def test_document_unpublish_flow(self, mock_judgment, mock_invalidate_caches):
-        judgment = JudgmentFactory.build(
-            uri="pubtest/4321/123",
-            body=DocumentBodyFactory.build(name="Publication Test"),
-            is_published=True,
-        )
-        judgment.publish = Mock()
-        judgment.unpublish = Mock()
+        judgment = Mock()
+        judgment.uri = "pubtest/4321/123"
         mock_judgment.return_value = judgment
 
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])

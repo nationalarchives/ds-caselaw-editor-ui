@@ -1,7 +1,6 @@
-from unittest.mock import call, patch
+from unittest.mock import Mock, call, patch
 
 import pytest
-from caselawclient.factories import DocumentFactory
 from django.core.management import call_command
 from django.test import TestCase
 
@@ -20,8 +19,8 @@ class CommandsTestCase(TestCase):
             ["/test/456.xml", None, None],
         ]
 
-        document_1 = DocumentFactory.build()
-        document_2 = DocumentFactory.build()
+        document_1 = Mock()
+        document_2 = Mock()
 
         mock_api_client.get_document_by_uri.side_effect = [document_1, document_2]
 
@@ -47,8 +46,8 @@ class CommandsTestCase(TestCase):
             ["/test/456.xml", None, None],
         ]
 
-        document_1 = DocumentFactory.build()
-        document_2 = DocumentFactory.build()
+        document_1 = Mock()
+        document_2 = Mock()
 
         mock_api_client.get_document_by_uri.side_effect = [document_1, document_2]
 
