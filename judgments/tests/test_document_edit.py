@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
 import lxml.html
-from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
+from caselawclient.factories import DocumentBodyFactory, JudgmentFactory, PressSummaryFactory
 from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
 from django.test import TestCase
@@ -139,7 +139,7 @@ class TestDocumentBadURIWarning(TestCase):
     @patch("judgments.views.judgment_edit.update_document_uri")
     @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
     def test_update_uri_not_called_for_press_summary(self, mock_judgment, update_document_uri, api_client):
-        judgment = JudgmentFactory.build(
+        judgment = PressSummaryFactory.build(
             uri="uksc/4321/123",
             name="Test v Tested",
             neutral_citation="[1234] UKSC 321",
