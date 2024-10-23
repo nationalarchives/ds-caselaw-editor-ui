@@ -120,7 +120,6 @@ class TestDocumentBadURIWarning(TestCase):
             neutral_citation="[1234] UKSC 321",
             best_human_identifier="[1234] UKSC 321",
         )
-        judgment.document_noun = "judgment"
 
         mock_judgment.return_value = judgment
 
@@ -146,7 +145,6 @@ class TestDocumentBadURIWarning(TestCase):
             neutral_citation="[1234] UKSC 321",
             best_human_identifier="[1234] UKSC 321",
         )
-        judgment.document_noun = "press-summary"
 
         mock_judgment.return_value = judgment
 
