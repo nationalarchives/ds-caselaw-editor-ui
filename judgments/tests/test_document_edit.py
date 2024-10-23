@@ -1,11 +1,11 @@
 from unittest.mock import patch
 
 import lxml.html
+from caselawclient.factories import DocumentBodyFactory, JudgmentFactory, PressSummaryFactory
 from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
 from django.test import TestCase
 from django.urls import reverse
-from factories import JudgmentFactory
 
 
 class TestDocumentEdit(TestCase):
@@ -91,10 +91,10 @@ class TestDocumentBadURIWarning(TestCase):
     def test_bad_ncn_has_banner(self, linked_document_uri, mock_judgment):
         judgment = JudgmentFactory.build(
             uri="uksc/1234/123",
-            neutral_citation="[1234] UKSC 321",
-            best_human_identifier="[1234] UKSC 321",
-            name="Test v Tested",
+            neutral_citation="[1234] UKSC 999",
+            body=DocumentBodyFactory.build(name="Test v Tested"),
         )
+
         mock_judgment.return_value = judgment
 
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
@@ -107,7 +107,7 @@ class TestDocumentBadURIWarning(TestCase):
         message = lxml.html.tostring(root.xpath("//div[@class='page-notification--warning']")[0])
         assert b"Document URI/NCN mismatch" in message
         assert b'This document is located at <a href="/uksc/1234/123">' in message
-        assert b'but has an NCN of <a href="/uksc/1234/321">' in message
+        assert b'but has an NCN of <a href="/uksc/1234/999">' in message
         assert b'<input type="hidden" name="judgment_uri" value="uksc/1234/123">' in message
 
     @patch("judgments.views.judgment_edit.api_client")
@@ -120,7 +120,6 @@ class TestDocumentBadURIWarning(TestCase):
             neutral_citation="[1234] UKSC 321",
             best_human_identifier="[1234] UKSC 321",
         )
-        judgment.document_noun = "judgment"
 
         mock_judgment.return_value = judgment
 
@@ -140,13 +139,12 @@ class TestDocumentBadURIWarning(TestCase):
     @patch("judgments.views.judgment_edit.update_document_uri")
     @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
     def test_update_uri_not_called_for_press_summary(self, mock_judgment, update_document_uri, api_client):
-        judgment = JudgmentFactory.build(
+        judgment = PressSummaryFactory.build(
             uri="uksc/4321/123",
             name="Test v Tested",
             neutral_citation="[1234] UKSC 321",
             best_human_identifier="[1234] UKSC 321",
         )
-        judgment.document_noun = "press-summary"
 
         mock_judgment.return_value = judgment
 

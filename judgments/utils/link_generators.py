@@ -34,7 +34,7 @@ def build_confirmation_email_link(
     subject_string = f"Notification of publication [TDR ref: {document.consignment_reference}]"
 
     email_context = {
-        "judgment_name": document.name,
+        "judgment_name": document.body.name,
         "reference": document.consignment_reference,
         "public_judgment_url": document.public_uri,
         "submitter": document.source_name,
@@ -59,7 +59,7 @@ def build_raise_issue_email_link(
 ) -> str:
     subject_string = f"Issue(s) found with {document.consignment_reference}"
     email_context = {
-        "judgment_name": document.name,
+        "judgment_name": document.body.name,
         "reference": document.consignment_reference,
         "public_judgment_url": document.public_uri,
         "user_signature": signature,
@@ -79,7 +79,7 @@ def build_raise_issue_email_link(
 
 
 def build_jira_create_link(document: Document, request: HttpRequest) -> str:
-    summary_string = f"{document.name} / {document.best_human_identifier} / {document.consignment_reference}"
+    summary_string = f"{document.body.name} / {document.best_human_identifier} / {document.consignment_reference}"
 
     editor_html_url = request.build_absolute_uri(
         reverse("full-text-html", kwargs={"document_uri": document.uri}),

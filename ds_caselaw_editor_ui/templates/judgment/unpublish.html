@@ -4,7 +4,7 @@
   {% include "includes/judgment/metadata_panel_static.html" with judgment=judgment %}
   <div class="container">
     <h1 class="judgment-component__confirmation-title">I want to unpublish:</h1>
-    <h2 class="judgment-component__confirmation-subtitle">{{ judgment.name }}</h2>
+    <h2 class="judgment-component__confirmation-subtitle">{{ judgment.body.name }}</h2>
     <form action="{% url 'unpublish' %}" method="post">
       {% csrf_token %}
       <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />

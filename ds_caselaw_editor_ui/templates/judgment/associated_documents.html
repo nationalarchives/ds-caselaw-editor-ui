@@ -3,7 +3,7 @@
   {% include "includes/judgment/metadata_panel_static.html" with judgment=document %}
   <div class="container">
     <h1 class="judgment-component__confirmation-title">Associated documents for:</h1>
-    <h2 class="judgment-component__confirmation-subtitle">{{ document.name }}</h2>
+    <h2 class="judgment-component__confirmation-subtitle">{{ document.body.name }}</h2>
     <p>
       <a href="{% url 'full-text-html' linked_document_uri %}">
         {% if document_type == "press_summary" %}

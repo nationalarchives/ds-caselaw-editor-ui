@@ -1,9 +1,8 @@
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from django.contrib.auth.models import Group, User
 from django.test import TestCase
 from django.urls import reverse
-from factories import JudgmentFactory
 
 
 class TestDocumentDelete(TestCase):
@@ -19,12 +18,8 @@ class TestDocumentDelete(TestCase):
     @patch("judgments.views.delete.invalidate_caches")
     @patch("judgments.views.delete.get_document_by_uri_or_404")
     def test_document_delete_flow_if_safe(self, mock_document, mock_invalidate_caches):
-        document = JudgmentFactory.build(
-            uri="deltest/4321/123",
-            name="Hold Test",
-            is_published=False,
-            safe_to_delete=True,
-        )
+        document = Mock()
+        document.safe_to_delete = True
         mock_document.return_value = document
 
         self.client.force_login(self.editor_user)
@@ -38,6 +33,7 @@ class TestDocumentDelete(TestCase):
 
         assert response.status_code == 302
         assert response["Location"] == reverse("home")
+
         mock_document.return_value.delete.assert_called_once()
         mock_invalidate_caches.assert_called_once()
 
@@ -48,12 +44,7 @@ class TestDocumentDelete(TestCase):
         mock_document,
         mock_invalidate_caches,
     ):
-        document = JudgmentFactory.build(
-            uri="deltest/4321/123",
-            name="Hold Test",
-            is_published=False,
-            safe_to_delete=True,
-        )
+        document = Mock()
         mock_document.return_value = document
 
         self.client.force_login(self.standard_user)
@@ -76,12 +67,8 @@ class TestDocumentDelete(TestCase):
         mock_document,
         mock_invalidate_caches,
     ):
-        document = JudgmentFactory.build(
-            uri="deltest/4321/123",
-            name="Hold Test",
-            is_published=True,
-            safe_to_delete=False,
-        )
+        document = Mock()
+        document.safe_to_delete = False
         mock_document.return_value = document
 
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])

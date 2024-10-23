@@ -14,11 +14,11 @@
         {% endif %}
       </span>
       <time class="judgment-metadata-panel__value"
-            datetime="{{ document.document_date_as_string }}">{{ document.document_date_as_string }}</time>
+            datetime="{{ document.body.document_date_as_string }}">{{ document.body.document_date_as_string }}</time>
     </li>
     <li>
       <span class="judgment-metadata-panel__key">{% translate "judgments.court" %}</span>
-      <span class="judgment-metadata-panel__value">{{ document.court }}</span>
+      <span class="judgment-metadata-panel__value">{{ document.body.court }}</span>
     </li>
     <li>
       <span class="judgment-metadata-panel__key">{% translate "document.type" %}</span>

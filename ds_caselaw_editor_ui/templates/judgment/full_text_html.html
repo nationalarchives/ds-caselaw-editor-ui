@@ -6,14 +6,14 @@
     {% include "includes/judgment/metadata_panel_static.html" with return_to="html" %}
   {% endif %}
   {% include "includes/judgment/view_controls.html" with selected_tab=1 %}
-  {% if document.failed_to_parse %}
+  {% if document.body.failed_to_parse %}
     <div class="container">
       <div class="page-notification--failure">This document has failed to parse.</div>
       <h2>Error log</h2>
       <pre style="white-space:pre-wrap;
                   background:#F6F6F6;
                   border:1px solid #AAA;
-                  padding:1em">{{ document.content_as_xml }}</pre>
+                  padding:1em">{{ document.body.content_as_xml }}</pre>
     </div>
   {% else %}
     {% autoescape off %}

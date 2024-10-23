@@ -1,10 +1,10 @@
 from unittest.mock import ANY, patch
 
 import pytest
+from caselawclient.factories import JudgmentFactory
 from django.contrib.auth.models import User
 from django.test import Client
 from django.urls import reverse
-from factories import JudgmentFactory
 
 
 @pytest.mark.django_db

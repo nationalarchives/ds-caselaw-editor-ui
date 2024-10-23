@@ -2,13 +2,7 @@
 <li class="judgments-list__judgment">
   <div class="judgments-list__judgment-details">
     <div class="judgments-list__judgment-details-name">
-      <a href="{% url 'full-text-html' item.uri %}">
-        {% if not item.failed_to_parse %}
-          {{ item.name | default:"[Untitled Document]" }}
-        {% else %}
-          <span class="judgments-list__failed">Failed to parse:</span> {{ item.uri }}
-        {% endif %}
-      </a>
+      <a href="{% url 'full-text-html' item.uri %}">{{ item.name | default:"[Untitled Document]" }}</a>
     </div>
     <ul class="judgments-list__judgment-details-meta">
       <li class="judgments-list__judgment-details-submitted-mobile">
