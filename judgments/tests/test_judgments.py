@@ -19,8 +19,10 @@ class TestJudgmentView(TestCase):
 
         judgment = JudgmentFactory.build(
             uri="hvtest/4321/123",
-            html="<h1>Test Judgment</h1>",
-            body=DocumentBodyFactory.build(name="Test v Tested"),
+            body=DocumentBodyFactory.build(
+                name="Test v Tested",
+                xml_string="<akomantoso>This is our test judgment.</akomantoso>",
+            ),
         )
         judgment.body.document_date_as_date = date(1999, 10, 31)
         mock_judgment.return_value = judgment
@@ -35,7 +37,7 @@ class TestJudgmentView(TestCase):
 
         decoded_response = response.content.decode("utf-8")
         assert "Test v Tested" in decoded_response
-        assert "<h1>Test Judgment</h1>" in decoded_response
+        assert "This is our test judgment." in decoded_response
         assert "31 Oct 1999" in decoded_response
         assert response.status_code == 200
 
@@ -53,8 +55,7 @@ class TestJudgmentView(TestCase):
 
         judgment = JudgmentFactory.build(
             uri="hvtest/4321/123",
-            html="<h1>Test Judgment</h1>",
-            body=DocumentBodyFactory.build(html="<h1>Test Judgment</h1>", xml_string="<error>Error log</error>"),
+            body=DocumentBodyFactory.build(xml_string="<error>Error log</error>"),
         )
 
         assert judgment.body.failed_to_parse
@@ -72,9 +73,6 @@ class TestJudgmentView(TestCase):
 
         assert "&lt;error&gt;Error log&lt;/error&gt;" in decoded_response
         assert "<error>Error log</error>" not in decoded_response
-
-        assert "&lt;h1&gt;Test Judgment&lt;/h1&gt;" not in decoded_response
-        assert "<h1>Test Judgment</h1>" not in decoded_response
 
         assert response.status_code == 200
 
