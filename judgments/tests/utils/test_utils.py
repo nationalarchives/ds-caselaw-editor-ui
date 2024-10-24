@@ -13,7 +13,7 @@ from judgments.utils import api_client as api_client_real
 from judgments.utils import (
     editors_dict,
     ensure_local_referer_url,
-    extract_version,
+    extract_version_number_from_filename,
     render_versions,
     update_document_uri,
 )
@@ -204,17 +204,17 @@ class TestReferrerUrlHelper(TestCase):
 
 
 class TestVersionUtils:
-    def test_extract_version_uri(self):
+    def test_extract_version_number_from_filename_uri(self):
         uri = "/ewhc/ch/2022/1178_xml_versions/2-1178.xml"
-        assert extract_version(uri) == 2
+        assert extract_version_number_from_filename(uri) == 2
 
-    def test_extract_version_failure(self):
+    def test_extract_version_number_from_filename_failure(self):
         uri = "/failures/TDR-2022-DBF_xml_versions/1-TDR-2022-DBF.xml"
-        assert extract_version(uri) == 1
+        assert extract_version_number_from_filename(uri) == 1
 
-    def test_extract_version_not_found(self):
+    def test_extract_version_number_from_filename_not_found(self):
         uri = "some-other-string"
-        assert extract_version(uri) == 0
+        assert extract_version_number_from_filename(uri) == 0
 
     def test_render_versions(self):
         version_parts = (

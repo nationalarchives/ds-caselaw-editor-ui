@@ -3,7 +3,7 @@ from urllib.parse import urlencode
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 
-from judgments.utils import extract_version, get_corrected_ncn_url
+from judgments.utils import extract_version_number_from_filename, get_corrected_ncn_url
 from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_404
 
 
@@ -20,7 +20,7 @@ class DocumentReviewHTMLView(DocumentView):
             )
 
         if version_uri:
-            context["version"] = extract_version(version_uri)
+            context["version"] = extract_version_number_from_filename(version_uri)
 
         context["view"] = "judgment_html"
 
@@ -46,7 +46,7 @@ class DocumentReviewPDFView(DocumentView):
         version_uri = self.request.GET.get("version_uri", None)
 
         if version_uri:
-            context["version"] = extract_version(version_uri)
+            context["version"] = extract_version_number_from_filename(version_uri)
 
         context["view"] = "judgment_pdf"
 
