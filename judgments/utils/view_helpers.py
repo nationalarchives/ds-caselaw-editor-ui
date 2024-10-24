@@ -90,7 +90,9 @@ class DocumentView(TemplateView):
 
         if version_uri:
             context["current_version_number"] = extract_version_number_from_filename(version_uri)
-            context["requested_version"] = get_document_by_uri_or_404(version_uri)
+            context["document_body"] = get_document_by_uri_or_404(version_uri).body
+        else:
+            context["document_body"] = document.body
 
         # TODO: Remove this once we fully deprecate 'judgment' contexts
         context["judgment"] = document
