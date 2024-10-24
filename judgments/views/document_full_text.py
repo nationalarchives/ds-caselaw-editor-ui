@@ -13,13 +13,7 @@ class DocumentReviewHTMLView(DocumentView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        if not context["document"].body.failed_to_parse:
-            context["document_html_content"] = context["document"].content_as_html(
-                version_uri=context["requested_version"].uri if "requested_version" in context else None,
-            )
-
         context["view"] = "judgment_html"
-
         context["corrected_ncn_url"] = get_corrected_ncn_url(context["judgment"])
 
         return context
