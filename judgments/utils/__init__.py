@@ -141,18 +141,7 @@ def set_metadata(old_uri, new_uri):
     api_client.set_boolean_property(new_uri, "published", bool(published))
 
 
-def render_versions(decoded_versions):
-    versions = [
-        {
-            "uri": part.text.rstrip(".xml"),
-            "version": extract_version(part.text),
-        }
-        for part in decoded_versions
-    ]
-    return sorted(versions, key=lambda d: -d["version"])
-
-
-def extract_version(version_string: str) -> int:
+def extract_version_number_from_filename(version_string: str) -> int:
     result = re.search(VERSION_REGEX, version_string)
     return int(result.group(1)) if result else 0
 

@@ -8,7 +8,7 @@ from caselawclient.search_parameters import SearchParameters
 from django.http import Http404
 from django.views.generic import TemplateView
 
-from judgments.utils import api_client, editors_dict, get_linked_document_uri
+from judgments.utils import api_client, editors_dict, extract_version_number_from_filename, get_linked_document_uri
 from judgments.utils.link_generators import build_jira_create_link
 from judgments.utils.paginator import paginator
 
@@ -85,6 +85,12 @@ class DocumentView(TemplateView):
         context["document_uri"] = document_uri
 
         context["document"] = document
+
+        version_uri = self.request.GET.get("version_uri", None)
+
+        if version_uri:
+            context["current_version_number"] = extract_version_number_from_filename(version_uri)
+            context["requested_version"] = get_document_by_uri_or_404(version_uri)
 
         # TODO: Remove this once we fully deprecate 'judgment' contexts
         context["judgment"] = document

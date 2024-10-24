@@ -1,5 +1,5 @@
 import os
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import MagicMock, patch
 
 import ds_caselaw_utils
 import pytest
@@ -13,8 +13,7 @@ from judgments.utils import api_client as api_client_real
 from judgments.utils import (
     editors_dict,
     ensure_local_referer_url,
-    extract_version,
-    render_versions,
+    extract_version_number_from_filename,
     update_document_uri,
 )
 from judgments.utils.aws import build_new_key, invalidate_caches
@@ -204,34 +203,17 @@ class TestReferrerUrlHelper(TestCase):
 
 
 class TestVersionUtils:
-    def test_extract_version_uri(self):
+    def test_extract_version_number_from_filename_uri(self):
         uri = "/ewhc/ch/2022/1178_xml_versions/2-1178.xml"
-        assert extract_version(uri) == 2
+        assert extract_version_number_from_filename(uri) == 2
 
-    def test_extract_version_failure(self):
+    def test_extract_version_number_from_filename_failure(self):
         uri = "/failures/TDR-2022-DBF_xml_versions/1-TDR-2022-DBF.xml"
-        assert extract_version(uri) == 1
+        assert extract_version_number_from_filename(uri) == 1
 
-    def test_extract_version_not_found(self):
+    def test_extract_version_number_from_filename_not_found(self):
         uri = "some-other-string"
-        assert extract_version(uri) == 0
-
-    def test_render_versions(self):
-        version_parts = (
-            Mock(text="/ewhc/ch/2022/1178_xml_versions/3-1178.xml"),
-            Mock(text="/ewhc/ch/2022/1178_xml_versions/2-1178.xml"),
-            Mock(text="/ewhc/ch/2022/1178_xml_versions/1-1178.xml"),
-        )
-        requests_toolbelt = Mock()
-        requests_toolbelt.multipart.decoder.BodyPart.return_value = version_parts
-
-        expected_result = [
-            {"uri": "/ewhc/ch/2022/1178_xml_versions/3-1178", "version": 3},
-            {"uri": "/ewhc/ch/2022/1178_xml_versions/2-1178", "version": 2},
-            {"uri": "/ewhc/ch/2022/1178_xml_versions/1-1178", "version": 1},
-        ]
-
-        assert render_versions(version_parts) == expected_result
+        assert extract_version_number_from_filename(uri) == 0
 
 
 class TestEditorsDict:
