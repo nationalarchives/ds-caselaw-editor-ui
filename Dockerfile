@@ -43,10 +43,8 @@ RUN addgroup --system django \
 
 # Install required system dependencies
 RUN apt-get update && apt-get install --no-install-recommends -y \
-  # psycopg2 dependencies
+  # psycopg2 dependency
   libpq-dev \
-  # Translations dependencies
-  gettext \
   curl \
   # node install
   nodejs npm \

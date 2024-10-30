@@ -6,7 +6,6 @@ from urllib.parse import quote, urlencode
 from django.conf import settings
 from django.template import loader
 from django.urls import reverse
-from django.utils.translation import gettext
 
 if TYPE_CHECKING:
     from caselawclient.models.documents import Document
@@ -92,11 +91,11 @@ def build_jira_create_link(document: Document, request: HttpRequest) -> str:
 {source_email_label}: {source_email}
 {consignment_ref_label}: {consignment_ref}""".format(
             html_url=editor_html_url,
-            source_name_label=gettext("judgments.submitter"),
+            source_name_label="Submitter",
             source_name=document.source_name,
-            source_email_label=gettext("judgments.submitteremail"),
+            source_email_label="Contact email",
             source_email=document.source_email,
-            consignment_ref_label=gettext("judgments.consignmentref"),
+            consignment_ref_label="TDR ref",
             consignment_ref=document.consignment_reference,
         ),
     )

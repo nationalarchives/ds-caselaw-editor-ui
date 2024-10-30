@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.utils.translation import gettext
 
 from judgments.utils import get_corrected_ncn_url
 from judgments.utils.aws import invalidate_caches
@@ -71,7 +70,7 @@ def unhold(request):
     judgment = get_document_by_uri_or_404(judgment_uri)
     judgment.unhold()
     invalidate_caches(judgment.uri)
-    messages.success(request, gettext("Document successfully taken off hold"))
+    messages.success(request, "Document successfully taken off hold")
     return HttpResponseRedirect(
         reverse("unhold-document-success", kwargs={"document_uri": judgment.uri}),
     )

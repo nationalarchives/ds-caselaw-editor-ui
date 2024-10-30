@@ -8,7 +8,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>
       {% if page_title %}{{ page_title }} -{% endif %}
-    {% translate "common.findcaselaw" %}</title>
+    Find and manage case law</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="{% static 'images/favicons/favicon.png' %}" />
     {% block css %}
@@ -24,7 +24,7 @@
     {% include "includes/gtm/gtm_body.html" %}
     {% include "includes/notifications.html" %}
     {% include "includes/cookie_consent/cookie_banner.html" %}
-    <a id="skip-to-main-content" href="#main-content">{% translate "skiplink" %}</a>
+    <a id="skip-to-main-content" href="#main-content">Skip to Main Content</a>
     {% include "includes/environment_banner.html" %}
     <header class="page-header">
       <div class="page-header__breadcrumbs page-header__navbar">
@@ -32,7 +32,7 @@
           <span class="page-header__breadcrumbs-you-are-in">You are in:</span>
           <ol>
             <li>
-              <a href="{% url 'home' %}">{% translate "common.findcaselaw" %}</a>
+              <a href="{% url 'home' %}">Find and manage case law</a>
             </li>
             {% block breadcrumbs %}
               {% include "includes/document_breadcrumbs.html" with title=page_title link=request.get_full_path %}
