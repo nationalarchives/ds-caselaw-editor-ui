@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<akomaNtoso xmlns="http://docs.oasis-open.org/legaldocml/ns/akn/3.0" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:uk="https://caselaw.nationalarchives.gov.uk/akn">
+  <judgment name="decision">
+    <meta>
+      <identification source="#tna">
+	<FRBRWork>
+	  <FRBRthis value="https://caselaw.nationalarchives.gov.uk/id/ewhc/ch/2023/9999"/>
+	  <FRBRuri value="https://caselaw.nationalarchives.gov.uk/id/ewhc/ch/2023/9999"/>
+	  <FRBRdate date="2023-06-05" name="decision"/>
+	  <FRBRauthor href="#"/>
+	  <FRBRcountry value="GB-UKM"/>
+	  <FRBRnumber value=""/>
+	  <FRBRname value="Sample v Judgment"/>
+	</FRBRWork>
+	<FRBRExpression>
+	  <FRBRthis value="https://caselaw.nationalarchives.gov.uk/ewhc/ch/2023/9999"/>
+	  <FRBRuri value="https://caselaw.nationalarchives.gov.uk/ewhc/ch/2023/9999"/>
+	  <FRBRdate date="2023-06-05" name="decision"/>
+	  <FRBRauthor href="#"/>
+	  <FRBRlanguage language="eng"/>
+	</FRBRExpression>
+	<FRBRManifestation>
+	  <FRBRthis value="https://caselaw.nationalarchives.gov.uk/ewhc/ch/2023/9999/data.xml"/>
+	  <FRBRuri value="https://caselaw.nationalarchives.gov.uk/ewhc/ch/2023/9999/data.xml"/>
+	  <FRBRdate date="2023-06-05T13:07:36" name="transform"/>
+	  <FRBRauthor href="#tna"/>
+	  <FRBRformat value="application/xml"/>
+	</FRBRManifestation>
+      </identification>
+      <lifecycle source="#">
+	<eventRef date="2023-06-05" refersTo="#decision" source="#"/>
+      </lifecycle>
+      <references source="#tna">
+	<TLCOrganization eId="tna" href="https://www.nationalarchives.gov.uk/" showAs="The National Archives"/>
+	<TLCEvent eId="decision" href="#" showAs="decision"/>
+      </references>
+      <proprietary source="#">
+	<uk:parser>0.14.8</uk:parser>
+	<uk:hash>376b2d62bc03ad74f3793f7b6175580eb44f9e2771e939732cf48e9000000000</uk:hash>
+	<uk:cite>[2023] EWHC 9999 (Ch)</uk:cite>
+	<uk:court>EWHC-Chancery</uk:court>
+      </proprietary>
+      <presentation source="#">
+	<html:style>
+#judgment { font-size: 11pt; font-family: Calibri, sans-serif; }
+#judgment .ListParagraph { margin-left: 0.5in; }
+#judgment .FootnoteText { font-size: 10pt; }
+#judgment .NormalWeb { font-family: 'Times New Roman'; font-size: 12pt; }
+#judgment .FootnoteTextChar { font-size: 10pt; }
+#judgment .FootnoteReference { vertical-align: super; }
+#judgment .Strong { font-weight: bold; }
+#judgment .TableGrid { }
+#judgment .TableGrid td { border: 0.5pt solid; }
+</html:style>
+      </presentation>
+    </meta>
+    <header>
+   <p>sample judgment</p>
+	 </header>
+    <judgmentBody>
+      <decision>
+			<p>sample judgment with a unique word: capybara</p>
+			<img src="cat.jpg" />
+      </decision>
+    </judgmentBody>
+  </judgment>
+</akomaNtoso>
