@@ -96,7 +96,6 @@ def run(c):
     npm_install(c)
     background_exec("npm run watch", "assets")
     django_exec("pip install -r requirements/local.txt -U")
-    django_exec("DJANGO_SETTINGS_MODULE= django-admin compilemessages")
     django_exec("python manage.py migrate")
     collectstatic(c)
     # Piping Marklogic logs to marklogic.log
