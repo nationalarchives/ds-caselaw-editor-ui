@@ -1,6 +1,7 @@
 from typing import Any
 
 import ds_caselaw_utils as caselawutils
+import environ
 from caselawclient.client_helpers.search_helpers import search_and_parse_response
 from caselawclient.errors import DocumentNotFoundError
 from caselawclient.models.documents import Document, DocumentURIString
@@ -12,6 +13,7 @@ from judgments.utils import api_client, editors_dict, extract_version_number_fro
 from judgments.utils.link_generators import build_jira_create_link
 from judgments.utils.paginator import paginator
 
+env = environ.Env()
 RESULTS_ORDER = "-date"
 
 
@@ -88,11 +90,15 @@ class DocumentView(TemplateView):
 
         version_uri = self.request.GET.get("version_uri", None)
 
+        xslt_image_location = env("XSLT_IMAGE_LOCATION", default=None)
+
         if version_uri:
             context["current_version_number"] = extract_version_number_from_filename(version_uri)
-            context["document_html"] = get_document_by_uri_or_404(version_uri).body.content_as_html
+            context["document_html"] = get_document_by_uri_or_404(version_uri).body.content_as_html(
+                image_base_url=xslt_image_location,
+            )
         else:
-            context["document_html"] = document.body.content_as_html
+            context["document_html"] = document.body.content_as_html(image_base_url=xslt_image_location)
 
         # TODO: Remove this once we fully deprecate 'judgment' contexts
         context["judgment"] = document
