@@ -1,4 +1,5 @@
-from factories import JudgmentFactory
+from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
+from caselawclient.models.documents import DocumentURIString
 
 
 class TestJudgmentFactory:
@@ -15,7 +16,7 @@ class TestJudgmentFactory:
         assert judgment.uri == "test/1234/56"
 
     def test_name(self):
-        judgment = JudgmentFactory.build(name="Some Test Judgment")
+        judgment = JudgmentFactory.build(body=DocumentBodyFactory.build(name="Some Test Judgment"))
 
         assert judgment.name == "Some Test Judgment"
 
@@ -27,4 +28,4 @@ class TestJudgmentFactory:
     def test_html(self):
         judgment = JudgmentFactory.build(html="<h1>Testing HTML</h1>")
 
-        assert judgment.content_as_html("") == "<h1>Testing HTML</h1>"
+        assert judgment.content_as_html(DocumentURIString("example/2024/1")) == "<h1>Testing HTML</h1>"

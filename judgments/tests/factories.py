@@ -4,8 +4,8 @@ from unittest.mock import Mock
 
 import factory
 from caselawclient.client_helpers import VersionAnnotation, VersionType
+from caselawclient.factories import DocumentFactory
 from caselawclient.models.documents import Document, DocumentURIString
-from caselawclient.models.judgments import Judgment
 from caselawclient.responses.search_result import SearchResult, SearchResultMetadata
 from django.contrib.auth import get_user_model
 from factory.faker import faker
@@ -23,70 +23,25 @@ class UserFactory(factory.django.DjangoModelFactory):
     last_name = factory.Faker("last_name")
 
 
-class DocumentFactory:
-    DocumentClass: TypeAlias = Document
-    # "name_of_attribute": ("name of incoming param", "default value")
-    PARAMS_MAP: dict[str, tuple[str, Any]] = {
-        "uri": ("uri", "test/2023/123"),
-        "name": ("name", "Judgment v Judgement"),
-        "document_noun": ("document_noun", "judgment"),
-        "neutral_citation": ("neutral_citation", "[2023] Test 123"),
-        "best_human_identifier": ("best_human_identifier", "[2023] Test 123"),
-        "court": ("court", "Court of Testing"),
-        "document_date_as_string": ("document_date_as_string", "2023-02-03"),
-        "document_date_as_date": ("document_date_as_date", datetime.date(2023, 2, 3)),
-        "is_published": ("is_published", False),
-        "is_failure": ("is_failure", False),
-        "failed_to_parse": ("failed_to_parse", False),
-        "source_name": ("source_name", "Example Uploader"),
-        "source_email": ("source_email", "uploader@example.com"),
-        "consignment_reference": ("consignment_reference", "TDR-12345"),
-        "versions": ("versions", []),
-        "versions_as_documents": ("versions_as_documents", []),
-        "content_as_xml": ("xml", "<akomaNtoso>This is a document's XML.</akomaNtoso>"),
-        "safe_to_delete": ("safe_to_delete", False),
-    }
-
-    @classmethod
-    def build(cls, **kwargs) -> DocumentClass:
-        document_mock = Mock(spec=cls.DocumentClass, autospec=True)
-
-        original_kwargs = kwargs
-
-        if "html" in kwargs:
-            document_mock.return_value.content_as_html.return_value = kwargs.pop("html")
-        else:
-            document_mock.return_value.content_as_html.return_value = "<p>This is a judgment.</p>"
-
-        for map_to, map_from in cls.PARAMS_MAP.items():
-            if map_from[0] in kwargs:
-                setattr(document_mock.return_value, map_to, kwargs[map_from[0]])
-            else:
-                setattr(document_mock.return_value, map_to, map_from[1])
-
-        document = document_mock()
-
-        # By default, documents should have at least one version. Create one unless either we've been explicitly
-        # provided a list, or we've been told not to.
-        if not document.versions_as_documents and kwargs.get("populate_versions", True):
-            version = DocumentVersionFactory.build(
-                populate_versions=False,
-                **original_kwargs,
-            )
-            document.versions_as_documents.append(version)
-
-        return document
-
-
 class DocumentVersionFactory(DocumentFactory):
     DocumentClass: TypeAlias = Document
 
     @classmethod
-    def build(cls, **kwargs) -> DocumentClass:
+    def build(
+        cls,
+        uri="test/2023/123",
+        html="<p>This is a Document Version.</p>",
+        api_client=None,
+        **kwargs: Any,
+    ) -> DocumentClass:
         kwargs["populate_versions"] = False
         document = super().build(
             **kwargs,
-        )  # We don't need to strip version-specific kwargs here, because they're ditched by `DocumentFactory` anyway.
+        )
+
+        # Note: this function was created for the Editor version of DocumentFactory, and
+        # moved to the API Client version. It's entirely possible that some parts don't make
+        # coherent sense.
 
         version = document
 
@@ -114,10 +69,6 @@ class DocumentVersionFactory(DocumentFactory):
         )
 
         return version
-
-
-class JudgmentFactory(DocumentFactory):
-    DocumentClass = Judgment
 
 
 class SimpleFactory:
