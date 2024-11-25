@@ -3,11 +3,13 @@ from datetime import datetime
 from unittest.mock import patch
 
 from caselawclient.client_helpers import VersionAnnotation, VersionType
+from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
+from caselawclient.models.documents import VersionsDict
 from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import Group, User
 from django.test import TestCase
 from django.urls import reverse
-from factories import DocumentFactory, DocumentVersionFactory, JudgmentFactory
+from factories import DocumentVersionFactory
 from waffle.testutils import override_flag
 
 from judgments.views import document_history
@@ -18,19 +20,23 @@ class TestDocumentHistory(TestCase):
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
-    def test_document_history_view(self, document_type, document_exists, mock_document):
+    def test_document_history_view(self, document_type, document_exists, mock_get_document):
         document_type.return_value = Judgment
         document_exists.return_value = None
 
         document = JudgmentFactory.build(
-            uri="edtest/4321/123",
-            name="Test v Tested",
+            uri="ewca/civ/2005/1444",
+            versions=[VersionsDict({"uri": "/ewca/civ/2005/1444_xml_versions/1-1444.xml", "version": 1})],
+            body=DocumentBodyFactory.build(name="Test v Tested"),
         )
-        mock_document.return_value = document
+
+        version_document = DocumentVersionFactory.build()
+        document.versions_as_documents = [version_document]
+        mock_get_document.return_value = document
 
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
 
-        assert reverse("document-history", kwargs={"document_uri": document.uri}) == "/edtest/4321/123/history"
+        assert reverse("document-history", kwargs={"document_uri": document.uri}) == "/ewca/civ/2005/1444/history"
 
         response = self.client.get(
             reverse("document-history", kwargs={"document_uri": document.uri}),
@@ -385,19 +391,20 @@ class TestStructuredDocumentHistoryView(TestCase):
         document_type.return_value = Judgment
         document_exists.return_value = None
 
-        document = DocumentFactory.build(
+        document = JudgmentFactory.build(  # This was a DocumentFactory; this may not work properly with Press Summaries
             uri="test/4321/123",
             name="Test v Tested",
-            versions_as_documents=[
-                DocumentVersionFactory.build(
-                    uri="test/4321/123",
-                    name="Test v Tested",
-                    annotation="Legacy annotation 1",
-                    version_number=123,
-                    version_created_datetime=datetime(2023, 1, 1),
-                ),
-            ],
         )
+        document.versions_as_documents = [
+            DocumentVersionFactory.build(
+                uri="test/4321/123",
+                name="Test v Tested",
+                annotation="Legacy annotation 1",
+                version_number=123,
+                version_created_datetime=datetime(2023, 1, 1),
+            ),
+        ]
+
         mock_document.return_value = document
 
         self.sign_in_developer_user()
@@ -429,70 +436,67 @@ class TestStructuredDocumentHistoryView(TestCase):
         document_type.return_value = Judgment
         document_exists.return_value = None
 
-        document = DocumentFactory.build(
-            uri="test/4321/123",
-            name="Test v Tested",
-            versions_as_documents=[
-                DocumentVersionFactory.build(
-                    uri="test/4321/123",
-                    name="Test v Tested",
-                    annotation=VersionAnnotation(
-                        VersionType.SUBMISSION,
-                        automated=False,
-                        message="Submission message 1",
-                        payload={
-                            "tdr_reference": "TDR-1234-ABC",
-                            "submitter": {
-                                "name": "Test Clerk",
-                                "email": "clerk@example.com",
-                            },
+        document = JudgmentFactory.build(uri="test/4321/123", body=DocumentBodyFactory.build(name="Test v Tested"))
+        document.versions_as_documents = [
+            DocumentVersionFactory.build(
+                uri="test/4321/123",
+                name="Test v Tested",
+                annotation=VersionAnnotation(
+                    VersionType.SUBMISSION,
+                    automated=False,
+                    message="Submission message 1",
+                    payload={
+                        "tdr_reference": "TDR-1234-ABC",
+                        "submitter": {
+                            "name": "Test Clerk",
+                            "email": "clerk@example.com",
                         },
-                    ),
-                    version_number=123,
-                    version_created_datetime=datetime(2023, 1, 1, 12, 1),
+                    },
                 ),
-                DocumentVersionFactory.build(
-                    uri="test/4321/123",
-                    name="Test v Tested",
-                    annotation=VersionAnnotation(
-                        VersionType.EDIT,
-                        automated=False,
-                        message="Edit message 1",
-                    ),
-                    version_number=124,
-                    version_created_datetime=datetime(2023, 1, 2, 12, 2),
+                version_number=123,
+                version_created_datetime=datetime(2023, 1, 1, 12, 1),
+            ),
+            DocumentVersionFactory.build(
+                uri="test/4321/123",
+                name="Test v Tested",
+                annotation=VersionAnnotation(
+                    VersionType.EDIT,
+                    automated=False,
+                    message="Edit message 1",
                 ),
-                DocumentVersionFactory.build(
-                    uri="test/4321/123",
-                    name="Test v Tested",
-                    annotation=VersionAnnotation(
-                        VersionType.ENRICHMENT,
-                        automated=True,
-                        message="Enrichment message 1",
-                    ),
-                    version_number=125,
-                    version_created_datetime=datetime(2023, 1, 3, 12, 3),
+                version_number=124,
+                version_created_datetime=datetime(2023, 1, 2, 12, 2),
+            ),
+            DocumentVersionFactory.build(
+                uri="test/4321/123",
+                name="Test v Tested",
+                annotation=VersionAnnotation(
+                    VersionType.ENRICHMENT,
+                    automated=True,
+                    message="Enrichment message 1",
                 ),
-                DocumentVersionFactory.build(
-                    uri="test/4321/123",
-                    name="Test v Tested",
-                    annotation="Legacy annotation 1",
-                    version_number=126,
-                    version_created_datetime=datetime(2023, 1, 4, 12, 4),
+                version_number=125,
+                version_created_datetime=datetime(2023, 1, 3, 12, 3),
+            ),
+            DocumentVersionFactory.build(
+                uri="test/4321/123",
+                name="Test v Tested",
+                annotation="Legacy annotation 1",
+                version_number=126,
+                version_created_datetime=datetime(2023, 1, 4, 12, 4),
+            ),
+            DocumentVersionFactory.build(
+                uri="test/4321/123",
+                name="Test v Tested",
+                annotation=VersionAnnotation(
+                    VersionType.EDIT,
+                    automated=False,
+                    message="Edit message 2",
                 ),
-                DocumentVersionFactory.build(
-                    uri="test/4321/123",
-                    name="Test v Tested",
-                    annotation=VersionAnnotation(
-                        VersionType.EDIT,
-                        automated=False,
-                        message="Edit message 2",
-                    ),
-                    version_number=127,
-                    version_created_datetime=datetime(2023, 1, 5, 12, 5),
-                ),
-            ],
-        )
+                version_number=127,
+                version_created_datetime=datetime(2023, 1, 5, 12, 5),
+            ),
+        ]
         mock_document.return_value = document
 
         self.sign_in_developer_user()
