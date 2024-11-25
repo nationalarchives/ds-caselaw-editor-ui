@@ -89,7 +89,7 @@ class TestDocumentView(TestCase):
         with open("judgments/tests/fixtures/sample_judgment.xml") as f:
             sample_judgment = f.read()
         mock_get_document_by_uri.return_value = JudgmentFactory.build(
-            uri=DocumentURIString("/eat/2023/1"),
+            uri=DocumentURIString("eat/2023/1"),
             body=DocumentBodyFactory.build(xml_string=sample_judgment),
         )
         response = self.client.get("/eat/2023/1")

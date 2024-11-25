@@ -91,13 +91,13 @@ class TestBreadcrumbs(TestCase):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
         mock_get_linked_document_uri.return_value = "my_related_document_uri"
         judgment = PressSummaryFactory.build(
-            uri=DocumentURIString("/eat/2023/1/press-summary/1/"),
+            uri=DocumentURIString("eat/2023/1/press-summary/1"),
             document_noun="press summary",
             body=DocumentBodyFactory.build(name="Press Summary of Judgment A"),
         )
 
         mock_get_document_by_uri.return_value = judgment
-        response = self.client.get("/eat/2023/1/press-summary/1/")
+        response = self.client.get("/eat/2023/1/press-summary/1")
         breadcrumb_html = """
         <nav class="page-header__breadcrumbs-container" aria-label="Breadcrumb">
             <span class="page-header__breadcrumbs-you-are-in">You are in:</span>
@@ -129,7 +129,7 @@ class TestBreadcrumbs(TestCase):
         """
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
         mock_get_document_by_uri.return_value = JudgmentFactory.build(
-            uri=DocumentURIString("/eat/2023/1"),
+            uri=DocumentURIString("eat/2023/1"),
             document_noun="judgment",
             body=DocumentBodyFactory.build(name="Judgment A"),
         )
@@ -161,7 +161,7 @@ class TestBreadcrumbs(TestCase):
         """
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
         judgment = JudgmentFactory.build(
-            uri=DocumentURIString("/eat/2023/1"),
+            uri=DocumentURIString("eat/2023/1"),
             name="",
             document_noun="judgment",
         )
@@ -194,7 +194,7 @@ class TestBreadcrumbs(TestCase):
 
         mock_get_document_by_uri.side_effect = Http404
 
-        response = self.client.get("/eat/2023/1/")
+        response = self.client.get("/eat/2023/1")
         breadcrumb_html = """
         <nav class="page-header__breadcrumbs-container" aria-label="Breadcrumb">
             <span class="page-header__breadcrumbs-you-are-in">You are in:</span>
@@ -223,7 +223,7 @@ class TestBreadcrumbs(TestCase):
 
         mock_get_document_by_uri.side_effect = Exception
 
-        response = self.client.get("/eat/2023/1/")
+        response = self.client.get("/eat/2023/1")
         breadcrumb_html = """
         <nav class="page-header__breadcrumbs-container" aria-label="Breadcrumb">
             <span class="page-header__breadcrumbs-you-are-in">You are in:</span>

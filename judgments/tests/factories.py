@@ -67,7 +67,7 @@ class DocumentVersionFactory(DocumentFactory):
         uri = document.uri
         _id = uri.split("/")[-1]
         version.uri = DocumentURIString(
-            f"{uri}/_xml_versions/{version.version_number}-{_id}.xml",
+            f"{uri}/_xml_versions/{version.version_number}-{_id}",
         )
 
         return version

@@ -18,7 +18,7 @@ class TestJudgmentFactory:
     def test_name(self):
         judgment = JudgmentFactory.build(body=DocumentBodyFactory.build(name="Some Test Judgment"))
 
-        assert judgment.name == "Some Test Judgment"
+        assert judgment.body.name == "Some Test Judgment"
 
     def test_versions(self):
         judgment = JudgmentFactory.build()
