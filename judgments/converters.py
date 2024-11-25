@@ -8,7 +8,7 @@ class YearConverter:
         return int(value)
 
     def to_url(self, value):
-        return "%04d" % value
+        return f"{value:4d}"
 
 
 class DateConverter:
