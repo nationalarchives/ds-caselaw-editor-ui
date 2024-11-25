@@ -3,6 +3,7 @@ from unittest.mock import patch
 from urllib.parse import urlencode
 
 from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
+from caselawclient.models.documents import DocumentURIString
 from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
 from django.test import TestCase
@@ -18,7 +19,7 @@ class TestJudgmentView(TestCase):
         document_exists.return_value = None
 
         judgment = JudgmentFactory.build(
-            uri="hvtest/4321/123",
+            uri=DocumentURIString("hvtest/4321/123"),
             body=DocumentBodyFactory.build(
                 name="Test v Tested",
                 xml_string="<akomantoso>This is our test judgment.</akomantoso>",
@@ -54,7 +55,7 @@ class TestJudgmentView(TestCase):
         document_exists.return_value = None
 
         judgment = JudgmentFactory.build(
-            uri="hvtest/4321/123",
+            uri=DocumentURIString("hvtest/4321/123"),
             body=DocumentBodyFactory.build(xml_string="<error>Error log</error>"),
         )
 

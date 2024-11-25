@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 from caselawclient.client_helpers import VersionAnnotation, VersionType
 from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
-from caselawclient.models.documents import VersionsDict
+from caselawclient.models.documents import DocumentURIString, VersionsDict
 from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import Group, User
 from django.test import TestCase
@@ -25,7 +25,7 @@ class TestDocumentHistory(TestCase):
         document_exists.return_value = None
 
         document = JudgmentFactory.build(
-            uri="ewca/civ/2005/1444",
+            uri=DocumentURIString("ewca/civ/2005/1444"),
             versions=[VersionsDict({"uri": "/ewca/civ/2005/1444_xml_versions/1-1444.xml", "version": 1})],
             body=DocumentBodyFactory.build(name="Test v Tested"),
         )
@@ -56,7 +56,7 @@ class TestDocumentHistory(TestCase):
 class TestStructuredDocumentHistoryLogic(TestCase):
     def test_build_event_object_without_submitter(self):
         version_document = DocumentVersionFactory.build(
-            uri="test/4321/123",
+            uri=DocumentURIString("test/4321/123"),
             name="Test v Tested",
             annotation=VersionAnnotation(
                 VersionType.SUBMISSION,
@@ -392,12 +392,12 @@ class TestStructuredDocumentHistoryView(TestCase):
         document_exists.return_value = None
 
         document = JudgmentFactory.build(  # This was a DocumentFactory; this may not work properly with Press Summaries
-            uri="test/4321/123",
+            uri=DocumentURIString("test/4321/123"),
             name="Test v Tested",
         )
         document.versions_as_documents = [
             DocumentVersionFactory.build(
-                uri="test/4321/123",
+                uri=DocumentURIString("test/4321/123"),
                 name="Test v Tested",
                 annotation="Legacy annotation 1",
                 version_number=123,
@@ -436,7 +436,10 @@ class TestStructuredDocumentHistoryView(TestCase):
         document_type.return_value = Judgment
         document_exists.return_value = None
 
-        document = JudgmentFactory.build(uri="test/4321/123", body=DocumentBodyFactory.build(name="Test v Tested"))
+        document = JudgmentFactory.build(
+            uri=DocumentURIString("test/4321/123"),
+            body=DocumentBodyFactory.build(name="Test v Tested"),
+        )
         document.versions_as_documents = [
             DocumentVersionFactory.build(
                 uri="test/4321/123",

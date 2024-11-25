@@ -11,7 +11,7 @@ class TestJudgmentFactory:
         assert judgment.uri != ""
 
     def test_uri(self):
-        judgment = JudgmentFactory.build(uri="test/1234/56")
+        judgment = JudgmentFactory.build(uri=DocumentURIString("test/1234/56"))
 
         assert judgment.uri == "test/1234/56"
 

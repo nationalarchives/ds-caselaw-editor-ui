@@ -2,6 +2,7 @@ import re
 from unittest.mock import patch
 
 from caselawclient.factories import JudgmentFactory
+from caselawclient.models.documents import DocumentURIString
 from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import Group, User
 from django.test import TestCase
@@ -22,7 +23,7 @@ class TestDocumentToolbar(TestCase):
     @patch("judgments.utils.api_client.document_exists")
     def test_editor_tools_if_editor(self, document_exists, mock_judgment):
         mock_judgment.return_value = JudgmentFactory.build(
-            uri="failures/TDR-ref",
+            uri=DocumentURIString("failures/TDR-ref"),
             is_failure=True,
         )
         self.client.force_login(self.editor_user)
@@ -40,7 +41,7 @@ class TestDocumentToolbar(TestCase):
         mock_judgment,
     ):
         mock_judgment.return_value = JudgmentFactory.build(
-            uri="failures/TDR-ref",
+            uri=DocumentURIString("failures/TDR-ref"),
             is_failure=True,
         )
         self.client.force_login(self.standard_user)
@@ -65,7 +66,7 @@ class TestDocumentToolbar(TestCase):
         document_exists.return_value = None
 
         judgment = JudgmentFactory.build(
-            uri="failures/TDR-ref",
+            uri=DocumentURIString("failures/TDR-ref"),
             is_failure=True,
         )
         mock_judgment.return_value = judgment
@@ -100,7 +101,7 @@ class TestDocumentToolbar(TestCase):
         document_exists.return_value = None
 
         judgment = JudgmentFactory.build(
-            uri="good-document",
+            uri=DocumentURIString("good-document"),
             is_failure=False,
         )
         mock_judgment.return_value = judgment
@@ -129,7 +130,7 @@ class TestDocumentToolbar(TestCase):
         document_exists.return_value = None
 
         judgment = JudgmentFactory.build(
-            uri="good-document",
+            uri=DocumentURIString("good-document"),
             is_failure=False,
         )
         judgment.is_locked = True
@@ -153,7 +154,7 @@ class TestDocumentToolbar(TestCase):
         document_exists.return_value = None
 
         judgment = JudgmentFactory.build(
-            uri="good-document",
+            uri=DocumentURIString("good-document"),
             is_failure=False,
         )
         judgment.is_locked = False

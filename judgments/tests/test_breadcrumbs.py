@@ -2,6 +2,7 @@ from unittest.mock import patch
 
 import pytest
 from caselawclient.factories import DocumentBodyFactory, JudgmentFactory, PressSummaryFactory
+from caselawclient.models.documents import DocumentURIString
 from django.http import Http404
 from django.test import Client, TestCase
 
@@ -90,7 +91,7 @@ class TestBreadcrumbs(TestCase):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
         mock_get_linked_document_uri.return_value = "my_related_document_uri"
         judgment = PressSummaryFactory.build(
-            uri="/eat/2023/1/press-summary/1/",
+            uri=DocumentURIString("/eat/2023/1/press-summary/1/"),
             document_noun="press summary",
             body=DocumentBodyFactory.build(name="Press Summary of Judgment A"),
         )
@@ -128,7 +129,7 @@ class TestBreadcrumbs(TestCase):
         """
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
         mock_get_document_by_uri.return_value = JudgmentFactory.build(
-            uri="/eat/2023/1",
+            uri=DocumentURIString("/eat/2023/1"),
             document_noun="judgment",
             body=DocumentBodyFactory.build(name="Judgment A"),
         )
@@ -160,7 +161,7 @@ class TestBreadcrumbs(TestCase):
         """
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
         judgment = JudgmentFactory.build(
-            uri="/eat/2023/1",
+            uri=DocumentURIString("/eat/2023/1"),
             name="",
             document_noun="judgment",
         )

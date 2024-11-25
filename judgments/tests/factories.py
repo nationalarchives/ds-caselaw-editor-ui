@@ -26,10 +26,12 @@ class UserFactory(factory.django.DjangoModelFactory):
 class DocumentVersionFactory(DocumentFactory):
     DocumentClass: TypeAlias = Document
 
+    default_document_uri = DocumentURIString("test/2023/123")
+
     @classmethod
     def build(
         cls,
-        uri="test/2023/123",
+        uri=default_document_uri,
         html="<p>This is a Document Version.</p>",
         api_client=None,
         **kwargs: Any,

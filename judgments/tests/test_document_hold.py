@@ -1,6 +1,7 @@
 from unittest.mock import Mock, patch
 
 from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
+from caselawclient.models.documents import DocumentURIString
 from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
 from django.test import TestCase
@@ -16,7 +17,7 @@ class TestDocumentHold(TestCase):
         document_exists.return_value = None
 
         judgment = JudgmentFactory.build(
-            uri="holdtest/4321/123",
+            uri=DocumentURIString("holdtest/4321/123"),
             body=DocumentBodyFactory.build(name="Test v Tested"),
         )
         mock_judgment.return_value = judgment
@@ -71,7 +72,7 @@ class TestDocumentHold(TestCase):
         document_exists.return_value = None
 
         judgment = JudgmentFactory.build(
-            uri="holdtest/4321/123",
+            uri=DocumentURIString("holdtest/4321/123"),
             body=DocumentBodyFactory.build(name="Test v Tested"),
         )
         mock_judgment.return_value = judgment
@@ -101,7 +102,7 @@ class TestJudgmentUnhold(TestCase):
         document_exists.return_value = None
 
         judgment = JudgmentFactory.build(
-            uri="unholdtest/4321/123",
+            uri=DocumentURIString("unholdtest/4321/123"),
             body=DocumentBodyFactory.build(name="Test v Tested"),
         )
         mock_judgment.return_value = judgment
@@ -156,7 +157,7 @@ class TestJudgmentUnhold(TestCase):
         document_exists.return_value = None
 
         judgment = JudgmentFactory.build(
-            uri="unholdtest/4321/123",
+            uri=DocumentURIString("unholdtest/4321/123"),
             body=DocumentBodyFactory.build(name="Test v Tested"),
         )
         mock_judgment.return_value = judgment

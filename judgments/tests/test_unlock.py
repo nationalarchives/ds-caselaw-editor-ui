@@ -2,6 +2,7 @@ from unittest.mock import ANY, patch
 
 import pytest
 from caselawclient.factories import JudgmentFactory
+from caselawclient.models.documents import DocumentURIString
 from django.contrib.auth.models import User
 from django.test import Client
 from django.urls import reverse
@@ -24,7 +25,7 @@ def test_break_lock_confirm_page():
 @patch("judgments.views.unlock.messages")
 def test_break_lock_post(messages, break_checkout, mock_judgment):
     judgment = JudgmentFactory.build(
-        uri="ewca/civ/2023/1",
+        uri=DocumentURIString("ewca/civ/2023/1"),
     )
     mock_judgment.return_value = judgment
 
