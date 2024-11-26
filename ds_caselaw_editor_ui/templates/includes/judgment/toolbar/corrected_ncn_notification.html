@@ -10,13 +10,13 @@
           Document URI/NCN mismatch
         </h3>
         <p>
-          This document is located at <a href="{% url 'full-text-html' judgment.uri %}"><strong>/{{ judgment.uri }}</strong></a> but has an NCN of <a href="{{ corrected_ncn_url }}"><strong>{{ judgment.best_human_identifier }}</strong></a>
+          This document is currently located at <strong>/{{ judgment.uri }}</strong> but based on its NCN should be at <strong>/{{ corrected_ncn_url }}</strong>
         </p>
         <input type="hidden" name="judgment_uri" value="{{ document_uri }}" />
         <div>
           <input type="submit"
                  name="move_document"
-                 value="Move to {{ corrected_ncn_url }}"
+                 value="Move to /{{ corrected_ncn_url }}"
                  class="button-cta button-small" />
         </div>
       </div>
