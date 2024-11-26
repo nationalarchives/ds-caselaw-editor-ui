@@ -2,6 +2,7 @@ from unittest.mock import patch
 
 import lxml.html
 from caselawclient.factories import DocumentBodyFactory, JudgmentFactory, PressSummaryFactory
+from caselawclient.models.documents import DocumentURIString
 from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
 from django.test import TestCase
@@ -22,7 +23,7 @@ class TestDocumentEdit(TestCase):
     @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
     def test_edit_judgment(self, mock_judgment, api_client):
         judgment = JudgmentFactory.build(
-            uri="edittest/4321/123",
+            uri=DocumentURIString("edittest/4321/123"),
             name="Test v Tested",
         )
         mock_judgment.return_value = judgment
@@ -62,7 +63,7 @@ class TestDocumentEdit(TestCase):
     @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
     def test_date_error(self, mock_judgment, api_client):
         judgment = JudgmentFactory.build(
-            uri="edittest/4321/123",
+            uri=DocumentURIString("edittest/4321/123"),
             name="Test v Tested",
         )
         mock_judgment.return_value = judgment
@@ -90,7 +91,7 @@ class TestDocumentBadURIWarning(TestCase):
     @patch("judgments.utils.view_helpers.get_linked_document_uri")
     def test_bad_ncn_has_banner(self, linked_document_uri, mock_judgment):
         judgment = JudgmentFactory.build(
-            uri="uksc/1234/123",
+            uri=DocumentURIString("uksc/1234/123"),
             neutral_citation="[1234] UKSC 999",
             body=DocumentBodyFactory.build(name="Test v Tested"),
         )
@@ -106,8 +107,8 @@ class TestDocumentBadURIWarning(TestCase):
         root = lxml.html.fromstring(response.content)
         message = lxml.html.tostring(root.xpath("//div[@class='page-notification--warning']")[0])
         assert b"Document URI/NCN mismatch" in message
-        assert b'This document is located at <a href="/uksc/1234/123">' in message
-        assert b'but has an NCN of <a href="/uksc/1234/999">' in message
+        assert b"This document is currently located at <strong>/uksc/1234/123</strong>" in message
+        assert b"but based on its NCN should be at <strong>/uksc/1234/999</strong>" in message
         assert b'<input type="hidden" name="judgment_uri" value="uksc/1234/123">' in message
 
     @patch("judgments.views.judgment_edit.api_client")
@@ -115,7 +116,7 @@ class TestDocumentBadURIWarning(TestCase):
     @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
     def test_update_uri_called(self, mock_judgment, update_document_uri, api_client):
         judgment = JudgmentFactory.build(
-            uri="uksc/4321/123",
+            uri=DocumentURIString("uksc/4321/123"),
             name="Test v Tested",
             neutral_citation="[1234] UKSC 321",
             best_human_identifier="[1234] UKSC 321",
@@ -140,7 +141,7 @@ class TestDocumentBadURIWarning(TestCase):
     @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
     def test_update_uri_not_called_for_press_summary(self, mock_judgment, update_document_uri, api_client):
         judgment = PressSummaryFactory.build(
-            uri="uksc/4321/123",
+            uri=DocumentURIString("uksc/4321/123"),
             name="Test v Tested",
             neutral_citation="[1234] UKSC 321",
             best_human_identifier="[1234] UKSC 321",

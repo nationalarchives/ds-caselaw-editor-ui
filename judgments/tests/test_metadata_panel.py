@@ -2,6 +2,7 @@ from unittest.mock import patch
 
 import lxml.html
 from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
+from caselawclient.models.documents import DocumentURIString
 from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
 from django.test import TestCase
@@ -17,7 +18,7 @@ class TestMetadataPanel(TestCase):
         document_exists.return_value = None
 
         judgment = JudgmentFactory.build(
-            uri="hvtest/4321/123",
+            uri=DocumentURIString("hvtest/4321/123"),
             html="<h1>Test Judgment</h1>",
             body=DocumentBodyFactory.build(name="Test v Tested"),
         )

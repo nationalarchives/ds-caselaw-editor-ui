@@ -4,6 +4,7 @@ from unittest.mock import patch
 import pytest
 from caselawclient.errors import DocumentNotFoundError
 from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
+from caselawclient.models.documents import DocumentURIString
 from django.contrib.auth.models import Group, User
 from django.http import Http404
 from django.test import Client, TestCase
@@ -88,7 +89,7 @@ class TestDocumentView(TestCase):
         with open("judgments/tests/fixtures/sample_judgment.xml") as f:
             sample_judgment = f.read()
         mock_get_document_by_uri.return_value = JudgmentFactory.build(
-            uri="/eat/2023/1",
+            uri=DocumentURIString("eat/2023/1"),
             body=DocumentBodyFactory.build(xml_string=sample_judgment),
         )
         response = self.client.get("/eat/2023/1")

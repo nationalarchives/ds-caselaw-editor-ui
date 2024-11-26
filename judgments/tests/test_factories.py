@@ -11,14 +11,14 @@ class TestJudgmentFactory:
         assert judgment.uri != ""
 
     def test_uri(self):
-        judgment = JudgmentFactory.build(uri="test/1234/56")
+        judgment = JudgmentFactory.build(uri=DocumentURIString("test/1234/56"))
 
         assert judgment.uri == "test/1234/56"
 
     def test_name(self):
         judgment = JudgmentFactory.build(body=DocumentBodyFactory.build(name="Some Test Judgment"))
 
-        assert judgment.name == "Some Test Judgment"
+        assert judgment.body.name == "Some Test Judgment"
 
     def test_versions(self):
         judgment = JudgmentFactory.build()
