@@ -87,6 +87,27 @@ class TestDocumentEdit(TestCase):
 
 
 class TestDocumentBadURIWarning(TestCase):
+    MISMATCH_HEADER_STRING = "Document URI/NCN mismatch"
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    @patch("judgments.utils.view_helpers.get_linked_document_uri")
+    def test_good_ncn_has_no_banner(self, linked_document_uri, mock_judgment):
+        judgment = JudgmentFactory.build(
+            uri=DocumentURIString("uksc/1234/123"),
+            neutral_citation="[1234] UKSC 123",
+            body=DocumentBodyFactory.build(name="Test v Tested"),
+        )
+
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.get(
+            "/uksc/1234/123",
+        )
+
+        self.assertNotContains(response, self.MISMATCH_HEADER_STRING)
+
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.view_helpers.get_linked_document_uri")
     def test_bad_ncn_has_banner(self, linked_document_uri, mock_judgment):
@@ -104,9 +125,11 @@ class TestDocumentBadURIWarning(TestCase):
             "/uksc/1234/123",
         )
 
+        self.assertContains(response, self.MISMATCH_HEADER_STRING)
+
         root = lxml.html.fromstring(response.content)
         message = lxml.html.tostring(root.xpath("//div[@class='page-notification--warning']")[0])
-        assert b"Document URI/NCN mismatch" in message
+
         assert b"This document is currently located at <strong>/uksc/1234/123</strong>" in message
         assert b"but based on its NCN should be at <strong>/uksc/1234/999</strong>" in message
         assert b'<input type="hidden" name="judgment_uri" value="uksc/1234/123">' in message
