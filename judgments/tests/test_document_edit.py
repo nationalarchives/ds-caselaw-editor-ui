@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import lxml.html
 from caselawclient.factories import DocumentBodyFactory, JudgmentFactory, PressSummaryFactory
@@ -26,6 +26,7 @@ class TestDocumentEdit(TestCase):
             uri=DocumentURIString("edittest/4321/123"),
             name="Test v Tested",
         )
+        judgment.identifiers = Mock()
         mock_judgment.return_value = judgment
 
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
@@ -36,7 +37,7 @@ class TestDocumentEdit(TestCase):
             {
                 "judgment_uri": "/edittest/4321/123",
                 "metadata_name": "New Name",
-                "neutral_citation": "[4321] TEST 123",
+                "neutral_citation": "[4321] UKSC 123",
                 "court": "Court of Testing",
                 "judgment_date": "2 Jan 2023",
             },
@@ -48,7 +49,7 @@ class TestDocumentEdit(TestCase):
         )
         api_client.set_judgment_citation.assert_called_with(
             "/edittest/4321/123",
-            "[4321] TEST 123",
+            "[4321] UKSC 123",
         )
         api_client.set_document_court_and_jurisdiction.assert_called_with(
             "/edittest/4321/123",
@@ -58,6 +59,9 @@ class TestDocumentEdit(TestCase):
             "/edittest/4321/123",
             "2023-01-02",
         )
+        assert "NeutralCitationNumber" in str(judgment.identifiers.delete_type.call_args_list[0][0])
+        assert "<Neutral Citation Number [4321] UKSC 123:" in str(judgment.identifiers.add.call_args_list[0][0])
+        judgment.identifiers.save.assert_called_with(judgment)
 
     @patch("judgments.views.judgment_edit.api_client")
     @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
@@ -76,7 +80,7 @@ class TestDocumentEdit(TestCase):
             {
                 "judgment_uri": "/edittest/4321/123",
                 "metadata_name": "New Name",
-                "neutral_citation": "[4321] TEST 123",
+                "neutral_citation": "[4321] UKSC 123",
                 "court": "Court of Testing",
                 "judgment_date": "Kittens",
             },
