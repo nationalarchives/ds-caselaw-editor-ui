@@ -1,6 +1,7 @@
 import datetime
 
 from caselawclient.Client import MarklogicAPIError
+from caselawclient.models.identifiers.neutral_citation import NeutralCitationNumber
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
@@ -49,6 +50,9 @@ class EditJudgmentView(View):
             # Set neutral citation
             new_citation = request.POST["neutral_citation"]
             api_client.set_judgment_citation(judgment_uri, new_citation)
+            judgment.identifiers.delete_type(NeutralCitationNumber)
+            judgment.identifiers.add(NeutralCitationNumber(value=new_citation))
+            judgment.identifiers.save(judgment)
 
             # Set court
             new_court = request.POST["court"]
