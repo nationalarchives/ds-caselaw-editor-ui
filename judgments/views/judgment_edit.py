@@ -76,7 +76,7 @@ class EditJudgmentView(View):
 
             judgment.identifiers.delete_type(NeutralCitationNumber)
             judgment.identifiers.add(NeutralCitationNumber(value=new_citation))
-            judgment.identifiers.save(judgment)
+            judgment.save_identifiers()
 
             # Set court
             new_court = request.POST["court"]
