@@ -67,7 +67,7 @@ class TestDocumentEdit(TestCase):
         )
         assert "NeutralCitationNumber" in str(judgment.identifiers.delete_type.call_args_list[0][0])
         assert "<Neutral Citation Number [4321] UKSC 123:" in str(judgment.identifiers.add.call_args_list[0][0])
-        judgment.identifiers.save.assert_called_with(judgment)
+        judgment.save_identifiers.assert_called_once_with()
 
     @patch("judgments.views.judgment_edit.api_client")
     @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
