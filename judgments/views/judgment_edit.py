@@ -58,6 +58,10 @@ class EditJudgmentView(View):
         # TODO: confirm that the stub we are about to set does not already have a mapping that isn't for this document
 
         try:
+            # confirm that the identifier isn't used elsewhere
+            new_citation = request.POST["neutral_citation"]
+            verify_stub_not_used(judgment_uri, new_citation)
+
             # Set name
             new_name = request.POST["metadata_name"]
             api_client.set_document_name(judgment_uri, new_name)
@@ -105,7 +109,7 @@ class EditJudgmentView(View):
 
             messages.success(request, "Document successfully updated")
 
-        except (MoveJudgmentError, NeutralCitationToUriError) as e:
+        except (MoveJudgmentError, NeutralCitationToUriError, StubAlreadyUsedError) as e:
             messages.error(
                 request,
                 f"There was an error updating the Document's neutral citation: {e}",
