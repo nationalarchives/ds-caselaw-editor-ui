@@ -78,6 +78,15 @@ def get_associated_documents_navigation_item(view, document):
     }
 
 
+def get_identifiers_navigation_item(view, document):
+    return {
+        "id": "identifiers",
+        "selected": view == "document_identifiers",
+        "label": "Identifiers",
+        "url": get_document_url("document-identifiers", document),
+    }
+
+
 @register.simple_tag(takes_context=True)
 def get_navigation_items(context):
     view, document, linked_document_uri = (
@@ -90,6 +99,7 @@ def get_navigation_items(context):
         get_review_navigation_item(view, document),
         get_hold_navigation_item(view, document),
         get_publishing_navigation_item(view, document),
+        get_identifiers_navigation_item(view, document),
         get_history_navigation_item(view, document),
         get_download_navigation_item(view, document),
     ]

@@ -1,0 +1,60 @@
+{% extends "layouts/judgment.html" %}
+{% load i18n document_utils user_permissions %}
+{% block content %}
+  {% include "includes/judgment/metadata_panel_static.html" with judgment=document %}
+  <div class="container">
+    <h1 class="judgment-component__confirmation-title">Identifiers for:</h1>
+    <h2 class="judgment-component__confirmation-subtitle">{{ document.body.name }}</h2>
+    {% if document.identifiers %}
+      <table class="table">
+        <tr>
+          <th>Type</th>
+          <th>Value</th>
+          <th>URL</th>
+        </tr>
+        {% for identifier in document.identifiers.values %}
+          <tr>
+            <td>
+              {{ identifier.schema.name }}
+              {% if user|is_developer %}
+                <br>
+                <small class="muted"><code>{{ identifier.schema.namespace }}</code></small>
+              {% endif %}
+            </td>
+            <td>
+              <code>{{ identifier.value }}</code>
+              {% if user|is_developer %}
+                <br>
+                <small class="muted"><code>{{ identifier.uuid }}</code></small>
+              {% endif %}
+            </td>
+            <td>
+              <code>/{{ identifier.url_slug }}</code>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+      <div class="page-notification--info">
+        <div class="judgment-toolbar__version">
+          <span class="icon icon__circle-info"></span> This document does not have any stored identifiers.
+        </div>
+      </div>
+    {% endif %}
+    {% if user|is_developer %}
+      <h3>System identifiers</h3>
+      <table class="table">
+        <tr>
+          <th>Type</th>
+          <th>Value</th>
+        </tr>
+        <tr>
+          <td>MarkLogic URI</td>
+          <td>
+            <code>{{ document.uri }}</code>
+          </td>
+        </tr>
+      </table>
+    {% endif %}
+  </div>
+{% endblock content %}
