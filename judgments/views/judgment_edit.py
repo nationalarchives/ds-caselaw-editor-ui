@@ -1,6 +1,7 @@
 import datetime
 
 from caselawclient.Client import MarklogicAPIError
+from caselawclient.models.identifiers.neutral_citation import NeutralCitationNumber, NeutralCitationNumberSchema
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
@@ -15,6 +16,19 @@ from judgments.utils import (
 )
 from judgments.utils.aws import invalidate_caches
 from judgments.utils.view_helpers import get_document_by_uri_or_404
+
+
+class StubAlreadyUsedError(Exception):
+    pass
+
+
+def verify_stub_not_used(old_uri, new_citation) -> None:
+    new_ncn_slug = NeutralCitationNumberSchema.compile_identifier_url_slug(new_citation)
+    existing_matches = api_client.resolve_from_identifier(new_ncn_slug)
+    existing_matches_except_this_one = [x for x in existing_matches if x.document_uri not in [new_ncn_slug, old_uri]]
+    if existing_matches_except_this_one:
+        msg = f"At least one identifier for slug {new_ncn_slug} already exists, {existing_matches_except_this_one}"
+        raise StubAlreadyUsedError(msg)
 
 
 class EditJudgmentView(View):
@@ -41,14 +55,28 @@ class EditJudgmentView(View):
 
         return_to = request.POST.get("return_to", None)
 
+        # TODO: confirm that the stub we are about to set does not already have a mapping that isn't for this document
+
         try:
+            # confirm that the identifier isn't used elsewhere
+            new_citation = request.POST["neutral_citation"]
+            verify_stub_not_used(judgment_uri, new_citation)
+
             # Set name
             new_name = request.POST["metadata_name"]
             api_client.set_document_name(judgment_uri, new_name)
 
-            # Set neutral citation
+            # Set neutral citation within the judgment text
             new_citation = request.POST["neutral_citation"]
             api_client.set_judgment_citation(judgment_uri, new_citation)
+
+            # Set neutral citation in the identifiers
+            # Note that this currently does not preserve the UUID if the
+            # neutral citation is unchanged.
+
+            judgment.identifiers.delete_type(NeutralCitationNumber)
+            judgment.identifiers.add(NeutralCitationNumber(value=new_citation))
+            judgment.save_identifiers()
 
             # Set court
             new_court = request.POST["court"]
@@ -81,7 +109,7 @@ class EditJudgmentView(View):
 
             messages.success(request, "Document successfully updated")
 
-        except (MoveJudgmentError, NeutralCitationToUriError) as e:
+        except (MoveJudgmentError, NeutralCitationToUriError, StubAlreadyUsedError) as e:
             messages.error(
                 request,
                 f"There was an error updating the Document's neutral citation: {e}",
