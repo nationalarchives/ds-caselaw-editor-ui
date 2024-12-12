@@ -26,8 +26,8 @@
   }
 
   &__result-list-container {
-    grid-row: 1 / 2;
     grid-column: 1 / 2;
+    grid-row: 1 / 2;
     background-color: #fff;
 
     h2 {
@@ -36,9 +36,9 @@
   }
 
   &__results-intro {
+    margin: 0 0 $space-5;
     font-family: $font-roboto;
     font-size: $typography-xl-text-size;
-    margin: 0 0 $space-5;
   }
 
   &__filter-heading {
@@ -56,8 +56,8 @@
   }
 
   &__result-title {
-    font-size: $typography-lg-text-size;
     font-family: $font-roboto;
+    font-size: $typography-lg-text-size;
   }
 
   &__result-term-sr {
@@ -82,24 +82,24 @@
 
   &__result-term-matching {
     margin: $space-4 0 $space-2 0;
-    color: $color-dark-grey;
     font-size: $typography-sm-text-size;
+    color: $color-dark-grey;
   }
 
   fieldset {
-    border: none;
     padding: 0;
+    border: none;
   }
 
   legend {
-    font-weight: $typography-bold-font-weight;
     font-size: $typography-lg-text-size;
+    font-weight: $typography-bold-font-weight;
   }
 
   &__container-extend-search-option {
-    background-color: $color-light-grey;
-    padding: $space-4 $space-8;
     margin: $space-4 0;
+    padding: $space-4 $space-8;
+    background-color: $color-light-grey;
   }
 
   &__result-failed {

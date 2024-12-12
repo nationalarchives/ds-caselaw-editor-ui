@@ -1,16 +1,18 @@
 .judgment-navigation {
   all: unset;
+
+  display: flex;
+  gap: $space-10;
+  justify-content: center;
+
   background: $color-light-grey;
   border-bottom: 1px solid $color-dark-grey;
-  display: flex;
-  justify-content: center;
-  gap: $space-10;
 
   &__item {
     all: unset;
     padding: $space-4 0;
-    border-bottom: 5px solid transparent;
     font-size: $typography-md-text-size;
+    border-bottom: 5px solid transparent;
 
     a {
       text-decoration: none;
@@ -27,8 +29,8 @@
   }
 
   &__item--active {
-    border-bottom-color: $color-link-blue;
     font-weight: $typography-bold-font-weight;
+    border-bottom-color: $color-link-blue;
   }
 
   &__item--disabled {

@@ -1,16 +1,20 @@
 .summary-panel {
-  border-width: 0px;
   position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   width: 391px;
   height: 139px;
-  background-color: #f2f2f2;
-  border: none;
-  border-radius: 10px;
+
   font-size: $typography-lg-text-size;
   text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+  background-color: #f2f2f2;
+  border: none;
+  border-width: 0;
+  border-radius: 10px;
 
   &:hover {
     background-color: #d7d7d7;
@@ -21,21 +25,22 @@
     background-color: #ffb952;
   }
 
-  @media screen and (max-device-width: 480px) {
-    width: 266px;
-    height: 95px;
-  }
-
   &__number {
     font-size: $typography-2xl-text-size;
     text-align: left;
   }
 
   &__text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     font-size: $typography-lg-text-size;
     text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  }
+
+  @media screen and (device-width <= 480px) {
+    width: 266px;
+    height: 95px;
   }
 }

@@ -3,18 +3,21 @@
 
   &__container {
     @include container;
-    text-align: center;
+
     padding: $space-8;
+    text-align: center;
   }
 
   &__header {
-    font-size: $typography-md-text-size;
-    line-height: $typography-3xl-line-height;
     display: inline-block;
-    font-family: $font-roboto;
-    font-weight: $typography-normal-font-weight;
-    color: $color-almost-black;
+
     margin: 0 $space-6;
+
+    font-family: $font-roboto;
+    font-size: $typography-md-text-size;
+    font-weight: $typography-normal-font-weight;
+    line-height: $typography-3xl-line-height;
+    color: $color-almost-black;
 
     &--sr-only {
       @include sr-only;
@@ -27,8 +30,9 @@
 
   input[type="submit"] {
     @include call-to-action-button;
-    padding-left: $space-12;
+
     padding-right: $space-12;
+    padding-left: $space-12;
   }
 
   &__search-term-label {
@@ -37,9 +41,10 @@
 
   &__search-term-input {
     @include text_field;
+
     width: 80%;
-    margin-top: $space-4;
     min-height: $space-12;
+    margin-top: $space-4;
     font-size: $typography-lg-text-size;
 
     @media (min-width: $grid-breakpoint-small) {
@@ -56,11 +61,12 @@
   }
 
   form {
-    max-width: 47rem;
     display: flex;
     gap: $space-4;
-    margin: 0 auto;
     justify-content: center;
+
+    max-width: 47rem;
+    margin: 0 auto;
   }
 
   input[type="checkbox"] {

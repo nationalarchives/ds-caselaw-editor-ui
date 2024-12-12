@@ -1,18 +1,20 @@
 .judgment-metadata-panel {
   display: flex;
-  gap: $space-4;
   flex-direction: row;
+  gap: $space-4;
+
   padding: $space-4 $space-2 0;
-  border-bottom: 1px solid $color-almost-black;
+
   border-top: 1px solid $color-almost-black;
+  border-bottom: 1px solid $color-almost-black;
 
   &__primary-details {
     flex: 60%;
 
     li {
       span:nth-child(odd) {
-        text-align: right;
         width: 55px;
+        text-align: right;
       }
     }
   }
@@ -22,28 +24,30 @@
 
     li {
       span:nth-child(odd) {
-        text-align: right;
         width: 110px;
+        text-align: right;
       }
     }
   }
 
   &__primary-details,
   &__secondary-details {
-    list-style-type: none;
-    padding: 0 0 $space-4 0;
-    margin: 0;
-    width: 100%;
-    line-height: $typography-lg-line-height;
-    font-size: $typography-sm-text-size;
     display: flex;
     flex-direction: column;
     row-gap: $space-2;
 
+    width: 100%;
+    margin: 0;
+    padding: 0 0 $space-4;
+
+    font-size: $typography-sm-text-size;
+    line-height: $typography-lg-line-height;
+    list-style-type: none;
+
     li {
-      width: 100%;
       display: flex;
       gap: $space-4;
+      width: 100%;
     }
   }
 
