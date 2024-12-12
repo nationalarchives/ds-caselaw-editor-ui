@@ -1,17 +1,19 @@
 #ds-cookie-consent-form {
   input[type="radio"] {
     margin-right: $space-2;
+
     + label {
       cursor: pointer;
-      @media only screen and (max-width: 818px) {
+
+      @media only screen and (width <= 818px) {
         display: inline;
       }
     }
   }
 
   #form_submit:focus {
-    background-color: #fff;
     color: #26262a;
+    background-color: #fff;
   }
 
   .form-group {
@@ -24,46 +26,50 @@
 }
 
 #ds-cookie-consent-banner {
-  z-index: 999;
-  padding: $space-2 $space-2 $space-4 $space-2;
   position: fixed;
+  z-index: 999;
+  bottom: 0;
+
   display: block;
-  bottom: 0px;
-  font-size: $typography-sm-text-size;
+
   width: 100%;
+  padding: $space-2 $space-2 $space-4 $space-2;
+
+  font-size: $typography-sm-text-size;
   color: #fff;
 
   .container {
-    background: #134571;
-    padding: $space-2 $space-5 $space-5 $space-8;
     box-sizing: border-box;
+    padding: $space-2 $space-5 $space-5 $space-8;
+    background: #134571;
     border-radius: 5px;
 
     .cookie_head {
-      font-family: "Roboto Mono";
-      font-style: normal;
-      font-weight: $typography-normal-font-weight;
-      font-size: $typography-lg-text-size;
-      line-height: inherit;
-      color: #ffffff;
       margin-top: $space-2;
       margin-bottom: 0;
+
+      font-family: "Roboto Mono";
+      font-size: $typography-lg-text-size;
+      font-weight: $typography-normal-font-weight;
+      font-style: normal;
+      line-height: inherit;
+      color: #fff;
     }
 
     .cookie-p {
+      margin-top: $space-2;
+      margin-bottom: $space-3;
+
       font-family: "Open Sans";
       font-size: $typography-md-text-size;
       line-height: inherit;
-      color: #ffffff;
-      margin-bottom: $space-3;
-      margin-top: $space-2;
+      color: #fff;
 
       br {
         content: "";
         display: block;
-        font-size: 100%;
         height: 0.25em;
-        display: block;
+        font-size: 100%;
       }
 
       a {
@@ -71,11 +77,13 @@
         text-decoration: underline;
 
         &:hover {
-          color: #000;
-          outline-offset: 0;
           z-index: 999;
+
+          color: #000;
+
           background-color: #fff;
           outline: 5px solid #1d70b8;
+          outline-offset: 0;
         }
 
         &:focus {
@@ -87,22 +95,25 @@
     #hide_this_message,
     #reject_optional_cookies,
     #accept_optional_cookies {
-      background: #eee;
-      color: #000;
-      border: #eee;
-      text-decoration: none;
-      margin-right: $space-4;
-      border: 2px solid #fff;
-      font-family: "Roboto Mono", monospace;
-      padding: $space-2 $space-4;
       display: inline-block;
+
       min-width: 24px;
+      margin-right: $space-4;
+      padding: $space-2 $space-4;
+
+      font-family: "Roboto Mono", monospace;
+      color: #000;
       text-align: center;
+      text-decoration: none;
+
+      background: #eee;
+      border: #eee;
+      border: 2px solid #fff;
 
       &:hover,
       &:focus {
-        background: #000;
         color: #fff;
+        background: #000;
         border: 2px solid #fff;
       }
 
@@ -110,24 +121,24 @@
         outline: 5px solid #fff;
       }
 
-      @media (max-width: 560px) {
+      @media (width <= 560px) {
         display: block;
-        margin-bottom: $space-3;
         width: 100%;
+        margin-bottom: $space-3;
       }
     }
 
     #btn_preferences {
+      text-decoration: underline;
       background: none;
       border: none;
       border: 2px solid transparent;
-      text-decoration: underline;
 
       &:hover,
       &:focus {
-        background: #000;
         color: #fff;
         text-decoration: none;
+        background: #000;
         border: 2px solid #fff;
       }
 
@@ -135,23 +146,23 @@
         outline: 5px solid #fff;
       }
 
-      @media (max-width: 675px) {
+      @media (width <= 675px) {
         margin-top: $space-1;
       }
 
-      @media (max-width: 560px) {
+      @media (width <= 560px) {
         display: block;
       }
     }
 
-    @media (max-width: 560px) {
+    @media (width <= 560px) {
       padding: $space-2 $space-6 $space-5 $space-6;
     }
   }
 }
 
 .cookie-consent-table {
-  @media only screen and (max-width: 768px) {
+  @media only screen and (width <= 768px) {
     tr {
       td:first-of-type {
         word-break: break-all;
@@ -164,6 +175,7 @@
   .jsON {
     display: none;
   }
+
   .jsOFF {
     display: block;
   }

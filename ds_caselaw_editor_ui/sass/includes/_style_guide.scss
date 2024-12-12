@@ -33,20 +33,20 @@
   }
 
   hr {
-    margin: $space-12 0;
     height: 1rem;
+    margin: $space-12 0;
     background-color: $color-light-grey;
     border: none;
   }
 
   &__spacing-container {
-    background: $color-light-pink;
     margin-bottom: $space-4;
+    background: $color-light-pink;
   }
 
   &__spacing-item {
-    background: $color-white;
     text-align: center;
+    background: $color-white;
   }
 
   &__line-heights {

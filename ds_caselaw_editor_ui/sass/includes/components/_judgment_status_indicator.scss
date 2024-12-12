@@ -1,21 +1,20 @@
 .judgment-status-indicator {
-  border: 3px solid $color-white;
   display: inline-block;
 
   padding: $space-1 $space-2;
 
-  outline: 2px solid transparent;
-  outline-offset: -2px;
-
   color: $color-white;
-  background-color: $color-dark-blue;
-
   text-decoration: none;
   text-transform: capitalize;
 
+  background-color: $color-dark-blue;
+  border: 3px solid $color-white;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+
   &--compact {
-    border: 0;
     padding: 0 $space-1;
+    border: 0;
   }
 
   &--new,

@@ -1,19 +1,21 @@
 .structured-search {
   &__main-search {
-    background-color: $color-light-grey;
-    padding: $space-6 0 $space-8;
     margin: 0 0 $space-12;
+    padding: $space-6 0 $space-8;
     text-align: center;
+    background-color: $color-light-grey;
   }
 
   &__main-search-header {
-    font-size: $typography-2xl-text-size;
-    line-height: $typography-xs-line-height;
     display: inline-block;
-    font-family: $font-roboto;
-    font-weight: $typography-normal-font-weight;
-    color: $color-almost-black;
+
     margin: $space-12 0 0 0;
+
+    font-family: $font-roboto;
+    font-size: $typography-2xl-text-size;
+    font-weight: $typography-normal-font-weight;
+    line-height: $typography-xs-line-height;
+    color: $color-almost-black;
   }
 
   &__container {
@@ -23,6 +25,7 @@
   &__full-text-panel {
     margin-top: $space-4;
     margin-bottom: $space-4;
+
     @media (min-width: $grid-breakpoint-medium) {
       padding: $space-6 $space-8;
     }
@@ -34,6 +37,7 @@
 
   &__full-text-input {
     @include text_field;
+
     width: 70%;
 
     @media (min-width: $grid-breakpoint-medium) {
@@ -59,6 +63,7 @@
 
   &__name-input {
     @include text_field;
+
     width: 70%;
   }
 
@@ -73,9 +78,9 @@
   }
 
   &__multi-fields-panel {
-    padding-top: $space-4;
     margin-top: $space-4;
     margin-bottom: $space-4;
+    padding-top: $space-4;
 
     @media (min-width: $grid-breakpoint-medium) {
       display: grid;
@@ -86,23 +91,27 @@
   }
 
   &__name-container {
-    background-color: $color-yellow;
-    padding: $space-8 $space-12;
-    margin-bottom: $space-4;
-    min-height: 10rem;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+
+    min-height: 10rem;
+    margin-bottom: $space-4;
+    padding: $space-8 $space-12;
+
+    background-color: $color-yellow;
   }
 
   &__limit-to-container {
-    background-color: $color-yellow;
-    padding: $space-8 $space-12;
-    margin-bottom: $space-4;
-    min-height: 10rem;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+
+    min-height: 10rem;
+    margin-bottom: $space-4;
+    padding: $space-8 $space-12;
+
+    background-color: $color-yellow;
   }
 
   &__submit-container {
@@ -122,13 +131,14 @@
   }
 
   fieldset {
-    border: none;
-    padding: 0;
     margin-top: $space-4;
+    padding: 0;
+    border: none;
   }
 
   input[type="submit"] {
     @include call-to-action-button;
+
     padding-right: $space-12;
     padding-left: $space-12;
   }

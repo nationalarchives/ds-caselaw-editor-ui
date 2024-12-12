@@ -1,29 +1,33 @@
 @mixin notification {
-  color: $color-white;
   padding: $space-3 $space-5;
+  color: $color-white;
 }
 
 .page-notification {
   &--success {
     @include notification;
+
     background-color: $color-success;
 
     .container {
       display: flex;
-      align-items: center;
       gap: $space-2;
+      align-items: center;
     }
   }
 
   &--failure {
     @include notification;
+
     background-color: $color-failure;
   }
 
   &--info {
     @include notification;
-    background-color: $color-information;
+
     color: $color-almost-black;
+    background-color: $color-information;
+
     a {
       color: $color-dark-blue;
     }
@@ -31,8 +35,10 @@
 
   &--warning {
     @include notification;
-    background-color: $color-yellow;
+
     color: $color-almost-black;
+    background-color: $color-yellow;
+
     a {
       color: $color-dark-blue;
     }
@@ -42,23 +48,27 @@
 .inline-notification {
   &--success {
     @include notification;
+
     background-color: $color-success;
   }
 
   &--info {
     @include notification;
+
     color: $color-almost-black;
     background-color: $color-information;
   }
 
   &--failure {
     @include notification;
+
     background-color: $color-failure;
   }
 }
 
 @mixin context-notification {
   @include notification;
+
   display: inline-block;
   animation: context-notification 0.5s 1;
   animation-fill-mode: forwards;
@@ -69,6 +79,7 @@
   from {
     opacity: 1;
   }
+
   to {
     opacity: 0;
   }
@@ -77,11 +88,13 @@
 .context-notification {
   &--success {
     @include context-notification;
+
     background-color: $color-success;
   }
 
   &--failure {
     @include context-notification;
+
     background-color: $color-failure;
   }
 }

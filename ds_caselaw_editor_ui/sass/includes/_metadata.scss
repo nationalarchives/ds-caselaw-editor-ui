@@ -1,10 +1,11 @@
 .metadata-header__block {
-  background-color: $color-light-grey;
   padding: $space-8 0;
+  background-color: $color-light-grey;
 }
 
 .metadata-component {
   @include container;
+
   background-color: $color-light-grey;
 
   form {
@@ -13,16 +14,16 @@
   }
 
   &__left-column {
-    flex: 1;
     display: flex;
+    flex: 1;
     flex-direction: column;
     gap: $space-2;
   }
 
   &__right-column {
-    min-width: 20%;
     display: flex;
     flex-direction: column;
+    min-width: 20%;
 
     > div {
       @media (min-width: $grid-breakpoint-large) {
@@ -33,8 +34,8 @@
     .metadata-component__main-labels {
       @media (min-width: $grid-breakpoint-large) {
         display: inline-block;
-        margin: 0;
         width: 4rem;
+        margin: 0;
       }
     }
 
@@ -63,30 +64,32 @@
 
   &__court {
     width: 33%;
-    @media (min-width: $grid-breakpoint-large) {
-      width: 50%;
-    }
 
     input {
       width: 100% !important;
+    }
+
+    @media (min-width: $grid-breakpoint-large) {
+      width: 50%;
     }
   }
 
   &__date {
     width: 33%;
-    @media (min-width: $grid-breakpoint-large) {
-      width: 16.67%;
-    }
 
     input {
       width: 100% !important;
     }
+
+    @media (min-width: $grid-breakpoint-large) {
+      width: 16.67%;
+    }
   }
 
   &__actions {
-    margin-top: auto;
     width: 100%;
     height: auto !important;
+    margin-top: auto;
 
     input {
       margin: 0;
@@ -94,17 +97,19 @@
   }
 
   &__status {
+    margin-bottom: $space-2;
+    white-space: nowrap;
+
     p {
       border: 3px solid white;
     }
-
-    margin-bottom: $space-2;
-    white-space: nowrap;
   }
 
   &__main-labels {
     display: block;
+
     margin-bottom: $space-1;
+
     font-size: $typography-sm-text-size;
     line-height: $typography-lg-line-height;
     color: $color-dark-grey;
@@ -113,47 +118,58 @@
   &__more-options {
     margin-top: $space-8;
   }
+
   &__success {
+    width: fit-content;
+    padding: $space-2;
     background-color: $color-green;
-    width: fit-content;
-    padding: $space-2;
   }
+
   &__error {
-    background-color: $color-red;
     width: fit-content;
     padding: $space-2;
+    background-color: $color-red;
   }
 
   input[type="submit"] {
     @include call-to-action-button;
+
     width: 100%;
-    margin: 0;
     min-height: 0.5rem;
+    margin: 0;
   }
 
   &__court-input {
-    @include text_field;
+    $font-open-sans: "Open Sans", sans-serif;
+
+    left: 2rem;
+
     box-sizing: border-box;
     width: 50%;
-    left: 2rem;
     min-height: 2rem;
-    font-size: $typography-md-text-size;
-    $font-open-sans: "Open Sans", sans-serif;
-    padding: $space-2;
-    border: 2px solid $color-dark-grey;
     margin: 0;
+    padding: $space-2;
+
+    font-size: $typography-md-text-size;
+
+    border: 2px solid $color-dark-grey;
+
+    @include text_field;
   }
 
   &__judgment_date-input {
     width: 80%;
     min-height: 2rem;
     font-size: $typography-md-text-size;
+
     @media (min-width: $grid-breakpoint-small) {
       width: 4rem;
     }
+
     @media (min-width: $grid-breakpoint-medium) {
       width: 2rem;
     }
+
     @media (min-width: $grid-breakpoint-extra-large) {
       width: 2rem;
     }
@@ -161,23 +177,30 @@
 
   &__metadata_name-input {
     @include text_field;
-    width: 100%;
-    margin-top: 0;
-    box-sizing: border-box;
-    height: calc(100% - $space-4 - 8px);
-    font-size: $typography-md-text-size;
+
     resize: none;
+
+    box-sizing: border-box;
+    width: 100%;
+    height: calc(100% - $space-4 - 8px);
+    margin-top: 0;
+
+    font-size: $typography-md-text-size;
   }
 
   input[type="text"] {
-    @include text_field;
+    $font-open-sans: "Open Sans", sans-serif;
+
     box-sizing: border-box;
     width: 95%;
     min-height: 2rem;
-    font-size: $typography-md-text-size;
-    $font-open-sans: "Open Sans", sans-serif;
-    padding: $space-2;
-    border: 2px solid $color-dark-grey;
     margin: 0;
+    padding: $space-2;
+
+    font-size: $typography-md-text-size;
+
+    border: 2px solid $color-dark-grey;
+
+    @include text_field;
   }
 }

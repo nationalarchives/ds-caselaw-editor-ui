@@ -1,19 +1,21 @@
 .judgments-footer {
   margin-top: auto;
-  background-color: $color-almost-black;
-  color: $color-white;
   padding: $space-4;
+
   font-size: $typography-sm-text-size;
+  color: $color-white;
+
+  background-color: $color-almost-black;
 
   &__heading {
     @include sr-only;
   }
 
   &__links {
-    padding: 0;
-    list-style-type: none;
     display: flex;
     justify-content: space-between;
+    padding: 0;
+    list-style-type: none;
   }
 
   &__link {

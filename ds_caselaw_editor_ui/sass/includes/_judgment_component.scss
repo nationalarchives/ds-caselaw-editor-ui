@@ -8,8 +8,9 @@
   &__button-actions {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     gap: $space-8;
+    align-items: flex-start;
+
     padding: $space-8 0;
 
     input.button-cta[type="submit"] {
@@ -45,22 +46,24 @@
     }
 
     label {
-      display: inline-block;
       position: relative;
       left: $space-8;
+      display: inline-block;
     }
   }
 
   input[type="submit"] {
-    display: inline-block;
     position: relative;
+    display: inline-block;
   }
 
   &__metadata_name-input {
     @include text_field;
+
     width: 80%;
     min-height: $space-12;
     font-size: $typography-lg-text-size;
+
     @media (min-width: $grid-breakpoint-small) {
       width: 20rem;
     }
@@ -76,19 +79,19 @@
 }
 
 .email-confirm-publish {
-  border: 2px #ffb952 solid;
   display: inline-block;
-  padding: 0px $space-2 0px 0;
+  padding: 0 $space-2 0 0;
+  border: 2px #ffb952 solid;
 
   &__list-header {
-    padding-left: $space-2;
     margin: $space-2 0;
+    padding-left: $space-2;
   }
 
   &__list {
-    list-style: none;
-    padding-left: $space-2;
     margin: $space-1 0;
+    padding-left: $space-2;
+    list-style: none;
   }
 
   &__list-link {
@@ -97,19 +100,19 @@
 }
 
 .email-hold-publish {
-  border: 2px #ffb952 solid;
   display: inline-block;
-  padding: 0px $space-2 0px 0;
+  padding: 0 $space-2 0 0;
+  border: 2px #ffb952 solid;
 
   &__list-header {
-    padding-left: $space-2;
     margin: $space-2 0;
+    padding-left: $space-2;
   }
 
   &__list {
-    list-style: none;
-    padding-left: $space-2;
     margin: $space-1 0;
+    padding-left: $space-2;
+    list-style: none;
   }
 
   &__list-link {
@@ -123,7 +126,7 @@
   padding: $space-2 0;
 }
 
-@media (max-width: 800px) {
+@media (width <= 800px) {
   .edit-component__actions {
     display: block;
   }

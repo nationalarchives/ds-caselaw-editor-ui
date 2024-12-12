@@ -1,7 +1,7 @@
 .tabs-set {
   width: 100%;
-  padding: $space-6 0 0;
   margin: auto;
+  padding: $space-6 0 0;
   text-align: center;
 
   &.tabs-set--primary {
@@ -16,23 +16,30 @@
     margin: 0 $space-1;
 
     label {
-      background: $color-aqua-blue;
       padding-top: $space-3;
+
+      font-family: "Open Sans", sans-serif;
+      font-size: $typography-md-text-size;
+      font-weight: $typography-bold-font-weight;
+      color: $color-white;
+
+      background: $color-aqua-blue;
       border: 2px solid $color-aqua-blue;
       border-bottom: none;
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
-      color: $color-white;
-      font-family: "Open Sans", sans-serif;
-      font-weight: $typography-bold-font-weight;
-      font-size: $typography-md-text-size;
+
       a {
-        padding: $space-3 $space-8 0 $space-8;
         position: relative;
         top: -0.33rem;
+
         display: inline-block;
-        text-decoration: none;
+
+        padding: $space-3 $space-8 0 $space-8;
+
         color: $color-white;
+        text-decoration: none;
+
         &:focus {
           outline-offset: 5px;
         }
@@ -54,11 +61,12 @@
     }
 
     input[type="radio"]:checked ~ label {
-      border-bottom: 2px solid $color-white;
       background: $color-white;
+      border-bottom: 2px solid $color-white;
+
       a {
-        color: $color-aqua-blue;
         cursor: default;
+        color: $color-aqua-blue;
       }
     }
   }

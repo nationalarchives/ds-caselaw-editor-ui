@@ -1,13 +1,14 @@
 .result-controls {
   &__order-by-label {
-    font-family: $font-roboto;
-    font-size: $typography-lg-text-size;
     display: block;
     margin-bottom: $space-4;
+    font-family: $font-roboto;
+    font-size: $typography-lg-text-size;
   }
 
   &__order-by {
     @include select;
+
     min-width: auto;
   }
 }

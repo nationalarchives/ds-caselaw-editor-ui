@@ -1,8 +1,9 @@
 .standard-text-template {
   @include container;
+
+  min-height: 40rem;
   margin-top: $space-20;
   margin-bottom: $space-32;
-  min-height: 40rem;
 
   h1,
   h2,
@@ -12,20 +13,20 @@
   }
 
   h1 {
-    font-size: $typography-2xl-text-size;
     margin: 0 0 $space-8;
+    font-size: $typography-2xl-text-size;
   }
 
   h2 {
-    font-size: $typography-xl-text-size;
     margin: 0 0 $space-5;
     padding: $space-8 0 0;
+    font-size: $typography-xl-text-size;
   }
 
   h3 {
-    font-size: $typography-lg-text-size;
     margin: 0 0 $space-5;
     padding: $space-5 0 0;
+    font-size: $typography-lg-text-size;
   }
 
   p {

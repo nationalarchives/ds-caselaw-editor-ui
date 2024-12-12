@@ -1,6 +1,6 @@
 .judgment-toolbar {
-  color: $color-black;
   padding: $space-2 0;
+  color: $color-black;
 
   &__button {
     display: inline-block;
@@ -10,6 +10,7 @@
 
   &__button-more {
     margin-left: $space-12 !important;
+
     svg {
       fill: $color-cta-background;
     }
@@ -29,33 +30,37 @@
   }
 
   &__delete {
-    border-color: $color-failure !important;
     color: $color-failure !important;
+    border-color: $color-failure !important;
+
     &:focus,
     &:hover {
-      background-color: $color-failure !important;
       color: $color-white !important;
+      background-color: $color-failure !important;
       outline-color: $color-failure !important;
     }
   }
 
   &__version {
-    text-align: center;
     display: flex;
+    gap: $space-2;
     align-items: center;
     justify-content: center;
-    gap: $space-2;
+
+    text-align: center;
   }
 
   &__corrected-ncn-notification {
     display: flex;
     flex-direction: column;
     gap: $space-2;
+
     h3 {
       display: flex;
-      align-items: center;
       gap: $space-2;
+      align-items: center;
     }
+
     p,
     h3 {
       margin: 0;
@@ -64,24 +69,24 @@
 
   &__container {
     display: flex;
+    gap: $space-4;
     align-items: center;
     justify-content: space-between;
-    gap: $space-4;
   }
 
   &__info,
   &__actions {
     display: flex;
+    gap: $space-4;
     align-items: center;
     justify-content: center;
-    gap: $space-4;
   }
 
   &__submitter,
   &__status {
     display: flex;
-    align-items: center;
     gap: $space-2;
+    align-items: center;
     padding-right: $space-4;
 
     h4 {
@@ -92,11 +97,14 @@
   &__more {
     &__menu {
       display: flex;
+
       &__group {
+        flex-grow: 1;
+
         h4 {
+          margin: 0;
           font-size: $typography-sm-text-size;
           line-height: $typography-lg-line-height;
-          margin: 0;
         }
 
         p {
@@ -116,11 +124,10 @@
 
         li {
           margin-top: 0;
-          list-style: none;
           font-size: $typography-sm-text-size;
           line-height: $typography-2xl-line-height;
+          list-style: none;
         }
-        flex-grow: 1;
       }
     }
   }

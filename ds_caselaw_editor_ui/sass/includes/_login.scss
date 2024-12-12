@@ -1,7 +1,7 @@
 .login-background {
-  background-color: $color-light-grey;
   padding-top: $space-8;
   padding-bottom: $space-8;
+  background-color: $color-light-grey;
 
   @media (min-width: $grid-breakpoint-small) {
     padding-top: $space-20;
@@ -15,15 +15,14 @@
 }
 
 .login-container {
+  width: 80%;
+  max-width: 20rem;
+  margin: auto;
+  padding: $space-8;
+
   background-color: #fff;
   border: 5px solid $color-yellow;
   border-radius: 8px;
-
-  margin: auto;
-
-  max-width: 20rem;
-  width: 80%;
-  padding: $space-8;
 
   h1 {
     margin: 0;
@@ -42,8 +41,8 @@
   &__text-field {
     box-sizing: border-box;
     width: 100%;
-    font-size: $typography-lg-text-size;
     margin-top: $space-2;
+    font-size: $typography-lg-text-size;
   }
 
   .button-cta {

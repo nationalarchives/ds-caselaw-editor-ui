@@ -1,26 +1,27 @@
 .page-header {
-  background-color: $color-almost-black;
-
   display: flex;
   flex-direction: row;
   align-items: center;
 
   padding: 0;
 
-  &__navbar {
-    flex-grow: 1;
+  background-color: $color-almost-black;
 
-    display: block;
+  &__navbar {
     position: relative;
+    display: block;
+    flex-grow: 1;
     padding: $space-2 $space-8;
 
     ol {
-      margin: 0 $space-2;
-      list-style-type: none;
-      padding: 0;
-      font-family: $font-roboto;
       display: inline-block;
+
+      margin: 0 $space-2;
+      padding: 0;
+
+      font-family: $font-roboto;
       font-size: $typography-sm-text-size;
+      list-style-type: none;
 
       a {
         color: $color-white;
@@ -28,8 +29,8 @@
     }
 
     li {
-      display: inline-block;
       position: relative;
+      display: inline-block;
       margin-right: $space-2;
       color: $color-white;
     }
@@ -46,33 +47,36 @@
 
         &::before {
           content: "";
-          display: block;
+
           position: absolute;
           top: 0;
           bottom: 0;
           left: -3.31px;
+          transform: rotate(45deg);
+
+          display: block;
+
           width: 7px;
           height: 7px;
           margin: auto 0;
-          -webkit-transform: rotate(45deg);
-          -ms-transform: rotate(45deg);
-          transform: rotate(45deg);
+
           border: solid;
-          border-width: 0.125rem 0.125rem 0 0;
           border-color: $color-white;
+          border-width: 0.125rem 0.125rem 0 0;
         }
       }
     }
 
     &-you-are-in {
-      color: $color-white;
-      font-size: $typography-sm-text-size;
       margin-right: $space-2;
+      font-size: $typography-sm-text-size;
+      color: $color-white;
     }
   }
 
   &__container {
     @include container;
+
     @media (min-width: $grid-breakpoint-medium) {
       text-align: center;
     }
