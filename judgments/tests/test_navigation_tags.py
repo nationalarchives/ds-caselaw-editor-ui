@@ -19,6 +19,7 @@ class TestNavigationTags(TestCase):
             {"id": "review", "selected": True, "label": "Review", "url": "/test/2023/123"},
             {"id": "put-on-hold", "selected": False, "label": "Put on hold", "url": "/test/2023/123/hold"},
             {"id": "publish", "selected": False, "label": "Publish", "url": "/test/2023/123/publish"},
+            {"id": "identifiers", "selected": False, "label": "Identifiers", "url": "/test/2023/123/identifiers"},
             {"id": "history", "selected": False, "label": "History", "url": "/test/2023/123/history"},
             {"id": "downloads", "selected": False, "label": "Downloads", "url": "/test/2023/123/downloads"},
         ]
