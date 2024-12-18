@@ -2,7 +2,6 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from judgments.utils import get_corrected_ncn_url
 from judgments.utils.aws import invalidate_caches
 from judgments.utils.link_generators import build_raise_issue_email_link
 from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_404
@@ -14,7 +13,6 @@ class HoldDocumentView(DocumentView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["view"] = "hold_judgment"
-        context["corrected_ncn_url"] = get_corrected_ncn_url(context["judgment"])
         return context
 
 
@@ -28,7 +26,6 @@ class HoldDocumentSuccessView(DocumentView):
             signature=(self.request.user.get_full_name() if self.request.user.is_authenticated else None),
         )
         context["view"] = "hold_judgment"
-        context["corrected_ncn_url"] = get_corrected_ncn_url(context["judgment"])
         return context
 
 
@@ -49,7 +46,6 @@ class UnholdDocumentView(DocumentView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["view"] = "unhold_judgment"
-        context["corrected_ncn_url"] = get_corrected_ncn_url(context["judgment"])
 
         return context
 
@@ -60,7 +56,6 @@ class UnholdDocumentSuccessView(DocumentView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["view"] = "unhold_judgment"
-        context["corrected_ncn_url"] = get_corrected_ncn_url(context["judgment"])
 
         return context
 

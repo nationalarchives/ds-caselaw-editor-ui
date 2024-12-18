@@ -6,18 +6,14 @@ from operator import itemgetter
 from typing import TYPE_CHECKING
 from urllib.parse import urlparse
 
-import ds_caselaw_utils as caselawutils
 from caselawclient.Client import (
     DEFAULT_USER_AGENT,
     MarklogicApiClient,
-    MarklogicAPIError,
 )
 from caselawclient.models.documents import DocumentURIString
 from caselawclient.models.press_summaries import PressSummary
 from django.conf import settings
 from django.contrib.auth.models import Group, User
-
-from .aws import copy_assets
 
 api_client = MarklogicApiClient(
     host=settings.MARKLOGIC_HOST,
@@ -70,48 +66,6 @@ def format_date(date):
 
     time = datetime.strptime(date, "%Y-%m-%d")
     return time.strftime("%d-%m-%Y")
-
-
-def update_document_uri(old_uri, new_citation):
-    """
-    Move the document at old_uri to the correct location based on the neutral citation
-    The new neutral citation *must* not already exist (that is handled elsewhere)
-    """
-    new_uri_raw = caselawutils.neutral_url(new_citation.strip())
-    if new_uri_raw is None:
-        msg = f"Unable to form new URI for {old_uri} from neutral citation: {new_citation}"
-        raise NeutralCitationToUriError(
-            msg,
-        )
-
-    new_uri = DocumentURIString(new_uri_raw)
-
-    if api_client.document_exists(new_uri):
-        msg = f"The URI {new_uri} generated from {new_citation} already exists, you cannot move this document to a pre-existing Neutral Citation Number."
-        raise MoveJudgmentError(
-            msg,
-        )
-
-    try:
-        api_client.copy_document(old_uri, new_uri)
-        set_metadata(old_uri, new_uri)
-        copy_assets(old_uri, new_uri)
-        api_client.set_judgment_this_uri(new_uri)
-    except MarklogicAPIError as e:
-        msg = f"Failure when attempting to copy document from {old_uri} to {new_uri}: {e}"
-        raise MoveJudgmentError(
-            msg,
-        ) from e
-
-    try:
-        api_client.delete_judgment(old_uri)
-    except MarklogicAPIError as e:
-        msg = f"Failure when attempting to delete document from {old_uri}: {e}"
-        raise MoveJudgmentError(
-            msg,
-        ) from e
-
-    return new_uri
 
 
 def set_metadata(old_uri, new_uri):
@@ -175,13 +129,3 @@ def _build_related_document_uri(document: Document) -> str:
     if isinstance(document, PressSummary):
         return document.uri.removesuffix(press_summary_suffix)
     return document.uri + press_summary_suffix
-
-
-def get_corrected_ncn_url(document: Document) -> str | None:
-    ncn_uri = caselawutils.neutral_url(document.neutral_citation)
-
-    if "press-summary" in document.uri:
-        return None
-    if document.uri != ncn_uri:
-        return ncn_uri
-    return None

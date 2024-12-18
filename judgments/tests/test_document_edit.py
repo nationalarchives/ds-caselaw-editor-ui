@@ -1,8 +1,7 @@
 from unittest.mock import Mock, patch
 
-import lxml.html
 import pytest
-from caselawclient.factories import DocumentBodyFactory, JudgmentFactory, PressSummaryFactory
+from caselawclient.factories import JudgmentFactory
 from caselawclient.identifier_resolution import IdentifierResolution, IdentifierResolutions
 from caselawclient.models.documents import DocumentURIString
 from caselawclient.xquery_type_dicts import MarkLogicDocumentURIString
@@ -94,107 +93,6 @@ class TestDocumentEdit(TestCase):
 
         messages = list(get_messages(response.wsgi_request))
         assert "Could not parse the date" in messages[0].message
-
-
-class TestDocumentBadURIWarning(TestCase):
-    MISMATCH_HEADER_STRING = "Document URI/NCN mismatch"
-
-    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
-    @patch("judgments.utils.view_helpers.get_linked_document_uri")
-    def test_good_ncn_has_no_banner(self, linked_document_uri, mock_judgment):
-        judgment = JudgmentFactory.build(
-            uri=DocumentURIString("uksc/1234/123"),
-            neutral_citation="[1234] UKSC 123",
-            body=DocumentBodyFactory.build(name="Test v Tested"),
-        )
-
-        mock_judgment.return_value = judgment
-
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
-
-        response = self.client.get(
-            "/uksc/1234/123",
-        )
-
-        self.assertNotContains(response, self.MISMATCH_HEADER_STRING)
-
-    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
-    @patch("judgments.utils.view_helpers.get_linked_document_uri")
-    def test_bad_ncn_has_banner(self, linked_document_uri, mock_judgment):
-        judgment = JudgmentFactory.build(
-            uri=DocumentURIString("uksc/1234/123"),
-            neutral_citation="[1234] UKSC 999",
-            body=DocumentBodyFactory.build(name="Test v Tested"),
-        )
-
-        mock_judgment.return_value = judgment
-
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
-
-        response = self.client.get(
-            "/uksc/1234/123",
-        )
-
-        self.assertContains(response, self.MISMATCH_HEADER_STRING)
-
-        root = lxml.html.fromstring(response.content)
-        message = lxml.html.tostring(root.xpath("//div[@class='page-notification--warning']")[0])
-
-        assert b"This document is currently located at <strong>/uksc/1234/123</strong>" in message
-        assert b"but based on its NCN should be at <strong>/uksc/1234/999</strong>" in message
-        assert b'<input type="hidden" name="judgment_uri" value="uksc/1234/123">' in message
-
-    @patch("judgments.views.judgment_edit.api_client")
-    @patch("judgments.views.judgment_edit.update_document_uri")
-    @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
-    def test_update_uri_called(self, mock_judgment, update_document_uri, api_client):
-        judgment = JudgmentFactory.build(
-            uri=DocumentURIString("uksc/4321/123"),
-            name="Test v Tested",
-            neutral_citation="[1234] UKSC 321",
-            best_human_identifier="[1234] UKSC 321",
-        )
-
-        mock_judgment.return_value = judgment
-
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
-
-        self.client.post(
-            "/uksc/4321/123/edit",
-            {
-                "move_document": "yes",
-                "judgment_uri": "uksc/4321/123",
-            },
-        )
-
-        update_document_uri.assert_called_with("uksc/4321/123", "[1234] UKSC 321")
-
-    @patch("judgments.views.judgment_edit.api_client")
-    @patch("judgments.views.judgment_edit.update_document_uri")
-    @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
-    def test_update_uri_not_called_for_press_summary(self, mock_judgment, update_document_uri, api_client):
-        judgment = PressSummaryFactory.build(
-            uri=DocumentURIString("uksc/4321/123"),
-            name="Test v Tested",
-            neutral_citation="[1234] UKSC 321",
-            best_human_identifier="[1234] UKSC 321",
-        )
-
-        mock_judgment.return_value = judgment
-
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
-
-        response = self.client.post(
-            "/uksc/4321/123/edit",
-            {
-                "move_document": "yes",
-                "judgment_uri": "uksc/4321/123",
-            },
-        )
-
-        update_document_uri.assert_not_called()
-        messages = list(get_messages(response.wsgi_request))
-        assert "Unable to move non-judgments at this time" in messages[0].message
 
 
 @patch("judgments.views.judgment_edit.api_client")

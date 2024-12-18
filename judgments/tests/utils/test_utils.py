@@ -1,22 +1,18 @@
 import os
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
-import ds_caselaw_utils
 import pytest
-from caselawclient.errors import MarklogicAPIError
 from django.contrib.auth.models import Group
 from django.test import TestCase
 from factories import UserFactory
 
-import judgments
 from judgments.utils import api_client as api_client_real
 from judgments.utils import (
     editors_dict,
     ensure_local_referer_url,
     extract_version_number_from_filename,
-    update_document_uri,
 )
-from judgments.utils.aws import build_new_key, invalidate_caches
+from judgments.utils.aws import invalidate_caches
 from judgments.utils.paginator import paginator
 
 
@@ -95,92 +91,6 @@ class TestPaginator:
             "number_of_pages": 1,
         }
         assert paginator(1, 5) == expected_result
-
-
-class TestUtils(TestCase):
-    @patch("judgments.utils.api_client")
-    @patch("boto3.session.Session.client")
-    def test_update_document_uri_success(self, fake_boto3_client, fake_api_client):
-        """Given the target document uri does not exist,
-        we continue to move the document to the new location
-        (where moving is copy + delete)"""
-        ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
-        fake_api_client.document_exists.return_value = False
-        fake_api_client.copy_document.return_value = True
-        fake_api_client.delete_judgment.return_value = True
-        fake_boto3_client.list_objects.return_value = []
-
-        result = update_document_uri("old/uri", "[2002] EAT 1")
-
-        fake_api_client.copy_document.assert_called_with("old/uri", "new/uri")
-        fake_api_client.delete_judgment.assert_called_with("old/uri")
-        assert result == "new/uri"
-
-    @patch("judgments.utils.api_client")
-    @patch("boto3.session.Session.client")
-    def test_update_document_uri_strips_whitespace(
-        self,
-        fake_boto3_client,
-        fake_api_client,
-    ):
-        ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
-        fake_api_client.copy_document.return_value = True
-        fake_api_client.delete_judgment.return_value = True
-        fake_api_client.document_exists.return_value = False
-        fake_boto3_client.list_objects.return_value = []
-
-        update_document_uri("old/uri", " [2002] EAT 1 ")
-
-        ds_caselaw_utils.neutral_url.assert_called_with("[2002] EAT 1")
-
-    @patch("judgments.utils.api_client")
-    def test_update_document_uri_exception_copy(self, fake_client):
-        """Given a document exists at the target uri, and copy_document fails,
-        we raise a MoveJudgmentError"""
-        ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
-        fake_client.copy_document.side_effect = MarklogicAPIError
-        fake_client.delete_judgment.side_effect = True
-
-        with pytest.raises(judgments.utils.MoveJudgmentError):
-            update_document_uri("old/uri", "[2002] EAT 1")
-
-    @patch("judgments.utils.api_client")
-    def test_update_document_uri_exception_delete(self, fake_client):
-        """If there's a target at the document uri and deleting fails,
-        raise a MoveJudgmentError"""
-        ds_caselaw_utils.neutral_url = MagicMock(return_value="new/uri")
-        fake_client.copy_document.return_value = True
-        fake_client.delete_judgment.side_effect = MarklogicAPIError
-
-        with pytest.raises(judgments.utils.MoveJudgmentError):
-            update_document_uri("old/uri", "[2002] EAT 1")
-
-    def test_update_document_uri_unparseable_citation(self):
-        ds_caselaw_utils.neutral_url = MagicMock(return_value=None)
-
-        with pytest.raises(judgments.utils.NeutralCitationToUriError):
-            update_document_uri("old/uri", "Wrong neutral citation")
-
-    @patch("judgments.utils.api_client")
-    def test_update_document_uri_duplicate_uri(self, fake_client):
-        fake_client.document_exists.return_value = True
-        with pytest.raises(judgments.utils.MoveJudgmentError):
-            update_document_uri("old/uri", "[2002] EAT 1")
-
-    def test_build_new_key_docx(self):
-        old_key = "failures/TDR-2022-DNWR/failures_TDR-2022-DNWR.docx"
-        new_uri = "ukpc/2023/120"
-        assert build_new_key(old_key, new_uri) == "ukpc/2023/120/ukpc_2023_120.docx"
-
-    def test_build_new_key_pdf(self):
-        old_key = "failures/TDR-2022-DNWR/failures_TDR-2022-DNWR.pdf"
-        new_uri = "ukpc/2023/120"
-        assert build_new_key(old_key, new_uri) == "ukpc/2023/120/ukpc_2023_120.pdf"
-
-    def test_build_new_key_image(self):
-        old_key = "failures/TDR-2022-DNWR/image1.jpg"
-        new_uri = "ukpc/2023/120"
-        assert build_new_key(old_key, new_uri) == "ukpc/2023/120/image1.jpg"
 
 
 class TestReferrerUrlHelper(TestCase):

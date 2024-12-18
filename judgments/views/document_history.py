@@ -6,7 +6,6 @@ from uuid import uuid4
 from caselawclient.client_helpers import VersionType
 from caselawclient.models.documents import Document
 
-from judgments.utils import get_corrected_ncn_url
 from judgments.utils.view_helpers import DocumentView
 
 VersionAnnotationDict = dict[str, Any]
@@ -197,7 +196,6 @@ class DocumentHistoryView(DocumentView):
             sorted_ml_versions,
         ).structured_history
 
-        context["corrected_ncn_url"] = get_corrected_ncn_url(context["judgment"])
         context["view"] = "document_history"
 
         return context

@@ -6,13 +6,20 @@
     <h1 class="judgment-component__confirmation-title">Identifiers for:</h1>
     <h2 class="judgment-component__confirmation-subtitle">{{ document.body.name }}</h2>
     {% if document.identifiers %}
+      <h2>Preferred identifier</h2>
+      <b>{{ document.identifiers.preferred.schema.name }}: {{ document.identifiers.preferred.value }}</b>
+      <h2>All identifiers</h2>
       <table class="table">
         <tr>
           <th>Type</th>
           <th>Value</th>
           <th>URL</th>
+          {% if user|is_developer %}
+            <th>Human readable</th>
+            <th>Score</th>
+          {% endif %}
         </tr>
-        {% for identifier in document.identifiers.values %}
+        {% for identifier in document.identifiers.by_score %}
           <tr>
             <td>
               {{ identifier.schema.name }}
@@ -31,6 +38,10 @@
             <td>
               <code>/{{ identifier.url_slug }}</code>
             </td>
+            {% if user|is_developer %}
+              <td>{{ identifier.schema.human_readable }}</td>
+              <td>{{ identifier.score }}</td>
+            {% endif %}
           </tr>
         {% endfor %}
       </table>
