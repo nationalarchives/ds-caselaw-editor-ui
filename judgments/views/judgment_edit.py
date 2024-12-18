@@ -4,7 +4,6 @@ from caselawclient.Client import MarklogicAPIError
 from caselawclient.models.identifiers.neutral_citation import NeutralCitationNumber, NeutralCitationNumberSchema
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import View
 
@@ -12,7 +11,6 @@ from judgments.utils import (
     MoveJudgmentError,
     NeutralCitationToUriError,
     api_client,
-    update_document_uri,
 )
 from judgments.utils.aws import invalidate_caches
 from judgments.utils.view_helpers import get_document_by_uri_or_404
@@ -87,13 +85,6 @@ class EditJudgmentView(View):
                 )
             new_date_as_iso = new_date_as_date.strftime(r"%Y-%m-%d")
             api_client.set_judgment_date(judgment_uri, new_date_as_iso)
-
-            # If judgment_uri is a `failure` URI, amend it to match new neutral citation and redirect
-            if "failures" in judgment_uri and new_citation is not None:
-                new_judgment_uri = update_document_uri(judgment_uri, new_citation)
-                return redirect(
-                    reverse("edit-document", kwargs={"document_uri": new_judgment_uri}),
-                )
 
             messages.success(request, "Document successfully updated")
 
