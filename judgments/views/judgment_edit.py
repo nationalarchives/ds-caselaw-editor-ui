@@ -40,18 +40,6 @@ class EditJudgmentView(View):
     def post(self, request, *args, **kwargs):
         judgment_uri = request.POST["judgment_uri"]
         judgment = get_document_by_uri_or_404(judgment_uri)
-        if request.POST.get("move_document", False):
-            if judgment.document_noun == "judgment":
-                # should be .neutral_citation
-                new_judgment_uri = update_document_uri(judgment_uri, judgment.best_human_identifier)
-                return redirect(
-                    reverse("edit-document", kwargs={"document_uri": new_judgment_uri}),
-                )
-            else:
-                messages.error(request, "Unable to move non-judgments at this time.")
-                return redirect(
-                    reverse("edit-document", kwargs={"document_uri": judgment_uri}),
-                )
 
         return_to = request.POST.get("return_to", None)
 

@@ -175,13 +175,3 @@ def _build_related_document_uri(document: Document) -> str:
     if isinstance(document, PressSummary):
         return document.uri.removesuffix(press_summary_suffix)
     return document.uri + press_summary_suffix
-
-
-def get_corrected_ncn_url(document: Document) -> str | None:
-    ncn_uri = caselawutils.neutral_url(document.neutral_citation)
-
-    if "press-summary" in document.uri:
-        return None
-    if document.uri != ncn_uri:
-        return ncn_uri
-    return None
