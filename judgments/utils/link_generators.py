@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 from urllib.parse import quote, urlencode
 
+from caselawclient.models.identifiers.neutral_citation import NeutralCitationNumber
 from django.conf import settings
 from django.template import loader
 from django.urls import reverse
@@ -78,7 +79,7 @@ def build_raise_issue_email_link(
 
 
 def build_jira_create_link(document: Document, request: HttpRequest) -> str:
-    summary_string = f"{document.body.name} / {document.best_human_identifier} / {document.consignment_reference}"
+    summary_string = f"{document.body.name} / {document.consignment_reference}"
 
     editor_html_url = request.build_absolute_uri(
         reverse("full-text-html", kwargs={"document_uri": document.uri}),
@@ -87,10 +88,13 @@ def build_jira_create_link(document: Document, request: HttpRequest) -> str:
     description_string = "{editor_html_url}".format(
         editor_html_url="""{html_url}
 
+NCN: {preferred_ncn}
+
 {source_name_label}: {source_name}
 {source_email_label}: {source_email}
 {consignment_ref_label}: {consignment_ref}""".format(
             html_url=editor_html_url,
+            preferred_ncn=document.identifiers.preferred(type=NeutralCitationNumber),
             source_name_label="Submitter",
             source_name=document.source_name,
             source_email_label="Contact email",
