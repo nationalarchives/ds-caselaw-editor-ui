@@ -5,6 +5,7 @@ import environ
 from caselawclient.client_helpers.search_helpers import search_and_parse_response
 from caselawclient.errors import DocumentNotFoundError
 from caselawclient.models.documents import Document, DocumentURIString
+from caselawclient.models.identifiers.neutral_citation import NeutralCitationNumber
 from caselawclient.search_parameters import SearchParameters
 from django.http import Http404
 from django.views.generic import TemplateView
@@ -115,5 +116,7 @@ class DocumentView(TemplateView):
 
         context["linked_document_uri"] = get_linked_document_uri(document)
         context["document_type"] = document.document_noun.replace(" ", "_")
+
+        context["preferred_ncn"] = document.identifiers.preferred(type=NeutralCitationNumber)
 
         return context
