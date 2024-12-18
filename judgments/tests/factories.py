@@ -123,6 +123,5 @@ class SearchResultFactory(SimpleFactory):
         "status": "NEW",
         "consignment_reference": "TDR-2023-ABC",
         "document_noun": "Judgment",
-        "best_human_identifier": "[2023] Test 123",
         "court_and_jurisdiction_identifier_string": "Court of Testing",
     }
