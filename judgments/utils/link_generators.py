@@ -10,6 +10,7 @@ from django.urls import reverse
 
 if TYPE_CHECKING:
     from caselawclient.models.documents import Document
+    from caselawclient.models.identifiers import Identifier
     from django.http import HttpRequest
 
 
@@ -85,6 +86,8 @@ def build_jira_create_link(document: Document, request: HttpRequest) -> str:
         reverse("full-text-html", kwargs={"document_uri": document.uri}),
     )
 
+    preferred_ncn: Identifier | None = document.identifiers.preferred(type=NeutralCitationNumber)
+
     description_string = "{editor_html_url}".format(
         editor_html_url="""{html_url}
 
@@ -94,7 +97,7 @@ NCN: {preferred_ncn}
 {source_email_label}: {source_email}
 {consignment_ref_label}: {consignment_ref}""".format(
             html_url=editor_html_url,
-            preferred_ncn=document.identifiers.preferred(type=NeutralCitationNumber),
+            preferred_ncn=preferred_ncn.value if preferred_ncn else "None",
             source_name_label="Submitter",
             source_name=document.source_name,
             source_email_label="Contact email",
