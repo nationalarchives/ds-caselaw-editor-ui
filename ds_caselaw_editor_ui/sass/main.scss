@@ -1,3 +1,6 @@
+// Vendor imports
+@import "@nationalarchives/ds-caselaw-frontend/src/main";
+
 // Setup
 @import "includes/variables";
 @import "includes/mixins";
@@ -10,9 +13,6 @@
 @import "includes/spacing";
 @import "includes/tables";
 @import "includes/typography";
-
-// Vendor imports
-@import "../../node_modules/@nationalarchives/ds-caselaw-frontend/src/main";
 
 // Base
 @import "includes/standard-text-template";
