@@ -29,7 +29,6 @@ class StyleGuide(TemplateView):
         context["judgment"] = JudgmentFactory.build()
 
         context["menu_items"] = [
-            {"label": "Colours", "href": "#colours"},
             {
                 "label": "Components",
                 "href": "#components",

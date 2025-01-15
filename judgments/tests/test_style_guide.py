@@ -11,7 +11,6 @@ class TestStyleGuide(TestCase):
         assert response.status_code == 200
         decoded_response = response.content.decode("utf-8")
         assert "style guide" in decoded_response
-        assert "Colours" in decoded_response
         assert "Components" in decoded_response
         assert "Buttons" in decoded_response
         assert "Note" in decoded_response

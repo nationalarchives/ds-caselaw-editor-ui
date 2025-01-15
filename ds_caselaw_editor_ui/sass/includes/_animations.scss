@@ -1,6 +1,8 @@
+@use "sass:color";
+
 @keyframes emphasis {
   from {
-    background-color: color.adjust(colour-var("focus-outline"), $lightness: 40);
+    background-color: color.adjust(#00b0ff, $lightness: 40);
   }
 
   to {
@@ -10,10 +12,7 @@
 
 @keyframes emphasis-border {
   from {
-    background-color: color.adjust(
-      colour-var("accent-background-light"),
-      $lightness: 30
-    );
+    background-color: color.adjust(#ededed, $lightness: 30);
   }
 
   to {
