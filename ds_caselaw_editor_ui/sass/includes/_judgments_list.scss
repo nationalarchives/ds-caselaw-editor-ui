@@ -165,7 +165,7 @@
 
     &:hover {
       cursor: grab;
-      background-color: $color-link-blue-hover;
+      background-color: colour-var("link");
     }
   }
 

@@ -42,11 +42,11 @@
     }
 
     &:visited {
-      color: $color-link-blue;
+      color: colour-var("link");
     }
 
     &:hover {
-      color: $color-link-blue-hover;
+      color: colour-var("link");
 
       &.up {
         &::before {

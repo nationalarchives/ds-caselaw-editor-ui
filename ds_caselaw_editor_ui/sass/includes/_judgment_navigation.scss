@@ -18,7 +18,7 @@
       text-decoration: none;
 
       &:visited {
-        color: $color-link-blue;
+        color: colour-var("link");
       }
 
       &:hover {
@@ -30,7 +30,7 @@
 
   &__item--active {
     font-weight: $typography-bold-font-weight;
-    border-bottom-color: $color-link-blue;
+    border-bottom-color: colour-var("link");
   }
 
   &__item--disabled {

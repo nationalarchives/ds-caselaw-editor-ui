@@ -1,18 +1,18 @@
 a {
-  color: $color-link-blue;
+  color: colour-var("link");
   text-decoration: underline;
 
   &:hover {
-    color: $color-link-blue-hover;
+    color: colour-var("link");
     text-decoration: none;
   }
 
   &:visited {
-    color: $color-link-blue-visited;
+    color: colour-var("link-visited");
   }
 
   &:active {
-    color: $color-link-blue-active;
+    color: colour-var("link");
   }
 
   &:focus {
