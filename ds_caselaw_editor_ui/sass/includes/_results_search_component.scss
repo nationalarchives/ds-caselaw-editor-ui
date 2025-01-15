@@ -97,7 +97,7 @@
     margin: $space-1;
     padding: $space-8;
 
-    color: $color-black;
+    color: colour-var("font-dark");
 
     background: $color-yellow;
     border: 0;
@@ -204,7 +204,7 @@
     padding: $space-2;
 
     font-size: $typography-sm-text-size;
-    color: $color-black;
+    color: colour-var("font-dark");
     text-decoration: none;
 
     &::after {

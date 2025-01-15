@@ -1,6 +1,6 @@
 .judgment-toolbar {
   padding: $space-2 0;
-  color: $color-black;
+  color: colour-var("font-dark");
 
   &__button {
     display: inline-block;
