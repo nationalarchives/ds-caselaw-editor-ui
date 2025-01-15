@@ -21,6 +21,6 @@
     font-size: $typography-md-text-size;
     line-height: $typography-md-line-height;
 
-    border: 2px solid $color-almost-black;
+    border: 2px solid colour-var("input-border");
   }
 }

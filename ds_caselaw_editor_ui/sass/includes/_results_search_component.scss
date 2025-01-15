@@ -18,7 +18,7 @@
     font-size: $typography-xl-text-size;
     font-weight: $typography-normal-font-weight;
     line-height: $typography-xl-line-height;
-    color: $color-almost-black;
+    color: colour-var("font-dark");
   }
 
   &__sub-header {
@@ -30,7 +30,7 @@
     font-size: $typography-md-text-size;
     font-weight: $typography-normal-font-weight;
     line-height: $typography-3xl-line-height;
-    color: $color-almost-black;
+    color: colour-var("font-dark");
 
     &--sr-only {
       @include sr-only;

@@ -15,7 +15,7 @@
     font-size: $typography-2xl-text-size;
     font-weight: $typography-normal-font-weight;
     line-height: $typography-xs-line-height;
-    color: $color-almost-black;
+    color: colour-var("font-dark");
   }
 
   &__container {

@@ -25,7 +25,7 @@
   &--info {
     @include notification;
 
-    color: $color-almost-black;
+    color: colour-var("font-dark");
     background-color: $color-information;
 
     a {
@@ -36,7 +36,7 @@
   &--warning {
     @include notification;
 
-    color: $color-almost-black;
+    color: colour-var("font-dark");
     background-color: $color-yellow;
 
     a {
@@ -55,14 +55,14 @@
   &--info {
     @include notification;
 
-    color: $color-almost-black;
+    color: colour-var("font-dark");
     background-color: $color-information;
   }
 
   &--failure {
     @include notification;
 
-    background-color: $color-failure;
+    background-color: colour-var("form-error-border");
   }
 }
 

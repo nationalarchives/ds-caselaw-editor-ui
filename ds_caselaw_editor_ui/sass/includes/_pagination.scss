@@ -1,6 +1,6 @@
 .pagination {
   margin-bottom: $space-8;
-  background-color: $color-almost-black;
+  background-color: colour-var("contrast-background");
 
   h3 {
     @include sr-only;

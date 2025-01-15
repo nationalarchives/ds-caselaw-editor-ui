@@ -5,8 +5,8 @@
 
   padding: $space-4 $space-2 0;
 
-  border-top: 1px solid $color-almost-black;
-  border-bottom: 1px solid $color-almost-black;
+  border-top: 1px solid colour-var("input-border");
+  border-bottom: 1px solid colour-var("input-border");
 
   &__primary-details {
     flex: 60%;
