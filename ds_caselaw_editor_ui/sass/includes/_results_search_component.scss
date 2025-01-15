@@ -1,7 +1,7 @@
 .results-search-component {
   margin: 0 0 $space-12;
   padding: $space-6 0 $space-8;
-  background-color: $color-light-grey;
+  background-color: colour-var("accent-background-light");
 
   &__container {
     @include container;

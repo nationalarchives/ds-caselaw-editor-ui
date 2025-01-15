@@ -1,12 +1,12 @@
 .metadata-header__block {
   padding: $space-8 0;
-  background-color: $color-light-grey;
+  background-color: colour-var("accent-background-light");
 }
 
 .metadata-component {
   @include container;
 
-  background-color: $color-light-grey;
+  background-color: colour-var("accent-background-light");
 
   form {
     display: flex;

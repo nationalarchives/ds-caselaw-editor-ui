@@ -6,7 +6,7 @@
   width: 6px !important;
   height: 6px !important;
 
-  border: 6px solid $color-light-grey;
+  border: 6px solid colour-var("accent-background-light");
   border-top-color: colour-var("input-border");
   border-radius: 50%;
 

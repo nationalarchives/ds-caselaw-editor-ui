@@ -70,8 +70,8 @@
 
   &.tabs-set--primary {
     input[type="radio"]:checked ~ label {
-      background: $color-light-grey;
-      border-bottom-color: $color-light-grey;
+      background: colour-var("accent-background-light");
+      border-bottom-color: colour-var("accent-background-light");
     }
   }
 }
