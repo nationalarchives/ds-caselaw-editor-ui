@@ -58,7 +58,7 @@
   }
 
   &--grey {
-    background-color: colour-var("accent-border");
+    background-color: $color-grey;
 
     @include label-dark;
   }
