@@ -161,7 +161,7 @@
     font-size: $typography-sm-text-size;
     font-weight: $typography-normal-font-weight;
 
-    outline-color: $color-dark-blue;
+    outline-color: colour-var("focus-outline");
 
     &:hover {
       cursor: grab;

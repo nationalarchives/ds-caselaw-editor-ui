@@ -30,14 +30,14 @@
   }
 
   &__delete {
-    color: $color-failure !important;
-    border-color: $color-failure !important;
+    color: colour-var("form-error-text") !important;
+    border-color: colour-var("form-error-border") !important;
 
     &:focus,
     &:hover {
       color: colour-var("button-text") !important;
-      background-color: $color-failure !important;
-      outline-color: $color-failure !important;
+      background-color: colour-var("form-error-border") !important;
+      outline-color: colour-var("form-error-border") !important;
     }
   }
 

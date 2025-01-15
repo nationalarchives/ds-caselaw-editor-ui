@@ -19,7 +19,7 @@
   &--failure {
     @include notification;
 
-    background-color: $color-failure;
+    background-color: colour-var("form-error-border");
   }
 
   &--info {
@@ -29,7 +29,7 @@
     background-color: brand-colour("pastel-blue");
 
     a {
-      color: $color-dark-blue;
+      color: colour-var("link");
     }
   }
 
@@ -40,7 +40,7 @@
     background-color: $color-yellow;
 
     a {
-      color: $color-dark-blue;
+      color: colour-var("link");
     }
   }
 }
@@ -95,6 +95,6 @@
   &--failure {
     @include context-notification;
 
-    background-color: $color-failure;
+    background-color: colour-var("form-error-border");
   }
 }
