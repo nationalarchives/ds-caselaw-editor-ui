@@ -71,7 +71,7 @@
     &-chevron-previous {
       height: 100%;
 
-      background-color: $color-grey;
+      background-color: colour-var("accent-border");
       background-repeat: no-repeat;
       background-position: center;
       background-size: 40%;
@@ -101,7 +101,7 @@
         width: 3.125rem;
         height: 100%;
 
-        background-color: $color-grey;
+        background-color: colour-var("accent-border");
         background-image: url($fa-chevron-right-disabled);
         background-repeat: no-repeat;
         background-position: center;
@@ -144,7 +144,7 @@
         width: 3.125rem;
         height: 100%;
 
-        background-color: $color-grey;
+        background-color: colour-var("accent-border");
         background-image: url($fa-chevron-left-disabled);
         background-repeat: no-repeat;
         background-position: center;

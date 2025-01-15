@@ -55,7 +55,7 @@
     gap: $space-4;
 
     > div {
-      border: 1px solid $color-grey;
+      border: 1px solid colour-var("accent-border");
     }
   }
 

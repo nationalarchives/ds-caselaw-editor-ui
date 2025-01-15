@@ -51,7 +51,7 @@
 
     li {
       padding: $space-8 $space-8 $space-8 0;
-      border-bottom: 0.125rem solid $color-grey;
+      border-bottom: 0.125rem solid colour-var("accent-border");
     }
   }
 
