@@ -27,7 +27,7 @@
 
     font-size: $typography-sm-text-size;
     line-height: $typography-lg-line-height;
-    color: $color-dark-grey;
+    color: colour-var("font-base");
   }
 
   &__right-column {
@@ -152,7 +152,7 @@
 
     font-size: $typography-md-text-size;
 
-    border: 2px solid $color-dark-grey;
+    border: 2px solid colour-var("font-base");
 
     @include text-field;
   }
@@ -199,7 +199,7 @@
 
     font-size: $typography-md-text-size;
 
-    border: 2px solid $color-dark-grey;
+    border: 2px solid colour-var("font-base");
 
     @include text-field;
   }

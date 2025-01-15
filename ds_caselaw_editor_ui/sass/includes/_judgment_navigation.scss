@@ -6,7 +6,7 @@
   justify-content: center;
 
   background: colour-var("accent-background-light");
-  border-bottom: 1px solid $color-dark-grey;
+  border-bottom: 1px solid colour-var("font-base");
 
   &__item {
     all: unset;
@@ -34,6 +34,6 @@
   }
 
   &__item--disabled {
-    color: $color-dark-grey;
+    color: colour-var("font-base");
   }
 }

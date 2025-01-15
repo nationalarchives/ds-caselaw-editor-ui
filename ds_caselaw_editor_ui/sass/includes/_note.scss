@@ -6,7 +6,7 @@
 
     font-size: $typography-sm-text-size;
     line-height: $typography-lg-line-height;
-    color: $color-dark-grey;
+    color: colour-var("font-base");
   }
 
   &__text-area {

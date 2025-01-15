@@ -78,7 +78,7 @@
     width: 100%;
     padding: $space-4 $space-2;
 
-    border-bottom: 1px solid $color-dark-grey;
+    border-bottom: 1px solid colour-var("font-base");
 
     &:last-child {
       border-bottom: none;

@@ -254,7 +254,7 @@
         margin: auto 0;
 
         border: solid;
-        border-color: $color-dark-grey;
+        border-color: colour-var("font-base");
         border-width: 0.125rem 0.125rem 0 0;
       }
     }

@@ -84,7 +84,7 @@
       &:focus {
         @include focus-default;
 
-        background-color: $color-dark-grey;
+        background-color: colour-var("font-base");
         background-image: url($fa-chevron-right-white);
         outline-color: $color-highlight-blue;
         outline-offset: 0.125rem;
@@ -127,7 +127,7 @@
       &:focus {
         @include focus-default;
 
-        background-color: $color-dark-grey;
+        background-color: colour-var("font-base");
         background-image: url($fa-chevron-left-white);
         outline-color: $color-highlight-blue;
         outline-offset: 0.125rem;
