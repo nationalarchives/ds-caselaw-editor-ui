@@ -111,7 +111,7 @@
     white-space: nowrap;
 
     p {
-      border: 3px solid white;
+      border: 3px solid colour-var("background");
     }
   }
 
@@ -122,13 +122,13 @@
   &__success {
     width: fit-content;
     padding: $space-2;
-    background-color: $color-green;
+    background-color: brand-colour("green");
   }
 
   &__error {
     width: fit-content;
     padding: $space-2;
-    background-color: $color-red;
+    background-color: colour-var("form-error-border");
   }
 
   input[type="submit"] {
