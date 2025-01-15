@@ -16,7 +16,7 @@
       list-style-type: none;
 
       a:visited {
-        color: $color-link-blue;
+        color: colour-var("link");
       }
     }
   }
