@@ -86,7 +86,7 @@
 
         background-color: colour-var("font-base");
         background-image: url($fa-chevron-right-white);
-        outline-color: $color-highlight-blue;
+        outline-color: colour-var("focus-outline");
         outline-offset: 0.125rem;
       }
 
@@ -129,7 +129,7 @@
 
         background-color: colour-var("font-base");
         background-image: url($fa-chevron-left-white);
-        outline-color: $color-highlight-blue;
+        outline-color: colour-var("focus-outline");
         outline-offset: 0.125rem;
       }
 

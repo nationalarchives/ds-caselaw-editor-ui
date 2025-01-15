@@ -1,6 +1,6 @@
 @keyframes emphasis {
   from {
-    background-color: color.adjust($color-highlight-blue, $lightness: 40);
+    background-color: color.adjust(colour-var("focus-outline"), $lightness: 40);
   }
 
   to {
