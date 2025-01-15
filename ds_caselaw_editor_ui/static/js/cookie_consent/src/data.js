@@ -19,7 +19,7 @@ const Data = {
     class: "button",
   },
   buttonPreferences: {
-    id: "#btn_preferences",
+    id: "#btn-preferences",
   },
   bannerParagraph: {
     id: ".cookie-p",

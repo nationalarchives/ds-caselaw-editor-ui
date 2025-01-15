@@ -2,7 +2,7 @@
   display: inline-block;
   width: 1rem;
   height: 1rem;
-  background: $color-black;
+  background: colour-var("accent-button-background");
 
   &--sm {
     width: 0.8rem;
@@ -15,30 +15,30 @@
   }
 
   &--light {
-    background: $color-white;
+    background: colour-var("contrast-button-background");
   }
 
   &--link {
-    background: $color-aqua-blue;
+    background: colour-var("link");
 
     &:hover {
-      background: $color-black;
+      background: colour-var("accent-button-background");
     }
   }
 
   &__circle-check {
-    mask-image: url($fa_circle_check);
+    mask-image: url($fa-circle-check);
   }
 
   &__triangle-exclamation {
-    mask-image: url($fa_triangle_exclamation);
+    mask-image: url($fa-triangle-exclamation);
   }
 
   &__arrow-up-right-square {
-    mask-image: url($fa_arrow_up_right_square);
+    mask-image: url($fa-arrow-up-right-square);
   }
 
   &__circle-info {
-    mask-image: url($fa_circle_info);
+    mask-image: url($fa-circle-info);
   }
 }

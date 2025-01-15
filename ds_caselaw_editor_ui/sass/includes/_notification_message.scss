@@ -1,6 +1,6 @@
 @mixin notification {
   padding: $space-3 $space-5;
-  color: $color-white;
+  color: colour-var("contrast-link");
 }
 
 .page-notification {

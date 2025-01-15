@@ -9,7 +9,7 @@
   @include label;
 
   p {
-    color: $color-white;
+    color: colour-var("button-text");
   }
 }
 

@@ -1,18 +1,18 @@
 a {
-  color: $color-link-blue;
+  color: colour-var("link");
   text-decoration: underline;
 
   &:visited {
-    color: $color-link-blue-visited;
+    color: colour-var("link-visited");
   }
 
   &:hover {
-    color: $color-link-blue-hover;
+    color: colour-var("link");
     text-decoration: none;
   }
 
   &:active {
-    color: $color-link-blue-active;
+    color: colour-var("link");
   }
 
   &:focus {
@@ -31,10 +31,10 @@ a {
 
     padding: $space-2;
 
-    color: $color-black;
+    color: colour-var("contrast-button-text");
 
-    background-color: $color-white;
-    border: 0.19rem solid $color-black;
-    outline: 0.313rem solid $color-white;
+    background-color: colour-var("contrast-button-background");
+    border: 0.19rem solid colour-var("contrast-button-text");
+    outline: 0.313rem solid colour-var("contrast-button-background");
   }
 }

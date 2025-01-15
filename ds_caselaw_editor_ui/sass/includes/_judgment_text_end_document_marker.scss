@@ -32,7 +32,7 @@
         height: $space-4;
         margin: 0 $space-2 0 0;
 
-        background: url($fa_chevron_up_link_blue) left no-repeat;
+        background: url($fa-chevron-up-link-blue) left no-repeat;
         background-size: contain;
       }
 
@@ -44,7 +44,7 @@
         color: $color-link-blue-hover;
 
         &::before {
-          background-image: url($fa_chevron_up_link_hover_blue);
+          background-image: url($fa-chevron-up-link-hover-blue);
         }
       }
 

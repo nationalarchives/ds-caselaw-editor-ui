@@ -34,5 +34,5 @@ class TestMetadataPanel(TestCase):
 
         assert b'<input type="hidden" name="judgment_uri" value="hvtest/4321/123" />' in response.content
         assert root.xpath("//input[@id='court']/@value")[0] == "Court of Testing"
-        assert root.xpath("//textarea[@class='metadata-component__metadata_name-input']")[0].text == "Test v Tested"
+        assert root.xpath("//textarea[@class='metadata-component__metadata-name-input']")[0].text == "Test v Tested"
         assert response.status_code == 200

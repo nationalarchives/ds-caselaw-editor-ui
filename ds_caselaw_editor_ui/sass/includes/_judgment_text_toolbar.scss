@@ -18,7 +18,7 @@
     &:hover,
     &:focus {
       svg {
-        fill: $color-white;
+        fill: colour-var("button-text");
       }
     }
 
@@ -35,7 +35,7 @@
 
     &:focus,
     &:hover {
-      color: $color-white !important;
+      color: colour-var("button-text") !important;
       background-color: $color-failure !important;
       outline-color: $color-failure !important;
     }
@@ -91,44 +91,6 @@
 
     h4 {
       margin: 0;
-    }
-  }
-
-  &__more {
-    &__menu {
-      display: flex;
-
-      &__group {
-        flex-grow: 1;
-
-        h4 {
-          margin: 0;
-          font-size: $typography-sm-text-size;
-          line-height: $typography-lg-line-height;
-        }
-
-        p {
-          margin-top: 0;
-          font-size: $typography-sm-text-size;
-          line-height: 1.4rem;
-        }
-
-        a {
-          display: block;
-        }
-
-        ul {
-          margin-top: 0;
-          padding-left: 0;
-        }
-
-        li {
-          margin-top: 0;
-          font-size: $typography-sm-text-size;
-          line-height: $typography-2xl-line-height;
-          list-style: none;
-        }
-      }
     }
   }
 }

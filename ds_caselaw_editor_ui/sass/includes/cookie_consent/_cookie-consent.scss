@@ -7,11 +7,11 @@
 }
 
 #ds-cookie-consent-banner a {
-  color: $color-white;
+  color: colour-var("contrast-link");
 }
 
-#ds-cookie-consent-banner .container #btn_preferences:hover,
-#ds-cookie-consent-banner .container #btn_preferences:focus {
+#ds-cookie-consent-banner .container #btn-preferences:hover,
+#ds-cookie-consent-banner .container #btn-preferences:focus {
   background: none;
   border: 2px solid transparent;
 }

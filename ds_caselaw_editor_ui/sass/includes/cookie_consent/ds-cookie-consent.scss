@@ -1,3 +1,4 @@
+/* stylelint-disable */
 #ds-cookie-consent-form {
   input[type="radio"] {
     margin-right: $space-2;
@@ -128,7 +129,7 @@
       }
     }
 
-    #btn_preferences {
+    #btn-preferences {
       text-decoration: underline;
       background: none;
       border: none;
@@ -180,3 +181,4 @@
     display: block;
   }
 }
+/* stylelint-enable */

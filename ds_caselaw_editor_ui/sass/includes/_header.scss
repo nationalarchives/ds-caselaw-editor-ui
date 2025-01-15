@@ -5,7 +5,7 @@
 
   padding: 0;
 
-  background-color: $color-almost-black;
+  background-color: colour-var("accent-button-background");
 
   &__navbar {
     position: relative;
@@ -24,7 +24,7 @@
       list-style-type: none;
 
       a {
-        color: $color-white;
+        color: colour-var("contrast-link");
       }
     }
 
@@ -32,7 +32,7 @@
       position: relative;
       display: inline-block;
       margin-right: $space-2;
-      color: $color-white;
+      color: colour-var("contrast-link");
     }
 
     &-right {
@@ -61,7 +61,7 @@
           margin: auto 0;
 
           border: solid;
-          border-color: $color-white;
+          border-color: colour-var("contrast-link");
           border-width: 0.125rem 0.125rem 0 0;
         }
       }
@@ -70,7 +70,7 @@
     &-you-are-in {
       margin-right: $space-2;
       font-size: $typography-sm-text-size;
-      color: $color-white;
+      color: colour-var("contrast-link");
     }
   }
 

@@ -8,15 +8,15 @@
 }
 
 @mixin button-disabled {
-  color: $color-dark-grey;
+  color: colour-var("button-text");
   background-color: transparent;
-  border-color: $color-grey;
+  border-color: colour-var("button-background");
 
   &:focus,
   &:hover {
     cursor: not-allowed;
 
-    color: $color-dark-grey;
+    color: colour-var("button-text");
     text-decoration: none;
 
     background-color: transparent;
@@ -27,7 +27,7 @@
 .button-cta {
   @include call-to-action-button;
 
-  border: 2px solid $color-cta-background;
+  border: 2px solid colour-var("link");
 
   &:disabled,
   &[aria-disabled="true"] {
@@ -38,17 +38,17 @@
 .button-secondary {
   @include call-to-action-button;
 
-  color: $color-cta-background;
-  background-color: $color-white;
-  border: 2px solid $color-cta-background;
+  color: colour-var("link");
+  background-color: colour-var("contrast-button-background");
+  border: 2px solid colour-var("link");
 
   &:visited {
-    color: $color-cta-background;
+    color: colour-var("link");
   }
 
   &:focus,
   &:hover {
-    color: white;
+    color: colour-var("contrast-button-background");
   }
 
   &:disabled,
@@ -60,17 +60,17 @@
 .button-danger {
   @include call-to-action-button;
 
-  color: $color-white;
-  background-color: $color-red;
-  border: 2px solid $color-red;
+  color: colour-var("accent-button-text");
+  background-color: colour-var("form-error-border");
+  border: 2px solid colour-var("form-error-border");
 
   &:visited,
   &:focus,
   &:hover {
-    color: $color-white;
-    background-color: $color-red;
-    border-color: $color-red;
-    outline-color: $color-red;
+    color: colour-var("accent-button-text");
+    background-color: colour-var("form-error-border");
+    border-color: colour-var("form-error-border");
+    outline-color: colour-var("form-error-border");
   }
 
   &:disabled,

@@ -29,7 +29,7 @@
     &-divider {
       display: inline-block;
       width: 2rem;
-      color: $color-white;
+      color: colour-var("button-text");
     }
 
     &-item {
@@ -70,35 +70,28 @@
     &-chevron-next,
     &-chevron-previous {
       height: 100%;
-    }
 
-    &-chevron-next,
-    &-chevron-previous {
       background-color: $color-grey;
       background-repeat: no-repeat;
       background-position: center;
       background-size: 40%;
+    }
+
+    &-chevron-next {
+      background-image: url($fa-chevron-right);
 
       &:hover,
       &:focus {
         @include focus-default;
 
         background-color: $color-dark-grey;
-      }
-    }
-
-    &-chevron-next {
-      background-image: url($fa_chevron_right);
-
-      &:hover,
-      &:focus {
-        background-image: url($fa_chevron_right_white);
+        background-image: url($fa-chevron-right-white);
         outline-color: $color-highlight-blue;
         outline-offset: 0.125rem;
       }
 
       &:focus {
-        box-shadow: -0.6rem 0 $color-white;
+        box-shadow: -0.6rem 0 colour-var("button-text");
       }
 
       &--disabled {
@@ -109,14 +102,14 @@
         height: 100%;
 
         background-color: $color-grey;
-        background-image: url($fa_chevron_right_disabled);
+        background-image: url($fa-chevron-right-disabled);
         background-repeat: no-repeat;
         background-position: center;
         background-size: 40%;
 
         &:hover,
         &:focus {
-          background-image: url($fa_chevron_right_disabled);
+          background-image: url($fa-chevron-right-disabled);
           outline-color: transparent;
           outline-offset: 0;
         }
@@ -128,17 +121,20 @@
     }
 
     &-chevron-previous {
-      background-image: url($fa_chevron_left);
+      background-image: url($fa-chevron-left);
 
       &:hover,
       &:focus {
-        background-image: url($fa_chevron_left_white);
+        @include focus-default;
+
+        background-color: $color-dark-grey;
+        background-image: url($fa-chevron-left-white);
         outline-color: $color-highlight-blue;
         outline-offset: 0.125rem;
       }
 
       &:focus {
-        box-shadow: 0.6rem 0 $color-white;
+        box-shadow: 0.6rem 0 colour-var("contrast-link");
       }
 
       &--disabled {
@@ -149,14 +145,14 @@
         height: 100%;
 
         background-color: $color-grey;
-        background-image: url($fa_chevron_left_disabled);
+        background-image: url($fa-chevron-left-disabled);
         background-repeat: no-repeat;
         background-position: center;
         background-size: 40%;
 
         &:hover,
         &:focus {
-          background-image: url($fa_chevron_left_disabled);
+          background-image: url($fa-chevron-left-disabled);
           outline-color: transparent;
           outline-offset: 0;
         }
@@ -184,7 +180,7 @@
 
     &-link,
     &-link:visited {
-      color: $color-white;
+      color: colour-var("contrast-link");
     }
 
     &-link-current,
@@ -193,9 +189,9 @@
     &-link:hover,
     &-link:focus {
       font-weight: $typography-bold-font-weight;
-      color: $color-black;
-      background-color: $color-white;
-      outline-color: $color-highlight-blue;
+      color: colour-var("accent-link");
+      background-color: colour-var("contrast-button-background");
+      outline-color: colour-var("link");
     }
   }
 }

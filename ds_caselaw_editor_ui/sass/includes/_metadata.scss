@@ -20,6 +20,16 @@
     gap: $space-2;
   }
 
+  &__main-labels {
+    display: block;
+
+    margin-bottom: $space-1;
+
+    font-size: $typography-sm-text-size;
+    line-height: $typography-lg-line-height;
+    color: $color-dark-grey;
+  }
+
   &__right-column {
     display: flex;
     flex-direction: column;
@@ -105,16 +115,6 @@
     }
   }
 
-  &__main-labels {
-    display: block;
-
-    margin-bottom: $space-1;
-
-    font-size: $typography-sm-text-size;
-    line-height: $typography-lg-line-height;
-    color: $color-dark-grey;
-  }
-
   &__more-options {
     margin-top: $space-8;
   }
@@ -154,10 +154,10 @@
 
     border: 2px solid $color-dark-grey;
 
-    @include text_field;
+    @include text-field;
   }
 
-  &__judgment_date-input {
+  &__judgment-date-input {
     width: 80%;
     min-height: 2rem;
     font-size: $typography-md-text-size;
@@ -175,8 +175,8 @@
     }
   }
 
-  &__metadata_name-input {
-    @include text_field;
+  &__metadata-name-input {
+    @include text-field;
 
     resize: none;
 
@@ -201,6 +201,6 @@
 
     border: 2px solid $color-dark-grey;
 
-    @include text_field;
+    @include text-field;
   }
 }

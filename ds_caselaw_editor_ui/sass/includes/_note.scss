@@ -10,7 +10,7 @@
   }
 
   &__text-area {
-    @include text_field;
+    @include text-field;
 
     display: block;
 

@@ -40,7 +40,7 @@
   }
 
   &__search-term-input {
-    @include text_field;
+    @include text-field;
 
     width: 80%;
     min-height: $space-12;
