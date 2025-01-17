@@ -1,3 +1,5 @@
+@use "sass:color";
+
 // GOVUK Frontend colours
 
 $govuk-green: #00703c;
@@ -27,17 +29,17 @@ $govuk-black: black;
 
   &--new,
   &--in-progress {
-    color: color-mix($govuk-black, $govuk-blue, 60%);
-    background: color-mix($govuk-white, $govuk-blue, 70%);
+    color: color.mix($govuk-black, $govuk-blue, 60%);
+    background: color.mix($govuk-white, $govuk-blue, 70%);
   }
 
   &--published {
-    color: color-mix($govuk-black, $govuk-green, 20%);
-    background: color-mix($govuk-white, $govuk-green, 80%);
+    color: color.mix($govuk-black, $govuk-green, 20%);
+    background: color.mix($govuk-white, $govuk-green, 80%);
   }
 
   &--on-hold {
-    color: color-mix($govuk-black, $govuk-red, 80%);
-    background: color-mix($govuk-white, $govuk-red, 75%);
+    color: color.mix($govuk-black, $govuk-red, 80%);
+    background: color.mix($govuk-white, $govuk-red, 75%);
   }
 }

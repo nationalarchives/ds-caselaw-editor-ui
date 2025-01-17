@@ -145,14 +145,14 @@
         height: 100%;
 
         background-color: colour-var("accent-border");
-        background-image: url($fa-chevron-left-disabled);
+        background-image: url($fa-chevron-left);
         background-repeat: no-repeat;
         background-position: center;
         background-size: 40%;
 
         &:hover,
         &:focus {
-          background-image: url($fa-chevron-left-disabled);
+          background-image: url($fa-chevron-left);
           outline-color: transparent;
           outline-offset: 0;
         }
