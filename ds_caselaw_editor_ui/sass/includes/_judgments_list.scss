@@ -78,7 +78,7 @@
     width: 100%;
     padding: $space-4 $space-2;
 
-    border-bottom: 1px solid $color-dark-grey;
+    border-bottom: 1px solid colour-var("font-base");
 
     &:last-child {
       border-bottom: none;
@@ -161,11 +161,11 @@
     font-size: $typography-sm-text-size;
     font-weight: $typography-normal-font-weight;
 
-    outline-color: $color-dark-blue;
+    outline-color: colour-var("focus-outline");
 
     &:hover {
       cursor: grab;
-      background-color: $color-link-blue-hover;
+      background-color: colour-var("link");
     }
   }
 

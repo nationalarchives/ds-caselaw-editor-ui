@@ -1,18 +1,18 @@
 .environment-banner {
-  color: $color-black;
-  background-color: $color-information;
+  color: colour-var("font-dark");
+  background-color: brand-colour("pastel-blue");
 
   &__notice {
     padding: 0;
 
     a {
       font-weight: $typography-bold-font-weight;
-      color: $color-black;
+      color: colour-var("contrast-button-text");
 
       &:focus {
-        color: $color-black;
-        background-color: $color-white;
-        outline: 0.125rem solid $color-black;
+        color: colour-var("contrast-button-text");
+        background-color: colour-var("contrast-button-background");
+        outline: 0.125rem solid colour-var("contrast-button-text");
       }
     }
   }
@@ -22,10 +22,10 @@
     padding: 0 $space-1;
 
     font-weight: $typography-bold-font-weight;
-    color: $color-black;
+    color: colour-var("font-dark");
     text-transform: uppercase;
 
-    background-color: $color-white;
+    background-color: colour-var("contrast-button-background");
   }
 
   &__message {

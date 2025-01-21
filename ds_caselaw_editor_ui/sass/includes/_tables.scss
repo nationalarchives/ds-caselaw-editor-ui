@@ -5,7 +5,7 @@
   th,
   td {
     padding: $space-2 $space-3;
-    border: 1px solid $color-dark-grey;
+    border: 1px solid colour-var("font-base");
   }
 
   thead {

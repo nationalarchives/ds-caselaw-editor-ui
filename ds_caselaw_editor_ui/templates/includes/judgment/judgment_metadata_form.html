@@ -30,7 +30,7 @@
           <div class="metadata-component__date">
             <label for="judgment_date" class="metadata-component__main-labels">Judgment date</label>
             <input type="text"
-                   class="metadata-component__judgment_date-input"
+                   class="metadata-component__judgment-date-input"
                    value="{{ judgment.body.document_date_as_date | date:'j M Y' }}"
                    name="judgment_date"
                    id="judgment_date" />
@@ -38,7 +38,7 @@
         </div>
         <div class="metadata-component__panel">
           <label for="metadata_name" class="metadata-component__main-labels">Name</label>
-          <textarea class="metadata-component__metadata_name-input"
+          <textarea class="metadata-component__metadata-name-input"
                     name="metadata_name"
                     id="metadata_name"
                     rows="2">{{ judgment.body.name }}</textarea>

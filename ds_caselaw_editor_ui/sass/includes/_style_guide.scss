@@ -16,7 +16,7 @@
       list-style-type: none;
 
       a:visited {
-        color: $color-link-blue;
+        color: colour-var("link");
       }
     }
   }
@@ -35,18 +35,18 @@
   hr {
     height: 1rem;
     margin: $space-12 0;
-    background-color: $color-light-grey;
+    background-color: colour-var("accent-background-light");
     border: none;
   }
 
   &__spacing-container {
     margin-bottom: $space-4;
-    background: $color-light-pink;
+    background: brand-colour("pastel-pink");
   }
 
   &__spacing-item {
     text-align: center;
-    background: $color-white;
+    background: colour-var("background");
   }
 
   &__line-heights {
@@ -55,7 +55,7 @@
     gap: $space-4;
 
     > div {
-      border: 1px solid $color-grey;
+      border: 1px solid colour-var("accent-border");
     }
   }
 

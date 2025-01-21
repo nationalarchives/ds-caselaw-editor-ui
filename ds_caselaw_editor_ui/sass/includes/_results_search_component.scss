@@ -1,7 +1,7 @@
 .results-search-component {
   margin: 0 0 $space-12;
   padding: $space-6 0 $space-8;
-  background-color: $color-light-grey;
+  background-color: colour-var("accent-background-light");
 
   &__container {
     @include container;
@@ -18,7 +18,7 @@
     font-size: $typography-xl-text-size;
     font-weight: $typography-normal-font-weight;
     line-height: $typography-xl-line-height;
-    color: $color-almost-black;
+    color: colour-var("font-dark");
   }
 
   &__sub-header {
@@ -30,7 +30,7 @@
     font-size: $typography-md-text-size;
     font-weight: $typography-normal-font-weight;
     line-height: $typography-3xl-line-height;
-    color: $color-almost-black;
+    color: colour-var("font-dark");
 
     &--sr-only {
       @include sr-only;
@@ -50,7 +50,7 @@
   }
 
   &__full-text-input {
-    @include text_field;
+    @include text-field;
 
     width: 90%;
     min-height: $space-12;
@@ -97,7 +97,7 @@
     margin: $space-1;
     padding: $space-8;
 
-    color: $color-black;
+    color: colour-var("font-dark");
 
     background: $color-yellow;
     border: 0;
@@ -125,7 +125,7 @@
   }
 
   &__name-input {
-    @include text_field;
+    @include text-field;
 
     width: 18rem;
   }
@@ -135,7 +135,7 @@
   }
 
   &__limit-to-input {
-    @include text_field;
+    @include text-field;
   }
 
   &__select {
@@ -143,7 +143,7 @@
   }
 
   &__date-input {
-    @include text_field;
+    @include text-field;
 
     margin-top: 0;
     padding: $space-2;
@@ -204,7 +204,7 @@
     padding: $space-2;
 
     font-size: $typography-sm-text-size;
-    color: $color-black;
+    color: colour-var("font-dark");
     text-decoration: none;
 
     &::after {
@@ -213,77 +213,73 @@
     }
 
     &:hover {
-      color: $color-white;
-      background: $color-black;
+      color: colour-var("accent-button-text");
+      background: colour-var("accent-button-background");
     }
   }
 
   &__removable-options-sr-only {
     @include sr-only;
   }
-}
 
-.results {
-  &-search-component {
-    &__toggle-control {
-      position: relative;
+  &__toggle-control {
+    position: relative;
 
-      display: block;
+    display: block;
 
-      margin: $space-6 auto 0;
-      padding: $space-2 0;
+    margin: $space-6 auto 0;
+    padding: $space-2 0;
 
-      font-size: $typography-md-text-size;
-      font-weight: $typography-bold-font-weight;
+    font-size: $typography-md-text-size;
+    font-weight: $typography-bold-font-weight;
 
-      background-color: transparent;
-      border: none;
-      border-bottom: 0.125rem solid $color-yellow;
+    background-color: transparent;
+    border: none;
+    border-bottom: 0.125rem solid $color-yellow;
 
-      &::after {
-        @media (min-width: $grid-breakpoint-medium) {
-          content: "";
-
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          left: 0.5rem;
-          transform: rotate(313deg);
-
-          display: block;
-
-          width: 0.438rem;
-          height: 0.438rem;
-          margin: auto 0;
-
-          border: solid;
-          border-color: $color-dark-grey;
-          border-width: 0.125rem 0.125rem 0 0;
-        }
-      }
-
-      &:focus {
-        @include focus-default;
-
-        text-decoration: underline;
-      }
-
-      &:hover {
-        cursor: pointer;
-        text-decoration: underline;
-      }
-
-      &.collapsed {
-        &::after {
-          top: 0;
-          transform: rotate(135deg);
-        }
-      }
-
+    &::after {
       @media (min-width: $grid-breakpoint-medium) {
-        padding-right: $space-4;
-        padding-left: $space-8;
+        content: "";
+
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0.5rem;
+        transform: rotate(313deg);
+
+        display: block;
+
+        width: 0.438rem;
+        height: 0.438rem;
+        margin: auto 0;
+
+        border: solid;
+        border-color: colour-var("font-base");
+        border-width: 0.125rem 0.125rem 0 0;
       }
+    }
+
+    &:focus {
+      @include focus-default;
+
+      text-decoration: underline;
+    }
+
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    &.collapsed {
+      &::after {
+        top: 0;
+        transform: rotate(135deg);
+      }
+    }
+
+    @media (min-width: $grid-breakpoint-medium) {
+      padding-right: $space-4;
+      padding-left: $space-8;
     }
   }
 }

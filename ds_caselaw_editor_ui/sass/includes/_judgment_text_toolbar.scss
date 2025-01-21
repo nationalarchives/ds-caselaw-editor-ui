@@ -1,6 +1,6 @@
 .judgment-toolbar {
   padding: $space-2 0;
-  color: $color-black;
+  color: colour-var("font-dark");
 
   &__button {
     display: inline-block;
@@ -12,13 +12,13 @@
     margin-left: $space-12 !important;
 
     svg {
-      fill: $color-cta-background;
+      fill: brand-colour("navy");
     }
 
     &:hover,
     &:focus {
       svg {
-        fill: $color-white;
+        fill: colour-var("button-text");
       }
     }
 
@@ -30,14 +30,14 @@
   }
 
   &__delete {
-    color: $color-failure !important;
-    border-color: $color-failure !important;
+    color: colour-var("form-error-text") !important;
+    border-color: colour-var("form-error-border") !important;
 
     &:focus,
     &:hover {
-      color: $color-white !important;
-      background-color: $color-failure !important;
-      outline-color: $color-failure !important;
+      color: colour-var("button-text") !important;
+      background-color: colour-var("form-error-border") !important;
+      outline-color: colour-var("form-error-border") !important;
     }
   }
 
@@ -91,44 +91,6 @@
 
     h4 {
       margin: 0;
-    }
-  }
-
-  &__more {
-    &__menu {
-      display: flex;
-
-      &__group {
-        flex-grow: 1;
-
-        h4 {
-          margin: 0;
-          font-size: $typography-sm-text-size;
-          line-height: $typography-lg-line-height;
-        }
-
-        p {
-          margin-top: 0;
-          font-size: $typography-sm-text-size;
-          line-height: 1.4rem;
-        }
-
-        a {
-          display: block;
-        }
-
-        ul {
-          margin-top: 0;
-          padding-left: 0;
-        }
-
-        li {
-          margin-top: 0;
-          font-size: $typography-sm-text-size;
-          line-height: $typography-2xl-line-height;
-          list-style: none;
-        }
-      }
     }
   }
 }

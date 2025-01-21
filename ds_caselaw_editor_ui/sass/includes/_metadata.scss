@@ -1,12 +1,12 @@
 .metadata-header__block {
   padding: $space-8 0;
-  background-color: $color-light-grey;
+  background-color: colour-var("accent-background-light");
 }
 
 .metadata-component {
   @include container;
 
-  background-color: $color-light-grey;
+  background-color: colour-var("accent-background-light");
 
   form {
     display: flex;
@@ -18,6 +18,16 @@
     flex: 1;
     flex-direction: column;
     gap: $space-2;
+  }
+
+  &__main-labels {
+    display: block;
+
+    margin-bottom: $space-1;
+
+    font-size: $typography-sm-text-size;
+    line-height: $typography-lg-line-height;
+    color: colour-var("font-base");
   }
 
   &__right-column {
@@ -101,18 +111,8 @@
     white-space: nowrap;
 
     p {
-      border: 3px solid white;
+      border: 3px solid colour-var("background");
     }
-  }
-
-  &__main-labels {
-    display: block;
-
-    margin-bottom: $space-1;
-
-    font-size: $typography-sm-text-size;
-    line-height: $typography-lg-line-height;
-    color: $color-dark-grey;
   }
 
   &__more-options {
@@ -122,13 +122,13 @@
   &__success {
     width: fit-content;
     padding: $space-2;
-    background-color: $color-green;
+    background-color: brand-colour("green");
   }
 
   &__error {
     width: fit-content;
     padding: $space-2;
-    background-color: $color-red;
+    background-color: colour-var("form-error-border");
   }
 
   input[type="submit"] {
@@ -152,12 +152,12 @@
 
     font-size: $typography-md-text-size;
 
-    border: 2px solid $color-dark-grey;
+    border: 2px solid colour-var("font-base");
 
-    @include text_field;
+    @include text-field;
   }
 
-  &__judgment_date-input {
+  &__judgment-date-input {
     width: 80%;
     min-height: 2rem;
     font-size: $typography-md-text-size;
@@ -175,8 +175,8 @@
     }
   }
 
-  &__metadata_name-input {
-    @include text_field;
+  &__metadata-name-input {
+    @include text-field;
 
     resize: none;
 
@@ -199,8 +199,8 @@
 
     font-size: $typography-md-text-size;
 
-    border: 2px solid $color-dark-grey;
+    border: 2px solid colour-var("font-base");
 
-    @include text_field;
+    @include text-field;
   }
 }

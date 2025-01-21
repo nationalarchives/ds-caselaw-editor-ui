@@ -11,7 +11,7 @@
     font-size: $typography-md-text-size;
     font-weight: $typography-normal-font-weight;
     line-height: $typography-3xl-line-height;
-    color: $color-almost-black;
+    color: colour-var("font-dark");
   }
 
   &__more-options {
@@ -36,8 +36,8 @@
     display: block;
   }
 
-  &__metadata_name-input {
-    @include text_field;
+  &__metadata-name-input {
+    @include text-field;
 
     width: 80%;
     font-size: $typography-lg-text-size;
@@ -56,7 +56,7 @@
   }
 
   input[type="text"] {
-    @include text_field;
+    @include text-field;
   }
 
   input[type="checkbox"] {

@@ -3,9 +3,9 @@
   padding: $space-4;
 
   font-size: $typography-sm-text-size;
-  color: $color-white;
+  color: colour-var("contrast-font-base");
 
-  background-color: $color-almost-black;
+  background-color: colour-var("contrast-background");
 
   &__heading {
     @include sr-only;

@@ -1,5 +1,5 @@
 .search-component {
-  background-color: $color-light-grey;
+  background-color: colour-var("accent-background-light");
 
   &__container {
     @include container;
@@ -17,7 +17,7 @@
     font-size: $typography-md-text-size;
     font-weight: $typography-normal-font-weight;
     line-height: $typography-3xl-line-height;
-    color: $color-almost-black;
+    color: colour-var("font-dark");
 
     &--sr-only {
       @include sr-only;
@@ -40,11 +40,11 @@
   }
 
   &__search-term-input {
-    @include text_field;
+    @include text-field;
 
     width: 80%;
     min-height: $space-12;
-    margin-top: $space-4;
+    margin: 0;
     font-size: $typography-lg-text-size;
 
     @media (min-width: $grid-breakpoint-small) {

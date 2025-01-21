@@ -2,6 +2,6 @@
   &__table {
     border-collapse: collapse;
     width: auto;
-    border-color: $color-dark-grey;
+    border-color: colour-var("font-base");
   }
 }

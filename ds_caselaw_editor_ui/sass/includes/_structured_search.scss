@@ -3,7 +3,7 @@
     margin: 0 0 $space-12;
     padding: $space-6 0 $space-8;
     text-align: center;
-    background-color: $color-light-grey;
+    background-color: colour-var("accent-background-light");
   }
 
   &__main-search-header {
@@ -15,7 +15,7 @@
     font-size: $typography-2xl-text-size;
     font-weight: $typography-normal-font-weight;
     line-height: $typography-xs-line-height;
-    color: $color-almost-black;
+    color: colour-var("font-dark");
   }
 
   &__container {
@@ -36,7 +36,7 @@
   }
 
   &__full-text-input {
-    @include text_field;
+    @include text-field;
 
     width: 70%;
 
@@ -62,7 +62,7 @@
   }
 
   &__name-input {
-    @include text_field;
+    @include text-field;
 
     width: 70%;
   }
@@ -74,7 +74,7 @@
   }
 
   &__limit-to-input {
-    @include text_field;
+    @include text-field;
   }
 
   &__multi-fields-panel {
@@ -127,7 +127,7 @@
   }
 
   &__date-input {
-    @include text_field;
+    @include text-field;
   }
 
   fieldset {

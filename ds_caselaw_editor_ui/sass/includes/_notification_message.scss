@@ -1,13 +1,13 @@
 @mixin notification {
   padding: $space-3 $space-5;
-  color: $color-white;
+  color: colour-var("contrast-link");
 }
 
 .page-notification {
   &--success {
     @include notification;
 
-    background-color: $color-success;
+    background-color: brand-colour("green");
 
     .container {
       display: flex;
@@ -19,28 +19,28 @@
   &--failure {
     @include notification;
 
-    background-color: $color-failure;
+    background-color: colour-var("form-error-border");
   }
 
   &--info {
     @include notification;
 
-    color: $color-almost-black;
-    background-color: $color-information;
+    color: colour-var("font-dark");
+    background-color: brand-colour("pastel-blue");
 
     a {
-      color: $color-dark-blue;
+      color: colour-var("link");
     }
   }
 
   &--warning {
     @include notification;
 
-    color: $color-almost-black;
+    color: colour-var("font-dark");
     background-color: $color-yellow;
 
     a {
-      color: $color-dark-blue;
+      color: colour-var("link");
     }
   }
 }
@@ -49,20 +49,20 @@
   &--success {
     @include notification;
 
-    background-color: $color-success;
+    background-color: brand-colour("green");
   }
 
   &--info {
     @include notification;
 
-    color: $color-almost-black;
-    background-color: $color-information;
+    color: colour-var("font-dark");
+    background-color: brand-colour("pastel-blue");
   }
 
   &--failure {
     @include notification;
 
-    background-color: $color-failure;
+    background-color: colour-var("form-error-border");
   }
 }
 
@@ -89,12 +89,12 @@
   &--success {
     @include context-notification;
 
-    background-color: $color-success;
+    background-color: brand-colour("green");
   }
 
   &--failure {
     @include context-notification;
 
-    background-color: $color-failure;
+    background-color: colour-var("form-error-border");
   }
 }

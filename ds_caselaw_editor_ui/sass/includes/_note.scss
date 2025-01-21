@@ -6,11 +6,11 @@
 
     font-size: $typography-sm-text-size;
     line-height: $typography-lg-line-height;
-    color: $color-dark-grey;
+    color: colour-var("font-base");
   }
 
   &__text-area {
-    @include text_field;
+    @include text-field;
 
     display: block;
 
@@ -21,6 +21,6 @@
     font-size: $typography-md-text-size;
     line-height: $typography-md-line-height;
 
-    border: 2px solid $color-almost-black;
+    border: 2px solid colour-var("input-border");
   }
 }

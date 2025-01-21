@@ -6,8 +6,8 @@
   width: 6px !important;
   height: 6px !important;
 
-  border: 6px solid $color-light-grey;
-  border-top-color: $color-almost-black;
+  border: 6px solid colour-var("accent-background-light");
+  border-top-color: colour-var("input-border");
   border-radius: 50%;
 
   animation: spin 2s linear infinite;

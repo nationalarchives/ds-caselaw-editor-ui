@@ -1,7 +1,7 @@
 .login-background {
   padding-top: $space-8;
   padding-bottom: $space-8;
-  background-color: $color-light-grey;
+  background-color: colour-var("accent-background-light");
 
   @media (min-width: $grid-breakpoint-small) {
     padding-top: $space-20;

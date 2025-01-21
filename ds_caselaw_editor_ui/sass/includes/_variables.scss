@@ -1,4 +1,4 @@
-@import "../../../node_modules/@nationalarchives/ds-caselaw-frontend/src/includes/variables/colours";
+@import "@nationalarchives/ds-caselaw-frontend/src/includes/variables/colours";
 
 // EUI-specific colours
 $colour-in-progress: #dbd5e9;
@@ -23,7 +23,7 @@ $space-20: 5rem;
 $space-24: 6rem;
 $space-28: 7rem;
 $space-32: 8rem;
-$gutter_unit: 25px;
+$gutter-unit: 25px;
 $grid-breakpoint-small: 576px;
 $grid-breakpoint-medium: 768px;
 $grid-breakpoint-large: 992px;
@@ -50,28 +50,22 @@ $typography-normal-font-weight: 400;
 $typography-bold-font-weight: 700;
 
 // Paths
-$fa_path: "/static/fontawesome-svgs/";
+$fa-path: "/static/fontawesome-svgs/";
 
 // Images
-$fa_arrow_up_right_square: "#{$fa_path}arrow-up-right-square.svg";
-$fa_circle_check: "#{$fa_path}circle-check.svg";
-$fa_circle_info: "#{$fa_path}circle-info.svg";
-$fa_chevron_right: "#{$fa_path}chevron-right.svg";
-$fa_chevron_right_white: "#{$fa_path}chevron-right-white.svg";
-$fa_chevron_right_disabled: "#{$fa_path}chevron-right-disabled.svg";
-$fa_chevron_left: "#{$fa_path}chevron-left.svg";
-$fa_chevron_left_white: "#{$fa_path}chevron-left-white.svg";
-$fa_chevron_left_disabled: "#{$fa_path}chevron-left-disabled.svg";
-$fa_download: "#{$fa_path}download.svg";
-$fa_chevron_up_aqua_blue: "#{$fa_path}chevron-up-aqua-blue.svg";
-$fa_chevron_up_link_blue: "#{$fa_path}chevron-up-link-blue.svg";
-$fa_chevron_up_link_hover_blue: "#{$fa_path}chevron-up-link-hover-blue.svg";
-$fa_chevron_down_link_blue: "#{$fa_path}chevron-down-link-blue.svg";
-$fa_chevron_down_link_hover_blue: "#{$fa_path}chevron-down-link-hover-blue.svg";
-$fa_triangle_exclamation: "#{$fa_path}triangle-exclamation.svg";
-
-// GOVUK Frontend colours
-
-$govuk-green: #00703c;
-$govuk-blue: #1d70b8;
-$govuk-red: #d4351c;
+$fa-arrow-up-right-square: "#{$fa-path}arrow-up-right-square.svg";
+$fa-circle-check: "#{$fa-path}circle-check.svg";
+$fa-circle-info: "#{$fa-path}circle-info.svg";
+$fa-chevron-right: "#{$fa-path}chevron-right.svg";
+$fa-chevron-right-white: "#{$fa-path}chevron-right-white.svg";
+$fa-chevron-right-disabled: "#{$fa-path}chevron-right-disabled.svg";
+$fa-chevron-left: "#{$fa-path}chevron-left.svg";
+$fa-chevron-left-white: "#{$fa-path}chevron-left-white.svg";
+$fa-chevron-left-disabled: "#{$fa-path}chevron-left-disabled.svg";
+$fa-download: "#{$fa-path}download.svg";
+$fa-chevron-up-aqua-blue: "#{$fa-path}chevron-up-aqua-blue.svg";
+$fa-chevron-up-link-blue: "#{$fa-path}chevron-up-link-blue.svg";
+$fa-chevron-up-link-hover-blue: "#{$fa-path}chevron-up-link-hover-blue.svg";
+$fa-chevron-down-link-blue: "#{$fa-path}chevron-down-link-blue.svg";
+$fa-chevron-down-link-hover-blue: "#{$fa-path}chevron-down-link-hover-blue.svg";
+$fa-triangle-exclamation: "#{$fa-path}triangle-exclamation.svg";

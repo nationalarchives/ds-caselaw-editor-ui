@@ -7,7 +7,7 @@
 
   text-align: center;
 
-  border: 1px dashed $color-black;
+  border: 1px dashed colour-var("input-border");
   border-top: none;
 
   &__top-link {
@@ -32,19 +32,19 @@
         height: $space-4;
         margin: 0 $space-2 0 0;
 
-        background: url($fa_chevron_up_link_blue) left no-repeat;
+        background: url($fa-chevron-up-link-blue) left no-repeat;
         background-size: contain;
       }
 
       &:visited {
-        color: $color-link-blue;
+        color: colour-var("link");
       }
 
       &:hover {
-        color: $color-link-blue-hover;
+        color: colour-var("link");
 
         &::before {
-          background-image: url($fa_chevron_up_link_hover_blue);
+          background-image: url($fa-chevron-up-link-hover-blue);
         }
       }
 

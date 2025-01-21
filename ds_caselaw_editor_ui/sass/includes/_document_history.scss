@@ -9,7 +9,7 @@
 
     td {
       border: none;
-      border-top: 1px solid $color-dark-grey;
+      border-top: 1px solid colour-var("font-base");
     }
   }
 
@@ -31,13 +31,13 @@
       margin-bottom: 0;
     }
 
-    &__show-link {
+    &-show-link {
       display: flex;
       flex-grow: 1;
       align-items: flex-end;
     }
 
-    &__reference {
+    &-reference {
       display: flex;
       align-items: flex-end;
       text-align: right;
@@ -52,9 +52,9 @@
     width: 100%;
     padding: $space-4;
 
-    background-color: $color-light-grey;
+    background-color: colour-var("accent-background-light");
 
-    &__details {
+    &-details {
       float: left;
 
       width: 100%;

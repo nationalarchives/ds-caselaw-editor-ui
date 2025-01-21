@@ -5,8 +5,8 @@
   gap: $space-10;
   justify-content: center;
 
-  background: $color-light-grey;
-  border-bottom: 1px solid $color-dark-grey;
+  background: colour-var("accent-background-light");
+  border-bottom: 1px solid colour-var("font-base");
 
   &__item {
     all: unset;
@@ -18,7 +18,7 @@
       text-decoration: none;
 
       &:visited {
-        color: $color-link-blue;
+        color: colour-var("link");
       }
 
       &:hover {
@@ -30,10 +30,10 @@
 
   &__item--active {
     font-weight: $typography-bold-font-weight;
-    border-bottom-color: $color-link-blue;
+    border-bottom-color: colour-var("link");
   }
 
   &__item--disabled {
-    color: $color-dark-grey;
+    color: colour-var("font-base");
   }
 }
