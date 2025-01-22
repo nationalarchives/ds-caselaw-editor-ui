@@ -18,7 +18,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Run latest-tag
-        uses: dxw/latest-tag@force-branch
+        uses: EndBug/latest-tag@latest
         with:
           tag-name: production
           force-branch: true
