@@ -25,7 +25,8 @@ class TestDocumentEdit(TestCase):
 
     @patch("judgments.views.judgment_edit.api_client")
     @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
-    def test_edit_judgment(self, mock_judgment, api_client):
+    @patch("judgments.utils.aws.boto3")
+    def test_edit_judgment(self, mock_boto, mock_judgment, api_client):
         judgment = JudgmentFactory.build(
             uri=DocumentURIString("edittest/4321/123"),
             name="Test v Tested",

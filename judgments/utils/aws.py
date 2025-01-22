@@ -1,4 +1,3 @@
-import logging
 import time
 
 import boto3
@@ -46,22 +45,7 @@ def generate_signed_asset_url(key: str):
 
 
 def invalidate_caches(uri: str) -> None:
-    if (
-        env("CLOUDFRONT_INVALIDATION_ACCESS_KEY_ID", default=None) is None
-        and env("CLOUDFRONT_INVALIDATION_ACCESS_SECRET", default=None) is None
-    ):
-        logging.warning(
-            "Cannot invalidate cache: no cloudfront environment variables set",
-        )
-        return
-
-    aws = boto3.session.Session(
-        aws_access_key_id=env("CLOUDFRONT_INVALIDATION_ACCESS_KEY_ID", default=None),
-        aws_secret_access_key=env(
-            "CLOUDFRONT_INVALIDATION_ACCESS_SECRET",
-            default=None,
-        ),
-    )
+    aws = boto3.session.Session()
     cloudfront = aws.client("cloudfront")
     cloudfront.create_invalidation(
         DistributionId=env("CLOUDFRONT_PUBLIC_DISTRIBUTION_ID", default=None),
