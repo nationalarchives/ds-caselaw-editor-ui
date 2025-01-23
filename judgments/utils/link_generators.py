@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 from urllib.parse import quote, urlencode
 
-from caselawclient.models.identifiers.neutral_citation import NeutralCitationNumber
 from django.conf import settings
 from django.template import loader
 from django.urls import reverse
@@ -79,39 +78,43 @@ def build_raise_issue_email_link(
     )
 
 
-def build_jira_create_link(document: Document, request: HttpRequest) -> str:
-    summary_string = f"{document.body.name} / {document.consignment_reference}"
+def _get_jira_link_summary_string_for_document(document: Document) -> str:
+    best_human_identifier: Identifier | None = document.best_human_identifier
 
-    editor_html_url = request.build_absolute_uri(
-        reverse("full-text-html", kwargs={"document_uri": document.uri}),
-    )
+    if best_human_identifier:
+        summary_string = f"{best_human_identifier.value} / {document.body.name} / {document.consignment_reference}"
+    else:
+        summary_string = f"{document.body.name} / {document.consignment_reference}"
 
-    preferred_ncn: Identifier | None = document.identifiers.preferred(type=NeutralCitationNumber)
+    return summary_string
 
-    description_string = "{editor_html_url}".format(
-        editor_html_url="""{html_url}
 
-NCN: {preferred_ncn}
-
-{source_name_label}: {source_name}
-{source_email_label}: {source_email}
-{consignment_ref_label}: {consignment_ref}""".format(
-            html_url=editor_html_url,
-            preferred_ncn=preferred_ncn.value if preferred_ncn else "None",
-            source_name_label="Submitter",
-            source_name=document.source_name,
-            source_email_label="Contact email",
-            source_email=document.source_email,
-            consignment_ref_label="TDR ref",
-            consignment_ref=document.consignment_reference,
+def _get_jira_link_description_string_for_document(document: Document, request: HttpRequest) -> str:
+    description_context = {
+        "editor_link": request.build_absolute_uri(
+            reverse("full-text-html", kwargs={"document_uri": document.uri}),
         ),
+        "identifiers": document.identifiers.values(),
+        "source_name_label": "Submitter",
+        "source_name": document.source_name,
+        "source_email_label": "Contact email",
+        "source_email": document.source_email,
+        "consignment_ref_label": "TDR ref",
+        "consignment_ref": document.consignment_reference,
+    }
+
+    return loader.render_to_string(
+        "emails/jira_ticket_body.txt",
+        description_context,
     )
 
+
+def build_jira_create_link(document: Document, request: HttpRequest) -> str:
     params = {
         "pid": "10090",
         "issuetype": "10320",
         "priority": "3",
-        "summary": summary_string,
-        "description": description_string,
+        "summary": _get_jira_link_summary_string_for_document(document),
+        "description": _get_jira_link_description_string_for_document(document, request),
     }
     return f"https://{settings.JIRA_INSTANCE}/secure/CreateIssueDetails!init.jspa?{urlencode(params)}"

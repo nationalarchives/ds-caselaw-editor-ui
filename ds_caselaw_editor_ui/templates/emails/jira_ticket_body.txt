@@ -1,0 +1,9 @@
+EUI link: {{editor_link}}
+
+Identifiers:{% for identifier in identifiers %}
+    {{identifier.schema.name}}: {{identifier.value}}{% empty %}
+    None{% endfor %}
+
+{{source_name_label}}: {{source_name}}
+{{source_email_label}}: {{source_email}}
+{{consignment_ref_label}}: {{consignment_ref}}
