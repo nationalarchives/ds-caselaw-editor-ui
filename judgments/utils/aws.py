@@ -7,6 +7,32 @@ import environ
 env = environ.Env()
 
 
+def copy_assets(old_uri, new_uri):
+    client = create_s3_client()
+    bucket = env("PRIVATE_ASSET_BUCKET")
+    old_uri = uri_for_s3(old_uri)
+    new_uri = uri_for_s3(new_uri)
+
+    response = client.list_objects(Bucket=bucket, Prefix=old_uri)
+
+    for result in response.get("Contents", []):
+        old_key = str(result["Key"])
+        new_key = build_new_key(old_key, new_uri)
+        if new_key is not None:
+            source = {"Bucket": bucket, "Key": old_key}
+            client.copy(source, bucket, new_key)
+
+
+def build_new_key(old_key, new_uri):
+    old_filename = old_key.rsplit("/", 1)[-1]
+
+    if old_filename.endswith((".docx", ".pdf")):
+        new_filename = new_uri.replace("/", "_")
+        return f"{new_uri}/{new_filename}.{old_filename.split('.')[-1]}"
+    else:
+        return f"{new_uri}/{old_filename}"
+
+
 def create_aws_client(service: str):  # service
     """@param: service The AWS service, e.g. 's3'"""
     aws = boto3.session.Session(
