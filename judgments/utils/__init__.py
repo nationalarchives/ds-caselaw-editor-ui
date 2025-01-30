@@ -9,10 +9,9 @@ from urllib.parse import urlparse
 from caselawclient.Client import DEFAULT_USER_AGENT, MarklogicApiClient, MarklogicAPIError
 from caselawclient.models.documents import DocumentURIString
 from caselawclient.models.press_summaries import PressSummary
+from caselawclient.models.utilities.aws import copy_assets
 from django.conf import settings
 from django.contrib.auth.models import Group, User
-
-from .aws import copy_assets
 
 api_client = MarklogicApiClient(
     host=settings.MARKLOGIC_HOST,

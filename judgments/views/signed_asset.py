@@ -1,6 +1,5 @@
+from caselawclient.models.utilities.aws import generate_signed_asset_url
 from django.shortcuts import redirect
-
-from judgments.utils.aws import generate_signed_asset_url
 
 
 def redirect_to_signed_asset(request, key):
