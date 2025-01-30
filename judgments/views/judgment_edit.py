@@ -1,33 +1,76 @@
 import datetime
 
 from caselawclient.Client import MarklogicAPIError
+from caselawclient.models.documents import Document, DocumentURIString
 from caselawclient.models.identifiers.neutral_citation import NeutralCitationNumber, NeutralCitationNumberSchema
+from django.conf import settings
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import View
+from ds_caselaw_utils import neutral_url
 from ds_caselaw_utils.types import NeutralCitationString
 
-from judgments.utils import (
-    MoveJudgmentError,
-    NeutralCitationToUriError,
-    api_client,
-)
+from judgments.utils import api_client, update_document_uri
 from judgments.utils.aws import invalidate_caches
 from judgments.utils.view_helpers import get_document_by_uri_or_404
 
 
-class StubAlreadyUsedError(Exception):
+class NCNValidationException(Exception):
     pass
 
 
-def verify_stub_not_used(old_uri, new_citation) -> None:
+class StubAlreadyUsedError(NCNValidationException):
+    pass
+
+
+class CannotUpdateNCNOfNonJudgment(NCNValidationException):
+    pass
+
+
+class NeutralCitationToUriError(NCNValidationException):
+    pass
+
+
+def verify_stub_not_used(old_uri: DocumentURIString, new_citation: str) -> None:
     new_ncn_slug = NeutralCitationNumberSchema.compile_identifier_url_slug(new_citation)
     existing_matches = api_client.resolve_from_identifier(new_ncn_slug)
     existing_matches_except_this_one = [x for x in existing_matches if x.document_uri not in [new_ncn_slug, old_uri]]
     if existing_matches_except_this_one:
         msg = f"At least one identifier for slug {new_ncn_slug} already exists, {existing_matches_except_this_one}"
         raise StubAlreadyUsedError(msg)
+
+
+def update_ncn_of_document(document: Document, new_neutral_citation_number_string: str) -> None:
+    """Given a document and a new NCN string, validate that NCN and perform necessary operations to update the document with it."""
+    # Perform sense-check on document type
+    if document.document_noun != "judgment":
+        msg = f"Cannot update the NCN of non-judgment at {document.uri}"
+        raise CannotUpdateNCNOfNonJudgment(msg)
+
+    # Convert the submitted NCN to a proper class (which will perform validation)
+    new_neutral_citation = NeutralCitationString(new_neutral_citation_number_string)
+
+    # Validate that the NCN can be converted to a URI
+    new_uri_raw = neutral_url(new_neutral_citation)
+    if new_uri_raw is None:
+        msg = f"Unable to form new URI from neutral citation: {new_neutral_citation}"
+        raise NeutralCitationToUriError(msg)
+
+    # Confirm that the identifier isn't used elsewhere
+    verify_stub_not_used(document.uri, new_neutral_citation)
+
+    # Set neutral citation in the identifiers
+    document.identifiers.delete_type(NeutralCitationNumber)
+    document.identifiers.add(NeutralCitationNumber(value=new_neutral_citation))
+    document.save_identifiers()
+
+    # Set neutral citation in the document XML
+    api_client.set_judgment_citation(document.uri, new_neutral_citation)
+
+    # Perform the move in MarkLogic
+    new_uri = DocumentURIString(new_uri_raw)
+    update_document_uri(document.uri, new_uri)
 
 
 class EditJudgmentView(View):
@@ -63,19 +106,7 @@ class EditJudgmentView(View):
                 if form_neutral_citation != "" and (
                     existing_preferred_ncn is None or form_neutral_citation != existing_preferred_ncn.value
                 ):
-                    # Convert the submitted NCN to a proper class (which will perform validation)
-                    neutral_citation = NeutralCitationString(form_neutral_citation)
-
-                    # Confirm that the identifier isn't used elsewhere
-                    verify_stub_not_used(judgment_uri, neutral_citation)
-
-                    # Set neutral citation in the identifiers
-                    judgment.identifiers.delete_type(NeutralCitationNumber)
-                    judgment.identifiers.add(NeutralCitationNumber(value=neutral_citation))
-                    judgment.save_identifiers()
-
-                    # Set neutral citation in the document XML
-                    api_client.set_judgment_citation(judgment_uri, neutral_citation)
+                    update_ncn_of_document(judgment, form_neutral_citation)
 
                 # Set name
                 new_name = request.POST["metadata_name"]
@@ -105,7 +136,7 @@ class EditJudgmentView(View):
 
                 messages.success(request, "Document successfully updated")
 
-        except (MoveJudgmentError, NeutralCitationToUriError, StubAlreadyUsedError) as e:
+        except (NCNValidationException, NeutralCitationToUriError, StubAlreadyUsedError) as e:
             messages.error(
                 request,
                 f"There was an error updating the Document's neutral citation: {e}",
@@ -114,7 +145,8 @@ class EditJudgmentView(View):
         except MarklogicAPIError as e:
             messages.error(request, f"There was an error saving the Document: {e}")
 
-        invalidate_caches(judgment.uri)
+        if not settings.DEBUG:
+            invalidate_caches(judgment.uri)
 
         if return_to == "html":
             return_path = reverse(
