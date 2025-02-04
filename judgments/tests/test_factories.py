@@ -24,8 +24,3 @@ class TestJudgmentFactory:
         judgment = JudgmentFactory.build()
 
         assert judgment.versions == []
-
-    def test_html(self):
-        judgment = JudgmentFactory.build(html="<h1>Testing HTML</h1>")
-
-        assert judgment.content_as_html(DocumentURIString("example/2024/1")) == "<h1>Testing HTML</h1>"

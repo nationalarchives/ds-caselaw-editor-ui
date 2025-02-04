@@ -22,7 +22,6 @@ class TestJudgmentView(TestCase):
             uri=DocumentURIString("hvtest/4321/123"),
             body=DocumentBodyFactory.build(
                 name="Test v Tested",
-                xml_string="<akomantoso>This is our test judgment.</akomantoso>",
             ),
         )
         judgment.body.document_date_as_date = date(1999, 10, 31)
@@ -38,7 +37,7 @@ class TestJudgmentView(TestCase):
 
         decoded_response = response.content.decode("utf-8")
         assert "Test v Tested" in decoded_response
-        assert "This is our test judgment." in decoded_response
+        assert "This is a document" in decoded_response
         assert "31 Oct 1999" in decoded_response
         assert response.status_code == 200
 
