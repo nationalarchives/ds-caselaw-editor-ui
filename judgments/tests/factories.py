@@ -32,7 +32,6 @@ class DocumentVersionFactory(DocumentFactory):
     def build(
         cls,
         uri=default_document_uri,
-        html="<p>This is a Document Version.</p>",
         api_client=None,
         **kwargs: Any,
     ) -> DocumentClass:

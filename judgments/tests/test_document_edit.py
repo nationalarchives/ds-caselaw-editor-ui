@@ -1,8 +1,8 @@
 from unittest.mock import Mock, patch
 
 import pytest
-from caselawclient.factories import JudgmentFactory, PressSummaryFactory
-from caselawclient.identifier_resolution import IdentifierResolution, IdentifierResolutions
+from caselawclient.factories import IdentifierResolutionFactory, JudgmentFactory, PressSummaryFactory
+from caselawclient.identifier_resolution import IdentifierResolutions
 from caselawclient.models.documents import DocumentURIString
 from caselawclient.models.identifiers.neutral_citation import NeutralCitationNumber
 from caselawclient.xquery_type_dicts import MarkLogicDocumentURIString
@@ -234,17 +234,13 @@ class TestUpdateNCNOfDocument(TestCase):
 def test_verify_stub_not_used_with_values(api_client):
     api_client.resolve_from_identifier.return_value = IdentifierResolutions(
         [
-            IdentifierResolution(
-                identifier_uuid="uuid",
+            IdentifierResolutionFactory.build(
                 document_uri=MarkLogicDocumentURIString("uksc/2024/999"),
                 identifier_slug=DocumentURIString("slug"),
-                document_published=True,
             ),
-            IdentifierResolution(
-                identifier_uuid="uuid",
+            IdentifierResolutionFactory.build(
                 document_uri=MarkLogicDocumentURIString("uksc/1701/999"),
                 identifier_slug=DocumentURIString("slug"),
-                document_published=True,
             ),
         ],
     )
