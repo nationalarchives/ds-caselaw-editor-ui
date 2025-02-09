@@ -24,6 +24,6 @@ django-stronghold==0.4.0
 boto3~=1.36.2
 
 # Type stubs
-mypy-boto3-s3==1.36.9
+mypy-boto3-s3==1.36.15
 mypy-boto3-sns==1.36.3
 types-pytz==2024.2.0.20241221
