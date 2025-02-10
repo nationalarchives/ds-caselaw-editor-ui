@@ -7,7 +7,7 @@ whitenoise==6.8.2  # https://github.com/evansd/whitenoise
 django==5.1.6  # https://www.djangoproject.com/
 django-environ>=0.11.0  # https://github.com/joke2k/django-environ
 django-model-utils==5.0.0  # https://github.com/jazzband/django-model-utils
-django-allauth==65.3.1  # https://github.com/pennersr/django-allauth
+django-allauth==65.4.1  # https://github.com/pennersr/django-allauth
 django-waffle==4.2.0  # https://github.com/django-waffle/django-waffle
 django-widget-tweaks==1.5.0  # https://github.com/jazzband/django-widget-tweaks
 factory-boy==3.3.3  # https://github.com/FactoryBoy/factory_boy
