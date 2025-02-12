@@ -3,6 +3,7 @@ import datetime
 from caselawclient.Client import MarklogicAPIError
 from caselawclient.models.documents import Document, DocumentURIString
 from caselawclient.models.identifiers.neutral_citation import NeutralCitationNumber, NeutralCitationNumberSchema
+from caselawclient.types import DocumentIdentifierSlug
 from django.conf import settings
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -20,7 +21,7 @@ class NCNValidationException(Exception):
     pass
 
 
-class StubAlreadyUsedError(NCNValidationException):
+class SlugAlreadyUsedError(NCNValidationException):
     pass
 
 
@@ -32,13 +33,10 @@ class NeutralCitationToUriError(NCNValidationException):
     pass
 
 
-def verify_stub_not_used(old_uri: DocumentURIString, new_citation: str) -> None:
-    new_ncn_slug = NeutralCitationNumberSchema.compile_identifier_url_slug(new_citation)
-    existing_matches = api_client.resolve_from_identifier(new_ncn_slug)
-    existing_matches_except_this_one = [x for x in existing_matches if x.document_uri not in [new_ncn_slug, old_uri]]
-    if existing_matches_except_this_one:
-        msg = f"At least one identifier for slug {new_ncn_slug} already exists, {existing_matches_except_this_one}"
-        raise StubAlreadyUsedError(msg)
+def verify_slug_not_used(identifier_slug: DocumentIdentifierSlug) -> None:
+    if resolutions := api_client.resolve_from_identifier_slug(identifier_slug):
+        msg = f"At least one identifier for slug {identifier_slug} already exists, {resolutions}"
+        raise SlugAlreadyUsedError(msg)
 
 
 def update_ncn_of_document(document: Document, new_neutral_citation_number_string: str) -> None:
@@ -58,11 +56,13 @@ def update_ncn_of_document(document: Document, new_neutral_citation_number_strin
         raise NeutralCitationToUriError(msg)
 
     # Confirm that the identifier isn't used elsewhere
-    verify_stub_not_used(document.uri, new_neutral_citation)
+    new_ncn = NeutralCitationNumber(value=new_neutral_citation)
+    # TODO: change types in API client to return DocumentIdentifierSlug and remove this coercion
+    verify_slug_not_used(DocumentIdentifierSlug(NeutralCitationNumberSchema.compile_identifier_url_slug(new_ncn.value)))
 
     # Set neutral citation in the identifiers
     document.identifiers.delete_type(NeutralCitationNumber)
-    document.identifiers.add(NeutralCitationNumber(value=new_neutral_citation))
+    document.identifiers.add(new_ncn)
     document.save_identifiers()
 
     # Set neutral citation in the document XML
@@ -136,7 +136,7 @@ class EditJudgmentView(View):
 
                 messages.success(request, "Document successfully updated")
 
-        except (NCNValidationException, NeutralCitationToUriError, StubAlreadyUsedError) as e:
+        except (NCNValidationException, NeutralCitationToUriError, SlugAlreadyUsedError) as e:
             messages.error(
                 request,
                 f"There was an error updating the Document's neutral citation: {e}",

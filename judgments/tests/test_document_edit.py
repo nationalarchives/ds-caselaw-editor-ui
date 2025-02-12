@@ -5,6 +5,7 @@ from caselawclient.factories import IdentifierResolutionFactory, JudgmentFactory
 from caselawclient.identifier_resolution import IdentifierResolutions
 from caselawclient.models.documents import DocumentURIString
 from caselawclient.models.identifiers.neutral_citation import NeutralCitationNumber
+from caselawclient.types import DocumentIdentifierSlug
 from caselawclient.xquery_type_dicts import MarkLogicDocumentURIString
 from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
@@ -14,9 +15,9 @@ from django.urls import reverse
 from judgments.views.judgment_edit import (
     CannotUpdateNCNOfNonJudgment,
     NeutralCitationToUriError,
-    StubAlreadyUsedError,
+    SlugAlreadyUsedError,
     update_ncn_of_document,
-    verify_stub_not_used,
+    verify_slug_not_used,
 )
 
 
@@ -124,20 +125,14 @@ class TestDocumentEdit(TestCase):
         assert "Could not parse the date" in messages[0].message
 
 
-@patch("judgments.views.judgment_edit.api_client")
-def test_verify_stub_not_used_no_values(api_client):
-    api_client.resolve_from_identifer.return_value = []
-    verify_stub_not_used(DocumentURIString("uksc/2024/999"), "[1701] UKSC 999")
-
-
 class TestUpdateNCNOfDocument(TestCase):
     @patch("judgments.views.judgment_edit.api_client")
-    @patch("judgments.views.judgment_edit.verify_stub_not_used")
+    @patch("judgments.views.judgment_edit.verify_slug_not_used")
     @patch("judgments.views.judgment_edit.update_document_uri")
     def test_update_ncn_of_document_where_change_is_valid(
         self,
         mock_update_document_uri,
-        mock_verify_stub_not_used,
+        mock_verify_slug_not_used,
         api_client,
     ):
         document = JudgmentFactory.build(
@@ -149,7 +144,7 @@ class TestUpdateNCNOfDocument(TestCase):
 
         update_ncn_of_document(document, "[2025] EWCC 456")
 
-        mock_verify_stub_not_used.assert_called_once_with("uksc/4321/123", "[2025] EWCC 456")
+        mock_verify_slug_not_used.assert_called_once_with("ewcc/2025/456")
 
         document.identifiers.delete_type.assert_called_once_with(NeutralCitationNumber)
         document.identifiers.add.assert_called_once()
@@ -158,12 +153,12 @@ class TestUpdateNCNOfDocument(TestCase):
         mock_update_document_uri.assert_called_once_with("uksc/4321/123", "ewcc/2025/456")
 
     @patch("judgments.views.judgment_edit.api_client")
-    @patch("judgments.views.judgment_edit.verify_stub_not_used")
+    @patch("judgments.views.judgment_edit.verify_slug_not_used")
     @patch("judgments.views.judgment_edit.update_document_uri")
     def test_update_ncn_of_document_rejects_non_judgment(
         self,
         mock_update_document_uri,
-        mock_verify_stub_not_used,
+        mock_verify_slug_not_used,
         api_client,
     ):
         document = PressSummaryFactory.build(
@@ -176,18 +171,18 @@ class TestUpdateNCNOfDocument(TestCase):
         with pytest.raises(CannotUpdateNCNOfNonJudgment):
             update_ncn_of_document(document, "[2025] EWCC 456")
 
-        mock_verify_stub_not_used.assert_not_called()
+        mock_verify_slug_not_used.assert_not_called()
         document.save_identifiers.assert_not_called()
         api_client.set_judgment_citation.assert_not_called()
         mock_update_document_uri.assert_not_called()
 
     @patch("judgments.views.judgment_edit.api_client")
-    @patch("judgments.views.judgment_edit.verify_stub_not_used")
+    @patch("judgments.views.judgment_edit.verify_slug_not_used")
     @patch("judgments.views.judgment_edit.update_document_uri")
     def test_update_ncn_of_document_rejects_malformed_ncn(
         self,
         mock_update_document_uri,
-        mock_verify_stub_not_used,
+        mock_verify_slug_not_used,
         api_client,
     ):
         document = JudgmentFactory.build(
@@ -200,18 +195,18 @@ class TestUpdateNCNOfDocument(TestCase):
         with pytest.raises(NeutralCitationToUriError):
             update_ncn_of_document(document, "TEST-123")
 
-        mock_verify_stub_not_used.assert_not_called()
+        mock_verify_slug_not_used.assert_not_called()
         document.save_identifiers.assert_not_called()
         api_client.set_judgment_citation.assert_not_called()
         mock_update_document_uri.assert_not_called()
 
     @patch("judgments.views.judgment_edit.api_client")
-    @patch("judgments.views.judgment_edit.verify_stub_not_used")
+    @patch("judgments.views.judgment_edit.verify_slug_not_used")
     @patch("judgments.views.judgment_edit.update_document_uri")
     def test_update_ncn_of_document_rejects_plausible_but_invalid_ncn(
         self,
         mock_update_document_uri,
-        mock_verify_stub_not_used,
+        mock_verify_slug_not_used,
         api_client,
     ):
         document = JudgmentFactory.build(
@@ -224,32 +219,36 @@ class TestUpdateNCNOfDocument(TestCase):
         with pytest.raises(NeutralCitationToUriError):
             update_ncn_of_document(document, "[2023] UKSC 123 (Fam)")
 
-        mock_verify_stub_not_used.assert_not_called()
+        mock_verify_slug_not_used.assert_not_called()
         document.save_identifiers.assert_not_called()
         api_client.set_judgment_citation.assert_not_called()
         mock_update_document_uri.assert_not_called()
 
 
 @patch("judgments.views.judgment_edit.api_client")
-def test_verify_stub_not_used_with_values(api_client):
-    api_client.resolve_from_identifier.return_value = IdentifierResolutions(
+def test_verify_slug_with_resolutions(api_client):
+    api_client.resolve_from_identifier_slug.return_value = IdentifierResolutions(
         [
             IdentifierResolutionFactory.build(
-                document_uri=MarkLogicDocumentURIString("uksc/2024/999"),
+                document_uri=MarkLogicDocumentURIString("/uksc/2024/999.xml"),
                 identifier_slug=DocumentURIString("slug"),
             ),
             IdentifierResolutionFactory.build(
-                document_uri=MarkLogicDocumentURIString("uksc/1701/999"),
+                document_uri=MarkLogicDocumentURIString("/uksc/1701/999.xml"),
                 identifier_slug=DocumentURIString("slug"),
             ),
         ],
     )
 
-    # If all Resolutions match either the old or new URI, that's fine
-    verify_stub_not_used(DocumentURIString("uksc/2024/999"), "[1701] UKSC 999")
+    # but it's not OK if it exists in the list of slugs
+    with pytest.raises(SlugAlreadyUsedError):
+        verify_slug_not_used(DocumentIdentifierSlug("uksc/1701/999"))
 
-    # but it's not OK if there's one left over which doesn't match
-    with pytest.raises(StubAlreadyUsedError):
-        verify_stub_not_used(DocumentURIString("uksc/2024/999"), "[2024] UKSC 999")
-    with pytest.raises(StubAlreadyUsedError):
-        verify_stub_not_used(DocumentURIString("uksc/1701/999"), "[1701] UKSC 999")
+    api_client.resolve_from_identifier_slug.assert_called_with("uksc/1701/999")
+
+
+@patch("judgments.views.judgment_edit.api_client")
+def test_verify_slug_with_no_resolutions(api_client):
+    api_client.resolve_from_identifier_slug.return_value = IdentifierResolutions([])
+    verify_slug_not_used(DocumentIdentifierSlug("uksc/1701/999"))
+    api_client.resolve_from_identifier_slug.assert_called_with("uksc/1701/999")
