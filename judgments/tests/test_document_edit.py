@@ -232,7 +232,7 @@ class TestUpdateNCNOfDocument(TestCase):
 
 @patch("judgments.views.judgment_edit.api_client")
 def test_verify_stub_not_used_with_values(api_client):
-    api_client.resolve_from_identifier.return_value = IdentifierResolutions(
+    api_client.resolve_from_identifier_slug.return_value = IdentifierResolutions(
         [
             IdentifierResolutionFactory.build(
                 document_uri=MarkLogicDocumentURIString("uksc/2024/999"),

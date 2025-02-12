@@ -3,6 +3,7 @@ import datetime
 from caselawclient.Client import MarklogicAPIError
 from caselawclient.models.documents import Document, DocumentURIString
 from caselawclient.models.identifiers.neutral_citation import NeutralCitationNumber, NeutralCitationNumberSchema
+from caselawclient.types import DocumentIdentifierSlug
 from django.conf import settings
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -33,8 +34,8 @@ class NeutralCitationToUriError(NCNValidationException):
 
 
 def verify_stub_not_used(old_uri: DocumentURIString, new_citation: str) -> None:
-    new_ncn_slug = NeutralCitationNumberSchema.compile_identifier_url_slug(new_citation)
-    existing_matches = api_client.resolve_from_identifier(new_ncn_slug)
+    new_ncn_slug = DocumentIdentifierSlug(NeutralCitationNumberSchema.compile_identifier_url_slug(new_citation))
+    existing_matches = api_client.resolve_from_identifier_slug(new_ncn_slug)
     existing_matches_except_this_one = [x for x in existing_matches if x.document_uri not in [new_ncn_slug, old_uri]]
     if existing_matches_except_this_one:
         msg = f"At least one identifier for slug {new_ncn_slug} already exists, {existing_matches_except_this_one}"
