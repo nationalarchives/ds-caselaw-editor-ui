@@ -5,9 +5,6 @@ from judgments.views.delete import DeleteDocumentView, delete
 from judgments.views.enrich import enrich
 
 from .views import reports
-from .views.button_handlers import (
-    hold_judgment_button,
-)
 from .views.document_downloads import DocumentDownloadsView
 from .views.document_full_text import (
     DocumentReviewHTMLView,
@@ -62,7 +59,6 @@ urlpatterns = [
     path("enrich", enrich, name="enrich"),
     path("reparse", reparse, name="reparse"),
     path("unlock", unlock, name="unlock"),
-    path("hold", hold_judgment_button, name="hold"),
     # Redirects for legacy judgment URIs
     path("edit", edit_view_redirect),
     path("detail", html_view_redirect),
