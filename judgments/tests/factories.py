@@ -6,6 +6,7 @@ import factory
 from caselawclient.client_helpers import VersionAnnotation, VersionType
 from caselawclient.factories import DocumentFactory
 from caselawclient.models.documents import Document, DocumentURIString
+from caselawclient.models.identifiers import Identifier
 from caselawclient.responses.search_result import SearchResult, SearchResultMetadata
 from django.contrib.auth import get_user_model
 from factory.faker import faker
@@ -33,12 +34,11 @@ class DocumentVersionFactory(DocumentFactory):
         cls,
         uri=default_document_uri,
         api_client=None,
+        identifiers: list[Identifier] | None = None,
         **kwargs: Any,
     ) -> DocumentClass:
         kwargs["populate_versions"] = False
-        document = super().build(
-            **kwargs,
-        )
+        document = super().build(identifiers=identifiers, **kwargs)
 
         # Note: this function was created for the Editor version of DocumentFactory, and
         # moved to the API Client version. It's entirely possible that some parts don't make
