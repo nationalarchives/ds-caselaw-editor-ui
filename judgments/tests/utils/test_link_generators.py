@@ -70,7 +70,7 @@ This is an email.""",
         )
 
     def test_get_jira_link_description_string_for_document_with_no_identifiers(self):
-        document = DocumentFactory.build()
+        document = DocumentFactory.build(identifiers=[])
         request = RequestFactory().get(document.uri)
         assert (
             _get_jira_link_description_string_for_document(document, request)
@@ -86,7 +86,7 @@ TDR ref: TDR-12345
         )
 
     def test_get_jira_link_description_string_for_document_with_identifiers(self):
-        document = DocumentFactory.build()
+        document = DocumentFactory.build(identifiers=[])
         request = RequestFactory().get(document.uri)
         document.identifiers.add(NeutralCitationNumber("[2024] TEST 123"))
         document.identifiers.add(FindCaseLawIdentifier("a1b2c3d4"))
