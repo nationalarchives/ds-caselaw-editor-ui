@@ -27,7 +27,7 @@
   "devDependencies": {
     "@babel/core": "^7.17.2",
     "@babel/preset-env": "^7.16.11",
-    "babel-loader": "^9.0.0",
+    "babel-loader": "^10.0.0",
     "cypress": "^14.0.0",
     "jquery": "^3.6.0",
     "stylelint": "^16.10.0",
