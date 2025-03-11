@@ -61,7 +61,6 @@ def build_raise_issue_email_link(
     email_context = {
         "judgment_name": document.body.name,
         "reference": document.consignment_reference,
-        "public_judgment_url": document.public_uri,
         "user_signature": signature,
         "submitter": document.source_name or "XXXXXX",
     }
