@@ -4,11 +4,10 @@
   height: $space-4;
   margin: auto;
   margin-bottom: $space-28;
-
-  text-align: center;
-
   border: 1px dashed colour-var("input-border");
   border-top: none;
+
+  text-align: center;
 
   &__top-link {
     display: inline-block;

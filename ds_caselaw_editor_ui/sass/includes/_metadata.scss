@@ -149,10 +149,9 @@
     min-height: 2rem;
     margin: 0;
     padding: $space-2;
+    border: 2px solid colour-var("font-base");
 
     font-size: $typography-md-text-size;
-
-    border: 2px solid colour-var("font-base");
 
     @include text-field;
   }
@@ -196,10 +195,9 @@
     min-height: 2rem;
     margin: 0;
     padding: $space-2;
+    border: 2px solid colour-var("font-base");
 
     font-size: $typography-md-text-size;
-
-    border: 2px solid colour-var("font-base");
 
     @include text-field;
   }

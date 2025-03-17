@@ -10,6 +10,10 @@
 
     label {
       padding-top: $space-3;
+      border: 2px solid colour-var("link");
+      border-bottom: none;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
 
       font-family: "Open Sans", sans-serif;
       font-size: $typography-md-text-size;
@@ -17,10 +21,6 @@
       color: colour-var("button-text");
 
       background: colour-var("link");
-      border: 2px solid colour-var("link");
-      border-bottom: none;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
 
       a {
         position: relative;
@@ -39,8 +39,8 @@
       }
 
       &:hover {
-        background: brand-colour("navy");
         border-color: brand-colour("navy");
+        background: brand-colour("navy");
       }
     }
 
@@ -54,8 +54,8 @@
     }
 
     input[type="radio"]:checked ~ label {
-      background: colour-var("input-background");
       border-bottom: 2px solid colour-var("input-background");
+      background: colour-var("input-background");
 
       a {
         cursor: default;
@@ -70,8 +70,8 @@
 
   &.tabs-set--primary {
     input[type="radio"]:checked ~ label {
-      background: colour-var("accent-background-light");
       border-bottom-color: colour-var("accent-background-light");
+      background: colour-var("accent-background-light");
     }
   }
 }

@@ -7,14 +7,14 @@
 
   width: 391px;
   height: 139px;
+  border: none;
+  border-width: 0;
+  border-radius: 10px;
 
   font-size: $typography-lg-text-size;
   text-align: center;
 
   background-color: #f2f2f2;
-  border: none;
-  border-width: 0;
-  border-radius: 10px;
 
   &:hover {
     background-color: #d7d7d7;

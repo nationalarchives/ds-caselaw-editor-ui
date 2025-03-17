@@ -30,11 +30,11 @@ a {
     left: 0.313rem;
 
     padding: $space-2;
+    border: 0.19rem solid colour-var("contrast-button-text");
 
     color: colour-var("contrast-button-text");
 
     background-color: colour-var("contrast-button-background");
-    border: 0.19rem solid colour-var("contrast-button-text");
     outline: 0.313rem solid colour-var("contrast-button-background");
   }
 }

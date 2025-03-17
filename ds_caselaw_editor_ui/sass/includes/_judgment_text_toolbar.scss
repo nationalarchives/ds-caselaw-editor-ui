@@ -30,8 +30,8 @@
   }
 
   &__delete {
-    color: colour-var("form-error-text") !important;
     border-color: colour-var("form-error-border") !important;
+    color: colour-var("form-error-text") !important;
 
     &:focus,
     &:hover {
