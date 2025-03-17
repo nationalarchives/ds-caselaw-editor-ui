@@ -5,14 +5,15 @@
   gap: $space-10;
   justify-content: center;
 
-  background: colour-var("accent-background-light");
   border-bottom: 1px solid colour-var("font-base");
+
+  background: colour-var("accent-background-light");
 
   &__item {
     all: unset;
     padding: $space-4 0;
-    font-size: $typography-md-text-size;
     border-bottom: 5px solid transparent;
+    font-size: $typography-md-text-size;
 
     a {
       text-decoration: none;
@@ -29,8 +30,8 @@
   }
 
   &__item--active {
-    font-weight: $typography-bold-font-weight;
     border-bottom-color: colour-var("link");
+    font-weight: $typography-bold-font-weight;
   }
 
   &__item--disabled {

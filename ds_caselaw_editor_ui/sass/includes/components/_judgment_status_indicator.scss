@@ -12,13 +12,13 @@ $govuk-black: black;
   display: inline-block;
 
   padding: $space-1 $space-2;
+  border: 3px solid $govuk-white;
 
   color: $govuk-white;
   text-decoration: none;
   text-transform: capitalize;
 
   background-color: $govuk-blue;
-  border: 3px solid $govuk-white;
   outline: 2px solid transparent;
   outline-offset: -2px;
 

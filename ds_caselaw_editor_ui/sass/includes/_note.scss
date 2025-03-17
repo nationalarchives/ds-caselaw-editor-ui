@@ -17,10 +17,9 @@
     box-sizing: border-box;
     width: calc(100% - $space-4);
     margin-top: 0;
+    border: 2px solid colour-var("input-border");
 
     font-size: $typography-md-text-size;
     line-height: $typography-md-line-height;
-
-    border: 2px solid colour-var("input-border");
   }
 }

@@ -96,11 +96,11 @@
   &__fieldset {
     margin: $space-1;
     padding: $space-8;
+    border: 0;
 
     color: colour-var("font-dark");
 
     background: $color-yellow;
-    border: 0;
   }
 
   &__legend {
@@ -229,13 +229,13 @@
 
     margin: $space-6 auto 0;
     padding: $space-2 0;
+    border: none;
+    border-bottom: 0.125rem solid $color-yellow;
 
     font-size: $typography-md-text-size;
     font-weight: $typography-bold-font-weight;
 
     background-color: transparent;
-    border: none;
-    border-bottom: 0.125rem solid $color-yellow;
 
     &::after {
       @media (min-width: $grid-breakpoint-medium) {
@@ -252,7 +252,6 @@
         width: 0.438rem;
         height: 0.438rem;
         margin: auto 0;
-
         border: solid;
         border-color: colour-var("font-base");
         border-width: 0.125rem 0.125rem 0 0;
