@@ -1,5 +1,5 @@
 name: CI
-
+permissions: {}
 # Enable Buildkit and let compose use it to speed up image building
 env:
   DOCKER_BUILDKIT: 1
@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Checkout Code Repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Set up node
         uses: actions/setup-node@v4.3.0
@@ -36,6 +38,8 @@ jobs:
     steps:
       - name: Checkout Code Repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@v5.4.0
@@ -57,6 +61,8 @@ jobs:
     steps:
       - name: Checkout Code Repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Copy .env.example file
         uses: canastro/copy-file-action@master
@@ -77,6 +83,8 @@ jobs:
     steps:
       - name: Checkout Code Repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Copy .env.example file
         uses: canastro/copy-file-action@master
