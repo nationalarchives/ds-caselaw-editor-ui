@@ -33,6 +33,7 @@ jobs:
         run: npm run build
   linter:
     runs-on: ubuntu-latest
+    needs: build-scss
     steps:
       - name: Checkout Code Repository
         uses: actions/checkout@v4
@@ -45,6 +46,8 @@ jobs:
           cache-dependency-path: |
             requirements/base.txt
             requirements/local.txt
+
+      - run: npm link
 
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
