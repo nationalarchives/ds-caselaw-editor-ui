@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout Code Repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Install Node.js and npm
         uses: actions/setup-node@v4
@@ -29,4 +31,7 @@ jobs:
         run: npm install cypress
 
       - name: Run Cypress Tests
-        run: CYPRESS_BASE_URL=${{inputs.CYPRESS_BASE_URL}} CYPRESS_USERNAME=${{secrets.CYPRESS_USERNAME}} CYPRESS_PASSWORD=${{secrets.CYPRESS_PASSWORD}} npx cypress run --headless
+        run: CYPRESS_BASE_URL=${CYPRESS_BASE_URL} CYPRESS_USERNAME=${{secrets.CYPRESS_USERNAME}} CYPRESS_PASSWORD=${{secrets.CYPRESS_PASSWORD}} npx cypress run --headless
+
+env:
+  CYPRESS_BASE_URL: ${{inputs.CYPRESS_BASE_URL}}
