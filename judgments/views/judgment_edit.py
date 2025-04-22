@@ -3,6 +3,7 @@ import datetime
 from caselawclient.Client import MarklogicAPIError
 from caselawclient.models.documents import Document, DocumentURIString
 from caselawclient.models.identifiers.neutral_citation import NeutralCitationNumber, NeutralCitationNumberSchema
+from caselawclient.models.utilities.move import MoveJudgmentError
 from caselawclient.types import DocumentIdentifierSlug
 from django.conf import settings
 from django.contrib import messages
@@ -136,7 +137,7 @@ class EditJudgmentView(View):
 
                 messages.success(request, "Document successfully updated")
 
-        except (NCNValidationException, NeutralCitationToUriError, SlugAlreadyUsedError) as e:
+        except (NCNValidationException, NeutralCitationToUriError, SlugAlreadyUsedError, MoveJudgmentError) as e:
             messages.error(
                 request,
                 f"There was an error updating the Document's neutral citation: {e}",
