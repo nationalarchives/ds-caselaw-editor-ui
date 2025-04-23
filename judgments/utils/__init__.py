@@ -6,10 +6,9 @@ from operator import itemgetter
 from typing import TYPE_CHECKING
 from urllib.parse import urlparse
 
-from caselawclient.Client import DEFAULT_USER_AGENT, MarklogicApiClient, MarklogicAPIError
+from caselawclient.Client import DEFAULT_USER_AGENT, MarklogicApiClient
 from caselawclient.models.documents import DocumentURIString
 from caselawclient.models.press_summaries import PressSummary
-from caselawclient.models.utilities.aws import copy_assets
 from django.conf import settings
 from django.contrib.auth.models import Group, User
 
@@ -60,40 +59,6 @@ def format_date(date):
 
     time = datetime.strptime(date, "%Y-%m-%d")
     return time.strftime("%d-%m-%Y")
-
-
-def update_document_uri(old_uri: DocumentURIString, new_uri: DocumentURIString):
-    """
-    Move the document at old_uri to the correct location based on the neutral citation
-    The new neutral citation *must* not already exist (that is handled elsewhere)
-    """
-
-    if api_client.document_exists(new_uri):
-        msg = f"The URI {new_uri} already exists, you cannot move this document to a pre-existing Neutral Citation Number."
-        raise MoveJudgmentError(
-            msg,
-        )
-
-    try:
-        api_client.copy_document(old_uri, new_uri)
-        set_metadata(old_uri, new_uri)
-        copy_assets(old_uri, new_uri)
-        api_client.set_judgment_this_uri(new_uri)
-    except MarklogicAPIError as e:
-        msg = f"Failure when attempting to copy document from {old_uri} to {new_uri}: {e}"
-        raise MoveJudgmentError(
-            msg,
-        ) from e
-
-    try:
-        api_client.delete_judgment(old_uri)
-    except MarklogicAPIError as e:
-        msg = f"Failure when attempting to delete document from {old_uri}: {e}"
-        raise MoveJudgmentError(
-            msg,
-        ) from e
-
-    return new_uri
 
 
 def set_metadata(old_uri, new_uri):
