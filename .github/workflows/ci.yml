@@ -104,9 +104,6 @@ jobs:
       - name: Generate coverage XML
         run: docker compose run django coverage xml
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
-
       - name: Upload coverage to CodeClimate
         uses: paambaati/codeclimate-action@v9.0.0
         env:
