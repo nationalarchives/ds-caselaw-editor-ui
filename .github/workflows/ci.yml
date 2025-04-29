@@ -1,9 +1,5 @@
 name: CI
 permissions: {}
-# Enable Buildkit and let compose use it to speed up image building
-env:
-  DOCKER_BUILDKIT: 1
-  COMPOSE_DOCKER_CLI_BUILD: 1
 
 on:
   pull_request:
@@ -17,22 +13,6 @@ on:
   merge_group:
 
 jobs:
-  build-scss:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code Repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-        with:
-          persist-credentials: false
-
-      - name: Set up node
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-
-      - name: Install node dependencies
-        run: npm ci
-
-      - name: Build scss
-        run: npm run build
   linter:
     runs-on: ubuntu-latest
     steps:
@@ -55,9 +35,96 @@ jobs:
         env:
           SKIP: no-commit-to-branch,stylelint
 
-  static-analysis:
-    runs-on: ubuntu-latest
+  build-scss:
     needs: linter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          persist-credentials: false
+
+      - name: Set up node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+
+      - name: Install node dependencies
+        run: npm ci
+
+      - name: Build scss
+        run: npm run build
+
+  build-django:
+    needs: linter
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3
+
+      - name: Copy .env.example file
+        uses: canastro/copy-file-action@ae66602ce7d214dbd2e298c1db67a81388755a0a
+        with:
+          source: ".env.example"
+          target: ".env"
+
+      - name: Build Django image
+        uses: docker/bake-action@76f9fa3a758507623da19f6092dc4089a7e61592 # v6
+        with:
+          targets: django
+          load: true
+          set: |
+            *.cache-from=type=gha
+            *.cache-to=type=gha,mode=max
+            *.tags=ds_judgments_public_ui_django:latest
+            *.output=type=docker,dest=/tmp/django-image.tar
+
+      - name: Upload Django image
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: django-image
+          path: /tmp/django-image.tar
+
+  download-postgres:
+    needs: linter
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Docker
+        uses: docker/setup-docker-action@b60f85385d03ac8acfca6d9996982511d8620a19 # v4.3.0
+
+      - name: Copy .env.example file
+        uses: canastro/copy-file-action@ae66602ce7d214dbd2e298c1db67a81388755a0a
+        with:
+          source: ".env.example"
+          target: ".env"
+
+      - name: Download Postgres image
+        run: docker compose pull postgres
+
+      - name: Save Postgres image
+        run: docker save -o /tmp/postgres-image.tar postgres
+
+      - name: Upload Postgres image
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: postgres-image
+          path: /tmp/postgres-image.tar
+
+  static-analysis:
+    needs:
+      - build-django
+      - download-postgres
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Code Repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
@@ -70,16 +137,32 @@ jobs:
           source: ".env.example"
           target: ".env"
 
-      - name: Build the Stack
-        run: docker compose build django postgres
+      - name: Download Django image
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: django-image
+          path: /tmp
+
+      - name: Download Postgres image
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: postgres-image
+          path: /tmp
+
+      - name: Load Django image
+        run: docker load --input /tmp/django-image.tar
+
+      - name: Load Postgres image
+        run: docker load --input /tmp/postgres-image.tar
 
       - name: Run mypy
         run: docker compose run django mypy ds_caselaw_editor_ui judgments
 
-  # With no caching at all the entire ci process takes 4m 30s to complete!
   pytest:
+    needs:
+      - build-django
+      - download-postgres
     runs-on: ubuntu-latest
-    needs: linter
     steps:
       - name: Checkout Code Repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
@@ -92,8 +175,23 @@ jobs:
           source: ".env.example"
           target: ".env"
 
-      - name: Build the Stack
-        run: docker compose build postgres django
+      - name: Download Django image
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: django-image
+          path: /tmp
+
+      - name: Download Postgres image
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: postgres-image
+          path: /tmp
+
+      - name: Load Django image
+        run: docker load --input /tmp/django-image.tar
+
+      - name: Load Postgres image
+        run: docker load --input /tmp/postgres-image.tar
 
       - name: Run DB Migrations
         run: docker compose run --rm django python manage.py migrate --settings=config.settings.test
