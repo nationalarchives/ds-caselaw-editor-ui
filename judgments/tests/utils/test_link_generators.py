@@ -64,9 +64,9 @@ This is an email.""",
 
     def test_get_jira_link_summary_string_for_document_with_human_identifier(self):
         document = DocumentFactory.build()
-        document.identifiers.add(NeutralCitationNumber("[2024] TEST 123"))
+        document.identifiers.add(NeutralCitationNumber("[2024] UKSC 123"))
         assert (
-            _get_jira_link_summary_string_for_document(document) == "[2024] TEST 123 / Judgment v Judgement / TDR-12345"
+            _get_jira_link_summary_string_for_document(document) == "[2024] UKSC 123 / Judgment v Judgement / TDR-12345"
         )
 
     def test_get_jira_link_description_string_for_document_with_no_identifiers(self):
@@ -88,15 +88,15 @@ TDR ref: TDR-12345
     def test_get_jira_link_description_string_for_document_with_identifiers(self):
         document = DocumentFactory.build(identifiers=[])
         request = RequestFactory().get(document.uri)
-        document.identifiers.add(NeutralCitationNumber("[2024] TEST 123"))
-        document.identifiers.add(FindCaseLawIdentifier("a1b2c3d4"))
+        document.identifiers.add(NeutralCitationNumber("[2024] UKSC 123"))
+        document.identifiers.add(FindCaseLawIdentifier("tn4t3st5"))
         assert (
             _get_jira_link_description_string_for_document(document, request)
             == """EUI link: http://testserver/test/2023/123
 
 Identifiers:
-    Neutral Citation Number: [2024] TEST 123
-    Find Case Law Identifier: a1b2c3d4
+    Neutral Citation Number: [2024] UKSC 123
+    Find Case Law Identifier: tn4t3st5
 
 Submitter: Example Uploader
 Contact email: uploader@example.com
