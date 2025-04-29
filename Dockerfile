@@ -83,4 +83,4 @@ ENTRYPOINT ["/entrypoint"]
 
 EXPOSE 5000
 
-CMD /start
+CMD ["/start"]

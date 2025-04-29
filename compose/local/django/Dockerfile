@@ -57,4 +57,4 @@ RUN pip install --no-cache-dir --no-index --find-links=/wheels/ /wheels/* \
 COPY . ${APP_HOME}
 
 # Do nothing forever (use 'exec' to resuse the container)
-CMD tail -f /dev/null
+CMD ["tail", "-f", "/dev/null"]
