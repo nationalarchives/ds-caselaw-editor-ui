@@ -77,10 +77,10 @@ class TestGroupCheck(TestCase):
 class TestDocumentView(TestCase):
     client = Client(raise_request_exception=False)
 
-    @patch.dict(os.environ, {"XSLT_IMAGE_LOCATION": "/VALUE_OF_ENVIRONMENT_VARIABLE/"})
+    @patch.dict(os.environ, {"XSLT_IMAGE_LOCATION": "assets"})
     @patch("judgments.utils.view_helpers.get_linked_document_uri")
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
-    def test_document_view_has_image(
+    def test_document_view_has_image_not_version(
         self,
         mock_get_document_by_uri,
         mock_get_linked_document_uri,
@@ -94,5 +94,27 @@ class TestDocumentView(TestCase):
         )
         response = self.client.get("/eat/2023/1")
 
+        mock_get_document_by_uri.assert_called_with("eat/2023/1")
         assert b"capybara" in response.content
-        assert b"/VALUE_OF_ENVIRONMENT_VARIABLE/ewhc/ch/2023/9999/cat.jpg" in response.content
+        assert b"assets/eat/2023/1/cat.jpg" in response.content
+
+    @patch.dict(os.environ, {"XSLT_IMAGE_LOCATION": "assets"})
+    @patch("judgments.utils.view_helpers.get_linked_document_uri")
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    def test_document_view_has_image_from_version(
+        self,
+        mock_get_document_by_uri,
+        mock_get_linked_document_uri,
+    ):
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        with open("judgments/tests/fixtures/sample_judgment.xml") as f:
+            sample_judgment = f.read()
+        mock_get_document_by_uri.return_value = JudgmentFactory.build(
+            uri=DocumentURIString("eat/2023/1"),
+            body=DocumentBodyFactory.build(xml_string=sample_judgment),
+        )
+        response = self.client.get("/eat/2023/1?version_uri=eat/2023/1_xml_versions/1-1")
+
+        mock_get_document_by_uri.assert_called_with("eat/2023/1_xml_versions/1-1")
+        assert b"capybara" in response.content
+        assert b"assets/eat/2023/1/cat.jpg" in response.content
