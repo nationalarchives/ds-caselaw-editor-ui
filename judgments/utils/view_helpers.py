@@ -91,15 +91,11 @@ class DocumentView(TemplateView):
 
         version_uri = self.request.GET.get("version_uri", None)
 
-        xslt_image_location = env("XSLT_IMAGE_LOCATION", default=None)
-
         if version_uri:
             context["current_version_number"] = extract_version_number_from_filename(version_uri)
-            context["document_html"] = get_document_by_uri_or_404(version_uri).body.content_as_html(
-                image_base_url=xslt_image_location,
-            )
+            context["document_html"] = get_document_by_uri_or_404(version_uri).content_as_html()
         else:
-            context["document_html"] = document.body.content_as_html(image_base_url=xslt_image_location)
+            context["document_html"] = document.content_as_html()
 
         # TODO: Remove this once we fully deprecate 'judgment' contexts
         context["judgment"] = document
