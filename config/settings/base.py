@@ -74,6 +74,7 @@ THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    "allauth.mfa",
     "stronghold",
     "waffle",
     "widget_tweaks",
@@ -282,17 +283,17 @@ MARKLOGIC_USE_HTTPS = env("MARKLOGIC_USE_HTTPS", default=False)
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_ADAPTER = "judgments.account_adapter.NoNewUsersAccountAdapter"
 ACCOUNT_ALLOW_REGISTRATION = False
-ACCOUNT_AUTHENTICATION_METHOD = "username"
-ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_LOGIN_METHODS = {"username"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
 ACCOUNT_EMAIL_VERIFICATION = "none"
+MFA_ADAPTER = "allauth.mfa.adapter.DefaultMFAAdapter"
 
 
 # Your stuff...
 # ------------------------------------------------------------------------------
 
 STRONGHOLD_PUBLIC_URLS = (
-    r"^/accounts/login",
-    r"^/accounts/password/reset/",
+    r"^/accounts/",
     r"^/check",
 )
 
