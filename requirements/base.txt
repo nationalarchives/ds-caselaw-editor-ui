@@ -26,4 +26,4 @@ boto3~=1.38.3
 # Type stubs
 mypy-boto3-s3==1.38.0
 mypy-boto3-sns==1.38.0
-types-pytz==2025.2.0.20250326
+types-pytz==2025.2.0.20250516
