@@ -79,7 +79,7 @@
   }
 
   mark {
-    background-color: color.adjust($color-yellow, $lightness: 18);
+    background-color: color-mix(in hsl, colour-var("accent-brand") 80%, white)
   }
 
   &__result-term-matching {

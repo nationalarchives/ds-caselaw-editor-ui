@@ -37,7 +37,7 @@
     @include notification;
 
     color: colour-var("font-dark");
-    background-color: $color-yellow;
+    background-color: colour-var("accent-brand");
 
     a {
       color: colour-var("link");

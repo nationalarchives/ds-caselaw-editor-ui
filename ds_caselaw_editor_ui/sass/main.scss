@@ -1,11 +1,12 @@
-@use "includes/tna_colour_overrides";
+@use "@nationalarchives/ds-caselaw-frontend/src/includes/tna_colour_overrides";
 @use "@nationalarchives/frontend/nationalarchives/tools/colour" as *;
 
 // Vendor imports
 @import "@nationalarchives/ds-caselaw-frontend/src/main";
 
 // Setup
-@import "includes/variables";
+@import "includes/image_paths";
+
 @import "includes/mixins";
 
 // Core
