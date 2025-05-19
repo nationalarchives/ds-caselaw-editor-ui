@@ -37,6 +37,12 @@
   height: 0.125rem;
 }
 
+$gutter-unit: 25px;
+$grid-breakpoint-small: 576px;
+$grid-breakpoint-medium: 768px;
+$grid-breakpoint-large: 992px;
+$grid-breakpoint-extra-large: 1200px;
+
 @mixin container {
   max-width: $grid-breakpoint-small - ($gutter-unit * 1);
   margin: auto;
