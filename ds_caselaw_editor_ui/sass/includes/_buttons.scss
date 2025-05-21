@@ -8,18 +8,12 @@
 }
 
 @mixin button-disabled {
-  border-color: colour-var("button-background");
-  color: colour-var("button-text");
-  background-color: transparent;
+  opacity: 0.6;
 
   &:focus,
   &:hover {
     cursor: not-allowed;
-
-    color: colour-var("button-text");
     text-decoration: none;
-
-    background-color: transparent;
     outline: none;
   }
 }
