@@ -30,7 +30,7 @@
   &__result-list-container {
     grid-column: 1 / 2;
     grid-row: 1 / 2;
-    background-color: #fff;
+    background-color: colour-var("background");
 
     h2 {
       @include sr-only;
@@ -79,7 +79,7 @@
   }
 
   mark {
-    background-color: color-mix(in hsl, colour-var("accent-brand") 80%, white)
+    background-color: color-mix(in hsl, colour-var("accent-brand") 80%, white);
   }
 
   &__result-term-matching {
