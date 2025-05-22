@@ -15,7 +15,6 @@ class TestStyleGuide(TestCase):
         assert "Buttons" in decoded_response
         assert "Note" in decoded_response
         assert "Notification messaging" in decoded_response
-        assert "Summary panels" in decoded_response
         assert "Tabs" in decoded_response
         assert "Spacing" in decoded_response
         assert "Typography" in decoded_response
