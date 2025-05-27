@@ -28,7 +28,7 @@
     "@babel/core": "7.27.1",
     "@babel/preset-env": "7.27.2",
     "babel-loader": "9.2.1",
-    "cypress": "14.3.3",
+    "cypress": "14.4.0",
     "jquery": "3.7.1",
     "stylelint": "16.19.1",
     "stylelint-config-clean-order": "7.0.0",
