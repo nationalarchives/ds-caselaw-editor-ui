@@ -26,7 +26,9 @@ class TestDocumentHistory(TestCase):
 
         document = JudgmentFactory.build(
             uri=DocumentURIString("ewca/civ/2005/1444"),
-            versions=[VersionsDict({"uri": "/ewca/civ/2005/1444_xml_versions/1-1444.xml", "version": 1})],
+            versions=[
+                VersionsDict({"uri": DocumentURIString("ewca/civ/2005/1444_xml_versions/1-1444"), "version": 1}),
+            ],
             body=DocumentBodyFactory.build(name="Test v Tested"),
         )
 
