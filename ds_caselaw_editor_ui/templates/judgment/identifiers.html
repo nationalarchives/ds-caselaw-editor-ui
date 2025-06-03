@@ -14,6 +14,7 @@
           <th>Type</th>
           <th>Value</th>
           <th>Public URL</th>
+          <th>Deprecated</th>
           {% if user|is_developer %}
             <th>Human readable</th>
             <th>Score</th>
@@ -44,6 +45,7 @@
                 <code>/{{ identifier.url_slug }}</code>
               {% endif %}
             </td>
+            <td>{{ identifier.deprecated }}</td>
             {% if user|is_developer %}
               <td>{{ identifier.schema.human_readable }}</td>
               <td>{{ identifier.score }}</td>
