@@ -37,7 +37,7 @@
     "webpack-cli": "6.0.1"
   },
   "dependencies": {
-    "@nationalarchives/ds-caselaw-frontend": "github:nationalarchives/ds-caselaw-frontend#v2.0.12",
+    "@nationalarchives/ds-caselaw-frontend": "github:nationalarchives/ds-caselaw-frontend#v2.0.16",
     "@nationalarchives/frontend": "^0.18.0",
     "nodemon": "^3.0.3",
     "sass": "^1.58.3"
