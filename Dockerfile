@@ -45,11 +45,14 @@ RUN addgroup --system django \
 RUN apt-get update && apt-get install --no-install-recommends -y \
   # psycopg2 dependency
   libpq-dev \
-  curl \
-  # node install
-  nodejs npm \
-  # cleaning up unused files
-  && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
+  curl
+
+# Install Specific Node.js version
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x  | bash -
+RUN apt-get -y install nodejs
+
+# cleaning up unused files
+RUN apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
 
 # All absolute dir copies ignore workdir instruction. All relative dir copies are wrt to the workdir instruction
