@@ -23,6 +23,7 @@ rollbar
 django-stronghold==0.4.0
 boto3~=1.38.3
 fido2~=2.0.0
+qrcode~=8.2
 
 # Type stubs
 mypy-boto3-s3==1.38.26
