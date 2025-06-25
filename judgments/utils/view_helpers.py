@@ -80,7 +80,7 @@ def get_document_by_uri_or_404(uri: str) -> Document:
         raise Http404(msg) from e
 
 
-class DocumentView(TemplateView):
+class DocumentViewMixin(TemplateView):
     def get_context_data(self, **kwargs):
         document_uri = kwargs["document_uri"]
         document = get_document_by_uri_or_404(document_uri)
@@ -97,9 +97,6 @@ class DocumentView(TemplateView):
         else:
             context["document_html"] = document.content_as_html()
 
-        # TODO: Remove this once we fully deprecate 'judgment' contexts
-        context["judgment"] = document
-
         context["page_title"] = document.body.name
         context["courts"] = caselawutils.courts.get_all(with_jurisdictions=True)
 
@@ -114,5 +111,15 @@ class DocumentView(TemplateView):
         context["document_type"] = document.document_noun.replace(" ", "_")
 
         context["preferred_ncn"] = document.identifiers.preferred(type=NeutralCitationNumber)
+
+        return context
+
+
+class DocumentView(DocumentViewMixin, TemplateView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # TODO: Remove this once we fully deprecate 'judgment' contexts
+        context["judgment"] = context["document"]
 
         return context
