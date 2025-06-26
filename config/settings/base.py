@@ -78,6 +78,8 @@ THIRD_PARTY_APPS = [
     "stronghold",
     "waffle",
     "widget_tweaks",
+    "crispy_forms",
+    "crispy_forms_gds",
 ]
 
 LOCAL_APPS = [
@@ -296,6 +298,15 @@ STRONGHOLD_PUBLIC_URLS = (
     r"^/accounts/",
     r"^/check",
 )
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = (
+    # "bootstrap",
+    # "bootstrap3",
+    # "bootstrap4",
+    # "uni_form",
+    "gds",
+)
+CRISPY_TEMPLATE_PACK = "gds"
 
 JIRA_INSTANCE = env("JIRA_INSTANCE")
 
