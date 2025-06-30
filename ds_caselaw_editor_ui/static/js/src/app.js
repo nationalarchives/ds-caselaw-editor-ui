@@ -1,5 +1,5 @@
 import $ from "jquery";
-
+import { initAll } from "govuk-frontend";
 import TabSet from "./components/tabSet";
 import "./components/document_navigation_links";
 
@@ -70,3 +70,5 @@ $(".document-history__submission-toggle").on("click", function () {
 });
 
 TabSet.init();
+
+initAll();

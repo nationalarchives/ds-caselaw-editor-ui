@@ -1,8 +1,11 @@
 @use "includes/tna_colour_overrides";
 @use "@nationalarchives/frontend/nationalarchives/tools/colour" as *;
 
+$govuk-assets-path: "/static/govuk-assets/";
+
 // Vendor imports
 @import "@nationalarchives/ds-caselaw-frontend/src/main";
+@import "govuk-frontend/dist/govuk/index";
 
 // Setup
 @import "includes/variables";
