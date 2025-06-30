@@ -78,6 +78,8 @@ THIRD_PARTY_APPS = [
     "stronghold",
     "waffle",
     "widget_tweaks",
+    "crispy_forms",
+    "crispy_forms_gds",
 ]
 
 LOCAL_APPS = [
@@ -158,7 +160,10 @@ STATIC_ROOT = str(ROOT_DIR / "staticfiles")
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
-STATICFILES_DIRS = [str(APPS_DIR / "static")]
+STATICFILES_DIRS = [
+    str(APPS_DIR / "static"),
+    ("govuk-assets", str(ROOT_DIR / "node_modules" / "govuk-frontend" / "dist" / "govuk" / "assets")),
+]
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
@@ -296,6 +301,15 @@ STRONGHOLD_PUBLIC_URLS = (
     r"^/accounts/",
     r"^/check",
 )
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = (
+    # "bootstrap",
+    # "bootstrap3",
+    # "bootstrap4",
+    # "uni_form",
+    "gds",
+)
+CRISPY_TEMPLATE_PACK = "gds"
 
 JIRA_INSTANCE = env("JIRA_INSTANCE")
 
