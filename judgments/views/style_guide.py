@@ -26,7 +26,7 @@ class StyleGuide(TemplateView):
             SearchResultFactory.build(metadata={"editor_hold": "true"}),
         ]
 
-        context["judgment"] = JudgmentFactory.build()
+        context["mock_document"] = JudgmentFactory.build()
 
         context["menu_items"] = [
             {
