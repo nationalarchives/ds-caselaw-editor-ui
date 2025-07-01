@@ -3,4 +3,6 @@
 <p>
   Use with <code>include "includes/judgment/judgment_metadata_form.html"</code>
 </p>
-<div class="style-guide__component-wrapper--large">{% include "includes/judgment/judgment_metadata_form.html" %}</div>
+<div class="style-guide__component-wrapper--large">
+  {% include "includes/judgment/judgment_metadata_form.html" with document=mock_document %}
+</div>
