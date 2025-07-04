@@ -2,24 +2,28 @@
   <div class="metadata-component">
     <form aria-label="Edit judgment"
           method="post"
-          action="{% url 'edit-document' judgment.uri %}">
+          action="{% url 'edit-document' document.uri %}">
       {% csrf_token %}
       <input type="hidden" name="return_to" value="{{ return_to }}" />
       <div class="metadata-component__left-column">
         <div class="metadata-component__top-left-row">
           <div class="metadata-component__ncn">
-            <label for="neutral_citation" class="metadata-component__main-labels">NCN</label>
-            <input type="text"
-                   class="metadata-component__neutral_citation-input"
-                   value="{{ preferred_ncn.value }}"
-                   name="neutral_citation"
-                   id="neutral_citation" />
+            <label class="metadata-component__main-labels">Preferred Identifier</label>
+            <span class="judgment-metadata-panel__value">
+              {% if document.identifiers.preferred %}
+                <small>{{ document.identifiers.preferred.schema.name }}</small>
+                <br>
+                <b>{{ document.identifiers.preferred.value }}</b>
+              {% else %}
+                &mdash;
+              {% endif %}
+            </span>
           </div>
           <div class="metadata-component__court">
             <label for="court" class="metadata-component__main-labels">Court</label>
             <input type="text"
                    class="metadata-component__court-input"
-                   value="{{ judgment.body.court_and_jurisdiction_identifier_string }}"
+                   value="{{ document.body.court_and_jurisdiction_identifier_string }}"
                    name="court"
                    id="court"
                    list="court-ids" />
@@ -31,7 +35,7 @@
             <label for="judgment_date" class="metadata-component__main-labels">Judgment date</label>
             <input type="text"
                    class="metadata-component__judgment-date-input"
-                   value="{{ judgment.body.document_date_as_date | date:'j M Y' }}"
+                   value="{{ document.body.document_date_as_date | date:'j M Y' }}"
                    name="judgment_date"
                    id="judgment_date" />
           </div>
@@ -41,7 +45,7 @@
           <textarea class="metadata-component__metadata-name-input"
                     name="metadata_name"
                     id="metadata_name"
-                    rows="2">{{ judgment.body.name }}</textarea>
+                    rows="2">{{ document.body.name }}</textarea>
         </div>
       </div>
       <div class="metadata-component__right-column">
@@ -49,13 +53,13 @@
           <aside for="metadata_name" class="metadata-component__main-labels">
             TDR ref
           </aside>
-          <p>{{ judgment.consignment_reference }}</p>
+          <p>{{ document.consignment_reference }}</p>
         </div>
         <div class="metadata-component__type">
           <aside for="metadata_name" class="metadata-component__main-labels">
             Type
           </aside>
-          <p>{{ judgment.document_noun|title }}</p>
+          <p>{{ document.document_noun|title }}</p>
         </div>
         <div class="metadata-component__actions">
           <input type="hidden" name="judgment_uri" value="{{ document_uri }}" />
