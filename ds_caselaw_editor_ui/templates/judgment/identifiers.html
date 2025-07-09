@@ -60,6 +60,10 @@
         </div>
       </div>
     {% endif %}
+    <div class="judgment-component__button-actions">
+      <a class="button-cta"
+         href="{% url 'document-identifiers-add' document.uri %}">Add new identifier</a>
+    </div>
     {% if user|is_developer %}
       <h3>System identifiers</h3>
       <table class="table">
