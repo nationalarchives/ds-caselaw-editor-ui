@@ -281,8 +281,8 @@ jobs:
         run: python ./development_scripts/populate_from_caselaw.py
         working-directory: "./marklogic"
 
-      # - name: Run DB Migrations
-      #   run: docker compose run --rm django python manage.py migrate --settings=config.settings.test
+      - name: Run DB Migrations
+        run: docker compose run --rm django python manage.py migrate --settings=config.settings.test
 
       - name: Setup django server for e2e tests
         run: docker compose up -d django
