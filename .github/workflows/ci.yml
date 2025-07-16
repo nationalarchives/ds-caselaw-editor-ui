@@ -211,3 +211,121 @@ jobs:
 
       - name: Tear down the Stack
         run: docker compose down
+  e2e-tests:
+    needs:
+      - build-scss
+      - build-django
+      - download-postgres
+      - pytest
+      - static-analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          persist-credentials: false
+
+      - name: Copy .env.example file
+        uses: canastro/copy-file-action@ae66602ce7d214dbd2e298c1db67a81388755a0a
+        with:
+          source: ".env.example"
+          target: ".env"
+
+      - name: Create docker network as used in dev
+        run: docker network create caselaw
+
+      - name: Download Django image
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: django-image
+          path: /tmp
+
+      - name: Download Postgres image
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: postgres-image
+          path: /tmp
+
+      - name: Load Django image
+        run: docker load --input /tmp/django-image.tar
+
+      - name: Load Postgres image
+        run: docker load --input /tmp/postgres-image.tar
+
+      - name: Checkout Marklogic repo
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          repository: "nationalarchives/ds-caselaw-marklogic"
+          path: "./marklogic"
+          persist-credentials: false
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
+
+      - name: Setup Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+
+      - name: Install requests
+        run: "pip install requests"
+
+      - name: Run marklogic docker container
+        run: docker compose up -d --wait
+        working-directory: "./marklogic"
+
+      - name: Deploy marklogic configuration
+        run: gradle mlDeploy
+        working-directory: "./marklogic"
+
+      - name: Populate marklogic DB with test data
+        run: python ./development_scripts/populate_from_caselaw.py
+        working-directory: "./marklogic"
+
+      - name: Run DB Migrations
+        run: docker compose run --rm django python manage.py migrate --settings=config.settings.test
+
+      - name: Setup django server for e2e tests
+        run: docker compose up -d django
+
+      - name: Install NPM deps
+        run: npm install
+
+      - name: Build the JS and SASS
+        run: npm run build
+
+      - name: Kick off the django server itself
+        run: docker compose exec -d django python manage.py runserver 0.0.0.0:3000
+
+      - name: Build playwright runner container
+        run: docker compose up -d e2e_tests
+
+      - name: Run playwright e2e tests
+        run: docker compose exec e2e_tests pytest --base-url http://django:3000 --tracing retain-on-failure
+
+      - name: Copy trace files from container
+        if: ${{ always() }}
+        run: docker compose cp e2e_tests:/app/test-results artifacts
+        continue-on-error: true
+
+      - name: Upload trace files as github artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: ${{ always() }}
+        with:
+          name: playwright-report
+          path: artifacts
+          retention-days: 7
+
+      - name: Upload snapshots as GitHub artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: failure()
+        with:
+          name: playwright-snapshots
+          path: e2e_tests/snapshots
+          retention-days: 7
+
+      - name: Tear down marklogic
+        run: docker compose down
+        working-directory: "./marklogic"
+
+      - name: Tear down the Stack
+        run: docker compose down
