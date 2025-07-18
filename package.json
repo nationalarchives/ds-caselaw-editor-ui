@@ -28,7 +28,6 @@
     "@babel/core": "7.28.0",
     "@babel/preset-env": "7.28.0",
     "babel-loader": "9.2.1",
-    "cypress": "14.5.1",
     "jquery": "3.7.1",
     "stylelint": "16.21.1",
     "stylelint-config-clean-order": "7.0.0",
@@ -38,7 +37,7 @@
   },
   "dependencies": {
     "@nationalarchives/ds-caselaw-frontend": "github:nationalarchives/ds-caselaw-frontend#v2.0.12",
-    "@nationalarchives/frontend": "^0.21.0",
+    "@nationalarchives/frontend": "^0.22.0",
     "nodemon": "^3.0.3",
     "sass": "^1.58.3"
   }
