@@ -283,3 +283,6 @@ docker/*
 
 # Cypress end-to-end tests create screenshots
 /cypress/screenshots
+
+# Visual regression testing
+e2e_tests/snapshots/*_actual.png

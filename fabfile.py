@@ -256,3 +256,20 @@ def restore_db(c, filename, delete_dump_on_success=False, delete_dump_on_error=F
         postgres_exec(f"rm {filename}")
 
     start(c, "django")
+
+
+@task(optional=["baseUrl"])
+def e2etest(c, baseUrl="http://django:3000"):
+    """
+    Run end-to-end playwright tests against the given base url -
+    the default is the running local django web container.
+    """
+    subprocess.run(
+        [
+            "docker",
+            "compose",
+            "build",
+            "e2e_tests",
+        ],
+    )
+    subprocess.run(["docker", "compose", "run", "e2e_tests", "pytest", "--base-url", baseUrl])
