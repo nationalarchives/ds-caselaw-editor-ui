@@ -1,9 +1,15 @@
 import time
+from typing import TYPE_CHECKING
 
+from caselawclient.models.documents import DocumentURIString
+from caselawclient.types import MarkLogicDocumentURIString
 from django.core.management.base import BaseCommand
 
 from judgments.utils import api_client
 from judgments.views.reports import get_rows_from_result
+
+if TYPE_CHECKING:
+    from caselawclient.models.documents import DocumentURIString
 
 NUMBER_TO_ENRICH = 25
 
@@ -23,9 +29,10 @@ class Command(BaseCommand):
         )
 
         for document_details in document_details_to_enrich[:NUMBER_TO_ENRICH]:
-            document_uri = document_details[0]
+            marklogic_document_uri: MarkLogicDocumentURIString = MarkLogicDocumentURIString(document_details[0])
+            document_uri: DocumentURIString = marklogic_document_uri.as_document_uri()
 
-            document = api_client.get_document_by_uri(document_uri.replace(".xml", ""))
+            document = api_client.get_document_by_uri(document_uri)
 
             self.stdout.write(f"Sending document {document.name} to enrichment...")
             document.enrich()
