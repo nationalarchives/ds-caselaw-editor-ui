@@ -257,7 +257,7 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           repository: "nationalarchives/ds-caselaw-marklogic"
-          path: "./marklogic"
+          path: "../marklogic"
           persist-credentials: false
 
       - name: Setup Gradle
@@ -271,15 +271,15 @@ jobs:
 
       - name: Run marklogic docker container
         run: docker compose up -d --wait
-        working-directory: "./marklogic"
+        working-directory: "../marklogic"
 
       - name: Deploy marklogic configuration
         run: gradle mlDeploy
-        working-directory: "./marklogic"
+        working-directory: "../marklogic"
 
       - name: Populate marklogic DB with test data
         run: python ./development_scripts/populate_from_caselaw.py
-        working-directory: "./marklogic"
+        working-directory: "../marklogic"
 
       - name: Run DB Migrations
         run: docker compose run --rm django python manage.py migrate --settings=config.settings.test
@@ -325,7 +325,7 @@ jobs:
 
       - name: Tear down marklogic
         run: docker compose down
-        working-directory: "./marklogic"
+        working-directory: "../marklogic"
 
       - name: Tear down the Stack
         run: docker compose down
