@@ -7,7 +7,7 @@ whitenoise==6.9.0  # https://github.com/evansd/whitenoise
 django==5.2.4  # https://www.djangoproject.com/
 django-environ>=0.11.0  # https://github.com/joke2k/django-environ
 django-model-utils==5.0.0  # https://github.com/jazzband/django-model-utils
-django-allauth==65.9.0  # https://github.com/pennersr/django-allauth
+django-allauth==65.10.0  # https://github.com/pennersr/django-allauth
 django-waffle==4.2.0  # https://github.com/django-waffle/django-waffle
 django-widget-tweaks==1.5.0  # https://github.com/jazzband/django-widget-tweaks
 factory-boy==3.3.3  # https://github.com/FactoryBoy/factory_boy
@@ -26,6 +26,6 @@ fido2~=2.0.0
 qrcode~=8.2
 
 # Type stubs
-mypy-boto3-s3==1.39.2
+mypy-boto3-s3==1.39.5
 mypy-boto3-sns==1.39.0
 types-pytz==2025.2.0.20250516
