@@ -17,13 +17,14 @@ xmltodict~=0.14.1
 requests-toolbelt~=1.0.0
 lxml~=5.4.0
 wsgi-basic-auth~=1.1.0
-ds-caselaw-marklogic-api-client~=37.4.0
+ds-caselaw-marklogic-api-client~=39.0.0
 ds-caselaw-utils~=2.4.0
 rollbar
 django-stronghold==0.4.0
 boto3~=1.39.0
 fido2~=2.0.0
 qrcode~=8.2
+crispy-forms-gds==2.0.1
 
 # Type stubs
 mypy-boto3-s3==1.39.5
