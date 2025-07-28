@@ -1,11 +1,11 @@
 import environ
-
 from playwright.sync_api import Page, expect
 
 from .utils.assertions import assert_matches_snapshot
 from .utils.authentication import login_user
 
 environ.Env.read_env()
+
 
 def test_login_page(page: Page):
     page.goto("/")

@@ -216,6 +216,11 @@ jobs:
       run:
         working-directory: ./main
 
+    env:
+      TEST_LOGIN_USERNAME: root
+      TEST_LOGIN_PASSWORD: password
+      DJANGO_SUPERUSER_PASSWORD: password
+
     steps:
       - name: Checkout Code Repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
@@ -280,6 +285,9 @@ jobs:
 
       - name: Run DB Migrations
         run: docker compose run --rm django python manage.py migrate --settings=config.settings.test
+
+      - name: Create super user
+        run: docker compose run --rm django python manage.py createsuperuser --no-input --username $TEST_LOGIN_USERNAME --email test@example.com
 
       - name: Setup django server for e2e tests
         run: docker compose up -d django
