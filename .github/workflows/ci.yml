@@ -217,8 +217,8 @@ jobs:
         working-directory: ./main
 
     env:
-      TEST_LOGIN_USERNAME: root
-      TEST_LOGIN_PASSWORD: password
+      E2E_LOGIN_USERNAME: root
+      E2E_LOGIN_PASSWORD: password
       DJANGO_SUPERUSER_PASSWORD: password
 
     steps:
@@ -287,7 +287,7 @@ jobs:
         run: docker compose run --rm django python manage.py migrate --settings=config.settings.test
 
       - name: Create super user
-        run: docker compose run --rm django python manage.py createsuperuser --no-input --username $TEST_LOGIN_USERNAME --email test@example.com
+        run: docker compose run --rm django python manage.py createsuperuser --no-input --username $E2E_LOGIN_USERNAME --email test@example.com
 
       - name: Setup django server for e2e tests
         run: docker compose up -d django
