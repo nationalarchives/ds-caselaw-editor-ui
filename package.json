@@ -29,7 +29,7 @@
     "@babel/preset-env": "7.28.0",
     "babel-loader": "9.2.1",
     "jquery": "3.7.1",
-    "stylelint": "16.21.1",
+    "stylelint": "16.22.0",
     "stylelint-config-clean-order": "7.0.0",
     "stylelint-config-standard-scss": "15.0.1",
     "webpack": "5.100.2",
@@ -38,6 +38,7 @@
   "dependencies": {
     "@nationalarchives/ds-caselaw-frontend": "github:nationalarchives/ds-caselaw-frontend#v2.0.12",
     "@nationalarchives/frontend": "^0.22.0",
+    "govuk-frontend": "^5.7.1",
     "nodemon": "^3.0.3",
     "sass": "^1.58.3"
   }
