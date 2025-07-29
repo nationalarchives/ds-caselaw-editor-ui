@@ -305,7 +305,7 @@ jobs:
         run: docker compose up -d e2e_tests
 
       - name: Run playwright e2e tests
-        run: docker compose exec e2e_tests pytest --base-url http://django:3000 --tracing retain-on-failure
+        run: docker compose exec --env E2E_LOGIN_USERNAME=$E2E_LOGIN_USERNAME --env E2E_LOGIN_PASSWORD=$E2E_LOGIN_PASSWORD e2e_tests pytest --base-url http://django:3000 --tracing retain-on-failure
 
       - name: Copy trace files from container
         if: ${{ always() }}
