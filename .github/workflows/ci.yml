@@ -217,8 +217,6 @@ jobs:
         working-directory: ./main
 
     env:
-      E2E_LOGIN_USERNAME: root
-      E2E_LOGIN_PASSWORD: password
       DJANGO_SUPERUSER_PASSWORD: password
 
     steps:
@@ -287,7 +285,7 @@ jobs:
         run: docker compose run --rm django python manage.py migrate --settings=config.settings.test
 
       - name: Create super user
-        run: docker compose run --rm django python manage.py createsuperuser --no-input --username $E2E_LOGIN_USERNAME --email test@example.com
+        run: docker compose run --rm django python manage.py createsuperuser --no-input --username root --email test@example.com
 
       - name: Setup django server for e2e tests
         run: docker compose up -d django
@@ -305,7 +303,7 @@ jobs:
         run: docker compose up -d e2e_tests
 
       - name: Run playwright e2e tests
-        run: docker compose exec --env E2E_LOGIN_USERNAME=$E2E_LOGIN_USERNAME --env E2E_LOGIN_PASSWORD=$E2E_LOGIN_PASSWORD e2e_tests pytest --base-url http://django:3000 --tracing retain-on-failure
+        run: docker compose exec e2e_tests pytest --base-url http://django:3000 --tracing retain-on-failure
 
       - name: Copy trace files from container
         if: ${{ always() }}
