@@ -17,4 +17,6 @@ def test_login_page(page: Page):
 
     login_user(page)
 
+    assert_matches_snapshot(page, "home_page")
+
     expect(page.locator("p", has_text="0 unpublished documents")).to_be_visible()
