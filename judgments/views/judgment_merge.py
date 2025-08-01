@@ -12,7 +12,33 @@ class ConfirmMergeDocumentView(DocumentView):
         context = super().get_context_data(**kwargs)
         document_uri_to_merge = self.kwargs["document_uri_to_merge"]
         document_to_merge = get_document_by_uri_or_404(document_uri_to_merge)
+
+        # TODO: Update with comparison method
+        # documents_comparison = document.compare_to(document_to_merge)
+        documents_comparison = [
+            {
+                "attribute": "court",
+                "attribute_label": "Court",
+                "match": False,
+            },
+            {
+                "attribute": "date",
+                "attribute_label": "Date",
+                "match": False,
+            },
+            {
+                "attribute": "name",
+                "attribute_label": "Name",
+                "match": False,
+            },
+        ]
+
         context["document_to_merge"] = document_to_merge
+        # TODO: Update with comparison check
+        # context["documents_mergable"] = documents_comparison.match()
+        context["documents_mergable"] = False
+        # TODO: Update with comparison data
+        context["documents_comparison"] = documents_comparison
         context["view"] = "merge_document"
         return context
 
