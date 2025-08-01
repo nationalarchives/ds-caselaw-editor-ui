@@ -1,0 +1,38 @@
+{% extends "layouts/judgment.html" %}
+{% load i18n waffle_tags %}
+{% block content %}
+  {% include "includes/judgment/metadata_panel_static.html" with judgment=document %}
+  <div class="container">
+    <h1 class="judgment-component__confirmation-title">I want to merge:</h1>
+    <h2 class="judgment-component__confirmation-subtitle">{{ document.body.name }}</h2>
+    <h2 class="judgment-component__confirmation-subtitle">With</h2>
+    <h2 class="judgment-component__confirmation-subtitle">{{ document_to_merge.body.name }}</h2>
+    {% if not documents_mergable %}
+      <div class="page-notification--warning">
+        <div class="container">
+          <h3>
+            <span class="icon icon__triangle-exclamation"></span>
+            These documents might not be mergeable due to the following reason(s):
+          </h3>
+          <ul>
+            <li>Title does not match</li>
+            <li>Court does not match</li>
+            <li>Date does not match</li>
+          </ul>
+        </div>
+      </div>
+      <p>Are you sure you still want to merge this document?</p>
+    {% endif %}
+    <form action="{% url 'merge' %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="document_uri" value="{{ document.uri }}" />
+      <input type="hidden"
+             name="document_uri_to_merge"
+             value="{{ document_to_merge.uri }}" />
+      <div class="judgment-component__button-actions">
+        <input class="button-cta" type="submit" value="Merge" />
+        <span class="judgment-component__back-button"><a href="{% url 'full-text-html' document.uri %}">Go back to review</a> </span>
+      </div>
+    </form>
+  </div>
+{% endblock content %}

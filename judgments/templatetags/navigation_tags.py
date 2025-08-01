@@ -87,6 +87,15 @@ def get_identifiers_navigation_item(view, document):
     }
 
 
+def get_merge_navigation_item(view, document):
+    return {
+        "id": "merge",
+        "selected": view in ("merge_document"),
+        "label": "Merge",
+        "url": get_document_url("merge-document", document),
+    }
+
+
 @register.simple_tag(takes_context=True)
 def get_navigation_items(context):
     view, document, linked_document_uri = (
@@ -97,6 +106,7 @@ def get_navigation_items(context):
 
     base_navigation = [
         get_review_navigation_item(view, document),
+        get_merge_navigation_item(view, document),
         get_hold_navigation_item(view, document),
         get_publishing_navigation_item(view, document),
         get_identifiers_navigation_item(view, document),

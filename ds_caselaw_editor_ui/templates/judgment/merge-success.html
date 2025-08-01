@@ -1,0 +1,11 @@
+{% extends "layouts/judgment.html" %}
+{% load i18n %}
+{% block content %}
+  {% include "includes/judgment/metadata_panel_static.html" with judgment=document %}
+  <div class="container">
+    <h1 class="judgment-component__confirmation-title">Confirmation this has been merged:</h1>
+    <h2 class="judgment-component__confirmation-subtitle">{{ document.body.name }}</h2>
+    <h2 class="judgment-component__confirmation-subtitle">with</h2>
+    <h2 class="judgment-component__confirmation-subtitle">{{ document_to_merge.body.name }}</h2>
+  </div>
+{% endblock content %}
