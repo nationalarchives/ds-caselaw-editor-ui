@@ -15,9 +15,9 @@
             These documents might not be mergeable due to the following reason(s):
           </h3>
           <ul>
-            <li>Title does not match</li>
-            <li>Court does not match</li>
-            <li>Date does not match</li>
+            {% for item in documents_comparison %}
+              {% if not item.match %}<li>{{ item.attribute_label }} does not match</li>{% endif %}
+            {% endfor %}
           </ul>
         </div>
       </div>
