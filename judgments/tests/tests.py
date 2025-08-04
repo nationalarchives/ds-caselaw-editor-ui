@@ -28,3 +28,17 @@ class TestSearchResults(TestCase):
                 page=1,
             ),
         )
+
+
+class TestCheckPrefixUrls(TestCase):
+    def test_just_check_ok(self):
+        """The /check endpoint can be used when not logged in"""
+        response = self.client.get("/check")
+        assert response.status_code == 200
+        assert b'"OK"' in response.content
+
+    def test_check_prefix_not_ok(self):
+        """Urls starting with /check cannot be used when not logged in"""
+        response = self.client.get("/checkblahblahblah")
+        assert response.status_code == 302
+        assert response["Location"] == "/accounts/login/?next=/checkblahblahblah"
