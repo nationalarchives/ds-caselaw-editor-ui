@@ -5,7 +5,7 @@ This repository is part of the [Find Case Law](https://caselaw.nationalarchives.
 # Editor Interface
 
 ![Tests](https://img.shields.io/github/actions/workflow/status/nationalarchives/ds-caselaw-editor-ui/ci.yml?branch=main&label=tests)
-![Coverage](https://img.shields.io/codecov/c/github/nationalarchives/ds-caselaw-custom-api-client)
+![Code Coverage](https://img.shields.io/codecov/c/github/nationalarchives/ds-caselaw-editor-ui)
 
 An interface for editors to modify content metadata for the Find Case Law service.
 
