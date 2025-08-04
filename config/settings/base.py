@@ -299,7 +299,7 @@ MFA_ADAPTER = "allauth.mfa.adapter.DefaultMFAAdapter"
 
 STRONGHOLD_PUBLIC_URLS = (
     r"^/accounts/",
-    r"^/check",
+    r"^/check$",
 )
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = ["gds"]
