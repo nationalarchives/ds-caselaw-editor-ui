@@ -8,7 +8,7 @@ from judgments.utils.view_helpers import get_document_by_uri_or_404
 def enrich(request):
     document_uri = request.POST.get("document_uri", None)
     document = get_document_by_uri_or_404(document_uri)
-    enrichment_triggered = document.enrich()
+    enrichment_triggered = document.enrich(accept_failures=True, even_if_recent=True)
     if not enrichment_triggered:
         messages.error(
             request,

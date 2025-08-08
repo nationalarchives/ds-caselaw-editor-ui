@@ -35,5 +35,5 @@ class Command(BaseCommand):
             document = api_client.get_document_by_uri(document_uri)
 
             self.stdout.write(f"Sending document {document.name} to enrichment...")
-            document.enrich()
+            document.enrich(accept_failures=True)
             time.sleep(3)
