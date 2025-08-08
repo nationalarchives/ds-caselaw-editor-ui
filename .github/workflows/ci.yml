@@ -287,6 +287,9 @@ jobs:
       - name: Setup django server for e2e tests
         run: docker compose up -d django
 
+      - name: Check Marklogic up
+        run: curl http://host.docker.internal:8011 || curl http://localhost:8011 || curl http://caselaw.marklogic:8011 || echo 1
+
       - name: Install NPM deps
         run: npm install
 
