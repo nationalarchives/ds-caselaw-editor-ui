@@ -1,4 +1,4 @@
-ARG PYTHON_VERSION=3.13-slim-bookworm@sha256:4c2cf9917bd1cbacc5e9b07320025bdb7cdf2df7b0ceaccb55e9dd7e30987419
+ARG PYTHON_VERSION=3.13-slim-bookworm@sha256:dbae11294fd02c6d65be6fc889633a3cf804e9586dbbf848bf4d3a294faa6482
 
 
 
