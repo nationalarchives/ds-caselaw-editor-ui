@@ -25,7 +25,7 @@ class CommandsTestCase(TestCase):
         call_command("enrich_next_in_reenrichment_queue")
 
         mock_api_client.get_document_by_uri.assert_has_calls(
-            [call("/test/123"), call("/test/456")],
+            [call("test/123"), call("test/456")],
         )
 
         document_1.enrich.assert_called_once()
@@ -50,7 +50,7 @@ class CommandsTestCase(TestCase):
 
         call_command("enrich_next_in_reenrichment_queue")
 
-        mock_api_client.get_document_by_uri.assert_has_calls([call("/test/123")])
+        mock_api_client.get_document_by_uri.assert_has_calls([call("test/123")])
 
         document_1.enrich.assert_called_once()
         document_2.enrich.assert_not_called()

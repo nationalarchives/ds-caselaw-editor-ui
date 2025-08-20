@@ -25,20 +25,20 @@
   },
   "homepage": "https://github.com/nationalarchives/ds-judgments-editor-ui#readme",
   "devDependencies": {
-    "@babel/core": "7.27.3",
-    "@babel/preset-env": "7.27.2",
+    "@babel/core": "7.28.3",
+    "@babel/preset-env": "7.28.3",
     "babel-loader": "9.2.1",
-    "cypress": "14.4.0",
     "jquery": "3.7.1",
-    "stylelint": "16.20.0",
+    "stylelint": "16.23.1",
     "stylelint-config-clean-order": "7.0.0",
     "stylelint-config-standard-scss": "15.0.1",
-    "webpack": "5.99.9",
+    "webpack": "5.101.2",
     "webpack-cli": "6.0.1"
   },
   "dependencies": {
-    "@nationalarchives/ds-caselaw-frontend": "github:nationalarchives/ds-caselaw-frontend#v2.0.16",
-    "@nationalarchives/frontend": "^0.18.0",
+    "@nationalarchives/ds-caselaw-frontend": "github:nationalarchives/ds-caselaw-frontend#v2.0.12",
+    "@nationalarchives/frontend": "^0.23.0",
+    "govuk-frontend": "^5.7.1",
     "nodemon": "^3.0.3",
     "sass": "^1.58.3"
   }

@@ -5,21 +5,14 @@ on:
     types: [published]
 
 jobs:
-  pre_release-qa_e2e_tests_on_staging:
-    uses: ./.github/workflows/e2e_staging_tests.yml
-    secrets:
-      CYPRESS_USERNAME: ${{ secrets.CYPRESS_USERNAME }}
-      CYPRESS_PASSWORD: ${{ secrets.CYPRESS_PASSWORD }}
-
   release:
-    needs: pre_release-qa_e2e_tests_on_staging
     name: Run local action
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
         with:
           persist-credentials: true
       - name: Run latest-tag

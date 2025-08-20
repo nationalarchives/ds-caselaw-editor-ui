@@ -23,7 +23,7 @@ services:
     command: tail -f /dev/null
 
   postgres:
-    image: postgres:15.13@sha256:f57a3bdbf044f0b213fdc99f35a0d21c401608bf41f063176ec00c51df9655f7
+    image: postgres:15.14@sha256:bc51cf4f1fe02cce7ed2370b20128a9b00b4eb804573a77d2a0d877aaa9c82b1
     ports:
       - "5432:5432"
     environment:
@@ -38,3 +38,14 @@ services:
       POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
       - ./database_backups:/backups:z
+
+  e2e_tests:
+    container_name: e2e_tests_container
+    build:
+      context: ./e2e_tests
+      dockerfile: "../compose/local/e2e_tests/Dockerfile"
+
+    profiles: [e2e_tests]
+    volumes:
+      - "./e2e_tests:/app:z"
+    tty: true

@@ -80,14 +80,16 @@ def get_document_by_uri_or_404(uri: str) -> Document:
         raise Http404(msg) from e
 
 
-class DocumentView(TemplateView):
-    def get_context_data(self, **kwargs):
-        document_uri = kwargs["document_uri"]
-        document = get_document_by_uri_or_404(document_uri)
-        context = super().get_context_data(**kwargs)
-        context["document_uri"] = document_uri
+class DocumentViewMixin(TemplateView):
+    def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
+        document_uri = self.kwargs["document_uri"]
+        self.document = get_document_by_uri_or_404(document_uri)
 
-        context["document"] = document
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["document"] = self.document
+        context["document_uri"] = self.document.uri
 
         version_uri = self.request.GET.get("version_uri", None)
 
@@ -95,24 +97,31 @@ class DocumentView(TemplateView):
             context["current_version_number"] = extract_version_number_from_filename(version_uri)
             context["document_html"] = get_document_by_uri_or_404(version_uri).content_as_html()
         else:
-            context["document_html"] = document.content_as_html()
+            context["document_html"] = self.document.content_as_html()
 
-        # TODO: Remove this once we fully deprecate 'judgment' contexts
-        context["judgment"] = document
-
-        context["page_title"] = document.body.name
+        context["page_title"] = self.document.body.name
         context["courts"] = caselawutils.courts.get_all(with_jurisdictions=True)
 
         context["editors"] = editors_dict()
 
         context["jira_create_link"] = build_jira_create_link(
-            document=document,
+            document=self.document,
             request=self.request,
         )
 
-        context["linked_document_uri"] = get_linked_document_uri(document)
-        context["document_type"] = document.document_noun.replace(" ", "_")
+        context["linked_document_uri"] = get_linked_document_uri(self.document)
+        context["document_type"] = self.document.document_noun.replace(" ", "_")
 
-        context["preferred_ncn"] = document.identifiers.preferred(type=NeutralCitationNumber)
+        context["preferred_ncn"] = self.document.identifiers.preferred(type=NeutralCitationNumber)
+
+        return context
+
+
+class DocumentView(DocumentViewMixin, TemplateView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # TODO: Remove this once we fully deprecate 'judgment' contexts
+        context["judgment"] = context["document"]
 
         return context

@@ -4,9 +4,11 @@ This repository is part of the [Find Case Law](https://caselaw.nationalarchives.
 
 # Editor Interface
 
-![Tests](https://img.shields.io/github/actions/workflow/status/nationalarchives/ds-caselaw-editor-ui/ci.yml?branch=main&label=tests) ![Coverage](https://img.shields.io/codeclimate/coverage/nationalarchives/ds-caselaw-editor-ui) ![Maintainability](https://img.shields.io/codeclimate/maintainability/nationalarchives/ds-caselaw-editor-ui)
+![Tests](https://img.shields.io/github/actions/workflow/status/nationalarchives/ds-caselaw-editor-ui/ci.yml?branch=main&label=tests)
+![Code Coverage](https://img.shields.io/codecov/c/github/nationalarchives/ds-caselaw-editor-ui)
 
-An interface for editors to modify content metadata for the Find Case Law service.
+An interface for editors to modify content metadata for the Find Case Law service. There are some [differences in the UI](docs/user-groups.md) depending
+on your user group.
 
 ## Local development
 
@@ -37,40 +39,21 @@ The database service built from the official [postgres](https://hub.docker.com/_
 
 **NOTE**: The `.env.example` file contains references to AWS tokens, such as `AWS_ACCESS_KEY_ID`, `AWS_SECRET_KEY` and `AWS_ENDPOINT_URL`. These should only be populated if you are testing locally with `localstack` (though the values do not matter, you can use anything). Leaving them blank will default to your configured AWS account.
 
-### 1. Get access to Marklogic
-
-This app is intended to edit Judgments in the Marklogic database defined in [ds-find-caselaw-docs/marklogic](https://github.com/nationalarchives/ds-find-caselaw-docs/tree/main/marklogic).
-
-Unless you are intending to do any database/Marklogic development work, it is simpler to access a
-shared Marklogic database running on the `staging` environment than to build your own.
-
-If you wish to run your own Marklogic instance, you will need to follow the setup instructions for it at
-[ds-find-caselaw-docs/marklogic](https://github.com/nationalarchives/ds-find-caselaw-docs/tree/main/marklogic).
-
-The **recommended** alternative is to access the shared staging Marklogic database. The way you do this
-depends on where you work:
-
-#### dxw developers
-
-You will need to be using the dxw vpn. Retrieve the staging Marklogic credentials from dalmatian (or ask
-one of the other developers/ops). Use these to fill MARKLOGIC_HOST, MARKLOGIC_USER and MARKLOGIC_PASSWORD
-in your `.env` file (see step 2).
-
-#### TNA/other developers
-
-You will need vpn credentials from the dxw ops team, and the staging Marklogic credentials from one of the
-dxw development team. Use these to fill MARKLOGIC_HOST, MARKLOGIC_USER and MARKLOGIC_PASSWORD
-in your `.env` file (see step 2).
-
-In both cases, when you run the application, you will be viewing data on staging Marklogic. This
-data is also used for testing and occasionally user research, so please exercise caution when creating/
-editing content!
-
-### 2. Create `.env`
+### 1. Create a `.env` file
 
 ```console
 $ cp .env.example .env
 ```
+
+### 2. Get access to Marklogic
+
+This app is intended to edit Judgments in the Marklogic database defined in [ds-find-caselaw-docs/marklogic](https://github.com/nationalarchives/ds-find-caselaw-docs/tree/main/marklogic).
+
+If you wish to run your own Marklogic instance, you will need to follow the setup instructions for it at
+[ds-find-caselaw-docs/marklogic](https://github.com/nationalarchives/ds-find-caselaw-docs/tree/main/marklogic).
+
+For TNA/dxw developers, it is simpler to access the shared [staging Marklogic database](https://national-archives.atlassian.net/wiki/spaces/DFCL/pages/1152974873/MarkLogic+database+location) via VPN,
+and then set the `MARKLOGIC_HOST`, `MARKLOGIC_USER`, and `MARKLOGIC_PASSWORD` variables in your `.env` file.
 
 ### 3. Build Docker containers
 
@@ -107,22 +90,19 @@ error message referring to a docker network, run:
 $ docker network create caselaw
 ```
 
-### 6. Start a shell session with the 'django' container
+### 6. Add a django user so you can log in
 
 ```console
 $ fab sh
+root# ./manage.py createsuperuser
+root# exit
+$
 ```
 
-### 7. Add a django user so you can log in
+### 7. Run a 'development' web server
 
 ```console
-$ ./manage.py createsuperuser
-```
-
-### 8. Run a 'development' web server
-
-```console
-$ python manage.py runserver_plus 0.0.0.0:3000
+$ fab run
 ```
 
 ### 8. Access the site
@@ -193,25 +173,6 @@ topic and `public-` and `private-asset-buckets` for S3.
 ```console
 $ fab test
 ```
-
-### Running cypress E2E tests
-
-We have started adding cypress tests so we have some E2E tests to be happier with critical E2E workflows.
-These should be kept to a minimum since they are slow to run, resource intensive and harder to debug than smaller integration and unit tests.
-
-However, we should try to add all critical editor workflows here to give confidence we don't introduce regressions in new releases.
-
-NOTE: For now we should point the tests to staging, but eventually we may have a dedicated testing set up.
-
-To run them locally, you can run:
-
-`CYPRESS_BASE_URL=base_eui_url CYPRESS_USERNAME=username CYPRESS_PASSWORD=password npx cypress run --headless`
-
-You can also run the tests interactively with:
-
-`CYPRESS_BASE_URL=base_eui_url CYPRESS_USERNAME=username CYPRESS_PASSWORD=password npx cypress open`
-
-where `username` and `password` are credentials for accessing the EUI deployment at `base_eui_url`.
 
 ## Setting up the pre-commit hooks (strongly advised)
 

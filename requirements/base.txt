@@ -1,30 +1,31 @@
 pytz==2025.2  # https://github.com/stub42/pytz
-argon2-cffi==23.1.0  # https://github.com/hynek/argon2_cffi
+argon2-cffi==25.1.0  # https://github.com/hynek/argon2_cffi
 whitenoise==6.9.0  # https://github.com/evansd/whitenoise
 
 # Django
 # ------------------------------------------------------------------------------
-django==5.2.1  # https://www.djangoproject.com/
+django==5.2.5  # https://www.djangoproject.com/
 django-environ>=0.11.0  # https://github.com/joke2k/django-environ
 django-model-utils==5.0.0  # https://github.com/jazzband/django-model-utils
-django-allauth==65.8.1  # https://github.com/pennersr/django-allauth
-django-waffle==4.2.0  # https://github.com/django-waffle/django-waffle
+django-allauth==65.11.0  # https://github.com/pennersr/django-allauth
+django-waffle==5.0.0  # https://github.com/django-waffle/django-waffle
 django-widget-tweaks==1.5.0  # https://github.com/jazzband/django-widget-tweaks
 factory-boy==3.3.3  # https://github.com/FactoryBoy/factory_boy
 
 requests~=2.32.3
 xmltodict~=0.14.1
 requests-toolbelt~=1.0.0
-lxml~=5.4.0
 wsgi-basic-auth~=1.1.0
-ds-caselaw-marklogic-api-client~=37.3.0
-ds-caselaw-utils~=2.4.0
+ds-caselaw-marklogic-api-client~=39.2.0
+ds-caselaw-utils~=2.6.0
 rollbar
 django-stronghold==0.4.0
-boto3~=1.38.3
+boto3~=1.40.0
 fido2~=2.0.0
+qrcode~=8.2
+crispy-forms-gds==2.0.1
 
 # Type stubs
-mypy-boto3-s3==1.38.26
-mypy-boto3-sns==1.38.0
-types-pytz==2025.2.0.20250516
+mypy-boto3-s3==1.40.0
+mypy-boto3-sns==1.40.1
+types-pytz==2025.2.0.20250809

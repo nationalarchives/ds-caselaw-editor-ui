@@ -1,0 +1,11 @@
+{% extends "layouts/judgment.html" %}
+{% load i18n document_utils user_permissions crispy_forms_tags crispy_forms_gds %}
+{% block content %}
+  {% include "includes/judgment/metadata_panel_static.html" with judgment=document %}
+  <div class="container">
+    <h1 class="judgment-component__confirmation-title">Add identifier for:</h1>
+    <h2 class="judgment-component__confirmation-subtitle">{{ document.body.name }}</h2>
+    {% error_summary form %}
+    {% crispy form %}
+  </div>
+{% endblock content %}

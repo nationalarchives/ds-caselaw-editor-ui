@@ -1,4 +1,4 @@
-ARG PYTHON_VERSION=3.13-slim-bookworm@sha256:56a11364ffe0fee3bd60af6d6d5209eba8a99c2c16dc4c7c5861dc06261503cc
+ARG PYTHON_VERSION=3.13-slim-bookworm@sha256:9b8102b7b3a61db24fe58f335b526173e5aeaaf7d13b2fbfb514e20f84f5e386
 
 
 
@@ -45,11 +45,14 @@ RUN addgroup --system django \
 RUN apt-get update && apt-get install --no-install-recommends -y \
   # psycopg2 dependency
   libpq-dev \
-  curl \
-  # node install
-  nodejs npm \
-  # cleaning up unused files
-  && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
+  curl
+
+# Install Specific Node.js version
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x  | bash -
+RUN apt-get -y install nodejs
+
+# cleaning up unused files
+RUN apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
 
 # All absolute dir copies ignore workdir instruction. All relative dir copies are wrt to the workdir instruction
