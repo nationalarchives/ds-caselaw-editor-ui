@@ -1,6 +1,19 @@
 .judgment-component {
   margin-top: $space-4;
 
+  &__form-input {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+    align-items: flex-start;
+
+    margin-bottom: $space-4;
+
+    input {
+      @include text-field;
+    }
+  }
+
   &__confirmation-subtitle {
     font-weight: $typography-normal-font-weight;
   }
