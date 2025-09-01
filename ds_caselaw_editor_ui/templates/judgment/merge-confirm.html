@@ -3,6 +3,17 @@
 {% block content %}
   {% include "includes/judgment/metadata_panel_static.html" with judgment=document %}
   <div class="container">
+    {% if documents_merge_failed %}
+      <div class="page-notification--failure">
+        <div class="container">
+          <h3>
+            <span class="icon icon--light icon__triangle-exclamation"></span>
+            Failed to merge
+          </h3>
+          <p>Please check the documents and try again</p>
+        </div>
+      </div>
+    {% endif %}
     <h1 class="judgment-component__confirmation-title">I want to merge:</h1>
     <h2 class="judgment-component__confirmation-subtitle">{{ document.body.name }}</h2>
     <h2 class="judgment-component__confirmation-subtitle">With</h2>
@@ -15,7 +26,7 @@
             These documents might not be mergeable due to the following reason(s):
           </h3>
           <ul>
-            {% for key, item in documents_comparison %}
+            {% for key, item in documents_comparison.items %}
               {% if not item.match %}<li>{{ item.label|default:key|capfirst }} does not match</li>{% endif %}
             {% endfor %}
           </ul>
