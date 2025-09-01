@@ -28,6 +28,7 @@ from .views.judgment_hold import (
 )
 from .views.judgment_merge import (
     ConfirmMergeDocumentView,
+    FailedMergeDocumentView,
     MergeDocumentSuccessView,
     MergeDocumentView,
     confirm_merge,
@@ -109,6 +110,11 @@ urlpatterns = [
         "<path:document_uri>/merge/<path:document_uri_to_merge>/confirm",
         ConfirmMergeDocumentView.as_view(),
         name="confirm-merge-document",
+    ),
+    path(
+        "<path:document_uri>/merge/<path:document_uri_to_merge>/failed",
+        FailedMergeDocumentView.as_view(),
+        name="failed-merge-document",
     ),
     path(
         "<path:document_uri>/history",
