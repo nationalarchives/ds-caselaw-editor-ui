@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
+from judgments.utils.aws import invalidate_caches
 from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_404
 
 
@@ -19,6 +20,17 @@ class ConfirmMergeDocumentView(DocumentView):
         context["documents_mergable"] = documents_comparison.match()
         context["documents_comparison"] = documents_comparison
         context["view"] = "merge_document"
+        return context
+
+
+class FailedMergeDocumentView(ConfirmMergeDocumentView):
+    template_name = "judgment/merge-confirm.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["documents_merge_failed"] = True
+
         return context
 
 
@@ -65,11 +77,18 @@ def merge(request):
     document_uri_to_merge = request.POST.get("document_uri_to_merge", None)
     document_to_merge = get_document_by_uri_or_404(document_uri_to_merge)
 
-    # TODO: How do we merge?
-    # document.merge(document_to_merge)
+    if not document.can_merge(document_to_merge):
+        return HttpResponseRedirect(
+            reverse(
+                "failed-merge-document",
+                kwargs={"document_uri": document.uri, "document_uri_to_merge": document_to_merge.uri},
+            ),
+        )
 
-    # invalidate_caches(document.uri)
-    # invalidate_caches(document_to_merge.uri)
+    document.merge(document_to_merge)
+
+    invalidate_caches(document.uri)
+    invalidate_caches(document_to_merge.uri)
     messages.success(request, "Document successfully merged")
     return HttpResponseRedirect(
         reverse(
