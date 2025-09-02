@@ -1,4 +1,4 @@
-@use "includes/tna_colour_overrides";
+@use "@nationalarchives/ds-caselaw-frontend/src/includes/tna_colour_overrides";
 @use "@nationalarchives/frontend/nationalarchives/tools/colour" as *;
 
 $govuk-assets-path: "/static/govuk-assets/";
@@ -8,7 +8,8 @@ $govuk-assets-path: "/static/govuk-assets/";
 @import "govuk-frontend/dist/govuk/index";
 
 // Setup
-@import "includes/variables";
+@import "includes/image_paths";
+
 @import "includes/mixins";
 
 // Core
@@ -23,7 +24,6 @@ $govuk-assets-path: "/static/govuk-assets/";
 // Base
 @import "includes/standard-text-template";
 @import "includes/loading_indicator";
-@import "includes/summary-panels";
 @import "includes/notification_message";
 @import "includes/note";
 @import "includes/login";

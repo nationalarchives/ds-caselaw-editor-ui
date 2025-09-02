@@ -7,7 +7,7 @@
   &--success {
     @include notification;
 
-    background-color: brand-colour("green");
+    background-color: brand-colour("forest");
 
     .container {
       display: flex;
@@ -37,7 +37,7 @@
     @include notification;
 
     color: colour-var("font-dark");
-    background-color: $color-yellow;
+    background-color: colour-var("accent-brand");
 
     a {
       color: colour-var("link");
@@ -49,7 +49,7 @@
   &--success {
     @include notification;
 
-    background-color: brand-colour("green");
+    background-color: brand-colour("forest");
   }
 
   &--info {
@@ -89,7 +89,7 @@
   &--success {
     @include context-notification;
 
-    background-color: brand-colour("green");
+    background-color: brand-colour("forest");
   }
 
   &--failure {
