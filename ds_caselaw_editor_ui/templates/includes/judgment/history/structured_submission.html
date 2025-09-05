@@ -19,14 +19,16 @@
 </div>
 <div id="submission-{{ submission.submission_sequence_number }}"
      {% if not expand %}hidden{% endif %}>
-  <table class="table document-history__event-table">
-    <tr>
-      <th>Change made</th>
-      <th>Changed at</th>
-      <th>Changed by</th>
-      {% for event in submission.events reversed %}
-        {% include "includes/judgment/history/event_line.html" %}
-      {% endfor %}
-    </tr>
-  </table>
+  <div class="table">
+    <table class="document-history__event-table">
+      <tr>
+        <th>Change made</th>
+        <th>Changed at</th>
+        <th>Changed by</th>
+        {% for event in submission.events reversed %}
+          {% include "includes/judgment/history/event_line.html" %}
+        {% endfor %}
+      </tr>
+    </table>
+  </div>
 </div>

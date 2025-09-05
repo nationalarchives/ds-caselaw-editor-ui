@@ -69,17 +69,29 @@
 
   &__container {
     display: flex;
-    gap: $space-4;
+    flex-direction: column;
+    gap: $space-2;
     align-items: center;
     justify-content: space-between;
+
+    @media (min-width: $grid-breakpoint-medium) {
+      flex-direction: row;
+      gap: $space-4;
+    }
   }
 
   &__info,
   &__actions {
     display: flex;
-    gap: $space-4;
+    flex-direction: column;
+    gap: 0;
     align-items: center;
     justify-content: center;
+
+    @media (min-width: $grid-breakpoint-medium) {
+      flex-direction: row;
+      gap: $space-4;
+    }
   }
 
   &__submitter,

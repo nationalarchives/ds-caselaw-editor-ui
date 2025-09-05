@@ -26,3 +26,11 @@
     }
   }
 }
+
+.judgment {
+  overflow: scroll;
+
+  @media (min-width: $grid-breakpoint-medium) {
+    overflow: auto;
+  }
+}

@@ -1,14 +1,22 @@
 .table {
-  border-collapse: collapse;
-  width: 100%;
+  overflow: scroll;
 
-  th,
-  td {
-    padding: $space-2 $space-3;
-    border: 1px solid colour-var("font-base");
+  table {
+    border-collapse: collapse;
+    width: 100%;
+
+    th,
+    td {
+      padding: $space-2 $space-3;
+      border: 1px solid colour-var("font-base");
+    }
+
+    thead {
+      text-align: left;
+    }
   }
 
-  thead {
-    text-align: left;
+  @media (min-width: $grid-breakpoint-medium) {
+    overflow: auto;
   }
 }

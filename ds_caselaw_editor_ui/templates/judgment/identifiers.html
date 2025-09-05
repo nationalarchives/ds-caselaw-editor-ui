@@ -9,50 +9,52 @@
       <h2>Preferred identifier</h2>
       <b>{{ document.identifiers.preferred.schema.name }}: {{ document.identifiers.preferred.value }}</b>
       <h2>All identifiers</h2>
-      <table class="table">
-        <tr>
-          <th>Type</th>
-          <th>Value</th>
-          <th>Public URL</th>
-          <th>Deprecated</th>
-          {% if user|is_developer %}
-            <th>Human readable</th>
-            <th>Score</th>
-          {% endif %}
-        </tr>
-        {% for identifier in document.identifiers.by_score %}
+      <div class="table">
+        <table>
           <tr>
-            <td>
-              {{ identifier.schema.name }}
-              {% if user|is_developer %}
-                <br>
-                <small class="muted"><code>{{ identifier.schema.namespace }}</code></small>
-              {% endif %}
-            </td>
-            <td>
-              <code>{{ identifier.value }}</code>
-              {% if user|is_developer %}
-                <br>
-                <small class="muted"><code>{{ identifier.uuid }}</code></small>
-              {% endif %}
-            </td>
-            <td>
-              {% if document.is_published %}
-                <a href="https://caselaw.nationalarchives.gov.uk/{{ identifier.url_slug }}"
-                   target="_blank"
-                   class="link__new-window"><code>/{{ identifier.url_slug }}</code></a>
-              {% else %}
-                <code>/{{ identifier.url_slug }}</code>
-              {% endif %}
-            </td>
-            <td>{{ identifier.deprecated }}</td>
+            <th>Type</th>
+            <th>Value</th>
+            <th>Public URL</th>
+            <th>Deprecated</th>
             {% if user|is_developer %}
-              <td>{{ identifier.schema.human_readable }}</td>
-              <td>{{ identifier.score }}</td>
+              <th>Human readable</th>
+              <th>Score</th>
             {% endif %}
           </tr>
-        {% endfor %}
-      </table>
+          {% for identifier in document.identifiers.by_score %}
+            <tr>
+              <td>
+                {{ identifier.schema.name }}
+                {% if user|is_developer %}
+                  <br>
+                  <small class="muted"><code>{{ identifier.schema.namespace }}</code></small>
+                {% endif %}
+              </td>
+              <td>
+                <code>{{ identifier.value }}</code>
+                {% if user|is_developer %}
+                  <br>
+                  <small class="muted"><code>{{ identifier.uuid }}</code></small>
+                {% endif %}
+              </td>
+              <td>
+                {% if document.is_published %}
+                  <a href="https://caselaw.nationalarchives.gov.uk/{{ identifier.url_slug }}"
+                     target="_blank"
+                     class="link__new-window"><code>/{{ identifier.url_slug }}</code></a>
+                {% else %}
+                  <code>/{{ identifier.url_slug }}</code>
+                {% endif %}
+              </td>
+              <td>{{ identifier.deprecated }}</td>
+              {% if user|is_developer %}
+                <td>{{ identifier.schema.human_readable }}</td>
+                <td>{{ identifier.score }}</td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
     {% else %}
       <div class="page-notification--info">
         <div class="judgment-toolbar__version">
