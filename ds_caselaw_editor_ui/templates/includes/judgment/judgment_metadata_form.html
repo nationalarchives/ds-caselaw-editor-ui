@@ -49,7 +49,7 @@
           <aside for="metadata_name" class="metadata-component__main-labels">
             TDR ref
           </aside>
-          <p>{{ judgment.consignment_reference }}</p>
+          <p>{% firstof judgment.consignment_reference "&mdash;" %}</p>
         </div>
         <div>
           <aside for="metadata_name" class="metadata-component__main-labels">

@@ -32,8 +32,8 @@
         <span class="judgment-metadata-panel__value">{{ judgment.document_noun|title }}</span>
       </li>
       <li>
-        <span class="judgment-metadata-panel__key">TDR ref</span>
-        <span class="judgment-metadata-panel__value">{{ judgment.consignment_reference }}</span>
+        <span class="judgment-metadata-panel__key">TDR reference</span>
+        <span class="judgment-metadata-panel__value">{% firstof judgment.consignment_reference "&mdash;" %}</span>
       </li>
     </ul>
   </div>
