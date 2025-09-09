@@ -45,17 +45,23 @@
         </div>
       </div>
       <div class="metadata-component__right-column">
-        <div class="metadata-component__tdr">
+        <div>
           <aside for="metadata_name" class="metadata-component__main-labels">
             TDR ref
           </aside>
-          <p>{{ judgment.consignment_reference }}</p>
+          <p>{% firstof judgment.consignment_reference "&mdash;" %}</p>
         </div>
-        <div class="metadata-component__type">
+        <div>
           <aside for="metadata_name" class="metadata-component__main-labels">
             Type
           </aside>
           <p>{{ judgment.document_noun|title }}</p>
+        </div>
+        <div>
+          <aside for="metadata_name" class="metadata-component__main-labels">
+            First pub
+          </aside>
+          <p>{% include "includes/judgment/first_published_datetime_component.html" with document=judgment %}</p>
         </div>
         <div class="metadata-component__actions">
           <input type="hidden" name="judgment_uri" value="{{ document_uri }}" />
