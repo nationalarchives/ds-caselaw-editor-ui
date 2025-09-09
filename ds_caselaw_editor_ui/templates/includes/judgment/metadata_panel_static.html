@@ -35,6 +35,12 @@
         <span class="judgment-metadata-panel__key">TDR reference</span>
         <span class="judgment-metadata-panel__value">{% firstof judgment.consignment_reference "&mdash;" %}</span>
       </li>
+      <li>
+        <span class="judgment-metadata-panel__key">First published</span>
+        <span class="judgment-metadata-panel__value">
+          {% include "includes/judgment/first_published_datetime_component.html" with document=judgment %}
+        </span>
+      </li>
     </ul>
   </div>
 </div>

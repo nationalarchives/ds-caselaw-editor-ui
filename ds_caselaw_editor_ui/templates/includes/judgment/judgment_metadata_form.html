@@ -57,6 +57,12 @@
           </aside>
           <p>{{ judgment.document_noun|title }}</p>
         </div>
+        <div>
+          <aside for="metadata_name" class="metadata-component__main-labels">
+            First pub
+          </aside>
+          <p>{% include "includes/judgment/first_published_datetime_component.html" with document=judgment %}</p>
+        </div>
         <div class="metadata-component__actions">
           <input type="hidden" name="judgment_uri" value="{{ document_uri }}" />
           <input type="submit" value="Save" />
