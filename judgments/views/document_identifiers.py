@@ -4,6 +4,8 @@ from caselawclient.models.identifiers.neutral_citation import NCNValidationExcep
 from crispy_forms_gds.helper import FormHelper
 from crispy_forms_gds.layout import Button, Layout
 from django import forms
+from django.core.exceptions import PermissionDenied
+from django.http import Http404
 from django.urls import reverse
 from django.views.generic import FormView
 
@@ -56,6 +58,93 @@ class AddDocumentIdentifierView(DocumentViewMixin, FormView):
             self.document.identifiers.valid_new_identifier_types(type(self.document)),
         )
         return kwargs
+
+    def form_valid(self, form):
+        identifier_namespace = form.cleaned_data["type"]
+        identifier_value = form.cleaned_data["value"]
+        identifier_deprecated = form.cleaned_data["deprecated"]
+
+        # Get the available identifier types for the document, to check
+        identifier_types = self.document.identifiers.valid_new_identifier_types(type(self.document))
+
+        # Find the correct Identifier class by namespace
+        identifier_type: type[Identifier] | None = next(
+            (t for t in identifier_types if t.schema.namespace == identifier_namespace),
+            None,
+        )
+        if identifier_type is None:
+            form.add_error("type", "Invalid identifier type selected.")
+            return self.form_invalid(form)
+
+        # Check that the identifier itself is valid
+        try:
+            identifier_valid_value = identifier_type.schema.validate_identifier_value(identifier_value)
+        except NCNValidationException as e:
+            form.add_error("value", str(e))
+            return self.form_invalid(form)
+        if identifier_valid_value is False:
+            form.add_error(
+                "value",
+                f'Identifier value "{identifier_value}" is not valid according to the {identifier_type.schema.name} schema.',
+            )
+            return self.form_invalid(form)
+
+        # Create a new identifier instance
+        new_identifier = identifier_type(value=identifier_value, deprecated=identifier_deprecated)
+
+        # Add it to the identifiers collection
+        self.document.identifiers.add(new_identifier)
+
+        # Run identifiers collection validations
+        valid, error_messages = self.document.validate_identifiers()
+        if not valid:
+            for error_message in error_messages:
+                form.add_error(None, error_message)
+            return self.form_invalid(form)
+
+        # Everything checks out - save the identifiers to the database.
+        self.document.save_identifiers()
+
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("document-identifiers", kwargs={"document_uri": self.document.uri})
+
+
+class DeleteIdentifierForm(forms.Form):
+    def __init__(self, *args, type_choices=None, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.layout = Layout(Button.warning("submit", "Delete"))
+
+
+class DeleteDocumentIdentifierView(DocumentViewMixin, FormView):
+    template_name = "judgment/identifier_delete.html"
+    form_class = DeleteIdentifierForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if self.document.has_ever_been_published:
+            msg = f"Document {self.document.uri} has previously been published; identifiers cannot be deleted."
+            raise PermissionDenied(
+                msg,
+            )
+
+        if kwargs["identifier_uuid"] not in self.document.identifiers:
+            msg = 'Identifier "{identifier_uuid}" does not exist in {document_uri}.'.format(
+                identifier_uuid=kwargs["identifier_uuid"],
+                document_uri=self.document.uri,
+            )
+            raise Http404(
+                msg,
+            )
+
+        context["view"] = "document_identifiers"
+        context["identifier"] = self.document.identifiers[kwargs["identifier_uuid"]]
+
+        return context
 
     def form_valid(self, form):
         identifier_namespace = form.cleaned_data["type"]
