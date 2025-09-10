@@ -5,12 +5,16 @@
   <div class="container">
     <h1 class="judgment-component__confirmation-title">Delete identifier for:</h1>
     <h2 class="judgment-component__confirmation-subtitle">{{ document.body.name }}</h2>
-    <p>You're about to delete a <b>{{ identifier.schema.name }}</b> with value <b>{{ identifier.value }}</b>.</p>
+    <p>
+      You're about to delete a <b>{{ identifier.schema.name }}</b> with value <b>{{ identifier.value }}</b>.
+    </p>
     <div class="page-notification--warning">
-        <div class="container">
-          <p><span class="icon icon__triangle-exclamation"></span> You should only delete an identifier if it has never been used to refer to this document. If this identifier has been used but is no longer current, it should be marked as deprecated instead.</p>
-        </div>
+      <div class="container">
+        <p>
+          <span class="icon icon__triangle-exclamation"></span> You should only delete an identifier if it has never been used to publicly refer to this document. If this identifier has been used but is no longer current, it should be marked as deprecated instead.
+        </p>
       </div>
+    </div>
     {% error_summary form %}
     {% crispy form %}
   </div>
