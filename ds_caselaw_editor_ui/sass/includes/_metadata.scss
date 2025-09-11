@@ -10,7 +10,12 @@
 
   form {
     display: flex;
+    flex-direction: column;
     gap: $space-8;
+
+    @media (min-width: $grid-breakpoint-medium) {
+      flex-direction: row;
+    }
   }
 
   &__left-column {
@@ -60,23 +65,31 @@
 
   &__top-left-row {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: $space-4;
+
+    @media (min-width: $grid-breakpoint-medium) {
+      flex-direction: row;
+    }
   }
 
   &__ncn {
-    width: 33.33%;
-
     input {
       width: 100% !important;
+    }
+
+    @media (min-width: $grid-breakpoint-medium) {
+      width: 33.33%;
     }
   }
 
   &__court {
-    width: 33%;
-
     input {
       width: 100% !important;
+    }
+
+    @media (min-width: $grid-breakpoint-medium) {
+      width: 33%;
     }
 
     @media (min-width: $grid-breakpoint-large) {
@@ -85,10 +98,12 @@
   }
 
   &__date {
-    width: 33%;
-
     input {
       width: 100% !important;
+    }
+
+    @media (min-width: $grid-breakpoint-medium) {
+      width: 33%;
     }
 
     @media (min-width: $grid-breakpoint-large) {
@@ -97,12 +112,17 @@
   }
 
   &__actions {
+    display: flex;
     width: 100%;
     height: auto !important;
     margin-top: auto;
 
     input {
       margin: 0;
+    }
+
+    @media (min-width: $grid-breakpoint-medium) {
+      display: block;
     }
   }
 

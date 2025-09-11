@@ -1,9 +1,9 @@
 .judgment-metadata-panel {
   display: flex;
-  flex-direction: row;
-  gap: $space-4;
+  flex-direction: column;
+  gap: $space-2;
 
-  padding: $space-4 $space-2 0;
+  padding: $space-4 0;
   border-top: 1px solid colour-var("input-border");
   border-bottom: 1px solid colour-var("input-border");
 
@@ -12,8 +12,12 @@
 
     li {
       span:nth-child(odd) {
-        width: 55px;
-        text-align: right;
+        min-width: 80px;
+
+        @media (min-width: $grid-breakpoint-medium) {
+          width: 55px;
+          text-align: right;
+        }
       }
     }
   }
@@ -23,8 +27,12 @@
 
     li {
       span:nth-child(odd) {
-        width: 110px;
-        text-align: right;
+        width: 80px;
+
+        @media (min-width: $grid-breakpoint-medium) {
+          width: 110px;
+          text-align: right;
+        }
       }
     }
   }
@@ -37,7 +45,7 @@
 
     width: 100%;
     margin: 0;
-    padding: 0 0 $space-4;
+    padding: 0;
 
     font-size: $typography-sm-text-size;
     line-height: $typography-lg-line-height;
@@ -48,9 +56,19 @@
       gap: $space-4;
       width: 100%;
     }
+
+    @media (min-width: $grid-breakpoint-medium) {
+      padding: 0 0 $space-4;
+    }
   }
 
   &__key {
     font-weight: $typography-bold-font-weight;
+  }
+
+  @media (min-width: $grid-breakpoint-medium) {
+    flex-direction: row;
+    gap: $space-4;
+    padding: $space-4 $space-2 0;
   }
 }

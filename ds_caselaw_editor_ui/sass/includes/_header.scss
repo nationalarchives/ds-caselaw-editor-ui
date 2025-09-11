@@ -1,6 +1,6 @@
 .page-header {
   display: flex;
-  flex-direction: row;
+  flex-direction: column-reverse;
   align-items: center;
 
   padding: 0;
@@ -11,7 +11,7 @@
     position: relative;
     display: block;
     flex-grow: 1;
-    padding: $space-2 $space-8;
+    padding: $space-2;
 
     ol {
       display: inline-block;
@@ -37,6 +37,10 @@
 
     &-right {
       text-align: right;
+    }
+
+    @media (min-width: $grid-breakpoint-medium) {
+      padding: $space-2 $space-8;
     }
   }
 
@@ -79,5 +83,9 @@
     @media (min-width: $grid-breakpoint-medium) {
       text-align: center;
     }
+  }
+
+  @media (min-width: $grid-breakpoint-medium) {
+    flex-direction: row;
   }
 }
