@@ -188,6 +188,7 @@ TEMPLATES = [
     {
         # https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TEMPLATES-BACKEND
         "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "NAME": "django",
         # https://docs.djangoproject.com/en/dev/ref/settings/#dirs
         "DIRS": [str(APPS_DIR / "templates")],
         # https://docs.djangoproject.com/en/dev/ref/settings/#app-dirs
@@ -205,6 +206,18 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "judgments.context_processors.cookie_consent",
                 "judgments.context_processors.environment",
+            ],
+        },
+    },
+    {
+        "BACKEND": "django.template.backends.jinja2.Jinja2",
+        "NAME": "jinja",
+        "DIRS": [str(APPS_DIR / "templates")],
+        "APP_DIRS": False,
+        "OPTIONS": {
+            "environment": "judgments.jinja.environment",
+            "context_processors": [
+                "django.template.context_processors.request",
             ],
         },
     },
