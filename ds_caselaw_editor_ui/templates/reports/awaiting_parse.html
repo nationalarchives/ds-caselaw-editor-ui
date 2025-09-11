@@ -9,19 +9,21 @@
     <p>
       There are <b>{{ documents|length|intcomma }}</b> documents waiting.
     </p>
-    <table class="table">
-      <tr>
-        <th>#</th>
-        <th>Document</th>
-        <th>Parsed with</th>
-        <th>Last sent for parsing</th>
-      </tr>
-      {% for document in documents %}
+    <div class="table">
+      <table>
         <tr>
-          <td>{{ forloop.counter }}</td>
-          {% for cell in document %}<td>{{ cell }}</td>{% endfor %}
+          <th>#</th>
+          <th>Document</th>
+          <th>Parsed with</th>
+          <th>Last sent for parsing</th>
         </tr>
-      {% endfor %}
-    </table>
+        {% for document in documents %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            {% for cell in document %}<td>{{ cell }}</td>{% endfor %}
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
   </div>
 {% endblock content %}

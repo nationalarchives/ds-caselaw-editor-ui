@@ -4,8 +4,12 @@
   &__container {
     @include container;
 
-    padding: $space-8;
+    padding: $space-4;
     text-align: center;
+
+    @media (min-width: $grid-breakpoint-medium) {
+      padding: $space-8;
+    }
   }
 
   &__header {
@@ -42,13 +46,14 @@
   &__search-term-input {
     @include text-field;
 
-    width: 80%;
+    width: 100%;
     min-height: $space-12;
     margin: 0;
-    font-size: $typography-lg-text-size;
+    font-size: $typography-md-text-size;
 
     @media (min-width: $grid-breakpoint-small) {
-      width: 20rem;
+      width: 80%;
+      font-size: $typography-lg-text-size;
     }
 
     @media (min-width: $grid-breakpoint-medium) {
@@ -62,11 +67,16 @@
 
   form {
     display: flex;
+    flex-direction: column;
     gap: $space-4;
     justify-content: center;
 
     max-width: 47rem;
     margin: 0 auto;
+
+    @media (min-width: $grid-breakpoint-small) {
+      flex-direction: row;
+    }
   }
 
   input[type="checkbox"] {
