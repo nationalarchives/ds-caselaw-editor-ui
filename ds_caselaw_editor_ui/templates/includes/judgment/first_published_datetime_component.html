@@ -1,6 +1,7 @@
+{% load document_utils %}
 {% if document.has_ever_been_published %}
   {% if document.first_published_datetime_display %}
-    {{ document.first_published_datetime_display|date:"SHORT_DATETIME_FORMAT" }}
+    {{ document.first_published_datetime_display|display_datetime }}
   {% else %}
     Unknown
   {% endif %}

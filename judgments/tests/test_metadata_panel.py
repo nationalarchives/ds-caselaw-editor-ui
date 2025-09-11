@@ -162,6 +162,6 @@ class TestMetadataPanel(TestCase):
 
         self.assertContains(
             response,
-            '<aside for="metadata_name" class="metadata-component__main-labels">First pub</aside><p>31/08/2025 12:34 p.m.</p>',
+            '<aside for="metadata_name" class="metadata-component__main-labels">First pub</aside><p>31 Aug 2025 12:34</p>',
             html=True,
         )
