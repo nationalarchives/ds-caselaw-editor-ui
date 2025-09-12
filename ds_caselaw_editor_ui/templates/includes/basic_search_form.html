@@ -1,19 +1,39 @@
 <div class="search-component">
   <div class="search-component__container">
-    <h2 class="search-component__header--sr-only">Search by keyword or neutral citation</h2>
     <form action="{% url 'results' %}"
           role="search"
           aria-label="Search by keyword or neutral citation"
           id="analytics-basic-search">
-      <label for="search_term" class="search-component__search-term-label">{# {{ form.search_term.label }} #}</label>
-      <input class="search-component__search-term-input"
-             id="search_term"
-             name="query"
-             type="search"
-             value=""
-             placeholder="Enter a keyword or neutral citation" />
-      {{ form.search_term }}
-      <input type="submit" value="Search" />
+      <h2>Search for documents</h2>
+      <div class="search-component__filters govuk-radios govuk-radios--small">
+        <div class="search-component__filter govuk-radios__item">
+          <input class="govuk-radios__input"
+                 type="radio"
+                 id="search-default"
+                 name="search_filter"
+                 value="default"
+                 {% if search_filter == "default" or not search_filter %}checked{% endif %} />
+          <label class="govuk-label govuk-radios__label" for="search-default">Everywhere</label>
+        </div>
+        <div class="search-component__filter govuk-radios__item">
+          <input class="govuk-radios__input"
+                 type="radio"
+                 id="search-ncn"
+                 name="search_filter"
+                 value="ncn"
+                 {% if search_filter == "ncn" %}checked{% endif %} />
+          <label class="govuk-label govuk-radios__label" for="search-ncn">NCN</label>
+        </div>
+      </div>
+      <div class="search-component__search-input">
+        <input class="search-component__search-term-input"
+               id="search_term"
+               name="query"
+               type="search"
+               value="{{ query|default_if_none:"" }}" />
+        <input type="submit" value="Search" />
+        <a href="">Clear search</a>
+      </div>
     </form>
   </div>
 </div>
