@@ -5,6 +5,7 @@ from judgments.views.delete import DeleteDocumentView, delete
 from judgments.views.enrich import enrich
 
 from .views import reports
+from .views.components import ComponentsView
 from .views.document_downloads import DocumentDownloadsView
 from .views.document_full_text import (
     DocumentReviewHTMLView,
@@ -46,6 +47,12 @@ from .views.unlock import unlock
 urlpatterns = [
     # Home
     path("", index, name="home"),
+    # Components
+    path(
+        "components",
+        ComponentsView.as_view(),
+        name="components",
+    ),
     # Search
     path("results", results, name="results"),
     # redirect to signed asset URLs
