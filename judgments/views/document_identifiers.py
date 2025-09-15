@@ -46,6 +46,13 @@ class AddDocumentIdentifierView(DocumentViewMixin, FormView):
     template_name = "judgment/identifiers_add.html"
     form_class = AddIdentifierForm
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["view"] = "document_identifiers"
+
+        return context
+
     def _identifier_types_to_form_list(self, identifier_types: list[type["Identifier"]]) -> list[tuple[str, str]]:
         """Given a list of identifier types, unpack them into tuples suitable for the form."""
         return [(t.schema.namespace, t.schema.name) for t in identifier_types]
