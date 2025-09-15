@@ -16,6 +16,9 @@
             <th>Value</th>
             <th>Public URL</th>
             <th>Deprecated</th>
+            {% flag "identifier_editing" %}
+              <th>Edit</th>
+            {% endflag %}
             {% if user|is_developer %}
               <th>Human readable</th>
               <th>Score</th>
@@ -47,6 +50,16 @@
                 {% endif %}
               </td>
               <td>{{ identifier.deprecated }}</td>
+              {% flag "identifier_editing" %}
+                <td>
+                  {% if document.has_ever_been_published %}
+                    <a class="button-danger button-small" disabled aria-disabled="true">Delete</a>
+                  {% else %}
+                    <a href="{% url 'document-identifier-delete' document.uri identifier.uuid %}"
+                       class="button-danger button-small">Delete</a>
+                  {% endif %}
+                </td>
+              {% endflag %}
               {% if user|is_developer %}
                 <td>{{ identifier.schema.human_readable }}</td>
                 <td>{{ identifier.score }}</td>
