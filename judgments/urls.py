@@ -15,7 +15,7 @@ from .views.document_full_text import (
     xml_view_redirect,
 )
 from .views.document_history import DocumentHistoryView
-from .views.document_identifiers import AddDocumentIdentifierView, DocumentIdentifiersView
+from .views.document_identifiers import AddDocumentIdentifierView, DeleteDocumentIdentifierView, DocumentIdentifiersView
 from .views.document_reparse import reparse
 from .views.index import index
 from .views.judgment_edit import EditJudgmentView, edit_view_redirect
@@ -94,7 +94,6 @@ urlpatterns = [
     # Style guide
     path("style-guide", StyleGuide.as_view(), name="style_guide"),
     # Different views on judgments
-    path("<path:document_uri>/delete", DeleteDocumentView.as_view(), name="delete-document"),
     path("<path:document_uri>/associated-documents", AssociatedDocumentsView.as_view(), name="associated-documents"),
     path("<path:document_uri>/edit", EditJudgmentView.as_view(), name="edit-document"),
     path(
@@ -111,6 +110,11 @@ urlpatterns = [
         "<path:document_uri>/identifiers/add",
         AddDocumentIdentifierView.as_view(),
         name="document-identifiers-add",
+    ),
+    path(
+        "<path:document_uri>/identifiers/<path:identifier_uuid>/delete",
+        DeleteDocumentIdentifierView.as_view(),
+        name="document-identifier-delete",
     ),
     path(
         "<path:document_uri>/publish",
@@ -151,6 +155,11 @@ urlpatterns = [
         "<path:document_uri>/unheld",
         UnholdDocumentSuccessView.as_view(),
         name="unhold-document-success",
+    ),
+    path(
+        "<path:document_uri>/delete",
+        DeleteDocumentView.as_view(),
+        name="delete-document",
     ),
     path(
         "<path:document_uri>/pdf",
