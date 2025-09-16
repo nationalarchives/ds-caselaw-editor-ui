@@ -9,6 +9,11 @@
       <h2>Preferred identifier</h2>
       <b>{{ document.identifiers.preferred.schema.name }}: {{ document.identifiers.preferred.value }}</b>
       <h2>All identifiers</h2>
+      {% if document.has_ever_been_published %}
+        <div class="page-notification--info">
+          <span class="icon icon__circle-info"></span> You are not able to delete identifiers for this document because it has been published.
+        </div>
+      {% endif %}
       <div class="table">
         <table>
           <tr>
