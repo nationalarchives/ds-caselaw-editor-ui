@@ -5,6 +5,11 @@
   <div class="container">
     <h1 class="judgment-component__confirmation-title">Add identifier for:</h1>
     <h2 class="judgment-component__confirmation-subtitle">{{ document.body.name }}</h2>
+    {% if document.has_ever_been_published %}
+      <div class="page-notification--warning">
+        <span class="icon icon__triangle-exclamation"></span> You cannot delete new identifiers once added because this document has been published.
+      </div>
+    {% endif %}
     {% error_summary form %}
     {% crispy form %}
   </div>
