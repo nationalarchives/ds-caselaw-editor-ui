@@ -45,16 +45,18 @@ def get_search_parameters(
     only_unpublished=False,
 ):
     query = params.get("query")
+    search_filter = params.get("search_filter")
     page = int(params.get("page", default_page))
     return {
         "query": query,
+        "search_filter": search_filter,
         "page": page,
         "order": RESULTS_ORDER,
         "only_unpublished": only_unpublished,
     }
 
 
-def get_search_results(parameters: dict[str, Any]) -> dict[str, Any]:
+def get_default_search_results(parameters: dict[str, Any]) -> dict[str, Any]:
     search_parameters = SearchParameters(
         query=parameters["query"],
         order=RESULTS_ORDER,
@@ -62,14 +64,49 @@ def get_search_results(parameters: dict[str, Any]) -> dict[str, Any]:
         show_unpublished=True,
         page=parameters["page"],
     )
+
     search_response = search_and_parse_response(api_client, search_parameters)
+
     return {
-        "query": parameters,
+        "query": parameters["query"],
+        "search_filter": parameters["search_filter"],
         "total": search_response.total,
         "judgments": search_response.results,
         "order": RESULTS_ORDER,
         "paginator": paginator(parameters["page"], search_response.total),
     }
+
+
+def get_ncn_results(parameters: dict[str, Any]) -> dict[str, Any]:
+    search_parameters = SearchParameters(
+        neutral_citation=parameters["query"],
+        order=RESULTS_ORDER,
+        only_unpublished=parameters["only_unpublished"],
+        show_unpublished=True,
+        page=parameters["page"],
+    )
+
+    search_response = search_and_parse_response(api_client, search_parameters)
+
+    return {
+        "query": parameters["query"],
+        "search_filter": parameters["search_filter"],
+        "total": search_response.total,
+        "judgments": search_response.results,
+        "order": RESULTS_ORDER,
+        "paginator": paginator(parameters["page"], search_response.total),
+    }
+
+
+def get_search_results(parameters: dict[str, Any]) -> dict[str, Any]:
+    search_filter = parameters["search_filter"]
+
+    match search_filter:
+        case "ncn":
+            return get_ncn_results(parameters)
+
+        case _:
+            return get_default_search_results(parameters)
 
 
 def get_document_by_uri_or_404(uri: str) -> Document:
