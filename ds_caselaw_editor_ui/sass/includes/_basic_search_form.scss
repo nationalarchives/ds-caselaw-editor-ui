@@ -42,21 +42,35 @@
 
   &__filters {
     display: flex;
-    gap: $space-8;
+    flex-direction: column;
+
+    @media (min-width: $grid-breakpoint-medium) {
+      flex-direction: row;
+      gap: $space-8;
+    }
   }
 
   &__search-input {
     display: flex;
+    flex-direction: column;
     gap: $space-4;
-    align-items: center;
 
     a {
-      margin-left: $space-4;
       font-weight: $typography-bold-font-weight;
+      text-align: center;
       white-space: nowrap;
 
       &:visited {
         color: colour-var("link");
+      }
+    }
+
+    @media (min-width: $grid-breakpoint-medium) {
+      flex-direction: row;
+      align-items: center;
+
+      a {
+        margin-left: $space-4;
       }
     }
   }
