@@ -2,7 +2,7 @@ from caselawclient.Client import MarklogicAPIError
 from django.http import Http404, HttpResponse
 from django.template import loader
 
-from judgments.utils.view_helpers import get_search_parameters, get_search_results
+from judgments.utils.view_helpers import get_context_with_search_filters, get_search_parameters, get_search_results
 
 
 def results(request):
@@ -13,6 +13,9 @@ def results(request):
             "page_title": "Search results",
             "query_string": f"query={params['query']}",
         }
+
+        context = get_context_with_search_filters(context)
+
     except MarklogicAPIError as e:
         msg = f"Search error, {e}"
         raise Http404(msg) from e  # TODO: This should be something else!
