@@ -6,24 +6,17 @@
           id="analytics-basic-search">
       <h2>Search for documents</h2>
       <div class="search-component__filters govuk-radios govuk-radios--small">
-        <div class="search-component__filter govuk-radios__item">
-          <input class="govuk-radios__input"
-                 type="radio"
-                 id="search-default"
-                 name="search_filter"
-                 value="default"
-                 {% if search_filter == "default" or not search_filter %}checked{% endif %} />
-          <label class="govuk-label govuk-radios__label" for="search-default">Everywhere</label>
-        </div>
-        <div class="search-component__filter govuk-radios__item">
-          <input class="govuk-radios__input"
-                 type="radio"
-                 id="search-ncn"
-                 name="search_filter"
-                 value="ncn"
-                 {% if search_filter == "ncn" %}checked{% endif %} />
-          <label class="govuk-label govuk-radios__label" for="search-ncn">NCN</label>
-        </div>
+        {% for label, value in search_filters %}
+          <div class="search-component__filter govuk-radios__item">
+            <input class="govuk-radios__input"
+                   type="radio"
+                   id="search-{{ value }}"
+                   name="search_filter"
+                   value="{{ value }}"
+                   {% if search_filter == value %}checked{% endif %} />
+            <label class="govuk-label govuk-radios__label" for="search-{{ value }}">{{ label }}</label>
+          </div>
+        {% endfor %}
       </div>
       <div class="search-component__search-input">
         <input class="search-component__search-term-input"
