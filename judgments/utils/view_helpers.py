@@ -17,6 +17,13 @@ from judgments.utils.paginator import paginator
 env = environ.Env()
 RESULTS_ORDER = "-date"
 
+SEARCH_FILTERS = [
+    ("Everywhere", "default"),
+    ("NCN", "neutral_citation"),
+    ("TDR ref", "consignment_number"),
+    ("Case name", "document_name"),
+]
+
 
 def user_is_superuser(user):
     """
@@ -56,57 +63,66 @@ def get_search_parameters(
     }
 
 
-def get_default_search_results(parameters: dict[str, Any]) -> dict[str, Any]:
-    search_parameters = SearchParameters(
-        query=parameters["query"],
-        order=RESULTS_ORDER,
-        only_unpublished=parameters["only_unpublished"],
-        show_unpublished=True,
-        page=parameters["page"],
-    )
-
-    search_response = search_and_parse_response(api_client, search_parameters)
-
-    return {
-        "query": parameters["query"],
-        "search_filter": parameters["search_filter"],
-        "total": search_response.total,
-        "judgments": search_response.results,
-        "order": RESULTS_ORDER,
-        "paginator": paginator(parameters["page"], search_response.total),
-    }
-
-
-def get_ncn_results(parameters: dict[str, Any]) -> dict[str, Any]:
-    search_parameters = SearchParameters(
-        neutral_citation=parameters["query"],
-        order=RESULTS_ORDER,
-        only_unpublished=parameters["only_unpublished"],
-        show_unpublished=True,
-        page=parameters["page"],
-    )
-
-    search_response = search_and_parse_response(api_client, search_parameters)
-
-    return {
-        "query": parameters["query"],
-        "search_filter": parameters["search_filter"],
-        "total": search_response.total,
-        "judgments": search_response.results,
-        "order": RESULTS_ORDER,
-        "paginator": paginator(parameters["page"], search_response.total),
-    }
-
-
-def get_search_results(parameters: dict[str, Any]) -> dict[str, Any]:
+def get_search_parameters_by_filter(parameters: dict[str, Any]) -> SearchParameters:
     search_filter = parameters["search_filter"]
 
     match search_filter:
-        case "ncn":
-            return get_ncn_results(parameters)
-
+        case "neutral_citation":
+            return SearchParameters(
+                neutral_citation=parameters["query"],
+                order=RESULTS_ORDER,
+                only_unpublished=parameters["only_unpublished"],
+                show_unpublished=True,
+                page=parameters["page"],
+            )
+        case "consignment_number":
+            return SearchParameters(
+                consignment_number=parameters["query"],
+                order=RESULTS_ORDER,
+                only_unpublished=parameters["only_unpublished"],
+                show_unpublished=True,
+                page=parameters["page"],
+            )
+        case "document_name":
+            return SearchParameters(
+                document_name=parameters["query"],
+                order=RESULTS_ORDER,
+                only_unpublished=parameters["only_unpublished"],
+                show_unpublished=True,
+                page=parameters["page"],
+            )
         case _:
-            return get_default_search_results(parameters)
+            return SearchParameters(
+                query=parameters["query"],
+                order=RESULTS_ORDER,
+                only_unpublished=parameters["only_unpublished"],
+                show_unpublished=True,
+                page=parameters["page"],
+            )
+
+
+def get_search_results(parameters: dict[str, Any]) -> dict[str, Any]:
+    search_parameters = get_search_parameters_by_filter(parameters)
+
+    search_response = search_and_parse_response(api_client, search_parameters)
+
+    return {
+        "query": parameters["query"],
+        "search_filter": parameters["search_filter"],
+        "total": search_response.total,
+        "judgments": search_response.results,
+        "order": RESULTS_ORDER,
+        "paginator": paginator(parameters["page"], search_response.total),
+    }
+
+
+def get_context_with_search_filters(context):
+    context["search_filters"] = SEARCH_FILTERS
+
+    if not context["search_filter"]:
+        context["search_filter"] = "default"
+
+    return context
 
 
 def get_document_by_uri_or_404(uri: str) -> Document:
