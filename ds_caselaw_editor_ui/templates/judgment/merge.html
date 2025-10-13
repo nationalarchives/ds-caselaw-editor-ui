@@ -3,7 +3,7 @@
 {% block content %}
   {% include "includes/judgment/metadata_panel_static.html" with judgment=document %}
   <div class="container">
-    <h1 class="judgment-component__confirmation-title">Merging {{ document.body.name }}:</h1>
+    {% include "includes/judgment/merge_header.html" with source_document=document %}
     {% if not document.check_is_safe_as_merge_source.success %}
       <div class="page-notification--warning">
         <h3>

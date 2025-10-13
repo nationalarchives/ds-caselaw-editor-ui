@@ -3,6 +3,7 @@
 {% block content %}
   {% include "includes/judgment/metadata_panel_static.html" with judgment=document %}
   <div class="container">
+    {% include "includes/judgment/merge_header.html" with source_document=document target_document=document_to_merge %}
     {% if documents_merge_failed %}
       <div class="page-notification--failure">
         <div class="container">
@@ -14,10 +15,6 @@
         </div>
       </div>
     {% endif %}
-    <h1 class="judgment-component__confirmation-title">Comparing</h1>
-    <h2 class="judgment-component__confirmation-subtitle">{{ document.body.name }}</h2>
-    <h2 class="judgment-component__confirmation-subtitle">With</h2>
-    <h2 class="judgment-component__confirmation-subtitle">{{ document_to_merge.body.name }}</h2>
     {% if not documents_comparison.match %}
       <div class="page-notification--warning">
         <div class="container">
