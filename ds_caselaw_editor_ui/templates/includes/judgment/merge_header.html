@@ -1,0 +1,15 @@
+<h1 class="judgment-component__confirmation-title">Merging</h1>
+<h2 class="judgment-component__confirmation-subtitle">
+  {{ source_document.body.name }}
+  <br>
+  <small class="muted">({{ source_document.uri }})</small>
+</h2>
+{% if target_document %}
+  <h2 class="judgment-component__confirmation-subtitle">into</h2>
+  <h2 class="judgment-component__confirmation-subtitle">
+    {{ target_document.body.name }}
+    <br>
+    <small class="muted">({{ target_document.uri }})</small>
+  </h2>
+{% endif %}
+<hr>
