@@ -14,26 +14,45 @@
         </div>
       </div>
     {% endif %}
-    <h1 class="judgment-component__confirmation-title">I want to merge:</h1>
+    <h1 class="judgment-component__confirmation-title">Comparing</h1>
     <h2 class="judgment-component__confirmation-subtitle">{{ document.body.name }}</h2>
     <h2 class="judgment-component__confirmation-subtitle">With</h2>
     <h2 class="judgment-component__confirmation-subtitle">{{ document_to_merge.body.name }}</h2>
-    {% if not documents_mergable %}
+    {% if not documents_comparison.match %}
       <div class="page-notification--warning">
         <div class="container">
           <h3>
             <span class="icon icon__triangle-exclamation"></span>
-            These documents might not be mergeable due to the following reason(s):
+            This document's metadata does not match the target document.
           </h3>
-          <ul>
-            {% for key, item in documents_comparison.items %}
-              {% if not item.match %}<li>{{ item.label|default:key|capfirst }} does not match</li>{% endif %}
-            {% endfor %}
-          </ul>
+          <p>You should check that you will not lose information during this merge.</p>
         </div>
       </div>
-      <p>Are you sure you still want to merge this document?</p>
     {% endif %}
+    <div class="table">
+      <table>
+        <tr>
+          <th>Attribute</th>
+          <th>This document</th>
+          <th>Target document</th>
+          <th>Match</th>
+        </tr>
+        {% for _, item in documents_comparison.items %}
+          <tr class="document-comparison-table__row__{% if item.match %}match{% else %}diff{% endif %}">
+            <th scope="row">{{ item.label|capfirst }}</th>
+            <td>{{ item.this_value }}</td>
+            <td>{{ item.that_value }}</td>
+            <td>
+              {% if item.match %}
+                ✅
+              {% else %}
+                ❌
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
     <form action="{% url 'merge' %}" method="post">
       {% csrf_token %}
       <input type="hidden" name="document_uri" value="{{ document.uri }}" />
@@ -41,8 +60,8 @@
              name="document_uri_to_merge"
              value="{{ document_to_merge.uri }}" />
       <div class="judgment-component__button-actions">
-        <input class="button-cta" type="submit" value="Merge" />
-        <span class="judgment-component__back-button"><a href="{% url 'full-text-html' document.uri %}">Go back to review</a> </span>
+        <input class="button-cta" type="submit" value="Continue" />
+        <span class="judgment-component__back-button"><a href="{% url 'merge-document' document.uri %}">Go back to select merge target</a> </span>
       </div>
     </form>
   </div>

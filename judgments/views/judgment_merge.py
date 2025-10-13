@@ -17,7 +17,6 @@ class ConfirmMergeDocumentView(DocumentView):
         documents_comparison = self.document.compare_to(document_to_merge)
 
         context["document_to_merge"] = document_to_merge
-        context["documents_mergable"] = documents_comparison.match()
         context["documents_comparison"] = documents_comparison
         context["view"] = "merge_document"
         return context
