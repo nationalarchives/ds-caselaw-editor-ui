@@ -28,11 +28,11 @@ from .views.judgment_hold import (
     unhold,
 )
 from .views.judgment_merge import (
-    ConfirmMergeDocumentView,
     FailedMergeDocumentView,
+    MergeDocumentCheckMetadataView,
+    MergeDocumentCheckSummaryView,
+    MergeDocumentSelectTargetView,
     MergeDocumentSuccessView,
-    MergeDocumentView,
-    confirm_merge,
     merge,
 )
 from .views.judgment_publish import (
@@ -69,7 +69,6 @@ urlpatterns = [
     path("publish", publish, name="publish"),
     path("unpublish", unpublish, name="unpublish"),
     path("merge", merge, name="merge"),
-    path("confirm-merge", confirm_merge, name="confirm-merge"),
     path("hold", hold, name="hold"),
     path("unhold", unhold, name="unhold"),
     path("delete", delete, name="delete"),
@@ -106,16 +105,21 @@ urlpatterns = [
     # Different views on judgments
     path("<path:document_uri>/associated-documents", AssociatedDocumentsView.as_view(), name="associated-documents"),
     path("<path:document_uri>/edit", EditJudgmentView.as_view(), name="edit-document"),
-    path("<path:document_uri>/merge", MergeDocumentView.as_view(), name="merge-document"),
+    path("<path:document_uri>/merge", MergeDocumentSelectTargetView.as_view(), name="merge-document"),
+    path(
+        "<path:document_uri>/merge/<path:document_uri_to_merge>/check-metadata",
+        MergeDocumentCheckMetadataView.as_view(),
+        name="merge-document-check-metadata",
+    ),
+    path(
+        "<path:document_uri>/merge/<path:document_uri_to_merge>/summary",
+        MergeDocumentCheckSummaryView.as_view(),
+        name="merge-document-check-summary",
+    ),
     path(
         "<path:document_uri>/merge/<path:document_uri_to_merge>/merged",
         MergeDocumentSuccessView.as_view(),
         name="merge-document-success",
-    ),
-    path(
-        "<path:document_uri>/merge/<path:document_uri_to_merge>/confirm",
-        ConfirmMergeDocumentView.as_view(),
-        name="confirm-merge-document",
     ),
     path(
         "<path:document_uri>/merge/<path:document_uri_to_merge>/failed",

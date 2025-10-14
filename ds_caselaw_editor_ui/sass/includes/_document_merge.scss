@@ -3,3 +3,28 @@
     background-color: brand-colour("pastel-pink");
   }
 }
+
+.merge-stages {
+  display: flex;
+  gap: $space-1;
+  padding: 0;
+  list-style-type: none;
+
+  li {
+    display: block;
+    flex: 1 1 0;
+
+    padding: $space-2 $space-4;
+    border-bottom: 5px solid colour-var("keyline");
+
+    text-align: center;
+
+    &:has(~ .current) {
+      border-color: brand-colour("green");
+    }
+  }
+}
+
+li.current {
+  border-color: brand-colour("blue");
+}

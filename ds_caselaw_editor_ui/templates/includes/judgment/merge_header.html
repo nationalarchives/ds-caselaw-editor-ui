@@ -12,4 +12,9 @@
     <small class="muted">({{ target_document.uri }})</small>
   </h2>
 {% endif %}
-<hr>
+<ol class="merge-stages mb-2">
+  <li {% if stage == "target" %}class="current"{% endif %}>Select merge target</li>
+  <li {% if stage == "metadata" %}class="current"{% endif %}>Check metadata</li>
+  <li {% if stage == "summary" %}class="current"{% endif %}>Merge summary</li>
+  <li {% if stage == "complete" %}class="current"{% endif %}>Complete</li>
+</ol>
