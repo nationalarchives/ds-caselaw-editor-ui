@@ -13,6 +13,17 @@
       </b>
     </p>
     <p>{{ event.data.message }}</p>
+    {% if event.data.payload.tre_raw_metadata.parameters.TDR|get_dict_key_with_hyphen:"Judgment-Update" == "true" %}
+      <p>
+        <b>This submission was marked as an update:</b>
+        <br>
+        Type: {{ event.data.payload.tre_raw_metadata.parameters.TDR|get_dict_key_with_hyphen:"Judgment-Update-Type" }}
+        {% if event.data.payload.tre_raw_metadata.parameters.TDR|get_dict_key_with_hyphen:"Judgment-Update-Details" %}
+          <br>
+          {{ event.data.payload.tre_raw_metadata.parameters.TDR|get_dict_key_with_hyphen:"Judgment-Update-Details" }}
+        {% endif %}
+      </p>
+    {% endif %}
     <p>
       <small><a href="{% url 'full-text-html' document_uri %}?version_uri={{ event.document.uri }}">View this version</a></small>
     </p>
