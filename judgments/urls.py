@@ -43,6 +43,7 @@ from .views.style_guide import (
     StyleGuide,
 )
 from .views.unlock import unlock
+from .views.upload import UploadDocumentSuccessView, UploadDocumentView, upload
 
 urlpatterns = [
     # Home
@@ -58,6 +59,7 @@ urlpatterns = [
     # redirect to signed asset URLs
     path("signed-asset/<path:key>", redirect_to_signed_asset, name="signed-asset"),
     # Judgment verbs
+    path("upload", upload, name="upload"),
     path("publish", publish, name="publish"),
     path("unpublish", unpublish, name="unpublish"),
     path("hold", hold, name="hold"),
@@ -66,6 +68,7 @@ urlpatterns = [
     path("enrich", enrich, name="enrich"),
     path("reparse", reparse, name="reparse"),
     path("unlock", unlock, name="unlock"),
+    path("upload", upload, name="upload"),
     # Redirects for legacy judgment URIs
     path("edit", edit_view_redirect),
     path("detail", html_view_redirect),
@@ -170,6 +173,16 @@ urlpatterns = [
         "<path:document_uri>/unheld",
         UnholdDocumentSuccessView.as_view(),
         name="unhold-document-success",
+    ),
+    path(
+        "<path:document_uri>/upload",
+        UploadDocumentView.as_view(),
+        name="document-upload",
+    ),
+    path(
+        "<path:document_uri>/uploaded",
+        UploadDocumentSuccessView.as_view(),
+        name="upload-document-success",
     ),
     path(
         "<path:document_uri>/delete",
