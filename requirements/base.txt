@@ -20,13 +20,13 @@ ds-caselaw-marklogic-api-client~=41.1.2
 ds-caselaw-utils~=2.9.0
 rollbar
 django-stronghold==0.4.0
-boto3~=1.40.0
+boto3~=1.41.0
 fido2~=2.0.0
 qrcode~=8.2
 crispy-forms-gds==2.0.1
 Jinja2>=3.0
 
 # Type stubs
-mypy-boto3-s3==1.40.61
-mypy-boto3-sns==1.40.57
+mypy-boto3-s3==1.41.0
+mypy-boto3-sns==1.41.0
 types-pytz==2025.2.0.20251108
