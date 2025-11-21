@@ -42,6 +42,15 @@ def get_publishing_navigation_item(view, document):
     }
 
 
+def get_upload_navigation_item(view, document):
+    return {
+        "id": "upload",
+        "selected": view == "document_upload",
+        "label": "Upload",
+        "url": get_document_url(view="document-upload", document=document),
+    }
+
+
 def get_download_navigation_item(view, document):
     return {
         "id": "downloads",
@@ -102,6 +111,7 @@ def get_navigation_items(context):
         get_identifiers_navigation_item(view, document),
         get_history_navigation_item(view, document),
         get_download_navigation_item(view, document),
+        get_upload_navigation_item(view=view, document=document),
     ]
 
     filtered_navigation = [item for item in base_navigation if item is not None]
