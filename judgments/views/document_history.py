@@ -3,8 +3,8 @@ from datetime import datetime
 from typing import Any, Literal, NotRequired, TypedDict
 from uuid import uuid4
 
-from caselawclient.client_helpers import VersionType
 from caselawclient.models.documents import Document
+from caselawclient.models.documents.versions import VersionType
 
 from judgments.utils.view_helpers import DocumentView
 

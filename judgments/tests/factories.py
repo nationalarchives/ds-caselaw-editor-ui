@@ -3,9 +3,9 @@ from typing import Any, TypeAlias
 from unittest.mock import Mock
 
 import factory
-from caselawclient.client_helpers import VersionAnnotation, VersionType
 from caselawclient.factories import DocumentFactory
 from caselawclient.models.documents import Document, DocumentURIString
+from caselawclient.models.documents.versions import VersionAnnotation, VersionType
 from caselawclient.models.identifiers import Identifier
 from caselawclient.responses.search_result import SearchResult, SearchResultMetadata
 from django.contrib.auth import get_user_model
