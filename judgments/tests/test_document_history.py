@@ -2,9 +2,9 @@ import json
 from datetime import datetime
 from unittest.mock import patch
 
-from caselawclient.client_helpers import VersionAnnotation, VersionType
 from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
 from caselawclient.models.documents import DocumentURIString
+from caselawclient.models.documents.versions import VersionAnnotation, VersionType
 from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import Group, User
 from django.test import TestCase
