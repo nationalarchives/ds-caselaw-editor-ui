@@ -2,20 +2,20 @@
 {% load i18n humanize %}
 {% block content %}
   <div class="standard-text-template">
-    <h1>Documents awaiting parsing</h1>
+    <h1>Documents awaiting reparsing</h1>
     <p>
       These documents have not yet been parsed with the latest version of the parser, version <b>{{ target_parser_version }}</b>, and have not recently had an parsing attempt.
     </p>
     <p>
-      There are <b>{{ documents|length|intcomma }}</b> documents waiting.
+      There are <b>{{ total|intcomma }}</b> documents waiting to be reparsed. Here are the next {{ report_limit|intcomma }} in the queue.
     </p>
     <div class="table">
       <table>
         <tr>
           <th>#</th>
           <th>Document</th>
-          <th>Parsed with</th>
-          <th>Last sent for parsing</th>
+          <th>Parsed with version</th>
+          <th>Minutes since last parse attempt</th>
         </tr>
         {% for document in documents %}
           <tr>

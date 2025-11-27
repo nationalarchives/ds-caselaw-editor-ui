@@ -30,7 +30,7 @@ class Command(BaseCommand):
         target_parser_version = api_client.get_highest_parser_version()
 
         document_details_to_parse = get_rows_from_result(
-            api_client.get_pending_parse_for_version(
+            api_client.get_documents_pending_parse_for_version(
                 target_version=target_parser_version,
             ),
         )
