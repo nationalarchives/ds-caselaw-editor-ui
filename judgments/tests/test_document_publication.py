@@ -12,9 +12,17 @@ class TestJudgmentPublish(TestCase):
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
-    def test_document_publish_view(self, document_type, document_exists, mock_judgment):
+    @patch("caselawclient.models.documents.are_unpublished_assets_clean")
+    def test_document_publish_view(
+        self,
+        mock_are_unpublished_assets_clean,
+        document_type,
+        document_exists,
+        mock_judgment,
+    ):
         document_type.return_value = Judgment
         document_exists.return_value = None
+        mock_are_unpublished_assets_clean.return_value = True
 
         judgment = JudgmentFactory.build(
             uri=DocumentURIString("pubtest/4321/123"),
