@@ -3,12 +3,16 @@
 {% block content %}
   <div class="standard-text-template">
     <h1>Reports</h1>
+    <h2>Reparsing</h2>
     <ul>
       <li>
-        <a href="{% url 'report_awaiting_parse' %}">Awaiting reparsing</a>
+        <a href="{% url 'report_awaiting_parse' %}">List of documents waiting for re-parsing</a>
       </li>
+    </ul>
+    <h2>Enrichment</h2>
+    <ul>
       <li>
-        <a href="{% url 'report_awaiting_enrichment' %}">Awaiting enrichment</a>
+        <a href="{% url 'report_awaiting_enrichment' %}">List of documents waiting for enrichment</a>
       </li>
     </ul>
   </div>
