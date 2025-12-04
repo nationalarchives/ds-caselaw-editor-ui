@@ -32,13 +32,12 @@ class Command(BaseCommand):
         document_details_to_parse = get_rows_from_result(
             api_client.get_documents_pending_parse_for_version(
                 target_version=target_parser_version,
+                maximum_records=MAX_DOCUMENTS_TO_TRY,
             ),
         )
 
         counter = 0
-        # Limit the number of documents so that when we run this job again
-        # this one should have finished, no matter what.
-        for document_details in document_details_to_parse[:MAX_DOCUMENTS_TO_TRY]:
+        for document_details in document_details_to_parse:
             document_uri = document_details[0]
 
             document = api_client.get_document_by_uri(document_uri.replace(".xml", ""))
