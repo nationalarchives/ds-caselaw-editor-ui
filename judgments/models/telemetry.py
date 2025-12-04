@@ -16,6 +16,7 @@ class BulkReparseRunLog(models.Model):
     class Meta:
         verbose_name = "Bulk Reparse Run Log"
         verbose_name_plural = "Bulk Reparse Run Logs"
+        ordering = ["-start_time"]
 
     def __str__(self):
         return f"Bulk Reparse Run - {self.start_time}"
