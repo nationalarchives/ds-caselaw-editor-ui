@@ -1,7 +1,9 @@
 from typing import Any
 
 from django.views.generic import TemplateView
+from django.views.generic.list import ListView
 
+from judgments.models import BulkReparseRunLog
 from judgments.utils import api_client
 
 
@@ -52,6 +54,13 @@ class AwaitingParse(TemplateView):
         )
 
         return context
+
+
+class BulkReparseRunLogListView(ListView):
+    model = BulkReparseRunLog
+    paginate_by = 50
+
+    template_name = "reports/bulk_reparse_run_log_list.html"
 
 
 class AwaitingEnrichment(TemplateView):

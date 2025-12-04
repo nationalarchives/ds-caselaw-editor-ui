@@ -80,6 +80,11 @@ urlpatterns = [
         name="report_awaiting_parse",
     ),
     path(
+        "reports/bulk-reparse-run-logs",
+        reports.BulkReparseRunLogListView.as_view(),
+        name="report_bulk_reparse_run_logs",
+    ),
+    path(
         "reports/awaiting-enrichment",
         reports.AwaitingEnrichment.as_view(),
         name="report_awaiting_enrichment",

@@ -1,0 +1,48 @@
+{% extends "layouts/base.html" %}
+{% load i18n humanize %}
+{% block content %}
+  <div class="standard-text-template">
+    <h1>Bulk reparse run logs</h1>
+    {% if object_list %}
+      <div class="table">
+        <table>
+          <tr>
+            <th>Start time</th>
+            <th>End time</th>
+            <th>Target version</th>
+            <th>Documents in queue</th>
+            <th>Selected</th>
+            <th>Attempted</th>
+            <th>Skipped</th>
+            <th>Failed</th>
+          </tr>
+          {% for run in object_list %}
+            <tr>
+              <td>{{ run.start_time }}</td>
+              <td>{{ run.end_time }}</td>
+              <td>{{ run.target_parser_version }}</td>
+              <td>{{ run.documents_in_queue|intcomma }}</td>
+              <td>{{ run.documents_selected|intcomma }}</td>
+              <td>{{ run.documents_attempted|intcomma }}</td>
+              <td>{{ run.documents_skipped|intcomma }}</td>
+              <td>{{ run.documents_failed|intcomma }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    {% else %}
+      <p>No runs have been logged.</p>
+    {% endif %}
+    <p>
+      {% if page_obj.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+      {% endif %}
+      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+      {% endif %}
+    </p>
+  </div>
+{% endblock content %}
