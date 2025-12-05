@@ -39,6 +39,7 @@ from .views.labs import Labs
 from .views.results import results
 from .views.signed_asset import redirect_to_signed_asset
 from .views.stats import Stats, stream_combined_stats_table_as_csv
+from .views.stub import CreateStubView, create_stub
 from .views.style_guide import (
     StyleGuide,
 )
@@ -66,6 +67,7 @@ urlpatterns = [
     path("enrich", enrich, name="enrich"),
     path("reparse", reparse, name="reparse"),
     path("unlock", unlock, name="unlock"),
+    path("create_stub", create_stub, name="stub"),
     # Redirects for legacy judgment URIs
     path("edit", edit_view_redirect),
     path("detail", html_view_redirect),
@@ -185,6 +187,11 @@ urlpatterns = [
         "<path:document_uri>/downloads",
         DocumentDownloadsView.as_view(),
         name="document-downloads",
+    ),
+    path(
+        "stub",
+        CreateStubView.as_view(),
+        name="create-stub-document",
     ),
     path("<path:document_uri>/xml", xml_view, name="full-text-xml"),
     # This 'bare document' URL must always go last
