@@ -1,0 +1,17 @@
+{% extends "layouts/base.html" %}
+{% load waffle_tags %}
+{% block content %}
+  {% load i18n %}
+  <div class="container">
+    <h1 class="judgment-component__confirmation-title">I want to create a stub:</h1>
+    <form action="{% url 'stub' %}" method="post">
+      {% csrf_token %}
+      <div class="judgment-component__actions">
+        <div class="judgment-component__button-actions">
+          {{ form.as_p }}
+          <input class="button" type="submit" value="Stub document" />
+        </div>
+      </div>
+    </form>
+  </div>
+{% endblock content %}
