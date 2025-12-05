@@ -156,11 +156,12 @@ def type(c):  # noqa: A001
     )
 
 
-@task
-def test(c):
+@task(optional=["test"])
+def test(c, test=None):  # noqa: PT028
     """
     Run python tests in the web container
     """
+
     # Static analysis
     subprocess.run(
         [
@@ -174,16 +175,17 @@ def test(c):
         ],
     )
     # Pytest
-    subprocess.run(
-        [
-            "docker",
-            "compose",
-            "exec",
-            "django",
-            "pytest",
-            "-v",
-        ],
-    )
+    command = [
+        "docker",
+        "compose",
+        "exec",
+        "django",
+        "pytest",
+        "-v",
+    ]
+    if test:
+        command.append(test)
+    subprocess.run(command)
 
 
 # -----------------------------------------------------------------------------
