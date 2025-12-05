@@ -174,6 +174,12 @@ topic and `public-` and `private-asset-buckets` for S3.
 $ fab test
 ```
 
+You can also pass arguments to pytest
+
+```console
+$ fab test --test="-k specific_test_to_run"
+```
+
 ## Setting up the pre-commit hooks (strongly advised)
 
 To use this, you will need to install [pre-commit](https://pre-commit.com/) on your development machine, typically using `pip install pre-commit`.
