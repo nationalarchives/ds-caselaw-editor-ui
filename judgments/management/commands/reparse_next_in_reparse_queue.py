@@ -4,7 +4,7 @@ from datetime import UTC, datetime
 
 import environ
 from botocore.exceptions import EndpointConnectionError
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandParser
 
 from judgments.models import BulkReparseRunLog
 from judgments.models.telemetry import RunStatus
@@ -13,22 +13,23 @@ from judgments.views.reports import get_rows_from_result
 
 env = environ.Env()
 
-# How many documents should we successfully parse each time?
-try:
-    NUMBER_TO_PARSE = int(env("NUMBER_OF_DOCUMENTS_TO_REPARSE", default="8"))
-except ValueError:
-    NUMBER_TO_PARSE = 8
-
-# How many documents should we look at before deciding none of them can be parsed
-# and giving up?
-try:
-    MAX_DOCUMENTS_TO_TRY = int(env("MAX_DOCUMENTS_TO_REPARSE", default="200"))
-except ValueError:
-    MAX_DOCUMENTS_TO_TRY = 200
-
 
 class Command(BaseCommand):
     help = "Sends the next document in the reparse queue to be reparsed"
+
+    def add_arguments(self, parser: CommandParser) -> None:
+        parser.add_argument(
+            "--max_try",
+            help="The number of documents to select from the database to attempt re-parsing",
+            type=int,
+            default=int(env("MAX_DOCUMENTS_TO_REPARSE", default="200")),
+        )
+        parser.add_argument(
+            "--max_parse",
+            help="The maximum number of documents to successfully re-parse in a run before finishing",
+            type=int,
+            default=int(env("NUMBER_OF_DOCUMENTS_TO_REPARSE", default="8")),
+        )
 
     def handle(self, *args, **options):
         # Get all the information we need to open a run log
@@ -52,7 +53,7 @@ class Command(BaseCommand):
             document_details_to_parse = get_rows_from_result(
                 api_client.get_documents_pending_parse_for_version(
                     target_version=target_parser_version,
-                    maximum_records=MAX_DOCUMENTS_TO_TRY,
+                    maximum_records=options["max_try"],
                 ),
             )
 
@@ -77,7 +78,7 @@ class Command(BaseCommand):
                     sys.stdout.write(f"Reparse failed: {e!r}\n")
                     failed_counter += 1
 
-                if attempted_counter >= NUMBER_TO_PARSE:
+                if attempted_counter >= options["max_parse"]:
                     break
 
                 # Give other things a chance to run
