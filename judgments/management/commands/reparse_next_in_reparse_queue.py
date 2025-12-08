@@ -4,6 +4,7 @@ from datetime import UTC, datetime
 
 import environ
 from botocore.exceptions import EndpointConnectionError
+from caselawclient.errors import MarklogicResourceLockedError
 from django.core.management.base import BaseCommand, CommandParser
 
 from judgments.models import BulkReparseRunLog
@@ -79,7 +80,7 @@ class Command(BaseCommand):
                         sys.stdout.write("Reparse skipped.\n")
                         run_detail += f"\nSkipped {document_uri}"
                         skipped_counter += 1
-                except EndpointConnectionError as e:
+                except (EndpointConnectionError, MarklogicResourceLockedError) as e:
                     sys.stdout.write(f"Reparse failed: {e}\n")
                     run_detail += f"\nFAILED {document_uri}: {e}"
                     failed_counter += 1
