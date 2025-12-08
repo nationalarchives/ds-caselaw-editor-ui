@@ -7,6 +7,7 @@
       <div class="table">
         <table>
           <tr>
+            <th>Status</th>
             <th>Start time</th>
             <th>End time</th>
             <th>Target version</th>
@@ -18,6 +19,7 @@
           </tr>
           {% for run in object_list %}
             <tr>
+              <td>{{ run.get_status_display }}</td>
               <td>{{ run.start_time }}</td>
               <td>{{ run.end_time }}</td>
               <td>{{ run.target_parser_version }}</td>

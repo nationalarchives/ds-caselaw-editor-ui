@@ -1,6 +1,12 @@
 from django.db import models
 
 
+class RunStatus(models.TextChoices):
+    STARTED = "STA", "Started"
+    FAILED = "FAI", "Failed"
+    FINISHED = "FIN", "Finished"
+
+
 class BulkReparseRunLog(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField(null=True)
@@ -12,6 +18,12 @@ class BulkReparseRunLog(models.Model):
     documents_attempted = models.IntegerField(null=True)
     documents_skipped = models.IntegerField(null=True)
     documents_failed = models.IntegerField(null=True)
+
+    status = models.CharField(
+        max_length=3,
+        choices=RunStatus,
+        blank=True,
+    )
 
     class Meta:
         verbose_name = "Bulk Reparse Run Log"

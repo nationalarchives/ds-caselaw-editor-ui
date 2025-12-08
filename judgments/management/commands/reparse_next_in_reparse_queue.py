@@ -7,6 +7,7 @@ from botocore.exceptions import EndpointConnectionError
 from django.core.management.base import BaseCommand
 
 from judgments.models import BulkReparseRunLog
+from judgments.models.telemetry import RunStatus
 from judgments.utils import api_client
 from judgments.views.reports import get_rows_from_result
 
@@ -39,49 +40,61 @@ class Command(BaseCommand):
             start_time=datetime.now(UTC),
             documents_in_queue=total_in_queue,
             target_parser_version=f"{target_parser_version[0]}.{target_parser_version[1]}",
+            status=RunStatus.STARTED,
         )
-
-        document_details_to_parse = get_rows_from_result(
-            api_client.get_documents_pending_parse_for_version(
-                target_version=target_parser_version,
-                maximum_records=MAX_DOCUMENTS_TO_TRY,
-            ),
-        )
-
-        # Save the number of documents we've loaded to attempt
-        run_log.documents_selected = len(document_details_to_parse)
-        run_log.save()
 
         attempted_counter = 0
         skipped_counter = 0
         failed_counter = 0
 
-        for document_details in document_details_to_parse:
-            document_uri = document_details[0]
+        # If any uncaught exceptions happen during this, we want to be able to report them back
+        try:
+            document_details_to_parse = get_rows_from_result(
+                api_client.get_documents_pending_parse_for_version(
+                    target_version=target_parser_version,
+                    maximum_records=MAX_DOCUMENTS_TO_TRY,
+                ),
+            )
 
-            document = api_client.get_document_by_uri(document_uri.replace(".xml", ""))
+            # Save the number of documents we've loaded to attempt
+            run_log.documents_selected = len(document_details_to_parse)
+            run_log.save()
 
-            sys.stdout.write(f"Attempting to reparse document {document.body.name}...\n")
-            try:
-                if document.reparse():  # This returns `False` if the document fails `can_reparse` checks.
-                    sys.stdout.write("Reparse attempted.\n")
-                    attempted_counter += 1
-                else:
-                    sys.stdout.write("Reparse skipped.\n")
-                    skipped_counter += 1
-            except EndpointConnectionError as e:
-                sys.stdout.write(f"Reparse failed: {e!r}\n")
-                failed_counter += 1
+            for document_details in document_details_to_parse:
+                document_uri = document_details[0]
 
-            if attempted_counter >= NUMBER_TO_PARSE:
-                break
+                document = api_client.get_document_by_uri(document_uri.replace(".xml", ""))
 
-            # Give other things a chance to run
-            time.sleep(3)
+                sys.stdout.write(f"Attempting to reparse document {document.body.name}...\n")
+                try:
+                    if document.reparse():  # This returns `False` if the document fails `can_reparse` checks.
+                        sys.stdout.write("Reparse attempted.\n")
+                        attempted_counter += 1
+                    else:
+                        sys.stdout.write("Reparse skipped.\n")
+                        skipped_counter += 1
+                except EndpointConnectionError as e:
+                    sys.stdout.write(f"Reparse failed: {e!r}\n")
+                    failed_counter += 1
 
-        # Save the run results
-        run_log.documents_attempted = attempted_counter
-        run_log.documents_skipped = skipped_counter
-        run_log.documents_failed = failed_counter
-        run_log.end_time = datetime.now(UTC)
-        run_log.save()
+                if attempted_counter >= NUMBER_TO_PARSE:
+                    break
+
+                # Give other things a chance to run
+                time.sleep(3)
+
+        # Any uncaught exception above? Record the run as failed.
+        except Exception:  # noqa: BLE001
+            run_log.status = RunStatus.FAILED
+
+        # Everything worked? Mark as finished
+        else:
+            run_log.status = RunStatus.FINISHED
+
+        # Log the run counts and time, and save our state.
+        finally:
+            run_log.documents_attempted = attempted_counter
+            run_log.documents_skipped = skipped_counter
+            run_log.documents_failed = failed_counter
+            run_log.end_time = datetime.now(UTC)
+            run_log.save()
