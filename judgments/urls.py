@@ -94,6 +94,11 @@ urlpatterns = [
         reports.AwaitingEnrichment.as_view(),
         name="report_awaiting_enrichment",
     ),
+    path(
+        "reports/locked-documents",
+        reports.LockedDocuments.as_view(),
+        name="report_locked_documents",
+    ),
     # Stats
     path("stats", Stats.as_view(), name="stats"),
     path(
