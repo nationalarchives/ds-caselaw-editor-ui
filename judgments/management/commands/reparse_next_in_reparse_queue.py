@@ -32,6 +32,31 @@ class Command(BaseCommand):
             default=int(env("NUMBER_OF_DOCUMENTS_TO_REPARSE", default="8")),
         )
 
+    def _reparse_selected_document(self, document_details, run_log):
+        document_uri = document_details[0]
+
+        document = api_client.get_document_by_uri(document_uri.replace(".xml", ""))
+
+        sys.stdout.write(f"Attempting to reparse document {document.body.name}...\n")
+        try:
+            if document.reparse():  # This returns `False` if the document fails `can_reparse` checks.
+                sys.stdout.write("Reparse attempted.\n")
+                run_log.detail += f"\nAttempted {document_uri}"
+                run_log.documents_attempted += 1
+            else:
+                sys.stdout.write("Reparse skipped.\n")
+                run_log.detail += f"\nSkipped {document_uri}"
+                run_log.documents_skipped += 1
+        except (EndpointConnectionError, MarklogicResourceLockedError) as e:
+            sys.stdout.write(f"Reparse failed: {e}\n")
+            run_log.detail += f"\nFAILED {document_uri}: {e}"
+            run_log.documents_failed += 1
+
+        run_log.save()
+
+        # Give other things a chance to run
+        time.sleep(3)
+
     def handle(self, *args, **options):
         # Get all the information we need to open a run log
         target_parser_version = api_client.get_highest_parser_version()
@@ -44,13 +69,12 @@ class Command(BaseCommand):
             start_time=start_time,
             documents_in_queue=total_in_queue,
             target_parser_version=f"{target_parser_version[0]}.{target_parser_version[1]}",
+            documents_attempted=0,
+            documents_skipped=0,
+            documents_failed=0,
             status=RunStatus.STARTED,
+            detail=f"STARTED: {start_time}",
         )
-
-        attempted_counter = 0
-        skipped_counter = 0
-        failed_counter = 0
-        run_detail = f"STARTED: {start_time}"
 
         # If any uncaught exceptions happen during this, we want to be able to report them back
         try:
@@ -66,35 +90,15 @@ class Command(BaseCommand):
             run_log.save()
 
             for document_details in document_details_to_parse:
-                document_uri = document_details[0]
+                self._reparse_selected_document(document_details, run_log)
 
-                document = api_client.get_document_by_uri(document_uri.replace(".xml", ""))
-
-                sys.stdout.write(f"Attempting to reparse document {document.body.name}...\n")
-                try:
-                    if document.reparse():  # This returns `False` if the document fails `can_reparse` checks.
-                        sys.stdout.write("Reparse attempted.\n")
-                        run_detail += f"\nAttempted {document_uri}"
-                        attempted_counter += 1
-                    else:
-                        sys.stdout.write("Reparse skipped.\n")
-                        run_detail += f"\nSkipped {document_uri}"
-                        skipped_counter += 1
-                except (EndpointConnectionError, MarklogicResourceLockedError) as e:
-                    sys.stdout.write(f"Reparse failed: {e}\n")
-                    run_detail += f"\nFAILED {document_uri}: {e}"
-                    failed_counter += 1
-
-                if attempted_counter >= options["max_parse"]:
+                if run_log.documents_attempted >= options["max_parse"]:
                     break
-
-                # Give other things a chance to run
-                time.sleep(3)
 
         # Any uncaught exception above? Record the run as failed.
         except Exception as e:  # noqa: BLE001
             run_log.status = RunStatus.FAILED
-            run_detail += f"\nUNCAUGHT EXCEPTION: {e}"
+            run_log.detail += f"\nUNCAUGHT EXCEPTION: {e}"
 
         # Everything worked? Mark as finished
         else:
@@ -103,10 +107,6 @@ class Command(BaseCommand):
         # Log the run counts and time, and save our state.
         finally:
             end_time = datetime.now(UTC)
-            run_detail += f"\nENDED: {end_time}"
-            run_log.documents_attempted = attempted_counter
-            run_log.documents_skipped = skipped_counter
-            run_log.documents_failed = failed_counter
             run_log.end_time = end_time
-            run_log.detail = run_detail
+            run_log.detail += f"\nENDED: {end_time}"
             run_log.save()
