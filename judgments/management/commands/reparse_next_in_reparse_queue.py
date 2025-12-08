@@ -36,9 +36,11 @@ class Command(BaseCommand):
         target_parser_version = api_client.get_highest_parser_version()
         total_in_queue = api_client.get_count_pending_parse_for_version(target_parser_version)
 
+        start_time = datetime.now(UTC)
+
         # Log the fact that this run has started
         run_log = BulkReparseRunLog.objects.create(
-            start_time=datetime.now(UTC),
+            start_time=start_time,
             documents_in_queue=total_in_queue,
             target_parser_version=f"{target_parser_version[0]}.{target_parser_version[1]}",
             status=RunStatus.STARTED,
@@ -47,6 +49,7 @@ class Command(BaseCommand):
         attempted_counter = 0
         skipped_counter = 0
         failed_counter = 0
+        run_detail = f"STARTED: {start_time}"
 
         # If any uncaught exceptions happen during this, we want to be able to report them back
         try:
@@ -70,12 +73,15 @@ class Command(BaseCommand):
                 try:
                     if document.reparse():  # This returns `False` if the document fails `can_reparse` checks.
                         sys.stdout.write("Reparse attempted.\n")
+                        run_detail += f"\nAttempted {document_uri}"
                         attempted_counter += 1
                     else:
                         sys.stdout.write("Reparse skipped.\n")
+                        run_detail += f"\nSkipped {document_uri}"
                         skipped_counter += 1
                 except EndpointConnectionError as e:
-                    sys.stdout.write(f"Reparse failed: {e!r}\n")
+                    sys.stdout.write(f"Reparse failed: {e}\n")
+                    run_detail += f"\nFAILED {document_uri}: {e}"
                     failed_counter += 1
 
                 if attempted_counter >= options["max_parse"]:
@@ -85,8 +91,9 @@ class Command(BaseCommand):
                 time.sleep(3)
 
         # Any uncaught exception above? Record the run as failed.
-        except Exception:  # noqa: BLE001
+        except Exception as e:  # noqa: BLE001
             run_log.status = RunStatus.FAILED
+            run_detail += f"\nUNCAUGHT EXCEPTION: {e}"
 
         # Everything worked? Mark as finished
         else:
@@ -94,8 +101,11 @@ class Command(BaseCommand):
 
         # Log the run counts and time, and save our state.
         finally:
+            end_time = datetime.now(UTC)
+            run_detail += f"\nENDED: {end_time}"
             run_log.documents_attempted = attempted_counter
             run_log.documents_skipped = skipped_counter
             run_log.documents_failed = failed_counter
-            run_log.end_time = datetime.now(UTC)
+            run_log.end_time = end_time
+            run_log.detail = run_detail
             run_log.save()

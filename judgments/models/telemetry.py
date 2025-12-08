@@ -25,6 +25,8 @@ class BulkReparseRunLog(models.Model):
         blank=True,
     )
 
+    detail = models.TextField(blank=True)
+
     class Meta:
         verbose_name = "Bulk Reparse Run Log"
         verbose_name_plural = "Bulk Reparse Run Logs"
