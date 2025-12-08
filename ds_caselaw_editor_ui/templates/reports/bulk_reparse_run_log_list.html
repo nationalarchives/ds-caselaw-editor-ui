@@ -7,6 +7,7 @@
       <div class="table">
         <table>
           <tr>
+            <th>Status</th>
             <th>Start time</th>
             <th>End time</th>
             <th>Target version</th>
@@ -18,7 +19,10 @@
           </tr>
           {% for run in object_list %}
             <tr>
-              <td>{{ run.start_time }}</td>
+              <td>{{ run.get_status_display }}</td>
+              <td>
+                <a href="{% url 'report_bulk_reparse_run_log_detail' run.pk %}">{{ run.start_time }}</a>
+              </td>
               <td>{{ run.end_time }}</td>
               <td>{{ run.target_parser_version }}</td>
               <td>{{ run.documents_in_queue|intcomma }}</td>

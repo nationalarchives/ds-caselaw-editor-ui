@@ -85,6 +85,11 @@ urlpatterns = [
         name="report_bulk_reparse_run_logs",
     ),
     path(
+        "reports/bulk-reparse-run-logs/<int:pk>",
+        reports.BulkReparseRunLogDetailView.as_view(),
+        name="report_bulk_reparse_run_log_detail",
+    ),
+    path(
         "reports/awaiting-enrichment",
         reports.AwaitingEnrichment.as_view(),
         name="report_awaiting_enrichment",

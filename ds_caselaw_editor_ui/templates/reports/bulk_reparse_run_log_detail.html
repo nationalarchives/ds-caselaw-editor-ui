@@ -1,0 +1,32 @@
+{% extends "layouts/base.html" %}
+{% load i18n humanize %}
+{% block content %}
+  <div class="standard-text-template">
+    <h1>Bulk reparse run</h1>
+    <h2>{{ object.get_status_display }}: {{ object.start_time }}</h2>
+    <div class="table">
+      <table>
+        <tr>
+          <th>End time</th>
+          <th>Target version</th>
+          <th>Documents in queue</th>
+          <th>Selected</th>
+          <th>Attempted</th>
+          <th>Skipped</th>
+          <th>Failed</th>
+        </tr>
+        <tr>
+          <td>{{ object.end_time }}</td>
+          <td>{{ object.target_parser_version }}</td>
+          <td>{{ object.documents_in_queue|intcomma }}</td>
+          <td>{{ object.documents_selected|intcomma }}</td>
+          <td>{{ object.documents_attempted|intcomma }}</td>
+          <td>{{ object.documents_skipped|intcomma }}</td>
+          <td>{{ object.documents_failed|intcomma }}</td>
+        </tr>
+      </table>
+    </div>
+    <h3>Run detail</h3>
+    <pre>{{ object.detail }}</pre>
+  </div>
+{% endblock content %}
