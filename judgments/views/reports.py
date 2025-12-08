@@ -1,6 +1,7 @@
 from typing import Any
 
 from django.views.generic import TemplateView
+from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
 from judgments.models import BulkReparseRunLog
@@ -61,6 +62,12 @@ class BulkReparseRunLogListView(ListView):
     paginate_by = 50
 
     template_name = "reports/bulk_reparse_run_log_list.html"
+
+
+class BulkReparseRunLogDetailView(DetailView):
+    model = BulkReparseRunLog
+
+    template_name = "reports/bulk_reparse_run_log_detail.html"
 
 
 class AwaitingEnrichment(TemplateView):
