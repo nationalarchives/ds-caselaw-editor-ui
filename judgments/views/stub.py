@@ -1,6 +1,6 @@
 import datetime
 
-from caselawclient.models.documents.stub import EditorStubData
+from caselawclient.models.documents.stub import EditorStubData, PartyData
 from caselawclient.models.documents.stub import create_stub as create_rendered_stub
 from django import forms
 from django.contrib import messages
@@ -57,8 +57,8 @@ def create_stub(request):
     case_numbers = list_from_string(stub_form["case_numbers"].value())
     claimants = list_from_string(stub_form["claimants"].value())
     respondants = list_from_string(stub_form["respondants"].value())
-    parties = [{"role": "claimant", "name": claimant} for claimant in claimants] + [
-        {"role": "respondant", "name": respondant} for respondant in respondants
+    parties = [PartyData(role="claimant", name=claimant) for claimant in claimants] + [
+        PartyData(role="respondant", name=respondant) for respondant in respondants
     ]
 
     stub_data = EditorStubData(
@@ -76,6 +76,6 @@ def create_stub(request):
     rendered_stub = create_rendered_stub(stub_data)
     messages.success(
         request,
-        f"{rendered_stub}",
+        f"{rendered_stub!r}",
     )
     return HttpResponseRedirect(reverse("home"))
