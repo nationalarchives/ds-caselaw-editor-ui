@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright/python:v1.56.0-noble@sha256:89902d5e054761daa611834d4065f3e1f1e641639da7b003a54e2952ffc1731e
+FROM mcr.microsoft.com/playwright/python:v1.56.0-noble@sha256:508b37a524219d210a67a7190beb079efda72553e0dcb9ef21d4dae8f8a7686b
 
 WORKDIR /app
 
