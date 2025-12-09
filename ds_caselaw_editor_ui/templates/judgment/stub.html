@@ -8,8 +8,8 @@
       {% csrf_token %}
       <div class="judgment-component__actions">
         <div class="judgment-component__button-actions">
-          <input type="text" value="jam" name="jam" />
-          <input class="button-danger" type="submit" value="Stub document" />
+          {{ form }}
+          <input class="button" type="submit" value="Stub document" />
         </div>
       </div>
     </form>
