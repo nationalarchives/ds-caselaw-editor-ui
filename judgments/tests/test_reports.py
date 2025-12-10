@@ -1,5 +1,7 @@
+from datetime import UTC, datetime
 from unittest.mock import patch
 
+from caselawclient.types import DocumentLock, DocumentURIString
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
@@ -7,7 +9,16 @@ from django.urls import reverse
 from judgments.views.reports import get_rows_from_result
 
 
-class TestReports(TestCase):
+class TestReportsHelpers(TestCase):
+    def test_get_rows_from_result(self):
+        assert get_rows_from_result(["header 1", "header 2"]) == []
+
+        assert get_rows_from_result(
+            [["header 1", "header 2"], ["value 1", "value 2"]],
+        ) == [["value 1", "value 2"]]
+
+
+class TestReportsIndex(TestCase):
     def test_index_view(self):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
 
@@ -17,6 +28,8 @@ class TestReports(TestCase):
         assert "Reports" in decoded_response
         assert response.status_code == 200
 
+
+class TestEnrichmentReports(TestCase):
     @patch("judgments.views.reports.api_client")
     def test_awaiting_enrichment_view(self, mock_api_client):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
@@ -39,6 +52,8 @@ class TestReports(TestCase):
 
         assert response.status_code == 200
 
+
+class TestReparseReports(TestCase):
     @patch("judgments.views.reports.api_client")
     def test_awaiting_parse_view(self, mock_api_client):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
@@ -61,9 +76,26 @@ class TestReports(TestCase):
 
         assert response.status_code == 200
 
-    def test_get_rows_from_result(self):
-        assert get_rows_from_result(["header 1", "header 2"]) == []
 
-        assert get_rows_from_result(
-            [["header 1", "header 2"], ["value 1", "value 2"]],
-        ) == [["value 1", "value 2"]]
+class TestLockedDocumentsReports(TestCase):
+    @patch("judgments.views.reports.api_client")
+    def test_awaiting_parse_view(self, mock_api_client):
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        mock_api_client.get_locked_documents.return_value = [
+            DocumentLock(
+                document_uri=DocumentURIString("test/1234"),
+                owner="Owner string",
+                timestamp=datetime(2025, 12, 9, 13, 0, 0, tzinfo=UTC),
+                timeout=0,
+            ),
+        ]
+
+        response = self.client.get(reverse("report_locked_documents"))
+
+        assert response.status_code == 200
+
+        self.assertContains(response, "Locked documents", html=True)
+        self.assertContains(response, "test/1234", html=True)
+        self.assertContains(response, "Owner string", html=True)
+        self.assertContains(response, "9 Dec 2025, 1 p.m.", html=True)

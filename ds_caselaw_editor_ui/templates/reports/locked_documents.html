@@ -1,0 +1,30 @@
+{% extends "layouts/base.html" %}
+{% load i18n humanize %}
+{% block content %}
+  <div class="standard-text-template">
+    <h1>Locked documents</h1>
+    <p>
+      There are <b>{{ lock_count }}</b> locks currently in place.
+    </p>
+    <div class="table">
+      <table>
+        <tr>
+          <th>Document</th>
+          <th>Lock owner</th>
+          <th>Timestamp</th>
+          <th>Timeout</th>
+        </tr>
+        {% for lock in locks %}
+          <tr>
+            <td>
+              <a href="{% url 'full-text-html' lock.document_uri %}">{{ lock.document_uri }}</a>
+            </td>
+            <td>{{ lock.owner }}</td>
+            <td>{{ lock.timestamp }}</td>
+            <td>{{ lock.timeout }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+{% endblock content %}
