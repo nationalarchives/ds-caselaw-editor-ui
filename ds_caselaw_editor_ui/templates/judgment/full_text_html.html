@@ -28,8 +28,16 @@
            class="document-navigation-links">
         <a class="up" href="#start-of-document">Back to start</a>
       </div>
-      {{ document_html }}
-      {% include "includes/judgment_end_document_marker.html" %}
+      {% if document_html %}
+        {{ document_html }}
+        {% include "includes/judgment_end_document_marker.html" %}
+      {% else %}
+        <div class="page-notification--info">
+          <div class="judgment-toolbar__version">
+            <span class="icon icon__circle-info"></span> This document does not have a HTML version.
+          </div>
+        </div>
+      {% endif %}
       <div id="end-of-document">
       {% endautoescape %}
     {% endif %}
