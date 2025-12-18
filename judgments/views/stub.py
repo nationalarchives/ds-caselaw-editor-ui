@@ -1,8 +1,7 @@
 import datetime
 from uuid import uuid4
 
-from caselawclient.models.documents.stub import EditorStubData, PartyData
-from caselawclient.models.documents.stub import create_stub as create_rendered_stub
+from caselawclient.models.documents.stub import EditorStubData, PartyData, render_stub_xml
 from caselawclient.models.documents.versions import VersionAnnotation, VersionType
 from caselawclient.models.judgments import Judgment
 from caselawclient.types import DocumentURIString
@@ -34,7 +33,7 @@ class StubForm(forms.Form):
         label="Decision date",
     )
     # transform_datetime is dynamically generated
-    court_code_upper = forms.CharField(label="Court code", max_length=100)
+    court_code = forms.CharField(label="Court code", max_length=100)
     title = forms.CharField(label="Title", max_length=100)
     year = forms.IntegerField(label="Year", min_value=1001)
     case_numbers = forms.CharField(widget=forms.Textarea(attrs={"rows": 4}), label="Case numbers", max_length=100)
@@ -77,7 +76,7 @@ def create_stub(request):
         {
             "decision_date": stub_form["decision_date"].value(),
             "transform_datetime": datetime.datetime.now(tz=datetime.UTC).strftime("%Y-%m-%dT%H:%M:%S"),
-            "court_code_upper": stub_form["court_code_upper"].value().upper(),
+            "court_code": stub_form["court_code"].value().upper(),
             "title": stub_form["title"].value(),
             "year": str(stub_form["year"].value()),
             "case_numbers": case_numbers,
@@ -85,7 +84,7 @@ def create_stub(request):
         },
     )
 
-    rendered_stub = create_rendered_stub(stub_data)
+    rendered_stub = render_stub_xml(stub_data)
 
     document_uri = DocumentURIString("d-" + str(uuid4()))
     element = ElementTree.fromstring(rendered_stub)
