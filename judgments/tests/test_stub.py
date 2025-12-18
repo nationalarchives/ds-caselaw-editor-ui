@@ -18,7 +18,7 @@ class TestStubView(TestCase):
         assert response.status_code == 200
 
     @patch("judgments.views.stub.uuid4", return_value="uuid")
-    @patch("judgments.views.stub.create_rendered_stub", return_value="<xml />")
+    @patch("judgments.views.stub.render_stub_xml", return_value="<xml />")
     @patch("judgments.views.stub.api_client.insert_document_xml")
     def test_judgment_stub_post(self, mock_insert_xml, mock_render_stub, mock_uuid):
         superuser = User.objects.create_superuser(username="clark")
@@ -27,7 +27,7 @@ class TestStubView(TestCase):
             "/create_stub",
             {
                 "decision_date": "2024-01-01",
-                "court_code_upper": "UKSC",
+                "court_code": "UkSc",
                 "title": "A title",
                 "year": "2024",
                 "case_numbers": "ABC123\nDEF123",
@@ -39,7 +39,7 @@ class TestStubView(TestCase):
             {
                 "decision_date": "2024-01-01",
                 "transform_datetime": ANY,
-                "court_code_upper": "UKSC",
+                "court_code": "UkSc",
                 "title": "A title",
                 "year": "2024",
                 "case_numbers": ["ABC123", "DEF123"],
