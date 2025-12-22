@@ -23,7 +23,7 @@ services:
     command: tail -f /dev/null
 
   postgres:
-    image: postgres:15.15@sha256:c23f5a12ca4e848f8fcd85a74f348888a89e04916a98726b00697af36ec0a700
+    image: postgres:15.15@sha256:697ff70295146d53b702b07532fe68aaed7a5f10d04ff68edbeffd5fbacd15a5
     ports:
       - "5432:5432"
     environment:
