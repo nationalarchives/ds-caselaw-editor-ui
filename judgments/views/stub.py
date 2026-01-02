@@ -36,8 +36,14 @@ class StubForm(forms.Form):
     court_code = forms.CharField(label="Court code", max_length=100)
     title = forms.CharField(label="Title", max_length=100)
     year = forms.IntegerField(label="Year", min_value=1001)
-    case_numbers = forms.CharField(widget=forms.Textarea(attrs={"rows": 4}), label="Case numbers", max_length=100)
+    case_numbers = forms.CharField(
+        widget=forms.Textarea(attrs={"rows": 4}),
+        label="Case numbers",
+        max_length=100,
+        required=False,
+    )
     claimants = forms.CharField(widget=forms.Textarea(attrs={"rows": 4}), label="Claimants", max_length=100)
+    # appellants = forms.CharField(widget=forms.Textarea(attrs={"rows": 4}), label="Appellants", max_length=100)
     respondants = forms.CharField(widget=forms.Textarea(attrs={"rows": 4}), label="Respondants", max_length=100)
 
 
@@ -68,6 +74,7 @@ def create_stub(request):
     case_numbers = list_from_string(stub_form["case_numbers"].value())
     claimants = list_from_string(stub_form["claimants"].value())
     respondants = list_from_string(stub_form["respondants"].value())
+    # appellants: list_from_string(stub_form["appellants"].value())
     parties = [PartyData(role="claimant", name=claimant) for claimant in claimants] + [
         PartyData(role="respondant", name=respondant) for respondant in respondants
     ]
@@ -81,6 +88,7 @@ def create_stub(request):
             "year": str(stub_form["year"].value()),
             "case_numbers": case_numbers,
             "parties": parties,
+            # "appellants": appellants,
         },
     )
 
