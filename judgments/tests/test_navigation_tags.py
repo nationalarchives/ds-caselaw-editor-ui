@@ -22,6 +22,7 @@ class TestNavigationTags(TestCase):
             {"id": "identifiers", "selected": False, "label": "Identifiers", "url": "/test/2023/123/identifiers"},
             {"id": "history", "selected": False, "label": "History", "url": "/test/2023/123/history"},
             {"id": "downloads", "selected": False, "label": "Downloads", "url": "/test/2023/123/downloads"},
+            {"id": "upload", "selected": False, "label": "Upload", "url": "/test/2023/123/upload"},
         ]
 
     def test_get_navigation_items_published(self):
