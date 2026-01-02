@@ -43,8 +43,8 @@ class StubForm(forms.Form):
         required=False,
     )
     claimants = forms.CharField(widget=forms.Textarea(attrs={"rows": 4}), label="Claimants", max_length=100)
-    # appellants = forms.CharField(widget=forms.Textarea(attrs={"rows": 4}), label="Appellants", max_length=100)
-    respondants = forms.CharField(widget=forms.Textarea(attrs={"rows": 4}), label="Respondants", max_length=100)
+    appellants = forms.CharField(widget=forms.Textarea(attrs={"rows": 4}), label="Appellants", max_length=100)
+    respondents = forms.CharField(widget=forms.Textarea(attrs={"rows": 4}), label="Respondents", max_length=100)
 
 
 class CreateStubView(TemplateView):
@@ -73,11 +73,13 @@ def create_stub(request):
 
     case_numbers = list_from_string(stub_form["case_numbers"].value())
     claimants = list_from_string(stub_form["claimants"].value())
-    respondants = list_from_string(stub_form["respondants"].value())
-    # appellants: list_from_string(stub_form["appellants"].value())
-    parties = [PartyData(role="claimant", name=claimant) for claimant in claimants] + [
-        PartyData(role="respondant", name=respondant) for respondant in respondants
-    ]
+    respondents = list_from_string(stub_form["respondents"].value())
+    appellants = list_from_string(stub_form["appellants"].value())
+    parties = (
+        [PartyData(role="Claimant", name=claimant) for claimant in claimants]
+        + [PartyData(role="Respondent", name=respondent) for respondent in respondents]
+        + [PartyData(role="Appellant", name=appellant) for appellant in appellants]
+    )
 
     stub_data = EditorStubData(
         {

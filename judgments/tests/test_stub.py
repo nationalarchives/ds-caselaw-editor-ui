@@ -32,22 +32,25 @@ class TestStubView(TestCase):
                 "year": "2024",
                 "case_numbers": "ABC123\nDEF123",
                 "claimants": "Amy\nBarry",
-                "respondants": "Cathy\nDarren",
+                "respondents": "Cathy\nDarren",
+                "appellants": "Emily\nFred",
             },
         )
         mock_render_stub.assert_called_with(
             {
                 "decision_date": "2024-01-01",
                 "transform_datetime": ANY,
-                "court_code": "UkSc",
+                "court_code": "UKSC",
                 "title": "A title",
                 "year": "2024",
                 "case_numbers": ["ABC123", "DEF123"],
                 "parties": [
-                    {"role": "claimant", "name": "Amy"},
-                    {"role": "claimant", "name": "Barry"},
-                    {"role": "respondant", "name": "Cathy"},
-                    {"role": "respondant", "name": "Darren"},
+                    {"role": "Claimant", "name": "Amy"},
+                    {"role": "Claimant", "name": "Barry"},
+                    {"role": "Respondent", "name": "Cathy"},
+                    {"role": "Respondent", "name": "Darren"},
+                    {"role": "Appellant", "name": "Emily"},
+                    {"role": "Appellant", "name": "Fred"},
                 ],
             },
         )
