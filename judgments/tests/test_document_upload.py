@@ -59,7 +59,7 @@ class TestUploadView(TestCase):
 
         response = self.client.post("/upload", {"file": not_pdf, "judgment_uri": "d-a1b2c3"})
         # user is redirected back to the upload page
-        assert response.url == "d-a1b2c3/upload"
+        assert response.url == "/d-a1b2c3/upload"
         mock_doc.assert_called_once_with("d-a1b2c3")
         # and file is not uploaded
         mock_upload.assert_not_called()
