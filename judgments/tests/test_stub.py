@@ -14,7 +14,7 @@ class TestStubView(TestCase):
         response = self.client.get("/stub")
         decoded_response = response.content.decode("utf-8")
         assert "I want to create a stub:" in decoded_response
-        assert "Case numbers:" in decoded_response
+        assert "Case numbers" in decoded_response
         assert response.status_code == 200
 
     @patch("judgments.views.stub.uuid4", return_value="uuid")
@@ -34,6 +34,7 @@ class TestStubView(TestCase):
                 "claimants": "Amy\nBarry",
                 "respondents": "Cathy\nDarren",
                 "appellants": "Emily\nFred",
+                "defendants": "Gertrude",
             },
         )
         mock_render_stub.assert_called_with(
@@ -51,6 +52,7 @@ class TestStubView(TestCase):
                     {"role": "Respondent", "name": "Darren"},
                     {"role": "Appellant", "name": "Emily"},
                     {"role": "Appellant", "name": "Fred"},
+                    {"role": "Defendant", "name": "Gertrude"},
                 ],
             },
         )
