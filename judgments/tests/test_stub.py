@@ -3,9 +3,40 @@ from unittest.mock import ANY, patch
 from caselawclient.models.judgments import Judgment
 from defusedxml import ElementTree
 from django.contrib.auth.models import User
+from django.contrib.messages import get_messages
 from django.test import TestCase
 
 from judgments.views.stub import ANNOTATION
+
+post_data = {
+    "decision_date": "2024-01-01",
+    "court_code": "UkSc",
+    "title": "A title",
+    "year": "2024",
+    "case_numbers": "ABC123\nDEF123",
+    "claimants": "Amy\nBarry",
+    "respondents": "Cathy\nDarren",
+    "appellants": "Emily\nFred",
+    "defendants": "Gertrude",
+}
+
+formatted_data = {
+    "decision_date": "2024-01-01",
+    "transform_datetime": ANY,
+    "court_code": "UKSC",
+    "title": "A title",
+    "year": "2024",
+    "case_numbers": ["ABC123", "DEF123"],
+    "parties": [
+        {"role": "Claimant", "name": "Amy"},
+        {"role": "Claimant", "name": "Barry"},
+        {"role": "Respondent", "name": "Cathy"},
+        {"role": "Respondent", "name": "Darren"},
+        {"role": "Appellant", "name": "Emily"},
+        {"role": "Appellant", "name": "Fred"},
+        {"role": "Defendant", "name": "Gertrude"},
+    ],
+}
 
 
 class TestStubView(TestCase):
@@ -25,36 +56,10 @@ class TestStubView(TestCase):
         self.client.force_login(superuser)
         _response = self.client.post(
             "/create_stub",
-            {
-                "decision_date": "2024-01-01",
-                "court_code": "UkSc",
-                "title": "A title",
-                "year": "2024",
-                "case_numbers": "ABC123\nDEF123",
-                "claimants": "Amy\nBarry",
-                "respondents": "Cathy\nDarren",
-                "appellants": "Emily\nFred",
-                "defendants": "Gertrude",
-            },
+            post_data,
         )
         mock_render_stub.assert_called_with(
-            {
-                "decision_date": "2024-01-01",
-                "transform_datetime": ANY,
-                "court_code": "UKSC",
-                "title": "A title",
-                "year": "2024",
-                "case_numbers": ["ABC123", "DEF123"],
-                "parties": [
-                    {"role": "Claimant", "name": "Amy"},
-                    {"role": "Claimant", "name": "Barry"},
-                    {"role": "Respondent", "name": "Cathy"},
-                    {"role": "Respondent", "name": "Darren"},
-                    {"role": "Appellant", "name": "Emily"},
-                    {"role": "Appellant", "name": "Fred"},
-                    {"role": "Defendant", "name": "Gertrude"},
-                ],
-            },
+            formatted_data,
         )
 
         # date has a T in the right place and is exactly long enough to have seconds
@@ -71,3 +76,20 @@ class TestStubView(TestCase):
 
         document_xml = mock_insert_xml.call_args.kwargs["document_xml"]
         assert ElementTree.tostring(document_xml) == b"<xml />"
+
+    @patch("judgments.views.stub.uuid4", return_value="uuid")
+    @patch("judgments.views.stub.render_stub_xml", return_value="<xml />")
+    @patch("judgments.views.stub.api_client.insert_document_xml")
+    def test_judgment_stub_post_invalid_court(self, mock_insert_xml, mock_render_stub, mock_uuid):
+        superuser = User.objects.create_superuser(username="clark")
+        self.client.force_login(superuser)
+        modified_post_data = dict(**post_data)
+        modified_post_data["court_code"] = "not_a_court_code"
+        response = self.client.post(
+            "/create_stub",
+            modified_post_data,
+        )
+        mock_render_stub.assert_not_called()
+        mock_insert_xml.assert_not_called()
+        messages = list(get_messages(response.wsgi_request))
+        assert "Court code not_a_court_code" in messages[0].message
