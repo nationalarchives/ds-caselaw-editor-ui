@@ -34,7 +34,7 @@ class StubForm(forms.Form):
     )
     # transform_datetime is dynamically generated
     court_code = forms.CharField(label="Court code", max_length=100)
-    title = forms.CharField(label="Title", max_length=100)
+    title = forms.CharField(label="Title", max_length=100, widget=forms.TextInput(attrs={"size": 50}))
     year = forms.IntegerField(label="Year", min_value=1001)
     case_numbers = forms.CharField(
         widget=forms.Textarea(attrs={"rows": 4}),
@@ -45,6 +45,12 @@ class StubForm(forms.Form):
     claimants = forms.CharField(widget=forms.Textarea(attrs={"rows": 4}), label="Claimants", max_length=100)
     appellants = forms.CharField(widget=forms.Textarea(attrs={"rows": 4}), label="Appellants", max_length=100)
     respondents = forms.CharField(widget=forms.Textarea(attrs={"rows": 4}), label="Respondents", max_length=100)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Hide colons from field names
+        for field in self.fields.values():
+            field.label_suffix = ""
 
 
 class CreateStubView(TemplateView):
