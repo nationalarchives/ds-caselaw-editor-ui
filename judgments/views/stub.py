@@ -122,7 +122,6 @@ def create_stub(request):
             "year": str(stub_form["year"].value()),
             "case_numbers": case_numbers,
             "parties": parties,
-            # "appellants": appellants,
         },
     )
 
