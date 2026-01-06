@@ -8,9 +8,12 @@ from caselawclient.types import DocumentURIString
 from defusedxml import ElementTree
 from django import forms
 from django.contrib import messages
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.http import HttpResponseRedirect
+from django.shortcuts import reverse
 from django.views.generic import TemplateView
+from ds_caselaw_utils.courts import CourtNotFoundException, courts
+from ds_caselaw_utils.types import CourtCode
 
 from judgments.utils import api_client
 from judgments.utils.view_helpers import (
@@ -26,6 +29,14 @@ ANNOTATION = VersionAnnotation(
 )
 
 
+def is_valid_court(court_code):
+    try:
+        _court = courts.get_court_by_code(CourtCode(court_code.upper()))
+    except CourtNotFoundException as error:
+        msg = f"Court code {court_code} not recognised"
+        raise ValidationError(msg) from error
+
+
 class StubForm(forms.Form):
     # Django form for display
     decision_date = forms.DateField(
@@ -33,7 +44,7 @@ class StubForm(forms.Form):
         label="Decision date",
     )
     # transform_datetime is dynamically generated
-    court_code = forms.CharField(label="Court code", max_length=100)
+    court_code = forms.CharField(label="Court code", max_length=100, validators=[is_valid_court])
     title = forms.CharField(label="Title", max_length=100, widget=forms.TextInput(attrs={"size": 50}))
     year = forms.IntegerField(label="Year", min_value=1001)
     case_numbers = forms.CharField(
@@ -95,6 +106,10 @@ def create_stub(request):
 
     stub_form = StubForm(request.POST)
     if not stub_form.is_valid():
+        messages.error(request, str(stub_form.errors))
+        return HttpResponseRedirect(
+            reverse("create-stub-document"),
+        )
         msg = "Invalid form data"
         raise RuntimeError(msg)
 
@@ -125,9 +140,8 @@ def create_stub(request):
         },
     )
 
-    rendered_stub = render_stub_xml(stub_data)
-
     document_uri = DocumentURIString("d-" + str(uuid4()))
+    rendered_stub = render_stub_xml(stub_data)
     element = ElementTree.fromstring(rendered_stub)
 
     # create document in Marklogic
