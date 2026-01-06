@@ -10,7 +10,7 @@ from django import forms
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.http import HttpResponseRedirect
-from django.shortcuts import reverse
+from django.urls import reverse
 from django.views.generic import TemplateView
 from ds_caselaw_utils.courts import CourtNotFoundException, courts
 from ds_caselaw_utils.types import CourtCode

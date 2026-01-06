@@ -8,7 +8,7 @@
       {% csrf_token %}
       <div class="judgment-component__actions">
         <div class="judgment-component__button-actions">
-          {{ form }}
+          {{ form.as_p }}
           <input class="button" type="submit" value="Stub document" />
         </div>
       </div>
