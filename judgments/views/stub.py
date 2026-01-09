@@ -1,10 +1,12 @@
 import datetime
+import xml.etree.ElementTree as ET
 from uuid import uuid4
 
 from caselawclient.models.documents.stub import EditorStubData, PartyData, render_stub_xml
 from caselawclient.models.documents.versions import VersionAnnotation, VersionType
 from caselawclient.models.judgments import Judgment
 from caselawclient.types import DocumentURIString
+from caselawclient.xml_helpers import DEFAULT_NAMESPACES
 from defusedxml import ElementTree
 from django import forms
 from django.contrib import messages
@@ -27,6 +29,12 @@ ANNOTATION = VersionAnnotation(
     message="Stub document created",
     payload={},
 )
+
+# avoid "<ns0:...>" appearing in XML output
+for namespace_name, namespace_uri in DEFAULT_NAMESPACES.items():
+    actual_namespace_name = "" if namespace_name == "akn" else namespace_name
+    # register namespace does not exist on defusedxml, unhelpfully.
+    ET.register_namespace(namespace_name, namespace_uri)
 
 
 def is_valid_court(court_code):
@@ -126,8 +134,6 @@ def create_stub(request):
         + [PartyData(role="Defendant", name=defendant) for defendant in defendants]
     )
 
-    # TODO fix <ns1:party role="Appellant">11</ns1:party> issue
-
     stub_data = EditorStubData(
         {
             "decision_date": stub_form["decision_date"].value(),
@@ -142,6 +148,7 @@ def create_stub(request):
 
     document_uri = DocumentURIString("d-" + str(uuid4()))
     rendered_stub = render_stub_xml(stub_data)
+
     element = ElementTree.fromstring(rendered_stub)
 
     # create document in Marklogic

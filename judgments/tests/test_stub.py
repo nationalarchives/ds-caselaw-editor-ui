@@ -1,5 +1,7 @@
+from pathlib import Path
 from unittest.mock import ANY, patch
 
+from caselawclient.Client import ROOT_DIR
 from caselawclient.models.judgments import Judgment
 from defusedxml import ElementTree
 from django.contrib.auth.models import User
@@ -49,9 +51,13 @@ class TestStubView(TestCase):
         assert response.status_code == 200
 
     @patch("judgments.views.stub.uuid4", return_value="uuid")
-    @patch("judgments.views.stub.render_stub_xml", return_value="<xml />")
+    @patch("judgments.views.stub.render_stub_xml")
     @patch("judgments.views.stub.api_client.insert_document_xml")
     def test_judgment_stub_post(self, mock_insert_xml, mock_render_stub, mock_uuid):
+        judgment_template_path = Path(ROOT_DIR) / "models" / "documents" / "templates" / "judgment.xml"
+        with (judgment_template_path).open("r") as f:
+            template = f.read()
+        mock_render_stub.return_value = template
         superuser = User.objects.create_superuser(username="clark")
         self.client.force_login(superuser)
         _response = self.client.post(
@@ -74,8 +80,11 @@ class TestStubView(TestCase):
             annotation=ANNOTATION,
         )
 
-        document_xml = mock_insert_xml.call_args.kwargs["document_xml"]
-        assert ElementTree.tostring(document_xml) == b"<xml />"
+        document_xml_bytes = ElementTree.tostring(mock_insert_xml.call_args.kwargs["document_xml"])
+
+        assert b"ns0" not in document_xml_bytes
+        assert b"<uk:" in document_xml_bytes
+        assert b"<akomaNtoso " in document_xml_bytes
 
     @patch("judgments.views.stub.uuid4", return_value="uuid")
     @patch("judgments.views.stub.render_stub_xml", return_value="<xml />")
