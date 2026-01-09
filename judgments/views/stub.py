@@ -34,7 +34,7 @@ ANNOTATION = VersionAnnotation(
 for namespace_name, namespace_uri in DEFAULT_NAMESPACES.items():
     actual_namespace_name = "" if namespace_name == "akn" else namespace_name
     # register namespace does not exist on defusedxml, unhelpfully.
-    ET.register_namespace(namespace_name, namespace_uri)
+    ET.register_namespace(actual_namespace_name, namespace_uri)
 
 
 def is_valid_court(court_code):
