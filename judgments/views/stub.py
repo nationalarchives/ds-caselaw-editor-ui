@@ -47,6 +47,8 @@ def is_valid_court(court_code):
 
 class StubForm(forms.Form):
     # Django form for display
+    clerk_name = forms.CharField(label="Clerk name")
+    clerk_email = forms.CharField(label="Clerk email")
     decision_date = forms.DateField(
         widget=forms.DateInput(attrs={"type": "date"}),
         label="Decision date",
@@ -158,6 +160,8 @@ def create_stub(request):
         document_type=Judgment,
         annotation=ANNOTATION,
     )
+    api_client.set_property(document_uri, "source-name", stub_form["clerk_name"].value())
+    api_client.set_property(document_uri, "source-email", stub_form["clerk_email"].value())
 
     messages.success(
         request,
