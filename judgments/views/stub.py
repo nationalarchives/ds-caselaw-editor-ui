@@ -11,6 +11,7 @@ from defusedxml import ElementTree
 from django import forms
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied, ValidationError
+from django.core.validators import validate_email
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import TemplateView
@@ -47,6 +48,12 @@ def is_valid_court(court_code):
 
 class StubForm(forms.Form):
     # Django form for display
+    email_date = forms.DateField(
+        widget=forms.DateInput(attrs={"type": "date"}),
+        label="Email date",
+    )
+    clerk_name = forms.CharField(label="Clerk name")
+    clerk_email = forms.CharField(label="Clerk email", validators=[validate_email])
     decision_date = forms.DateField(
         widget=forms.DateInput(attrs={"type": "date"}),
         label="Decision date",
@@ -91,6 +98,8 @@ class StubForm(forms.Form):
         # Hide colons from field names
         for field in self.fields.values():
             field.label_suffix = ""
+
+        self.fields["email_date"].initial = datetime.datetime.now(tz=datetime.UTC).date().isoformat()
 
 
 class CreateStubView(TemplateView):
@@ -158,6 +167,9 @@ def create_stub(request):
         document_type=Judgment,
         annotation=ANNOTATION,
     )
+    api_client.set_property(document_uri, "source-name", stub_form["clerk_name"].value())
+    api_client.set_property(document_uri, "source-email", stub_form["clerk_email"].value())
+    api_client.set_property(document_uri, "email-received-at", stub_form["email_date"].value() + "T12:00:00Z")
 
     messages.success(
         request,
