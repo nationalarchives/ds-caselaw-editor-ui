@@ -48,8 +48,8 @@ def is_valid_court(court_code):
 
 class StubForm(forms.Form):
     # Django form for display
-    email_date = forms.DateField(
-        widget=forms.DateInput(attrs={"type": "date"}),
+    email_received_at = forms.DateTimeField(
+        widget=forms.DateInput(attrs={"type": "datetime-local"}),
         label="Email date",
     )
     clerk_name = forms.CharField(label="Clerk name")
@@ -98,8 +98,6 @@ class StubForm(forms.Form):
         # Hide colons from field names
         for field in self.fields.values():
             field.label_suffix = ""
-
-        self.fields["email_date"].initial = datetime.datetime.now(tz=datetime.UTC).date().isoformat()
 
 
 class CreateStubView(TemplateView):
@@ -169,7 +167,7 @@ def create_stub(request):
     )
     api_client.set_property(document_uri, "source-name", stub_form["clerk_name"].value())
     api_client.set_property(document_uri, "source-email", stub_form["clerk_email"].value())
-    api_client.set_property(document_uri, "email-received-at", stub_form["email_date"].value() + "T12:00:00Z")
+    api_client.set_property(document_uri, "email-received-at", stub_form["email_received_at"].value() + ":00Z")
 
     messages.success(
         request,

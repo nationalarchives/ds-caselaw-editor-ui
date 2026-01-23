@@ -14,7 +14,7 @@ from judgments.views.stub import ANNOTATION
 post_data = {
     "clerk_name": "Tess Testerton",
     "clerk_email": "tess.testerton@example.invalid",
-    "email_date": "2025-01-01",
+    "email_received_at": "2025-01-01T09:09",
     "decision_date": "2024-01-01",
     "court_code": "UkSc",
     "title": "A title",
@@ -90,7 +90,7 @@ class TestStubView(TestCase):
             [
                 call("d-uuid", "source-name", "Tess Testerton"),
                 call("d-uuid", "source-email", "tess.testerton@example.invalid"),
-                call("d-uuid", "email-received-at", "2025-01-01T12:00:00Z"),
+                call("d-uuid", "email-received-at", "2025-01-01T09:09:00Z"),
             ],
         )
 
