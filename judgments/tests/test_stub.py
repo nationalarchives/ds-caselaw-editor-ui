@@ -12,8 +12,8 @@ from judgments.views.stub import ANNOTATION
 
 # the data posted into the webform
 post_data = {
-    "clerk_name": "Tess Testerton",
-    "clerk_email": "tess.testerton@example.invalid",
+    "source_name": "Tess Testerton",
+    "source_email": "tess.testerton@example.invalid",
     "email_received_at": "2025-01-01T09:09",
     "decision_date": "2024-01-01",
     "court_code": "UkSc",

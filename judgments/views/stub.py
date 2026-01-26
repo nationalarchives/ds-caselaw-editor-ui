@@ -52,8 +52,8 @@ class StubForm(forms.Form):
         widget=forms.DateInput(attrs={"type": "datetime-local"}),
         label="Email date",
     )
-    clerk_name = forms.CharField(label="Clerk name")
-    clerk_email = forms.CharField(label="Clerk email", validators=[validate_email])
+    source_name = forms.CharField(label="Submitter name")
+    source_email = forms.CharField(label="Submitter email", validators=[validate_email])
     decision_date = forms.DateField(
         widget=forms.DateInput(attrs={"type": "date"}),
         label="Decision date",
@@ -165,8 +165,8 @@ def create_stub(request):
         document_type=Judgment,
         annotation=ANNOTATION,
     )
-    api_client.set_property(document_uri, "source-name", stub_form["clerk_name"].value())
-    api_client.set_property(document_uri, "source-email", stub_form["clerk_email"].value())
+    api_client.set_property(document_uri, "source-name", stub_form["source_name"].value())
+    api_client.set_property(document_uri, "source-email", stub_form["source_email"].value())
     api_client.set_property(document_uri, "email-received-at", stub_form["email_received_at"].value() + ":00Z")
 
     messages.success(
