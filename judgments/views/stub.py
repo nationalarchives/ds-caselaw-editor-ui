@@ -11,6 +11,7 @@ from defusedxml import ElementTree
 from django import forms
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied, ValidationError
+from django.core.validators import validate_email
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import TemplateView
@@ -47,6 +48,12 @@ def is_valid_court(court_code):
 
 class StubForm(forms.Form):
     # Django form for display
+    email_received_at = forms.DateTimeField(
+        widget=forms.DateInput(attrs={"type": "datetime-local"}),
+        label="Email date",
+    )
+    source_name = forms.CharField(label="Submitter name")
+    source_email = forms.CharField(label="Submitter email", validators=[validate_email])
     decision_date = forms.DateField(
         widget=forms.DateInput(attrs={"type": "date"}),
         label="Decision date",
@@ -158,6 +165,9 @@ def create_stub(request):
         document_type=Judgment,
         annotation=ANNOTATION,
     )
+    api_client.set_property(document_uri, "source-name", stub_form["source_name"].value())
+    api_client.set_property(document_uri, "source-email", stub_form["source_email"].value())
+    api_client.set_property(document_uri, "email-received-at", stub_form["email_received_at"].value() + ":00Z")
 
     messages.success(
         request,

@@ -1,5 +1,5 @@
 from pathlib import Path
-from unittest.mock import ANY, patch
+from unittest.mock import ANY, call, patch
 
 from caselawclient.Client import ROOT_DIR
 from caselawclient.models.judgments import Judgment
@@ -10,7 +10,11 @@ from django.test import TestCase
 
 from judgments.views.stub import ANNOTATION
 
+# the data posted into the webform
 post_data = {
+    "source_name": "Tess Testerton",
+    "source_email": "tess.testerton@example.invalid",
+    "email_received_at": "2025-01-01T09:09",
     "decision_date": "2024-01-01",
     "court_code": "UkSc",
     "title": "A title",
@@ -22,6 +26,7 @@ post_data = {
     "defendants": "Gertrude",
 }
 
+# The data actually sent to the renderer
 formatted_data = {
     "decision_date": "2024-01-01",
     "transform_datetime": ANY,
@@ -53,7 +58,8 @@ class TestStubView(TestCase):
     @patch("judgments.views.stub.uuid4", return_value="uuid")
     @patch("judgments.views.stub.render_stub_xml")
     @patch("judgments.views.stub.api_client.insert_document_xml")
-    def test_judgment_stub_post(self, mock_insert_xml, mock_render_stub, mock_uuid):
+    @patch("judgments.views.stub.api_client.set_property")
+    def test_judgment_stub_post(self, mock_set_property, mock_insert_xml, mock_render_stub, mock_uuid):
         judgment_template_path = Path(ROOT_DIR) / "models" / "documents" / "templates" / "judgment.xml"
         with (judgment_template_path).open("r") as f:
             template = f.read()
@@ -78,6 +84,14 @@ class TestStubView(TestCase):
             document_xml=ANY,
             document_type=Judgment,
             annotation=ANNOTATION,
+        )
+
+        mock_set_property.assert_has_calls(
+            [
+                call("d-uuid", "source-name", "Tess Testerton"),
+                call("d-uuid", "source-email", "tess.testerton@example.invalid"),
+                call("d-uuid", "email-received-at", "2025-01-01T09:09:00Z"),
+            ],
         )
 
         document_xml_bytes = ElementTree.tostring(mock_insert_xml.call_args.kwargs["document_xml"])
