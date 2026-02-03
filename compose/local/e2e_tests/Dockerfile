@@ -7,4 +7,6 @@ COPY . .
 
 EXPOSE 9222
 
+USER root
+
 CMD ["tail", "-f", "/dev/null"]
