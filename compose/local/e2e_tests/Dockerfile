@@ -5,9 +5,13 @@ WORKDIR /app
 RUN pip install --no-cache-dir pytest-playwright==0.7.1 axe-playwright-python==0.1.6 pillow numpy scikit-image
 COPY . .
 
+RUN useradd -m playwrightuser
+
 EXPOSE 9222
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
   CMD test -f /proc/self/status || exit 1
+
+USER playwrightuser
 
 CMD ["tail", "-f", "/dev/null"]
