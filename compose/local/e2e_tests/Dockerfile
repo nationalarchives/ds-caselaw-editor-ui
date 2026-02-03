@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/playwright/python:v1.57.0-noble@sha256:8331696befd3ee8b5b
 
 WORKDIR /app
 
-RUN pip install pytest-playwright==0.7.1 axe-playwright-python==0.1.6 pillow numpy scikit-image
+RUN pip install pytest-playwright==0.7.1 axe-playwright-python==0.1.6 pillow numpy scikit-image --no-cache-dir
 COPY . .
 
 EXPOSE 9222
