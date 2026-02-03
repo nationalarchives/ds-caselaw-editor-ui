@@ -5,7 +5,7 @@ WORKDIR /app
 RUN pip install --no-cache-dir pytest-playwright==0.7.2 axe-playwright-python==0.1.7 pillow==12.1.0 numpy==2.4.2 scikit-image==0.26.0
 COPY . .
 
-RUN useradd -m playwrightuser
+RUN useradd -m playwrightuser && chown -R playwrightuser:playwrightuser /app
 
 EXPOSE 9222
 
