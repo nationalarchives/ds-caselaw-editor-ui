@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/playwright/python:v1.58.0-noble@sha256:cd8493e380df200a47
 
 WORKDIR /app
 
-RUN pip install --no-cache-dir pytest-playwright==0.7.1 axe-playwright-python==0.1.6 pillow numpy scikit-image
+RUN pip install --no-cache-dir pytest-playwright==0.7.2 axe-playwright-python==0.1.7 pillow==12.1.0 numpy==2.4.2 scikit-image==0.26.0
 COPY . .
 
 RUN useradd -m playwrightuser
