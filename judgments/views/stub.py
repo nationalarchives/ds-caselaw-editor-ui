@@ -1,6 +1,7 @@
 import datetime
 import xml.etree.ElementTree as ET
 from uuid import uuid4
+from xml.sax.saxutils import escape
 
 from caselawclient.models.documents.stub import EditorStubData, PartyData, render_stub_xml
 from caselawclient.models.documents.versions import VersionAnnotation, VersionType
@@ -46,51 +47,67 @@ def is_valid_court(court_code):
         raise ValidationError(msg) from error
 
 
+def forbid_angle_brackets(s: str):
+    if "<" in s or ">" in s:
+        msg = "Angle brackets are not allowed"
+        raise ValidationError(msg)
+
+
 class StubForm(forms.Form):
     # Django form for display
     email_received_at = forms.DateTimeField(
         widget=forms.DateInput(attrs={"type": "datetime-local"}),
         label="Email date",
     )
-    source_name = forms.CharField(label="Submitter name")
-    source_email = forms.CharField(label="Submitter email", validators=[validate_email])
+    source_name = forms.CharField(label="Submitter name", validators=[forbid_angle_brackets])
+    source_email = forms.CharField(label="Submitter email", validators=[validate_email, forbid_angle_brackets])
     decision_date = forms.DateField(
         widget=forms.DateInput(attrs={"type": "date"}),
         label="Decision date",
     )
     # transform_datetime is dynamically generated
-    court_code = forms.CharField(label="Court code", max_length=100, validators=[is_valid_court])
-    title = forms.CharField(label="Title", max_length=100, widget=forms.TextInput(attrs={"size": 50}))
+    court_code = forms.CharField(label="Court code", max_length=100, validators=[is_valid_court, forbid_angle_brackets])
+    title = forms.CharField(
+        label="Title",
+        max_length=100,
+        validators=[forbid_angle_brackets],
+        widget=forms.TextInput(attrs={"size": 50}),
+    )
     year = forms.IntegerField(label="Year", min_value=1001)
     case_numbers = forms.CharField(
         widget=forms.Textarea(attrs={"rows": 4}),
         label="Case numbers",
         max_length=100,
         required=False,
+        validators=[forbid_angle_brackets],
     )
     claimants = forms.CharField(
         widget=forms.Textarea(attrs={"rows": 4}),
         label="Claimants",
         max_length=100,
         required=False,
+        validators=[forbid_angle_brackets],
     )
     appellants = forms.CharField(
         widget=forms.Textarea(attrs={"rows": 4}),
         label="Appellants",
         max_length=100,
         required=False,
+        validators=[forbid_angle_brackets],
     )
     respondents = forms.CharField(
         widget=forms.Textarea(attrs={"rows": 4}),
         label="Respondents",
         max_length=100,
         required=False,
+        validators=[forbid_angle_brackets],
     )
     defendants = forms.CharField(
         widget=forms.Textarea(attrs={"rows": 4}),
         label="Defendants",
         max_length=100,
         required=False,
+        validators=[forbid_angle_brackets],
     )
 
     def __init__(self, *args, **kwargs):
@@ -111,7 +128,7 @@ class CreateStubView(TemplateView):
 
 
 def list_from_string(s):
-    return [line.strip() for line in s.split("\n") if line.strip()]
+    return [escape(line.strip()) for line in s.split("\n") if line.strip()]
 
 
 def create_stub(request):
@@ -145,8 +162,8 @@ def create_stub(request):
         {
             "decision_date": stub_form["decision_date"].value(),
             "transform_datetime": datetime.datetime.now(tz=datetime.UTC).strftime("%Y-%m-%dT%H:%M:%S"),
-            "court_code": stub_form["court_code"].value().upper(),
-            "title": stub_form["title"].value(),
+            "court_code": escape(stub_form["court_code"].value().upper()),
+            "title": escape(stub_form["title"].value()),
             "year": str(stub_form["year"].value()),
             "case_numbers": case_numbers,
             "parties": parties,

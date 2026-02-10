@@ -55,6 +55,8 @@ class TestStubView(TestCase):
         assert "Case numbers" in decoded_response
         assert response.status_code == 200
 
+
+class TestStubPost(TestCase):
     @patch("judgments.views.stub.uuid4", return_value="uuid")
     @patch("judgments.views.stub.render_stub_xml")
     @patch("judgments.views.stub.api_client.insert_document_xml")
@@ -100,10 +102,13 @@ class TestStubView(TestCase):
         assert b"<uk:" in document_xml_bytes
         assert b"<akomaNtoso " in document_xml_bytes
 
-    @patch("judgments.views.stub.uuid4", return_value="uuid")
-    @patch("judgments.views.stub.render_stub_xml", return_value="<xml />")
-    @patch("judgments.views.stub.api_client.insert_document_xml")
-    def test_judgment_stub_post_invalid_court(self, mock_insert_xml, mock_render_stub, mock_uuid):
+
+@patch("judgments.views.stub.uuid4", return_value="uuid")
+@patch("judgments.views.stub.render_stub_xml", return_value="<xml />")
+@patch("judgments.views.stub.api_client.insert_document_xml")
+@patch(target="judgments.views.stub.api_client.set_property")
+class TestStubValidation(TestCase):
+    def test_judgment_stub_post_invalid_court(self, mock_set_prop, mock_insert_xml, mock_render_stub, mock_uuid):
         superuser = User.objects.create_superuser(username="clark")
         self.client.force_login(superuser)
         modified_post_data = dict(**post_data)
@@ -116,3 +121,29 @@ class TestStubView(TestCase):
         mock_insert_xml.assert_not_called()
         messages = list(get_messages(response.wsgi_request))
         assert "Court code not_a_court_code" in messages[0].message
+
+    def test_judgment_stub_post_angle_brackets(self, mock_set_prop, mock_insert_xml, mock_render_stub, mock_uuid):
+        superuser = User.objects.create_superuser(username="clark")
+        self.client.force_login(superuser)
+        modified_post_data = dict(**post_data)
+        modified_post_data["title"] = "<script>alert('xss')</script>"
+        response = self.client.post(
+            "/create_stub",
+            modified_post_data,
+        )
+        mock_render_stub.assert_not_called()
+        mock_insert_xml.assert_not_called()
+        messages = list(get_messages(response.wsgi_request))
+        assert "Angle brackets are not allowed" in messages[0].message
+
+    def test_judgment_stub_post_ampersand(self, mock_set_prop, mock_insert_xml, mock_render_stub, mock_uuid):
+        superuser = User.objects.create_superuser(username="clark")
+        self.client.force_login(superuser)
+        modified_post_data = dict(**post_data)
+        modified_post_data["title"] = "Johnson & Johnson v Dolce & Gabbana"
+        self.client.post(
+            "/create_stub",
+            modified_post_data,
+        )
+        assert mock_render_stub.call_args_list[0].args[0]["title"] == "Johnson &amp; Johnson v Dolce &amp; Gabbana"
+        mock_insert_xml.assert_called()
