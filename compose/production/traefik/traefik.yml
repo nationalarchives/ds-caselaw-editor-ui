@@ -44,6 +44,9 @@ http:
       # https://docs.djangoproject.com/en/dev/ref/csrf/#ajax
       headers:
         hostsProxyHeaders: ["X-CSRFToken"]
+    limit:
+      buffering:
+        maxRequestBodyBytes: 20000000
 
   services:
     django:
