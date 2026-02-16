@@ -4,6 +4,7 @@ from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
 from caselawclient.models.documents import DocumentURIString
 from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
+from django.contrib.messages import get_messages
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
@@ -43,6 +44,24 @@ class TestUploadView(TestCase):
         _response = self.client.post("/upload", {"file": pdf, "judgment_uri": "d-a1b2c3"})
         mock_doc.assert_called_once_with("d-a1b2c3")
         mock_upload.assert_called_once_with(body=b"%PDF-1.7", s3_key="d-a1b2c3/d-a1b2c3.pdf")
+
+    @patch("judgments.views.upload.get_document_by_uri_or_404")
+    @patch("judgments.views.upload.upload_asset_to_private_bucket")
+    def test_judgment_upload_too_big_post(self, mock_upload, mock_doc):
+        document = JudgmentFactory.build(
+            uri=DocumentURIString("d-a1b2c3"),
+            body=DocumentBodyFactory.build(name="Test v Tested"),
+        )
+        mock_doc.return_value = document
+
+        pdf = SimpleUploadedFile("file.pdf", b"%PDF-1.7" + b"x" * 30 * 1024 * 1024, content_type="application/pdf")
+        superuser = User.objects.create_superuser(username="clark")
+        self.client.force_login(superuser)
+
+        response = self.client.post("/upload", {"file": pdf, "judgment_uri": "d-a1b2c3"})
+        mock_upload.assert_not_called()
+        messages = list(get_messages(response.wsgi_request))
+        assert "Uploaded file is too large. Maximum size is 20 MB." in messages[0].message
 
     @patch("judgments.views.upload.get_document_by_uri_or_404")
     @patch("judgments.views.upload.upload_asset_to_private_bucket")
