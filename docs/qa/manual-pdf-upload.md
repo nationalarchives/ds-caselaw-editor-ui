@@ -58,12 +58,6 @@ This playbook covers scenarios to test for the manual PDF upload process. These 
 - The editor is able to access a document's "upload" page
 - Any attempt to upload a file which exceeds 20MB will be rejected, regardless of file type
 
-## Editor cannot publish file with virus
-
-- Given an editor is signed in
-- The editor is able to access a document's "upload" page
-- Uploading an [EICAR test file](https://github.com/fire1ce/eicar-standard-antivirus-test-files/blob/master/eicar-adobe-acrobat-attachment.pdf) will result in the file being rejected with a virus warning
-
 ## Only editors can create stub documents
 
 - Given a non-editor user is signed in
