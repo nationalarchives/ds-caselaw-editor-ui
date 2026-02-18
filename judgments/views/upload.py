@@ -7,6 +7,8 @@ from django.urls import reverse
 
 from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_404
 
+MAX_UPLOAD_SIZE = 20 * 1024 * 1024  # 20 MB
+
 
 def is_pdf(file):
     header = file.read(4)
@@ -17,8 +19,14 @@ def is_pdf(file):
         raise ValidationError(msg)
 
 
+def is_reasonable_size(file):
+    if file.size > MAX_UPLOAD_SIZE:
+        msg = f"Uploaded file is too large. Maximum size is {int(MAX_UPLOAD_SIZE / (1024 * 1024))} MB."
+        raise ValidationError(msg)
+
+
 class UploadFileForm(forms.Form):
-    file = forms.FileField(validators=[is_pdf])
+    file = forms.FileField(validators=[is_pdf, is_reasonable_size])
 
 
 def get_pdf_upload_key(uri):
