@@ -13,7 +13,7 @@ from django.contrib import messages
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.validators import validate_email
 from django.http import HttpResponseRedirect
-from django.urls import reverse
+from django.shortcuts import render
 from django.views.generic import TemplateView
 from ds_caselaw_utils.courts import CourtNotFoundException, courts
 from ds_caselaw_utils.types import CourtCode
@@ -122,11 +122,14 @@ def create_stub(request):
     stub_form = StubForm(request.POST)
     if not stub_form.is_valid():
         messages.error(request, str(stub_form.errors))
-        return HttpResponseRedirect(
-            reverse("create-stub-document"),
+        return render(
+            request,
+            "judgment/stub.html",
+            {
+                "view": "create_stub",
+                "form": stub_form,
+            },
         )
-        msg = "Invalid form data"
-        raise RuntimeError(msg)
 
     case_numbers = list_from_string(stub_form["case_numbers"].value())
     claimants = list_from_string(stub_form["claimants"].value())
