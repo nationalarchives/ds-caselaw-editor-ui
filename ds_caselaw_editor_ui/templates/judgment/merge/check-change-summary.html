@@ -1,0 +1,35 @@
+{% extends "layouts/judgment.html" %}
+{% load i18n waffle_tags %}
+{% block content %}
+  {% include "includes/judgment/metadata_panel_static.html" with judgment=document %}
+  <div class="container">
+    {% include "includes/judgment/merge_header.html" with stage="summary" source_document=document target_document=merge_target_document %}
+    <p>
+      The document's URI will be <b>{{ document.uri }}</b>.
+    </p>
+    <p>
+      Its primary public URL will be <b>https://caselaw.nationalarchives.gov.uk/{{ document.identifiers.preferred.url_slug }}</b>.
+    </p>
+    <ul>
+      {% for identifier in document.identifiers.by_score %}
+        <li>
+          {{ identifier.schema.name }}: <b>{{ identifier.value }}</b>
+          {% if identifier.deprecated %}(deprecated){% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+    <form action="{% url 'merge' %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="document_uri" value="{{ document.uri }}" />
+      <input type="hidden"
+             name="merge_target_uri"
+             value="{{ merge_target_document.uri }}" />
+      <input type="hidden" name="merge_checked_metadata" value="1" />
+      <input type="hidden" name="merge_checked_summary" value="1" />
+      <div class="judgment-component__button-actions">
+        <input class="button-cta" type="submit" value="Confirm merge" />
+        <span class="judgment-component__back-button"><a href="{% url 'merge-document-check-metadata' document.uri merge_target_document.uri %}">Go back to check metadata</a> </span>
+      </div>
+    </form>
+  </div>
+{% endblock content %}
