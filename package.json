@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@nationalarchives/ds-caselaw-frontend": "github:nationalarchives/ds-caselaw-frontend#v2.0.16",
-    "@nationalarchives/frontend": "^0.34.0",
+    "@nationalarchives/frontend": "^0.35.0",
     "govuk-frontend": "^5.7.1",
     "nodemon": "^3.0.3",
     "sass": "^1.58.3"
