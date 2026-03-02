@@ -1,0 +1,69 @@
+{% extends "layouts/judgment.html" %}
+{% load i18n waffle_tags %}
+{% block content %}
+  {% include "includes/judgment/metadata_panel_static.html" with judgment=document %}
+  <div class="container">
+    {% include "includes/judgment/merge_header.html" with stage="metadata" source_document=document target_document=merge_target_document %}
+    {% if not safe_to_merge_target.success %}
+      <div class="page-notification--warning">
+        <h3>
+          <span class="icon icon__triangle-exclamation"></span>
+          This merge cannot be completed.
+        </h3>
+        <ul>
+          {% for message in safe_to_merge_target.messages %}<li>{{ message }}</li>{% endfor %}
+        </ul>
+      </div>
+    {% else %}
+      {% if not documents_comparison.match %}
+        <div class="page-notification--warning">
+          <div class="container">
+            <h3>
+              <span class="icon icon__triangle-exclamation"></span>
+              This document's metadata does not match the target document.
+            </h3>
+            <p>
+              You should check that you will not lose information during this merge. Information from the <b>target document</b> will be kept.
+            </p>
+          </div>
+        </div>
+      {% endif %}
+      <div class="table">
+        <table>
+          <tr>
+            <th>Attribute</th>
+            <th>This document</th>
+            <th>Target document</th>
+            <th>Match</th>
+          </tr>
+          {% for _, item in documents_comparison.items %}
+            <tr class="document-comparison-table__row__{% if item.match %}match{% else %}diff{% endif %}">
+              <th scope="row">{{ item.label|capfirst }}</th>
+              <td>{{ item.this_value }}</td>
+              <td>{{ item.that_value }}</td>
+              <td>
+                {% if item.match %}
+                  ✅
+                {% else %}
+                  ❌
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+      <form action="{% url 'merge' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="document_uri" value="{{ document.uri }}" />
+        <input type="hidden"
+               name="merge_target_uri"
+               value="{{ merge_target_document.uri }}" />
+        <input type="hidden" name="merge_checked_metadata" value="1" />
+        <div class="judgment-component__button-actions">
+          <input class="button-cta" type="submit" value="Continue" />
+          <span class="judgment-component__back-button"><a href="{% url 'merge-document' document.uri %}">Go back to select merge target</a> </span>
+        </div>
+      </form>
+    {% endif %}
+  </div>
+{% endblock content %}

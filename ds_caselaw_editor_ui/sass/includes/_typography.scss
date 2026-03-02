@@ -21,7 +21,7 @@ a {
 }
 
 .muted {
-  color: colour-var("font-base");
+  color: color-mix(in oklab, colour-var("font-base"), white 20%);
 }
 
 .display-font-family {

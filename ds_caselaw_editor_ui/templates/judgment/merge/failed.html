@@ -1,0 +1,9 @@
+{% extends "layouts/judgment.html" %}
+{% load i18n waffle_tags %}
+{% block content %}
+  {% include "includes/judgment/metadata_panel_static.html" with judgment=document %}
+  <div class="container">
+    {% include "includes/judgment/merge_header.html" with stage="complete" state="failure" source_document=document target_document=merge_target_document %}
+    <p>Sorry, but the merge operation failed.</p>
+  </div>
+{% endblock content %}

@@ -27,6 +27,14 @@ from .views.judgment_hold import (
     hold,
     unhold,
 )
+from .views.judgment_merge import (
+    FailedMergeDocumentView,
+    MergeDocumentCheckMetadataView,
+    MergeDocumentCheckSummaryView,
+    MergeDocumentSelectTargetView,
+    MergeDocumentSuccessView,
+    merge,
+)
 from .views.judgment_publish import (
     PublishDocumentSuccessView,
     PublishDocumentView,
@@ -63,6 +71,7 @@ urlpatterns = [
     path("upload", upload, name="upload"),
     path("publish", publish, name="publish"),
     path("unpublish", unpublish, name="unpublish"),
+    path("merge", merge, name="merge"),
     path("hold", hold, name="hold"),
     path("unhold", unhold, name="unhold"),
     path("delete", delete, name="delete"),
@@ -116,6 +125,27 @@ urlpatterns = [
     # Different views on judgments
     path("<path:document_uri>/associated-documents", AssociatedDocumentsView.as_view(), name="associated-documents"),
     path("<path:document_uri>/edit", EditJudgmentView.as_view(), name="edit-document"),
+    path("<path:document_uri>/merge", MergeDocumentSelectTargetView.as_view(), name="merge-document"),
+    path(
+        "<path:document_uri>/merge/<path:document_uri_to_merge>/check-metadata",
+        MergeDocumentCheckMetadataView.as_view(),
+        name="merge-document-check-metadata",
+    ),
+    path(
+        "<path:document_uri>/merge/<path:document_uri_to_merge>/summary",
+        MergeDocumentCheckSummaryView.as_view(),
+        name="merge-document-check-summary",
+    ),
+    path(
+        "<path:document_uri>/merge/<path:document_uri_to_merge>/merged",
+        MergeDocumentSuccessView.as_view(),
+        name="merge-document-success",
+    ),
+    path(
+        "<path:document_uri>/merge/<path:document_uri_to_merge>/failed",
+        FailedMergeDocumentView.as_view(),
+        name="failed-merge-document",
+    ),
     path(
         "<path:document_uri>/history",
         DocumentHistoryView.as_view(),
