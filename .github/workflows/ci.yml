@@ -82,7 +82,7 @@ jobs:
             *.output=type=docker,dest=/tmp/django-image.tar
 
       - name: Upload Django image
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: django-image
           path: /tmp/django-image.tar
@@ -115,7 +115,7 @@ jobs:
         run: docker save -o /tmp/postgres-image.tar postgres
 
       - name: Upload Postgres image
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: postgres-image
           path: /tmp/postgres-image.tar
@@ -138,13 +138,13 @@ jobs:
           target: ".env"
 
       - name: Download Django image
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
         with:
           name: django-image
           path: /tmp
 
       - name: Download Postgres image
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
         with:
           name: postgres-image
           path: /tmp
@@ -176,13 +176,13 @@ jobs:
           target: ".env"
 
       - name: Download Django image
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
         with:
           name: django-image
           path: /tmp
 
       - name: Download Postgres image
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
         with:
           name: postgres-image
           path: /tmp
@@ -236,13 +236,13 @@ jobs:
         run: docker network create caselaw
 
       - name: Download Django image
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
         with:
           name: django-image
           path: /tmp
 
       - name: Download Postgres image
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
         with:
           name: postgres-image
           path: /tmp
@@ -308,7 +308,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload trace files as github artifacts
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: ${{ always() }}
         with:
           name: playwright-report
@@ -316,7 +316,7 @@ jobs:
           retention-days: 7
 
       - name: Upload snapshots as GitHub artifacts
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: failure()
         with:
           name: playwright-snapshots
