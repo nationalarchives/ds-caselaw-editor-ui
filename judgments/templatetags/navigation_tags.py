@@ -1,3 +1,4 @@
+import waffle
 from django import template
 from django.urls import reverse
 
@@ -96,16 +97,30 @@ def get_identifiers_navigation_item(view, document):
     }
 
 
+def get_merge_navigation_item(view, document, request):
+    if waffle.flag_is_active(request, "merge"):
+        return {
+            "id": "merge",
+            "selected": view in ("merge_document"),
+            "label": "Merge",
+            "url": get_document_url("merge-document", document),
+        }
+
+    return None
+
+
 @register.simple_tag(takes_context=True)
 def get_navigation_items(context):
-    view, document, linked_document_uri = (
+    view, document, linked_document_uri, request = (
         context.get("view"),
         context.get("document"),
         context.get("linked_document_uri"),
+        context.get("request"),
     )
 
     base_navigation = [
         get_review_navigation_item(view, document),
+        get_merge_navigation_item(view, document, request),
         get_hold_navigation_item(view, document),
         get_publishing_navigation_item(view, document),
         get_identifiers_navigation_item(view, document),
