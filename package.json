@@ -33,7 +33,7 @@
     "stylelint-config-clean-order": "8.0.1",
     "stylelint-config-standard-scss": "17.0.0",
     "webpack": "5.105.4",
-    "webpack-cli": "6.0.1"
+    "webpack-cli": "7.0.2"
   },
   "dependencies": {
     "@nationalarchives/ds-caselaw-frontend": "github:nationalarchives/ds-caselaw-frontend#v2.0.16",
