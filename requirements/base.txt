@@ -12,7 +12,7 @@ django-waffle==5.0.0  # https://github.com/django-waffle/django-waffle
 django-widget-tweaks==1.5.1  # https://github.com/jazzband/django-widget-tweaks
 factory-boy==3.3.3  # https://github.com/FactoryBoy/factory_boy
 
-requests~=2.32.3
+requests~=2.33.0
 xmltodict~=1.0.2
 requests-toolbelt~=1.0.0
 wsgi-basic-auth~=1.1.0
