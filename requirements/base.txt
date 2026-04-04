@@ -29,4 +29,4 @@ Jinja2>=3.0
 # Type stubs
 mypy-boto3-s3==1.42.80
 mypy-boto3-sns==1.42.3
-types-pytz==2026.1.1.20260304
+types-pytz==2026.1.1.20260402
