@@ -65,12 +65,12 @@ RUN pip install --no-cache-dir --no-index --find-links=/wheels/ /wheels/* \
 COPY --chown=django:django package-lock.json package-lock.json
 COPY --chown=django:django package.json package.json
 RUN npm ci --engine-strict=true
-COPY --chown=django:django ./compose/production/django/entrypoint /entrypoint
+COPY --chown=django:django ./docker/entrypoint /entrypoint
 RUN sed -i 's/\r$//g' /entrypoint
 RUN chmod +x /entrypoint
 
 
-COPY --chown=django:django ./compose/production/django/start /start
+COPY --chown=django:django ./docker/start /start
 RUN sed -i 's/\r$//g' /start
 RUN chmod +x /start
 
