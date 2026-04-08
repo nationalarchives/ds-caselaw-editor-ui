@@ -1,0 +1,15 @@
+{% from "govuk_frontend_jinja/components/input/macro.html" import govukInput %}
+{% macro number_input(field) %}
+  {% set errors = {"text": field.errors | join(", ")} if field.errors else None %}
+  {{ govukInput({
+    "label":       { "text": field.label, "classes": "govuk-label--s" },
+    "hint":        { "text": field.help_text } if field.help_text else None,
+    "id":          field.id_for_label,
+    "name":        field.html_name,
+    "value":       field.value() ,
+  "type":        "number",
+  "inputmode":   "numeric",
+  "classes":      "govuk-input--width-6",
+  "errorMessage": errors
+  }) }}
+{% endmacro %}

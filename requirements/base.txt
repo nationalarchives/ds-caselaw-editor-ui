@@ -25,6 +25,7 @@ fido2~=2.1.0
 qrcode~=8.2
 crispy-forms-gds==2.0.1
 Jinja2>=3.0
+govuk-frontend-jinja>=4.0.0
 
 # Type stubs
 mypy-boto3-s3==1.42.80

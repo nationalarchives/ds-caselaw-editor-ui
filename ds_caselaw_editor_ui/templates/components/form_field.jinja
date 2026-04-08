@@ -1,0 +1,18 @@
+{% from "components/text_input.jinja" import text_input %}
+{% from "components/number_input.jinja" import number_input %}
+{% from "components/date_input.jinja" import date_input %}
+{% from "components/textarea.jinja" import textarea %}
+{% from "components/datalist_input.jinja" import datalist_input %}
+{% macro form_field(field) %}
+  {% if field.widget_type == "textarea" %}
+    {{ textarea(field) }}
+  {% elif field.widget_type == "date" or field.widget_type == "govukdateinput" or field.widget_type == "govukdatetimeinput" %}
+    {{ date_input(field) }}
+  {% elif field.widget_type == "number" %}
+    {{ number_input(field) }}
+  {% elif field.widget_type == "select" %}
+    {{ datalist_input(field) }}
+  {% else %}
+    {{ text_input(field) }}
+  {% endif %}
+{% endmacro %}

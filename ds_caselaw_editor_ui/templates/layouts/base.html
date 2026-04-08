@@ -51,6 +51,9 @@
                   {{ user.username }}
                 {% endif %}
               </li>
+              <li>
+                <a href="{% url 'create-stub-document' %}">Create a stub</a>
+              </li>
               {% if user|is_superuser %}
                 <li>
                   <a href="{% url 'admin:index' %}">Admin</a>

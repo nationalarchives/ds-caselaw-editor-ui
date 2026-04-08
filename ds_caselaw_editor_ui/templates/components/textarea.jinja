@@ -1,0 +1,12 @@
+{% from "govuk_frontend_jinja/components/textarea/macro.html" import govukTextarea %}
+{% macro textarea(field) %}
+  {% set errors = {"text": field.errors | join(", ")} if field.errors else None %}
+  {{ govukTextarea({
+    "label":       { "text": field.label, "classes": "govuk-label--s" },
+    "hint":  { "text": field.help_text } if field.help_text else None,
+    "id":    field.id_for_label,
+    "name":  field.html_name,
+    "value": field.value() or "",
+  "errorMessage": errors
+  }) }}
+{% endmacro %}

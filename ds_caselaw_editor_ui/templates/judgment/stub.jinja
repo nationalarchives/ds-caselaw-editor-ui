@@ -1,0 +1,29 @@
+{% extends "layouts/base.jinja" %}
+{% from "components/form_field.jinja" import form_field %}
+{% from "components/button.jinja" import button %}
+{% from "components/content.jinja" import content_container, content_body, content_article, content_aside %}
+{% from "components/panel.jinja" import panel %}
+{% block content %}
+  {% call panel() %}
+    {% call content_container() %}
+      {% call content_body() %}
+        {% call content_article() %}
+          <h1>I want to create a stub:</h1>
+          <form action="{{ url('stub') }}" method="post" novalidate>
+            {{ csrf_input }}
+            {% for field in form %}
+              {% if not field.is_hidden %}
+                {{ form_field(field) }}
+              {% else %}
+                {{ field }}
+              {% endif %}
+            {% endfor %}
+            {{ button({"text": "Stub document"}) }}
+          </form>
+        {% endcall %}
+        {% call content_aside() %}
+        {% endcall %}
+      {% endcall %}
+    {% endcall %}
+  {% endcall %}
+{% endblock content %}

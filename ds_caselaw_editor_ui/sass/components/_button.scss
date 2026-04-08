@@ -1,0 +1,5 @@
+.govuk-button {
+  @include call-to-action-button;
+
+  position: relative;
+}

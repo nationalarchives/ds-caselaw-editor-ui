@@ -1,0 +1,14 @@
+{% macro content_container() %}
+  <div class="content__container">{{ caller() }}</div>
+{% endmacro %}
+{% macro content_body() %}
+  <div class="content__body">{{ caller() }}</div>
+{% endmacro %}
+{% macro content_article() %}
+  <article class="content__article">{{ caller() }}</article>
+{% endmacro %}
+{% macro content_aside() %}
+  <aside class="content__aside">
+    {{ caller() }}
+  </aside>
+{% endmacro %}

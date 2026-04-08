@@ -1,5 +1,5 @@
-import datetime
 import xml.etree.ElementTree as ET
+from datetime import UTC, date, datetime
 from uuid import uuid4
 
 from caselawclient.models.documents.stub import EditorStubData, PartyData, render_stub_xml
@@ -46,49 +46,142 @@ def is_valid_court(court_code):
         raise ValidationError(msg) from error
 
 
+class GovukDateInputWidgetBase(forms.Widget):
+    def decompress(self, value):
+        if isinstance(value, (date, datetime)):
+            return value.day, value.month, value.year
+        if isinstance(value, str) and value:
+            try:
+                d = datetime.strptime(value[:10], "%Y-%m-%d")
+            except ValueError:
+                pass
+            else:
+                return d.day, d.month, d.year
+        return None, None, None
+
+    def render(self, name, value, attrs=None, renderer=None):
+        return ""
+
+
+class GovukDateInputWidget(GovukDateInputWidgetBase):
+    def value_from_datadict(self, data, files, name):
+        day = data.get(f"{name}-day", "").zfill(2)
+        month = data.get(f"{name}-month", "").zfill(2)
+        year = data.get(f"{name}-year", "")
+        if day and month and year:
+            return f"{year}-{month}-{day}"
+        return None
+
+
+class GovukDateTimeInputWidget(GovukDateInputWidgetBase):
+    format = "%Y-%m-%dT%H:%M:%SZ"
+
+    def value_from_datadict(self, data, files, name):
+        day = data.get(f"{name}-day", "").zfill(2)
+        month = data.get(f"{name}-month", "").zfill(2)
+        year = data.get(f"{name}-year", "")
+        if day and month and year:
+            return f"{year}-{month}-{day}T00:00:00Z"
+        return None
+
+    def format_value(self, value):
+        if isinstance(value, datetime):
+            return value.strftime(self.format)
+        return value
+
+
+class GovukDateField(forms.DateField):
+    widget = GovukDateInputWidget
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("input_formats", ["%Y-%m-%d"])
+        super().__init__(*args, **kwargs)
+
+
+class GovukDateTimeField(forms.DateTimeField):
+    widget = GovukDateTimeInputWidget
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("input_formats", ["%Y-%m-%dT%H:%M:%SZ"])
+        super().__init__(*args, **kwargs)
+
+
 class StubForm(forms.Form):
     # Django form for display
-    email_received_at = forms.DateTimeField(
-        widget=forms.DateInput(attrs={"type": "datetime-local"}),
+    email_received_at = GovukDateTimeField(
         label="Email date",
+        error_messages={
+            "required": "Enter the date of the email",
+        },
     )
-    source_name = forms.CharField(label="Submitter name")
-    source_email = forms.CharField(label="Submitter email", validators=[validate_email])
-    decision_date = forms.DateField(
-        widget=forms.DateInput(attrs={"type": "date"}),
+    source_name = forms.CharField(
+        label="Submitter name",
+        error_messages={
+            "required": "Enter the full submitter name",
+        },
+    )
+    source_email = forms.CharField(
+        label="Submitter email",
+        validators=[validate_email],
+        error_messages={
+            "required": "Enter the submitter email address",
+        },
+    )
+    decision_date = GovukDateField(
         label="Decision date",
+        error_messages={
+            "required": "Enter the date of the court decision",
+        },
     )
-    # transform_datetime is dynamically generated
-    court_code = forms.CharField(label="Court code", max_length=100, validators=[is_valid_court])
-    title = forms.CharField(label="Title", max_length=100, widget=forms.TextInput(attrs={"size": 50}))
-    year = forms.IntegerField(label="Year", min_value=1001)
+    court_code = forms.ChoiceField(
+        label="Court code",
+        validators=[is_valid_court],
+        error_messages={
+            "required": "Select the court code",
+        },
+    )
+    title = forms.CharField(
+        label="Title",
+        max_length=100,
+        widget=forms.TextInput(attrs={"size": 50}),
+        error_messages={
+            "required": "Enter the title of the case",
+        },
+    )
+    year = forms.IntegerField(
+        label="Year",
+        min_value=1001,
+        error_messages={
+            "required": "Enter the year of the case",
+        },
+    )
     case_numbers = forms.CharField(
         widget=forms.Textarea(attrs={"rows": 4}),
-        label="Case numbers",
+        label="Case number(s)",
         max_length=100,
         required=False,
     )
     claimants = forms.CharField(
         widget=forms.Textarea(attrs={"rows": 4}),
-        label="Claimants",
+        label="Claimant(s)",
         max_length=100,
         required=False,
     )
     appellants = forms.CharField(
         widget=forms.Textarea(attrs={"rows": 4}),
-        label="Appellants",
+        label="Appellant(s)",
         max_length=100,
         required=False,
     )
     respondents = forms.CharField(
         widget=forms.Textarea(attrs={"rows": 4}),
-        label="Respondents",
+        label="Respondent(s)",
         max_length=100,
         required=False,
     )
     defendants = forms.CharField(
         widget=forms.Textarea(attrs={"rows": 4}),
-        label="Defendants",
+        label="Defendant(s)",
         max_length=100,
         required=False,
     )
@@ -98,10 +191,15 @@ class StubForm(forms.Form):
         # Hide colons from field names
         for field in self.fields.values():
             field.label_suffix = ""
+        court_choices = courts.get_all(with_jurisdictions=True)
+        self.fields["court_code"].choices = [("", "Select a court")] + [
+            (court.code, court.name) for court in court_choices
+        ]
 
 
 class CreateStubView(TemplateView):
-    template_name = "judgment/stub.html"
+    template_engine = "jinja"
+    template_name = "judgment/stub.jinja"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -124,11 +222,12 @@ def create_stub(request):
         messages.error(request, str(stub_form.errors))
         return render(
             request,
-            "judgment/stub.html",
+            "judgment/stub.jinja",
             {
                 "view": "create_stub",
                 "form": stub_form,
             },
+            using="jinja",
         )
 
     case_numbers = list_from_string(stub_form["case_numbers"].value())
@@ -147,7 +246,7 @@ def create_stub(request):
     stub_data = EditorStubData(
         {
             "decision_date": stub_form["decision_date"].value(),
-            "transform_datetime": datetime.datetime.now(tz=datetime.UTC).strftime("%Y-%m-%dT%H:%M:%S"),
+            "transform_datetime": datetime.now(tz=UTC).strftime("%Y-%m-%dT%H:%M:%S"),
             "court_code": stub_form["court_code"].value().upper(),
             "title": stub_form["title"].value(),
             "year": str(stub_form["year"].value()),
@@ -170,11 +269,11 @@ def create_stub(request):
     )
     api_client.set_property(document_uri, "source-name", stub_form["source_name"].value())
     api_client.set_property(document_uri, "source-email", stub_form["source_email"].value())
-    api_client.set_property(document_uri, "email-received-at", stub_form["email_received_at"].value() + ":00Z")
+    api_client.set_property(document_uri, "email-received-at", stub_form["email_received_at"].value())
 
     messages.success(
         request,
         f"Added stub to {document_uri}",
     )
 
-    return HttpResponseRedirect(f"/{document_uri}")
+    return HttpResponseRedirect(f"/{document_uri}/upload")
