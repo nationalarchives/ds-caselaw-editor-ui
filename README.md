@@ -274,18 +274,6 @@ To do this:
 
 ## Deployment
 
-### Staging
+<!-- last_review: 2026-04-08 -->
 
-The `main` branch is automatically deployed with each commit. The deployed app can be viewed at [https://editor.staging.caselaw.nationalarchives.gov.uk/](https://editor.staging.caselaw.nationalarchives.gov.uk/)
-
-### Production
-
-To deploy to production:
-
-1. Create a [new release](https://github.com/nationalarchives/ds-caselaw-editor-ui/releases).
-2. Set the tag and release name to `vX.Y.Z`, following semantic versioning.
-3. Publish the release.
-4. Automated workflow will then force-push that release to the `production` branch, which will then be deployed to the production environment.
-5. If you need to roll back to an earlier version, force-push that version to `production` manually.
-
-The production app is at [https://editor.caselaw.nationalarchives.gov.uk/](https://editor.caselaw.nationalarchives.gov.uk/)
+See the [deployment documentation](docs/DEPLOY.md).
