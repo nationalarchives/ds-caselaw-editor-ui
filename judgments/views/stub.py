@@ -193,7 +193,8 @@ class StubForm(forms.Form):
             field.label_suffix = ""
         court_choices = courts.get_all(with_jurisdictions=True)
         court_field = self.fields["court_code"]
-        court_field.choices = [("", "Select a court")] + [(court.code, court.name) for court in court_choices]
+        if isinstance(court_field, forms.ChoiceField):
+            court_field.choices = [("", "Select a court")] + [(court.code, court.name) for court in court_choices]
 
 
 class CreateStubView(TemplateView):
