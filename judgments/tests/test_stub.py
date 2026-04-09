@@ -1,5 +1,5 @@
 from pathlib import Path
-from unittest.mock import ANY, call, patch
+from unittest.mock import ANY, MagicMock, call, patch
 
 from caselawclient.Client import ROOT_DIR
 from caselawclient.models.judgments import Judgment
@@ -14,9 +14,13 @@ from judgments.views.stub import ANNOTATION
 post_data = {
     "source_name": "Tess Testerton",
     "source_email": "tess.testerton@example.invalid",
-    "email_received_at": "2025-01-01T09:09",
-    "decision_date": "2024-01-01",
-    "court_code": "UkSc",
+    "email_received_at-day": "01",
+    "email_received_at-month": "01",
+    "email_received_at-year": "2025",
+    "decision_date-day": "01",
+    "decision_date-month": "01",
+    "decision_date-year": "2024",
+    "court_code": "UKSC",
     "title": "A title",
     "year": "2024",
     "case_numbers": "ABC123\nDEF123",
@@ -46,20 +50,28 @@ formatted_data = {
 }
 
 
+def make_mock_court(code="UKSC", name="UK Supreme Court"):
+    court = MagicMock()
+    court.code = code
+    court.name = name
+    return court
+
+
 class TestStubView(TestCase):
     def test_judgment_stub_view(self):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
         response = self.client.get("/stub")
         decoded_response = response.content.decode("utf-8")
         assert "I want to create a stub:" in decoded_response
-        assert "Case numbers" in decoded_response
+        assert "Case number(s)" in decoded_response
         assert response.status_code == 200
 
+    @patch("judgments.views.stub.courts.get_all", return_value=[make_mock_court()])
     @patch("judgments.views.stub.uuid4", return_value="uuid")
     @patch("judgments.views.stub.render_stub_xml")
     @patch("judgments.views.stub.api_client.insert_document_xml")
     @patch("judgments.views.stub.api_client.set_property")
-    def test_judgment_stub_post(self, mock_set_property, mock_insert_xml, mock_render_stub, mock_uuid):
+    def test_judgment_stub_post(self, mock_set_property, mock_insert_xml, mock_render_stub, mock_uuid, mock_courts):
         judgment_template_path = Path(ROOT_DIR) / "models" / "documents" / "templates" / "judgment.xml"
         with (judgment_template_path).open("r") as f:
             template = f.read()
@@ -70,6 +82,7 @@ class TestStubView(TestCase):
             "/create_stub",
             post_data,
         )
+
         mock_render_stub.assert_called_with(
             formatted_data,
         )
@@ -90,7 +103,7 @@ class TestStubView(TestCase):
             [
                 call("d-uuid", "source-name", "Tess Testerton"),
                 call("d-uuid", "source-email", "tess.testerton@example.invalid"),
-                call("d-uuid", "email-received-at", "2025-01-01T09:09:00Z"),
+                call("d-uuid", "email-received-at", "2025-01-01T00:00:00Z"),
             ],
         )
 
@@ -100,10 +113,11 @@ class TestStubView(TestCase):
         assert b"<uk:" in document_xml_bytes
         assert b"<akomaNtoso " in document_xml_bytes
 
+    @patch("judgments.views.stub.courts.get_all", return_value=[make_mock_court()])
     @patch("judgments.views.stub.uuid4", return_value="uuid")
     @patch("judgments.views.stub.render_stub_xml", return_value="<xml />")
     @patch("judgments.views.stub.api_client.insert_document_xml")
-    def test_judgment_stub_post_invalid_court(self, mock_insert_xml, mock_render_stub, mock_uuid):
+    def test_judgment_stub_post_invalid_court(self, mock_insert_xml, mock_render_stub, mock_uuid, mock_courts):
         superuser = User.objects.create_superuser(username="clark")
         self.client.force_login(superuser)
         modified_post_data = dict(**post_data)
@@ -115,4 +129,4 @@ class TestStubView(TestCase):
         mock_render_stub.assert_not_called()
         mock_insert_xml.assert_not_called()
         messages = list(get_messages(response.wsgi_request))
-        assert "Court code not_a_court_code" in messages[0].message
+        assert "Select a valid choice. not_a_court_code is not one of the available choices." in messages[0].message

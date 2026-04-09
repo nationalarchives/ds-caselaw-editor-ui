@@ -218,7 +218,11 @@ TEMPLATES = [
             "environment": "judgments.jinja.environment",
             "context_processors": [
                 "django.template.context_processors.request",
+                "judgments.context_processors.cookie_consent",
+                "judgments.context_processors.environment",
+                "judgments.context_processors.user_context",
             ],
+            "extensions": ["waffle.jinja.WaffleExtension"],
         },
     },
 ]

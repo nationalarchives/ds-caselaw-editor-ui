@@ -1,0 +1,18 @@
+{% from "govuk_frontend_jinja/components/input/macro.html" import govukInput %}
+{% macro datalist_input(field) %}
+  {% set datalist_id = field.id_for_label ~ "-list" %}
+  {% set errors = {"text": field.errors | join(", ")} if field.errors else {} %}
+  {{ govukInput({
+    "id":           field.id_for_label,
+    "name":         field.html_name,
+    "label":        { "text": field.label, "classes": "govuk-label--s" },
+    "value":        field.value() ,
+  "errorMessage": errors,
+  "attributes":   { "list": datalist_id }
+  }) }}
+  <datalist id="{{ datalist_id }}">
+    {% for choice in field.field.choices %}
+      {% if choice[0] %}<option value="{{ choice[0] }}">{{ choice[1] }}</option>{% endif %}
+    {% endfor %}
+  </datalist>
+{% endmacro %}

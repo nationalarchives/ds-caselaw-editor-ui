@@ -1,5 +1,6 @@
+{% from "components/navigation.jinja" import navigation with context %}
 <!DOCTYPE html>
-<html>
+<html lang="en-gb">
   <head>
     <meta charset="utf-8" />
     <meta name="robots" content="noindex,nofollow" />
@@ -29,9 +30,12 @@
             <li>
               <a href="{{ url('home') }}">Find and manage case law</a>
             </li>
+            {% block breadcrumbs %}
+            {% endblock breadcrumbs %}
           </ol>
         </nav>
       </div>
+      {{ navigation() }}
     </header>
     {% block precontent %}
     {% endblock precontent %}
