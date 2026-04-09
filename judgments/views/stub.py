@@ -227,6 +227,7 @@ def create_stub(request):
             {
                 "view": "create_stub",
                 "form": stub_form,
+                "active_navigation_endpoint": "stub",
             },
             using="jinja",
         )
