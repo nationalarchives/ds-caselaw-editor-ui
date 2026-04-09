@@ -205,6 +205,7 @@ class CreateStubView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["view"] = "create_stub"
         context["form"] = StubForm()
+        context["active_navigation_endpoint"] = "stub"
         return context
 
 

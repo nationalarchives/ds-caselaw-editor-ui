@@ -1,0 +1,50 @@
+{% macro navigation() %}
+  <div class="page-header__navbar page-header__navbar-right">
+    <nav>
+      <ol>
+        {% if user.is_authenticated %}
+          <li>
+            {% if user.first_name %}
+              {{ user.first_name }}
+            {% else %}
+              {{ user.username }}
+            {% endif %}
+          </li>
+          <li>
+            {% if active_navigation_endpoint == "stub" %}
+              Create a stub
+            {% else %}
+              <a href="{{ url('create-stub-document') }}">Create a stub</a>
+            {% endif %}
+          </li>
+          {% if user|is_superuser %}
+            <li>
+              <a href="{{ url('admin:index') }}">Admin</a>
+            </li>
+          {% endif %}
+          {% if waffle.flag("reports") %}
+            <li>
+              <a href="{{ url('reports') }}">Reports</a>
+            </li>
+          {% endif %}
+          {% if waffle.flag("stats") %}
+            <li>
+              <a href="{{ url('stats') }}">Stats</a>
+            </li>
+          {% endif %}
+        {% endif %}
+        <li>
+          <a href="{{ url('labs') }}">Labs</a>
+        </li>
+        {% if user.is_authenticated %}
+          <li>
+            <form action="{{ url('admin:logout') }}" method="post">
+              {{ csrf_input }}
+              <button type="submit">Sign out</button>
+            </form>
+          </li>
+        {% endif %}
+      </ol>
+    </nav>
+  </div>
+{% endmacro %}
