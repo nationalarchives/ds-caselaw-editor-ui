@@ -1,5 +1,8 @@
+import os
+from pathlib import Path
+
 from .base import *  # noqa: F403
-from .base import TEMPLATES, env
+from .base import MIDDLEWARE, ROOT_DIR, TEMPLATES, env
 
 # GENERAL
 # ------------------------------------------------------------------------------
@@ -44,11 +47,22 @@ def show_debug_toolbar(request):
     return False
 
 
+MIDDLEWARE += [
+    "config.vcr_middleware.VCRMiddleware",
+]
+
+VCR_ENABLED = os.getenv("VCR_ENABLED", "true").lower() == "true"
+VCR_MODE = os.getenv("VCR_MODE", "playback")
+VCR_CASSETTE_DIR = str(ROOT_DIR / "vcr_cassettes")
+
+if VCR_ENABLED:
+    Path(VCR_CASSETTE_DIR).mkdir(parents=True, exist_ok=True)
+
 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#prerequisites
 if DEBUG:
     INSTALLED_APPS += ["debug_toolbar"]  # F405
     # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#middleware
-    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]  # noqa: F405
+    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
     # https://django-debug-toolbar.readthedocs.io/en/latest/configuration.html#debug-toolbar-config
     DEBUG_TOOLBAR_CONFIG = {
         "DISABLE_PANELS": ["debug_toolbar.panels.redirects.RedirectsPanel"],

@@ -5,6 +5,7 @@ repos:
     rev: v6.0.0
     hooks:
       - id: check-added-large-files
+        exclude: ^e2e_tests/snapshots/judgment_page_expected.png$
       - id: check-case-conflict
       - id: check-json
       - id: check-merge-conflict

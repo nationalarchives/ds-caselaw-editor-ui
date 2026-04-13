@@ -273,5 +273,6 @@ def e2etest(c, baseUrl="http://django:3000"):
             "build",
             "e2e_tests",
         ],
+        env=os.environ,
     )
-    subprocess.run(["docker", "compose", "run", "e2e_tests", "pytest", "--base-url", baseUrl])
+    subprocess.run(["docker", "compose", "run", "--rm", "e2e_tests", "pytest", "--base-url", baseUrl], env=os.environ)
