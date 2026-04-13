@@ -87,7 +87,7 @@ jobs:
           name: django-image
           path: /tmp/django-image.tar
 
-  build-production-dockerfile:
+  production-smoke-test:
     needs: linter
     runs-on: ubuntu-latest
 
@@ -97,18 +97,25 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4.0.0
-
-      - name: Build production Dockerfile
-        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f # v7.1.0
+      - name: Copy .env.example file
+        uses: canastro/copy-file-action@ae66602ce7d214dbd2e298c1db67a81388755a0a
         with:
-          context: .
-          file: ./Dockerfile
-          push: false
-          tags: ds-caselaw-editor-ui:production-test
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          source: ".env.example"
+          target: ".env"
+
+      - name: Create external network
+        run: docker network create caselaw
+
+      - name: Build and run production smoke test
+        run: docker compose -f docker-compose.yml -f docker-compose.prod-test.yml up -d --build --wait --wait-timeout 600
+
+      - name: Show logs on failure
+        if: failure()
+        run: docker compose -f docker-compose.yml -f docker-compose.prod-test.yml logs
+
+      - name: Cleanup
+        if: always()
+        run: docker compose -f docker-compose.yml -f docker-compose.prod-test.yml down
 
   download-postgres:
     needs: linter
@@ -130,6 +137,9 @@ jobs:
         with:
           source: ".env.example"
           target: ".env"
+
+      - name: Create external network
+        run: docker network create caselaw
 
       - name: Download Postgres image
         run: docker compose pull postgres
@@ -159,6 +169,9 @@ jobs:
         with:
           source: ".env.example"
           target: ".env"
+
+      - name: Create external network
+        run: docker network create caselaw
 
       - name: Download Django image
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
@@ -197,6 +210,9 @@ jobs:
         with:
           source: ".env.example"
           target: ".env"
+
+      - name: Create external network
+        run: docker network create caselaw
 
       - name: Download Django image
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
@@ -321,10 +337,6 @@ jobs:
           name: playwright-snapshots
           path: "./main/e2e_tests/snapshots"
           retention-days: 7
-
-      # - name: Tear down marklogic
-      #   run: docker compose down
-      #   working-directory: "./marklogic"
 
       - name: Tear down the Stack
         run: docker compose down

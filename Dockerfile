@@ -62,24 +62,35 @@ COPY --from=python-build-stage /usr/src/app/wheels  /wheels/
 # use wheels to install python dependencies
 RUN pip install --no-cache-dir --no-index --find-links=/wheels/ /wheels/* \
   && rm -rf /wheels/
-COPY --chown=django:django package-lock.json package-lock.json
-COPY --chown=django:django package.json package.json
+
+# Install Node.js dependencies (as root)
+COPY package-lock.json package.json ./
 RUN npm ci --engine-strict=true
-COPY --chown=django:django ./docker/entrypoint /entrypoint
+
+# Copy application code (owned by root)
+COPY . ${APP_HOME}
+
+# Copy and prepare production scripts (owned by root)
+COPY ./docker/entrypoint /entrypoint
 RUN sed -i 's/\r$//g' /entrypoint
 RUN chmod +x /entrypoint
 
-
-COPY --chown=django:django ./docker/start /start
+COPY ./docker/start /start
 RUN sed -i 's/\r$//g' /start
 RUN chmod +x /start
 
-# copy application code to WORKDIR
-COPY --chown=django:django . ${APP_HOME}
+# Grant django user write access to directories written at runtime:
+# - media/logs: application data
+# - static: build outputs from npm run build (webpack + sass) and collectstatic
+RUN mkdir -p ${APP_HOME}/media ${APP_HOME}/logs ${APP_HOME}/staticfiles \
+    && chown -R django:django \
+    ${APP_HOME}/media \
+    ${APP_HOME}/logs \
+    ${APP_HOME}/ds_caselaw_editor_ui/static \
+    ${APP_HOME}/staticfiles
 
-# make django owner of the WORKDIR directory as well.
-RUN chown django:django ${APP_HOME}
-
+# Run as non-root user in production
+# User can write to media/logs/staticfiles but cannot modify application code
 USER django
 
 ENTRYPOINT ["/entrypoint"]
