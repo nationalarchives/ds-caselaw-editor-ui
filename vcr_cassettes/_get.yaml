@@ -1,0 +1,715 @@
+interactions:
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24user+as+xs%3Astring+external%3B%0Adeclare+variable+%24role+as+xs%3Astring+external%3B%0A%0Alet+%24user_roles+%3A%3D+xdmp%3Auser-roles%28%24user%29%0Alet+%24role_id+%3A%3D+xdmp%3Arole%28%24role%29%0A%0Areturn+fn%3Aboolean%28index-of%28%24role_id%2C+%24user_roles%29%29%0A&vars=%7B%22role%22%3A%22admin%22%2C%22user%22%3A%22cassette_user%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "boolean"}, "body": "true", "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 10 Apr 2026 10:30:19 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+null%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+10%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22-date%22%2C+%22from%22%3A+%22%22%2C+%22to%22%3A+%22%22%2C+%22show_unpublished%22%3A+%22true%22%2C+%22only_unpublished%22%3A+%22true%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"5694\" start=\"1\" page-length=\"10\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:result
+          index=\"1\" uri=\"/d-fb7b3b97-182b-4710-bf4c-2f69f9a006fc.xml\" path=\"fn:doc(&quot;/d-fb7b3b97-182b-4710-bf4c-2f69f9a006fc.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2099-01-17\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"aaa v ccc\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2026-02-17T17:08:55\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">UKSC</uk:court>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\">\n      <identifiers
+          xmlns:prop=\"http://marklogic.com/xdmp/property\">\n\t<identifier>\n\t  <namespace>fclid</namespace>\n\t  <uuid>id-796516b3-0ea8-4824-b4c1-504f7c4adb7d</uuid>\n\t  <value>pfc5k5wd</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>tna.pfc5k5wd</url_slug>\n\t</identifier>\n      </identifiers>\n    </search:extracted>\n  </search:result>\n  <search:result
+          index=\"2\" uri=\"/d-bd39a989-cc8c-46be-b979-66a87350485a.xml\" path=\"fn:doc(&quot;/d-bd39a989-cc8c-46be-b979-66a87350485a.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2026-04-01\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"test\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2026-04-08T14:31:01\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">SIAC</uk:court>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
+          index=\"3\" uri=\"/d-1297dc2d-edb8-404f-8061-317013555eda.xml\" path=\"fn:doc(&quot;/d-1297dc2d-edb8-404f-8061-317013555eda.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2026-03-06\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"wwewq\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2026-03-09T09:45:34\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">SIAC</uk:court>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
+          index=\"4\" uri=\"/d-b6cd225c-a0ff-4764-9f2b-99355c2c4b97.xml\" path=\"fn:doc(&quot;/d-b6cd225c-a0ff-4764-9f2b-99355c2c4b97.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2026-02-12\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"teeeest\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2026-02-09T11:30:55\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">UKSC</uk:court>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
+          index=\"5\" uri=\"/d-5b0ecda6-80bc-4e63-bb3f-1fcbc6854222.xml\" path=\"fn:doc(&quot;/d-5b0ecda6-80bc-4e63-bb3f-1fcbc6854222.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2026-01-29\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"t\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2026-01-29T16:21:57\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">UKSC</uk:court>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
+          index=\"6\" uri=\"/d-82cfb855-f341-4863-8fd5-a936c003f02a.xml\" path=\"fn:doc(&quot;/d-82cfb855-f341-4863-8fd5-a936c003f02a.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2026-01-01\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"Test1550\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2026-04-08T14:51:00\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">UKSC</uk:court>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
+          index=\"7\" uri=\"/d-13cc4d44-4623-4c7b-a905-05b71a2faed4.xml\" path=\"fn:doc(&quot;/d-13cc4d44-4623-4c7b-a905-05b71a2faed4.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2025-08-01\" name=\"judgment\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"TELEDYNE UK LIMITED v JULIAN ALLEN GAO.\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2025-10-03T13:22:00\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">EWHC-KBD</uk:court>\n      <uk:cite
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">[2025] EWHC 2050
+          (KB)</uk:cite>\n      <uk:hash xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">1a7736dcdb10018730ceca07d63b97eeaca3156cf39f21e90c38bcb6ce9bda32</uk:hash>\n      <uk:jurisdiction
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\"/>\n      <neutralCitation
+          xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\">[2025] EWHC 2050
+          (KB)</neutralCitation>\n    </search:extracted>\n    <search:extracted kind=\"identifiers\"
+          xmlns:map=\"http://marklogic.com/xdmp/map\">\n      <identifiers xmlns:prop=\"http://marklogic.com/xdmp/property\">\n\t<identifier>\n\t  <namespace>ukncn</namespace>\n\t  <uuid>id-02b7b8ef-639e-400d-a24b-766d8a30162d</uuid>\n\t  <value>[2025]
+          EWHC 2050 (KB)</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>ewhc/kb/2025/2050</url_slug>\n\t</identifier>\n\t<identifier>\n\t  <namespace>fclid</namespace>\n\t  <uuid>id-8a3fe3b8-d0db-4706-8d2c-006b57d0fbf6</uuid>\n\t  <value>hqmyr2cj</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>tna.hqmyr2cj</url_slug>\n\t</identifier>\n      </identifiers>\n    </search:extracted>\n  </search:result>\n  <search:result
+          index=\"8\" uri=\"/d-14d53aa1-53b6-4c1e-a1bc-a3a8761fda86.xml\" path=\"fn:doc(&quot;/d-14d53aa1-53b6-4c1e-a1bc-a3a8761fda86.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2025-08-01\" name=\"judgment\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"TELEDYNE UK LIMITED v JULIAN ALLEN GAO\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2025-08-05T10:30:54\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">EWHC-KBD</uk:court>\n      <uk:cite
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">[2025] EWHC 2050
+          (KB)</uk:cite>\n      <uk:hash xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">90aea15de3ac0aeee3a744de126b6a8f54230d95a4f3b584205d4c23cf2aaa9e</uk:hash>\n      <uk:jurisdiction
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\"/>\n      <neutralCitation
+          xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\">[2025] EWHC 2050
+          (KB)</neutralCitation>\n    </search:extracted>\n    <search:extracted kind=\"identifiers\"
+          xmlns:map=\"http://marklogic.com/xdmp/map\">\n      <identifiers xmlns:prop=\"http://marklogic.com/xdmp/property\">\n\t<identifier>\n\t  <namespace>ukncn</namespace>\n\t  <uuid>id-18dc1ba7-8f4d-45a3-8a67-91b70b146809</uuid>\n\t  <value>[2025]
+          UKSC 1234</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>uksc/2025/1234</url_slug>\n\t</identifier>\n\t<identifier>\n\t  <namespace>fclid</namespace>\n\t  <uuid>id-bab95a04-0c80-4969-90b9-a5ebfdbdde57</uuid>\n\t  <value>qnxtn2hd</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>tna.qnxtn2hd</url_slug>\n\t</identifier>\n      </identifiers>\n    </search:extracted>\n  </search:result>\n  <search:result
+          index=\"9\" uri=\"/d-1c05d70c-5d2a-4e5c-bbc6-c2379048f20d.xml\" path=\"fn:doc(&quot;/d-1c05d70c-5d2a-4e5c-bbc6-c2379048f20d.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <ns0:FRBRdate date=\"2025-01-01\" name=\"decision\"
+          xmlns:ns0=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <ns0:FRBRname
+          value=\"a\" xmlns:ns0=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <ns0:FRBRdate
+          date=\"2026-01-05T16:20:42\" name=\"transform\" xmlns:ns0=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <ns1:court
+          xmlns:ns1=\"https://caselaw.nationalarchives.gov.uk/akn\">UKIST</ns1:court>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
+          index=\"10\" uri=\"/d-cec741b6-1810-4f6b-a2d6-4915898cc2aa.xml\" path=\"fn:doc(&quot;/d-cec741b6-1810-4f6b-a2d6-4915898cc2aa.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <ns0:FRBRdate date=\"2025-01-01\" name=\"decision\"
+          xmlns:ns0=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <ns0:FRBRname
+          value=\"a\" xmlns:ns0=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <ns0:FRBRdate
+          date=\"2026-01-05T16:20:05\" name=\"transform\" xmlns:ns0=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <ns1:court
+          xmlns:ns1=\"https://caselaw.nationalarchives.gov.uk/akn\">UKIST</ns1:court>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:facet
+          name=\"court\" type=\"xs:string\">\n    <search:facet-value name=\"\" count=\"1\"/>\n    <search:facet-value
+          name=\"EAT\" count=\"14\">EAT</search:facet-value>\n    <search:facet-value
+          name=\"EWCA-Civil\" count=\"4\">EWCA-Civil</search:facet-value>\n    <search:facet-value
+          name=\"EWCA-Criminal\" count=\"1\">EWCA-Criminal</search:facet-value>\n    <search:facet-value
+          name=\"EWFC\" count=\"29\">EWFC</search:facet-value>\n    <search:facet-value
+          name=\"EWHC-Chancery\" count=\"1\">EWHC-Chancery</search:facet-value>\n    <search:facet-value
+          name=\"EWHC-Chancery-Business\" count=\"35\">EWHC-Chancery-Business</search:facet-value>\n    <search:facet-value
+          name=\"EWHC-Chancery-IPEC\" count=\"44\">EWHC-Chancery-IPEC</search:facet-value>\n    <search:facet-value
+          name=\"EWHC-Chancery-Patents\" count=\"1\">EWHC-Chancery-Patents</search:facet-value>\n    <search:facet-value
+          name=\"EWHC-Family\" count=\"1\">EWHC-Family</search:facet-value>\n  </search:facet>\n  <search:facet
+          name=\"year\" type=\"xs:gYear\">\n    <search:facet-value name=\"1111\" count=\"5\">1111</search:facet-value>\n    <search:facet-value
+          name=\"1212\" count=\"1\">1212</search:facet-value>\n    <search:facet-value
+          name=\"1292\" count=\"1\">1292</search:facet-value>\n    <search:facet-value
+          name=\"1812\" count=\"1\">1812</search:facet-value>\n    <search:facet-value
+          name=\"1963\" count=\"1\">1963</search:facet-value>\n    <search:facet-value
+          name=\"1982\" count=\"1\">1982</search:facet-value>\n    <search:facet-value
+          name=\"2000\" count=\"1\">2000</search:facet-value>\n    <search:facet-value
+          name=\"2001\" count=\"3\">2001</search:facet-value>\n    <search:facet-value
+          name=\"2009\" count=\"7\">2009</search:facet-value>\n    <search:facet-value
+          name=\"2010\" count=\"7\">2010</search:facet-value>\n  </search:facet>\n  <search:metrics>\n    <search:query-resolution-time>PT0.008496S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.002485S</search:facet-resolution-time>\n    <search:snippet-resolution-time>PT0.000159S</search:snippet-resolution-time>\n    <search:extract-resolution-time>PT0.00874S</search:extract-resolution-time>\n    <search:total-time>PT0.020968S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 10 Apr 2026 10:30:19 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uris+as+json%3Aarray+external%3B%0Alet+%24properties+%3A%3D+%28%0A++++fn%3AQName%28%22%22%2C+%27editor-priority%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27assigned-to%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27editor-hold%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-name%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-email%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-consignment-reference%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27published%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27email-received-at%27%29%0A%29%0A%0Areturn+%3Cproperty-results%3E%7B%0Afor+%24uri+in+json%3Aarray-values%28%24uris%29%0A++return+%3Cproperty-result+uri%3D%27%7B%24uri%7D%27%3E+%7B%0A++++for+%24prop+in+%24properties%0A++++++return+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A++%7D+%3C%2Fproperty-result%3E%0A%7D%3C%2Fproperty-results%3E%0A&vars=%7B%22uris%22%3A+%5B%22%2Fd-fb7b3b97-182b-4710-bf4c-2f69f9a006fc.xml%22%5D%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "element()", "X-Path": "/property-results"}, "body": "<property-results><property-result
+          uri=\"/d-fb7b3b97-182b-4710-bf4c-2f69f9a006fc.xml\"><editor-hold>true</editor-hold><source-name>JC
+          Picard</source-name><source-email>jean@enterprise.invalid</source-email><published>false</published><email-received-at>2099-01-17T12:34:00Z</email-received-at></property-result></property-results>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 10 Apr 2026 10:30:19 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Alet+%24timestamp+%3A%3D+xdmp%3Adocument-timestamp%28+%24uri+%29%0A%0Areturn+xdmp%3Atimestamp-to-wallclock%28+%24timestamp+%29%0A&vars=%7B%22uri%22%3A+%22%2Fd-fb7b3b97-182b-4710-bf4c-2f69f9a006fc.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "dateTime"}, "body": "2026-04-09T11:56:10.419064", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 10 Apr 2026 10:30:19 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uris+as+json%3Aarray+external%3B%0Alet+%24properties+%3A%3D+%28%0A++++fn%3AQName%28%22%22%2C+%27editor-priority%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27assigned-to%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27editor-hold%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-name%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-email%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-consignment-reference%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27published%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27email-received-at%27%29%0A%29%0A%0Areturn+%3Cproperty-results%3E%7B%0Afor+%24uri+in+json%3Aarray-values%28%24uris%29%0A++return+%3Cproperty-result+uri%3D%27%7B%24uri%7D%27%3E+%7B%0A++++for+%24prop+in+%24properties%0A++++++return+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A++%7D+%3C%2Fproperty-result%3E%0A%7D%3C%2Fproperty-results%3E%0A&vars=%7B%22uris%22%3A+%5B%22%2Fd-bd39a989-cc8c-46be-b979-66a87350485a.xml%22%5D%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "element()", "X-Path": "/property-results"}, "body": "<property-results><property-result
+          uri=\"/d-bd39a989-cc8c-46be-b979-66a87350485a.xml\"><source-name>test</source-name><source-email>terry.price@nationalarchives.gov.uk</source-email><email-received-at>2026-04-08T15:30:00Z</email-received-at></property-result></property-results>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 10 Apr 2026 10:30:19 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Alet+%24timestamp+%3A%3D+xdmp%3Adocument-timestamp%28+%24uri+%29%0A%0Areturn+xdmp%3Atimestamp-to-wallclock%28+%24timestamp+%29%0A&vars=%7B%22uri%22%3A+%22%2Fd-bd39a989-cc8c-46be-b979-66a87350485a.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "dateTime"}, "body": "2026-04-08T14:31:02.640654", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 10 Apr 2026 10:30:20 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uris+as+json%3Aarray+external%3B%0Alet+%24properties+%3A%3D+%28%0A++++fn%3AQName%28%22%22%2C+%27editor-priority%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27assigned-to%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27editor-hold%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-name%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-email%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-consignment-reference%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27published%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27email-received-at%27%29%0A%29%0A%0Areturn+%3Cproperty-results%3E%7B%0Afor+%24uri+in+json%3Aarray-values%28%24uris%29%0A++return+%3Cproperty-result+uri%3D%27%7B%24uri%7D%27%3E+%7B%0A++++for+%24prop+in+%24properties%0A++++++return+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A++%7D+%3C%2Fproperty-result%3E%0A%7D%3C%2Fproperty-results%3E%0A&vars=%7B%22uris%22%3A+%5B%22%2Fd-1297dc2d-edb8-404f-8061-317013555eda.xml%22%5D%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "element()", "X-Path": "/property-results"}, "body": "<property-results><property-result
+          uri=\"/d-1297dc2d-edb8-404f-8061-317013555eda.xml\"><source-name>test</source-name><source-email>terry.price@nationalarchives.gov.uk</source-email><email-received-at>2026-03-03T08:48:00Z</email-received-at></property-result></property-results>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 10 Apr 2026 10:30:20 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Alet+%24timestamp+%3A%3D+xdmp%3Adocument-timestamp%28+%24uri+%29%0A%0Areturn+xdmp%3Atimestamp-to-wallclock%28+%24timestamp+%29%0A&vars=%7B%22uri%22%3A+%22%2Fd-1297dc2d-edb8-404f-8061-317013555eda.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "dateTime"}, "body": "2026-03-18T12:42:12.284096", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 10 Apr 2026 10:30:20 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uris+as+json%3Aarray+external%3B%0Alet+%24properties+%3A%3D+%28%0A++++fn%3AQName%28%22%22%2C+%27editor-priority%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27assigned-to%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27editor-hold%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-name%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-email%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-consignment-reference%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27published%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27email-received-at%27%29%0A%29%0A%0Areturn+%3Cproperty-results%3E%7B%0Afor+%24uri+in+json%3Aarray-values%28%24uris%29%0A++return+%3Cproperty-result+uri%3D%27%7B%24uri%7D%27%3E+%7B%0A++++for+%24prop+in+%24properties%0A++++++return+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A++%7D+%3C%2Fproperty-result%3E%0A%7D%3C%2Fproperty-results%3E%0A&vars=%7B%22uris%22%3A+%5B%22%2Fd-b6cd225c-a0ff-4764-9f2b-99355c2c4b97.xml%22%5D%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "element()", "X-Path": "/property-results"}, "body": "<property-results><property-result
+          uri=\"/d-b6cd225c-a0ff-4764-9f2b-99355c2c4b97.xml\"><source-name>TestANT</source-name><source-email>Test@ANT.COM</source-email><email-received-at>2026-02-19T15:34:00Z</email-received-at></property-result></property-results>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 10 Apr 2026 10:30:20 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Alet+%24timestamp+%3A%3D+xdmp%3Adocument-timestamp%28+%24uri+%29%0A%0Areturn+xdmp%3Atimestamp-to-wallclock%28+%24timestamp+%29%0A&vars=%7B%22uri%22%3A+%22%2Fd-b6cd225c-a0ff-4764-9f2b-99355c2c4b97.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "dateTime"}, "body": "2026-03-18T12:42:47.004578", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 10 Apr 2026 10:30:20 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uris+as+json%3Aarray+external%3B%0Alet+%24properties+%3A%3D+%28%0A++++fn%3AQName%28%22%22%2C+%27editor-priority%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27assigned-to%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27editor-hold%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-name%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-email%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-consignment-reference%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27published%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27email-received-at%27%29%0A%29%0A%0Areturn+%3Cproperty-results%3E%7B%0Afor+%24uri+in+json%3Aarray-values%28%24uris%29%0A++return+%3Cproperty-result+uri%3D%27%7B%24uri%7D%27%3E+%7B%0A++++for+%24prop+in+%24properties%0A++++++return+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A++%7D+%3C%2Fproperty-result%3E%0A%7D%3C%2Fproperty-results%3E%0A&vars=%7B%22uris%22%3A+%5B%22%2Fd-5b0ecda6-80bc-4e63-bb3f-1fcbc6854222.xml%22%5D%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "element()", "X-Path": "/property-results"}, "body": "<property-results><property-result
+          uri=\"/d-5b0ecda6-80bc-4e63-bb3f-1fcbc6854222.xml\"><source-name>TestANT</source-name><source-email>Test@ANT.COM</source-email><email-received-at>2026-01-24T20:25:00Z</email-received-at></property-result></property-results>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 10 Apr 2026 10:30:20 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Alet+%24timestamp+%3A%3D+xdmp%3Adocument-timestamp%28+%24uri+%29%0A%0Areturn+xdmp%3Atimestamp-to-wallclock%28+%24timestamp+%29%0A&vars=%7B%22uri%22%3A+%22%2Fd-5b0ecda6-80bc-4e63-bb3f-1fcbc6854222.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "dateTime"}, "body": "2026-03-18T12:43:08.410538", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 10 Apr 2026 10:30:20 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uris+as+json%3Aarray+external%3B%0Alet+%24properties+%3A%3D+%28%0A++++fn%3AQName%28%22%22%2C+%27editor-priority%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27assigned-to%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27editor-hold%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-name%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-email%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-consignment-reference%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27published%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27email-received-at%27%29%0A%29%0A%0Areturn+%3Cproperty-results%3E%7B%0Afor+%24uri+in+json%3Aarray-values%28%24uris%29%0A++return+%3Cproperty-result+uri%3D%27%7B%24uri%7D%27%3E+%7B%0A++++for+%24prop+in+%24properties%0A++++++return+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A++%7D+%3C%2Fproperty-result%3E%0A%7D%3C%2Fproperty-results%3E%0A&vars=%7B%22uris%22%3A+%5B%22%2Fd-82cfb855-f341-4863-8fd5-a936c003f02a.xml%22%5D%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "element()", "X-Path": "/property-results"}, "body": "<property-results><property-result
+          uri=\"/d-82cfb855-f341-4863-8fd5-a936c003f02a.xml\"><source-name>James</source-name><source-email>james.harries@dxw.com</source-email><email-received-at>2026-02-02T00:00:00Z</email-received-at></property-result></property-results>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 10 Apr 2026 10:30:20 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Alet+%24timestamp+%3A%3D+xdmp%3Adocument-timestamp%28+%24uri+%29%0A%0Areturn+xdmp%3Atimestamp-to-wallclock%28+%24timestamp+%29%0A&vars=%7B%22uri%22%3A+%22%2Fd-82cfb855-f341-4863-8fd5-a936c003f02a.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "dateTime"}, "body": "2026-04-08T14:51:00.918463", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 10 Apr 2026 10:30:20 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uris+as+json%3Aarray+external%3B%0Alet+%24properties+%3A%3D+%28%0A++++fn%3AQName%28%22%22%2C+%27editor-priority%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27assigned-to%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27editor-hold%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-name%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-email%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-consignment-reference%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27published%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27email-received-at%27%29%0A%29%0A%0Areturn+%3Cproperty-results%3E%7B%0Afor+%24uri+in+json%3Aarray-values%28%24uris%29%0A++return+%3Cproperty-result+uri%3D%27%7B%24uri%7D%27%3E+%7B%0A++++for+%24prop+in+%24properties%0A++++++return+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A++%7D+%3C%2Fproperty-result%3E%0A%7D%3C%2Fproperty-results%3E%0A&vars=%7B%22uris%22%3A+%5B%22%2Fd-13cc4d44-4623-4c7b-a905-05b71a2faed4.xml%22%5D%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "element()", "X-Path": "/property-results"}, "body": "<property-results><property-result
+          uri=\"/d-13cc4d44-4623-4c7b-a905-05b71a2faed4.xml\"><editor-hold>false</editor-hold><source-name>Anthony
+          Hashemi</source-name><source-email>anthony.hashemi@nationalarchives.gov.uk</source-email><transfer-consignment-reference>TDR-2025-3GHN</transfer-consignment-reference><transfer-received-at>2025-10-03T13:21:07Z</transfer-received-at><published>false</published></property-result></property-results>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 10 Apr 2026 10:30:20 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Alet+%24timestamp+%3A%3D+xdmp%3Adocument-timestamp%28+%24uri+%29%0A%0Areturn+xdmp%3Atimestamp-to-wallclock%28+%24timestamp+%29%0A&vars=%7B%22uri%22%3A+%22%2Fd-13cc4d44-4623-4c7b-a905-05b71a2faed4.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "dateTime"}, "body": "2026-04-08T14:38:02.849326", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 10 Apr 2026 10:30:20 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uris+as+json%3Aarray+external%3B%0Alet+%24properties+%3A%3D+%28%0A++++fn%3AQName%28%22%22%2C+%27editor-priority%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27assigned-to%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27editor-hold%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-name%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-email%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-consignment-reference%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27published%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27email-received-at%27%29%0A%29%0A%0Areturn+%3Cproperty-results%3E%7B%0Afor+%24uri+in+json%3Aarray-values%28%24uris%29%0A++return+%3Cproperty-result+uri%3D%27%7B%24uri%7D%27%3E+%7B%0A++++for+%24prop+in+%24properties%0A++++++return+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A++%7D+%3C%2Fproperty-result%3E%0A%7D%3C%2Fproperty-results%3E%0A&vars=%7B%22uris%22%3A+%5B%22%2Fd-14d53aa1-53b6-4c1e-a1bc-a3a8761fda86.xml%22%5D%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "element()", "X-Path": "/property-results"}, "body": "<property-results><property-result
+          uri=\"/d-14d53aa1-53b6-4c1e-a1bc-a3a8761fda86.xml\"><editor-hold>true</editor-hold><source-name>Emma
+          Peacock</source-name><source-email>emma.peacock@nationalarchives.gov.uk</source-email><transfer-consignment-reference>TDR-2025-X6TR</transfer-consignment-reference><transfer-received-at>2025-08-05T10:29:33Z</transfer-received-at><published>false</published></property-result></property-results>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 10 Apr 2026 10:30:21 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Alet+%24timestamp+%3A%3D+xdmp%3Adocument-timestamp%28+%24uri+%29%0A%0Areturn+xdmp%3Atimestamp-to-wallclock%28+%24timestamp+%29%0A&vars=%7B%22uri%22%3A+%22%2Fd-14d53aa1-53b6-4c1e-a1bc-a3a8761fda86.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "dateTime"}, "body": "2026-03-18T12:41:24.960994", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 10 Apr 2026 10:30:21 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uris+as+json%3Aarray+external%3B%0Alet+%24properties+%3A%3D+%28%0A++++fn%3AQName%28%22%22%2C+%27editor-priority%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27assigned-to%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27editor-hold%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-name%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-email%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-consignment-reference%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27published%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27email-received-at%27%29%0A%29%0A%0Areturn+%3Cproperty-results%3E%7B%0Afor+%24uri+in+json%3Aarray-values%28%24uris%29%0A++return+%3Cproperty-result+uri%3D%27%7B%24uri%7D%27%3E+%7B%0A++++for+%24prop+in+%24properties%0A++++++return+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A++%7D+%3C%2Fproperty-result%3E%0A%7D%3C%2Fproperty-results%3E%0A&vars=%7B%22uris%22%3A+%5B%22%2Fd-1c05d70c-5d2a-4e5c-bbc6-c2379048f20d.xml%22%5D%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "element()", "X-Path": "/property-results"}, "body": "<property-results><property-result
+          uri=\"/d-1c05d70c-5d2a-4e5c-bbc6-c2379048f20d.xml\"/></property-results>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 10 Apr 2026 10:30:21 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Alet+%24timestamp+%3A%3D+xdmp%3Adocument-timestamp%28+%24uri+%29%0A%0Areturn+xdmp%3Atimestamp-to-wallclock%28+%24timestamp+%29%0A&vars=%7B%22uri%22%3A+%22%2Fd-1c05d70c-5d2a-4e5c-bbc6-c2379048f20d.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "dateTime"}, "body": "2026-03-18T12:41:32.952529", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 10 Apr 2026 10:30:21 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uris+as+json%3Aarray+external%3B%0Alet+%24properties+%3A%3D+%28%0A++++fn%3AQName%28%22%22%2C+%27editor-priority%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27assigned-to%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27editor-hold%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-name%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-email%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-consignment-reference%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27published%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27email-received-at%27%29%0A%29%0A%0Areturn+%3Cproperty-results%3E%7B%0Afor+%24uri+in+json%3Aarray-values%28%24uris%29%0A++return+%3Cproperty-result+uri%3D%27%7B%24uri%7D%27%3E+%7B%0A++++for+%24prop+in+%24properties%0A++++++return+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A++%7D+%3C%2Fproperty-result%3E%0A%7D%3C%2Fproperty-results%3E%0A&vars=%7B%22uris%22%3A+%5B%22%2Fd-cec741b6-1810-4f6b-a2d6-4915898cc2aa.xml%22%5D%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "element()", "X-Path": "/property-results"}, "body": "<property-results><property-result
+          uri=\"/d-cec741b6-1810-4f6b-a2d6-4915898cc2aa.xml\"/></property-results>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 10 Apr 2026 10:30:21 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Alet+%24timestamp+%3A%3D+xdmp%3Adocument-timestamp%28+%24uri+%29%0A%0Areturn+xdmp%3Atimestamp-to-wallclock%28+%24timestamp+%29%0A&vars=%7B%22uri%22%3A+%22%2Fd-cec741b6-1810-4f6b-a2d6-4915898cc2aa.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "dateTime"}, "body": "2026-03-18T12:43:25.002329", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 10 Apr 2026 10:30:21 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+version: 1

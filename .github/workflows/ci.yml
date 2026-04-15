@@ -250,10 +250,7 @@ jobs:
           path: main
 
       - name: Copy .env.example file
-        uses: canastro/copy-file-action@ae66602ce7d214dbd2e298c1db67a81388755a0a
-        with:
-          source: "./main/.env.example"
-          target: "./main/.env"
+        run: cp .env.example .env
 
       - name: Create docker network as used in dev
         run: docker network create caselaw
@@ -276,37 +273,16 @@ jobs:
       - name: Load Postgres image
         run: docker load --input /tmp/postgres-image.tar
 
-      - name: Checkout Marklogic repo
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          repository: "nationalarchives/ds-caselaw-marklogic"
-          path: marklogic
-          persist-credentials: false
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6.1.0
-
       - name: Setup Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
 
       - name: Install requests
         run: "pip install requests"
 
-      - name: Run marklogic docker container
-        run: docker compose up -d --wait
-        working-directory: "./marklogic"
-
-      - name: Deploy marklogic configuration
-        run: gradle mlDeploy
-        working-directory: "./marklogic"
-
-      - name: Populate marklogic DB with test data
-        run: python ./development_scripts/populate_from_caselaw.py
-        working-directory: "./marklogic"
-
       - name: Run DB Migrations
         run: docker compose run --rm django python manage.py migrate --settings=config.settings.test
-
+      - name: Create E2E super user
+        run: docker compose run --rm -e DJANGO_SUPERUSER_PASSWORD=password django python manage.py createsuperuser --no-input --username root --email test@example.com
       - name: Setup django server for e2e tests
         run: docker compose up -d django
 
@@ -346,9 +322,9 @@ jobs:
           path: "./main/e2e_tests/snapshots"
           retention-days: 7
 
-      - name: Tear down marklogic
-        run: docker compose down
-        working-directory: "./marklogic"
+      # - name: Tear down marklogic
+      #   run: docker compose down
+      #   working-directory: "./marklogic"
 
       - name: Tear down the Stack
         run: docker compose down
