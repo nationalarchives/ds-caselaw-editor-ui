@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
+from judgments.templatetags.navigation_tags import get_navigation_items_logic
 from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_404
 
 MAX_UPLOAD_SIZE = 20 * 1024 * 1024  # 20 MB
@@ -47,11 +48,25 @@ class UploadDocumentView(DocumentView):
 
 
 class UploadDocumentSuccessView(DocumentView):
-    template_name = "judgment/upload-success.html"
+    template_engine = "jinja"
+    template_name = "judgment/upload_success.jinja"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["request"] = self.request
+        context["user"] = self.request.user
+        document = context.get("document")
         context["view"] = "upload_document_success"
+
+        context["navigation_items"] = get_navigation_items_logic(
+            view=context["view"],
+            document=document,
+        )
+
+        if document:
+            context["preferred_ncn"] = getattr(document, "preferred_ncn", None)
+            context["document_type"] = "judgment"
+
         return context
 
 

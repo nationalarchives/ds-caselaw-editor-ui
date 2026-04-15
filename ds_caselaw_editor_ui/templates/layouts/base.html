@@ -26,6 +26,8 @@
     {% include "includes/cookie_consent/cookie_banner.html" %}
     <a id="skip-to-main-content" href="#main-content">Skip to Main Content</a>
     {% include "includes/environment_banner.html" %}
+    {% block banner %}
+    {% endblock banner %}
     <header class="page-header">
       <div class="page-header__breadcrumbs page-header__navbar">
         <nav class="page-header__breadcrumbs-container" aria-label="Breadcrumb">

@@ -14,7 +14,7 @@ from jinja2 import (
     select_autoescape,
 )
 
-from judgments.templatetags.document_utils import get_title_to_display_in_html
+from judgments.templatetags.document_utils import display_datetime, get_title_to_display_in_html
 from judgments.templatetags.navigation_tags import get_navigation_items
 from judgments.templatetags.user_permissions import is_editor, is_superuser
 
@@ -78,4 +78,5 @@ def environment(**options):
     env.filters["is_editor"] = is_editor
     env.filters["date"] = format_date
     env.filters["get_title_to_display_in_html"] = get_title_to_display_in_html
+    env.filters["display_datetime"] = display_datetime
     return env

@@ -1,0 +1,19 @@
+{% from "includes/judgment/toolbar/editor_tools.jinja" import editor_tools with context %}
+{% from "includes/judgment/toolbar/editor_tools.jinja" import editor_tools %}
+{% from "includes/judgment/toolbar/status.jinja" import status_display %}
+{% from "includes/judgment/toolbar/submitter.jinja" import submitter_display %}
+{% from "includes/judgment/toolbar/create_jira_button.jinja" import jira_button %}
+{% include "includes/judgment/toolbar/version.jinja" %}
+{{ judgment_navigation(navigation_items=navigation_items, user=user) }}
+<div class="judgment-toolbar">
+  <div class="judgment-toolbar__container container">
+    <div class="judgment-toolbar__info">
+      {{ submitter_display(submitter_name=document.source_name, submitter_email=document.source_email) }}
+      {{ status_display(status=document.status) }}
+    </div>
+    <div class="judgment-toolbar__actions">
+      {{ jira_button(link=jira_create_link) }}
+      {{ editor_tools(user=user, document=document, request=request, csrf_input=csrf_input) }}
+    </div>
+  </div>
+</div>
