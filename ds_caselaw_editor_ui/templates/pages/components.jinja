@@ -1,5 +1,6 @@
 {% extends "layouts/base.jinja" %}
 {% from "components/navigation_tabs.jinja" import navigation_tabs_examples %}
+{% from "components/notification.jinja" import notification_examples %}
 {% block content %}
   <div class="container">
     <h1>Components</h1>
@@ -9,4 +10,8 @@
     <h2>Navigation tabs</h2>
   </div>
   {{ navigation_tabs_examples() }}
+  <div class="container">
+    <h2>Notification</h2>
+  </div>
+  {{ notification_examples() }}
 {% endblock content %}

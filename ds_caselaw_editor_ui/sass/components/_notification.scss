@@ -1,0 +1,33 @@
+.notification {
+  padding: $space-3 $space-5;
+  color: colour-var("contrast-link");
+
+  a {
+    color: colour-var("link");
+  }
+
+  &__container {
+    display: flex;
+    gap: $space-2;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &--success {
+    background-color: brand-colour("forest");
+  }
+
+  &--failure {
+    background-color: colour-var("form-error-border");
+  }
+
+  &--info {
+    color: colour-var("font-dark");
+    background-color: brand-colour("pastel-blue");
+  }
+
+  &--warning {
+    color: colour-var("font-dark");
+    background-color: colour-var("accent-brand");
+  }
+}
