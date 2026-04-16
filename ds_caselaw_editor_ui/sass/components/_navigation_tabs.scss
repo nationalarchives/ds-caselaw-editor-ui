@@ -1,0 +1,66 @@
+.navigation-tabs {
+  border-bottom: 1px solid colour-var("font-base");
+  background: colour-var("accent-background-light");
+
+  &__container {
+    all: unset;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    @media (min-width: $grid-breakpoint-medium) {
+      flex-direction: row;
+      gap: $space-10;
+    }
+  }
+
+  &__tab {
+    all: unset;
+    padding: $space-2 0;
+    font-size: $typography-sm-text-size;
+    text-align: center;
+
+    a {
+      text-decoration: none;
+
+      &:visited {
+        color: colour-var("link");
+      }
+
+      &:hover {
+        text-decoration: underline;
+        text-decoration-thickness: max(3px, 0.1875rem, 0.12em);
+      }
+    }
+
+    @media (min-width: $grid-breakpoint-medium) {
+      padding: $space-4 0;
+      border-bottom: 5px solid transparent;
+      font-size: $typography-md-text-size;
+    }
+  }
+
+  &__tab--active {
+    font-weight: $typography-bold-font-weight;
+    background: colour-var("link");
+
+    a:visited,
+    a:hover,
+    a:link {
+      color: colour-var("contrast-link");
+
+      @media (min-width: $grid-breakpoint-medium) {
+        color: colour-var("link");
+      }
+    }
+
+    @media (min-width: $grid-breakpoint-medium) {
+      border-bottom-color: colour-var("link");
+      background: colour-var("accent-background-light");
+    }
+  }
+
+  &__tab--disabled {
+    color: colour-var("font-base");
+  }
+}
