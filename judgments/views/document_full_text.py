@@ -1,6 +1,6 @@
 from urllib.parse import urlencode
 
-from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 
 from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_404
@@ -8,6 +8,16 @@ from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_40
 
 class DocumentReviewHTMLView(DocumentView):
     template_name = "judgment/full_text_html.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.document.failed_to_parse:
+            return super().dispatch(request, args, kwargs)
+
+        if not self.document.content_as_html():
+            redirect_path = reverse("full-text-pdf", kwargs={"document_uri": self.document.uri})
+            return HttpResponseRedirect(redirect_path)
+
+        return super().dispatch(request, args, kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -20,16 +30,15 @@ class DocumentReviewHTMLView(DocumentView):
 class DocumentReviewPDFView(DocumentView):
     template_name = "judgment/full_text_pdf.html"
 
+    def dispatch(self, request, *args, **kwargs):
+        if not self.document.pdf_url:
+            redirect_path = reverse("full-text-html", kwargs={"document_uri": self.document.uri})
+            return HttpResponseRedirect(redirect_path)
+
+        return super().dispatch(request, args, kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        if not context["document"].pdf_url:
-            msg = 'Document "{document_name}" does not have a PDF.'.format(
-                document_name=context["document"].name,
-            )
-            raise Http404(
-                msg,
-            )
 
         context["view"] = "judgment_pdf"
 
