@@ -13,9 +13,18 @@
     flex-direction: column;
   }
 
+  &__body--horizontal {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
   &__body-row {
     display: flex;
     gap: $space-4;
+  }
+
+  &__body-row--vertical {
+    flex-direction: column;
   }
 
   &__aside {
