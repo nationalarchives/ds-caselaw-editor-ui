@@ -1,0 +1,17 @@
+{% from "components/badge.jinja" import badge %}
+{% macro field_display(label=None) %}
+  <div class="field-display">
+    <h4>{{ label }}</h4>
+    {{ caller() }}
+  </div>
+{% endmacro %}
+{% macro field_display_examples() %}
+  {% call field_display(label="Submitter") %}
+    <a href="">User name</a>
+  {% endcall %}
+  {% call field_display(label="Status") %}
+    {% call badge() %}
+      On Hold
+    {% endcall %}
+  {% endcall %}
+{% endmacro %}

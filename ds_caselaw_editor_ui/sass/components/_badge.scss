@@ -1,0 +1,44 @@
+@use "sass:color";
+
+// GOVUK Frontend colours
+
+$govuk-green: #00703c;
+$govuk-blue: #1d70b8;
+$govuk-red: #d4351c;
+$govuk-white: white;
+$govuk-black: black;
+
+.badge {
+  display: inline-block;
+
+  padding: $space-1 $space-2;
+  border: 3px solid $govuk-white;
+
+  color: $govuk-white;
+  text-decoration: none;
+  text-transform: capitalize;
+
+  background-color: $govuk-blue;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+
+  &--small {
+    padding: 0 $space-1;
+    border: 0;
+  }
+
+  &--info {
+    color: color.mix($govuk-black, $govuk-blue, 60%);
+    background: color.mix($govuk-white, $govuk-blue, 70%);
+  }
+
+  &--success {
+    color: color.mix($govuk-black, $govuk-green, 20%);
+    background: color.mix($govuk-white, $govuk-green, 80%);
+  }
+
+  &--failure {
+    color: color.mix($govuk-black, $govuk-red, 80%);
+    background: color.mix($govuk-white, $govuk-red, 75%);
+  }
+}

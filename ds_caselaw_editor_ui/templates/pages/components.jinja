@@ -2,10 +2,20 @@
 {% from "components/button.jinja" import button_variant_examples, button_size_examples, button_href_examples, button_contrast_examples %}
 {% from "components/navigation_tabs.jinja" import navigation_tabs_examples %}
 {% from "components/notification.jinja" import notification_examples %}
+{% from "components/field_display.jinja" import field_display_examples %}
+{% from "components/badge.jinja" import badge_examples %}
 {% block content %}
   <div class="container">
     <h1>Components</h1>
     <p>As we create the components in jinja templates we can add them to this template to ensure they work as expected</p>
+  </div>
+  <div class="container">
+    <h2>Field display</h2>
+    {{ field_display_examples() }}
+  </div>
+  <div class="container">
+    <h2>Badge</h2>
+    {{ badge_examples() }}
   </div>
   <div class="container">
     <h2>Buttons</h2>

@@ -1,0 +1,10 @@
+.field-display {
+  display: flex;
+  gap: $space-2;
+  align-items: center;
+  padding-right: $space-4;
+
+  h4 {
+    margin: 0;
+  }
+}
