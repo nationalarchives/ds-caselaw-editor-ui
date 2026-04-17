@@ -4,6 +4,8 @@
 {% from "components/notification.jinja" import notification_examples %}
 {% from "components/field_display.jinja" import field_display_examples %}
 {% from "components/badge.jinja" import badge_examples %}
+{% from "components/metadata.jinja" import metadata_examples %}
+{% from "components/panel.jinja" import panel %}
 {% block content %}
   <div class="container">
     <h1>Components</h1>
@@ -36,4 +38,8 @@
     <h2>Notification</h2>
   </div>
   {{ notification_examples() }}
+  <div class="container">
+    <h2>Metadata</h2>
+  </div>
+  {{ metadata_examples() }}
 {% endblock content %}

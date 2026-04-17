@@ -1,0 +1,63 @@
+{% from "components/button.jinja" import button %}
+{% from "components/panel.jinja" import panel %}
+{% from "components/text_input.jinja" import text_input %}
+{% from "components/textarea.jinja" import textarea %}
+{% macro metadata_container() %}
+  <div class="metadata__container">{{ caller() }}</div>
+{% endmacro %}
+{% macro metadata_body() %}
+  <div class="metadata__body">{{ caller() }}</div>
+{% endmacro %}
+{% macro metadata_body_row() %}
+  <div class="metadata__body-row">{{ caller() }}</div>
+{% endmacro %}
+{% macro metadata_aside() %}
+  <div class="metadata__aside">{{ caller() }}</div>
+{% endmacro %}
+{% macro metadata_examples() %}
+  {% call panel() %}
+    {% call metadata_container() %}
+      {% call metadata_body() %}
+        {% call metadata_body_row() %}
+          {{ text_input({"label": "NCN", "value": "", "label_size": "extra-small", "width": "one-third", "margin": "small"}) }}
+          {{ text_input({"label": "Court", "value": "", "label_size": "extra-small", "width": "one-half", "margin": "small"}) }}
+          {{ text_input({
+            "label": "Judgment date",
+            "value": "",
+            "label_size": "extra-small",
+            "width": "one-third",
+            "margin": "small"
+          }) }}
+        {% endcall %}
+        {% call metadata_body_row() %}
+          {{ textarea({"label": "Name", "value": "", "rows": 2, "label_size": "extra-small", "width": "full"}) }}
+        {% endcall %}
+      {% endcall %}
+      {% call metadata_aside() %}
+        <dl>
+          <div>
+            <dt>TDR ref</dt>
+            <dd>
+              —
+            </dd>
+          </div>
+          <div>
+            <dt>Type</dt>
+            <dd>
+              Judgment
+            </dd>
+          </div>
+          <div>
+            <dt>First pub</dt>
+            <dd>
+              11 Mar 2026 10:08
+            </dd>
+          </div>
+        </dl>
+        {% call button() %}
+          Save
+        {% endcall %}
+      {% endcall %}
+    {% endcall %}
+  {% endcall %}
+{% endmacro %}

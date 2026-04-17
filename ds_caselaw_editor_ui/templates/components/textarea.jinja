@@ -1,12 +1,27 @@
 {% from "govuk_frontend_jinja/components/textarea/macro.html" import govukTextarea %}
 {% macro textarea(field) %}
   {% set errors = {"text": field.errors | join(", ")} if field.errors else None %}
+  {% set value = field.value() if field.value is callable else field.value %}
+  {% set label_classes = {"default": "govuk-label--s", "extra-small": "govuk-label--xs"} %}
+  {% set label_class = label_classes.get(field.label_size, label_classes["default"]) %}
+  {% set rows = field.rows if field.rows is defined else field.field.widget.attrs.rows if field.field.widget.attrs.rows is defined else 5 %}
+  {% set width_classes = {
+    "full": "govuk-!-width-full",
+    "three-quarters": "govuk-!-width-three-quarters",
+    "two-thirds": "govuk-!-width-two-thirds",
+    "one-half": "govuk-!-width-one-half",
+    "one-third": "govuk-!-width-one-third",
+    "one-quarter": "govuk-!-width-one-quarter"
+  } %}
+  {% set width_class = width_classes.get(field.width, "") %}
   {{ govukTextarea({
-    "label":       { "text": field.label, "classes": "govuk-label--s" },
+    "label":       { "text": field.label, "classes": label_class },
     "hint":  { "text": field.help_text } if field.help_text else None,
     "id":    field.id_for_label,
     "name":  field.html_name,
-    "value": field.value() or "",
-  "errorMessage": errors
-  }) }}
+    "value": value or "",
+    "rows":         rows,
+    "formGroup":   { "classes": width_class},
+    "errorMessage": errors
+    }) }}
 {% endmacro %}

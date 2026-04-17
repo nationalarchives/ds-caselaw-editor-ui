@@ -1,0 +1,55 @@
+.metadata {
+  &__container {
+    @include container;
+
+    display: flex;
+    gap: $space-8;
+    padding: $space-8 0;
+  }
+
+  &__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  &__body-row {
+    display: flex;
+    gap: $space-4;
+  }
+
+  &__aside {
+    display: flex;
+    flex-direction: column;
+
+    *:last-child {
+      margin-top: auto;
+    }
+
+    dl {
+      display: flex;
+      flex-direction: column;
+      gap: $space-1;
+
+      div {
+        display: flex;
+
+        dt {
+          display: block;
+
+          margin-bottom: $space-1;
+
+          font-size: $typography-sm-text-size;
+          line-height: $typography-lg-line-height;
+          color: colour-var("font-base");
+
+          @media (min-width: $grid-breakpoint-large) {
+            display: inline-block;
+            width: 4rem;
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
+}
