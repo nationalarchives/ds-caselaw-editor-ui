@@ -45,7 +45,7 @@ repos:
         language: python
 
   - repo: https://github.com/thibaudcolas/pre-commit-stylelint
-    rev: v17.7.0
+    rev: v17.8.0
     hooks:
       - id: stylelint
         args: [--fix]
