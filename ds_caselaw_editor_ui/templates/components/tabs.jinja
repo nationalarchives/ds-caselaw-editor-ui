@@ -1,0 +1,27 @@
+{% macro tabs(primary_tabs=False) %}
+  <div class="tabs-set {% if primary_tabs %}tabs-set--primary{% endif %} {% if javascript_enabled %}with-js{% endif %}">
+    <form>
+      {{ caller() }}
+      <div class="tabs-set__divider"></div>
+    </form>
+  </div>
+{% endmacro %}
+{% macro tab(id=None, name=None, index=None, selected=False, url=None, label=None) %}
+  <div class="tabs-set__item">
+    <input type="radio"
+           id="tab-{{ id }}"
+           name="{{ name }}"
+           value="{{ index }}"
+           {% if selected %}checked{% endif %}
+           {% if not url %}disabled{% endif %} />
+    <label for="tab-{{ id }}">
+      <a href="{{ url }}">{{ label }}</a>
+    </label>
+  </div>
+{% endmacro %}
+{% macro tabs_examples() %}
+  {% call tabs() %}
+    {{ tab(id="html", name="html", index=0, selected=True, url="/test", label="HTML") }}
+    {{ tab(id="pdf", name="pdf", index=1, url="/test", label="PDF") }}
+  {% endcall %}
+{% endmacro %}

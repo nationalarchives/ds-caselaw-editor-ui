@@ -6,6 +6,7 @@
 {% from "components/badge.jinja" import badge_examples %}
 {% from "components/metadata.jinja" import metadata_examples %}
 {% from "components/panel.jinja" import panel %}
+{% from "components/tabs.jinja" import tabs_examples %}
 {% block content %}
   <div class="container">
     <h1>Components</h1>
@@ -42,4 +43,8 @@
     <h2>Metadata</h2>
   </div>
   {{ metadata_examples() }}
+  <div class="container">
+    <h2>Tabs</h2>
+    {{ tabs_examples() }}
+  </div>
 {% endblock content %}
