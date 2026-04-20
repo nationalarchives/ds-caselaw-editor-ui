@@ -1,0 +1,36 @@
+{% from "components/badge.jinja" import badge %}
+{% from "components/button.jinja" import button %}
+{% from "components/field_display.jinja" import field_display %}
+{% macro toolbar() %}
+  <div class="toolbar">
+    <div class="toolbar__container">{{ caller() }}</div>
+  </div>
+{% endmacro %}
+{% macro toolbar_section() %}
+  <div class="toolbar__section">{{ caller() }}</div>
+{% endmacro %}
+{% macro toolbar_examples() %}
+  {% call toolbar() %}
+    {% call toolbar_section() %}
+      {% call field_display(label="Submitter") %}
+        <a href="">User name</a>
+      {% endcall %}
+      {% call field_display(label="Status") %}
+        {% call badge() %}
+          On Hold
+        {% endcall %}
+      {% endcall %}
+    {% endcall %}
+    {% call toolbar_section() %}
+      {% call button(size="small") %}
+        Create in jira
+      {% endcall %}
+      {% call button(size="small") %}
+        Request enrichment
+      {% endcall %}
+      {% call button(size="small", variant="danger") %}
+        Delete
+      {% endcall %}
+    {% endcall %}
+  {% endcall %}
+{% endmacro %}

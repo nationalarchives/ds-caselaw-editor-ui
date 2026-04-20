@@ -1,5 +1,5 @@
 {% macro button(href=None, variant=None, size=None, contrast=None, element_type="button", attrs={}) %}
-  {% set variant_classes = {"default": "", "secondary": "button--secondary", "link": "button--link"} %}
+  {% set variant_classes = {"default": "", "danger": "button--danger", "secondary": "button--secondary", "link": "button--link"} %}
   {% set size_classes = {"default": "", "small": "button--small"} %}
   {% set variant_class = variant_classes.get(variant, variant_classes['default']) %}
   {% set size_class = size_classes.get(size, size_classes['default']) %}
