@@ -1,0 +1,52 @@
+{% extends "layouts/judgment.jinja" %}
+{% from "components/notification.jinja" import notification %}
+{% from "components/document_metadata.jinja" import document_metadata with context %}
+{% from "components/tabs.jinja" import tabs, tab %}
+{% block content %}
+  {{ document_metadata(variant=("edit" if document_type == "judgment" else "view") ) }}
+  {% if document.pdf_url %}
+    {% call tabs() %}
+      {{ tab(id="html", name="html", index=0, selected=True, url=url("full-text-html", document.uri) , label="HTML view") }}
+      {{ tab(id="pdf", name="pdf", index=1, url=url("full-text-pdf", document.uri) , label="PDF view") }}
+    {% endcall %}
+  {% endif %}
+  {% if document.body.failed_to_parse %}
+    <div class="container">
+      {% call notification(variant="failure") %}
+        This document has failed to parse.
+      {% endcall %}
+      <h2>Error log</h2>
+      <pre style="white-space:pre-wrap;
+                  background:#F6F6F6;
+                  border:1px solid #AAA;
+                  padding:1em">{{ document.body.content_as_xml }}</pre>
+    </div>
+  {% else %}
+    {% autoescape off %}
+      <!-- <div class="container"> -->
+      <div id="start-of-document">
+        <div id="js-document-navigation-links-start"
+             class="document-navigation-links">
+          <a class="down" href="#end-of-document">Skip to end</a>
+        </div>
+      </div>
+      <div id="js-document-navigation-links-end"
+           class="document-navigation-links">
+        <a class="up" href="#start-of-document">Back to start</a>
+      </div>
+      {% if document_html %}
+        {{ document_html }}
+        {% include "includes/judgment_end_document_marker.html" %}
+      {% else %}
+        <div class="page-notification--info">
+          <div class="judgment-toolbar__version">
+            <span class="icon icon__circle-info"></span> This document does not have a HTML version.
+          </div>
+        </div>
+      {% endif %}
+      <div id="end-of-document">
+      {% endautoescape %}
+    {% endif %}
+  {% endblock content %}
+</div>
+<!-- </div> -->

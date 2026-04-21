@@ -1,0 +1,105 @@
+{% from "components/button.jinja" import button %}
+{% from "components/panel.jinja" import panel %}
+{% from "components/text_input.jinja" import text_input %}
+{% from "components/textarea.jinja" import textarea %}
+{% from "components/field_display.jinja" import field_display %}
+{% macro metadata_container() %}
+  <div class="metadata__container">{{ caller() }}</div>
+{% endmacro %}
+{% macro metadata_body(variant=None) %}
+  {% set variant_classes = {"default": "", "horizontal": "metadata__body--horizontal"} %}
+  {% set variant_class = variant_classes.get(variant, variant_classes["default"]) %}
+  <div class="metadata__body {{ variant_class }}">{{ caller() }}</div>
+{% endmacro %}
+{% macro metadata_body_row(variant=None) %}
+  {% set variant_classes = {"default": "", "vertical": "metadata__body-row--vertical"} %}
+  {% set variant_class = variant_classes.get(variant, variant_classes["default"]) %}
+  <div class="metadata__body-row {{ variant_class }}">{{ caller() }}</div>
+{% endmacro %}
+{% macro metadata_aside() %}
+  <div class="metadata__aside">{{ caller() }}</div>
+{% endmacro %}
+{% macro metadata_examples() %}
+  <div class="container">
+    <h3>Panel with form</h3>
+  </div>
+  {% call panel() %}
+    {% call metadata_container() %}
+      {% call metadata_body() %}
+        {% call metadata_body_row() %}
+          {{ text_input({"label": "NCN", "value": "", "label_size": "extra-small", "width": "one-third", "margin": "small"}) }}
+          {{ text_input({"label": "Court", "value": "", "label_size": "extra-small", "width": "one-half", "margin": "small"}) }}
+          {{ text_input({
+            "label": "Judgment date",
+            "value": "",
+            "label_size": "extra-small",
+            "width": "one-third",
+            "margin": "small"
+          }) }}
+        {% endcall %}
+        {% call metadata_body_row() %}
+          {{ textarea({"label": "Name", "value": "", "rows": 2, "label_size": "extra-small", "width": "full"}) }}
+        {% endcall %}
+      {% endcall %}
+      {% call metadata_aside() %}
+        <dl>
+          <div>
+            <dt>TDR ref</dt>
+            <dd>
+              —
+            </dd>
+          </div>
+          <div>
+            <dt>Type</dt>
+            <dd>
+              Judgment
+            </dd>
+          </div>
+          <div>
+            <dt>First pub</dt>
+            <dd>
+              11 Mar 2026 10:08
+            </dd>
+          </div>
+        </dl>
+        {% call button() %}
+          Save
+        {% endcall %}
+      {% endcall %}
+    {% endcall %}
+  {% endcall %}
+  <div class="container">
+    <h3>Light panel with static data</h3>
+  </div>
+  {% call panel(variant="light") %}
+    {% call metadata_container() %}
+      {% call metadata_body(variant="horizontal") %}
+        {% call metadata_body_row(variant="vertical") %}
+          {% call field_display(label="NCN", align="right", label_width="small") %}
+            [2023] EAT 1
+          {% endcall %}
+          {% call field_display(label="Court", align="right", label_width="small") %}
+            EAT
+          {% endcall %}
+          {% call field_display(label="Name", align="right", label_width="small") %}
+            IMPERIAL COLLEGE HEALTHCARE NHS TRUST v MR N MATAR
+          {% endcall %}
+        {% endcall %}
+        {% call metadata_body_row(variant="vertical") %}
+          {% call field_display(label="Judgment date", align="right", label_width="medium") %}
+            2023-01-24
+          {% endcall %}
+          {% call field_display(label="Type", align="right", label_width="medium") %}
+            Judgment
+          {% endcall %}
+          {% call field_display(label="TDR reference", align="right", label_width="medium") %}
+            TDR-2023-LL5
+          {% endcall %}
+          {% call field_display(label="First published", align="right", label_width="medium") %}
+            Unknown
+          {% endcall %}
+        {% endcall %}
+      {% endcall %}
+    {% endcall %}
+  {% endcall %}
+{% endmacro %}
