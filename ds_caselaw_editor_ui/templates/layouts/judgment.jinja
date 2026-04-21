@@ -1,0 +1,82 @@
+{% extends "layouts/base.jinja" %}
+{% from "components/badge.jinja" import badge %}
+{% from "components/badge.jinja" import badge %}
+{% from "components/button.jinja" import button %}
+{% from "components/field_display.jinja" import field_display %}
+{% from "components/notification.jinja" import notification %}
+{% from "components/navigation_tabs.jinja" import navigation_tabs, navigation_tab %}
+{% from "components/toolbar.jinja" import toolbar, toolbar_section %}
+{% block precontent %}
+  {% if current_version_number %}
+    {% call notification() %}
+      <span>
+        You are viewing <strong>version {{ current_version_number }}</strong> of this document.
+      </span>
+    {% endcall %}
+  {% endif %}
+  {% call navigation_tabs() %}
+    {% set navigation_items = get_navigation_items() %}
+    {% for item in navigation_items %}
+      {{ navigation_tab(label=item.label, url=item.url, active=item.selected) }}
+    {% endfor %}
+  {% endcall %}
+  {% call toolbar() %}
+    {% call toolbar_section() %}
+      {% call field_display(label="Submitter") %}
+        {% if document.source_name and document.source_email %}
+          <a href="mailto:{{ document.source_email }}">{{ document.source_name }}</a>
+        {% else %}
+          Unknown
+        {% endif %}
+      {% endcall %}
+      {% call field_display(label="Status") %}
+        {% set badge_variant = get_badge_variant_from_status(document.status) %}
+        {% call badge(variant=badge_variant) %}
+          {{ document.status }}
+        {% endcall %}
+      {% endcall %}
+    {% endcall %}
+    {% call toolbar_section() %}
+      {% call button(size="small", href=jira_create_link, attrs={"target": "_blank", "rel":"noopener noreferrer"}) %}
+        Create in Jira
+      {% endcall %}
+      {% if user|is_superuser or user|is_editor %}
+        <form action="{{ url('enrich') }}" method="post">
+          {{ csrf_input }}
+          <input type="hidden" name="document_uri" value="{{ document.uri }}" />
+          {% call button(size="small") %}
+            Request enrichment
+          {% endcall %}
+        </form>
+        {% if waffle.flag("reparse") %}
+          <form action="{{ url('reparse') }}" method="post">
+            {{ csrf_input }}
+            <input type="hidden" name="document_uri" value="{{ document.uri }}" />
+            {% call button(size="small") %}
+              Reparse
+            {% endcall %}
+          </form>
+        {% endif %}
+        {% call button(variant="danger", size="small", href=url("delete-document", document.uri)) %}
+          Delete
+        {% endcall %}
+      {% else %}
+        {% if document.is_failure %}
+          {% call button(variant="danger", size="small", href=url("delete-document", document.uri)) %}
+            Delete
+          {% endcall %}
+        {% endif %}
+      {% endif %}
+    {% endcall %}
+  {% endcall %}
+  {% if judgment.is_locked %}
+    {% call notification() %}
+      <div class="container">
+        <p>This document is locked: "{{ document.checkout_message }}"</p>
+        <p>
+          <a href="{{ url("unlock") }}?judgment_uri={{ document.uri }}">Unlock it</a>
+        </p>
+      </div>
+    {% endcall %}
+  {% endif %}
+{% endblock precontent %}

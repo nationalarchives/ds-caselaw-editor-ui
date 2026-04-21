@@ -1,0 +1,95 @@
+{% from "components/metadata.jinja" import metadata_container, metadata_body, metadata_body_row, metadata_aside %}
+{% from "components/panel.jinja" import panel %}
+{% from "components/text_input.jinja" import text_input %}
+{% from "components/textarea.jinja" import textarea %}
+{% from "components/datalist_input.jinja" import datalist_input %}
+{% from "components/field_display.jinja" import field_display %}
+{% from "components/button.jinja" import button %}
+{% macro document_metadata(variant="view") %}
+  {% if variant == "edit" %}
+    {% call panel() %}
+      <form aria-label="Edit judgment"
+            method="post"
+            action="{{ url('edit-document', judgment.uri) }}">
+        {{ csrf_input }}
+        <input type="hidden" name="return_to" value="html" />
+        <input type="hidden" name="judgment_uri" value="{{ document_uri }}" />
+        {% call metadata_container() %}
+          {% call metadata_body() %}
+            {% call metadata_body_row() %}
+              {{ text_input({"label": "NCN", "id_for_label": "neutral_citation", "html_name": "neutral_citation", "value": preferred_ncn.value, "label_size": "extra-small", "width": "one-third", "margin": "small"}) }}
+              {% set court_options = [] %}
+              {% for court in courts %}
+                {% set _ = court_options.append((court.code, court.name)) %}
+              {% endfor %}
+              {{ datalist_input({"label": "Court", "id_for_label": "court", "html_name": "court", "choices": court_options, "value": document.body.court_and_jurisdiction_identifier_string, "label_size": "extra-small", "width": "one-third", "margin": "small" }) }}
+              {% set document_date_value = document.body.document_date_as_date | date("%-d %b %Y") %}
+              {{ text_input({"label": "Judgment date", "value": document_date_value, "id_for_label": "judgment_date", "html_name": "judgment_date", "label_size": "extra-small", "width": "one-third", "margin": "small"}) }}
+            {% endcall %}
+            {% call metadata_body_row() %}
+              {{ textarea({"label": "Name", "id_for_label": "metadata_name", "html_name": "metadata_name", "value": document.body.name, "rows": 2, "label_size": "extra-small", "width": "full"}) }}
+            {% endcall %}
+          {% endcall %}
+          {% call metadata_aside() %}
+            <dl>
+              <div>
+                <dt>TDR ref</dt>
+                <dd>
+                  {{ document.consignment_reference or "&mdash;" }}
+                </dd>
+              </div>
+              <div>
+                <dt>Type</dt>
+                <dd>
+                  {{ document.document_noun|title }}
+                </dd>
+              </div>
+              <div>
+                <dt>First pub</dt>
+                <dd>
+                  {{ first_published_date }}
+                </dd>
+              </div>
+            </dl>
+            {% call button() %}
+              Save
+            {% endcall %}
+          {% endcall %}
+        {% endcall %}
+      </form>
+    {% endcall %}
+  {% else %}
+    {% call panel(variant="light") %}
+      {% call metadata_container() %}
+        {% call metadata_body(variant="horizontal") %}
+          {% call metadata_body_row(variant="vertical") %}
+            {% call field_display(label="NCN", align="right", label_width="small") %}
+              {{ preferred_ncn.value }}
+            {% endcall %}
+            {% call field_display(label="Court", align="right", label_width="small") %}
+              {{ document.body.court }}
+            {% endcall %}
+            {% call field_display(label="Name", align="right", label_width="small") %}
+              {{ document.body.name }}
+            {% endcall %}
+          {% endcall %}
+          {% call metadata_body_row(variant="vertical") %}
+            {% set date_field_label = "Judgment date" if document_type == "judgment" else "Pblication date" %}
+            {% call field_display(label=date_field_label, align="right", label_width="medium") %}
+              <time datetime="{{ document.body.document_date_as_string }}">{{ document.body.document_date_as_string }}</time>
+            {% endcall %}
+            {% call field_display(label="Type", align="right", label_width="medium") %}
+              {{ document.document_noun|title }}
+            {% endcall %}
+            {% call field_display(label="TDR reference", align="right", label_width="medium") %}
+              {{ document.consignment_reference or "&mdash;" }}
+            {% endcall %}
+            {% call field_display(label="First published", align="right", label_width="medium") %}
+              {{ first_published_date }}
+            {% endcall %}
+          {% endcall %}
+        {% endcall %}
+      {% endcall %}
+    {% endcall %}
+  {% endif %}
+{% endmacro %}

@@ -1,17 +1,33 @@
 {% from "govuk_frontend_jinja/components/input/macro.html" import govukInput %}
 {% macro datalist_input(field) %}
   {% set datalist_id = field.id_for_label ~ "-list" %}
+  {% set label_classes = {"default": "govuk-label--s", "extra-small": "govuk-label--xs"} %}
+  {% set label_class = label_classes.get(field.label_size, label_classes["default"]) %}
+  {% set value = field.value() if field.value is callable else field.value %}
   {% set errors = {"text": field.errors | join(", ")} if field.errors else {} %}
+  {% set width_classes = {
+    "full": "govuk-!-width-full",
+    "three-quarters": "govuk-!-width-three-quarters",
+    "two-thirds": "govuk-!-width-two-thirds",
+    "one-half": "govuk-!-width-one-half",
+    "one-third": "govuk-!-width-one-third",
+    "one-quarter": "govuk-!-width-one-quarter"
+  } %}
+  {% set width_class = width_classes.get(field.width, "") %}
+  {% set margin_classes = {"default": "", "small": "govuk-!-margin-bottom-4"} %}
+  {% set margin_class = margin_classes.get(field.margin, "") %}
+  {% set choices = field.choices if field.choices is defined else field.field.choices if field.field.choices is defined else [] %}
   {{ govukInput({
     "id":           field.id_for_label,
     "name":         field.html_name,
-    "label":        { "text": field.label, "classes": "govuk-label--s" },
-    "value":        field.value() ,
-  "errorMessage": errors,
-  "attributes":   { "list": datalist_id }
-  }) }}
+    "label":       { "text": field.label, "classes": label_class },
+    "value":        value,
+    "formGroup":   { "classes": width_class ~ " " ~ margin_class },
+    "errorMessage": errors,
+    "attributes":   { "list": datalist_id }
+    }) }}
   <datalist id="{{ datalist_id }}">
-    {% for choice in field.field.choices %}
+    {% for choice in choices %}
       {% if choice[0] %}<option value="{{ choice[0] }}">{{ choice[1] }}</option>{% endif %}
     {% endfor %}
   </datalist>

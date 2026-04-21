@@ -3,11 +3,13 @@ from urllib.parse import urlencode
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 
+from judgments.templatetags.document_utils import display_datetime
 from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_404
 
 
 class DocumentReviewHTMLView(DocumentView):
-    template_name = "judgment/full_text_html.html"
+    template_engine = "jinja"
+    template_name = "judgment/full_text_html.jinja"
 
     def dispatch(self, request, *args, **kwargs):
         if self.document.failed_to_parse:
@@ -22,13 +24,26 @@ class DocumentReviewHTMLView(DocumentView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        document = context["document"]
+
+        if document.has_ever_been_published:
+            if document.first_published_datetime_display:
+                context["first_published_date"] = display_datetime(
+                    document.first_published_datetime_display,
+                )
+            else:
+                context["first_published_date"] = "Unknown"
+        else:
+            context["first_published_date"] = "&mdash;"
+
         context["view"] = "judgment_html"
 
         return context
 
 
 class DocumentReviewPDFView(DocumentView):
-    template_name = "judgment/full_text_pdf.html"
+    template_engine = "jinja"
+    template_name = "judgment/full_text_pdf.jinja"
 
     def dispatch(self, request, *args, **kwargs):
         if not self.document.pdf_url:

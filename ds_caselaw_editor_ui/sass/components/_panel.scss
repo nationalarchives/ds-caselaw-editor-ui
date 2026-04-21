@@ -1,3 +1,9 @@
 .panel {
   background-color: colour-var("accent-background-light");
+
+  &--light {
+    border-top: 1px solid colour-var("input-border");
+    border-bottom: 1px solid colour-var("input-border");
+    background: colour-var("white");
+  }
 }
