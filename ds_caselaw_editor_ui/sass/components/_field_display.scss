@@ -4,6 +4,24 @@
   align-items: center;
   padding-right: $space-4;
 
+  &--right {
+    h4 {
+      text-align: right;
+    }
+  }
+
+  &--small {
+    h4 {
+      width: 55px;
+    }
+  }
+
+  &--medium {
+    h4 {
+      width: 125px;
+    }
+  }
+
   h4 {
     margin: 0;
   }

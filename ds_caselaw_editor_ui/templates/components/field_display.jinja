@@ -1,6 +1,10 @@
 {% from "components/badge.jinja" import badge %}
-{% macro field_display(label=None) %}
-  <div class="field-display">
+{% macro field_display(label=None, align=None, label_width=None) %}
+  {% set label_width_classes = {"default": "", "small": "field-display--small", "medium": "field-display--medium"} %}
+  {% set label_width_class = label_width_classes.get(label_width, label_width_classes["default"]) %}
+  {% set align_classes = {"default": "", "right": "field-display--right"} %}
+  {% set align_class = align_classes.get(align, align_classes["default"]) %}
+  <div class="field-display {{ align_class }} {{ label_width_class }}">
     <h4>{{ label }}</h4>
     {{ caller() }}
   </div>

@@ -11,6 +11,7 @@
   flex-wrap: wrap;
   gap: $space-2;
   align-items: center;
+  justify-content: center;
 
   margin: 0;
   border: 2px solid brand-colour("navy");
@@ -28,6 +29,21 @@
 
       background-color: colour-var("button-background");
       outline: none;
+    }
+  }
+
+  &--danger {
+    border: 2px solid colour-var("form-error-border");
+    color: colour-var("accent-button-text");
+    background-color: colour-var("form-error-border");
+
+    &:visited,
+    &:focus,
+    &:hover {
+      border-color: colour-var("form-error-border");
+      color: colour-var("accent-button-text");
+      background-color: colour-var("form-error-border");
+      outline-color: colour-var("form-error-border");
     }
   }
 
@@ -104,12 +120,9 @@
   }
 
   &--small {
-    max-height: 35px;
     margin: 0;
-    padding: $space-2 $space-3;
-
-    font-size: $typography-xs-text-size;
-    font-weight: $typography-normal-font-weight;
+    padding: $space-1 $space-2;
+    font-size: $typography-sm-text-size;
   }
 
   &__label {

@@ -1,0 +1,14 @@
+.govuk-form-group {
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.govuk-textarea {
+  margin: 0;
+}
+
+.govuk-label--xs {
+  font-size: $typography-sm-text-size;
+  line-height: $typography-lg-line-height;
+}
