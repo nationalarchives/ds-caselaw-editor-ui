@@ -22,7 +22,7 @@
               {% for court in courts %}
                 {% set _ = court_options.append((court.code, court.name)) %}
               {% endfor %}
-              {{ datalist_input({"label": "Court", "id_for_label": "court", "html_name": "court", "choices": court_options, "value": document.body.court_and_jurisdiction_identifier_string, "label_size": "extra-small", "width": "one-third", "margin": "small" }) }}
+              {{ datalist_input({"label": "Court", "id_for_label": "court", "html_name": "court", "choices": court_options, "value": document.body.court_and_jurisdiction_identifier_string, "label_size": "extra-small", "width": "one-half", "margin": "small" }) }}
               {% set document_date_value = document.body.document_date_as_date | date("%-d %b %Y") %}
               {{ text_input({"label": "Judgment date", "value": document_date_value, "id_for_label": "judgment_date", "html_name": "judgment_date", "label_size": "extra-small", "width": "one-third", "margin": "small"}) }}
             {% endcall %}

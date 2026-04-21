@@ -19,6 +19,5 @@ def test_judgment_list_pagination(authenticated_page: Page):
     authenticated_page.goto("/")
     expect(authenticated_page.locator(".pagination__page-chevron-previous--disabled")).to_be_visible()
 
-    authenticated_page.screenshot(path="test.jpg", full_page=True)
     authenticated_page.get_by_role("link", name="Next page").click()
     expect(authenticated_page).to_have_url(re.compile(r"page=2"))
