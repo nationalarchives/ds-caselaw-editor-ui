@@ -18,7 +18,9 @@
                 {{ field }}
               {% endif %}
             {% endfor %}
-            {{ button({"text": "Stub document"}) }}
+            {% call button() %}
+              Stub document
+            {% endcall %}
           </form>
         {% endcall %}
         {% call content_aside() %}

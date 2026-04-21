@@ -7,6 +7,8 @@ $govuk-assets-path: "/static/govuk-assets/";
 @import "@nationalarchives/ds-caselaw-frontend/src/main";
 @import "govuk-frontend/dist/govuk/index";
 
+@import "includes/govuk_overrides";
+
 // Setup
 @import "includes/image_paths";
 
@@ -72,3 +74,8 @@ $govuk-assets-path: "/static/govuk-assets/";
 @import "components/panel";
 @import "components/button";
 @import "components/navigation_tabs";
+@import "components/notification";
+@import "components/field_display";
+@import "components/badge";
+@import "components/metadata";
+@import "components/toolbar";

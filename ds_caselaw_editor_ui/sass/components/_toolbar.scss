@@ -1,0 +1,24 @@
+.toolbar {
+  padding: $space-4 0;
+  color: colour-var("font-dark");
+
+  &__container {
+    @include container;
+
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    align-items: center;
+    justify-content: center;
+
+    @media (min-width: $grid-breakpoint-medium) {
+      flex-direction: row;
+      gap: $space-4;
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{% macro notification(variant=None, icon=True) %}
+  {% set variant_classes = {
+    "default": "notification--info",
+    "success": "notification--success",
+    "failure": "notification--failure",
+    "info": "notification--info",
+    "warning": "notification--warning"
+  } %}
+  {% set variant_class = variant_classes.get(variant, variant_classes['default']) %}
+  {% set icon_classes = {'default': None, 'success': 'icon__circle-check', 'failure': 'icon__triangle-exclamation', 'info': 'icon__circle-info', 'warning': 'icon__triangle-exclamation'} %}
+  {% set icon_class = icon_classes.get(variant, icon_classes["default"]) %}
+  <div class="notification {{ variant_class }}">
+    <div class="notification__container">
+      {% if icon_class %}<span class="icon {{ icon_class }}"></span>{% endif %}
+      <span>{{ caller() }}</span>
+    </div>
+  </div>
+{% endmacro %}
+{% macro notification_examples() %}
+  {% call notification(variant="success") %}
+    This is an <strong>success</strong> notification
+  {% endcall %}
+  {% call notification(variant="info") %}
+    This is an <strong>info</strong> notification
+  {% endcall %}
+  {% call notification(variant="warning") %}
+    This is an <strong>warning</strong> notification
+  {% endcall %}
+  {% call notification(variant="failure") %}
+    This is an <strong>failure</strong> notification
+  {% endcall %}
+  {% call notification(icon=False) %}
+    Without an icon
+  {% endcall %}
+{% endmacro %}
