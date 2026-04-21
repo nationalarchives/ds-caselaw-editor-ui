@@ -35,7 +35,7 @@
               <div>
                 <dt>TDR ref</dt>
                 <dd>
-                  {{ document.consignment_reference or "&mdash;" }}
+                  {{ document.consignment_reference or "—" }}
                 </dd>
               </div>
               <div>
@@ -82,7 +82,7 @@
               {{ document.document_noun|title }}
             {% endcall %}
             {% call field_display(label="TDR reference", align="right", label_width="medium") %}
-              {{ document.consignment_reference or "&mdash;" }}
+              {{ document.consignment_reference or "—" }}
             {% endcall %}
             {% call field_display(label="First published", align="right", label_width="medium") %}
               {{ first_published_date }}

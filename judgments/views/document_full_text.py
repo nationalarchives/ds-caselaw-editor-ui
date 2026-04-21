@@ -34,7 +34,7 @@ class DocumentReviewHTMLView(DocumentView):
             else:
                 context["first_published_date"] = "Unknown"
         else:
-            context["first_published_date"] = "&mdash;"
+            context["first_published_date"] = "—"
 
         context["view"] = "judgment_html"
 

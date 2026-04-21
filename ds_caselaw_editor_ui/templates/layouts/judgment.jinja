@@ -80,3 +80,19 @@
     {% endcall %}
   {% endif %}
 {% endblock precontent %}
+{% block breadcrumbs %}
+  {% if document_type == "press_summary" %}
+    <li>
+      {% if linked_document_uri %}
+        <a href="{{ url('full-text-html', linked_document_uri) }}">{{ page_title|get_title_to_display_in_html(document_type) }}</a>
+      {% else %}
+        <a>{{ page_title|get_title_to_display_in_html(document_type) }}</a>
+      {% endif %}
+    </li>
+    <li>Press Summary</li>
+  {% elif document_type == "judgment" %}
+    <li>{{ page_title or "[Untitled Document]" }}</li>
+  {% elif page_title %}
+    <li>{{ page_title }}</li>
+  {% endif %}
+{% endblock breadcrumbs %}

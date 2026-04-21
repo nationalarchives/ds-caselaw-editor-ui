@@ -1,7 +1,7 @@
 {% from "govuk_frontend_jinja/components/input/macro.html" import govukInput %}
 {% macro text_input(field) %}
   {% set errors = {"text": field.errors | join(", ")} if field.errors else None %}
-  {% set value = field.value() if field.value is callable else field.value %}
+  {% set value = field.value if field is mapping else (field.value() if field.value is callable else field.value) %}
   {% set label_classes = {"default": "govuk-label--s", "extra-small": "govuk-label--xs"} %}
   {% set label_class = label_classes.get(field.label_size, label_classes["default"]) %}
   {% set width_classes = {
