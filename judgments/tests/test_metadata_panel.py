@@ -35,7 +35,7 @@ class TestMetadataPanel(TestCase):
 
         assert b'<input type="hidden" name="judgment_uri" value="hvtest/4321/123" />' in response.content
         assert root.xpath("//input[@id='court']/@value")[0] == "Court of Testing"
-        assert root.xpath("//textarea[@class='metadata-component__metadata-name-input']")[0].text == "Test v Tested"
+        assert root.xpath("//textarea[@id='metadata_name']")[0].text == "Test v Tested"
         assert response.status_code == 200
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
@@ -59,7 +59,7 @@ class TestMetadataPanel(TestCase):
 
         self.assertContains(
             response,
-            '<aside for="metadata_name" class="metadata-component__main-labels">TDR ref</aside><p>TDR-1234</p>',
+            "<dt>TDR ref</dt><dd>TDR-1234</dd>",
             html=True,
         )
 
@@ -84,7 +84,7 @@ class TestMetadataPanel(TestCase):
 
         self.assertContains(
             response,
-            '<aside for="metadata_name" class="metadata-component__main-labels">TDR ref</aside><p>&mdash;</p>',
+            "<dt>TDR ref</dt><dd>&mdash;</dd>",
             html=True,
         )
 
@@ -110,7 +110,7 @@ class TestMetadataPanel(TestCase):
 
         self.assertContains(
             response,
-            '<aside for="metadata_name" class="metadata-component__main-labels">First pub</aside><p>&mdash;</p>',
+            "<dt>First pub</dt><dd>&mdash;</dd>",
             html=True,
         )
 
@@ -136,7 +136,7 @@ class TestMetadataPanel(TestCase):
 
         self.assertContains(
             response,
-            '<aside for="metadata_name" class="metadata-component__main-labels">First pub</aside><p>Unknown</p>',
+            "<dt>First pub</dt><dd>Unknown</dd>",
             html=True,
         )
 
@@ -162,6 +162,6 @@ class TestMetadataPanel(TestCase):
 
         self.assertContains(
             response,
-            '<aside for="metadata_name" class="metadata-component__main-labels">First pub</aside><p>31 Aug 2025 12:34</p>',
+            "<dt>First pub</dt><dd>31 Aug 2025 12:34</dd>",
             html=True,
         )

@@ -1,3 +1,5 @@
-{% macro panel() %}
-  <div class="panel">{{ caller() }}</div>
+{% macro panel(variant=None) %}
+  {% set variant_classes = {"default": "", "light": "panel--light"} %}
+  {% set variant_class = variant_classes.get(variant, variant_classes['default']) %}
+  <div class="panel {{ variant_class }}">{{ caller() }}</div>
 {% endmacro %}

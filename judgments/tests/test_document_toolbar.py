@@ -78,8 +78,9 @@ class TestDocumentToolbar(TestCase):
         )
 
         decoded_response = response.content.decode("utf-8")
+
         delete_button_html = """
-        <a class="button-danger button-small" href="/failures/TDR-ref/delete">Delete</a>
+        <a href="/failures/TDR-ref/delete" class="button button--danger button--small" > Delete </a>
         """
         assert self.preprocess_html(delete_button_html) in self.preprocess_html(
             decoded_response,
@@ -114,7 +115,7 @@ class TestDocumentToolbar(TestCase):
 
         decoded_response = response.content.decode("utf-8")
         delete_button_html = """
-        <a class="button-danger button-small" href="/good-document/delete">Delete</a>
+        <a class="button button--danger button--small" href="/good-document/delete">Delete</a>
         """
         assert self.preprocess_html(delete_button_html) not in self.preprocess_html(
             decoded_response,

@@ -1,16 +1,40 @@
 from urllib.parse import urlencode
 
-from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 
+from judgments.templatetags.document_utils import display_datetime
 from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_404
 
 
 class DocumentReviewHTMLView(DocumentView):
-    template_name = "judgment/full_text_html.html"
+    template_engine = "jinja"
+    template_name = "judgment/full_text_html.jinja"
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.document.failed_to_parse:
+            return super().dispatch(request, args, kwargs)
+
+        if not self.document.content_as_html():
+            redirect_path = reverse("full-text-pdf", kwargs={"document_uri": self.document.uri})
+            return HttpResponseRedirect(redirect_path)
+
+        return super().dispatch(request, args, kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        document = context["document"]
+
+        if document.has_ever_been_published:
+            if document.first_published_datetime_display:
+                context["first_published_date"] = display_datetime(
+                    document.first_published_datetime_display,
+                )
+            else:
+                context["first_published_date"] = "Unknown"
+        else:
+            context["first_published_date"] = "—"
 
         context["view"] = "judgment_html"
 
@@ -18,18 +42,18 @@ class DocumentReviewHTMLView(DocumentView):
 
 
 class DocumentReviewPDFView(DocumentView):
-    template_name = "judgment/full_text_pdf.html"
+    template_engine = "jinja"
+    template_name = "judgment/full_text_pdf.jinja"
+
+    def dispatch(self, request, *args, **kwargs):
+        if not self.document.pdf_url:
+            redirect_path = reverse("full-text-html", kwargs={"document_uri": self.document.uri})
+            return HttpResponseRedirect(redirect_path)
+
+        return super().dispatch(request, args, kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        if not context["document"].pdf_url:
-            msg = 'Document "{document_name}" does not have a PDF.'.format(
-                document_name=context["document"].name,
-            )
-            raise Http404(
-                msg,
-            )
 
         context["view"] = "judgment_pdf"
 

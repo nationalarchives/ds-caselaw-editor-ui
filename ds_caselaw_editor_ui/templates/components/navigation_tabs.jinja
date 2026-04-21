@@ -1,0 +1,30 @@
+{% macro navigation_tabs() %}
+  <div class="navigation-tabs">
+    <ul class="navigation-tabs__container">
+      {{ caller() }}
+    </ul>
+  </div>
+{% endmacro %}
+{% macro navigation_tab(label=None, url=None, active=False) %}
+  {% set state_class = "" %}
+  {% if not url %}
+    {% set state_class = "navigation-tabs__tab--disabled" %}
+  {% endif %}
+  {% if active %}
+    {% set state_class = "navigation-tabs__tab--active" %}
+  {% endif %}
+  <li class="navigation-tabs__tab {{ state_class }}">
+    {% if url %}
+      <a href="{{ url }}">{{ label }}</a>
+    {% else %}
+      <span>{{ label }}</span>
+    {% endif %}
+  </li>
+{% endmacro %}
+{% macro navigation_tabs_examples() %}
+  {% call navigation_tabs() %}
+    {{ navigation_tab(label="Active", url="/review", active=True) }}
+    {{ navigation_tab(label="Default", url="/unhold") }}
+    {{ navigation_tab(label="Disabled") }}
+  {% endcall %}
+{% endmacro %}

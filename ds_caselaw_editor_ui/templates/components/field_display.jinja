@@ -1,0 +1,21 @@
+{% from "components/badge.jinja" import badge %}
+{% macro field_display(label=None, align=None, label_width=None) %}
+  {% set label_width_classes = {"default": "", "small": "field-display--small", "medium": "field-display--medium"} %}
+  {% set label_width_class = label_width_classes.get(label_width, label_width_classes["default"]) %}
+  {% set align_classes = {"default": "", "right": "field-display--right"} %}
+  {% set align_class = align_classes.get(align, align_classes["default"]) %}
+  <div class="field-display {{ align_class }} {{ label_width_class }}">
+    <h4>{{ label }}</h4>
+    {{ caller() }}
+  </div>
+{% endmacro %}
+{% macro field_display_examples() %}
+  {% call field_display(label="Submitter") %}
+    <a href="">User name</a>
+  {% endcall %}
+  {% call field_display(label="Status") %}
+    {% call badge() %}
+      On Hold
+    {% endcall %}
+  {% endcall %}
+{% endmacro %}

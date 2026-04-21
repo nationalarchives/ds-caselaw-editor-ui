@@ -1,12 +1,27 @@
 {% from "govuk_frontend_jinja/components/input/macro.html" import govukInput %}
 {% macro text_input(field) %}
   {% set errors = {"text": field.errors | join(", ")} if field.errors else None %}
+  {% set value = field.value if field is mapping else (field.value() if field.value is callable else field.value) %}
+  {% set label_classes = {"default": "govuk-label--s", "extra-small": "govuk-label--xs"} %}
+  {% set label_class = label_classes.get(field.label_size, label_classes["default"]) %}
+  {% set width_classes = {
+    "full": "govuk-!-width-full",
+    "three-quarters": "govuk-!-width-three-quarters",
+    "two-thirds": "govuk-!-width-two-thirds",
+    "one-half": "govuk-!-width-one-half",
+    "one-third": "govuk-!-width-one-third",
+    "one-quarter": "govuk-!-width-one-quarter"
+  } %}
+  {% set width_class = width_classes.get(field.width, "") %}
+  {% set margin_classes = {"default": "", "small": "govuk-!-margin-bottom-4"} %}
+  {% set margin_class = margin_classes.get(field.margin, "") %}
   {{ govukInput({
-    "label":       { "text": field.label, "classes": "govuk-label--s" },
+    "label":       { "text": field.label, "classes": label_class },
     "hint":        { "text": field.help_text } if field.help_text else None,
     "id":          field.id_for_label,
     "name":        field.html_name,
-    "value":       field.value() ,
-  "errorMessage": errors
-  }) }}
+    "value":       value,
+    "formGroup":   { "classes": width_class ~ " " ~ margin_class },
+    "errorMessage": errors
+    }) }}
 {% endmacro %}

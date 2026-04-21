@@ -5,7 +5,9 @@
   {% else %}
     {% include "includes/judgment/metadata_panel_static.html" with return_to="html" %}
   {% endif %}
-  {% include "includes/judgment/view_controls.html" with selected_tab=1 %}
+  {% if document.pdf_url %}
+    {% include "includes/judgment/view_controls.html" with selected_tab=1 %}
+  {% endif %}
   {% if document.body.failed_to_parse %}
     <div class="container">
       <div class="page-notification--failure">This document has failed to parse.</div>

@@ -68,13 +68,13 @@ class TestJudgmentView(TestCase):
             reverse("full-text-html", kwargs={"document_uri": judgment.uri}),
         )
 
+        assert response.status_code == 200
+
         decoded_response = response.content.decode("utf-8")
         assert "This document has failed to parse" in decoded_response
 
         assert "&lt;error&gt;Error log&lt;/error&gt;" in decoded_response
         assert "<error>Error log</error>" not in decoded_response
-
-        assert response.status_code == 200
 
     def test_judgment_html_view_redirect(self):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
@@ -115,11 +115,12 @@ class TestJudgmentView(TestCase):
 
         mock_judgment.return_value.name = "JUDGMENT v JUDGEMENT"
         mock_judgment.return_value.pdf_url = ""
+        mock_judgment.return_value.uri = "/test/1234"
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
         response = self.client.get("/test/1234/pdf")
-        decoded_response = response.content.decode("utf-8")
-        assert "Document &quot;JUDGMENT v JUDGEMENT&quot; does not have a PDF." in decoded_response
-        assert response.status_code == 404
+
+        assert response.status_code == 302
+        assert response["location"] == reverse("full-text-html", kwargs={"document_uri": "/test/1234"})
 
     def test_judgment_xml_view_redirect(self):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
