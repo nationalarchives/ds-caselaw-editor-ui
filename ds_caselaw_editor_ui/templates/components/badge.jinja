@@ -1,0 +1,24 @@
+{% macro badge(variant=None, size=None) %}
+  {% set size_classes = {"default": "", "small": "badge--small"} %}
+  {% set size_class = size_classes.get(size, size_classes["default"]) %}
+  {% set variant_classes = {"default": "badge--info", "info": "badge--info", "success": "badge--success", "failure": "badge--failure"} %}
+  {% set variant_class = variant_classes.get(variant, variant_classes["default"]) %}
+  <div class="badge {{ variant_class }} {{ size_class }}">{{ caller() }}</div>
+{% endmacro %}
+{% macro badge_examples() %}
+  {% call badge() %}
+    Default
+  {% endcall %}
+  {% call badge(variant="info") %}
+    Info
+  {% endcall %}
+  {% call badge(variant="success") %}
+    Success
+  {% endcall %}
+  {% call badge(variant="failure") %}
+    Failure
+  {% endcall %}
+  {% call badge(size="small") %}
+    Small
+  {% endcall %}
+{% endmacro %}
