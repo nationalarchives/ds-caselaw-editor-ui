@@ -16,6 +16,7 @@
             action="{{ url('publish') }}"
             method="post">
         {{ csrf_input }}
+        <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
         {% if waffle.flag("notes_on_state_change") %}{{ note_form() }}{% endif %}
         {{ button(content="Publish") }}
         <p>
