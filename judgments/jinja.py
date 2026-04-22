@@ -1,3 +1,5 @@
+import re
+
 from caselawclient.models.documents import (
     DOCUMENT_STATUS_HOLD,
     DOCUMENT_STATUS_IN_PROGRESS,
@@ -17,6 +19,13 @@ from jinja2 import (
 from judgments.templatetags.document_utils import display_datetime, get_title_to_display_in_html
 from judgments.templatetags.navigation_tags import get_navigation_items
 from judgments.templatetags.user_permissions import is_editor, is_superuser
+
+
+def hyphenate(value: str) -> str:
+    value = value.lower()
+    value = re.sub(r"[^\w\s-]", "", value)
+    value = re.sub(r"[\s_-]+", "-", value)
+    return value.strip("-")
 
 
 def get_badge_variant_from_status(status):
@@ -79,4 +88,6 @@ def environment(**options):
     env.filters["date"] = format_date
     env.filters["get_title_to_display_in_html"] = get_title_to_display_in_html
     env.filters["display_datetime"] = display_datetime
+    env.filters["hyphenate"] = hyphenate
+
     return env

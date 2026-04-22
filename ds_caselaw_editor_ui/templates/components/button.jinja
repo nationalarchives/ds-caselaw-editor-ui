@@ -1,4 +1,5 @@
-{% macro button(href=None, variant=None, size=None, contrast=None, element_type="button", attrs={}) %}
+{% macro button(href=None, variant=None, size=None, contrast=None, element_type="button", attrs={}, content=None) %}
+  {% set body_content = caller() if caller is defined else content if content is defined else "" %}
   {% set variant_classes = {"default": "", "danger": "button--danger", "secondary": "button--secondary", "link": "button--link"} %}
   {% set size_classes = {"default": "", "small": "button--small"} %}
   {% set variant_class = variant_classes.get(variant, variant_classes['default']) %}
@@ -25,16 +26,13 @@
         <button class="{{ button_class }}"
                 {% for key, value in attrs.items() %}{{ key }}="{{ value }}"{% endfor %}>
         {% endif %}
-        {{ caller() }}
+        {{ body_content }}
         {% if href %}
         </a>
       {% else %}
       </button>
     {% endif %}
   {% endif %}
-{% endmacro %}
-{% macro button_label() %}
-  <span class="button__label">{{ caller() }}</span>
 {% endmacro %}
 {% macro button_variant_examples() %}
   {% call button() %}

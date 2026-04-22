@@ -7,7 +7,13 @@
     "warning": "notification--warning"
   } %}
   {% set variant_class = variant_classes.get(variant, variant_classes['default']) %}
-  {% set icon_classes = {'default': None, 'success': 'icon__circle-check', 'failure': 'icon__triangle-exclamation', 'info': 'icon__circle-info', 'warning': 'icon__triangle-exclamation'} %}
+  {% set icon_classes = {
+    "default": "icon__circle-info",
+    "success": "icon__circle-check",
+    "failure": "icon__triangle-exclamation",
+    "info": "icon__circle-info",
+    "warning": "icon__triangle-exclamation"
+  } %}
   {% set icon_class = icon_classes.get(variant, icon_classes["default"]) %}
   <div class="notification {{ variant_class }}">
     <div class="notification__container">

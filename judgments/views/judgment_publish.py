@@ -8,7 +8,8 @@ from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_40
 
 
 class PublishDocumentView(DocumentView):
-    template_name = "judgment/publish.html"
+    template_engine = "jinja"
+    template_name = "judgment/publish.jinja"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

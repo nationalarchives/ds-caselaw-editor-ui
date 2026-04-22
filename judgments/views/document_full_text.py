@@ -3,7 +3,6 @@ from urllib.parse import urlencode
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 
-from judgments.templatetags.document_utils import display_datetime
 from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_404
 
 
@@ -23,18 +22,6 @@ class DocumentReviewHTMLView(DocumentView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        document = context["document"]
-
-        if document.has_ever_been_published:
-            if document.first_published_datetime_display:
-                context["first_published_date"] = display_datetime(
-                    document.first_published_datetime_display,
-                )
-            else:
-                context["first_published_date"] = "Unknown"
-        else:
-            context["first_published_date"] = "—"
 
         context["view"] = "judgment_html"
 

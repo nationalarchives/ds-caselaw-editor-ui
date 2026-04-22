@@ -8,6 +8,7 @@
 {% from "components/panel.jinja" import panel %}
 {% from "components/tabs.jinja" import tabs_examples %}
 {% from "components/toolbar.jinja" import toolbar_examples %}
+{% from "components/heading.jinja" import heading_examples %}
 {% block content %}
   <div class="container">
     <h1>Components</h1>
@@ -52,4 +53,8 @@
     <h2>Toolbar</h2>
   </div>
   {{ toolbar_examples() }}
+  <div class="container">
+    <h2>Heading</h2>
+    {{ heading_examples() }}
+  </div>
 {% endblock content %}
