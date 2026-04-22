@@ -1,0 +1,84 @@
+{% extends "layouts/judgment.jinja" %}
+{% from "components/document_metadata.jinja" import document_metadata with context %}
+{% from "components/heading.jinja" import heading %}
+{% from "components/notification.jinja" import notification %}
+{% block content %}
+  <div class="container">
+    {{ document_metadata(variant="view") }}
+    {{ heading(content="Confirmation this has been published") }}
+    {{ heading(tag="h2", weight="normal", content=judgment.body.name) }}
+    <p>
+      <a href="{{ judgment.public_uri }}"
+         target="_blank"
+         rel="noopener noreferrer">View the published document <span class="icon icon--sm icon--link icon__arrow-up-right-square"></span></a>
+    </p>
+    <p>
+      <a href="{{ email_confirmation_link }}">Email the submitter</a>
+    </p>
+  </div>
+{% endblock content %}
+{% block footer_javascript %}
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles-preset-confetti@2/tsparticles.preset.confetti.bundle.min.js"></script>
+  <script>
+    (async () => {
+      await tsParticles.load("tsparticles", {
+        particles: {
+          color: {
+            value: ["#CB0D07", "#EBAB00", "#FCE45C", "#008484", "#405480"],
+          },
+        },
+        emitters: [
+          {
+            startCount: 50,
+            rate: {
+              delay: 0,
+              quantity: 0
+            },
+            life: {
+              duration: 0.1,
+              count: 1
+            },
+            position: {
+              x: 0,
+              y: 60,
+            },
+            particles: {
+              move: {
+                direction: "top-right",
+                speed: {
+                  min: 50,
+                  max: 150
+                }
+              },
+            },
+          },
+          {
+            startCount: 50,
+            rate: {
+              delay: 0,
+              quantity: 0
+            },
+            life: {
+              duration: 0.1,
+              count: 1
+            },
+            position: {
+              x: 100,
+              y: 60,
+            },
+            particles: {
+              move: {
+                direction: "top-left",
+                speed: {
+                  min: 50,
+                  max: 150
+                }
+              },
+            },
+          }
+        ],
+        preset: "confetti",
+      });
+    })();
+  </script>
+{% endblock footer_javascript %}
