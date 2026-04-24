@@ -9,9 +9,9 @@
     <div class="document-history">
       {% for submission in structured_history | reversed %}
         {% if submission.submission_type == 'structured' %}
-          {{ structured_submission(submission=submission, expand=loop.first, document_uri=document_uri) }}
+          {{ structured_submission(submission=submission, expand=loop.first, document_uri=document_uri,user=user) }}
         {% elif submission.submission_type == 'orphan' %}
-          {{ orphaned_events(submission=submission, expand=loop.first, document_uri=document_uri) }}
+          {{ orphaned_events(submission=submission, expand=loop.first, document_uri=document_uri,user=user) }}
         {% else %}
           <h2>Legacy version {{ submission.marklogic_version }}</h2>
           <p>

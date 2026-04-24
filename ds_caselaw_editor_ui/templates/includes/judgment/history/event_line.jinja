@@ -1,4 +1,4 @@
-{% macro event_line(event=None, document_uri=None) %}
+{% macro event_line(event=None, document_uri=None, user=None) %}
   <tr>
     <td>
       <p>
@@ -12,7 +12,7 @@
           {% endif %}
         </b>
       </p>
-      <p>{{ event.data.message }}</p>
+      <p>{{ event["data"].get('message', '') }}</p>
       {% set tdr = event["data"].get("payload", {}).get("tre_raw_metadata", {}).get("parameters", {}).get("TDR") %}
       {% if tdr|get_dict_key_with_hyphen("Judgment-Update" == "true") %}
         <p>

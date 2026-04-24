@@ -1,5 +1,5 @@
 {% from "includes/judgment/history/event_line.jinja" import event_line %}
-{% macro orphaned_events(submission=None, expand=False, document_uri=None) %}
+{% macro orphaned_events(submission=None, expand=False, document_uri=None, user=None) %}
   <div class="document-history__submission-header">
     <div class="document-history__submission-header-title">
       <h2>Orphaned events</h2>
@@ -22,7 +22,9 @@
           <th>Change made</th>
           <th>Changed at</th>
           <th>Changed by</th>
-          {% for event in submission.events | reversed %}{{ event_line(event=event, document_uri=document_uri) }}{% endfor %}
+          {% for event in submission.events | reversed %}
+            {{ event_line(event=event, document_uri=document_uri, user=user) }}
+          {% endfor %}
         </tr>
       </table>
     </div>

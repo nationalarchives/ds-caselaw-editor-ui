@@ -21,6 +21,7 @@ from judgments.templatetags.document_utils import (
     display_datetime,
     get_dict_key_with_hyphen,
     get_title_to_display_in_html,
+    render_json,
 )
 from judgments.templatetags.navigation_tags import get_navigation_items
 from judgments.templatetags.user_permissions import is_developer, is_editor, is_superuser
@@ -105,4 +106,5 @@ def environment(**options):
     env.filters["hyphenate"] = hyphenate
     env.filters["reversed"] = reversed_filter
     env.filters["get_dict_key_with_hyphen"] = get_dict_key_with_hyphen
+    env.filters["render_json"] = render_json
     return env
