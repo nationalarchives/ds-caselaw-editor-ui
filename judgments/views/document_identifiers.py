@@ -18,12 +18,19 @@ if TYPE_CHECKING:
 
 
 class DocumentIdentifiersView(DocumentView):
-    template_name = "judgment/identifiers.html"
+    template_engine = "jinja"
+    template_name = "judgment/identifiers.jinja"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         context["view"] = "document_identifiers"
+        preferred_identifier = self.document.identifiers.preferred()
+
+        context["preferred_identifier_name"] = preferred_identifier.schema.name
+        context["preferred_identifier_value"] = preferred_identifier.value
+
+        context["identifiers_by_score"] = self.document.identifiers.by_score()
 
         return context
 
