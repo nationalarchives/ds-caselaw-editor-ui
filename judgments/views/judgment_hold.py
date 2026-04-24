@@ -43,7 +43,8 @@ def hold(request):
 
 
 class UnholdDocumentView(DocumentView):
-    template_name = "judgment/unhold.html"
+    template_engine = "jinja"
+    template_name = "judgment/unhold.jinja"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
