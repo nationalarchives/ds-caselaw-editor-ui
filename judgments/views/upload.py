@@ -36,7 +36,8 @@ def get_pdf_upload_key(uri):
 
 
 class UploadDocumentView(DocumentView):
-    template_name = "judgment/upload.html"
+    template_engine = "jinja"
+    template_name = "judgment/upload.jinja"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
