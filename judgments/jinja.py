@@ -17,8 +17,20 @@ from jinja2 import (
 )
 
 from judgments.templatetags.document_utils import display_datetime, get_title_to_display_in_html
+from judgments.templatetags.document_utils import (
+    display_datetime,
+    get_dict_key_with_hyphen,
+    get_title_to_display_in_html,
+)
 from judgments.templatetags.navigation_tags import get_navigation_items
-from judgments.templatetags.user_permissions import is_editor, is_superuser
+from judgments.templatetags.user_permissions import is_developer, is_editor, is_superuser
+
+
+def reversed_filter(value):
+    try:
+        return list(value)[::-1]
+    except TypeError:
+        return value
 
 
 def hyphenate(value: str) -> str:
@@ -85,9 +97,12 @@ def environment(**options):
 
     env.filters["is_superuser"] = is_superuser
     env.filters["is_editor"] = is_editor
+    env.filters["is_developer"] = is_developer
     env.filters["date"] = format_date
+    env.filters["display_datetime"] = display_datetime
     env.filters["get_title_to_display_in_html"] = get_title_to_display_in_html
     env.filters["display_datetime"] = display_datetime
     env.filters["hyphenate"] = hyphenate
-
+    env.filters["reversed"] = reversed_filter
+    env.filters["get_dict_key_with_hyphen"] = get_dict_key_with_hyphen
     return env
