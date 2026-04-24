@@ -18,14 +18,14 @@ if TYPE_CHECKING:
 
 
 class DocumentIdentifiersView(DocumentView):
+    template_name = "judgment/identifiers.html"
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         context["view"] = "document_identifiers"
 
         return context
-
-    template_name = "judgment/identifiers.html"
 
 
 class AddIdentifierForm(forms.Form):

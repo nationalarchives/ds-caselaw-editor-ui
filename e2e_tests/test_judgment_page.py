@@ -31,8 +31,8 @@ def test_judgment_upload(authenticated_page: Page):
 
 
 def test_judgment_hold(authenticated_page: Page):
-    authenticated_page.goto(f"{JUDGMENT_URI}/upload")
-    assert_matches_snapshot(authenticated_page, "judgment_upload_page")
+    authenticated_page.goto(f"{JUDGMENT_URI}/hold")
+    assert_matches_snapshot(authenticated_page, "judgment_hold_page")
 
 
 def test_judgment_delete(authenticated_page: Page):

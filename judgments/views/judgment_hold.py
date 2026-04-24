@@ -8,7 +8,8 @@ from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_40
 
 
 class HoldDocumentView(DocumentView):
-    template_name = "judgment/hold.html"
+    template_engine = "jinja"
+    template_name = "judgment/hold.jinja"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
