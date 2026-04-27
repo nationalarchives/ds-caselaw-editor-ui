@@ -66,7 +66,8 @@ class BulkReparseRunLogListView(ListView):
     model = BulkReparseRunLog
     paginate_by = 50
 
-    template_name = "reports/bulk_reparse_run_log_list.html"
+    template_engine = "jinja"
+    template_name = "reports/bulk_reparse_run_log_list.jinja"
 
 
 class BulkReparseRunLogDetailView(DetailView):
