@@ -73,6 +73,13 @@ def crispy(form, request):
     )
 
 
+def intcomma(value):
+    try:
+        return f"{int(value):,}"
+    except (ValueError, TypeError):
+        return value
+
+
 def environment(**options):
     base_loader = options.get("loader")
     govuk_loader = PrefixLoader(
@@ -116,5 +123,5 @@ def environment(**options):
     env.filters["reversed"] = reversed_filter
     env.filters["get_dict_key_with_hyphen"] = get_dict_key_with_hyphen
     env.filters["render_json"] = render_json
-    # env.filters["crispy"] = render_crispy_form
+    env.filters["intcomma"] = intcomma
     return env

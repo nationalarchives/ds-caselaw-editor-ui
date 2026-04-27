@@ -32,12 +32,16 @@ def get_rows_from_result(result: list | list[list[Any]]) -> list[list[Any]]:
 
 
 class AwaitingParse(TemplateView):
-    template_name = "reports/awaiting_parse.html"
+    template_engine = "jinja"
+    template_name = "reports/awaiting_parse.jinja"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        target_parser_version = api_client.get_highest_parser_version()
+        try:
+            target_parser_version = api_client.get_highest_parser_version()
+        except (TypeError, ValueError):
+            target_parser_version = (0, 0)
 
         context["page_title"] = "Documents awaiting reparsing"
         context["target_parser_version"] = f"{target_parser_version[0]}.{target_parser_version[1]}"
