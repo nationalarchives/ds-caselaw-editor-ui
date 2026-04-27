@@ -77,13 +77,21 @@ class BulkReparseRunLogDetailView(DetailView):
 
 
 class AwaitingEnrichment(TemplateView):
-    template_name = "reports/awaiting_enrichment.html"
+    template_engine = "jinja"
+    template_name = "reports/awaiting_enrichment.jinja"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        target_enrichment_version = api_client.get_highest_enrichment_version()
-        target_parser_version = api_client.get_highest_parser_version()
+        try:
+            target_enrichment_version = api_client.get_highest_enrichment_version()
+        except (TypeError, ValueError):
+            target_enrichment_version = (0, 0)
+
+        try:
+            target_parser_version = api_client.get_highest_parser_version()
+        except (TypeError, ValueError):
+            target_parser_version = (0, 0)
 
         context["page_title"] = "Documents awaiting enrichment"
         context["target_enrichment_version"] = f"{target_enrichment_version[0]}.{target_enrichment_version[1]}"

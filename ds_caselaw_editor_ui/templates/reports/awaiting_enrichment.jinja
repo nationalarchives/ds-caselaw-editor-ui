@@ -1,0 +1,28 @@
+{% extends "layouts/base.jinja" %}
+{% block content %}
+  <div class="standard-text-template">
+    <h1>Documents awaiting enrichment</h1>
+    <p>
+      These documents have been parsed with the latest version of the parser ({{ target_parser_version }}) but have not yet been enriched with the latest version of the enrichment engine, version <b>{{ target_enrichment_version }}</b>, and have not recently had an enrichment attempt.
+    </p>
+    <p>
+      There are <b>{{ documents|length|intcomma }}</b> documents waiting.
+    </p>
+    <div class="table">
+      <table>
+        <tr>
+          <th>#</th>
+          <th>Document</th>
+          <th>Enriched with</th>
+          <th>Last sent for enrichment</th>
+        </tr>
+        {% for document in documents %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            {% for cell in document %}<td>{{ cell }}</td>{% endfor %}
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+{% endblock content %}
