@@ -58,7 +58,8 @@ class AddIdentifierForm(forms.Form):
 
 
 class AddDocumentIdentifierView(DocumentViewMixin, FormView):
-    template_name = "judgment/identifiers_add.html"
+    template_engine = "jinja"
+    template_name = "judgment/identifiers_add.jinja"
     form_class = AddIdentifierForm
 
     def get_context_data(self, **kwargs):
@@ -159,7 +160,8 @@ def check_safe_to_delete_identifier(document: Document, identifier_uuid: str):
 
 
 class DeleteDocumentIdentifierView(DocumentViewMixin, FormView):
-    template_name = "judgment/identifier_delete.html"
+    template_engine = "jinja"
+    template_name = "judgment/identifier_delete.jinja"
     form_class = DeleteIdentifierForm
 
     def get_context_data(self, **kwargs):

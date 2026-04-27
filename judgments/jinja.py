@@ -5,6 +5,7 @@ from caselawclient.models.documents import (
     DOCUMENT_STATUS_IN_PROGRESS,
     DOCUMENT_STATUS_PUBLISHED,
 )
+from crispy_forms.utils import render_crispy_form
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import reverse
 from jinja2 import (
@@ -65,6 +66,13 @@ def jinja_url(name, *args, **kwargs):
     return reverse(name, args=args or None, kwargs=kwargs or None)
 
 
+def crispy(form, request):
+    return render_crispy_form(
+        form,
+        context={"csrf_token": request.META.get("CSRF_COOKIE")},
+    )
+
+
 def environment(**options):
     base_loader = options.get("loader")
     govuk_loader = PrefixLoader(
@@ -93,6 +101,7 @@ def environment(**options):
             "url": jinja_url,
             "get_badge_variant_from_status": get_badge_variant_from_status,
             "get_navigation_items": get_document_navigation_items,
+            "crispy": crispy,
         },
     )
 
@@ -107,4 +116,5 @@ def environment(**options):
     env.filters["reversed"] = reversed_filter
     env.filters["get_dict_key_with_hyphen"] = get_dict_key_with_hyphen
     env.filters["render_json"] = render_json
+    # env.filters["crispy"] = render_crispy_form
     return env

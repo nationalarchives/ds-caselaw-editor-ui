@@ -31,6 +31,9 @@
   }
 
   &__triangle-exclamation {
+    width: 0.8rem;
+    min-width: 0.8rem;
+    height: 0.8rem;
     mask-image: url($fa-triangle-exclamation);
   }
 
