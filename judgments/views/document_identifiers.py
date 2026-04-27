@@ -27,8 +27,12 @@ class DocumentIdentifiersView(DocumentView):
         context["view"] = "document_identifiers"
         preferred_identifier = self.document.identifiers.preferred()
 
-        context["preferred_identifier_name"] = preferred_identifier.schema.name
-        context["preferred_identifier_value"] = preferred_identifier.value
+        if preferred_identifier is not None:
+            context["preferred_identifier_name"] = preferred_identifier.schema.name
+            context["preferred_identifier_value"] = preferred_identifier.value
+        else:
+            context["preferred_identifier_name"] = None
+            context["preferred_identifier_value"] = None
 
         context["identifiers_by_score"] = self.document.identifiers.by_score()
 
