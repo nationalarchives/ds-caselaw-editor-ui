@@ -9,7 +9,8 @@ from judgments.utils import api_client
 
 
 class Index(TemplateView):
-    template_name = "reports/index.html"
+    template_engine = "jinja"
+    template_name = "reports/index.jinja"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
