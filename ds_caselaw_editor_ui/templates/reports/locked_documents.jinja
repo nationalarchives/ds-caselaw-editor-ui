@@ -19,7 +19,7 @@
               <a href="{{ url('full-text-html', lock.document_uri) }}">{{ lock.document_uri }}</a>
             </td>
             <td>{{ lock.owner }}</td>
-            <td>{{ lock.timestamp }}</td>
+            <td>{{ lock.timestamp|display_datetime }}</td>
             <td>{{ lock.timeout }}</td>
           </tr>
         {% endfor %}

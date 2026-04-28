@@ -98,4 +98,4 @@ class TestLockedDocumentsReports(TestCase):
         self.assertContains(response, "Locked documents", html=True)
         self.assertContains(response, "test/1234", html=True)
         self.assertContains(response, "Owner string", html=True)
-        self.assertContains(response, "9 Dec 2025, 1 p.m.", html=True)
+        self.assertContains(response, "09 Dec 2025 13:00", html=True)
