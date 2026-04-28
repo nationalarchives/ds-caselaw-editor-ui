@@ -17,7 +17,6 @@ from jinja2 import (
     select_autoescape,
 )
 
-from judgments.templatetags.document_utils import display_datetime, get_title_to_display_in_html
 from judgments.templatetags.document_utils import (
     display_datetime,
     get_dict_key_with_hyphen,
