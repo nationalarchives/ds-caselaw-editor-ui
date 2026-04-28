@@ -64,7 +64,7 @@
         {% call metadata_body(variant="horizontal") %}
           {% call metadata_body_row(variant="vertical") %}
             {% call field_display(label="NCN", align="right", label_width="small") %}
-              {{ preferred_ncn.value }}
+              {% if preferred_ncn %}{{ preferred_ncn.value }}{% endif %}
             {% endcall %}
             {% call field_display(label="Court", align="right", label_width="small") %}
               {{ document.body.court }}

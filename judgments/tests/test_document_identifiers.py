@@ -101,7 +101,7 @@ class TestIdentifierViewDeleteDisablement(TestCase):
             <td><code>[2025] UKSC 123</code></td>
             <td><code>/uksc/2025/123</code></td>
             <td>False</td>
-            <td><a href="/d-a1b2c3/identifiers/id-1234/delete" class="button-danger button-small">Delete</a></td>
+            <td><a href="/d-a1b2c3/identifiers/id-1234/delete" class="button button--danger button--small">Delete</a></td>
             </tr>""",
             html=True,
         )
@@ -144,7 +144,7 @@ class TestIdentifierViewDeleteDisablement(TestCase):
             <td><code>[2025] UKSC 123</code></td>
             <td><code>/uksc/2025/123</code></td>
             <td>False</td>
-            <td><a class="button-danger button-small" disabled aria-disabled="true">Delete</a></td>
+            <td><button class="button button--danger button--small" disabled="true">Delete</button></td>
             </tr>""",
             html=True,
         )
@@ -156,7 +156,7 @@ class TestIdentifierViewDeleteDisablement(TestCase):
             <td><code>tn4t35ts</code></td>
             <td><code>/tna.tn4t35ts</code></td>
             <td>False</td>
-            <td><a class="button-danger button-small" disabled aria-disabled="true">Delete</a></td>
+            <td><button class="button button--danger button--small" disabled="true">Delete</button></td>
             </tr>""",
             html=True,
         )

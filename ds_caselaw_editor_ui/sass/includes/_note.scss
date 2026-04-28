@@ -1,4 +1,8 @@
 .note-form {
+  &__container {
+    margin-bottom: $space-8;
+  }
+
   &__label {
     display: block;
 
@@ -15,7 +19,7 @@
     display: block;
 
     box-sizing: border-box;
-    width: calc(100% - $space-4);
+    width: 100%;
     margin-top: 0;
     border: 2px solid colour-var("input-border");
 

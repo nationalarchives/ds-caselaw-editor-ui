@@ -1,0 +1,30 @@
+{% extends "layouts/judgment.jinja" %}
+{% from "components/document_metadata.jinja" import document_metadata with context %}
+{% from "components/heading.jinja" import heading %}
+{% from "includes/judgment/history/orphaned_events.jinja" import orphaned_events %}
+{% from "includes/judgment/history/structured_submission.jinja" import structured_submission %}
+{% block content %}
+  <div class="container">
+    {{ document_metadata(variant="view") }}
+    <div class="document-history">
+      {% for submission in structured_history | reversed %}
+        {% if submission.submission_type == 'structured' %}
+          {{ structured_submission(submission=submission, expand=loop.first, document_uri=document_uri,user=user) }}
+        {% elif submission.submission_type == 'orphan' %}
+          {{ orphaned_events(submission=submission, expand=loop.first, document_uri=document_uri,user=user) }}
+        {% else %}
+          <h2>Legacy version {{ submission.marklogic_version }}</h2>
+          <p>
+            <time datetime="{{ submission.datetime|date('c') }}">{{ submission.datetime|display_datetime }}</time>
+          </p>
+          {% if submission.annotation %}<p>{{ submission.annotation }}</p>{% endif %}
+          {% if user|is_developer %}
+            <p>
+              <small class="muted">Event #{{ submission.event_sequence_number }} • Submission #{{ submission.submission_sequence_number }} • MarkLogic version #{{ submission.marklogic_version }}</small>
+            </p>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+{% endblock content %}

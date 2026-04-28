@@ -1,0 +1,19 @@
+{% extends "layouts/judgment.jinja" %}
+{% from "components/document_metadata.jinja" import document_metadata with context %}
+{% from "components/heading.jinja" import heading %}
+{% from "components/note_form.jinja" import note_form %}
+{% block content %}
+  <div class="container">
+    {{ document_metadata(variant="view") }}
+    {{ heading(content="I want to delete:") }}
+    {{ heading(tag="h2", weight="normal", content=judgment.body.name) }}
+    <form action="{{ url('delete') }}" method="post">
+      {{ csrf_input }}
+      <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
+      {{ button(variant="danger", content="Delete document") }}
+      <p>
+        <a href="{{ url('full-text-html', document.uri) }}">Go back to review</a>
+      </p>
+    </form>
+  </div>
+{% endblock content %}

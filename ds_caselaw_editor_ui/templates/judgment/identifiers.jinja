@@ -1,0 +1,101 @@
+{% extends "layouts/judgment.jinja" %}
+{% from "components/document_metadata.jinja" import document_metadata with context %}
+{% from "components/heading.jinja" import heading %}
+{% from "components/notification.jinja" import notification %}
+{% block content %}
+  <div class="container">
+    {{ document_metadata(variant="view") }}
+    {{ heading(content="Identifiers for:") }}
+    {{ heading(tag="h2", weight="normal", content=document.body.name) }}
+    {% if document.identifiers %}
+      {{ heading(tag="h2", content="Preferred identifier") }}
+      <p>
+        <strong>{{ preferred_identifier_name }}: {{ preferred_identifier_value }}</strong>
+      </p>
+      {{ heading(tag="h2", content="All identifiers") }}
+      {% if document.has_ever_been_published %}
+        {% call notification() %}
+          You are not able to delete identifiers for this document because it has been published.
+        {% endcall %}
+      {% endif %}
+      <div class="table">
+        <table>
+          <tr>
+            <th>Type</th>
+            <th>Value</th>
+            <th>Public URL</th>
+            <th>Deprecated</th>
+            {% if waffle.flag("identifier_editing") %}<th>Edit</th>{% endif %}
+            {% if user|is_developer %}
+              <th>Human readable</th>
+              <th>Score</th>
+            {% endif %}
+          </tr>
+          {% for identifier in identifiers_by_score %}
+            <tr>
+              <td>
+                {{ identifier.schema.name }}
+                {% if user|is_developer %}
+                  <br>
+                  <small class="muted"><code>{{ identifier.schema.namespace }}</code></small>
+                {% endif %}
+              </td>
+              <td>
+                <code>{{ identifier.value }}</code>
+                {% if user|is_developer %}
+                  <br>
+                  <small class="muted"><code>{{ identifier.uuid }}</code></small>
+                {% endif %}
+              </td>
+              <td>
+                {% if document.is_published %}
+                  <a href="https://caselaw.nationalarchives.gov.uk/{{ identifier.url_slug }}"
+                     target="_blank"
+                     class="link__new-window"><code>/{{ identifier.url_slug }}</code></a>
+                {% else %}
+                  <code>/{{ identifier.url_slug }}</code>
+                {% endif %}
+              </td>
+              <td>{{ identifier.deprecated }}</td>
+              {% if waffle.flag("identifier_editing") %}
+                <td>
+                  {% if document.has_ever_been_published %}
+                    {{ button(variant="danger", size="small", attrs={"disabled":"true"}, content="Delete") }}
+                  {% else %}
+                    {{ button(variant="danger", size="small", href=url("document-identifier-delete", document.uri, identifier.uuid) , content="Delete") }}
+                  {% endif %}
+                </td>
+              {% endif %}
+              {% if user|is_developer %}
+                <td>{{ identifier.schema.human_readable }}</td>
+                <td>{{ identifier.score }}</td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    {% else %}
+      {% call notification() %}
+        This document does not have any stored identifiers.
+      {% endcall %}
+    {% endif %}
+    {% if waffle.flag("identifier_editing") %}
+      {{ button(href=url("document-identifiers-add", document.uri) , content="Add new identifier") }}
+    {% endif %}
+    {% if user|is_developer %}
+      <h3>System identifiers</h3>
+      <table class="table">
+        <tr>
+          <th>Type</th>
+          <th>Value</th>
+        </tr>
+        <tr>
+          <td>MarkLogic URI</td>
+          <td>
+            <code>{{ document.uri }}</code>
+          </td>
+        </tr>
+      </table>
+    {% endif %}
+  </div>
+{% endblock content %}

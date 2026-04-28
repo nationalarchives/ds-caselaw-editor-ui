@@ -1,0 +1,36 @@
+{% from "includes/judgment/history/event_line.jinja" import event_line %}
+{% macro structured_submission(submission=None, expand=False, document_uri=None, user=None) %}
+  <div class="document-history__submission-header">
+    <div class="document-history__submission-header-title">
+      <h2>Submission {{ submission.submission_sequence_number }}</h2>
+    </div>
+    <div class="document-history__submission-header-show-link">
+      <p>
+        <a class="document-history__submission-toggle"
+           data-target-submission="{{ submission.submission_sequence_number }}">Show</a>
+      </p>
+    </div>
+    {% if submission.submission_data and submission.submission_data.get("payload", {}).get("tdr_reference") %}
+      <div class="document-history__submission-header-reference">
+        <p>
+          <b>TDR ref</b> {{ submission.submission_data["payload"]["tdr_reference"] }}
+        </p>
+      </div>
+    {% endif %}
+  </div>
+  <div id="submission-{{ submission.submission_sequence_number }}"
+       {% if not expand %}hidden{% endif %}>
+    <div class="table">
+      <table class="document-history__event-table">
+        <tr>
+          <th>Change made</th>
+          <th>Changed at</th>
+          <th>Changed by</th>
+          {% for event in submission.events | reversed %}
+            {{ event_line(event=event, document_uri=document_uri, user=user) }}
+          {% endfor %}
+        </tr>
+      </table>
+    </div>
+  </div>
+{% endmacro %}

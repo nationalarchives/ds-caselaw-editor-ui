@@ -8,7 +8,7 @@ from caselawclient.models.documents import (
 )
 from django.test import TestCase
 
-from judgments.templatetags.document_utils import display_annotation_type, render_json
+from judgments.templatetags.document_utils import display_annotation_type, get_dict_key_with_hyphen, render_json
 from judgments.templatetags.status_tag_css import status_tag
 
 
@@ -71,3 +71,12 @@ class TestRenderJson:
             render_json({"string": "stringValue", "array": ["one", "two"]})
             == '{\n  "string": "stringValue",\n  "array": [\n    "one",\n    "two"\n  ]\n}'
         )
+
+
+class TestGetDictKeyWithHyphen:
+    def test_when_dict_is_none(self):
+        assert get_dict_key_with_hyphen(None, "some-key") == ""
+
+    def test_when_dict_exists(self):
+        data = {"some-key": "value"}
+        assert get_dict_key_with_hyphen(data, "some-key") == "value"

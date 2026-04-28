@@ -1,0 +1,20 @@
+{% extends "layouts/judgment.jinja" %}
+{% from "components/document_metadata.jinja" import document_metadata with context %}
+{% from "components/heading.jinja" import heading %}
+{% from "components/note_form.jinja" import note_form %}
+{% block content %}
+  <div class="container">
+    {{ document_metadata(variant="view") }}
+    {{ heading(content="I want to unpublish:") }}
+    {{ heading(tag="h2", weight="normal", content=judgment.body.name) }}
+    <form action="{{ url('unpublish') }}" method="post">
+      {{ csrf_input }}
+      <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
+      {% if waffle.flag("notes_on_state_change") %}{{ note_form() }}{% endif %}
+      {{ button(content="Unpublish") }}
+      <p>
+        <a href="{{ url('full-text-html', document.uri) }}">Go back to review</a>
+      </p>
+    </form>
+  </div>
+{% endblock content %}

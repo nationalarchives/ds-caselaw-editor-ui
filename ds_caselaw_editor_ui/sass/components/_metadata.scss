@@ -4,7 +4,7 @@
 
     display: flex;
     gap: $space-8;
-    padding: $space-8 0;
+    padding: $space-4 0 $space-6;
   }
 
   &__body {
@@ -15,11 +15,13 @@
 
   &__body--horizontal {
     flex-direction: row;
+    gap: $space-12;
     justify-content: space-between;
   }
 
   &__body-row {
     display: flex;
+    flex: 1;
     gap: $space-4;
   }
 

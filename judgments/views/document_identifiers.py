@@ -18,14 +18,25 @@ if TYPE_CHECKING:
 
 
 class DocumentIdentifiersView(DocumentView):
+    template_engine = "jinja"
+    template_name = "judgment/identifiers.jinja"
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         context["view"] = "document_identifiers"
+        preferred_identifier = self.document.identifiers.preferred()
+
+        if preferred_identifier is not None:
+            context["preferred_identifier_name"] = preferred_identifier.schema.name
+            context["preferred_identifier_value"] = preferred_identifier.value
+        else:
+            context["preferred_identifier_name"] = None
+            context["preferred_identifier_value"] = None
+
+        context["identifiers_by_score"] = self.document.identifiers.by_score()
 
         return context
-
-    template_name = "judgment/identifiers.html"
 
 
 class AddIdentifierForm(forms.Form):
@@ -47,7 +58,8 @@ class AddIdentifierForm(forms.Form):
 
 
 class AddDocumentIdentifierView(DocumentViewMixin, FormView):
-    template_name = "judgment/identifiers_add.html"
+    template_engine = "jinja"
+    template_name = "judgment/identifiers_add.jinja"
     form_class = AddIdentifierForm
 
     def get_context_data(self, **kwargs):
@@ -148,7 +160,8 @@ def check_safe_to_delete_identifier(document: Document, identifier_uuid: str):
 
 
 class DeleteDocumentIdentifierView(DocumentViewMixin, FormView):
-    template_name = "judgment/identifier_delete.html"
+    template_engine = "jinja"
+    template_name = "judgment/identifier_delete.jinja"
     form_class = DeleteIdentifierForm
 
     def get_context_data(self, **kwargs):

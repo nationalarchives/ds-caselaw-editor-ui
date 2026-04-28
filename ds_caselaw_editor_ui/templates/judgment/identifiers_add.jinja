@@ -1,0 +1,17 @@
+{% extends "layouts/judgment.jinja" %}
+{% from "components/document_metadata.jinja" import document_metadata with context %}
+{% from "components/heading.jinja" import heading %}
+{% from "components/notification.jinja" import notification %}
+{% block content %}
+  <div class="container">
+    {{ document_metadata(variant="view") }}
+    {{ heading(content="Add identifiers for:") }}
+    {{ heading(tag="h2", weight="normal", content=document.body.name) }}
+    {% if document.has_ever_been_published %}
+      {% call notification(variant="warning") %}
+        You cannot delete new identifiers once added because this document has been published.
+      {% endcall %}
+    {% endif %}
+    {{ crispy(form, request) | safe }}
+  </div>
+{% endblock content %}
