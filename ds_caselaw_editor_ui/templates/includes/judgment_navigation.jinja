@@ -1,0 +1,15 @@
+{% macro judgment_navigation(navigation_items, user=None) %}
+  <nav class="page-header__navbar">
+    <ul class="judgment-navigation">
+      {% for item in navigation_items|default([]) %}
+        <li class="judgment-navigation__item {{ 'judgment-navigation__item--active' if item.selected else '' }} {{ 'judgment-navigation__item--disabled' if not item.url else '' }}">
+          {% if item.url %}
+            <a href="{{ item.url }}">{{ item.label }}</a>
+          {% else %}
+            <span>{{ item.label }}</span>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </nav>
+{% endmacro %}

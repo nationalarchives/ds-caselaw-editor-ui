@@ -96,6 +96,26 @@ def get_identifiers_navigation_item(view, document):
     }
 
 
+def get_navigation_items_logic(view, document, linked_document_uri=None):
+
+    base_navigation = [
+        get_review_navigation_item(view, document),
+        get_hold_navigation_item(view, document),
+        get_publishing_navigation_item(view, document),
+        get_identifiers_navigation_item(view, document),
+        get_history_navigation_item(view, document),
+        get_download_navigation_item(view, document),
+        get_upload_navigation_item(view=view, document=document),
+    ]
+
+    filtered_navigation = [item for item in base_navigation if item is not None]
+
+    if linked_document_uri:
+        filtered_navigation.append(get_associated_documents_navigation_item(view, document))
+
+    return filtered_navigation
+
+
 @register.simple_tag(takes_context=True)
 def get_navigation_items(context):
     view, document, linked_document_uri = (

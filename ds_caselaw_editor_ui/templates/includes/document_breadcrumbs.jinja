@@ -1,0 +1,16 @@
+{% macro render_breadcrumbs(document_type, title, linked_document_uri=None) %}
+  {% if document_type == "press_summary" %}
+    <li>
+      {% if linked_document_uri %}
+        <a href="{{ '/' ~ linked_document_uri ~ '/view' }}">{{ title or "[Untitled Press Summary]" }}</a>
+      {% else %}
+        <a>{{ title or "[Untitled Press Summary]" }}</a>
+      {% endif %}
+    </li>
+    <li>Press Summary</li>
+  {% elif document_type == "judgment" %}
+    <li>{{ title or "[Untitled Document]" }}</li>
+  {% elif title %}
+    <li>{{ title }}</li>
+  {% endif %}
+{% endmacro %}

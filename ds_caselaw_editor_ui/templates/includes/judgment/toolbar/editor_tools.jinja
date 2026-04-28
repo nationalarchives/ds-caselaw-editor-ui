@@ -1,0 +1,29 @@
+{% macro editor_tools(user, document, request, csrf_input) %}
+  <div class="judgment-toolbar__editor-tools">
+    {% if user|is_superuser or user|is_editor %}
+      <form action="{{ url('enrich') }}" method="post" style="display: inline;">
+        {{ csrf_input }}
+        <input type="hidden" name="document_uri" value="{{ document.uri }}" />
+        <input type="submit"
+               name="enrich"
+               class="button-cta button-small"
+               value="Request enrichment" />
+      </form>
+      <form action="{{ url('reparse') }}" method="post" style="display: inline;">
+        {{ csrf_input }}
+        <input type="hidden" name="document_uri" value="{{ document.uri }}" />
+        <input type="submit"
+               name="reparse"
+               class="button-cta button-small"
+               value="Reparse" />
+      </form>
+      <a class="button-danger button-small"
+         href="{{ url('delete', query={'judgment_uri': document.uri}) }}">Delete</a>
+    {% else %}
+      {% if document.is_failure %}
+        <a class="button-danger button-small"
+           href="{{ url('delete', query={'judgment_uri': document.uri}) }}">Delete</a>
+      {% endif %}
+    {% endif %}
+  </div>
+{% endmacro %}

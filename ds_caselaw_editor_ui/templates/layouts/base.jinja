@@ -1,4 +1,6 @@
 {% from "components/navigation.jinja" import navigation with context %}
+{% from "includes/judgment_navigation.jinja" import judgment_navigation %}
+{% from "includes/document_breadcrumbs.jinja" import render_breadcrumbs %}
 <!DOCTYPE html>
 <html lang="en-gb">
   <head>
@@ -18,6 +20,8 @@
     <script defer src="{{ static('js/dist/app.js') }}"></script>
     <script defer src="{{ static('js/dist/cookie_consent.js') }}"></script>
   </head>
+  {% block banner %}
+  {% endblock banner %}
   <body>
     {% include "includes/cookie_consent/cookie_banner.html" %}
     <a id="skip-to-main-content" href="#main-content">Skip to Main Content</a>
@@ -31,6 +35,7 @@
               <a href="{{ url('home') }}">Find and manage case law</a>
             </li>
             {% block breadcrumbs %}
+              {% if document %}{{ render_breadcrumbs("judgment", document.body.name) }}{% endif %}
             {% endblock breadcrumbs %}
           </ol>
         </nav>
