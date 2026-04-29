@@ -1,0 +1,36 @@
+{% extends "layouts/judgment.jinja" %}
+{% from "components/document_metadata.jinja" import document_metadata with context %}
+{% from "components/heading.jinja" import heading %}
+{% from "components/notification.jinja" import notification %}
+{% from "components/note_form.jinja" import note_form %}
+{% block content %}
+  <div class="container">
+    {{ document_metadata(variant="view") }}
+    {% if judgment.is_publishable %}
+      {{ heading(content="I want to publish:") }}
+      {{ heading(tag="h2", weight="normal", content=judgment.body.name) }}
+      {% call notification() %}
+        Once published you will not be able to delete identifiers for this document, only mark them as deprecated.
+      {% endcall %}
+      <form aria-label="publish judgment"
+            action="{{ url('publish') }}"
+            method="post">
+        {{ csrf_input }}
+        <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
+        {% if waffle.flag("notes_on_state_change") %}{{ note_form() }}{% endif %}
+        {{ button(content="Publish") }}
+        <p>
+          <a href="{{ url('full-text-html', document.uri) }}">Go back to review</a>
+        </p>
+      </form>
+    {% else %}
+      {% call notification(variant="warning") %}
+        This document is not publishable due to the following reason(s):
+      {% endcall %}
+      <ul>
+        {% for message in judgment.validation_failure_messages %}<li>{{ message }}</li>{% endfor %}
+      </ul>
+      <p>To publish this document, first resolve the issues above then try again.</p>
+    {% endif %}
+  </div>
+{% endblock content %}

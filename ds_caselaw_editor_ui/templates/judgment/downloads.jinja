@@ -1,0 +1,23 @@
+{% extends "layouts/judgment.jinja" %}
+{% from "components/document_metadata.jinja" import document_metadata with context %}
+{% from "components/heading.jinja" import heading %}
+{% block content %}
+  <div class="container">
+    {{ document_metadata(variant="view") }}
+    {{ heading(content="Download documents for:") }}
+    {{ heading(tag="h2", weight="normal", content=document.body.name) }}
+    {% if document.docx_url %}
+      <p>
+        <a href="{{ document.docx_url }}" download>Download .DOCX</a>
+      </p>
+    {% endif %}
+    {% if document.pdf_url %}
+      <p>
+        <a href="{{ document.pdf_url }}">Download PDF</a>
+      </p>
+    {% endif %}
+    <p>
+      <a href="{{ url('full-text-xml', document.uri) }}">Download XML</a>
+    </p>
+  </div>
+{% endblock content %}

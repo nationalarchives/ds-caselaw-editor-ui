@@ -8,7 +8,8 @@ from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_40
 
 
 class HoldDocumentView(DocumentView):
-    template_name = "judgment/hold.html"
+    template_engine = "jinja"
+    template_name = "judgment/hold.jinja"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -17,7 +18,8 @@ class HoldDocumentView(DocumentView):
 
 
 class HoldDocumentSuccessView(DocumentView):
-    template_name = "judgment/hold-success.html"
+    template_engine = "jinja"
+    template_name = "judgment/hold-success.jinja"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -41,7 +43,8 @@ def hold(request):
 
 
 class UnholdDocumentView(DocumentView):
-    template_name = "judgment/unhold.html"
+    template_engine = "jinja"
+    template_name = "judgment/unhold.jinja"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -51,7 +54,8 @@ class UnholdDocumentView(DocumentView):
 
 
 class UnholdDocumentSuccessView(DocumentView):
-    template_name = "judgment/unhold-success.html"
+    template_engine = "jinja"
+    template_name = "judgment/unhold-success.jinja"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

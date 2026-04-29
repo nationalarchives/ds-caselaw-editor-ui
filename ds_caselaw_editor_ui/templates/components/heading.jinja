@@ -1,0 +1,68 @@
+{% macro heading(tag="h1", weight="default", size="default", id=None, content=None) %}
+  {% set body_content = caller() if caller is defined else content if content is defined else "" %}
+  {% set weight_classes = {"default": "", "normal": "heading--normal"} %}
+  {% set weight_class = weight_classes.get(weight, weight_classes) %}
+  {% set size_classes = {
+    "default": "",
+    "h1": "heading heading--h1",
+    "h2": "heading heading--h2",
+    "h3": "heading heading--h3",
+    "h4": "heading heading--h4"
+  } %}
+  {% set size_class = size_classes.get(size, size_classes["default"]) %}
+  {% set text = body_content | trim %}
+  {% set id_value = id | default(text | hyphenate, true) %}
+  {% if tag == "h1" %}
+    <h1 id="{{ id_value }}" class="{{ size_class }} {{ weight_class }}">{{ body_content }}</h1>
+  {% endif %}
+  {% if tag == "h2" %}
+    <h2 id="{{ id_value }}" class="{{ size_class }} {{ weight_class }}">{{ body_content }}</h2>
+  {% endif %}
+  {% if tag == "h3" %}
+    <h3 id="{{ id_value }}" class="{{ size_class }} {{ weight_class }}">{{ body_content }}</h3>
+  {% endif %}
+  {% if tag == "h4" %}
+    <h4 id="{{ id_value }}" class="{{ size_class }} {{ weight_class }}">{{ body_content }}</h4>
+  {% endif %}
+  {% if tag == "div" %}
+    <div id="{{ id_value }}" class="{{ size_class }} {{ weight_class }}">{{ body_content }}</div>
+  {% endif %}
+  {% if tag == "span" %}
+    <span id="{{ id_value }}" class="{{ size_class }} {{ weight_class }}">{{ body_content }}</span>
+  {% endif %}
+{% endmacro %}
+{% macro heading_examples() %}
+  {% call heading(size="h1") %}
+    Size H1
+  {% endcall %}
+  {% call heading(size="h2") %}
+    Size H2
+  {% endcall %}
+  {% call heading(size="h3") %}
+    Size H3
+  {% endcall %}
+  {% call heading(size="h4") %}
+    Size H4
+  {% endcall %}
+  {% call heading(tag="h1") %}
+    Tag H1
+  {% endcall %}
+  {% call heading(tag="h2") %}
+    Tag H2
+  {% endcall %}
+  {% call heading(tag="h3") %}
+    Tag H3
+  {% endcall %}
+  {% call heading(tag="h4") %}
+    Tag H4
+  {% endcall %}
+  {% call heading(tag="div") %}
+    Tag div
+  {% endcall %}
+  {% call heading(tag="span") %}
+    Tag span
+  {% endcall %}
+  {% call heading(weight="normal") %}
+    Normal weight
+  {% endcall %}
+{% endmacro %}

@@ -1,0 +1,18 @@
+{% extends "layouts/judgment.jinja" %}
+{% from "components/document_metadata.jinja" import document_metadata with context %}
+{% from "components/heading.jinja" import heading %}
+{% from "components/notification.jinja" import notification %}
+{% block content %}
+  <div class="container">
+    {{ document_metadata(variant="view") }}
+    {{ heading(content="Delete identifier for:") }}
+    {{ heading(tag="h2", weight="normal", content=document.body.name) }}
+    <p>
+      You're about to delete a <b>{{ identifier.schema.name }}</b> with value <b>{{ identifier.value }}</b>.
+    </p>
+    {% call notification(variant="warning") %}
+      You should only delete an identifier if it has never been used to publicly refer to this document. If this identifier has been used but is no longer current, it should be marked as deprecated instead.
+    {% endcall %}
+    {{ crispy(form, request) | safe }}
+  </div>
+{% endblock content %}

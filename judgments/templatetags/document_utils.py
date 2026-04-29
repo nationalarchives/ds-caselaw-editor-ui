@@ -32,6 +32,8 @@ def render_json(json_string):
 @register.filter
 def get_dict_key_with_hyphen(the_dict, key):
     """Django templates don't support using hyphens in variable names (eg `the_dict.key-with-hyphen`), so this provides a workaround."""
+    if not the_dict:
+        return ""
     return the_dict.get(key, "")
 
 

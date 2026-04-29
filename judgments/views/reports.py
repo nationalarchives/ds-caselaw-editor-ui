@@ -9,7 +9,8 @@ from judgments.utils import api_client
 
 
 class Index(TemplateView):
-    template_name = "reports/index.html"
+    template_engine = "jinja"
+    template_name = "reports/index.jinja"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -32,12 +33,16 @@ def get_rows_from_result(result: list | list[list[Any]]) -> list[list[Any]]:
 
 
 class AwaitingParse(TemplateView):
-    template_name = "reports/awaiting_parse.html"
+    template_engine = "jinja"
+    template_name = "reports/awaiting_parse.jinja"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        target_parser_version = api_client.get_highest_parser_version()
+        try:
+            target_parser_version = api_client.get_highest_parser_version()
+        except (TypeError, ValueError):
+            target_parser_version = (0, 0)
 
         context["page_title"] = "Documents awaiting reparsing"
         context["target_parser_version"] = f"{target_parser_version[0]}.{target_parser_version[1]}"
@@ -61,7 +66,8 @@ class BulkReparseRunLogListView(ListView):
     model = BulkReparseRunLog
     paginate_by = 50
 
-    template_name = "reports/bulk_reparse_run_log_list.html"
+    template_engine = "jinja"
+    template_name = "reports/bulk_reparse_run_log_list.jinja"
 
 
 class BulkReparseRunLogDetailView(DetailView):
@@ -71,13 +77,21 @@ class BulkReparseRunLogDetailView(DetailView):
 
 
 class AwaitingEnrichment(TemplateView):
-    template_name = "reports/awaiting_enrichment.html"
+    template_engine = "jinja"
+    template_name = "reports/awaiting_enrichment.jinja"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        target_enrichment_version = api_client.get_highest_enrichment_version()
-        target_parser_version = api_client.get_highest_parser_version()
+        try:
+            target_enrichment_version = api_client.get_highest_enrichment_version()
+        except (TypeError, ValueError):
+            target_enrichment_version = (0, 0)
+
+        try:
+            target_parser_version = api_client.get_highest_parser_version()
+        except (TypeError, ValueError):
+            target_parser_version = (0, 0)
 
         context["page_title"] = "Documents awaiting enrichment"
         context["target_enrichment_version"] = f"{target_enrichment_version[0]}.{target_enrichment_version[1]}"
@@ -94,7 +108,8 @@ class AwaitingEnrichment(TemplateView):
 
 
 class LockedDocuments(TemplateView):
-    template_name = "reports/locked_documents.html"
+    template_engine = "jinja"
+    template_name = "reports/locked_documents.jinja"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

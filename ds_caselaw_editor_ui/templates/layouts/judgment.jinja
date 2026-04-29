@@ -69,7 +69,7 @@
       {% endif %}
     {% endcall %}
   {% endcall %}
-  {% if judgment.is_locked %}
+  {% if document.is_locked %}
     {% call notification() %}
       <div class="container">
         <p>This document is locked: "{{ document.checkout_message }}"</p>

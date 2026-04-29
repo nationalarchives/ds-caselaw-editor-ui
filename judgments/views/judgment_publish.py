@@ -8,7 +8,8 @@ from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_40
 
 
 class PublishDocumentView(DocumentView):
-    template_name = "judgment/publish.html"
+    template_engine = "jinja"
+    template_name = "judgment/publish.jinja"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -17,7 +18,8 @@ class PublishDocumentView(DocumentView):
 
 
 class PublishDocumentSuccessView(DocumentView):
-    template_name = "judgment/publish-success.html"
+    template_engine = "jinja"
+    template_name = "judgment/publish-success.jinja"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -43,7 +45,8 @@ def publish(request):
 
 
 class UnpublishDocumentView(DocumentView):
-    template_name = "judgment/unpublish.html"
+    template_engine = "jinja"
+    template_name = "judgment/unpublish.jinja"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -52,7 +55,8 @@ class UnpublishDocumentView(DocumentView):
 
 
 class UnpublishDocumentSuccessView(DocumentView):
-    template_name = "judgment/unpublish-success.html"
+    template_engine = "jinja"
+    template_name = "judgment/unpublish-success.jinja"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
