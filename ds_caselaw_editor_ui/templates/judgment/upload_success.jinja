@@ -1,20 +1,20 @@
 {% extends "layouts/judgment.jinja" %}
-{% from "includes/judgment/metadata_panel_static.jinja" import metadata_panel %}
+{% from "components/document_metadata.jinja" import document_metadata with context %}
+{% from "components/heading.jinja" import heading %}
+{% from "components/notification.jinja" import notification %}
 {% from "components/button.jinja" import button %}
 {% block banner %}
-  <div class="page-notification--success">File successfully uploaded to: {{ document.body.name }}</div>
+  {% call notification(variant="success", marginless=True) %}
+    File successfully uploaded to: {{ document.body.name }}
+  {% endcall %}
 {% endblock banner %}
 {% block content %}
-  {{ metadata_panel(judgment=document, preferred_ncn=preferred_ncn, document_type=document_type) }}
   <div class="container">
-    <h1 class="judgment-component__confirmation-title">Confirmation that a file has been uploaded for</h1>
-    <h2 class="judgment-component__confirmation-subtitle">{{ document.body.name }}</h2>
-    <div class="judgment-component__button-actions">
-      <div class="judgment-component__button-actions">
-        {% call button(href='/' ~ document.uri, variant="cta") %}
-          Review document
-        {% endcall %}
-      </div>
-    </div>
+    {{ document_metadata(variant="view") }}
+    {{ heading(content="Confirmation that a file has been uploaded for") }}
+    {{ heading(tag="h2", content=document.body.name) }}
+    {% call button(href='/' ~ document.uri) %}
+      Review document
+    {% endcall %}
   </div>
 {% endblock content %}

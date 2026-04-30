@@ -14,6 +14,10 @@
     justify-content: center;
   }
 
+  &--marginless {
+    margin: 0;
+  }
+
   &--success {
     background-color: brand-colour("forest");
   }
