@@ -10,6 +10,11 @@ def test_judgment_review(authenticated_page: Page):
     assert_matches_snapshot(authenticated_page, "judgment_page")
 
 
+def test_judgment_associated_documents(authenticated_page: Page):
+    authenticated_page.goto(f"{JUDGMENT_URI}/associated-documents")
+    assert_matches_snapshot(authenticated_page, "judgment_associated_documents_page")
+
+
 def test_judgment_identifiers(authenticated_page: Page):
     authenticated_page.goto(f"{JUDGMENT_URI}/identifiers")
     assert_matches_snapshot(authenticated_page, "judgment_identifiers_page")

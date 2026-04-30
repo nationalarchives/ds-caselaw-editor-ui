@@ -1,0 +1,19 @@
+{% extends "layouts/judgment.jinja" %}
+{% from "components/document_metadata.jinja" import document_metadata with context %}
+{% from "components/heading.jinja" import heading %}
+{% block content %}
+  <div class="container">
+    {{ document_metadata(variant="view") }}
+    {{ heading(content="Associated documents for:") }}
+    {{ heading(tag="h2", content=document.body.name) }}
+    <p>
+      <a href="{{ url('full-text-html', linked_document_uri) }}">
+        {% if document_type == "press_summary" %}
+          Judgment
+        {% else %}
+          Press Summary
+        {% endif %}
+      </a>
+    </p>
+  </div>
+{% endblock content %}

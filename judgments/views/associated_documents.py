@@ -4,7 +4,8 @@ from judgments.utils.view_helpers import (
 
 
 class AssociatedDocumentsView(DocumentView):
-    template_name = "judgment/associated_documents.html"
+    template_engine = "jinja"
+    template_name = "judgment/associated_documents.jinja"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
