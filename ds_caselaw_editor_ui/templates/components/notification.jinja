@@ -1,4 +1,4 @@
-{% macro notification(variant=None, icon=True) %}
+{% macro notification(variant=None, icon=True, marginless=False) %}
   {% set variant_classes = {
     "default": "notification--info",
     "success": "notification--success",
@@ -15,7 +15,8 @@
     "warning": "icon__triangle-exclamation"
   } %}
   {% set icon_class = icon_classes.get(variant, icon_classes["default"]) %}
-  <div class="notification {{ variant_class }}">
+  {% set margin_class = "notification--marginless" if marginless else "" %}
+  <div class="notification {{ variant_class }} {{ margin_class }}">
     <div class="notification__container">
       {% if icon_class %}<span class="icon {{ icon_class }}"></span>{% endif %}
       <span>{{ caller() }}</span>
