@@ -35,7 +35,6 @@ from .views.judgment_publish import (
     publish,
     unpublish,
 )
-from .views.labs import Labs
 from .views.results import results
 from .views.signed_asset import redirect_to_signed_asset
 from .views.stats import Stats, stream_combined_stats_table_as_csv
@@ -75,8 +74,6 @@ urlpatterns = [
     path("edit", edit_view_redirect),
     path("detail", html_view_redirect),
     path("xml", xml_view_redirect),
-    # Labs
-    path("labs", Labs.as_view(), name="labs"),
     # Reports
     path("reports", reports.Index.as_view(), name="reports"),
     path(
