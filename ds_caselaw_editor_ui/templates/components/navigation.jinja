@@ -33,9 +33,6 @@
             </li>
           {% endif %}
         {% endif %}
-        <li>
-          <a href="{{ url('labs') }}">Labs</a>
-        </li>
         {% if user.is_authenticated %}
           <li>
             <form action="{{ url('admin:logout') }}" method="post">
