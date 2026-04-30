@@ -7,13 +7,7 @@
     {{ heading(content="Associated documents for:") }}
     {{ heading(tag="h2", content=document.body.name) }}
     <p>
-      <a href="{{ url('full-text-html', linked_document_uri) }}">
-        {% if document_type == "press_summary" %}
-          Judgment
-        {% else %}
-          Press Summary
-        {% endif %}
-      </a>
+      <a href="{{ url('full-text-html', linked_document_uri) }}">{{ document.document_noun|title }}</a>
     </p>
   </div>
 {% endblock content %}
