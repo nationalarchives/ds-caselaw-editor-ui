@@ -37,7 +37,6 @@ from .views.judgment_publish import (
 )
 from .views.results import results
 from .views.signed_asset import redirect_to_signed_asset
-from .views.stats import Stats, stream_combined_stats_table_as_csv
 from .views.stub import CreateStubView, create_stub
 from .views.style_guide import (
     StyleGuide,
@@ -100,13 +99,6 @@ urlpatterns = [
         "reports/locked-documents",
         reports.LockedDocuments.as_view(),
         name="report_locked_documents",
-    ),
-    # Stats
-    path("stats", Stats.as_view(), name="stats"),
-    path(
-        "stats/combined-csv",
-        stream_combined_stats_table_as_csv,
-        name="stats_combined_csv",
     ),
     # Style guide
     path("style-guide", StyleGuide.as_view(), name="style_guide"),
