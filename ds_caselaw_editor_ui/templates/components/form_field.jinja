@@ -1,4 +1,5 @@
 {% from "components/text_input.jinja" import text_input %}
+{% from "components/password_input.jinja" import password_input %}
 {% from "components/number_input.jinja" import number_input %}
 {% from "components/date_input.jinja" import date_input %}
 {% from "components/textarea.jinja" import textarea %}
@@ -12,6 +13,8 @@
     {{ number_input(field) }}
   {% elif field.widget_type == "select" %}
     {{ datalist_input(field) }}
+  {% elif field.widget_type == "password" %}
+    {{ password_input(field) }}
   {% else %}
     {{ text_input(field) }}
   {% endif %}

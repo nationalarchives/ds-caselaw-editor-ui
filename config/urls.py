@@ -5,6 +5,14 @@ from django.urls import include, path
 from django.views import defaults as default_views
 from django.views.generic.base import TemplateView
 
+from judgments.accounts.views import (
+    LoginView,
+    PasswordResetDoneView,
+    PasswordResetFromKeyDoneView,
+    PasswordResetFromKeyView,
+    PasswordResetView,
+)
+
 from . import views
 
 urlpatterns = [
@@ -12,6 +20,27 @@ urlpatterns = [
         "check",
         views.CheckView.as_view(),
         name="check",
+    ),
+    path("accounts/login/", LoginView.as_view(), name="account_login"),
+    path(
+        "accounts/password/reset/",
+        PasswordResetView.as_view(),
+        name="account_reset_password",
+    ),
+    path(
+        "accounts/password/reset/done/",
+        PasswordResetDoneView.as_view(),
+        name="account_reset_password_done",
+    ),
+    path(
+        "accounts/password/reset/key/<uidb36>/<key>/",
+        PasswordResetFromKeyView.as_view(),
+        name="account_reset_password_from_key",
+    ),
+    path(
+        "accounts/password/reset/key/done/",
+        PasswordResetFromKeyDoneView.as_view(),
+        name="account_reset_password_from_key_done",
     ),
     path("accounts/", include("allauth.urls")),
     # Django Admin, use {% url 'admin:index' %}
