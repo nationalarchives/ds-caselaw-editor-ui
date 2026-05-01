@@ -23,4 +23,5 @@ class StructuredSearchView(TemplateViewWithContext):
 
 
 class CheckView(TemplateViewWithContext):
-    template_name = "pages/check.html"
+    template_engine = "jinja"
+    template_name = "pages/check.jinja"
