@@ -1,0 +1,66 @@
+{% from "components/badge.jinja" import badge %}
+{% macro documents_table(total_count=None, total_count_postfix=None) %}
+  <div class="judgments-list">
+    <div class="judgments-list__container">
+      <div class="judgments-list__judgments-list-controls-container">
+        <div class="results__result-header">
+          <p id="recently-published-judgments" class="judgments-list__header">{{ total_count }} {{ total_count_postfix }}</p>
+        </div>
+      </div>
+      <div class="judgments-list__table">
+        <div class="judgments-list__table-header">
+          <div class="judgments-list__table-header-details">Document details</div>
+          <div class="judgments-list__table-header-submitted">Submitted</div>
+        </div>
+        <ul class="judgments-list__list">
+          {{ caller() }}
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endmacro %}
+{% macro documents_table_item(document=None) %}
+  <li class="judgments-list__judgment">
+    <div class="judgments-list__judgment-details">
+      <div class="judgments-list__judgment-details-name">
+        <a href="{{ url('full-text-html', document.uri) }}">{{ document.name or "[Untitled Document]" }}</a>
+      </div>
+      <ul class="judgments-list__judgment-details-meta">
+        <li class="judgments-list__judgment-details-submitted-mobile">
+          <span class="judgments-list__judgment-details-meta-key">Submitted</span>
+          <span class="judgments-list__judgment-details-meta-value">{{ document.metadata.submission_datetime|date("j M Y H:i") }}</span>
+        </li>
+        <li>
+          <span class="judgments-list__judgment-details-meta-key">NCN</span>
+          <span class="judgments-list__judgment-details-meta-value">{{ document.neutral_citation }}</span>
+        </li>
+        <li>
+          <span class="judgments-list__judgment-details-meta-key">Submitter</span>
+          <span class="judgments-list__judgment-details-meta-value">{{ document.metadata.author }}</span>
+        </li>
+        <li>
+          <span class="judgments-list__judgment-details-meta-key">Court</span>
+          <span class="judgments-list__judgment-details-meta-value">{{ document.court.name }}</span>
+        </li>
+        <li>
+          <span class="judgments-list__judgment-details-meta-key">Status</span>
+          <span class="judgments-list__judgment-details-meta-value">
+            {% set badge_variant = get_badge_variant_from_status(document.metadata.editor_status) %}
+            {% call badge(variant=badge_variant, size="small") %}
+              {{ document.metadata.editor_status }}
+            {% endcall %}
+          </span>
+        </li>
+        <li>
+          <span class="judgments-list__judgment-details-meta-key">TDR ref</span>
+          <span class="judgments-list__judgment-details-meta-value">{{ document.metadata.consignment_reference }}</span>
+        </li>
+      </ul>
+    </div>
+    <div class="judgments-list__judgment-submitted">
+      {{ document.metadata.submission_datetime|date }}
+      <br />
+      {{ document.metadata.submission_datetime|time }}
+    </div>
+  </li>
+{% endmacro %}

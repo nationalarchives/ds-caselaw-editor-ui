@@ -218,6 +218,7 @@ TEMPLATES = [
             "environment": "judgments.jinja.environment",
             "context_processors": [
                 "django.template.context_processors.request",
+                "django.contrib.messages.context_processors.messages",
                 "judgments.context_processors.cookie_consent",
                 "judgments.context_processors.environment",
                 "judgments.context_processors.user_context",

@@ -56,6 +56,10 @@ def format_date(value, fmt="%-d %b %Y"):
     return value.strftime(fmt) if value else ""
 
 
+def format_time(value, fmt="%H:%M"):
+    return value.strftime(fmt) if value else ""
+
+
 @pass_context
 def get_document_navigation_items(context):
     return get_navigation_items(context)
@@ -115,6 +119,7 @@ def environment(**options):
     env.filters["is_editor"] = is_editor
     env.filters["is_developer"] = is_developer
     env.filters["date"] = format_date
+    env.filters["time"] = format_time
     env.filters["display_datetime"] = display_datetime
     env.filters["get_title_to_display_in_html"] = get_title_to_display_in_html
     env.filters["display_datetime"] = display_datetime
