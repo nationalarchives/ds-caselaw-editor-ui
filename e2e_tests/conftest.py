@@ -23,7 +23,7 @@ def authenticated_page(browser: Browser, base_url: str) -> Page:
     page.goto("/")
     page.fill("#id_login", username)
     page.fill("#id_password", password)
-    page.click("button.button-cta[type='submit']")
+    page.click("button.button")
     page.wait_for_load_state("networkidle")
     yield page
     context.close()

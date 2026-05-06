@@ -28,12 +28,6 @@
     margin: 0;
   }
 
-  .login {
-    display: flex;
-    flex-direction: column;
-    gap: $space-4;
-  }
-
   &__label {
     font-weight: $typography-bold-font-weight;
   }

@@ -1,0 +1,35 @@
+{% extends "layouts/base.jinja" %}
+{% from "components/button.jinja" import button %}
+{% from "components/form_field.jinja" import form_field %}
+{% from "components/heading.jinja" import heading %}
+{% block breadcrumbs %}
+  <li>Sign in</li>
+{% endblock breadcrumbs %}
+{% block content %}
+  <div class="login-background">
+    <div class="login-container">
+      <form method="post" action="{{ url('account_login') }}">
+        {% call heading() %}
+          Sign in to
+          <br>
+          Find Case Law
+        {% endcall %}
+        {{ csrf_input }}
+        {% if redirect_field_value %}
+          <input type="hidden"
+                 name="{{ redirect_field_name }}"
+                 value="{{ redirect_field_value }}" />
+        {% endif %}
+        {{ form.non_field_errors() }}
+        {% set login = form["login"] %}
+        {% set password = form["password"] %}
+        {{ form_field(login) }}
+        {{ form_field(password) }}
+        {{ button(content="Sign in") }}
+        <p>
+          <a href="{{ url('account_reset_password') }}">Forgotten password</a>
+        </p>
+      </form>
+    </div>
+  </div>
+{% endblock content %}

@@ -308,6 +308,7 @@ ACCOUNT_ALLOW_REGISTRATION = False
 ACCOUNT_LOGIN_METHODS = {"username"}
 ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
 ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_TEMPLATE_EXTENSION = "jinja"
 MFA_ADAPTER = "allauth.mfa.adapter.DefaultMFAAdapter"
 
 
