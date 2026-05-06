@@ -73,7 +73,7 @@ class BulkReparseRunLogListView(ListView):
 class BulkReparseRunLogDetailView(DetailView):
     model = BulkReparseRunLog
 
-    template_name = "reports/bulk_reparse_run_log_detail.html"
+    template_name = "reports/bulk_reparse_run_log_detail.jinja"
 
 
 class AwaitingEnrichment(TemplateView):
