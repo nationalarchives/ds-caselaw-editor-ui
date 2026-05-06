@@ -66,11 +66,6 @@
                   <a href="{% url 'reports' %}">Reports</a>
                 </li>
               {% endflag %}
-              {% flag "stats" %}
-                <li>
-                  <a href="{% url 'stats' %}">Stats</a>
-                </li>
-              {% endflag %}
             {% endif %}
             {% if user.is_authenticated %}
               <li>

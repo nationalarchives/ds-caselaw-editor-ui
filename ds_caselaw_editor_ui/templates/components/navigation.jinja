@@ -27,11 +27,6 @@
               <a href="{{ url('reports') }}">Reports</a>
             </li>
           {% endif %}
-          {% if waffle.flag("stats") %}
-            <li>
-              <a href="{{ url('stats') }}">Stats</a>
-            </li>
-          {% endif %}
         {% endif %}
         {% if user.is_authenticated %}
           <li>
