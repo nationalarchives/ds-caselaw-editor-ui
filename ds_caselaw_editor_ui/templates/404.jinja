@@ -1,0 +1,22 @@
+{% extends "layouts/base.jinja" %}
+{% block breadcrumbs %}
+  <li>Page not found</li>
+{% endblock breadcrumbs %}
+{% block title %}
+  Page not found
+{% endblock title %}
+{% block content %}
+  <div class="standard-text-template">
+    <h1>Page not found</h1>
+    <p>
+      {% if exception %}
+        {{ exception }}
+      {% else %}
+        Sorry, this page could not be found.
+      {% endif %}
+    </p>
+    <p>
+      <a href="{{ url('home') }}">Return to Find case law</a>
+    </p>
+  </div>
+{% endblock content %}
