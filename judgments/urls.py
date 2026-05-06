@@ -17,7 +17,7 @@ from .views.document_full_text import (
 from .views.document_history import DocumentHistoryView
 from .views.document_identifiers import AddDocumentIdentifierView, DeleteDocumentIdentifierView, DocumentIdentifiersView
 from .views.document_reparse import reparse
-from .views.index import index
+from .views.index import HomeView
 from .views.judgment_edit import EditJudgmentView, edit_view_redirect
 from .views.judgment_hold import (
     HoldDocumentSuccessView,
@@ -47,7 +47,7 @@ from .views.upload import UploadDocumentSuccessView, UploadDocumentView, upload
 
 urlpatterns = [
     # Home
-    path("", index, name="home"),
+    path("", HomeView.as_view(), name="home"),
     # Components
     path(
         "components",

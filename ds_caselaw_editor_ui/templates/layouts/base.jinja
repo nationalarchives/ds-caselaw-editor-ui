@@ -1,6 +1,7 @@
 {% from "components/navigation.jinja" import navigation with context %}
 {% from "includes/judgment_navigation.jinja" import judgment_navigation %}
 {% from "includes/document_breadcrumbs.jinja" import render_breadcrumbs %}
+{% from "components/notification.jinja" import notification %}
 <!DOCTYPE html>
 <html lang="en-gb">
   <head>
@@ -23,6 +24,12 @@
   {% block banner %}
   {% endblock banner %}
   <body>
+    {% for message in messages %}
+      {% set notification_variant = message.tags if message.tags else "success" %}
+      {% call notification(variant=notification_variant, marginless=True) %}
+        {{ message }}
+      {% endcall %}
+    {% endfor %}
     {% include "includes/cookie_consent/cookie_banner.html" %}
     <a id="skip-to-main-content" href="#main-content">Skip to Main Content</a>
     {% include "includes/environment_banner.html" %}
