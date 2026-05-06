@@ -17,6 +17,7 @@ from .views.document_full_text import (
 from .views.document_history import DocumentHistoryView
 from .views.document_identifiers import AddDocumentIdentifierView, DeleteDocumentIdentifierView, DocumentIdentifiersView
 from .views.document_reparse import reparse
+from .views.errors import NotFoundView, PermissionDeniedView, ServerErrorView
 from .views.index import HomeView
 from .views.judgment_edit import EditJudgmentView, edit_view_redirect
 from .views.judgment_hold import (
@@ -44,6 +45,11 @@ from .views.style_guide import (
 )
 from .views.unlock import unlock
 from .views.upload import UploadDocumentSuccessView, UploadDocumentView, upload
+
+handler404 = NotFoundView.as_view()
+handler500 = ServerErrorView.as_view()
+handler403 = PermissionDeniedView.as_view()
+
 
 urlpatterns = [
     # Home
