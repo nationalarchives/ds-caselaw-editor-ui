@@ -1,4 +1,4 @@
-{% macro search_form() %}
+{% macro search_form(search_filter=None, query=None) %}
   <div class="search-component">
     <div class="search-component__container">
       <form action="{{ url('results') }}"

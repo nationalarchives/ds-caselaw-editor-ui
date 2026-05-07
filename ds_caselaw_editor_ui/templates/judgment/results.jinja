@@ -2,11 +2,12 @@
 {% from "components/search_form.jinja" import search_form %}
 {% from "components/pagination.jinja" import pagination %}
 {% from "components/documents_table.jinja" import documents_table, documents_table_item %}
-{% block breadcrumbs %}
-{% endblock breadcrumbs %}
+{% block title %}
+  Search results - Find and manage case law
+{% endblock title %}
 {% block content %}
   {{ search_form(query=query, search_filter=search_filter) }}
-  {% call documents_table(total_count=total, total_count_postfix="unpublished documents") %}
+  {% call documents_table(total_count=total, total_count_postfix="documents:") %}
     {% for document in documents %}{{ documents_table_item(document=document) }}{% endfor %}
   {% endcall %}
   <div class="container">

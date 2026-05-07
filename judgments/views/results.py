@@ -1,21 +1,28 @@
 from caselawclient.Client import MarklogicAPIError
-from django.http import Http404, HttpResponse
-from django.template import loader
+from django.http import Http404
+from django.views.generic import TemplateView
 
 from judgments.utils.view_helpers import get_search_parameters, get_search_results
 
 
-def results(request):
-    try:
-        params = get_search_parameters(request.GET)
-        results = get_search_results(params)
-        context = results | {
-            "page_title": "Search results",
-            "query_string": f"query={params['query']}",
-        }
-    except MarklogicAPIError as e:
-        msg = f"Search error, {e}"
-        raise Http404(msg) from e  # TODO: This should be something else!
+class ResultsView(TemplateView):
+    template_engine = "jinja"
+    template_name = "judgment/results.jinja"
 
-    template = loader.get_template("judgment/results.html")
-    return HttpResponse(template.render(context, request))
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        try:
+            params = get_search_parameters(self.request.GET)
+            results = get_search_results(params)
+            search_context = results | {
+                "page_title": "Search results",
+                "query_string": f"query={params['query']}",
+            }
+        except MarklogicAPIError as e:
+            msg = f"Search error, {e}"
+            raise Http404(msg) from e  # TODO: This should be something else!
+
+        search_context["documents"] = search_context["judgments"]
+        context.update(search_context)
+
+        return context

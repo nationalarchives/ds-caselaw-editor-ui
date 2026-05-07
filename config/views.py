@@ -12,16 +12,6 @@ class TemplateViewWithContext(TemplateView):
         }
 
 
-class SourcesView(TemplateViewWithContext):
-    template_name = "pages/sources.html"
-    page_title = "judgmentsources.title"
-
-
-class StructuredSearchView(TemplateViewWithContext):
-    template_name = "pages/structured_search.html"
-    page_title = "search.title"
-
-
 class CheckView(TemplateViewWithContext):
     template_engine = "jinja"
     template_name = "pages/check.jinja"

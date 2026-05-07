@@ -36,7 +36,13 @@
       </div>
       {% if document_html %}
         {{ document_html }}
-        {% include "includes/judgment_end_document_marker.html" %}
+        <div class="judgment-end-document-marker" id="end-of-document">
+          <div class="judgment-end-document-marker__top-link">
+            <span>End of document</span>
+            <br />
+            <a href="#start-of-document">Back to start</a>
+          </div>
+        </div>
       {% else %}
         <div class="page-notification--info">
           <div class="judgment-toolbar__version">

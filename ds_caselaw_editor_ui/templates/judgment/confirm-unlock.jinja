@@ -1,0 +1,21 @@
+{% extends "layouts/base.jinja" %}
+{% from "components/heading.jinja" import heading %}
+{% from "components/button.jinja" import button %}
+{% from "components/notification.jinja" import notification %}
+{% block content %}
+  <div class="container">
+    {{ heading(content="I want to unlock:") }}
+    {{ heading(tag="h2", content=judgment_uri) }}
+    {% call notification(variant="warning") %}
+      This will make any enrichment processes on the document fail.
+    {% endcall %}
+    <form method="post">
+      {{ csrf_input }}
+      <input type="hidden" name="judgment_uri" value="{{ judgment_uri }}" />
+      {{ button(content="Unlock document") }}
+      <p>
+        <a href="{{ url('full-text-html', judgment_uri) }}">Back to document</a>
+      </p>
+    </form>
+  </div>
+{% endblock content %}
