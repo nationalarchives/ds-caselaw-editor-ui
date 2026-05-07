@@ -2,8 +2,8 @@ from django.views.generic import TemplateView
 
 
 class BaseErrorView(TemplateView):
-    template_name = None
-    template_engine = None
+    template_name: str | None = None
+    template_engine: str | None = None
 
     def get_error_status(self):
         raise NotImplementedError
