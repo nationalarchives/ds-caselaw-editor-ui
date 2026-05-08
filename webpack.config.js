@@ -5,6 +5,7 @@ module.exports = {
   devtool: false,
   entry: {
     app: "./ds_caselaw_editor_ui/static/js/src/app.js",
+    confetti: "./ds_caselaw_editor_ui/static/js/src/confetti.js",
     cookie_consent:
       "./ds_caselaw_editor_ui/static/js/cookie_consent/src/ds-cookie-consent.js",
     gtm_script: "./ds_caselaw_editor_ui/static/js/src/gtm_script.js",
