@@ -29,7 +29,9 @@ repos:
     rev: v1.36.4
     hooks:
       - id: djlint-reformat-jinja
+        exclude: ^ds_caselaw_editor_ui/templates/mfa/
       - id: djlint-jinja
+        exclude: ^ds_caselaw_editor_ui/templates/mfa/
       - id: djlint-django
         name: djLint Reformatting for Django
         entry: djlint --profile=django --reformat
