@@ -3,10 +3,10 @@ from unittest.mock import ANY, MagicMock, call, patch
 
 from caselawclient.Client import ROOT_DIR
 from caselawclient.models.judgments import Judgment
-from defusedxml import ElementTree
 from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
 from django.test import TestCase
+from lxml import etree
 
 from judgments.views.stub import ANNOTATION
 
@@ -73,7 +73,7 @@ class TestStubView(TestCase):
     @patch("judgments.views.stub.api_client.set_property")
     def test_judgment_stub_post(self, mock_set_property, mock_insert_xml, mock_render_stub, mock_uuid, mock_courts):
         judgment_template_path = Path(ROOT_DIR) / "models" / "documents" / "templates" / "judgment.xml"
-        with (judgment_template_path).open("r") as f:
+        with (judgment_template_path).open("rb") as f:
             template = f.read()
         mock_render_stub.return_value = template
         superuser = User.objects.create_superuser(username="clark")
@@ -107,7 +107,7 @@ class TestStubView(TestCase):
             ],
         )
 
-        document_xml_bytes = ElementTree.tostring(mock_insert_xml.call_args.kwargs["document_xml"])
+        document_xml_bytes = etree.tostring(mock_insert_xml.call_args.kwargs["document_xml"])
 
         assert b"ns0" not in document_xml_bytes
         assert b"<uk:" in document_xml_bytes
@@ -115,7 +115,7 @@ class TestStubView(TestCase):
 
     @patch("judgments.views.stub.courts.get_all", return_value=[make_mock_court()])
     @patch("judgments.views.stub.uuid4", return_value="uuid")
-    @patch("judgments.views.stub.render_stub_xml", return_value="<xml />")
+    @patch("judgments.views.stub.render_stub_xml", return_value=b"<xml />")
     @patch("judgments.views.stub.api_client.insert_document_xml")
     def test_judgment_stub_post_invalid_court(self, mock_insert_xml, mock_render_stub, mock_uuid, mock_courts):
         superuser = User.objects.create_superuser(username="clark")
