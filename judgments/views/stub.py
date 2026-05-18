@@ -1,4 +1,3 @@
-import xml.etree.ElementTree as ET
 from datetime import UTC, date, datetime
 from uuid import uuid4
 
@@ -6,8 +5,6 @@ from caselawclient.models.documents.stub import EditorStubData, PartyData, rende
 from caselawclient.models.documents.versions import VersionAnnotation, VersionType
 from caselawclient.models.judgments import Judgment
 from caselawclient.types import DocumentURIString
-from caselawclient.xml_helpers import DEFAULT_NAMESPACES
-from defusedxml import ElementTree
 from django import forms
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied, ValidationError
@@ -17,6 +14,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from ds_caselaw_utils.courts import CourtNotFoundException, courts
 from ds_caselaw_utils.types import CourtCode
+from lxml import etree
 
 from judgments.utils import api_client
 from judgments.utils.view_helpers import (
@@ -30,12 +28,6 @@ ANNOTATION = VersionAnnotation(
     message="Stub document created",
     payload={},
 )
-
-# avoid "<ns0:...>" appearing in XML output
-for namespace_name, namespace_uri in DEFAULT_NAMESPACES.items():
-    actual_namespace_name = "" if namespace_name == "akn" else namespace_name
-    # register namespace does not exist on defusedxml, unhelpfully.
-    ET.register_namespace(actual_namespace_name, namespace_uri)
 
 
 def is_valid_court(court_code):
@@ -259,8 +251,7 @@ def create_stub(request):
 
     document_uri = DocumentURIString("d-" + str(uuid4()))
     rendered_stub = render_stub_xml(stub_data)
-
-    element = ElementTree.fromstring(rendered_stub)
+    element = etree.fromstring(rendered_stub)
 
     # create document in Marklogic
     api_client.insert_document_xml(
