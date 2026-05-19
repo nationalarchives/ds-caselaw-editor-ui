@@ -28,6 +28,7 @@ post_data = {
     "respondents": "Cathy\nDarren",
     "appellants": "Emily\nFred",
     "defendants": "Gertrude",
+    "ncn": "[2024] UKSC 123",
 }
 
 # The data actually sent to the renderer
@@ -47,6 +48,7 @@ formatted_data = {
         {"role": "Appellant", "name": "Fred"},
         {"role": "Defendant", "name": "Gertrude"},
     ],
+    "ncn": "[2024] UKSC 123",
 }
 
 
@@ -71,7 +73,16 @@ class TestStubView(TestCase):
     @patch("judgments.views.stub.render_stub_xml")
     @patch("judgments.views.stub.api_client.insert_document_xml")
     @patch("judgments.views.stub.api_client.set_property")
-    def test_judgment_stub_post(self, mock_set_property, mock_insert_xml, mock_render_stub, mock_uuid, mock_courts):
+    @patch("judgments.views.stub.api_client.get_document_by_uri")
+    def test_judgment_stub_post(  # noqa: PLR0913 -- too many args
+        self,
+        mock_get_doc,
+        mock_set_property,
+        mock_insert_xml,
+        mock_render_stub,
+        mock_uuid,
+        mock_courts,
+    ):
         judgment_template_path = Path(ROOT_DIR) / "models" / "documents" / "templates" / "judgment.xml"
         with (judgment_template_path).open("rb") as f:
             template = f.read()
