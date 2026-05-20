@@ -36,6 +36,7 @@ class TestCheckPrefixUrls(TestCase):
         response = self.client.get("/check")
         assert response.status_code == 200
         assert b'"OK"' in response.content
+        assert response["X-Clacks-Overhead"] == "GNU Terry Pratchett"
 
     def test_check_prefix_not_ok(self):
         """Urls starting with /check cannot be used when not logged in"""
