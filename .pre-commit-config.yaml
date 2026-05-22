@@ -56,7 +56,7 @@ repos:
         additional_dependencies:
           - stylelint@17.11.1
           - stylelint-config-standard-scss@17.0.0
-          - stylelint-config-clean-order@8.0.1
+          - stylelint-config-clean-order@8.0.2
 
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v4.0.0-alpha.8
