@@ -10,8 +10,12 @@ import { loadConfettiPreset } from "@tsparticles/preset-confetti";
       preset: "confetti",
 
       particles: {
-        color: {
-          value: ["#CB0D07", "#EBAB00", "#FCE45C", "#008484", "#405480"],
+        paint: {
+          fill: {
+            color: {
+              value: ["#CB0D07", "#EBAB00", "#FCE45C", "#008484", "#405480"],
+            },
+          },
         },
       },
 
