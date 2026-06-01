@@ -48,7 +48,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   curl
 
 # Install Specific Node.js version
-RUN curl -fsSL https://deb.nodesource.com/setup_22.x  | bash -
+RUN curl -fsSL https://deb.nodesource.com/setup_24.x  | bash -
 RUN apt-get -y install nodejs
 
 # cleaning up unused files
