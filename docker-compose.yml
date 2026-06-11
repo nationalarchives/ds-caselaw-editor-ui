@@ -40,7 +40,8 @@ services:
     env_file:
       - ./.env
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
+      - "[::1]:3000:3000"
     command: tail -f /dev/null
 
   postgres:
@@ -51,7 +52,8 @@ services:
       timeout: 3s
       retries: 10
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
+      - "[::1]:5432:5432"
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-ds_judgments_editor_ui}
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
@@ -84,7 +86,8 @@ services:
     volumes:
       - marklogic_data:/var/opt/MarkLogic
     ports:
-      - 8000-8010:8000-8010
+      - "127.0.0.1:8000-8010:8000-8010"
+      - "[::1]:8000-8010:8000-8010"
 
   e2e_tests:
     container_name: e2e_tests_container
