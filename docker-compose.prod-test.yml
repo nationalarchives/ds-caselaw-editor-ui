@@ -14,7 +14,8 @@ services:
     environment:
       DJANGO_SETTINGS_MODULE: config.settings.production
     ports:
-      - "5001:5000"
+      - "127.0.0.1:5001:5000"
+      - "[::1]:5001:5000"
     command: ["/start"]
     healthcheck:
       test:
