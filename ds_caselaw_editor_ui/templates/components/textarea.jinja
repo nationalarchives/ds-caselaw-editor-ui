@@ -14,6 +14,8 @@
     "one-quarter": "govuk-!-width-one-quarter"
   } %}
   {% set width_class = width_classes.get(field.width, "") %}
+  {% set margin_classes = {"default": "", "small": "govuk-!-margin-bottom-4"} %}
+  {% set margin_class = margin_classes.get(field.margin, "") %}
   {{ govukTextarea({
     "label":       { "text": field.label, "classes": label_class },
     "hint":  { "text": field.help_text } if field.help_text else None,
@@ -21,7 +23,7 @@
     "name":  field.html_name,
     "value": value or "",
     "rows":         rows,
-    "formGroup":   { "classes": width_class},
+    "formGroup":   { "classes": width_class ~ " " ~ margin_class},
     "errorMessage": errors
     }) }}
 {% endmacro %}

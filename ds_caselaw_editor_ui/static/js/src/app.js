@@ -2,6 +2,7 @@ import $ from "jquery";
 import { initAll } from "govuk-frontend";
 import TabSet from "./components/tabSet";
 import "./components/document_navigation_links";
+import "./components/aside";
 
 (function ($) {
   $.fn.manage_filters = function (options) {

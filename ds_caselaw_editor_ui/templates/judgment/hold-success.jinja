@@ -1,11 +1,13 @@
 {% extends "layouts/judgment.jinja" %}
-{% from "components/document_metadata.jinja" import document_metadata with context %}
+{% from "components/document_metadata.jinja" import document_metadata %}
 {% from "components/heading.jinja" import heading %}
+{% block aside %}
+  {{ document_metadata(document=document, preferred_ncn=preferred_ncn) }}
+{% endblock aside %}
 {% block content %}
   <div class="container">
-    {{ document_metadata(variant="view") }}
     {{ heading(content="Confirmation this has been put on hold:") }}
-    {{ heading(tag="h2", weight="normal", content=judgment.body.name) }}
+    {{ heading(tag="h2", weight="normal", content=document.body.name) }}
     <p>
       <a href="{{ email_issue_link }}">Email the submitter</a>
     </p>

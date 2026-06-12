@@ -1,10 +1,8 @@
 .metadata {
   &__container {
-    @include container;
-
     display: flex;
     gap: $space-8;
-    padding: $space-4 0 $space-6;
+    padding: $space-4;
   }
 
   &__body {

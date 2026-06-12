@@ -44,4 +44,10 @@
   &__circle-info {
     mask-image: url($fa-circle-info);
   }
+
+  &__chevron-left {
+    width: 0.7rem;
+    background-repeat: no-repeat;
+    mask-image: url($fa-chevron-left);
+  }
 }
