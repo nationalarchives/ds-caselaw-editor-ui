@@ -260,8 +260,8 @@ def restore_db(c, filename, delete_dump_on_success=False, delete_dump_on_error=F
     start(c, "django")
 
 
-@task(optional=["baseUrl"])
-def e2etest(c, baseUrl="http://django:3000"):
+@task(optional=["baseUrl", "regenerateSnapshots", "testPath"])
+def e2etest(c, baseUrl="http://django:3000", regenerateSnapshots="false", testPath=None):
     """
     Run end-to-end playwright tests against the given base url -
     the default is the running local django web container.
@@ -273,6 +273,26 @@ def e2etest(c, baseUrl="http://django:3000"):
             "build",
             "e2e_tests",
         ],
-        env=os.environ,
     )
-    subprocess.run(["docker", "compose", "run", "--rm", "e2e_tests", "pytest", "--base-url", baseUrl], env=os.environ)
+
+    pytest_cmd = [
+        "pytest",
+        "--base-url",
+        baseUrl,
+    ]
+
+    if testPath:
+        pytest_cmd.append(testPath)
+
+    subprocess.run(
+        [
+            "docker",
+            "compose",
+            "run",
+            "--rm",
+            "-e",
+            f"E2E_REGENERATE_SNAPSHOTS={regenerateSnapshots}",
+            "e2e_tests",
+            *pytest_cmd,
+        ],
+    )
