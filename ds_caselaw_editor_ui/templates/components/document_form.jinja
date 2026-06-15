@@ -29,17 +29,6 @@
             {{ textarea({"label": "Name", "id_for_label": "metadata_name", "html_name": "metadata_name", "value": document.body.name, "rows": 2, "label_size": "extra-small", "width": "full", "margin": "small"}) }}
           {% endcall %}
           {% call metadata_body_row() %}
-            {{ datalist_input({
-              "label": "Identifiers",
-              "id_for_label": "identifiers",
-              "html_name": "identifiers",
-              "choices": [],
-              "value": "",
-              "label_size": "extra-small",
-              "width": "full"
-            }) }}
-          {% endcall %}
-          {% call metadata_body_row() %}
             {% call button() %}
               Save
             {% endcall %}
