@@ -74,48 +74,49 @@
         <div>
           <dt>Jurisdiction</dt>
           <dd>
-            Employment Appeal Tribunal
+            {{ document.body.jurisdiction or "—" }}
           </dd>
         </div>
         <div>
           <dt>Case number</dt>
           <dd>
-            ABC-1022-1339-DA12
+            {{ document.body.case_number or "—" }}
           </dd>
         </div>
         <div>
           <dt>Source name</dt>
           <dd>
-            Employment Tribunals
+            {{ document.source_name }}
           </dd>
         </div>
         <div>
           <dt>Source email</dt>
           <dd>
-            jane@source.com
+            {{ document.source_email }}
           </dd>
         </div>
         <div>
           <dt>Judges</dt>
           <dd>
-            {{ badge(content="JL Harries") }}
-            {{ badge(content="USE Prise") }}
+            —
           </dd>
         </div>
         <div>
           <dt>Categories</dt>
           <dd>
-            {{ badge(content="Employment") }}
-            {{ badge(content="Appeals") }}
-            {{ badge(content="Healthcare") }}
+            {% if document.body.categories %}
+              {% for category in document.body.categories %}
+                {{ badge(content=category) }}
+              {% endfor %}
+            {% else %}
+              —
+            {% endif %}
           </dd>
         </div>
         <div>
           <dt>Parties</dt>
           <dd>
-            {{ badge(content="IMPERIAL COLLEGE HEALTHCARE NHS TRUST") }}
-            {{ badge(content="MR P ZIPRIN") }}
-            {{ badge(content="MR N MATAR") }}
+            —
           </dd>
         </div>
       </dl>
