@@ -5,6 +5,9 @@
 {% from "components/notification.jinja" import notification %}
 {% from "components/navigation_tabs.jinja" import navigation_tabs, navigation_tab %}
 {% from "components/toolbar.jinja" import toolbar, toolbar_section %}
+{% block aside %}
+  {{ document_metadata(document=document, preferred_ncn=preferred_ncn) }}
+{% endblock aside %}
 {% block precontent %}
   {% if current_version_number %}
     {% call notification() %}

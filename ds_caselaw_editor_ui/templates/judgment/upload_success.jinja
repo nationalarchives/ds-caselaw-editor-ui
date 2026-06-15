@@ -8,9 +8,6 @@
     File successfully uploaded to: {{ document.body.name }}
   {% endcall %}
 {% endblock banner %}
-{% block aside %}
-  {{ document_metadata(document=document, preferred_ncn=preferred_ncn) }}
-{% endblock aside %}
 {% block content %}
   <div class="container">
     {{ heading(content="Confirmation that a file has been uploaded for") }}

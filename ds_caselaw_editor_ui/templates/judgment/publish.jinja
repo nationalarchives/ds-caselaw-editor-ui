@@ -3,9 +3,6 @@
 {% from "components/heading.jinja" import heading %}
 {% from "components/notification.jinja" import notification %}
 {% from "components/note_form.jinja" import note_form %}
-{% block aside %}
-  {{ document_metadata(document=document, preferred_ncn=preferred_ncn) }}
-{% endblock aside %}
 {% block content %}
   <div class="container">
     {% if judgment.is_publishable %}

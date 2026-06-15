@@ -2,9 +2,6 @@
 {% from "components/document_metadata.jinja" import document_metadata %}
 {% from "components/heading.jinja" import heading %}
 {% from "components/note_form.jinja" import note_form %}
-{% block aside %}
-  {{ document_metadata(document=document, preferred_ncn=preferred_ncn) }}
-{% endblock aside %}
 {% block content %}
   <div class="container">
     {{ heading(content="I want to put this on hold:") }}
