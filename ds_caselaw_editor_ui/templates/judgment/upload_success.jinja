@@ -1,5 +1,4 @@
 {% extends "layouts/judgment.jinja" %}
-{% from "components/document_metadata.jinja" import document_metadata with context %}
 {% from "components/heading.jinja" import heading %}
 {% from "components/notification.jinja" import notification %}
 {% from "components/button.jinja" import button %}
@@ -10,7 +9,6 @@
 {% endblock banner %}
 {% block content %}
   <div class="container">
-    {{ document_metadata(variant="view") }}
     {{ heading(content="Confirmation that a file has been uploaded for") }}
     {{ heading(tag="h2", content=document.body.name) }}
     {% call button(href='/' ~ document.uri) %}

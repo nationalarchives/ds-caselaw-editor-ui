@@ -51,9 +51,15 @@
     </header>
     {% block precontent %}
     {% endblock precontent %}
-    <main id="main-content">
-      {% block content %}
-      {% endblock content %}
+    <main id="main-content" class="main-container">
+      <div class="main-container__content">
+        {% block content %}
+        {% endblock content %}
+      </div>
+      <div class="main-container__aside">
+        {% block aside %}
+        {% endblock aside %}
+      </div>
     </main>
     <footer class="judgments-footer">
       <div class="judgments-footer__container">

@@ -7,7 +7,7 @@ JUDGMENT_URI = "/eat/2023/1"
 
 def test_judgment_review(authenticated_page: Page):
     authenticated_page.goto(JUDGMENT_URI)
-    assert_matches_snapshot(authenticated_page, "judgment_page")
+    assert_matches_snapshot(authenticated_page, "judgment_page", clip={"x": 0, "y": 0, "width": 1280, "height": 650})
 
 
 def test_judgment_associated_documents(authenticated_page: Page):

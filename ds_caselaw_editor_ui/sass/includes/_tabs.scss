@@ -1,8 +1,8 @@
 .tabs-set {
   width: 100%;
   margin: auto;
-  padding: $space-6 0 0;
   text-align: center;
+  background: colour-var("accent-background-light");
 
   &__item {
     display: inline-block;
