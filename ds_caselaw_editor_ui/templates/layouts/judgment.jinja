@@ -5,6 +5,7 @@
 {% from "components/notification.jinja" import notification %}
 {% from "components/navigation_tabs.jinja" import navigation_tabs, navigation_tab %}
 {% from "components/toolbar.jinja" import toolbar, toolbar_section %}
+{% from "components/document_metadata.jinja" import document_metadata %}
 {% block aside %}
   {{ document_metadata(document=document, preferred_ncn=preferred_ncn) }}
 {% endblock aside %}
