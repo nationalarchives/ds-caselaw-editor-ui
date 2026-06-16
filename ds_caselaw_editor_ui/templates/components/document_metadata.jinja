@@ -3,10 +3,10 @@
 {% from "components/button.jinja" import button %}
 {% macro document_metadata(document=None, preferred_ncn=None, full_details=True) %}
   <div class="aside__container" data-aside-toggle>
-    <div class="aside__toggle" data-aside-toggle-button>
+    <button class="aside__toggle" data-aside-toggle-button>
       <span class="icon icon__chevron-left"></span>
       <span>Metadata</span>
-    </div>
+    </button>
     <div class="aside__content">
       <div class="aside__title">
         <span>Metadata</span>

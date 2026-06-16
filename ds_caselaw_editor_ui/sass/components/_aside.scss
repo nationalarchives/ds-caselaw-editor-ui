@@ -23,6 +23,8 @@
   }
 
   &__toggle {
+    all: unset;
+
     cursor: pointer;
 
     display: none;
@@ -30,8 +32,9 @@
     gap: $space-2;
     align-items: center;
 
+    width: 100%;
     height: 100vh;
-    padding: $space-4 $space-1;
+    padding: $space-4 0;
     border-left: 1px solid colour-var("accent-border");
 
     background: colour-var("accent-background-light");
