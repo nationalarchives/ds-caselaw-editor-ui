@@ -48,7 +48,6 @@ def assert_matches_snapshot(page, page_name, clip: dict | None = None):
         screenshot_opts["clip"] = clip
 
     page.set_viewport_size({"width": 1280, "height": 720})
-    page.screenshot(path=actual_path, **screenshot_opts)
 
     if not os.path.exists(expected_path):
         Path(actual_path).replace(expected_path)
@@ -58,7 +57,7 @@ def assert_matches_snapshot(page, page_name, clip: dict | None = None):
         warnings.warn("Expected snapshot not found — generating from current page.", stacklevel=2)
         return
 
-    page.screenshot(path=actual_path, full_page=True)
+    page.screenshot(path=actual_path, **screenshot_opts)
     result, score = compare_snapshot(actual_path, expected_path)
 
     if not result:
@@ -67,5 +66,5 @@ def assert_matches_snapshot(page, page_name, clip: dict | None = None):
             return
 
         pytest.fail(
-            f"\n{page_name} has changed ({score}). Please check screenshots/actual_{page_name}.png and update screenshots/expected_{page_name}.png if happy.",
+            f"\n{page_name} has changed ({score}). Please check {actual_path} and update {expected_path} if happy.",
         )
