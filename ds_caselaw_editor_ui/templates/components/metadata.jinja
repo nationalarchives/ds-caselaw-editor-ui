@@ -27,18 +27,18 @@
     {% call metadata_container() %}
       {% call metadata_body() %}
         {% call metadata_body_row() %}
-          {{ text_input({"label": "NCN", "value": "", "label_size": "extra-small", "width": "one-third", "margin": "small"}) }}
-          {{ text_input({"label": "Court", "value": "", "label_size": "extra-small", "width": "one-half", "margin": "small"}) }}
+          {{ text_input({"label": "NCN", "value": "", "width": "one-third", "margin": "small"}) }}
+          {{ text_input({"label": "Court", "value": "", "width": "one-half", "margin": "small"}) }}
           {{ text_input({
             "label": "Judgment date",
             "value": "",
-            "label_size": "extra-small",
+            "label_size": "small",
             "width": "one-third",
             "margin": "small"
           }) }}
         {% endcall %}
         {% call metadata_body_row() %}
-          {{ textarea({"label": "Name", "value": "", "rows": 2, "label_size": "extra-small", "width": "full"}) }}
+          {{ textarea({"label": "Name", "value": "", "rows": 2, "width": "full"}) }}
         {% endcall %}
       {% endcall %}
       {% call metadata_aside() %}
