@@ -55,26 +55,22 @@ class PaginatedView(TemplateView):
                 },
             )
 
-        previous_page = (
-            paginator.get("prev_page", None)
-            if paginator.get("has_prev_page", False)
-            else paginator.get("current_page", 0)
-        )
-
-        next_page = (
-            paginator.get("next_page", None)
-            if paginator.get("has_next_page", False)
-            else paginator.get("current_page", 0)
-        )
-
-        return {
-            "previous": {
-                "html": "Previous",
-                "href": page_href(previous_page),
-            },
+        pagination_context = {
+            "next": None,
+            "previous": None,
             "items": items,
-            "next": {
-                "html": "Next",
-                "href": page_href(next_page),
-            },
         }
+
+        if paginator.get("has_prev_page", False):
+            pagination_context["previous"] = {
+                "html": "Previous",
+                "href": page_href(paginator.get("prev_page")),
+            }
+
+        if paginator.get("has_next_page", False):
+            pagination_context["next"] = {
+                "html": "Next",
+                "href": page_href(paginator.get("next_page")),
+            }
+
+        return pagination_context
