@@ -17,13 +17,13 @@
           <div>
             <dt>NCN</dt>
             <dd>
-              {{ preferred_ncn.value if preferred_ncn else "—" }}
+              {{ preferred_ncn.value|or_no_data_available_label }}
             </dd>
           </div>
           <div>
             <dt>Court</dt>
             <dd>
-              {{ document.body.court_and_jurisdiction_identifier_string }}
+              {{ document.body.court_and_jurisdiction_identifier_string|or_no_data_available_label }}
             </dd>
           </div>
           <div>
@@ -41,14 +41,14 @@
           <div>
             <dt>Identifiers</dt>
             <dd>
-              —
+              {{ None|or_no_data_available_label }}
             </dd>
           </div>
         {% endif %}
         <div>
           <dt>TDR ref</dt>
           <dd>
-            {{ document.consignment_reference or "—" }}
+            {{ document.consignment_reference|or_no_data_available_label }}
           </dd>
         </div>
         <div>
@@ -67,38 +67,38 @@
                 Unknown
               {% endif %}
             {% else %}
-              —
+              {{ None|or_no_data_available_label }}
             {% endif %}
           </dd>
         </div>
         <div>
           <dt>Jurisdiction</dt>
           <dd>
-            {{ document.body.jurisdiction or "—" }}
+            {{ document.body.jurisdiction|or_no_data_available_label }}
           </dd>
         </div>
         <div>
           <dt>Case number</dt>
           <dd>
-            {{ document.body.case_number or "—" }}
+            {{ document.body.case_number|or_no_data_available_label }}
           </dd>
         </div>
         <div>
           <dt>Source name</dt>
           <dd>
-            {{ document.source_name or "—" }}
+            {{ document.source_name|or_no_data_available_label }}
           </dd>
         </div>
         <div>
           <dt>Source email</dt>
           <dd>
-            {{ document.source_email or "—" }}
+            {{ document.source_email|or_no_data_available_label }}
           </dd>
         </div>
         <div>
           <dt>Judges</dt>
           <dd>
-            —
+            {{ None|or_no_data_available_label }}
           </dd>
         </div>
         <div>
@@ -109,14 +109,14 @@
                 {{ badge(content=category) }}
               {% endfor %}
             {% else %}
-              —
+              {{ None|or_no_data_available_label }}
             {% endif %}
           </dd>
         </div>
         <div>
           <dt>Parties</dt>
           <dd>
-            —
+            {{ None|or_no_data_available_label }}
           </dd>
         </div>
       </dl>
