@@ -84,7 +84,7 @@ class TestMetadataPanel(TestCase):
 
         self.assertContains(
             response,
-            "<dt>TDR ref</dt><dd>&mdash;</dd>",
+            "<dt>TDR ref</dt><dd>No data available</dd>",
             html=True,
         )
 
@@ -110,7 +110,7 @@ class TestMetadataPanel(TestCase):
 
         self.assertContains(
             response,
-            "<dt>First pub</dt><dd>&mdash;</dd>",
+            "<dt>First pub</dt><dd>No data available</dd>",
             html=True,
         )
 
