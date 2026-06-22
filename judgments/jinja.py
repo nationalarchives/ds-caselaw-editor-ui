@@ -83,6 +83,10 @@ def intcomma(value):
         return value
 
 
+def or_no_data_available_label(value):
+    return value if value else "No data available"
+
+
 def environment(**options):
     base_loader = options.get("loader")
     govuk_loader = PrefixLoader(
@@ -128,4 +132,5 @@ def environment(**options):
     env.filters["get_dict_key_with_hyphen"] = get_dict_key_with_hyphen
     env.filters["render_json"] = render_json
     env.filters["intcomma"] = intcomma
+    env.filters["or_no_data_available_label"] = or_no_data_available_label
     return env
