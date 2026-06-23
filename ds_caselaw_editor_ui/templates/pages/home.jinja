@@ -9,7 +9,5 @@
   {% call documents_table(total_count=total, total_count_postfix="unpublished documents") %}
     {% for document in documents %}{{ documents_table_item(document=document) }}{% endfor %}
   {% endcall %}
-  <div class="container">
-    {{ pagination(path=request.path, query_string=query_string, paginator=paginator, label="Unpublished documents pagination") }}
-  </div>
+  <div class="container">{{ pagination(pagination_data) }}</div>
 {% endblock content %}

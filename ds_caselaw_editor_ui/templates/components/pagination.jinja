@@ -1,73 +1,45 @@
-{% macro pagination(path=None, query_string=None, paginator=None, label=None) %}
-  <nav class="pagination" aria-label="{{ label }}">
-    <h3>{{ label }}</h3>
-    <ul class="pagination__list">
-      <li class="pagination__list-item">
-        {% if paginator.has_prev_page %}
-          <a class="pagination__page-chevron-previous"
-             href="{{ path }}?{%- if query_string -%}{{ query_string }}&{%- endif -%}page={{ paginator.prev_page }}">
-            <span>Previous page</span>
-          </a>
-        {% else %}
-          <span class="pagination__page-chevron-previous--disabled">
-            <span>Previous page</span>
-          </span>
-        {% endif %}
-      </li>
-      <li class="pagination__list-pages">
-        <ol>
-          {% if paginator.show_first_page %}
-            <li class="pagination__list-item">
-              <a class="pagination__page-link"
-                 href="{{ path }}?{%- if query_string -%}{{ query_string }}&{%- endif -%}page=1"
-                 aria-label="Go to page 1">
-                <span>Page</span>1
-              </a>
-            </li>
-          {% endif %}
-          {% if paginator.show_first_page_divider %}<li class="pagination__list-divider">⋯</li>{% endif %}
-          {% for page in paginator.page_range %}
-            <li class="pagination__list-item">
-              {% if page == paginator.current_page %}
-                <a class="pagination__page-link-current"
-                   href="{{ path }}?{%- if query_string -%}{{ query_string }}&{%- endif -%}page={{ page }}"
-                   aria-label="Current page, Page {{ page }}"
-                   aria-current="true">
-                  <span>Current page</span>{{ page }}
-                </a>
-              {% else %}
-                <a class="pagination__page-link"
-                   href="{{ path }}?{%- if query_string -%}{{ query_string }}&{%- endif -%}page={{ page }}"
-                   aria-label="Go to page {{ page }}">
-                  <span>Page</span>{{ page }}
-                </a>
-              {% endif %}
-            </li>
-          {% endfor %}
-          {% if paginator.show_last_page_divider %}<li class="pagination__list-divider">⋯</li>{% endif %}
-          {% if paginator.show_last_page %}
-            <li class="pagination__list-item">
-              <a class="pagination__page-link"
-                 href="{{ path }}?{%- if query_string -%}{{ query_string }}&{%- endif -%}page={{ paginator.number_of_pages }}"
-                 aria-label="Go to page {{ paginator.number_of_pages }}">
-                <span>Page</span>{{ paginator.number_of_pages }}
-              </a>
-            </li>
-          {% endif %}
-        </ol>
-      </li>
-      <li class="pagination__list-item">
-        {% if paginator.has_next_page %}
-          <a class="pagination__page-chevron-next"
-             href="{{ path }}?{%- if query_string -%}{{ query_string }}&{%- endif -%}&page={{ paginator.next_page }}">
-            <span>Next page</span>
-          </a>
-        {% else %}
-          <span class="pagination__page-chevron-next--disabled">
-            <span>Next page</span>
-          </span>
-        {% endif %}
-      </li>
-    </ul>
-  </nav>
+{% from "govuk_frontend_jinja/components/pagination/macro.html" import govukPagination %}
+{% macro pagination(params) %}
+  {{ govukPagination(params) }}
+{% endmacro %}
+{% macro pagination_examples() %}
+  {{ pagination({
+    "previous": {
+      "href": "?page=4",
+      "html": "Previous"
+    },
+    "items": [
+      {
+        "number": 1,
+        "href": "?page=1"
+      },
+      {
+        "ellipsis": true
+      },
+      {
+        "number": 4,
+        "href": "?page=4"
+      },
+      {
+        "number": 5,
+        "href": "?page=5",
+        "current": true
+      },
+      {
+        "number": 6,
+        "href": "?page=6"
+      },
+      {
+        "ellipsis": true
+      },
+      {
+        "number": 12,
+        "href": "?page=12"
+      }
+    ],
+    "next": {
+      "href": "?page=6",
+      "html": "Next"
+    }
+  }) }}
 {% endmacro %}

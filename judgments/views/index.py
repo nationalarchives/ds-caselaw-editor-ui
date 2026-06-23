@@ -1,9 +1,9 @@
-from django.views.generic import TemplateView
-
 from judgments.utils.view_helpers import get_search_parameters, get_search_results
 
+from .paginated_view import PaginatedView
 
-class HomeView(TemplateView):
+
+class HomeView(PaginatedView):
     template_engine = "jinja"
     template_name = "pages/home.jinja"
 
@@ -13,5 +13,12 @@ class HomeView(TemplateView):
         search_context = get_search_results(query)
         search_context["documents"] = search_context["judgments"]
         context.update(search_context)
+
+        paginator = search_context["paginator"]
+
+        context["pagination_data"] = self.get_pagination_context(
+            request=self.request,
+            paginator=paginator,
+        )
 
         return context
