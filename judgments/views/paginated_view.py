@@ -1,3 +1,5 @@
+from typing import Any
+
 from django.views.generic import TemplateView
 
 
@@ -55,7 +57,7 @@ class PaginatedView(TemplateView):
                 },
             )
 
-        pagination_context = {
+        pagination_context: dict[str, Any] = {
             "next": None,
             "previous": None,
             "items": items,
