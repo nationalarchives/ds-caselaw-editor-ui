@@ -77,7 +77,7 @@
       <div class="container">
         <p>This document is locked: "{{ document.checkout_message }}"</p>
         <p>
-          <a href="{{ url("unlock") }}?judgment_uri={{ document.uri }}">Unlock it</a>
+          <a href="{{ url('unlock') }}?judgment_uri={{ document.uri }}">Unlock it</a>
         </p>
       </div>
     {% endcall %}
