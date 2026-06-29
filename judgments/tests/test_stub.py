@@ -1,7 +1,5 @@
-from pathlib import Path
 from unittest.mock import ANY, MagicMock, call, patch
 
-from caselawclient.Client import ROOT_DIR
 from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
@@ -83,10 +81,10 @@ class TestStubView(TestCase):
         mock_uuid,
         mock_courts,
     ):
-        judgment_template_path = Path(ROOT_DIR) / "models" / "documents" / "templates" / "judgment.xml"
-        with (judgment_template_path).open("rb") as f:
-            template = f.read()
-        mock_render_stub.return_value = template
+        # judgment_template_path = Path(ROOT_DIR) / "models" / "documents" / "templates" / "judgment.xml"
+        # with (judgment_template_path).open("rb") as f:
+        #     template = f.read()
+        mock_render_stub.return_value = '<akomaNtoso xmlns="http://docs.oasis-open.org/legaldocml/ns/akn/3.0" xmlns:uk="https://caselaw.nationalarchives.gov.uk/akn"><uk:test/></akomaNtoso>'
         superuser = User.objects.create_superuser(username="clark")
         self.client.force_login(superuser)
         _response = self.client.post(
