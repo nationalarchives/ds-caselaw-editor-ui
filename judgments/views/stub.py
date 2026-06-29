@@ -3,6 +3,7 @@ from uuid import uuid4
 
 from caselawclient.models.documents.stub import EditorStubData, PartyData, render_stub_xml
 from caselawclient.models.documents.versions import VersionAnnotation, VersionType
+from caselawclient.models.identifiers.neutral_citation import NeutralCitationNumber, NeutralCitationNumberSchema
 from caselawclient.models.judgments import Judgment
 from caselawclient.types import DocumentURIString
 from django import forms
@@ -36,6 +37,14 @@ def is_valid_court(court_code):
     except CourtNotFoundException as error:
         msg = f"Court code {court_code} not recognised"
         raise ValidationError(msg) from error
+
+
+def is_valid_or_empty_ncn(ncn):
+    if not ncn:
+        return
+    if not NeutralCitationNumberSchema.validate_identifier_value(ncn):
+        msg = f"NCN '{ncn}' is not valid"
+        raise ValidationError(msg)
 
 
 class GovukDateInputWidgetBase(forms.Widget):
@@ -119,6 +128,15 @@ class StubForm(forms.Form):
             "required": "Enter the submitter email address",
         },
     )
+    ncn = forms.CharField(
+        label="Neutral citation",
+        validators=[is_valid_or_empty_ncn],
+        error_messages={
+            "invalid": "Enter a valid NCN, or remove it",
+        },
+        required=False,
+    )
+
     decision_date = GovukDateField(
         label="Decision date",
         error_messages={
@@ -143,6 +161,7 @@ class StubForm(forms.Form):
     year = forms.IntegerField(
         label="Year",
         min_value=1001,
+        help_text="This must agree with the NCN, if available",
         error_messages={
             "required": "Enter the year of the case",
         },
@@ -229,6 +248,7 @@ def create_stub(request):
     respondents = list_from_string(stub_form["respondents"].value())
     appellants = list_from_string(stub_form["appellants"].value())
     defendants = list_from_string(stub_form["defendants"].value())
+    ncn = stub_form["ncn"].value()
 
     parties = (
         [PartyData(role="Claimant", name=claimant) for claimant in claimants]
@@ -246,10 +266,12 @@ def create_stub(request):
             "year": str(stub_form["year"].value()),
             "case_numbers": case_numbers,
             "parties": parties,
+            "ncn": ncn,
         },
     )
 
     document_uri = DocumentURIString("d-" + str(uuid4()))
+
     rendered_stub = render_stub_xml(stub_data)
     element = etree.fromstring(rendered_stub)
 
@@ -263,6 +285,11 @@ def create_stub(request):
     api_client.set_property(document_uri, "source-name", stub_form["source_name"].value())
     api_client.set_property(document_uri, "source-email", stub_form["source_email"].value())
     api_client.set_property(document_uri, "email-received-at", stub_form["email_received_at"].value())
+
+    if ncn.strip():
+        document = api_client.get_document_by_uri(document_uri)
+        document.identifiers.add(NeutralCitationNumber(ncn.strip()))
+        document.save_identifiers()
 
     messages.success(
         request,
