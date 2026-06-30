@@ -36,7 +36,7 @@ from .views.judgment_publish import (
     publish,
     unpublish,
 )
-from .views.results import results
+from .views.results import ResultsView
 from .views.signed_asset import redirect_to_signed_asset
 from .views.stub import CreateStubView, create_stub
 from .views.style_guide import (
@@ -60,7 +60,7 @@ urlpatterns = [
         name="components",
     ),
     # Search
-    path("results", results, name="results"),
+    path("results", ResultsView.as_view(), name="results"),
     # redirect to signed asset URLs
     path("signed-asset/<path:key>", redirect_to_signed_asset, name="signed-asset"),
     # Judgment verbs

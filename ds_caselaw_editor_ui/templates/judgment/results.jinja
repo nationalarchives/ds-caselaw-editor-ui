@@ -1,0 +1,15 @@
+{% extends "layouts/base.jinja" %}
+{% from "components/search_form.jinja" import search_form with context %}
+{% from "components/pagination.jinja" import pagination %}
+{% from "components/documents_table.jinja" import documents_table, documents_table_item %}
+{% from "includes/document_breadcrumbs.jinja" import render_breadcrumbs %}
+{% block breadcrumbs %}
+  {{ render_breadcrumbs('results', 'Search results') }}
+{% endblock breadcrumbs %}
+{% block content %}
+  {{ search_form() }}
+  {% call documents_table(total_count=total, total_count_postfix="unpublished documents") %}
+    {% for document in documents %}{{ documents_table_item(document=document) }}{% endfor %}
+  {% endcall %}
+  <div class="container">{{ pagination(pagination_data) }}</div>
+{% endblock content %}
