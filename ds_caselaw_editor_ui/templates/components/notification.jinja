@@ -18,7 +18,7 @@
   {% set margin_class = "notification--marginless" if marginless else "" %}
   <div class="notification {{ variant_class }} {{ margin_class }}">
     <div class="notification__container">
-      {% if icon_class %}<span class="icon {{ icon_class }}"></span>{% endif %}
+      {% if icon and icon_class %}<span class="icon {{ icon_class }}"></span>{% endif %}
       <span>{{ caller() }}</span>
     </div>
   </div>
