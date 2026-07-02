@@ -1,26 +1,43 @@
 .aside {
   &__container {
-    position: sticky;
-    top: 0;
-
-    overflow-y: scroll;
-
-    min-width: 320px;
-    max-width: 360px;
-    max-height: 100vh;
-
     &.collapsed {
-      overflow: hidden;
-      min-width: 34px;
-      max-width: 34px;
-
       .aside__toggle {
-        display: flex;
+        display: none;
+        flex-direction: row;
+        padding: 0.5rem 1rem;
+
+        @media (min-width: $grid-breakpoint-medium) {
+          display: flex;
+          flex-direction: column;
+          padding: $space-4 0;
+        }
       }
 
       .aside__content {
-        display: none;
+        display: flex;
+        flex-direction: column;
+
+        @media (min-width: $grid-breakpoint-medium) {
+          display: none;
+        }
       }
+
+      @media (min-width: $grid-breakpoint-medium) {
+        overflow: hidden;
+        min-width: 34px;
+        max-width: 34px;
+      }
+    }
+
+    @media (min-width: $grid-breakpoint-medium) {
+      position: sticky;
+      top: 0;
+
+      overflow-y: scroll;
+
+      min-width: 320px;
+      max-width: 360px;
+      max-height: 100vh;
     }
   }
 
@@ -29,21 +46,33 @@
 
     cursor: pointer;
 
-    display: none;
-    flex-direction: column;
+    display: flex;
+    flex-direction: row;
     gap: $space-2;
     align-items: center;
 
     width: 100%;
-    height: 100vh;
-    padding: $space-4 0;
-    border-left: 1px solid colour-var("font-base");
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid colour-var("font-base");
 
     background: colour-var("accent-background-light");
 
     span {
-      writing-mode: sideways-lr;
       font-weight: $typography-bold-font-weight;
+
+      @media (min-width: $grid-breakpoint-medium) {
+        writing-mode: sideways-lr;
+      }
+    }
+
+    @media (min-width: $grid-breakpoint-medium) {
+      display: none;
+      flex-direction: column;
+
+      height: 100vh;
+      padding: $space-4 0;
+      border-bottom: 0;
+      border-left: 1px solid colour-var("font-base");
     }
   }
 
@@ -60,8 +89,8 @@
   }
 
   &__content {
-    min-height: 100vh;
-    border-left: 1px solid colour-var("font-base");
+    display: none;
+    border-bottom: 1px solid colour-var("font-base");
 
     dl {
       display: flex;
@@ -87,6 +116,13 @@
           margin: 0;
         }
       }
+    }
+
+    @media (min-width: $grid-breakpoint-medium) {
+      display: block;
+      min-height: 100vh;
+      border-bottom: 0;
+      border-left: 1px solid colour-var("font-base");
     }
   }
 }
