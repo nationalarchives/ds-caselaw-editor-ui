@@ -5,13 +5,20 @@
 
   &__container {
     display: flex;
+    flex-direction: column;
+    gap: $space-6;
     justify-content: space-between;
+
+    @media (min-width: $grid-breakpoint-medium) {
+      flex-direction: row;
+      gap: 0;
+    }
   }
 
   &__section {
     display: flex;
     flex-direction: column;
-    gap: 0;
+    gap: $space-2;
     align-items: center;
     justify-content: center;
 
