@@ -49,6 +49,8 @@ def assert_matches_snapshot(page, page_name, clip: dict | None = None):
 
     page.set_viewport_size({"width": 1280, "height": 720})
 
+    page.screenshot(path=actual_path, **screenshot_opts)
+
     if not os.path.exists(expected_path):
         Path(actual_path).replace(expected_path)
         if regenerate:
@@ -57,7 +59,6 @@ def assert_matches_snapshot(page, page_name, clip: dict | None = None):
         warnings.warn("Expected snapshot not found — generating from current page.", stacklevel=2)
         return
 
-    page.screenshot(path=actual_path, **screenshot_opts)
     result, score = compare_snapshot(actual_path, expected_path)
 
     if not result:
