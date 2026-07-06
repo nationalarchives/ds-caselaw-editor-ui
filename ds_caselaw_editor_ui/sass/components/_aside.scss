@@ -51,6 +51,7 @@
     gap: $space-2;
     align-items: center;
 
+    box-sizing: border-box;
     width: 100%;
     padding: 0.5rem 1rem;
     border-bottom: 1px solid colour-var("font-base");
