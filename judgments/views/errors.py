@@ -8,6 +8,10 @@ class BaseErrorView(TemplateView):
     def get_error_status(self):
         raise NotImplementedError
 
+    def dispatch(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
+
     def render_to_response(self, context, **response_kwargs):
         response_kwargs.setdefault("status", self.get_error_status())
         return super().render_to_response(context, **response_kwargs)
