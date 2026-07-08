@@ -72,19 +72,8 @@ def assert_matches_snapshot(
         if not result:
             if regenerate:
                 Path(actual_path).replace(expected_path)
-                if regenerate:
-                    continue
-                pytest.fail(
-                    f"Expected {label} snapshot for {page_name} not found - this has been generated. Re-run to try again",
-                )
-            page.screenshot(path=actual_path, **screenshot_opts)
-            result, score = compare_snapshot(actual_path, expected_path)
+                continue
 
-            if not result:
-                if regenerate:
-                    Path(actual_path).replace(expected_path)
-                    continue
-
-                pytest.fail(
-                    f"\n{page_name} on {label} has changed ({score}). Please check snapshots/{page_name}_{label}_actual.png and update snapshots/{page_name}_{label}_expected.png if happy.",
-                )
+            pytest.fail(
+                f"\n{page_name} on {label} has changed ({score}). Please check snapshots/{page_name}_{label}_actual.png and update snapshots/{page_name}_{label}_expected.png if happy.",
+            )

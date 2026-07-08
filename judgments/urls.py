@@ -39,9 +39,6 @@ from .views.judgment_publish import (
 from .views.results import ResultsView
 from .views.signed_asset import redirect_to_signed_asset
 from .views.stub import CreateStubView, create_stub
-from .views.style_guide import (
-    StyleGuide,
-)
 from .views.unlock import unlock
 from .views.upload import UploadDocumentSuccessView, UploadDocumentView, upload
 
@@ -106,8 +103,6 @@ urlpatterns = [
         reports.LockedDocuments.as_view(),
         name="report_locked_documents",
     ),
-    # Style guide
-    path("style-guide", StyleGuide.as_view(), name="style_guide"),
     # Different views on judgments
     path("<path:document_uri>/associated-documents", AssociatedDocumentsView.as_view(), name="associated-documents"),
     path("<path:document_uri>/edit", EditJudgmentView.as_view(), name="edit-document"),

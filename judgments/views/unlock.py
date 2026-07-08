@@ -1,8 +1,7 @@
 from caselawclient.Client import MarklogicResourceUnmanagedError
 from django.contrib import messages
-from django.http import Http404, HttpResponse
-from django.shortcuts import redirect
-from django.template import loader
+from django.http import Http404
+from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
@@ -22,12 +21,16 @@ def unlock(request):
 def unlock_get(request):
     """Confirmation screen for unlocking"""
     judgment_uri = request.GET["judgment_uri"]
-    context = {
-        "judgment_uri": judgment_uri,
-        "page_title": "Unlock document",
-    }
-    template = loader.get_template("judgment/confirm-unlock.html")
-    return HttpResponse(template.render(context, request))
+
+    return render(
+        request,
+        "judgment/confirm-unlock.jinja",
+        {
+            "judgment_uri": judgment_uri,
+            "page_title": "Unlock document",
+        },
+        using="jinja",
+    )
 
 
 def unlock_post(request):
