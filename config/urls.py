@@ -12,8 +12,13 @@ from judgments.accounts.views import (
     PasswordResetFromKeyView,
     PasswordResetView,
 )
+from judgments.views.errors import NotFoundView, PermissionDeniedView, ServerErrorView
 
 from . import views
+
+handler404 = NotFoundView.as_view()
+handler500 = ServerErrorView.as_view()
+handler403 = PermissionDeniedView.as_view()
 
 urlpatterns = [
     path(
