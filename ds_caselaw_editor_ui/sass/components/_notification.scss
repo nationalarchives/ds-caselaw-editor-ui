@@ -12,6 +12,10 @@
     gap: $space-2;
     align-items: center;
     justify-content: center;
+
+    span:last-child {
+      flex: 1;
+    }
   }
 
   &--marginless {

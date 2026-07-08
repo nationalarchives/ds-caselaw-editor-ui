@@ -20,7 +20,12 @@
   &__body-row {
     display: flex;
     flex: 1;
+    flex-direction: column;
     gap: $space-4;
+
+    @media (min-width: $grid-breakpoint-medium) {
+      flex-direction: row;
+    }
   }
 
   &__body-row--vertical {

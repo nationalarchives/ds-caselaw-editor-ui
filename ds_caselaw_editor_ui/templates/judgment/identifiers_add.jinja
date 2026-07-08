@@ -10,6 +10,14 @@
         You cannot delete new identifiers once added because this document has been published.
       {% endcall %}
     {% endif %}
+    {% if form.non_field_errors() %}
+      {% call notification(variant="failure", icon=False) %}
+        {% for error in form.non_field_errors() %}
+          {{ error }}
+          <br />
+        {% endfor %}
+      {% endcall %}
+    {% endif %}
     {{ crispy(form, request) | safe }}
   </div>
 {% endblock content %}
