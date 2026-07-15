@@ -169,6 +169,9 @@ class DocumentView(DocumentViewMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        courts = context["courts"]
+        context["court_options"] = [(court.code, court.name) for court in courts]
+
         # TODO: Remove this once we fully deprecate 'judgment' contexts
         context["judgment"] = context["document"]
 

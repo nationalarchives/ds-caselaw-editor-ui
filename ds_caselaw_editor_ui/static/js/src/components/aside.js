@@ -12,3 +12,28 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const asideEditContainer = document.querySelector("[data-aside-edit]");
+  if (!asideEditContainer) return;
+
+  const asideEditShowButtons = asideEditContainer.querySelectorAll(
+    "[data-aside-edit-show-button]",
+  );
+
+  const asideEditHideButtons = asideEditContainer.querySelectorAll(
+    "[data-aside-edit-hide-button]",
+  );
+
+  asideEditShowButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      asideEditContainer.classList.toggle("editing");
+    });
+  });
+
+  asideEditHideButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      asideEditContainer.classList.toggle("editing");
+    });
+  });
+});

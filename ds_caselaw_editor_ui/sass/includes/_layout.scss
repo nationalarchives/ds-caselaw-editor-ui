@@ -6,6 +6,8 @@ body {
   margin: 0;
 
   font-family: $font-open-sans;
+
+  -webkit-font-smoothing: antialiased;
 }
 
 main {
