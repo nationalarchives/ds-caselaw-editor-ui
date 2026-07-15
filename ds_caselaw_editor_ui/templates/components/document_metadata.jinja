@@ -1,7 +1,8 @@
-{% from "components/badge.jinja" import badge %}
 {% from "components/icon.jinja" import icon %}
 {% from "components/button.jinja" import button %}
+{% from "components/document_metadata_item.jinja" import document_metadata_item %}
 {% macro document_metadata(document=None, preferred_ncn=None, full_details=True) %}
+  {% set metadata = document.metadata if document.metadata is defined else {} %}
   <div class="aside__container" data-aside-toggle>
     <button class="aside__toggle" data-aside-toggle-button>
       <span class="icon icon__chevron-left"></span>
@@ -23,19 +24,19 @@
           <div>
             <dt>Court</dt>
             <dd>
-              {{ document.body.court_and_jurisdiction_identifier_string|or_no_data_available_label }}
+              {{ document_metadata_item(metadata_item=metadata.court) }}
             </dd>
           </div>
           <div>
             <dt>Judgment date</dt>
             <dd>
-              {{ document.body.document_date_as_date | date("%-d %b %Y") }}
+              {{ document_metadata_item(metadata_item=metadata.date, date_format="%-d %b %Y") }}
             </dd>
           </div>
           <div>
             <dt>Name</dt>
             <dd>
-              {{ document.body.name }}
+              {{ document_metadata_item(metadata_item=metadata.name) }}
             </dd>
           </div>
           <div>
@@ -74,13 +75,13 @@
         <div>
           <dt>Jurisdiction</dt>
           <dd>
-            {{ document.body.jurisdiction|or_no_data_available_label }}
+            {{ document_metadata_item(metadata_item=metadata.jurisdiction) }}
           </dd>
         </div>
         <div>
           <dt>Case number</dt>
           <dd>
-            {{ document.body.case_number|or_no_data_available_label }}
+            {{ document_metadata_item(metadata_item=metadata.case_number) }}
           </dd>
         </div>
         <div>
@@ -104,13 +105,7 @@
         <div>
           <dt>Categories</dt>
           <dd>
-            {% if document.body.categories %}
-              {% for category in document.body.categories %}
-                {{ badge(content=category) }}
-              {% endfor %}
-            {% else %}
-              {{ None|or_no_data_available_label }}
-            {% endif %}
+            {{ document_metadata_item(metadata_item=metadata.categories) }}
           </dd>
         </div>
         <div>
