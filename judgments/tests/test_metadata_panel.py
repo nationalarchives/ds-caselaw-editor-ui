@@ -1,4 +1,5 @@
 from datetime import datetime
+from types import SimpleNamespace
 from unittest.mock import patch
 
 import lxml.html
@@ -8,6 +9,9 @@ from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
+from jinja2 import PackageLoader
+
+from judgments.jinja import environment
 
 
 class TestMetadataPanel(TestCase):
@@ -37,6 +41,26 @@ class TestMetadataPanel(TestCase):
         assert root.xpath("//input[@id='court']/@value")[0] == "Court of Testing"
         assert root.xpath("//textarea[@id='metadata_name']")[0].text == "Test v Tested"
         assert response.status_code == 200
+
+    def test_metadata_item_renders_scalar_value(self):
+        template = environment(loader=PackageLoader("ds_caselaw_editor_ui", "templates")).from_string(
+            '{% from "components/document_metadata_item.jinja" import document_metadata_item %}{{ document_metadata_item(metadata_item=metadata_item) }}',
+        )
+
+        rendered = template.render(metadata_item=SimpleNamespace(value="Court of Testing"))
+
+        assert "Court of Testing" in rendered
+        assert "badge" not in rendered
+
+    def test_metadata_item_renders_multi_value_badges(self):
+        template = environment(loader=PackageLoader("ds_caselaw_editor_ui", "templates")).from_string(
+            '{% from "components/document_metadata_item.jinja" import document_metadata_item %}{{ document_metadata_item(metadata_item=metadata_item) }}',
+        )
+
+        rendered = template.render(metadata_item=SimpleNamespace(values=["Tax", "Employment"]))
+
+        assert '<div class="badge badge--info ">Tax</div>' in rendered
+        assert '<div class="badge badge--info ">Employment</div>' in rendered
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
