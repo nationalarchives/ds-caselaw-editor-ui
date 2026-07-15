@@ -1,20 +1,36 @@
 {% from "components/badge.jinja" import badge %}
-{% macro document_metadata_item(metadata_item, date_format=None) %}
-  {% set values = metadata_item.values if metadata_item.values is defined else none %}
-  {% set value = metadata_item.value if metadata_item.value is defined else none %}
-  {% if values is not none %}
-    {% if values %}
-      {% for value in values %}
-        {{ badge(content=value) }}
-      {% endfor %}
+{% from "components/text_input.jinja" import text_input %}
+{% from "components/select_input.jinja" import select_input %}
+{% from "components/datalist_input.jinja" import datalist_input %}
+{% macro document_metadata_item(label=None, name=None, value=None, values=None, choices=None, date_format=None, editable=True) %}
+  <div class="aside__item {{ "aside__item--editable" if editable }}">
+    {% if editable %}
+      {% if values is defined and values %}
+        {% for value in values %}
+          {{ text_input({"label": label, "value": value.name, "html_name": name ~ "["~loop.index~"]", "width": "full", "margin": "none"}) }}
+        {% endfor %}
+      {% else %}
+        {% if choices %}
+          {{ datalist_input({"label": label, "id_for_label": name, "html_name": name, "choices": choices, "value": value, "width": "full", "margin": "none" }) }}
+        {% else %}
+          {{ text_input({"label": label, "value": value, "html_name": name, "width": "full", "margin": "none"}) }}
+        {% endif %}
+      {% endif %}
     {% else %}
-      {{ None|or_no_data_available_label }}
+      <dt>{{ label }}</dt>
     {% endif %}
-  {% else %}
-    {% if date_format and value %}
-      {{ value | date(date_format) }}
-    {% else %}
-      {{ value|or_no_data_available_label }}
-    {% endif %}
-  {% endif %}
+    <dd>
+      {% if values is defined and values %}
+        {% for value in values %}
+          {{ badge(content=value.name) }}
+        {% endfor %}
+      {% else %}
+        {% if date_format and value %}
+          {{ value | date(date_format) }}
+        {% else %}
+          {{ value|or_no_data_available_label }}
+        {% endif %}
+      {% endif %}
+    </dd>
+  </div>
 {% endmacro %}
