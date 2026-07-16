@@ -1,0 +1,1450 @@
+interactions:
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Alet+%24error+%3A%3D+if+%28not%28fn%3Adoc-available%28%24uri%29%29%29+then+%28fn%3Aerror%28xs%3AQName%28%22FCL-DOCUMENTNOTFOUND%22%29%2C+%22FCL-DOCUMENTNOTFOUND+No+document+at+%22%7C%7C%24uri+%29%29+else+%28%29%0Areturn+xdmp%3Adocument-get-collections%28%24uri%29%0A&vars=%7B%22uri%22%3A+%22%2Feat%2F2023%2F123.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "string"}, "body": "judgment", "encoding": "utf-8"}, {"content_type":
+          "text/plain", "extra_headers": {"X-Primitive": "string"}, "body": "http://marklogic.com/collections/dls/latest-version",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Thu, 16 Jul 2026 10:18:39 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Afn%3Adoc-available%28%24uri%29%0A&vars=%7B%22uri%22%3A+%22%2Feat%2F2023%2F123.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "boolean"}, "body": "true", "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Thu, 16 Jul 2026 10:18:39 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24user+as+xs%3Astring+external%3B%0Adeclare+variable+%24role+as+xs%3Astring+external%3B%0A%0Alet+%24user_roles+%3A%3D+xdmp%3Auser-roles%28%24user%29%0Alet+%24role_id+%3A%3D+xdmp%3Arole%28%24role%29%0A%0Areturn+fn%3Aboolean%28index-of%28%24role_id%2C+%24user_roles%29%29%0A&vars=%7B%22role%22%3A%22admin%22%2C%22user%22%3A%22cassette_user%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "boolean"}, "body": "true", "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Thu, 16 Jul 2026 10:18:39 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+namespace+xdmp+%3D+%22http%3A%2F%2Fmarklogic.com%2Fxdmp%22%3B%0Adeclare+namespace+cts+%3D+%22http%3A%2F%2Fmarklogic.com%2Fcts%22%3B%0Adeclare+namespace+uk+%3D+%22https%3A%2F%2Fcaselaw.nationalarchives.gov.uk%2Fakn%22%3B%0Aimport+module+namespace+helper+%3D+%22https%3A%2F%2Fcaselaw.nationalarchives.gov.uk%2Fhelper%22+at+%22%2Fjudgments%2Fsearch%2Fhelper.xqy%22%3B%0A%0Adeclare+variable+%24show_unpublished+as+xs%3Aboolean%3F+external%3B%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0Adeclare+variable+%24version_uri+as+xs%3Astring%3F+external%3B%0Adeclare+variable+%24search_query+as+xs%3Astring%3F+external%3B%0A%0A%28%3A+Note+that+%60xsl%3Aoutput+method%60+is+changed+from+%60html%60+to+%60xml%60+and+we%27ve+namespaced+the+tag+%3A%29%0Alet+%24delete_meta_marks_xslt+%3A%3D+%28%0A++%3Cxsl%3Astylesheet+xmlns%3Axsl%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2FXSL%2FTransform%22%0A++++++++++++++++++xmlns%3Auk%3D%22https%3A%2F%2Fcaselaw.nationalarchives.gov.uk%2Fakn%22%0A++++++++++++++++++xmlns%3Aakn%3D%22http%3A%2F%2Fdocs.oasis-open.org%2Flegaldocml%2Fns%2Fakn%2F3.0%22%0A++++++++++++++++++version%3D%222.0%22%3E%0A++++%3Cxsl%3Aoutput+method%3D%22xml%22+%2F%3E%0A++++%3Cxsl%3Atemplate+match%3D%22%40%2A%7Cnode%28%29%22%3E%0A++++++%3Cxsl%3Acopy%3E%0A++++++++%3Cxsl%3Aapply-templates+select%3D%22%40%2A%7Cnode%28%29%22%2F%3E%0A++++++%3C%2Fxsl%3Acopy%3E%0A++++%3C%2Fxsl%3Atemplate%3E%0A++++%3Cxsl%3Atemplate+match%3D%22%2F%2Fakn%3Ameta%2F%2Fuk%3Amark%22%3E%0A++++++++++%3Cxsl%3Aapply-templates+%2F%3E%0A++++%3C%2Fxsl%3Atemplate%3E%0A++%3C%2Fxsl%3Astylesheet%3E%0A%29%0A%0Alet+%24judgment+%3A%3D+fn%3Adocument%28%24uri%29%0Alet+%24version+%3A%3D+if+%28%24version_uri%29+then+fn%3Adocument%28%24version_uri%29+else+%28%29%0Alet+%24judgment_published_property+%3A%3D+xdmp%3Adocument-get-properties%28%24uri%2C+xs%3AQName%28%22published%22%29%29%5B1%5D%0Alet+%24is_published+%3A%3D+%24judgment_published_property%2Ftext%28%29%0A%0Alet+%24document_to_return+%3A%3D+if+%28%24version_uri%29+then+%24version+else+%24judgment%0A%0A%0Alet+%24raw_xml+%3A%3D+if+%28%24show_unpublished%29+then%0A++++++++%24document_to_return%0A++++else+if+%28xs%3Aboolean%28%24is_published%29%29+then%0A++++++++%24document_to_return%0A++++else%0A++++++++%28%29%0A%0A%28%3A+If+a+search+query+string+is+present%2C+highlight+instances+%3A%29%0Alet+%24transformed+%3A%3D+if%28%24search_query%29+then%0A++++++xdmp%3Axslt-eval%28%0A++++++++%24delete_meta_marks_xslt%2C%0A++++++++cts%3Ahighlight%28%0A++++++++++%24raw_xml%2C%0A++++++++++helper%3Amake-q-query%28%24search_query%29%2C%0A++++++++++%3Cuk%3Amark%3E%7B%24cts%3Atext%7D%3C%2Fuk%3Amark%3E%0A++++++++%29%0A++++++%29%0A++++else%0A++++++%24raw_xml%0A%0Areturn+%24transformed%0A&vars=%7B%22uri%22%3A+%22%2Feat%2F2023%2F123.xml%22%2C+%22version_uri%22%3A+null%2C+%22show_unpublished%22%3A+true%2C+%22search_query%22%3A+null%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()", "X-URI": "/eat/2023/123.xml"}, "body":
+          "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<akomaNtoso xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"
+          xmlns:html=\"http://www.w3.org/1999/xhtml\" xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">\n  <judgment
+          name=\"judgment\">\n    <meta>\n      <identification source=\"#tna\">\n\t<FRBRWork>\n\t  <FRBRthis
+          value=\"https://caselaw.nationalarchives.gov.uk/id/eat/2023/123\"/>\n\t  <FRBRuri
+          value=\"https://caselaw.nationalarchives.gov.uk/id/eat/2023/123\"/>\n\t  <FRBRdate
+          date=\"2023-09-01\" name=\"judgment\"/>\n\t  <FRBRauthor href=\"#eat\"/>\n\t  <FRBRcountry
+          value=\"GB-UKM\"/>\n\t  <FRBRnumber value=\"123\"/>\n\t  <FRBRname value=\"LONDON
+          UNITED BUSWAYS LIMITED v MR KAMAL HAMID DANKALI\"/>\n\t</FRBRWork>\n\t<FRBRExpression>\n\t  <FRBRthis
+          value=\"https://caselaw.nationalarchives.gov.uk/eat/2023/123\"/>\n\t  <FRBRuri
+          value=\"https://caselaw.nationalarchives.gov.uk/eat/2023/123\"/>\n\t  <FRBRdate
+          date=\"2023-09-01\" name=\"judgment\"/>\n\t  <FRBRauthor href=\"#eat\"/>\n\t  <FRBRlanguage
+          language=\"eng\"/>\n\t</FRBRExpression>\n\t<FRBRManifestation>\n\t  <FRBRthis
+          value=\"https://caselaw.nationalarchives.gov.uk/eat/2023/123/data.xml\"/>\n\t  <FRBRuri
+          value=\"https://caselaw.nationalarchives.gov.uk/eat/2023/123/data.xml\"/>\n\t  <FRBRdate
+          date=\"2025-11-18T17:01:04\" name=\"transform\"/>\n\t  <FRBRauthor href=\"#tna\"/>\n\t  <FRBRformat
+          value=\"application/xml\"/>\n\t</FRBRManifestation>\n      </identification>\n      <lifecycle
+          source=\"#\">\n\t<eventRef date=\"2023-09-01\" refersTo=\"#judgment\" source=\"#\"/>\n      </lifecycle>\n      <references
+          source=\"#tna\">\n\t<TLCOrganization eId=\"eat\" href=\"https://www.gov.uk/courts-tribunals/employment-appeal-tribunal\"
+          showAs=\"Employment Appeal Tribunal\"/>\n\t<TLCOrganization eId=\"tna\" href=\"https://www.nationalarchives.gov.uk/\"
+          showAs=\"The National Archives\"/>\n\t<TLCEvent eId=\"judgment\" href=\"#\"
+          showAs=\"judgment\"/>\n\t<TLCPerson eId=\"london-united-busways-limited\"
+          href=\"\" showAs=\"LONDON UNITED BUSWAYS LIMITED\"/>\n\t<TLCPerson eId=\"mr-kamal-hamid-dankali\"
+          href=\"\" showAs=\"MR KAMAL HAMID DANKALI\"/>\n\t<TLCRole eId=\"appellant\"
+          href=\"\" showAs=\"Appellant\"/>\n\t<TLCRole eId=\"respondent\" href=\"\"
+          showAs=\"Respondent\"/>\n\t<TLCPerson eId=\"judge-his-honour-judge-auerbach\"
+          href=\"/judge-his-honour-judge-auerbach\" showAs=\"HIS HONOUR JUDGE AUERBACH\"/>\n      </references>\n      <proprietary
+          source=\"#\">\n\t<uk:court>EAT</uk:court>\n\t<uk:year>2023</uk:year>\n\t<uk:number>123</uk:number>\n\t<uk:cite>[2023]
+          EAT 123</uk:cite>\n\t<uk:caseNumber>EA-2021-001006-BA</uk:caseNumber>\n\t<uk:parser>0.27.1</uk:parser>\n\t<uk:hash>17bf6f5842cf30295ed0e2240e3de4cf74ef88dec1f5d7ccba8230d7aee3a0ae</uk:hash>\n      </proprietary>\n      <presentation
+          source=\"#\">\n\t<html:style>\n#judgment { font-size: 11pt; font-family: ''Times
+          New Roman''; }\n#judgment .BodyText { margin-left: 0.35in; font-family: Algerian;
+          font-size: 12pt; }\n#judgment .ListParagraph { }\n#judgment .TableParagraph
+          { }\n#judgment .Header { }\n#judgment .Footer { }\n#judgment .legp1paratext
+          { font-family: ''Times New Roman''; font-size: 12pt; }\n#judgment .legclearfix
+          { font-family: ''Times New Roman''; font-size: 12pt; }\n#judgment .Hyperlink
+          { text-decoration-line: underline; text-decoration-style: solid; color: #0000FF;
+          }\n#judgment .UnresolvedMention { color: #605E5C; background-color: initial;
+          }\n#judgment .HeaderChar { }\n#judgment .FooterChar { }\n#judgment .legp1no
+          { }\n#judgment .legds { }\n#judgment .legchangedelimiter { }\n#judgment .legaddition
+          { }\n#judgment .TableGrid { }\n#judgment .TableGrid td { border: 0.5pt solid;
+          }\n</html:style>\n      </presentation>\n    </meta>\n    <coverPage>\n      <p><span
+          style=\"font-weight:bold;text-decoration-line:underline;text-decoration-style:solid;font-family:''Times
+          New Roman'';font-size:8pt;color:#000000\">Judgment approved by the court</span><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\"> </span><marker
+          name=\"tab\"/><span style=\"font-family:''Times New Roman'';font-size:6pt\">London
+          United Busways v Dankali</span></p>\n    </coverPage>\n    <header>\n      <p><span
+          style=\"text-decoration-line:underline;text-decoration-style:solid;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">Neutral Citation Number: </span><neutralCitation
+          style=\"text-decoration-line:underline;text-decoration-style:solid;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">[2023] EAT 123</neutralCitation></p>\n      <p
+          style=\"text-align:right\"><span style=\"text-decoration-line:underline;text-decoration-style:solid;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">Case No: </span><docketNumber style=\"text-decoration-line:underline;text-decoration-style:solid;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">EA-2021-001006-BA</docketNumber></p>\n      <p><courtType
+          refersTo=\"#eat\" style=\"font-weight:bold;text-decoration-line:underline;text-decoration-style:solid;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">EMPLOYMENT APPEAL TRIBUNAL</courtType></p>\n      <p
+          style=\"text-align:right\"><span style=\"text-decoration-line:underline;text-decoration-style:solid;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">Rolls Building</span></p>\n      <p
+          style=\"text-align:right\"><span style=\"text-decoration-line:underline;text-decoration-style:solid;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">Fetter Lane, London, EC4A 1NL</span></p>\n      <p
+          style=\"text-align:right\"><span style=\"text-decoration-line:underline;text-decoration-style:solid;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">Date: </span><docDate date=\"2023-09-01\"
+          refersTo=\"#judgment\" style=\"text-decoration-line:underline;text-decoration-style:solid;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">1 September 2023</docDate></p>\n      <p
+          style=\"text-align:center\"><span style=\"font-weight:bold;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">Before</span><span style=\"font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\"> :</span></p>\n      <p style=\"text-align:center\"><judge
+          refersTo=\"#judge-his-honour-judge-auerbach\" style=\"font-weight:bold;text-decoration-line:underline;text-decoration-style:solid;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">HIS HONOUR JUDGE AUERBACH</judge></p>\n      <p
+          style=\"text-align:center\"><span style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">-
+          - - - - - - - - - - - - - - - - - - - -</span></p>\n      <p style=\"text-align:center\"><span
+          style=\"font-weight:bold;font-family:''Times New Roman'';font-size:12pt;color:#000000\">Between
+          :</span></p>\n      <p><marker name=\"tab\"/><party refersTo=\"#london-united-busways-limited\"
+          as=\"#appellant\" style=\"font-weight:bold;font-size:12pt\">LONDON UNITED
+          BUSWAYS LIMITED</party><marker name=\"tab\"/><role refersTo=\"#appellant\"
+          style=\"font-weight:bold;text-decoration-line:underline;text-decoration-style:solid;font-size:12pt\">Appellant</role></p>\n      <p
+          style=\"text-align:center\"><span style=\"font-weight:bold;font-size:12pt\">-
+          and -</span></p>\n      <p><marker name=\"tab\"/><party refersTo=\"#mr-kamal-hamid-dankali\"
+          as=\"#respondent\" style=\"font-weight:bold;text-transform:uppercase;font-size:12pt\">Mr
+          Kamal Hamid DAnkali</party><marker name=\"tab\"/><role refersTo=\"#respondent\"
+          style=\"font-weight:bold;text-decoration-line:underline;text-decoration-style:solid;font-size:12pt\">Respondent</role></p>\n      <p
+          style=\"text-align:center\"><span style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">-
+          - - - - - - - - - - - - - - - - - - - -</span></p>\n      <p style=\"text-align:center\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">- -
+          - - - - - - - - - - - - - - - - - - -</span></p>\n      <p style=\"text-align:center;text-indent:-0in\"><span
+          style=\"font-weight:bold;font-family:''Times New Roman'';font-size:12pt;color:#000000\">Edward
+          Nuttman </span><span style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">(solicitor,
+          Ward Hadaway LLP) for the </span><span style=\"font-weight:bold;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">Appellant</span></p>\n      <p
+          style=\"text-align:center;text-indent:-0in\"><span style=\"font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">No attendance or representation</span><span
+          style=\"font-weight:bold;font-family:''Times New Roman'';font-size:12pt;color:#000000\">
+          </span><span style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">for
+          the </span><span style=\"font-weight:bold;font-family:''Times New Roman'';font-size:12pt;color:#000000\">Respondent</span></p>\n      <p
+          style=\"text-align:center\"><span style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">Hearing
+          date: 1 September 2023</span></p>\n      <p style=\"text-align:center\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">- -
+          - - - - - - - - - - - - - - - - - - -</span></p>\n      <p style=\"text-align:center\"><span
+          style=\"font-weight:bold;font-family:''Times New Roman'';font-size:18pt;color:#000000\">JUDGMENT</span></p>\n    </header>\n    <judgmentBody>\n      <decision>\n\t<level
+          eId=\"lvl_1\">\n\t  <content>\n\t    <p style=\"text-align:justify\"><span
+          style=\"font-weight:bold;text-decoration-line:underline;text-decoration-style:solid;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">SUMMARY</span></p>\n\t    <p style=\"text-align:justify\"><span
+          style=\"font-weight:bold;font-family:''Times New Roman'';font-size:12pt;color:#000000\">PRACTICE
+          AND PROCEDURE</span></p>\n\t    <p style=\"text-align:justify\"><span style=\"font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">The claimant in the employment
+          tribunal was identified in the claim form as being represented by his trade
+          union.  The matter had been listed for a full merits hearing to take place
+          in July 2021.  In the run-up to that hearing, the claimant\u2019s representative
+          wrote to the tribunal indicating that the last contact with the claimant,
+          at which point he was overseas, had been in February 2021, and that all attempts
+          to establish contact with him had failed.  A judge directed that the full
+          merits hearing be postponed, and, subsequently, that there be a preliminary
+          hearing to consider whether the claim should be struck out.</span></p>\n\t    <p
+          style=\"text-align:justify\"><span style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">
+          During the course of the preliminary hearing the claimant\u2019s representative
+          stated that he had blanket oral authority that enabled him to continue to
+          conduct the claim on the claimant\u2019s behalf in his absence, including
+          at trial.  He confirmed that he had nothing in writing.  He asked that the
+          matter proceed to a full hearing on that basis, and on the basis that the
+          only witness for the claimant would be his trade union representative.  The
+          respondent\u2019s representative queried whether there could be a valid oral
+          authority to that effect, and invited the tribunal to direct that the claimant\u2019s
+          representative give evidence which could be tested on oath or affirmation
+          as to the terms of the agreement with the claimant.  The tribunal did not
+          adopt that course.  In reliance on the representative\u2019s statement, it
+          decided to refuse the strike out application and to direct that the matter
+          be relisted for a merits hearing to proceed, whether or not in the continued
+          absence of the claimant.</span></p>\n\t    <p style=\"text-align:justify\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">The
+          respondent appealed.</span></p>\n\t    <p style=\"text-align:justify\"><span
+          style=\"font-weight:bold;font-family:''Times New Roman'';font-size:12pt;color:#000000\">Held</span><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">: the
+          tribunal had not erred by failing to consider whether the terms of the agreement
+          between the claimant and the representative might be contrary to the common
+          law doctrine of maintenance or champerty and hence unenforceable, with the
+          consequence that there was no valid authority to represent.  However, it did
+          err by proceeding in the way that it did, without taking further steps to
+          investigate and satisfy itself of the position.  That was unfair to the respondent.</span></p>\n\t    <p
+          style=\"text-align:justify\"><span style=\"font-weight:bold;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">HIS HONOUR JUDGE AUERBACH:</span></p>\n\t    <p
+          style=\"text-align:justify;margin-right:3.7in\"><span style=\"font-weight:bold;text-decoration-line:underline;text-decoration-style:solid;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">Introduction</span></p>\n\t  </content>\n\t</level>\n\t<paragraph
+          eId=\"para_1\">\n\t  <num style=\"font-size:12pt\">1.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">This
+          is the appeal of the respondent in the employment tribunal, against the decision
+          of the tribunal at a preliminary hearing held at London Central by CVP, declining
+          its application to strike out the claim.  I will refer to the parties as they
+          were in the tribunal, as claimant and respondent. </span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_2\">\n\t  <num style=\"font-size:12pt\">2.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">The
+          relevant background and chronology is as follows.  The respondent is a bus
+          company.  The claimant worked as a driver, initially for its predecessor,
+          but subsequently TUPE-transferred into its employment.  Following a long period
+          of sickness absence, he was dismissed at a meeting on 24 January 2020.  In
+          the internal sickness absence process he was accompanied at meetings by his
+          PTSC trade-union representative, Mr Francis Neckles.  </span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_3\">\n\t  <num style=\"font-size:12pt\">3.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">Following
+          ACAS early conciliation, the tribunal claim was presented on 3 June 2020,
+          identifying Mr Neckles of PTSC as the claimant\u2019s representative.  Complaints
+          were raised of unfair dismissal, including related to TUPE, of disability
+          and race discrimination and for notice pay.</span><span style=\"font-family:''Times
+          New Roman'';color:#010302\">  </span><span style=\"font-family:''Times New
+          Roman'';font-size:12pt;color:#000000\">The claim was resisted, the respondent
+          being represented by solicitors. There was a case management hearing in November
+          2020, at which there was no attendance for the claimant. The minute recorded
+          that the matter remained listed for a full merits hearing on 27 to 29 July
+          2021.  So far as able, the judge summarised the claims and issues and gave
+          directions. </span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph eId=\"para_4\">\n\t  <num
+          style=\"font-size:12pt\">4.</num>\n\t  <content>\n\t    <p class=\"ListParagraph\"
+          style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span style=\"font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">There was a further hearing on
+          17 December 2020.  This was attended by Mr Ibekwe of PTSC union for the claimant
+          and a solicitor for the respondent.  Some complaints had previously been struck
+          out, but that decision had been revoked upon review, on the basis that the
+          claimant\u2019s representative had not had a fair opportunity to make submissions.  The
+          strike-out application was renewed, but at that hearing, those particular
+          complaints were in any event withdrawn.  At that hearing Mr Ibekwe indicated
+          that the complaints being pursued were of ordinary unfair dismissal, wrongful
+          dismissal and failure to comply with the duty of reasonable adjustment.  It
+          was identified that in respect of all three complaints reliance was placed
+          upon guidelines relating to dealing with long-term sickness absence, dating
+          from prior to the claimant\u2019s transfer into the respondent\u2019s employment,
+          which were said to have transferred with him and to have been incorporated
+          into his contract.  Fresh directions were given, including for the claimant
+          to provide medical records by 26 January 2021 and for a schedule of loss and
+          disclosure in April.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_5\">\n\t  <num style=\"font-size:12pt\">5.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">In
+          the period from March to June 2021, the respondent\u2019s solicitors chased
+          for disclosure of the claimant\u2019s medical records.  In the course of these
+          exchanges they sought clarification of whether a freestanding complaint of
+          failure to comply with the duty of reasonable adjustment was still being maintained.  During
+          this period the tribunal made a revised order for the claimant to provide
+          medical evidence by 6 July 2021.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_6\">\n\t  <num style=\"font-size:12pt\">6.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">On
+          11 July 2021 Mr Neckles wrote to the tribunal.  In summary, he stated that
+          the claimant had travelled to his home country of Eritrea in November 2020.  He
+          wrote: \u201cWe have spoken to him in February 2021 but since then we have
+          not heard from him.\u201d  He wrote that they had been trying to contact the
+          claimant by various means that he set out, but without success.  He wrote
+          that they were very concerned that some kind of emergency was preventing the
+          claimant from making contact, and for his well-being. However, they considered
+          that the hearing in July could proceed, as they put it, \u201ceven if the
+          claimant is considered or designated as missing\u201d.  Mr Neckles asserted
+          that that was because the burden of proof rested with the respondent, the
+          claimant\u2019s side would be calling only his trade union representative
+          as a witness and there would be little prejudice to the respondent, as the
+          primary evidence would be documentary.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_7\">\n\t  <num style=\"font-size:12pt\">7.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\"> On
+          22 July 2021 the tribunal wrote that Employment Judge F. Spencer had directed
+          that the hearing opening on 27 July be vacated as \u201cit would appear that
+          the claimant is not actively pursuing his claim and his representative is
+          unable to take instructions. [The judge] is therefore considering striking
+          out the claim because it is not being actively pursued.\u201d  The letter
+          indicated that if the claimant\u2019s representative objected to that course,
+          he should write to the tribunal within 14 days stating what instructions he
+          had received from the claimant: (1) indicating that he wishes to proceed and
+          (2) that he had withdrawn his disability discrimination claim.  It appears
+          that there was no further communication from the claimant\u2019s representative
+          in response, to that effect or otherwise.  However, on 8 September 2021 the
+          tribunal wrote again that EJ Spencer had now directed that there be a preliminary
+          hearing to determine whether to strike out the claim \u201con the basis that
+          the matter cannot proceed in the absence of the claimant and a lack of recent
+          instructions.\u201d</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_8\">\n\t  <num style=\"font-size:12pt\">8.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">That
+          preliminary hearing took place on 6 October 2021, before EJ Nicolle.  Mr Neckles
+          appeared for the claimant and Ms Blythe, a solicitor, for the respondent.  The
+          tribunal declined to strike out the claim.  The judge directed that the matter
+          should proceed to be listed for a hearing at the earliest available date,
+          to take place regardless of the claimant\u2019s attendance.</span><span style=\"font-family:''Times
+          New Roman'';font-size:12pt;color:#010302\">  Written reasons were subsequently
+          provided.  </span><span style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">In
+          its reasons, the tribunal referred to there having been previous case management
+          hearings.  It noted that Mr Neckles had confirmed that the only complaints
+          being pursued were for unfair dismissal and breach of contract; and a freestanding
+          complaint of disability discrimination was no longer pursued.  The tribunal
+          referred to Mr Neckles\u2019 letter of 11 July 2021 and noted that he had
+          said that he had had no communication with the claimant directly or indirectly
+          since February.  The tribunal then summarised the parties\u2019 submissions.  </span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_9\">\n\t  <num style=\"font-size:12pt\">9.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">The
+          basis of the respondent\u2019s case, said the tribunal, was that the matter
+          could not proceed in the absence of the claimant and as a result of lack of
+          recent instructions from him to his union representative.  They relied on
+          all five limbs of rule 37.  Particular issues highlighted were said to be
+          the claimant\u2019s non-attendance and that continuing with a hearing where
+          there would be no reasonable prospect of success would be a waste of time.  Further
+          issues related to the ability of the claimant to demonstrate a disability
+          for the purposes of the provisions he relied upon, if applicable, and how
+          remedy and mitigation would be assessed if he succeeded.  </span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_10\">\n\t  <num style=\"font-size:12pt\">10.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">Submissions
+          made by Mr Neckles, identified by the tribunal, included that it was the claimant\u2019s
+          prerogative to choose whether to give evidence, that the respondent had already
+          had an unsuccessful attempt at securing a strike-out on the basis that complaints
+          had no reasonable prospect of success, and that the claimant had given full
+          disclosure.  He also asserted that the burden was on the respondent to show
+          the fairness of the dismissal and there was no need for the claimant to give
+          evidence.</span><span style=\"font-family:''Times New Roman'';color:#010302\">  </span><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">At
+          paragraph 12, the tribunal said this of Mr Neckles:</span></p>\n\t    <block
+          name=\"embeddedStructure\">\n              <embeddedStructure>\n\t\t<level>\n\t\t  <content>\n\t\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in\"><span
+          style=\"font-weight:bold;font-family:''Times New Roman'';font-size:12pt;color:#000000\">\u201cHe
+          says the claimant gave instructions at the outset of the claim to do what
+          is ever necessary, without the need to revert and therefore says the lack
+          of instructions is not an issue. Mr Neckles is not able to provide any written
+          evidence as to the scope of his instructions and the unconditional authority
+          he says has been bestowed upon him to take all actions necessary in the conduct
+          of the claim. He says that is not how the union works.  Things are much more
+          informal.\u201d</span></p>\n\t\t  </content>\n\t\t</level>\n\t      </embeddedStructure>\n            </block>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_11\">\n\t  <num style=\"font-size:12pt\">11.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">The
+          tribunal also referred to the claimant having previously presented a schedule
+          of loss which involved seeking compensation over a period of 78 weeks.  The
+          tribunal added: \u201cMr Neckles confirmed that as far as he was aware, the
+          claimant had not been able to mitigate his loss and had not received any benefits
+          to which the recoupment regulations would apply.\u201d</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_12\">\n\t  <num style=\"font-size:12pt\">12.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\"> In
+          the remainder of the decision the tribunal set out its conclusions. I will
+          set out this part of the decision in full. </span></p>\n\t    <block name=\"embeddedStructure\">\n              <embeddedStructure>\n\t\t<paragraph>\n\t\t  <num
+          style=\"font-weight:bold\">\u201c15.</num>\n\t\t  <content>\n\t\t    <p class=\"ListParagraph\"
+          style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in;text-indent:0.41in\"><span
+          style=\"font-weight:bold\">The starting point is to consider Rule 37 and the
+          discretion which a tribunal has to strike out a claim. It is important that
+          I do not revisit a decision previously made by Employment Judge Russell based
+          on whether the underlying claims have a reasonable prospect of success. I
+          have avoided doing so. My sole consideration is whether given the lack of
+          communication from the Claimant this is a case where it would be appropriate
+          to strike out the claim given the basis upon which Mr Neckles says it would
+          continue to be conducted. </span></p>\n\t\t  </content>\n\t\t</paragraph>\n\t\t<paragraph>\n\t\t  <num
+          style=\"font-weight:bold\">16.</num>\n\t\t  <content>\n\t\t    <p class=\"ListParagraph\"
+          style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in;text-indent:0.41in\"><span
+          style=\"font-weight:bold\">Looking in turn at each of the various limbs of
+          Rule 37(1). </span></p>\n\t\t  </content>\n\t\t</paragraph>\n\t\t<paragraph>\n\t\t  <num
+          style=\"font-weight:bold\">(a)</num>\n\t\t  <content>\n\t\t    <p class=\"ListParagraph\"
+          style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in;text-indent:0.82in\"><span
+          style=\"font-weight:bold;text-decoration-line:underline;text-decoration-style:solid\">That
+          it is scandalous or vexatious or has no reasonable prospect of success.</span></p>\n\t\t  </content>\n\t\t</paragraph>\n\t\t<paragraph>\n\t\t  <num
+          style=\"font-weight:bold\">17.</num>\n\t\t  <intro>\n\t\t    <p class=\"ListParagraph\"
+          style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in;text-indent:0.41in\"><span
+          style=\"font-weight:bold\">I do not consider the conduct to be scandalous
+          or vexatious. Whilst I consider that there may be a limited prospect of success
+          absent the Claimant\u2019s attendance to give witness evidence I do not consider
+          that it follows automatically that the claim has no reasonable prospect of
+          success. It may well be that the claim is potentially weak but that is not
+          in itself sufficient for it to be struck out. </span></p>\n\t\t  </intro>\n\t\t  <subparagraph>\n\t\t    <num
+          style=\"font-weight:bold\">(b)</num>\n\t\t    <content>\n\t\t      <p class=\"ListParagraph\"
+          style=\"text-align:justify;margin-left:1in;margin-right:0.59in;text-indent:0.5in\"><span
+          style=\"font-weight:bold;text-decoration-line:underline;text-decoration-style:solid\">That
+          the manner in which the proceedings have been conducted has been scandalous,
+          unreasonable or vexatious.</span></p>\n\t\t    </content>\n\t\t  </subparagraph>\n\t\t</paragraph>\n\t\t<paragraph>\n\t\t  <num
+          style=\"font-weight:bold\">18.</num>\n\t\t  <content>\n\t\t    <p class=\"ListParagraph\"
+          style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in;text-indent:0.41in\"><span
+          style=\"font-weight:bold\">It is not suggested that Mr Neckles in his conduct
+          of the proceedings has been in any way scandalous, unreasonable or vexatious.
+          Given that his position is that he has unconditional authority to take all
+          actions necessary in the claim I do not consider any basis exists for this
+          limb to be made out. </span></p>\n\t\t  </content>\n\t\t</paragraph>\n\t\t<paragraph>\n\t\t  <num
+          style=\"font-weight:bold\">(c)</num>\n\t\t  <content>\n\t\t    <p class=\"ListParagraph\"
+          style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in;text-indent:0.82in\"><span
+          style=\"font-weight:bold;text-decoration-line:underline;text-decoration-style:solid\">A
+          party has not complied with any of these Rules or with an order of the Tribunal.</span></p>\n\t\t  </content>\n\t\t</paragraph>\n\t\t<paragraph>\n\t\t  <num
+          style=\"font-weight:bold\">19.</num>\n\t\t  <content>\n\t\t    <p class=\"ListParagraph\"
+          style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in;text-indent:0.41in\"><span
+          style=\"font-weight:bold\">I find this more difficult as there have been various
+          elements of the claim where arguably the Claimant has not provided full disclosure
+          of evidence. Nevertheless, the position as now stated by Mr Neckles is that
+          the Claimant has made full disclosure, he is not going to be providing any
+          medical evidence as to the existence of disability, but rather relying on
+          what he says is the Respondent\u2019s failure to give consideration to whether
+          disability potentially applied and the enhanced benefits which may therefore
+          have arisen under a collective agreement should it be enforceable, and that
+          failure to provide evidence of mitigation would be to the Claimant\u2019s
+          disadvantage. I am therefore not sufficiently satisfied that there has been
+          a sufficiently serious failure to comply with Tribunal Orders that it would
+          be justified to strike the claim out on this basis. </span></p>\n\t\t  </content>\n\t\t</paragraph>\n\t\t<paragraph>\n\t\t  <num
+          style=\"font-weight:bold\">(d)</num>\n\t\t  <content>\n\t\t    <p class=\"ListParagraph\"
+          style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in;text-indent:0.82in\"><span
+          style=\"font-weight:bold;text-decoration-line:underline;text-decoration-style:solid\">The
+          claim has not been actively pursued.</span></p>\n\t\t  </content>\n\t\t</paragraph>\n\t\t<paragraph>\n\t\t  <num
+          style=\"font-weight:bold\">20.</num>\n\t\t  <content>\n\t\t    <p class=\"ListParagraph\"
+          style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in;text-indent:0.41in\"><span
+          style=\"font-weight:bold\">At the outset I considered this to have been the
+          most of likely ground for strike out given the acknowledged position that
+          the Claimant has been incommunicado since February 2021. Nevertheless, based
+          on Mr Neckles\u2019 unequivocal confirmation that he has unconditional authority
+          to take all steps in the claim, that the intention was to pursue the claim,
+          that he was a participant in today\u2019s hearing and has been involved in
+          correspondence throughout I do not consider that it can be said the claim
+          is not being actively pursued. It is true that it is being pursued in a highly
+          unusual manner. That in itself gives rise to issues but to say the claim was
+          not being actively pursued because it was being done on behalf of, rather
+          than with the direct involvement of a claimant, would in my view be wrong.
+          There will be occasions, for example, a claimant with a mental health incapacity
+          who is not capable of giving instructions where the claim would be pursued
+          absent their direct instructions. It may also be pursued by a deceased claimant\u2019s
+          estate. So, whilst unusual it is not wholly unprecedented and does not in
+          itself provide an automatic reason why there should be a strike out.  </span></p>\n\t\t  </content>\n\t\t</paragraph>\n\t\t<paragraph>\n\t\t  <num
+          style=\"font-weight:bold\">(e)</num>\n\t\t  <content>\n\t\t    <p class=\"ListParagraph\"
+          style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in;text-indent:0.82in\"><span
+          style=\"font-weight:bold;text-decoration-line:underline;text-decoration-style:solid\">That
+          the tribunal considers it is no longer possible to have a fair hearing. </span></p>\n\t\t  </content>\n\t\t</paragraph>\n\t\t<paragraph>\n\t\t  <num
+          style=\"font-weight:bold\">21.</num>\n\t\t  <content>\n\t\t    <p class=\"ListParagraph\"
+          style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in;text-indent:0.41in\"><span
+          style=\"font-weight:bold\">Whilst I accept the hearing will have unusual elements
+          they will inevitably be to the Claimant\u2019s disadvantage. The Tribunal
+          will have to make findings of fact and conclusions and if necessary assess
+          mitigation. Absent the Claimant that can only be to the his disadvantage but
+          it does not mean that the hearing is not a fair hearing. Certainly as far
+          as the Respondent is concerned it has the cards stacked firmly in its favour
+          but it does not mean that it is not receiving a fair hearing. </span></p>\n\t\t  </content>\n\t\t</paragraph>\n\t\t<paragraph>\n\t\t  <num
+          style=\"font-weight:bold\">22.</num>\n\t\t  <intro>\n\t\t    <p class=\"ListParagraph\"
+          style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in;text-indent:0.41in\"><span
+          style=\"font-weight:bold\">The Claimant has the prerogative, as Mr Neckles
+          argues, whether to give witness evidence or not, normally this is a right
+          exercised or not in criminal proceedings rather than civil proceedings but
+          nevertheless there is no absolute obligation on a party to give evidence.
+          The fundamental principle is that each party has a discretion as to which
+          witnesses it chooses to call, of course that normally would include the claimant,
+          but there is no automatic obligation for it to do so. </span></p>\n\t\t  </intro>\n\t\t  <subparagraph>\n\t\t    <content>\n\t\t      <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in;text-indent:0.41in\"><span
+          style=\"font-weight:bold;text-decoration-line:underline;text-decoration-style:solid\">Final
+          conclusion</span></p>\n\t\t    </content>\n\t\t  </subparagraph>\n\t\t</paragraph>\n\t\t<paragraph>\n\t\t  <num
+          style=\"font-weight:bold\">23.</num>\n\t\t  <content>\n\t\t    <p class=\"ListParagraph\"
+          style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in;text-indent:0.41in\"><span
+          style=\"font-weight:bold\">Therefore, having carefully weighed up factors
+          on what is in my view a marginal situation I have nevertheless found the balance
+          of prejudice, after weighing all of the relevant factors, that it would not
+          be appropriate to strike out the claim and therefore the claim should proceed
+          and be listed for a hearing at the earliest available date to take place regardless
+          of the Claimant\u2019s attendance. In other words the non-attendance of the
+          Claimant would not be a reason for a further postponement.\u201d</span></p>\n\t\t  </content>\n\t\t</paragraph>\n\t      </embeddedStructure>\n            </block>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_13\">\n\t  <num style=\"font-size:12pt\">13.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">The
+          original grounds of appeal raised a range of points of challenge to this decision.  HHJ
+          Shanks considered the notice of appeal on paper and was of the view that it
+          did not raise any arguable grounds.  In relation to a reference to maintenance
+          and champerty, he observed that it was not clear what the point being raised
+          was, although I note that the copy of the notice of appeal that was before
+          him had a few words cut off in the photocopying process.  HHJ Shanks also
+          observed that there was no evidence that any such point was raised with the
+          employment judge. </span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_14\">\n\t  <num style=\"font-size:12pt\">14.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">The
+          respondent asked for a rule 3(10) hearing.  That came before HHJ Wayne Beard.  Mr
+          Nuttman, a solicitor, appeared for it.  Paragraphs 9, 11 and 14 of the grounds
+          of appeal were permitted to proceed.  All other grounds were dismissed.  As
+          drafted, those three paragraphs between them raise, in substance, the following
+          points of challenge.  First, the tribunal is said to have erred, because,
+          in order to be entitled to conduct the proceedings in the claimant\u2019s
+          absence, his representative should have been required to produce some written
+          evidence of his authority to pursue the claim.  He had confirmed that there
+          was no such written document; and therefore there could also be no power of
+          attorney or assignment.  Secondly, the tribunal erred because it \u201cdid
+          not consider, or misapplied, the common law rule against maintenance and champerty.  The
+          claimant\u2019s representative\u2019s pursuit of the case in circumstances
+          where he has no vested interest is an abuse of process.\u201d</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_15\">\n\t  <num style=\"font-size:12pt\">15.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">In
+          his reasons for permitting those grounds to proceed, HHJ Wayne Beard noted
+          that it was not suggested that, at the tribunal hearing, reference had been
+          made to maintenance or champerty, specifically by using those words, but that
+          submissions were made on facts said to underpin such a contention, being that
+          PTSC union relied on financial receipts from pursuing claims on behalf of
+          parties before employment tribunals, and also that Mr Neckles had been previously
+          found in another case to have interfered with evidence, being meta-data.  He
+          considered it arguable that, in those circumstances, it was a procedural failing
+          not to require evidence on oath or affirmation to be given by the representative
+          and cross-examination of him upon it.  He also observed that there may be
+          a wider point of interest, given the provisions as to rights of audience of
+          trade union representatives in section 6 </span><span style=\"font-weight:bold;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">Employment Tribunals Act 1996</span><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_16\">\n\t  <num style=\"font-size:12pt\">16.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\"> As
+          I have noted, at the hearing before the tribunal, the respondent was represented
+          by Ms Blythe.  It is represented today, as at the rule 3(10) hearing, by Mr
+          Nuttman.  He clarified to me that at the rule 3(10) hearing he had sought
+          to convey what he understood from Ms Blythe that she had said to the employment
+          tribunal.  The context was that, prior to the tribunal hearing, there had
+          been no indication that Mr Neckles\u2019 position might be that he had carte
+          blanche oral authority which enabled him to continue conducting the claim
+          in the claimant\u2019s absence.</span><span style=\"font-family:''Times New
+          Roman'';color:#010302\">  Upon his </span><span style=\"font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">making that assertion during the
+          hearing,  Ms Blythe responded to the effect that there was an issue as to
+          whether it was possible to assign, or give to a representative, such a blanket
+          authority in an effective way; and she indicated in so many words that she
+          wished to be permitted to cross-examine Mr Neckles as to what he said precisely
+          was the nature and terms of his union\u2019s agreement with the claimant.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_17\">\n\t  <num style=\"font-size:12pt\">17.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">Mr
+          Nuttman clarified that, at the rule 3(10) hearing, two particular matters
+          were identified, that he, Mr Nuttman, understood from Ms Blythe that she was
+          aware of at the time of the tribunal hearing, and would have intended to question
+          Mr Neckles about, had she been permitted to cross-examine him.  The first
+          was that there was a provision in PTSC\u2019s annual return for 2020, which
+          referred to it having received some \u00a359,251 income from court actions.  The
+          second was that in a previous case an employment tribunal had found that Mr
+          Neckles had manipulated the meta-data of a witness statement with the intention
+          of misleading the tribunal as to when that statement was produced.  Mr Nuttman
+          clarified that it was not suggested to HHJ Wayne Beard, nor being said now,
+          that Mr Blythe had identified to the tribunal that these were particular points
+          that she wished to raise in cross-examination.  Rather, the EAT was being
+          told that this was what she had in mind. </span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_18\">\n\t  <num style=\"font-size:12pt\">18.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">Following
+          the rule 3(10) hearing, which was evidently attended as an observer by either
+          Mr Ibekwe, or possibly a PTSC union colleague, Mr Ibekwe wrote to the EAT
+          applying for a review.  He asserted, in summary, that the maintenance/champerty
+          point had not been run before the employment tribunal, which had not had the
+          opportunity to consider it.  He also asserted that it had not hitherto been
+          run before the EAT, and so permission to amend was required.  He also asserted
+          that it was unfair that the respondent had not been required itself to provide
+          sworn evidence to support its allegation that the doctrine of maintenance
+          or champerty applied.  He sought various further directions from the EAT.  HHJ
+          Wayne Beard declined that application, indicating that these matters were
+          suitable to be argued and considered at the full appeal hearing.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_19\">\n\t  <num style=\"font-size:12pt\">19.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">The
+          claimant\u2019s Answer to this appeal, also prepared by Mr Ibekwe, relied
+          on the reasons given by the employment tribunal for its decision and also,
+          in summary, upon the following matters.  It is said that the tribunal properly
+          exercised its discretion to refuse to strike out, having had regard to all
+          essential matters.  These included that PTSC had been properly entered on
+          the record and had had conduct of the proceedings from the outset, and that
+          the tribunal had had regard to what the Answer called the spirit of section
+          206, which gave PTSC the power or obligation to protect the interests of its
+          member.  I assume this was intended to be a reference to that section of the
+          </span><span style=\"font-weight:bold;font-family:''Times New Roman'';font-size:12pt;color:#000000\">Employment
+          Rights Act 1996</span><span style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">,
+          and from what I have read my understanding is that the underlying point that
+          PTSC seeks to make is that, in circumstances where it had been unable to make
+          contact with its member, it felt that it had a duty to him, so far as possible,
+          nevertheless to, as it were, keep the show on the road. </span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_20\">\n\t  <num style=\"font-size:12pt\">20.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">The
+          Answer also maintains that the respondent (now the appellant) raises matters
+          in this appeal that were not raised before the tribunal, being, as the Answer
+          puts it; \u201cextremely serious and frivolous allegations about the integrity,
+          honesty and credibility\u201d of the union, Mr Ibekwe and/or Mr Neckles, without
+          being required to do so on oath.  The Answer asserted that, in any event,
+          the relationship with the claimant was not one of champerty, and PTSC did
+          not act for profit in these proceedings.  It made further observations about
+          the flexible modern nature of the doctrine of maintenance and champerty in
+          any event.</span><span style=\"font-family:''Times New Roman'';color:#010302\">  </span><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">That
+          Answer, which was filed in December 2022, also stated that in any event the
+          claimant \u201chas returned back to the UK and is therefore in a position
+          to oversee the giving of instructions or directions\u201d to PTSC in the conduct
+          of the proceedings.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_21\">\n\t  <num style=\"font-size:12pt\">21.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">On
+          8 August 2023 Mr Neckles emailed the EAT indicating that the claimant had
+          informed the union that he wished to apply for ELAAS representation.  The
+          EAT\u2019s administration replied noting that Mr Neckles was on record as
+          representing the claimant and that, in any event, ELAAS representation is
+          not provided to respondents to appeals, but only to qualifying appellants
+          at rule 3(10) or preliminary hearings.  He was asked to notify the EAT if
+          he was coming off the record.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_22\">\n\t  <num style=\"font-size:12pt\">22.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">Skeleton
+          arguments were due for today\u2019s appeal hearing on 18 August 2023.  None
+          has been provided for the claimant before or since that date. Yesterday Mr
+          Neckles applied for a postponement of today\u2019s hearing on the grounds
+          of his own ill health.  That was opposed by the respondent''s solicitors.  I
+          refused that application for reasons that were emailed yesterday to the parties.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_23\">\n\t  <num style=\"font-size:12pt\">23.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">Today
+          there was no attendance by, or representation for, the claimant.  Just prior
+          to the hearing, the EAT\u2019s administration telephoned Mr Neckles, who confirmed
+          that he was aware that his application yesterday had been refused, and indicated
+          that he would not be attending, as he was not well enough.  I note that no
+          fresh application or submission with regard to postponement was made.  In
+          the circumstances I have thought it appropriate to proceed with this hearing.  I
+          have taken into account everything I have read in support of the substantive
+          basis upon which this appeal is resisted by the claimant including, in particular,
+          the contents of the application for a review of HHJ Wayne Beard\u2019s decision
+          and the contents of the Answer, to which I have already referred.  Further,
+          I have put to Mr Nuttman for his response, a number of further points which
+          it occurred to me might well have been raised by a representative for the
+          claimant, had anyone attended.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_24\">\n\t  <num style=\"font-size:12pt\">24.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">I have
+          before me bundles of documents and authorities prepared by the respondent,
+          to which some further documents arising from the litigation were added at
+          my direction.  I have a short skeleton argument from Mr Nuttman and have heard
+          extensive oral argument from him this morning. As I have already noted, he
+          referred to an extract from PTSC\u2019s annual return for 2020, showing income
+          received from court actions. He also referred to a number of examples of decisions
+          of employment tribunals which have made various findings adverse to Mr Neckles,
+          PTSC union and/or other PTSC union representatives over the years. Copies
+          of these decisions were included in the authorities bundle, although they
+          are being relied upon, I observe, not as authorities in support of the legal
+          argument today, as such, but effectively as evidence.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_25\">\n\t  <num style=\"font-size:12pt\">25.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">As
+          Mr Nuttman confirmed, these materials were not referred to before the tribunal.  That
+          is not a criticism of Ms Blythe, given, as Mr Nuttman has described, that
+          the respondent\u2019s solicitors had no reason to suppose that Mr Neckles
+          was going to assert that he had blanket oral authority to continue to represent
+          the claimant, until he did so during the course of the hearing itself.  Nevertheless,
+          the fact that these materials were not before, or referred to, the employment
+          tribunal, is potentially relevant to my assessment of whether it erred in
+          law as advanced by the live grounds of appeal.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_26\">\n\t  <num style=\"font-size:12pt\">26.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">Mr
+          Nuttman made submissions about what he described as the long-established common
+          law duty of maintenance and champerty.  He submits, in summary, that maintenance
+          can be defined as the improper support of litigation in which the supporter
+          has no legitimate concern.  This is usually by way of third party funding,
+          although it has been said that assignments of causes of action may \u201csavour
+          of maintenance\u201d.  Champerty occurs where the third party pays some or
+          all of the costs of a litigant, in return for being given a share of the proceeds,
+          if any, of the litigation.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_27\">\n\t  <num style=\"font-size:12pt\">27.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">Mr
+          Nuttman traced the evolution of these doctrines, and the exceptions that have
+          been created to them, since the 1960s, by reference to various authorities
+          and statutory provisions.  The modern position, he concluded, is that maintenance
+          and champerty are no longer either a tort or a crime, but that a contract
+          which amounts to entailing maintenance or champerty is unenforceable. There
+          are statutory exceptions for conditional fee agreements (CFAs) and damages-based
+          agreements (DBAs) which meet certain conditions, including that they must
+          be in writing.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph eId=\"para_28\">\n\t  <num
+          style=\"font-size:12pt\">28.</num>\n\t  <content>\n\t    <p class=\"ListParagraph\"
+          style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span style=\"font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">Mr Nuttman acknowledged that, so
+          far as he is aware, there is no authority specifically addressing whether,
+          or, if so, how, these doctrines apply to the conduct of litigation or provision
+          of advocacy services in employment tribunals.  But he submitted, by reference
+          to provisions of the </span><span style=\"font-weight:bold;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">Legal Services Act 2007</span><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\"> and
+          the discussion in the decision in </span><span style=\"font-weight:bold;text-decoration-line:underline;text-decoration-style:solid;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">Factortame v Secretary of State
+          for Transport</span><span style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">
+          [2002] EWCA Civ 932, that the principles underlying these doctrines should
+          be taken to apply in employment tribunals, and indeed that the policy of public
+          protection underpinning them should apply with particular force in that context.  He
+          also submitted that the discussion in the authorities shows that the principles
+          exist to protect both parties to the litigation, not just the party to the
+          agreement with the representative which is impugned in the given case. </span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_29\">\n\t  <num style=\"font-size:12pt\">29.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">Mr
+          Nuttman\u2019s submission was therefore that a CFA or DBA in respect of employment
+          tribunal proceedings would be unenforceable unless it was in writing and met
+          the other statutory conditions.  If it was unenforceable, then it could not
+          validly confer authority on the putative representative.  Were that the position
+          in the present case, that would have had a direct bearing on whether the claim
+          should have been struck out on the basis that the claimant himself was not
+          actively pursuing it, and that PTSC could not assert that it had a valid authority
+          to continue to pursue it on his behalf in his absence. </span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_30\">\n\t  <num style=\"font-size:12pt\">30.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">Mr
+          Nuttman submits that the tribunal was therefore required to consider whether
+          the doctrine of maintenance and champerty applied in that way in this case,
+          on the footing that there was a potential issue as to whether there may have
+          been an agreement whereby the union or Mr Neckles would be entitled to some
+          share of, or payment from, any compensation awarded, if the claimant succeeded.  What
+          Mr Neckles said at the hearing was sufficient to put the tribunal on enquiry,
+          such that it needed to investigate whether this might be the case.  </span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_31\">\n\t  <num style=\"font-size:12pt\">31.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">Mr
+          Nuttman submitted that this would have been so even if nothing at all had
+          been said by Ms Blythe.  But the fact that she flagged up the issue, and applied
+          to cross-examine, reinforced the submission that the tribunal erred by not
+          at least requiring Mr Neckles to give sworn evidence and to submit to cross-examination
+          as a condition of being possibly permitted to continue to conduct the claim.  Mr
+          Nuttman stressed that, as emphasised in various passages in </span><span style=\"font-weight:bold;text-decoration-line:underline;text-decoration-style:solid;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">Factortame</span><span style=\"font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">, the  application of the doctrines
+          of maintenance or champerty is an important matter of public policy.  </span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_32\">\n\t  <num style=\"font-size:12pt\">32.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">I should
+          note that Mr Nuttman confirmed that it was </span><span style=\"font-style:italic;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">not</span><span style=\"font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\"> suggested to the tribunal by Ms
+          Blythe, nor was it  part of his case today, that this is a case where it may
+          be, in fact, that proceedings have been instituted from the outset by PTSC
+          without the claimant\u2019s knowledge or authority at all. </span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_33\">\n\t  <num style=\"font-size:12pt\">33.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">The
+          second limb of the appeal is to the effect that, even if there was not sufficient
+          to put the tribunal on enquiry as to the possibility that there might be a
+          representation agreement that involved maintenance or champerty, the tribunal
+          still erred by accepting what Mr Neckles told it about the oral blanket authority
+          that he had, in the absence of written evidence of that authority, and without
+          at the very least requiring him to submit to cross-examination as a condition
+          of being possibly permitted to continue to represent the claimant.  Mr Nuttman
+          relies upon a number of features of the facts and circumstances as they stood
+          at the time of the employment tribunal hearing in support.  </span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_34\">\n\t  <num style=\"font-size:12pt\">34.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">The
+          first is that it was positively asserted that the claimant had not been in
+          touch with Mr Neckles, and that all efforts to contact him had failed since
+          February of that year.  Mr Neckles had not, following Judge Spencer\u2019s
+          first order, put forward any evidence of instructions or resumed contact.  The
+          second is that the claimant remained absent.  The third is that Mr Neckles
+          was asserting that he had a blanket authority, but confirmed that there was
+          nothing in writing.  These facts alone, submitted Mr Nuttman, meant the tribunal
+          should not have allowed the matter to proceed merely on the basis of what
+          Mr Neckles had told it. </span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_35\">\n\t  <num style=\"font-size:12pt\">35.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">In
+          his oral submissions today, Mr Nuttman clarified and confirmed that he was
+          not saying that anything specifically turned on the fact that Mr Neckles is
+          not a solicitor or barrister.  He submitted that the approach of the tribunal
+          should have been the same, if it had been a solicitor or barrister representing
+          the claimant on this occasion, and all the other circumstances had been the
+          same.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph eId=\"para_36\">\n\t  <num
+          style=\"font-size:12pt\">36.</num>\n\t  <content>\n\t    <p class=\"ListParagraph\"
+          style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span style=\"font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">Rule 37(1) </span><span style=\"font-weight:bold;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">Employment Tribunals Rules of Procedure
+          2013</span><span style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">
+          provides as follows:</span></p>\n\t    <block name=\"embeddedStructure\">\n              <embeddedStructure>\n\t\t<paragraph>\n\t\t  <num
+          class=\"legp1no\" style=\"font-weight:bold;color:#494949\">\u201c37.</num>\n\t\t  <content>\n\t\t    <p
+          class=\"legp1paratext\" style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in;text-indent:0.41in\"><span
+          style=\"font-weight:bold;font-size:11pt;color:#494949\">\u2014(1)\u00a0At
+          any stage of the proceedings, either on its own initiative or on the application
+          of a party, a Tribunal may strike out all or part of a claim or response on
+          any of the following grounds\u2014</span></p>\n\t\t  </content>\n\t\t</paragraph>\n\t\t<paragraph>\n\t\t  <num
+          class=\"legds\" style=\"font-weight:bold;color:#494949\">(a)</num>\n\t\t  <content>\n\t\t    <p
+          class=\"legclearfix\" style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in;text-indent:0.41in\"><span
+          class=\"legds\" style=\"font-weight:bold;font-size:11pt;color:#494949\">that
+          it is scandalous or vexatious or has no reasonable prospect of success;</span></p>\n\t\t  </content>\n\t\t</paragraph>\n\t\t<paragraph>\n\t\t  <num
+          class=\"legds\" style=\"font-weight:bold;color:#494949\">(b)</num>\n\t\t  <content>\n\t\t    <p
+          class=\"legclearfix\" style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in;text-indent:0.41in\"><span
+          class=\"legds\" style=\"font-weight:bold;font-size:11pt;color:#494949\">that
+          the manner in which the proceedings have been conducted by or on behalf of
+          the claimant or the respondent (as the case may be) has been scandalous, unreasonable
+          or vexatious;</span></p>\n\t\t  </content>\n\t\t</paragraph>\n\t\t<paragraph>\n\t\t  <num
+          class=\"legds\" style=\"font-weight:bold;color:#494949\">(c)</num>\n\t\t  <content>\n\t\t    <p
+          class=\"legclearfix\" style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in;text-indent:0.41in\"><span
+          class=\"legds\" style=\"font-weight:bold;font-size:11pt;color:#494949\">for
+          non-compliance with any of these Rules or with an order of the Tribunal;</span></p>\n\t\t  </content>\n\t\t</paragraph>\n\t\t<paragraph>\n\t\t  <num
+          class=\"legds\" style=\"font-weight:bold;color:#494949\">(d)</num>\n\t\t  <content>\n\t\t    <p
+          class=\"legclearfix\" style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in;text-indent:0.41in\"><span
+          class=\"legds\" style=\"font-weight:bold;font-size:11pt;color:#494949\">that
+          it has not been actively pursued;</span></p>\n\t\t  </content>\n\t\t</paragraph>\n\t\t<paragraph>\n\t\t  <num
+          class=\"legds\" style=\"font-weight:bold;color:#494949\">(e)</num>\n\t\t  <content>\n\t\t    <p
+          class=\"legclearfix\" style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in;text-indent:0.41in\"><span
+          class=\"legds\" style=\"font-weight:bold;font-size:11pt;color:#494949\">that
+          the Tribunal considers that it is no longer possible to have a fair hearing
+          in respect of the claim or response (or the part to be struck out).\u201d</span></p>\n\t\t  </content>\n\t\t</paragraph>\n\t      </embeddedStructure>\n            </block>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_37\">\n\t  <num style=\"font-size:12pt\">37.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-weight:bold;font-family:''Times New Roman'';font-size:12pt;color:#000000\">Employment
+          Tribunals Act 1996</span><span style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">
+          section 6(1) provides:</span></p>\n\t    <block name=\"embeddedStructure\">\n              <embeddedStructure>\n\t\t<level>\n\t\t  <content>\n\t\t    <p
+          class=\"legclearfix\" style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in\"><span
+          style=\"font-weight:bold;color:#000000\">\u201c</span><span class=\"legds\"
+          style=\"font-weight:bold;font-size:11pt;color:#000000\">A person may appear
+          before an\u00a0</span><span class=\"legaddition\" style=\"font-weight:bold;font-size:11pt;color:#000000\">employment
+          tribunal</span><span class=\"legds\" style=\"font-weight:bold;font-size:11pt;color:#000000\">\u00a0in
+          person or be represented by\u2014</span></p>\n\t\t  </content>\n\t\t</level>\n\t\t<paragraph>\n\t\t  <num
+          class=\"legds\" style=\"font-weight:bold\">(a)</num>\n\t\t  <content>\n\t\t    <p
+          class=\"legclearfix\" style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in;text-indent:0.41in\"><span
+          class=\"legds\" style=\"font-weight:bold;font-size:11pt;color:#000000\">counsel
+          or a solicitor,</span></p>\n\t\t  </content>\n\t\t</paragraph>\n\t\t<paragraph>\n\t\t  <num
+          class=\"legds\" style=\"font-weight:bold\">(b)</num>\n\t\t  <content>\n\t\t    <p
+          class=\"legclearfix\" style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in;text-indent:0.41in\"><span
+          class=\"legds\" style=\"font-weight:bold;font-size:11pt;color:#000000\">a
+          representative of a trade union or an employers\u2019 association, or</span></p>\n\t\t  </content>\n\t\t</paragraph>\n\t\t<paragraph>\n\t\t  <num
+          class=\"legds\" style=\"font-weight:bold\">(c)</num>\n\t\t  <content>\n\t\t    <p
+          class=\"legclearfix\" style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in;text-indent:0.41in\"><span
+          class=\"legds\" style=\"font-weight:bold;font-size:11pt;color:#000000\">any
+          other person whom he desires to represent him.\u201d</span></p>\n\t\t  </content>\n\t\t</paragraph>\n\t      </embeddedStructure>\n            </block>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_38\">\n\t  <num style=\"font-size:12pt\">38.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">I am
+          content that Mr Nuttman\u2019s submissions which I have described are a fair
+          brief summary of the general state of the law on maintenance and champerty.  In
+          the very recent decision of the Supreme Court in </span><span style=\"font-weight:bold;text-decoration-line:underline;text-decoration-style:solid;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">R (PACCAR Inc) v Competition Appeal
+          Tribunal</span><span style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">
+          [2023] UKSC 28, to which I also drew Mr Nuttman\u2019s attention, Lord Sales
+          JSC encapsulated it in this way:</span></p>\n\t    <block name=\"embeddedStructure\">\n              <embeddedStructure>\n\t\t<level>\n\t\t  <content>\n\t\t    <p
+          style=\"text-align:justify;margin-left:0.59in;margin-right:0.59in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">\u201c</span><span
+          style=\"font-weight:bold;font-family:''Times New Roman'';color:#000000\">The
+          common law was historically hostile to arrangements for third parties to finance
+          litigation between others. According to the doctrines of champerty and maintenance,
+          such arrangements were generally regarded as unenforceable as being contrary
+          to public policy according to the test identified in\u00a0</span><span style=\"font-style:italic;font-weight:bold;font-family:''Times
+          New Roman'';color:#000000\">British Cash and Parcel Conveyors Ltd v Lamson
+          Store Service Co Ltd</span><span style=\"font-weight:bold;font-family:''Times
+          New Roman'';color:#000000\"> [1908] 1 KB 1006: see the discussion in\u00a0</span><span
+          style=\"font-style:italic;font-weight:bold;font-family:''Times New Roman'';color:#000000\">Giles
+          v Thompson</span><span style=\"font-weight:bold;font-family:''Times New Roman'';color:#000000\">
+          [1994] 1 AC 142 and\u00a0</span><span style=\"font-style:italic;font-weight:bold;font-family:''Times
+          New Roman'';color:#000000\">R (Factortame Ltd) v Secretary of State for Transport,
+          Local Government and the Regions (No 8)</span><span style=\"font-weight:bold;font-family:''Times
+          New Roman'';color:#000000\"> [2003] QB 381 (\u201c</span><span style=\"font-style:italic;font-weight:bold;font-family:''Times
+          New Roman'';color:#000000\">Factortame (No 8)</span><span style=\"font-weight:bold;font-family:''Times
+          New Roman'';color:#000000\">\u201d). But over the last 30 years there have
+          been substantial changes to litigation funding in England and Wales. Legislation
+          has been passed which has affected the courts\u2019 assessment of the extent
+          to which public policy supports the conclusion that particular funding arrangements
+          are unenforceable: see\u00a0</span><span style=\"font-style:italic;font-weight:bold;font-family:''Times
+          New Roman'';color:#000000\">Factortame (No 8).\u00a0</span><span style=\"font-weight:bold;font-family:''Times
+          New Roman'';color:#000000\">As Henderson LJ observed, funding of litigation
+          by third parties is now a substantial industry which, although driven by commercial
+          motives, is widely acknowledged to play a valuable role in furthering access
+          to justice. The old common law restrictions on the enforceability of third
+          party funding arrangements have been relaxed in various ways, with the result
+          that this industry has developed.\u201d</span></p>\n\t\t  </content>\n\t\t</level>\n\t      </embeddedStructure>\n            </block>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_39\">\n\t  <num style=\"font-size:12pt\">39.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">As
+          I will explain, whether or how the doctrines of maintenance or champerty apply
+          to the provision of litigation or advocacy services in-house, by a trade union
+          to a member, in the employment tribunal context, is not something that I have
+          to determine in order to decide this appeal. </span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_40\">\n\t  <num style=\"font-size:12pt\">40.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">I turn
+          to my conclusions.  As I have noted, there are two specific general grounds
+          of challenge before me. It is convenient, first, to consider the challenge
+          relating to the law of maintenance and champerty.  It is important to note
+          that it is plain that the union and Mr Neckles deny that there was or is,
+          factually, any arrangement with the claimant in this case that would fall
+          foul of the doctrine, if indeed it could apply in this context.  Mr Nuttman
+          confirmed to me that the respondent is not looking to the EAT to resolve that
+          factual issue, and indeed I would not be in a position to do so.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_41\">\n\t  <num style=\"font-size:12pt\">41.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">As
+          to whether the tribunal erred by not taking more steps than it did to investigate
+          the factual position and to consider whether it might fall foul of the law
+          of maintenance or champerty, my starting point is that an employment tribunal
+          generally cannot be criticised for not considering a possible issue which
+          is not, or not sufficiently, raised before it, unless it so obviously jumps
+          out from the material before the tribunal, that it is incumbent upon the tribunal
+          to look into it on its own initiative. </span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_42\">\n\t  <num style=\"font-size:12pt\">42.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">Mr
+          Nuttman forcibly submitted that this is a doctrine of public policy that exists
+          to provide protection to potentially vulnerable litigants and indeed to their
+          opponents, so that there is a proactive duty of enquiry.  But he nevertheless
+          accepted, as he was bound to do, that there has to be something sufficient
+          in the particular case, at least to put the tribunal on enquiry; or the matter
+          has to have been sufficiently raised by a party and, I would add, by advancing
+          some sufficient arguable basis or potential basis for doing so.  A tribunal
+          would not be obliged to investigate such a matter even if invited to do so
+          by a party, if they could not put forward any reasonable basis for having
+          done so.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph eId=\"para_43\">\n\t  <num
+          style=\"font-size:12pt\">43.</num>\n\t  <content>\n\t    <p class=\"ListParagraph\"
+          style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span style=\"font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">As I have said, I appreciate that
+          Ms Blythe did not consider, until Mr Neckles said what he did during the hearing,
+          that there might be a potential issue.  I accept that that also explains why
+          it was not raised in the respondent\u2019s own skeleton argument for the purposes
+          of the tribunal hearing.  But the fact remains that in these circumstances
+          Ms Blythe raised the matter only in the very limited way that she did, without
+          referring in terms to maintenance or champerty nor expounding upon them in
+          the manner that Mr Nuttman has today before me.  Nor did she refer to other
+          matters that she might seek to rely on, and in particular the significance
+          that she might seek to attach to the accounts in the union\u2019s 2020 annual
+          return, were she permitted to cross examine.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_44\">\n\t  <num style=\"font-size:12pt\">44.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">In
+          all the circumstances I do not think that the tribunal can be criticised for
+          not having sought further to investigate whether the union\u2019s agreement
+          with its member might be affected by the doctrine of maintenance or champerty,
+          and the associated questions of law as to whether or how it might apply to
+          litigation and representation in employment tribunals.  This is not the type
+          of matter which routinely arises before employment tribunals.  It more commonly
+          arises in personal injury, group litigation and other forms of civil litigation.  It
+          is a specialist area where the authorities and legislation are by no means
+          straightforward to navigate.  It is not part of tribunals\u2019 daily diet.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_45\">\n\t  <num style=\"font-size:12pt\">45.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">In
+          all the circumstances, I do not think that Mr Neckles\u2019 remark, and Ms
+          Blythe\u2019s brief reaction, and application, no doubt thinking on her feet,
+          were sufficient to put the tribunal on enquiry specifically as to this issue
+          relating to the doctrine of maintenance or champerty, such that it erred,
+          for </span><span style=\"font-style:italic;font-family:''Times New Roman'';font-size:12pt;color:#000000\">that
+          </span><span style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">reason,
+          by not doing more than it did, in response to what Mr Neckles said, and directing
+          the matter to proceed to trial. For this reason, I conclude that this ground
+          fails, and that the tribunal did not err in not considering, or by misapplying,
+          the common law rule against maintenance or champerty.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_46\">\n\t  <num style=\"font-size:12pt\">46.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">That
+          being so, I do not need to consider whether, in principle, the law of maintenance
+          and champerty applies in this context, or, if so, how.  It is not in the event
+          necessary for me to decide that in order to dispose of this appeal, and bearing
+          in mind the potentially wider ramifications and that I have not heard full
+          contested argument on the issue of law today I will refrain from doing so.
+          </span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph eId=\"para_47\">\n\t  <num
+          style=\"font-size:12pt\">47.</num>\n\t  <content>\n\t    <p class=\"ListParagraph\"
+          style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span style=\"font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">Mr Nuttman invited me, nevertheless,
+          to give some further guidance as to what set of factual circumstances ought
+          to be considered in future as sufficient to put an employment tribunal on
+          enquiry as to whether a party might be represented under an arrangement which
+          would infringe the rules against maintenance and champerty, assuming, as is
+          his case, that they apply in the same way in the employment tribunal context
+          as in other civil litigation. However, I decline to give such guidance in
+          the abstract, as the factual permutations that may arise are too many and
+          too varied, and I have not had to form a view as to the underlying legal question.
+          </span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph eId=\"para_48\">\n\t  <num
+          style=\"font-size:12pt\">48.</num>\n\t  <content>\n\t    <p class=\"ListParagraph\"
+          style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span style=\"font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">I turn to the second strand of
+          the live grounds of appeal, being that in all the circumstances of this case,
+          and regardless of whether the tribunal erred by not considering that there
+          was a potential issue to do with maintenance or champerty, the tribunal erred
+          by not requiring the union or Mr Neckles to produce some evidence of the blanket
+          authority which he claimed to have, rather than relying upon what it described
+          as paragraph 20 as his \u201cunequivocal confirmation that he has unconditional
+          authority to take all steps in the claim.\u201d</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_49\">\n\t  <num style=\"font-size:12pt\">49.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">As
+          to this, employment tribunals may sometimes be confronted with circumstances
+          or developments in the course of an ongoing case, which give cause for concern
+          as to whether a representative is acting with sufficient or proper authority
+          or instruction from the party concerned. Such concerns can arise in a very
+          wide variety and range of different scenarios, and how appropriately to manage
+          them where they do arise can be a particularly delicate and challenging matter.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_50\">\n\t  <num style=\"font-size:12pt\">50.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">Mr
+          Nuttman draws a principled distinction between assertions or submissions made
+          by a representative as to their authority, and the presentation of evidence,
+          whether written or oral.  However, the starting point is that there is a presumption
+          that tribunal representatives are generally acting with the authority and
+          on the instructions of the party concerned.  Tribunals do not routinely in
+          every case require evidence of written authority to be produced.  Parties
+          are also discouraged from communicating with the tribunal simultaneously with
+          their representatives, so as to ensure clear and consistent lines of communication.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_51\">\n\t  <num style=\"font-size:12pt\">51.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">However,
+          that does not mean that, where developments may be said to give rise to a
+          potential cause for concern as to whether a representative does have the authority
+          or instructions that they claim to have, the tribunal can or should do nothing,
+          though it may need to proceed with some care. For example, sometimes one party
+          may raise with the tribunal an issue about another party\u2019s representative,
+          or representation arrangements, which is not properly the concern of the tribunal.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_52\">\n\t  <num style=\"font-size:12pt\">52.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">In
+          this case, however, I agree with Mr Nuttman that there was a potential cause
+          for concern that the circumstances were, as the judge himself put it, highly
+          unusual. The claimant\u2019s own representative had informed the tribunal
+          that he had received no proactive contact from the claimant, who was overseas
+          when last heard from months ago, and all his efforts to contact the claimant
+          had failed.  Ordinarily litigation of this sort, whether as to ongoing case
+          management, or at the trial itself, cannot properly be conducted by a representative
+          unless they have a current line of communication with their client, whether
+          or not the client attends hearings. </span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_53\">\n\t  <num style=\"font-size:12pt\">53.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">EJ
+          Spencer was plainly right, in light of Mr Neckles\u2019 July 2021 letter,
+          to raise a serious concern as to whether the claimant was actively pursuing
+          his claim, serious enough to postpone the trial while further information
+          was sought.  That strong cause for concern was bound to have been reinforced
+          by the fact that Mr Neckles did not provide any response to her initial direction,
+          although it is not hard to understand why, rather than then proceeding, as
+          she might have, to make a strike out order, Judge Spencer decided to proceed
+          to list the matter to be considered at a preliminary hearing.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_54\">\n\t  <num style=\"font-size:12pt\">54.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\"> At
+          that hearing, for the first time Mr Neckles then asserted that he had informal
+          oral authority to continue to conduct the litigation on behalf of the claimant,
+          effectively as he saw fit.  On his own account, he had already to some extent
+          been doing so in the correspondence that had taken place between March and
+          June, as he had had no further contact with the claimant since February. Further,
+          there had, during that period, been a failure to comply with certain directions.  While
+          the tribunal in its decision on the strike-out application considered that
+          that non-compliance was not </span><span style=\"font-style:italic;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">in itself</span><span style=\"font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\"> so serious or pervasive as to
+          warrant a strike-out, in this case it was being relied upon also, for a different
+          purpose, being in support of the contention that the litigation could not
+          be, and was not being, fairly conducted, given Mr Neckles\u2019 lack of contact
+          with his client ever since February. </span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_55\">\n\t  <num style=\"font-size:12pt\">55.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">In
+          general, when a tribunal is presented with a situation in which there may
+          be some concern as to whether a representative has sufficient current instructions
+          or authority, it will be a matter for the judgement of the judge concerned
+          as to how to manage that concern. There are a range of tools available to
+          the judge confronted by such a situation, who considers that some further
+          steps need to be taken to investigate it. These might include requiring written
+          or other forms of evidence to support assertions that there is sufficient
+          authority or instructions, or could include, in certain circumstances, the
+          tribunal seeking to communicate directly with the party concerned as well
+          as with the representative. See, for example, albeit in a different context,
+          the recent observations of the Court of Appeal in </span><span style=\"font-weight:bold;text-decoration-line:underline;text-decoration-style:solid;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">Phipps v Primary Education Services
+          Ltd</span><span style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">
+          [2023] ICR 1043 at [43].</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_56\">\n\t  <num style=\"font-size:12pt\">56.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">I would
+          not therefore be disposed to say that in any and every case where such concerns
+          arise, it is not sufficient, and is an error, for the tribunal to accept some
+          assurance or statement made by a representative, in a letter or at a hearing,
+          without requiring independent written evidence or sworn witness evidence to
+          be provided in support.  The EAT should only generally interfere in such decisions
+          on usual irrationality or </span><span style=\"font-style:italic;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">Wednesbury</span><span style=\"font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\"> grounds, or where there has been
+          some principled error of law on the part of the tribunal.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_57\">\n\t  <num style=\"font-size:12pt\">57.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">However,
+          in the present case the circumstances were highly unusual and concerning.  It
+          could fairly be said that what Mr Neckles had written and then told the tribunal
+          gave rise to at least as many questions as it answered.  One way or another,
+          the matter needed to be explored further before the tribunal decided whether
+          to strike out at that stage or, if not, what further steps it might need to
+          take before permitting the case to proceed.  I have come to the conclusion
+          that in this particular case the judge did err by proceeding, simply on the
+          basis of the very limited statement that had been made by Mr Neckles at the
+          hearing, to take a decision to decline to strike out on that basis, and, having
+          decided not to do so, to direct that the matter proceed to be relisted for
+          a full merits hearing, without further ado.  That was not fair to the respondent,
+          and not an option reasonably open to the judge as a way of proceeding.  On
+          the very particular facts of this case, this ground of challenge therefore
+          succeeds. </span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph eId=\"para_58\">\n\t  <num
+          style=\"font-size:12pt\">58.</num>\n\t  <content>\n\t    <p class=\"ListParagraph\"
+          style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span style=\"font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\">As Mr Nuttman acknowledged during
+          the course of argument this morning, it also follows that this is not a case
+          in which I can say that the only correct decision with the tribunal could
+          have arrived at, at the point of the hearing on 6 October 2021, would have
+          been to strike out the claim.  What was required was further proactive steps
+          by the tribunal to investigate and satisfy itself as to the factual position
+          regarding authority and representation in respect of the claimant, and then
+          to consider the options in light of the picture emerging.  Those might have
+          included a decision to strike out on the basis that the claim was not actively
+          being pursued, or possibly, for example, a decision to stay the claim for
+          a further period to enable further steps to be taken, although the interests
+          of the respondent and of finality in litigation would of course need to be
+          kept firmly in mind when considering whether to direct a stay, and if so,
+          on what basis and for how long.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_59\">\n\t  <num style=\"font-size:12pt\">59.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">I will
+          therefore simply quash the particular decision of the tribunal to refuse to
+          strike out the claim, which is the subject of this appeal, but I will not
+          substitute a decision striking out.  The matter must return to the tribunal
+          where it will be a matter for the respondent, if so advised, to renew, or
+          advance a fresh application to strike out, whether on the basis of its case
+          in relation to maintenance/champerty, or otherwise.  Any such application
+          would need to be considered on the basis of all the circumstances as they
+          may now appear to the tribunal when it is considered.</span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_60\">\n\t  <num style=\"font-size:12pt\">60.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">As
+          I have also noted, in the Answer to this appeal, tabled in December 2022,
+          Mr Ibekwe wrote that the claimant had returned to the UK and was \u201cin
+          a position to oversee the giving of instructions and directions to PTSC\u201d;
+          and, as recently as 8 August 2023 Mr Neckles wrote that he had been informed
+          by the claimant that the claimant wished to seek ELAAS representation, and
+          he asked for what he referred to as the necessary application form \u201cso
+          that we can forward it to him for completion\u201d, indicating, on the face
+          of it, recent proactive communication with the claimant.  </span></p>\n\t  </content>\n\t</paragraph>\n\t<paragraph
+          eId=\"para_61\">\n\t  <num style=\"font-size:12pt\">61.</num>\n\t  <content>\n\t    <p
+          class=\"ListParagraph\" style=\"text-align:justify;margin-left:0in;text-indent:0.5in\"><span
+          style=\"font-family:''Times New Roman'';font-size:12pt;color:#000000\">Mr
+          Nuttman made plain to me that the respondent would not necessarily be disposed
+          to accept such assertions at face value.  But any such issues, if so advised,
+          should be raised with the employment tribunal, as should any application that
+          the respondent may wish to make for further directions or steps to be taken
+          by the tribunal in order to satisfy itself of the current position in that
+          regard. Any other matters of case management, whether raised by the claimant,
+          the respondent or the tribunal itself, will also be a matter for the tribunal
+          when the matter returns to it.</span></p>\n\t  </content>\n\t</paragraph>\n      </decision>\n    </judgmentBody>\n  </judgment>\n</akomaNtoso>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Thu, 16 Jul 2026 10:18:39 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Adeclare+variable+%24name+as+xs%3Astring+external%3B%0A%0Alet+%24prop+%3A%3D+fn%3AQName%28%22%22%2C+%24name%29%0A%0Areturn+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A&vars=%7B%22uri%22%3A+%22%2Feat%2F2023%2F123.xml%22%2C+%22name%22%3A+%22identifiers%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "element()", "X-URI": "/eat/2023/123.xml", "X-Path": "/prop:properties/identifiers"},
+          "body": "<identifiers xmlns:prop=\"http://marklogic.com/xdmp/property\"><identifier><namespace>ukncn</namespace><uuid>id-631a237a-aebc-4c04-b93e-29ead488d368</uuid><value>[2023]
+          EAT 123</value><deprecated>false</deprecated><url_slug>eat/2023/123</url_slug></identifier></identifiers>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Thu, 16 Jul 2026 10:18:39 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Adeclare+variable+%24name+as+xs%3Astring+external%3B%0A%0Alet+%24prop+%3A%3D+fn%3AQName%28%22%22%2C+%24name%29%0A%0Areturn+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%2Ftext%28%29%0A&vars=%7B%22uri%22%3A+%22%2Feat%2F2023%2F123.xml%22%2C+%22name%22%3A+%22transfer-consignment-reference%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "text()", "X-URI": "/eat/2023/123.xml", "X-Path": "/prop:properties/transfer-consignment-reference/text()"},
+          "body": "TDR-2025-36JW", "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Thu, 16 Jul 2026 10:18:40 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Adeclare+variable+%24name+as+xs%3Astring+external%3B%0A%0Alet+%24prop+%3A%3D+fn%3AQName%28%22%22%2C+%24name%29%0A%0Areturn+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%2Ftext%28%29%0A&vars=%7B%22uri%22%3A+%22%2Feat%2F2023%2F123.xml%22%2C+%22name%22%3A+%22source-name%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "text()", "X-URI": "/eat/2023/123.xml", "X-Path": "/prop:properties/source-name/text()"},
+          "body": "Anthony Hashemi", "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Thu, 16 Jul 2026 10:18:40 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Adeclare+variable+%24name+as+xs%3Astring+external%3B%0A%0Alet+%24prop+%3A%3D+fn%3AQName%28%22%22%2C+%24name%29%0A%0Areturn+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%2Ftext%28%29%0A&vars=%7B%22uri%22%3A+%22%2Feat%2F2023%2F123.xml%22%2C+%22name%22%3A+%22source-email%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "text()", "X-URI": "/eat/2023/123.xml", "X-Path": "/prop:properties/source-email/text()"},
+          "body": "anthony.hashemi@nationalarchives.gov.uk", "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Thu, 16 Jul 2026 10:18:40 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Afn%3Adoc-available%28%24uri%29%0A&vars=%7B%22uri%22%3A+%22%2Feat%2F2023%2F123%2Fpress-summary%2F1.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "boolean"}, "body": "false", "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Thu, 16 Jul 2026 10:18:40 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Adeclare+variable+%24name+as+xs%3Astring+external%3B%0A%0Alet+%24prop+%3A%3D+fn%3AQName%28%22%22%2C+%24name%29%0A%0Areturn+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%2Ftext%28%29%0A&vars=%7B%22uri%22%3A+%22%2Feat%2F2023%2F123.xml%22%2C+%22name%22%3A+%22published%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "text()", "X-URI": "/eat/2023/123.xml", "X-Path": "/prop:properties/published/text()"},
+          "body": "false", "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Thu, 16 Jul 2026 10:18:40 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Adeclare+variable+%24name+as+xs%3Astring+external%3B%0A%0Alet+%24prop+%3A%3D+fn%3AQName%28%22%22%2C+%24name%29%0A%0Areturn+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%2Ftext%28%29%0A&vars=%7B%22uri%22%3A+%22%2Feat%2F2023%2F123.xml%22%2C+%22name%22%3A+%22first_published_datetime%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "text()", "X-URI": "/eat/2023/123.xml", "X-Path": "/prop:properties/first_published_datetime/text()"},
+          "body": "1970-01-01T00:00:00Z", "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Thu, 16 Jul 2026 10:18:40 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Adeclare+variable+%24name+as+xs%3Astring+external%3B%0A%0Alet+%24prop+%3A%3D+fn%3AQName%28%22%22%2C+%24name%29%0A%0Areturn+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%2Ftext%28%29%0A&vars=%7B%22uri%22%3A+%22%2Feat%2F2023%2F123.xml%22%2C+%22name%22%3A+%22editor-hold%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string: ""
+      headers:
+        Connection:
+          - keep-alive
+        Content-Length:
+          - "0"
+        Date:
+          - Thu, 16 Jul 2026 10:18:41 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Adeclare+variable+%24name+as+xs%3Astring+external%3B%0A%0Alet+%24prop+%3A%3D+fn%3AQName%28%22%22%2C+%24name%29%0A%0Areturn+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%2Ftext%28%29%0A&vars=%7B%22uri%22%3A+%22%2Feat%2F2023%2F123.xml%22%2C+%22name%22%3A+%22assigned-to%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string: ""
+      headers:
+        Connection:
+          - keep-alive
+        Content-Length:
+          - "0"
+        Date:
+          - Thu, 16 Jul 2026 10:18:41 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0Aimport+module+namespace+dls+%3D+%22http%3A%2F%2Fmarklogic.com%2Fxdmp%2Fdls%22+at+%22%2FMarkLogic%2Fdls.xqy%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Adls%3Adocument-checkout-status%28%24uri%29&vars=%7B%22uri%22%3A+%22%2Feat%2F2023%2F123.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string: ""
+      headers:
+        Connection:
+          - keep-alive
+        Content-Length:
+          - "0"
+        Date:
+          - Thu, 16 Jul 2026 10:18:41 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+version: 1
