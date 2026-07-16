@@ -171,6 +171,15 @@ class DocumentView(DocumentViewMixin, TemplateView):
 
         courts = context["courts"]
         context["court_options"] = [(court.code, court.name) for court in courts]
+        identifiers_by_score = self.document.identifiers.by_score()
+
+        context["identifiers_by_score"] = identifiers_by_score
+        context["mapped_identifiers"] = [
+            {
+                "name": f"{identifier.schema.name} - {identifier.value}",
+            }
+            for identifier in identifiers_by_score
+        ]
 
         # TODO: Remove this once we fully deprecate 'judgment' contexts
         context["judgment"] = context["document"]
