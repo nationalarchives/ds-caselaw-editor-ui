@@ -50,7 +50,11 @@
       }
 
       .aside__footer {
-        display: none;
+        display: flex;
+
+        @media (min-width: $grid-breakpoint-medium) {
+          display: none;
+        }
       }
 
       .aside__content {
@@ -134,7 +138,7 @@
   }
 
   &__footer {
-    display: flex;
+    display: none;
     flex-direction: column;
     gap: $space-2;
 
@@ -148,6 +152,10 @@
       &[data-aside-edit-hide-button] {
         display: none;
       }
+    }
+
+    @media (min-width: $grid-breakpoint-medium) {
+      display: flex;
     }
   }
 
