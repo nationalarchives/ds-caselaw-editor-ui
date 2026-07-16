@@ -40,6 +40,8 @@ def test_judgment_upload(authenticated_page: Page):
     authenticated_page.goto(f"{JUDGMENT_URI}/upload")
     assert_matches_snapshot(authenticated_page, "judgment_upload_page")
 
+
+def test_unpublished_judgment_upload(authenticated_page: Page):
     authenticated_page.goto(f"{UNPUBLISHED_JUDGMENT_URI}/upload")
     assert_matches_snapshot(authenticated_page, "judgment_unpublished_upload_page")
 
