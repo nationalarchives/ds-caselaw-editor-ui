@@ -27,7 +27,6 @@
             {{ document_metadata_item(label="Court", name="court", value=metadata.court.value, choices=court_options) }}
             {{ document_metadata_item(label="Judgment date", name="metadata_date", value=metadata.date.value, date_format="%-d %b %Y") }}
             {{ document_metadata_item(label="Name", name="metadata_name", value=metadata.name.value) }}
-            {{ document_metadata_item(label="Identifiers", name="identifiers", value=None, editable=False) }}
           {% else %}
             <input type="hidden"
                    name="neutral_citation"
@@ -36,6 +35,7 @@
             <input type="hidden" name="judgment_date" value="{{ judgment_date }}" />
             <input type="hidden" name="metadata_name" value="{{ metadata.name.value }}" />
           {% endif %}
+          {{ document_metadata_item(label="Identifiers", name="identifiers", values=mapped_identifiers, editable=False) }}
           {{ document_metadata_item(label="TDR ref", name="consignment_reference", value=document.consignment_reference, editable=False) }}
           {{ document_metadata_item(label="Type", name="document_noun", value=document.document_noun, editable=False) }}
           {{ document_metadata_item(label="First pub", name="first_published_datetime_display", value=document.first_published_datetime_display, date_format="%-d %b %Y", editable=False) }}
