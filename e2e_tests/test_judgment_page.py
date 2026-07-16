@@ -3,6 +3,7 @@ from playwright.sync_api import Page
 from .utils.assertions import assert_matches_snapshot
 
 JUDGMENT_URI = "/eat/2023/1"
+UNPUBLISHED_JUDGMENT_URI = "/eat/2023/123"
 
 
 def test_judgment_review(authenticated_page: Page):
@@ -38,6 +39,9 @@ def test_judgment_downloads(authenticated_page: Page):
 def test_judgment_upload(authenticated_page: Page):
     authenticated_page.goto(f"{JUDGMENT_URI}/upload")
     assert_matches_snapshot(authenticated_page, "judgment_upload_page")
+
+    authenticated_page.goto(f"{UNPUBLISHED_JUDGMENT_URI}/upload")
+    assert_matches_snapshot(authenticated_page, "judgment_unpublished_upload_page")
 
 
 def test_judgment_hold(authenticated_page: Page):
