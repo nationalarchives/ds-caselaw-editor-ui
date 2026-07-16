@@ -7,52 +7,56 @@
   {% set metadata = document.metadata if document.metadata is defined else {} %}
   <form aria-label="Edit judgment"
         method="post"
-        action="{{ url('edit-document', judgment.uri) }}">
+        class="aside__container"
+        data-aside-toggle
+        data-aside-edit
+        action="{{ url('edit-document', document.uri) }}">
     {{ csrf_input }}
     <input type="hidden" name="return_to" value="html" />
     <input type="hidden" name="judgment_uri" value="{{ document_uri }}" />
-    <div class="aside__container" data-aside-toggle data-aside-edit>
-      <button class="aside__toggle" data-aside-toggle-button type="button">
-        <span class="icon icon__chevron-left"></span>
+    <button class="aside__toggle" data-aside-toggle-button type="button">
+      <span class="icon icon__chevron-left"></span>
+      <span>Metadata</span>
+    </button>
+    <div class="aside__content">
+      <div class="aside__title">
         <span>Metadata</span>
-      </button>
-      <div class="aside__content">
-        <div class="aside__title">
-          <span>Metadata</span>
-          {{ button(variant="link", size="small", content="Hide", attrs={"data-aside-toggle-button":"", "type": "button"}) }}
-        </div>
-        <dl>
-          {% if full_details %}
-            {{ document_metadata_item(label="NCN", name="neutral_citation", value=preferred_ncn.value) }}
-            {{ document_metadata_item(label="Court", name="court", value=metadata.court.value, choices=court_options) }}
-            {{ document_metadata_item(label="Judgment date", name="metadata_date", value=metadata.date.value, date_format="%-d %b %Y") }}
-            {{ document_metadata_item(label="Name", name="metadata_name", value=metadata.name.value) }}
-          {% else %}
-            <input type="hidden"
-                   name="neutral_citation"
-                   value="{{ preferred_ncn.value }}" />
-            <input type="hidden" name="court" value="{{ court }}" />
-            <input type="hidden" name="judgment_date" value="{{ judgment_date }}" />
-            <input type="hidden" name="metadata_name" value="{{ metadata.name.value }}" />
-          {% endif %}
-          {{ document_metadata_item(label="Identifiers", name="identifiers", values=mapped_identifiers, editable=False) }}
-          {{ document_metadata_item(label="TDR ref", name="consignment_reference", value=document.consignment_reference, editable=False) }}
-          {{ document_metadata_item(label="Type", name="document_noun", value=document.document_noun, editable=False) }}
-          {{ document_metadata_item(label="First pub", name="first_published_datetime_display", value=document.first_published_datetime_display, date_format="%-d %b %Y", editable=False) }}
-          {{ document_metadata_item(label="Jurisdiction", name="metadata[jurisdiction]", value=metadata.jurisdiction.value) }}
-          {{ document_metadata_item(label="Case number", name="metadata[case_number]", value=metadata.case_number.value) }}
-          {{ document_metadata_item(label="Source name", name="source_name", value=document.source_name) }}
-          {{ document_metadata_item(label="Source email", name="source_email", value=document.source_email) }}
-          {{ document_metadata_item(label="Judges", name="metadata[judges]", value=None, editable=False) }}
-          {{ document_metadata_item(label="Categories", name="metadata[categories]", values=metadata.categories.values) }}
-          {{ document_metadata_item(label="Parties", name="metadata[parties]", value=None, editable=False) }}
-        </dl>
+        {{ button(variant="link", size="small", content="Hide", attrs={"data-aside-toggle-button":"", "type": "button"}) }}
       </div>
+      <dl>
+        {% if full_details %}
+          {{ document_metadata_item(label="NCN", name="neutral_citation", value=preferred_ncn.value) }}
+          {{ document_metadata_item(label="Court", name="court", value=metadata.court.value, choices=court_options) }}
+          {{ document_metadata_item(label="Judgment date", name="metadata_date", value=metadata.date.value, date_format="%-d %b %Y") }}
+          {{ document_metadata_item(label="Name", name="metadata_name", value=metadata.name.value) }}
+        {% else %}
+          <input type="hidden"
+                 name="neutral_citation"
+                 value="{{ preferred_ncn.value }}" />
+          <input type="hidden" name="court" value="{{ court }}" />
+          <input type="hidden" name="judgment_date" value="{{ judgment_date }}" />
+          <input type="hidden" name="metadata_name" value="{{ metadata.name.value }}" />
+        {% endif %}
+        {{ document_metadata_item(label="Identifiers", name="identifiers", values=mapped_identifiers, editable=False) }}
+        {{ document_metadata_item(label="TDR ref", name="consignment_reference", value=document.consignment_reference, editable=False) }}
+        {{ document_metadata_item(label="Type", name="document_noun", value=document.document_noun, editable=False) }}
+        {{ document_metadata_item(label="First pub", name="first_published_datetime_display", value=document.first_published_datetime_display, date_format="%-d %b %Y", editable=False) }}
+        {{ document_metadata_item(label="Jurisdiction", name="metadata[jurisdiction]", value=metadata.jurisdiction.value, editable=False) }}
+        {{ document_metadata_item(label="Case number", name="metadata[case_number]", value=metadata.case_number.value, editable=False) }}
+        {{ document_metadata_item(label="Source name", name="source_name", value=document.source_name, editable=False) }}
+        {{ document_metadata_item(label="Source email", name="source_email", value=document.source_email, editable=False) }}
+        {{ document_metadata_item(label="Judges", name="metadata[judges]", value=None, editable=False) }}
+        {{ document_metadata_item(label="Categories", name="metadata[categories]", values=metadata.categories.values, editable=False) }}
+        {{ document_metadata_item(label="Parties", name="metadata[parties]", value=None, editable=False) }}
+      </dl>
+    </div>
+    {# TODO: remove this when we can edit metadata #}
+    {% if full_details %}
       <div class="aside__footer" data-aside-footer>
         {{ button(variant="primary", content="Edit metadata", attrs={"data-aside-edit-show-button":"", "type":"button"}) }}
         {{ button(variant="primary", content="Save changes", attrs={"data-aside-edit-submit-button":"", "type":"submit"}) }}
         {{ button(variant="secondary", content="Discard", attrs={"data-aside-edit-hide-button":"", "type":"button"}) }}
       </div>
-    </div>
+    {% endif %}
   </form>
 {% endmacro %}
