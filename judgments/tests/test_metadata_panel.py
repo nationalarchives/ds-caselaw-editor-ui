@@ -44,7 +44,7 @@ class TestMetadataPanel(TestCase):
 
     def test_metadata_item_renders_scalar_value(self):
         template = environment(loader=PackageLoader("ds_caselaw_editor_ui", "templates")).from_string(
-            '{% from "components/document_metadata_item.jinja" import document_metadata_item %}{{ document_metadata_item(metadata_item=metadata_item) }}',
+            '{% from "components/document_metadata_item.jinja" import document_metadata_item %}{{ document_metadata_item(value=metadata_item.value) }}',
         )
 
         rendered = template.render(metadata_item=SimpleNamespace(value="Court of Testing"))
@@ -54,10 +54,10 @@ class TestMetadataPanel(TestCase):
 
     def test_metadata_item_renders_multi_value_badges(self):
         template = environment(loader=PackageLoader("ds_caselaw_editor_ui", "templates")).from_string(
-            '{% from "components/document_metadata_item.jinja" import document_metadata_item %}{{ document_metadata_item(metadata_item=metadata_item) }}',
+            '{% from "components/document_metadata_item.jinja" import document_metadata_item %}{{ document_metadata_item(values=metadata_item.values) }}',
         )
 
-        rendered = template.render(metadata_item=SimpleNamespace(values=["Tax", "Employment"]))
+        rendered = template.render(metadata_item=SimpleNamespace(values=[{"name": "Tax"}, {"name": "Employment"}]))
 
         assert '<div class="badge badge--info ">Tax</div>' in rendered
         assert '<div class="badge badge--info ">Employment</div>' in rendered
