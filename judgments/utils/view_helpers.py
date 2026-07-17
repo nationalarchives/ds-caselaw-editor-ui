@@ -181,6 +181,18 @@ class DocumentView(DocumentViewMixin, TemplateView):
             for identifier in identifiers_by_score
         ]
 
+        if context["document"].has_ever_been_published:
+            if context["document"].first_published_datetime_display:
+                first_published_datetime_display = context["document"].first_published_datetime_display.strftime(
+                    "%-d %b %Y %H:%M",
+                )
+            else:
+                first_published_datetime_display = "Unknown"
+        else:
+            first_published_datetime_display = None
+
+        context["first_published_datetime_display"] = first_published_datetime_display
+
         # TODO: Remove this once we fully deprecate 'judgment' contexts
         context["judgment"] = context["document"]
 
