@@ -14,7 +14,7 @@ class DocumentReviewHTMLView(DocumentView):
         if self.document.failed_to_parse:
             return super().dispatch(request, args, kwargs)
 
-        if not self.document.content_as_html():
+        if not self.document.content_as_html() and not request.GET.get("no-redirect", False):
             redirect_path = reverse("full-text-pdf", kwargs={"document_uri": self.document.uri})
             return HttpResponseRedirect(redirect_path)
 
@@ -33,7 +33,7 @@ class DocumentReviewPDFView(DocumentView):
     template_name = "judgment/full_text_pdf.jinja"
 
     def dispatch(self, request, *args, **kwargs):
-        if not self.document.pdf_url:
+        if not self.document.pdf_url and not request.GET.get("no-redirect", False):
             redirect_path = reverse("full-text-html", kwargs={"document_uri": self.document.uri})
             return HttpResponseRedirect(redirect_path)
 
