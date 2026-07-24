@@ -1,120 +1,62 @@
 {% from "components/icon.jinja" import icon %}
 {% from "components/button.jinja" import button %}
 {% from "components/document_metadata_item.jinja" import document_metadata_item %}
+{% from "components/text_input.jinja" import text_input %}
+{% from "components/select_input.jinja" import select_input %}
 {% macro document_metadata(document=None, preferred_ncn=None, full_details=True) %}
   {% set metadata = document.metadata if document.metadata is defined else {} %}
-  <div class="aside__container" data-aside-toggle>
-    <button class="aside__toggle" data-aside-toggle-button>
+  <form aria-label="Edit judgment"
+        method="post"
+        class="aside__container"
+        data-aside-toggle
+        data-aside-edit
+        action="{{ url('edit-document', document.uri) }}">
+    {{ csrf_input }}
+    <input type="hidden" name="return_to" value="html" />
+    <input type="hidden" name="judgment_uri" value="{{ document_uri }}" />
+    <button class="aside__toggle" data-aside-toggle-button type="button">
       <span class="icon icon__chevron-left"></span>
       <span>Metadata</span>
     </button>
     <div class="aside__content">
       <div class="aside__title">
         <span>Metadata</span>
-        {{ button(variant="link", size="small", content="Hide", attrs={"data-aside-toggle-button":""}) }}
+        {{ button(variant="link", size="small", content="Hide", attrs={"data-aside-toggle-button":"", "type": "button"}) }}
       </div>
       <dl>
         {% if full_details %}
-          <div>
-            <dt>NCN</dt>
-            <dd>
-              {{ preferred_ncn.value|or_no_data_available_label }}
-            </dd>
-          </div>
-          <div>
-            <dt>Court</dt>
-            <dd>
-              {{ document_metadata_item(metadata_item=metadata.court) }}
-            </dd>
-          </div>
-          <div>
-            <dt>Judgment date</dt>
-            <dd>
-              {{ document_metadata_item(metadata_item=metadata.date, date_format="%-d %b %Y") }}
-            </dd>
-          </div>
-          <div>
-            <dt>Name</dt>
-            <dd>
-              {{ document_metadata_item(metadata_item=metadata.name) }}
-            </dd>
-          </div>
-          <div>
-            <dt>Identifiers</dt>
-            <dd>
-              {{ None|or_no_data_available_label }}
-            </dd>
-          </div>
+          {{ document_metadata_item(label="NCN", name="neutral_citation", value=preferred_ncn.value) }}
+          {{ document_metadata_item(label="Court", name="court", value=metadata.court.value, choices=court_options) }}
+          {{ document_metadata_item(label="Judgment date", name="metadata_date", value=metadata.date.value, date_format="%-d %b %Y") }}
+          {{ document_metadata_item(label="Name", name="metadata_name", value=metadata.name.value) }}
+        {% else %}
+          <input type="hidden"
+                 name="neutral_citation"
+                 value="{{ preferred_ncn.value }}" />
+          <input type="hidden" name="court" value="{{ court }}" />
+          <input type="hidden" name="judgment_date" value="{{ judgment_date }}" />
+          <input type="hidden" name="metadata_name" value="{{ metadata.name.value }}" />
         {% endif %}
-        <div>
-          <dt>TDR ref</dt>
-          <dd>
-            {{ document.consignment_reference|or_no_data_available_label }}
-          </dd>
-        </div>
-        <div>
-          <dt>Type</dt>
-          <dd>
-            {{ document.document_noun|title }}
-          </dd>
-        </div>
-        <div>
-          <dt>First pub</dt>
-          <dd>
-            {% if document.has_ever_been_published %}
-              {% if document.first_published_datetime_display %}
-                {{ document.first_published_datetime_display | date("%-d %b %Y %H:%M") }}
-              {% else %}
-                Unknown
-              {% endif %}
-            {% else %}
-              {{ None|or_no_data_available_label }}
-            {% endif %}
-          </dd>
-        </div>
-        <div>
-          <dt>Jurisdiction</dt>
-          <dd>
-            {{ document_metadata_item(metadata_item=metadata.jurisdiction) }}
-          </dd>
-        </div>
-        <div>
-          <dt>Case number</dt>
-          <dd>
-            {{ document_metadata_item(metadata_item=metadata.case_number) }}
-          </dd>
-        </div>
-        <div>
-          <dt>Source name</dt>
-          <dd>
-            {{ document.source_name|or_no_data_available_label }}
-          </dd>
-        </div>
-        <div>
-          <dt>Source email</dt>
-          <dd>
-            {{ document.source_email|or_no_data_available_label }}
-          </dd>
-        </div>
-        <div>
-          <dt>Judges</dt>
-          <dd>
-            {{ None|or_no_data_available_label }}
-          </dd>
-        </div>
-        <div>
-          <dt>Categories</dt>
-          <dd>
-            {{ document_metadata_item(metadata_item=metadata.categories) }}
-          </dd>
-        </div>
-        <div>
-          <dt>Parties</dt>
-          <dd>
-            {{ None|or_no_data_available_label }}
-          </dd>
-        </div>
+        {{ document_metadata_item(label="Identifiers", name="identifiers", values=mapped_identifiers, editable=False) }}
+        {{ document_metadata_item(label="TDR ref", name="consignment_reference", value=document.consignment_reference, editable=False) }}
+        {{ document_metadata_item(label="Type", name="document_noun", value=document.document_noun, editable=False) }}
+        {{ document_metadata_item(label="First pub", name="first_published_datetime_display", value=first_published_datetime_display, editable=False) }}
+        {{ document_metadata_item(label="Jurisdiction", name="metadata[jurisdiction]", value=metadata.jurisdiction.value, editable=False) }}
+        {{ document_metadata_item(label="Case number", name="metadata[case_number]", value=metadata.case_number.value, editable=False) }}
+        {{ document_metadata_item(label="Source name", name="source_name", value=document.source_name, editable=False) }}
+        {{ document_metadata_item(label="Source email", name="source_email", value=document.source_email, editable=False) }}
+        {{ document_metadata_item(label="Judges", name="metadata[judges]", value=None, editable=False) }}
+        {{ document_metadata_item(label="Categories", name="metadata[categories]", values=metadata.categories.values, editable=False) }}
+        {{ document_metadata_item(label="Parties", name="metadata[parties]", value=None, editable=False) }}
       </dl>
     </div>
-  </div>
+    {# TODO: remove this when we can edit metadata #}
+    {% if full_details %}
+      <div class="aside__footer" data-aside-footer>
+        {{ button(variant="primary", content="Edit metadata", attrs={"data-aside-edit-show-button":"", "type":"button"}) }}
+        {{ button(variant="primary", content="Save changes", attrs={"data-aside-edit-submit-button":"", "type":"submit"}) }}
+        {{ button(variant="secondary", content="Discard", attrs={"data-aside-edit-hide-button":"", "type":"button"}) }}
+      </div>
+    {% endif %}
+  </form>
 {% endmacro %}

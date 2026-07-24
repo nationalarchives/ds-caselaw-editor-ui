@@ -34,8 +34,6 @@ class DocumentIdentifiersView(DocumentView):
             context["preferred_identifier_name"] = None
             context["preferred_identifier_value"] = None
 
-        context["identifiers_by_score"] = self.document.identifiers.by_score()
-
         return context
 
 
