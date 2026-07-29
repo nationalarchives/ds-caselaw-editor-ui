@@ -4,7 +4,7 @@ from judgments.views.associated_documents import AssociatedDocumentsView
 from judgments.views.delete import DeleteDocumentView, delete
 from judgments.views.enrich import enrich
 
-from .views import reports
+from .views import reports, tools
 from .views.components import ComponentsView
 from .views.document_downloads import DocumentDownloadsView
 from .views.document_full_text import (
@@ -102,6 +102,13 @@ urlpatterns = [
         "reports/locked-documents",
         reports.LockedDocuments.as_view(),
         name="report_locked_documents",
+    ),
+    # Tools (Developers group only)
+    path("tools", tools.ToolsIndex.as_view(), name="tools"),
+    path(
+        "tools/missing-fclid",
+        tools.MissingFclid.as_view(),
+        name="tools_missing_fclid",
     ),
     # Different views on judgments
     path("<path:document_uri>/associated-documents", AssociatedDocumentsView.as_view(), name="associated-documents"),

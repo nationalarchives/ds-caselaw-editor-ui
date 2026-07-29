@@ -1,0 +1,31 @@
+{% extends "layouts/base.jinja" %}
+{% block content %}
+  <div class="standard-text-template">
+    <h1>Published documents missing FCLID</h1>
+    <p>Published documents which do not have a Find Case Law Identifier (FCLID).</p>
+    {% if results_capped %}
+      <p>
+        Showing the first <b>{{ document_count }}</b> results (capped at {{ report_limit }}).
+        There may be more documents missing an FCLID.
+      </p>
+    {% else %}
+      <p>
+        Found <b>{{ document_count }}</b> documents missing an FCLID.
+      </p>
+    {% endif %}
+    <div class="table">
+      <table>
+        <tr>
+          <th>Document</th>
+        </tr>
+        {% for document in documents %}
+          <tr>
+            <td>
+              <a href="{{ url('full-text-html', document.document_uri) }}">{{ document.document_uri }}</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+{% endblock content %}
