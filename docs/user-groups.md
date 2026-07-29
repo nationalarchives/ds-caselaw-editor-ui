@@ -15,3 +15,8 @@ There are a number of differences in the UI depending on the user's groups:
 
 - See event number, Submission sequence number and Marklogic version
 - See the calling agent
+
+### Developers can access Tools
+
+- View the Tools hub
+- Inspect published documents missing an FCLID
