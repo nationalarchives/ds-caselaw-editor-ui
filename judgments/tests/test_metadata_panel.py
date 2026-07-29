@@ -62,6 +62,15 @@ class TestMetadataPanel(TestCase):
         assert '<div class="badge badge--info ">Tax</div>' in rendered
         assert '<div class="badge badge--info ">Employment</div>' in rendered
 
+    def test_metadata_item_handles_missing_value(self):
+        template = environment(loader=PackageLoader("ds_caselaw_editor_ui", "templates")).from_string(
+            '{% from "components/document_metadata_item.jinja" import document_metadata_item %}{{ document_metadata_item(metadata_item=metadata.jurisdiction) }}',
+        )
+
+        rendered = template.render(metadata={})
+
+        assert "No data available" in rendered
+
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")

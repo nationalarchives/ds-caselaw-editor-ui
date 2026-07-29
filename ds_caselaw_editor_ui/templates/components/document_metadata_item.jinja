@@ -1,20 +1,24 @@
 {% from "components/badge.jinja" import badge %}
 {% macro document_metadata_item(metadata_item, date_format=None) %}
-  {% set values = metadata_item.values if metadata_item.values is defined else none %}
-  {% set value = metadata_item.value if metadata_item.value is defined else none %}
-  {% if values is not none %}
-    {% if values %}
-      {% for value in values %}
-        {{ badge(content=value) }}
-      {% endfor %}
-    {% else %}
-      {{ None|or_no_data_available_label }}
-    {% endif %}
+  {% if metadata_item is not defined or metadata_item is none %}
+    {{ None|or_no_data_available_label }}
   {% else %}
-    {% if date_format and value %}
-      {{ value | date(date_format) }}
+    {% set values = metadata_item.values if metadata_item.values is defined else none %}
+    {% set value = metadata_item.value if metadata_item.value is defined else none %}
+    {% if values is not none %}
+      {% if values %}
+        {% for value in values %}
+          {{ badge(content=value) }}
+        {% endfor %}
+      {% else %}
+        {{ None|or_no_data_available_label }}
+      {% endif %}
     {% else %}
-      {{ value|or_no_data_available_label }}
+      {% if date_format and value %}
+        {{ value | date(date_format) }}
+      {% else %}
+        {{ value|or_no_data_available_label }}
+      {% endif %}
     {% endif %}
   {% endif %}
 {% endmacro %}
