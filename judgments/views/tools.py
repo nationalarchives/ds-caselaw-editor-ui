@@ -1,5 +1,6 @@
 from caselawclient.types import MarkLogicDocumentURIString
-from django.core.exceptions import PermissionDenied
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.http import HttpRequest
 from django.views.generic import TemplateView
 
 from judgments.utils import api_client
@@ -8,12 +9,12 @@ from judgments.utils.view_helpers import user_is_developer
 MISSING_FCLID_REPORT_LIMIT = 200
 
 
-class DeveloperRequiredMixin:
-    def dispatch(self, request, *args, **kwargs):
-        if not user_is_developer(request.user):
-            msg = "Only developers can access tools"
-            raise PermissionDenied(msg)
-        return super().dispatch(request, *args, **kwargs)
+class DeveloperRequiredMixin(UserPassesTestMixin):
+    raise_exception = True
+    request: HttpRequest
+
+    def test_func(self) -> bool:
+        return bool(user_is_developer(self.request.user))
 
 
 class ToolsIndex(DeveloperRequiredMixin, TemplateView):
