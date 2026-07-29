@@ -26,27 +26,41 @@
       <dl>
         {% if full_details %}
           {{ document_metadata_item(label="NCN", name="neutral_citation", value=preferred_ncn.value) }}
-          {{ document_metadata_item(label="Court", name="court", value=metadata.court.value, choices=court_options) }}
-          {{ document_metadata_item(label="Judgment date", name="metadata_date", value=metadata.date.value, date_format="%-d %b %Y") }}
-          {{ document_metadata_item(label="Name", name="metadata_name", value=metadata.name.value) }}
+          {{ document_metadata_item(label="Court", name="court", value=metadata.court.value, choices=court_options, editable=metadata.court.editable) }}
+          {{ document_metadata_item(label="Judgment date", name="metadata_date", value=metadata.date.value, date_format="%-d %b %Y", editable=metadata.date.editable) }}
+          {{ document_metadata_item(label="Name", name="metadata_name", value=metadata.title.value, editable=metadata.title.editable) }}
         {% else %}
           <input type="hidden"
                  name="neutral_citation"
                  value="{{ preferred_ncn.value }}" />
-          <input type="hidden" name="court" value="{{ court }}" />
-          <input type="hidden" name="judgment_date" value="{{ judgment_date }}" />
+          <input type="hidden" name="court" value="{{ metadata.court.value }}" />
+          <input type="hidden" name="judgment_date" value="{{ metadata.date.value }}" />
           <input type="hidden" name="metadata_name" value="{{ metadata.name.value }}" />
         {% endif %}
+
+        {# NOTE: There is a separate page to edit the identifiers #}
         {{ document_metadata_item(label="Identifiers", name="identifiers", values=mapped_identifiers, editable=False) }}
+        {# NOTE: Consignment reference is not an editable field #}
         {{ document_metadata_item(label="TDR ref", name="consignment_reference", value=document.consignment_reference, editable=False) }}
+
+        {# NOTE: Document noun is not an editable field #}
         {{ document_metadata_item(label="Type", name="document_noun", value=document.document_noun, editable=False) }}
+
+        {# NOTE: First published date is not an editable field #}
         {{ document_metadata_item(label="First pub", name="first_published_datetime_display", value=first_published_datetime_display, editable=False) }}
-        {{ document_metadata_item(label="Jurisdiction", name="metadata[jurisdiction]", value=metadata.jurisdiction.value, editable=False) }}
-        {{ document_metadata_item(label="Case number", name="metadata[case_number]", value=metadata.case_number.value, editable=False) }}
+        {{ document_metadata_item(label="Jurisdiction", name="metadata[jurisdiction]", value=metadata.jurisdiction.value, editable=metadata.jurisdiction.editable) }}
+        {{ document_metadata_item(label="Case number", name="metadata[case_number]", value=metadata.case_number.value, editable=metadata.case_number.editable) }}
+        {# TODO: Update this once we add source name as an option to metadata #}
         {{ document_metadata_item(label="Source name", name="source_name", value=document.source_name, editable=False) }}
+        {# TODO: Update this once we add source email as an option to metadata #}
         {{ document_metadata_item(label="Source email", name="source_email", value=document.source_email, editable=False) }}
+
+        {# TODO: Update this once we add judges as an option to metadata #}
         {{ document_metadata_item(label="Judges", name="metadata[judges]", value=None, editable=False) }}
-        {{ document_metadata_item(label="Categories", name="metadata[categories]", values=metadata.categories.values, editable=False) }}
+
+        {{ document_metadata_item(label="Categories", name="metadata[categories]", values=metadata.categories.values, editable=metadata.categories.editable) }}
+
+        {# TODO: Update this once we add parties as an option to metadata #}
         {{ document_metadata_item(label="Parties", name="metadata[parties]", value=None, editable=False) }}
       </dl>
     </div>
