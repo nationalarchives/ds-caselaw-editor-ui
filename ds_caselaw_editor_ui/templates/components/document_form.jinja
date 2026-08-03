@@ -1,33 +1,101 @@
 {% from "components/metadata.jinja" import metadata_container, metadata_body, metadata_body_row, metadata_aside %}
 {% from "components/panel.jinja" import panel %}
-{% from "components/text_input.jinja" import text_input %}
-{% from "components/textarea.jinja" import textarea %}
-{% from "components/datalist_input.jinja" import datalist_input %}
-{% from "components/field_display.jinja" import field_display %}
 {% from "components/button.jinja" import button %}
+{% macro form_errors(errors) %}
+  {% if errors %}
+    <ul class="govuk-error-summary__list">
+      {% for error in errors %}<li>{{ error }}</li>{% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}
+{% macro identifier_formset_row(identifier_form) %}
+  <div class="formset__form"
+       data-formset-form
+       data-formset-existing="{%- if identifier_form.is_existing_identifier -%}true{%- else -%}false{%- endif -%}"
+       hidden>
+    {{ identifier_form.uuid }}
+    {% if identifier_form.is_existing_identifier %}
+      {{ identifier_form.type }}
+      <div class="govuk-form-group"
+           data-formset-type-label="{{ identifier_form.type_label }}">
+        <label class="govuk-label">Type</label>
+        <p>{{ identifier_form.type_label }}</p>
+      </div>
+    {% else %}
+      <div class="govuk-form-group">
+        {{ identifier_form.type.label_tag(attrs={"class":"govuk-label"}) }}
+        {{ form_errors(identifier_form.type.errors) }}
+        {{ identifier_form.type }}
+      </div>
+    {% endif %}
+    <div class="govuk-form-group">
+      {{ identifier_form.value.label_tag(attrs={"class":"govuk-label"}) }}
+      {{ form_errors(identifier_form.value.errors) }}
+      {{ identifier_form.value }}
+    </div>
+    <div class="govuk-form-group">
+      {{ identifier_form.deprecated.label_tag(attrs={"class":"govuk-label"}) }}
+      {{ form_errors(identifier_form.deprecated.errors) }}
+      {{ identifier_form.deprecated }}
+    </div>
+    {% if identifier_form.is_existing_identifier %}
+      <div class="govuk-form-group formset__delete-control">
+        {{ identifier_form.DELETE.label_tag() }}
+        {{ identifier_form.DELETE }}
+      </div>
+    {% endif %}
+    <div>
+      {% call button(size="small", attrs={"type": "button", "data-formset-apply": ""}) %}
+        Apply changes
+      {% endcall %}
+      {% if not identifier_form.is_existing_identifier %}
+        {% call button(variant="secondary", size="small", attrs={"type": "button", "data-formset-remove": ""}) %}
+          Remove
+        {% endcall %}
+      {% endif %}
+    </div>
+    {{ form_errors(identifier_form.non_field_errors() ) }}
+  </div>
+{% endmacro %}
+{% macro identifier_formset_rows(identifier_formset) %}
+  <div class="formset govuk-form-group" data-formset-prefix="identifiers">
+    {{ identifier_formset.management_form }}
+    {{ form_errors(identifier_formset.non_form_errors() ) }}
+    <template data-formset-empty-form>
+      {{ identifier_formset_row(identifier_formset.empty_form) }}
+    </template>
+    <div class="metadata-component__body-row">
+      <h2 class="govuk-heading-m">Identifiers</h2>
+    </div>
+    <div class="formset__tags-container">
+      <div class="formset__tags" data-formset-tags></div>
+      {% call button(variant="secondary", size="small", attrs={"type": "button", "data-formset-add": ""}) %}
+        +
+      {% endcall %}
+    </div>
+    <div data-formset-forms>
+      {% for identifier_form in identifier_formset.forms %}
+        {{ identifier_formset_row(identifier_form) }}
+      {% endfor %}
+    </div>
+  </div>
+{% endmacro %}
 {% macro document_form() %}
   {% call panel() %}
     <form aria-label="Edit judgment"
           method="post"
           action="{{ url('edit-document', judgment.uri) }}">
       {{ csrf_input }}
-      <input type="hidden" name="return_to" value="html" />
+      <input type="hidden"
+             name="return_to"
+             value="{%- if view == 'judgment_pdf' -%}pdf{%- else -%}html{%- endif -%}" />
       <input type="hidden" name="judgment_uri" value="{{ document_uri }}" />
       {% call metadata_container() %}
         {% call metadata_body() %}
           {% call metadata_body_row() %}
-            {{ text_input({"label": "NCN", "id_for_label": "neutral_citation", "html_name": "neutral_citation", "value": preferred_ncn.value, "width": "one-third", "margin": "small"}) }}
-            {% set court_options = [] %}
-            {% for court in courts %}
-              {% set _ = court_options.append((court.code, court.name)) %}
-            {% endfor %}
-            {{ datalist_input({"label": "Court", "id_for_label": "court", "html_name": "court", "choices": court_options, "value": document.body.court_and_jurisdiction_identifier_string, "width": "one-half", "margin": "small" }) }}
-            {% set document_date_value = document.body.document_date_as_date | date("%-d %b %Y") %}
-            {{ text_input({"label": "Judgment date", "value": document_date_value, "id_for_label": "judgment_date", "html_name": "judgment_date", "width": "one-third", "margin": "small"}) }}
+            {{ crispy(document_edit_form, request) | safe }}
           {% endcall %}
-          {% call metadata_body_row() %}
-            {{ textarea({"label": "Name", "id_for_label": "metadata_name", "html_name": "metadata_name", "value": document.body.name, "rows": 2, "width": "full", "margin": "small"}) }}
-          {% endcall %}
+          {{ identifier_formset_rows(identifier_formset) }}
           {% call metadata_body_row() %}
             {% call button() %}
               Save

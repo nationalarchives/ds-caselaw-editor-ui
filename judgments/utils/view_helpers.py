@@ -10,6 +10,7 @@ from caselawclient.search_parameters import SearchParameters
 from django.http import Http404
 from django.views.generic import TemplateView
 
+from judgments.forms.document_edit import build_document_edit_forms
 from judgments.templatetags.document_utils import display_datetime
 from judgments.utils import api_client, editors_dict, extract_version_number_from_filename, get_linked_document_uri
 from judgments.utils.link_generators import build_jira_create_link
@@ -151,6 +152,7 @@ class DocumentViewMixin(TemplateView):
         context["document_type"] = self.document.document_noun.replace(" ", "_")
 
         context["preferred_ncn"] = self.document.identifiers.preferred(type=NeutralCitationNumber)
+        context.update(build_document_edit_forms(self.document, context["courts"]))
 
         if self.document.has_ever_been_published:
             if self.document.first_published_datetime_display:
