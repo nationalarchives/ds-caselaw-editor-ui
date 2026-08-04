@@ -14,7 +14,7 @@
     "one-quarter": "govuk-!-width-one-quarter"
   } %}
   {% set width_class = width_classes.get(field.width, "") %}
-  {% set margin_classes = {"default": "", "small": "govuk-!-margin-bottom-4"} %}
+  {% set margin_classes = {"default": "", "small": "govuk-!-margin-bottom-4", "none": "govuk-!-margin-bottom-0"} %}
   {% set margin_class = margin_classes.get(field.margin, "") %}
   {% set choices = field.choices if field.choices is defined else field.field.choices if field.field.choices is defined else [] %}
   {{ govukInput({

@@ -1,15 +1,59 @@
 .aside {
   &__container {
+    input,
+    select {
+      display: none;
+    }
+
+    &.editing {
+      label {
+        color: colour-var("font-base");
+      }
+
+      input,
+      select {
+        display: block;
+      }
+
+      .aside__item--editable {
+        dd {
+          display: none;
+        }
+      }
+
+      .aside__footer {
+        button {
+          &[data-aside-edit-show-button] {
+            display: none;
+          }
+
+          &[data-aside-edit-submit-button],
+          &[data-aside-edit-hide-button] {
+            display: block;
+          }
+        }
+      }
+    }
+
     &.collapsed {
       .aside__toggle {
         display: none;
         flex-direction: row;
         padding: 0.5rem 1rem;
+        border-left: 0;
 
         @media (min-width: $grid-breakpoint-medium) {
           display: flex;
           flex-direction: column;
           padding: $space-4 0;
+        }
+      }
+
+      .aside__footer {
+        display: flex;
+
+        @media (min-width: $grid-breakpoint-medium) {
+          display: none;
         }
       }
 
@@ -33,11 +77,15 @@
       position: sticky;
       top: 0;
 
-      overflow-y: scroll;
+      overflow-y: hidden;
+      display: flex;
+      flex-direction: column;
 
       min-width: 320px;
       max-width: 360px;
+      height: 100vh;
       max-height: 100vh;
+      border-left: 1px solid colour-var("font-base");
     }
   }
 
@@ -89,8 +137,36 @@
     font-weight: $typography-bold-font-weight;
   }
 
-  &__content {
+  &__footer {
     display: none;
+    flex-direction: column;
+    gap: $space-2;
+
+    padding: $space-4;
+    border-top: 1px solid #343338;
+
+    background: white;
+
+    button {
+      &[data-aside-edit-submit-button],
+      &[data-aside-edit-hide-button] {
+        display: none;
+      }
+    }
+
+    @media (min-width: $grid-breakpoint-medium) {
+      display: flex;
+    }
+  }
+
+  &__content {
+    position: relative;
+
+    overflow-y: auto;
+    display: none;
+    flex: 1;
+
+    min-height: 0;
     border-bottom: 1px solid colour-var("font-base");
 
     dl {
@@ -104,9 +180,12 @@
       div {
         display: flex;
         flex-direction: column;
-        gap: $space-2;
 
+        label,
         dt {
+          margin-bottom: $space-1;
+          font-size: $typography-md-text-size;
+          line-height: $typography-lg-line-height;
           color: colour-var("accent-border");
         }
 
@@ -121,9 +200,7 @@
 
     @media (min-width: $grid-breakpoint-medium) {
       display: block;
-      min-height: 100vh;
       border-bottom: 0;
-      border-left: 1px solid colour-var("font-base");
     }
   }
 }
