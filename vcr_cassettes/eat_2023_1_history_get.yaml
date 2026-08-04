@@ -163,6 +163,30 @@ interactions:
         code: 200
         message: OK
   - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Adeclare+variable+%24name+as+xs%3Astring+external%3B%0A%0Alet+%24prop+%3A%3D+fn%3AQName%28%22%22%2C+%24name%29%0A%0Areturn+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A&vars=%7B%22uri%22%3A+%22%2Feat%2F2023%2F1.xml%22%2C+%22name%22%3A+%22metadata_fields%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string: ""
+      headers:
+        Connection:
+          - keep-alive
+        Content-Length:
+          - "0"
+        Date:
+          - Mon, 13 Apr 2026 12:14:48 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
       body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Adeclare+variable+%24name+as+xs%3Astring+external%3B%0A%0Alet+%24prop+%3A%3D+fn%3AQName%28%22%22%2C+%24name%29%0A%0Areturn+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%2Ftext%28%29%0A&vars=%7B%22uri%22%3A+%22%2Feat%2F2023%2F1.xml%22%2C+%22name%22%3A+%22transfer-consignment-reference%22%7D
       headers:
         Accept:
@@ -454,6 +478,30 @@ interactions:
         code: 200
         message: OK
   - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Adeclare+variable+%24name+as+xs%3Astring+external%3B%0A%0Alet+%24prop+%3A%3D+fn%3AQName%28%22%22%2C+%24name%29%0A%0Areturn+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A&vars=%7B%22uri%22%3A+%22%2Feat%2F2023%2F1_xml_versions%2F2-1.xml%22%2C+%22name%22%3A+%22metadata_fields%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string: ""
+      headers:
+        Connection:
+          - keep-alive
+        Content-Length:
+          - "0"
+        Date:
+          - Mon, 13 Apr 2026 12:14:49 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
       body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Alet+%24error+%3A%3D+if+%28not%28fn%3Adoc-available%28%24uri%29%29%29+then+%28fn%3Aerror%28xs%3AQName%28%22FCL-DOCUMENTNOTFOUND%22%29%2C+%22FCL-DOCUMENTNOTFOUND+No+document+at+%22%7C%7C%24uri+%29%29+else+%28%29%0Areturn+xdmp%3Adocument-get-collections%28%24uri%29%0A&vars=%7B%22uri%22%3A+%22%2Feat%2F2023%2F1_xml_versions%2F1-1.xml%22%7D
       headers:
         Accept:
@@ -587,6 +635,30 @@ interactions:
         message: OK
   - request:
       body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Adeclare+variable+%24name+as+xs%3Astring+external%3B%0A%0Alet+%24prop+%3A%3D+fn%3AQName%28%22%22%2C+%24name%29%0A%0Areturn+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A&vars=%7B%22uri%22%3A+%22%2Feat%2F2023%2F1_xml_versions%2F1-1.xml%22%2C+%22name%22%3A+%22identifiers%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string: ""
+      headers:
+        Connection:
+          - keep-alive
+        Content-Length:
+          - "0"
+        Date:
+          - Mon, 13 Apr 2026 12:14:49 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Adeclare+variable+%24name+as+xs%3Astring+external%3B%0A%0Alet+%24prop+%3A%3D+fn%3AQName%28%22%22%2C+%24name%29%0A%0Areturn+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A&vars=%7B%22uri%22%3A+%22%2Feat%2F2023%2F1_xml_versions%2F1-1.xml%22%2C+%22name%22%3A+%22metadata_fields%22%7D
       headers:
         Accept:
           - application/xml
@@ -790,6 +862,30 @@ interactions:
           - keep-alive
         Content-Type:
           - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Mon, 13 Apr 2026 12:14:50 GMT
+        Server:
+          - MarkLogic 11.0.2
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Adeclare+variable+%24name+as+xs%3Astring+external%3B%0A%0Alet+%24prop+%3A%3D+fn%3AQName%28%22%22%2C+%24name%29%0A%0Areturn+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A&vars=%7B%22uri%22%3A+%22%2Feat%2F2023%2F1.xml%22%2C+%22name%22%3A+%22metadata_fields%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string: ""
+      headers:
+        Connection:
+          - keep-alive
+        Content-Length:
+          - "0"
         Date:
           - Mon, 13 Apr 2026 12:14:50 GMT
         Server:
