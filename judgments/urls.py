@@ -16,6 +16,7 @@ from .views.document_full_text import (
 )
 from .views.document_history import DocumentHistoryView
 from .views.document_identifiers import AddDocumentIdentifierView, DeleteDocumentIdentifierView, DocumentIdentifiersView
+from .views.document_metadata import DocumentMetadataView
 from .views.document_reparse import reparse
 from .views.errors import NotFoundView, PermissionDeniedView, ServerErrorView
 from .views.index import HomeView
@@ -122,6 +123,11 @@ urlpatterns = [
         "<path:document_uri>/identifiers",
         DocumentIdentifiersView.as_view(),
         name="document-identifiers",
+    ),
+    path(
+        "<path:document_uri>/metadata",
+        DocumentMetadataView.as_view(),
+        name="document-metadata",
     ),
     path(
         "<path:document_uri>/identifiers/add",

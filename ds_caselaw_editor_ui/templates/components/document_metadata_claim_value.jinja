@@ -1,0 +1,10 @@
+{% macro document_metadata_claim_value(claim) %}
+  {% if claim.value.name is defined %}
+    {{ claim.value.name }}
+    {% if claim.value.parent %}
+      <span class="muted">({{ claim.value.parent }})</span>
+    {% endif %}
+  {% else %}
+    {{ claim.value }}
+  {% endif %}
+{% endmacro %}
