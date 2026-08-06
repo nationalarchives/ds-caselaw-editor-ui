@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
+from judgments.models import BulkReparseRunLog
+from judgments.models.telemetry import RunStatus
 from judgments.views.reports import get_rows_from_result
 
 
@@ -99,3 +101,35 @@ class TestLockedDocumentsReports(TestCase):
         self.assertContains(response, "test/1234", html=True)
         self.assertContains(response, "Owner string", html=True)
         self.assertContains(response, "09 Dec 2025 13:00", html=True)
+
+
+class TestBulkReparseRunLogReports(TestCase):
+    def setUp(self):
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        self.run_log = BulkReparseRunLog.objects.create(
+            start_time=datetime(2026, 4, 2, 7, 31, 0, tzinfo=UTC),
+            documents_in_queue=10,
+            target_parser_version="1.2.3",
+            documents_selected=5,
+            documents_attempted=4,
+            documents_skipped=1,
+            documents_failed=0,
+            status=RunStatus.FINISHED,
+            detail="FINISHED",
+        )
+
+    def test_list_view_shows_status_label(self):
+        response = self.client.get(reverse("report_bulk_reparse_run_logs"))
+
+        assert response.status_code == 200
+        self.assertContains(response, "Finished")
+        self.assertNotContains(response, "functools.partial")
+
+    def test_detail_view_shows_status_label(self):
+        response = self.client.get(
+            reverse("report_bulk_reparse_run_log_detail", args=[self.run_log.pk]),
+        )
+
+        assert response.status_code == 200
+        self.assertContains(response, "Finished")
+        self.assertNotContains(response, "functools.partial")
