@@ -62,6 +62,7 @@ class UploadDocumentSuccessView(DocumentView):
         context["navigation_items"] = get_navigation_items_logic(
             view=context["view"],
             document=document,
+            request=self.request,
         )
 
         if document:

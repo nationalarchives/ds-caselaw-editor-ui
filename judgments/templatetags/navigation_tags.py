@@ -1,7 +1,10 @@
 from django import template
 from django.urls import reverse
+from waffle import flag_is_active
 
 register = template.Library()
+
+DOCUMENT_METADATA_FLAG = "document_metadata"
 
 
 def get_document_url(view, document):
@@ -96,13 +99,26 @@ def get_identifiers_navigation_item(view, document):
     }
 
 
-def get_navigation_items_logic(view, document, linked_document_uri=None):
+def get_metadata_navigation_item(view, document, request=None):
+    if not request or not flag_is_active(request, DOCUMENT_METADATA_FLAG):
+        return None
+
+    return {
+        "id": "metadata",
+        "selected": view == "document_metadata",
+        "label": "Metadata",
+        "url": get_document_url("document-metadata", document),
+    }
+
+
+def get_navigation_items_logic(view, document, linked_document_uri=None, request=None):
 
     base_navigation = [
         get_review_navigation_item(view, document),
         get_hold_navigation_item(view, document),
         get_publishing_navigation_item(view, document),
         get_identifiers_navigation_item(view, document),
+        get_metadata_navigation_item(view, document, request=request),
         get_history_navigation_item(view, document),
         get_download_navigation_item(view, document),
         get_upload_navigation_item(view=view, document=document),
@@ -118,28 +134,12 @@ def get_navigation_items_logic(view, document, linked_document_uri=None):
 
 @register.simple_tag(takes_context=True)
 def get_navigation_items(context):
-    view, document, linked_document_uri = (
-        context.get("view"),
-        context.get("document"),
-        context.get("linked_document_uri"),
+    return get_navigation_items_logic(
+        view=context.get("view"),
+        document=context.get("document"),
+        linked_document_uri=context.get("linked_document_uri"),
+        request=context.get("request"),
     )
-
-    base_navigation = [
-        get_review_navigation_item(view, document),
-        get_hold_navigation_item(view, document),
-        get_publishing_navigation_item(view, document),
-        get_identifiers_navigation_item(view, document),
-        get_history_navigation_item(view, document),
-        get_download_navigation_item(view, document),
-        get_upload_navigation_item(view=view, document=document),
-    ]
-
-    filtered_navigation = [item for item in base_navigation if item is not None]
-
-    if linked_document_uri:
-        return [*filtered_navigation, get_associated_documents_navigation_item(view, document)]
-
-    return filtered_navigation
 
 
 @register.simple_tag(takes_context=True)

@@ -1,16 +1,21 @@
 from caselawclient.factories import JudgmentFactory
-from django.test import TestCase
+from django.test import RequestFactory, TestCase
+from waffle.testutils import override_flag
 
-from judgments.templatetags.navigation_tags import get_navigation_items
+from judgments.templatetags.navigation_tags import DOCUMENT_METADATA_FLAG, get_navigation_items
 
 
 class TestNavigationTags(TestCase):
+    def setUp(self):
+        self.request = RequestFactory().get("/")
+
     def test_get_navigation_items(self):
         judgment = JudgmentFactory.build(is_published=False)
 
         context = {
             "view": "judgment_html",
             "document": judgment,
+            "request": self.request,
         }
 
         navigation_items = get_navigation_items(context)
@@ -24,6 +29,26 @@ class TestNavigationTags(TestCase):
             {"id": "downloads", "selected": False, "label": "Downloads", "url": "/test/2023/123/downloads"},
             {"id": "upload", "selected": False, "label": "Upload", "url": "/test/2023/123/upload"},
         ]
+        assert not any(item["id"] == "metadata" for item in navigation_items)
+
+    @override_flag(DOCUMENT_METADATA_FLAG, active=True)
+    def test_get_navigation_items_includes_metadata_when_flag_active(self):
+        judgment = JudgmentFactory.build(is_published=False)
+
+        context = {
+            "view": "judgment_html",
+            "document": judgment,
+            "request": self.request,
+        }
+
+        navigation_items = get_navigation_items(context)
+
+        assert {
+            "id": "metadata",
+            "selected": False,
+            "label": "Metadata",
+            "url": "/test/2023/123/metadata",
+        } in navigation_items
 
     def test_get_navigation_items_published(self):
         judgment = JudgmentFactory.build(is_published=True)
@@ -31,6 +56,7 @@ class TestNavigationTags(TestCase):
         context = {
             "view": "judgment_html",
             "document": judgment,
+            "request": self.request,
         }
 
         navigation_items = get_navigation_items(context)
@@ -38,17 +64,20 @@ class TestNavigationTags(TestCase):
         assert not any(item["id"] == "take-off-hold" for item in navigation_items)
         assert not any(item["id"] == "put-on-hold" for item in navigation_items)
 
+    @override_flag(DOCUMENT_METADATA_FLAG, active=True)
     def test_get_navigation_items_selected_pages(self):
         judgment = JudgmentFactory.build(is_published=False)
 
         base_context = {
             "document": judgment,
+            "request": self.request,
         }
 
         tests = [
             {"expected_selected_id": "review", "view": "judgment_html"},
             {"expected_selected_id": "review", "view": "judgment_pdf"},
             {"expected_selected_id": "history", "view": "document_history"},
+            {"expected_selected_id": "metadata", "view": "document_metadata"},
             {"expected_selected_id": "publish", "view": "publish_judgment"},
             {"expected_selected_id": "publish", "view": "unpublish_judgment"},
             {"expected_selected_id": "downloads", "view": "document_downloads"},
@@ -70,6 +99,7 @@ class TestNavigationTags(TestCase):
             "view": "associated_documents",
             "document": judgment,
             "linked_document_uri": judgment.uri,
+            "request": self.request,
         }
 
         navigation_items = get_navigation_items(context)

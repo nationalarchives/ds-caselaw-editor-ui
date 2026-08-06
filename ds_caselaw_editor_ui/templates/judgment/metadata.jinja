@@ -1,0 +1,87 @@
+{% extends "layouts/judgment.jinja" %}
+{% from "components/heading.jinja" import heading %}
+{% from "components/notification.jinja" import notification %}
+{% from "components/document_metadata_item.jinja" import document_metadata_item %}
+{% from "components/document_metadata_claim_value.jinja" import document_metadata_claim_value %}
+{% block content %}
+  <div class="container">
+    {{ heading(content="Metadata for:") }}
+    {{ heading(tag="h2", weight="normal", content=document.body.name) }}
+    {% if document.metadata %}
+      {% for key, metadata_item in document.metadata.items() %}
+        {% set resolved = document.metadata_fields.resolve(metadata_item.key) %}
+        {% set active_claims = resolved.claims %}
+        {% set winning_claim = active_claims[-1] if active_claims else none %}
+        {% set is_single_value = metadata_item.value is defined %}
+        <section>
+          {{ heading(tag="h2", content=metadata_item.title) }}
+          {% if metadata_item.description %}
+            <p class="muted">{{ metadata_item.description }}</p>
+          {% endif %}
+          {% if resolved.has_any_claims %}
+            <div class="table">
+              <table>
+                <tr>
+                  <th>Status</th>
+                  <th>Value</th>
+                  <th>Source</th>
+                  <th>First seen</th>
+                  {% if user|is_developer %}
+                    <th>Claim id</th>
+                  {% endif %}
+                </tr>
+                {% for claim in resolved.all_claims|reversed %}
+                  {% if claim.rejected %}
+                    {% set is_current = false %}
+                  {% elif is_single_value and winning_claim and claim.id == winning_claim.id %}
+                    {% set is_current = true %}
+                  {% elif not is_single_value %}
+                    {% set is_current = true %}
+                  {% else %}
+                    {% set is_current = false %}
+                  {% endif %}
+                  <tr {% if claim.rejected %}class="muted"{% endif %}>
+                    <td>
+                      {% if claim.rejected %}
+                        Rejected
+                      {% elif is_current %}
+                        Current
+                      {% else %}
+                        Superseded
+                      {% endif %}
+                    </td>
+                    <td>{{ document_metadata_claim_value(claim) }}</td>
+                    <td>{{ claim.source.value|title }}</td>
+                    <td>{{ claim.timestamp|date("%-d %b %Y %H:%M") }}</td>
+                    {% if user|is_developer %}
+                      <td>
+                        <code>{{ claim.id }}</code>
+                      </td>
+                    {% endif %}
+                  </tr>
+                {% endfor %}
+              </table>
+            </div>
+          {% else %}
+            <p>
+              <strong>Current value:</strong>
+              {% if metadata_item.key == "date" %}
+                {{ document_metadata_item(metadata_item=metadata_item, date_format="%-d %b %Y") }}
+              {% else %}
+                {{ document_metadata_item(metadata_item=metadata_item) }}
+              {% endif %}
+              (from document body)
+            </p>
+            {% call notification() %}
+              No stored claims for this field. The current value comes from the document body.
+            {% endcall %}
+          {% endif %}
+        </section>
+      {% endfor %}
+    {% else %}
+      {% call notification() %}
+        This document does not have any structured metadata.
+      {% endcall %}
+    {% endif %}
+  </div>
+{% endblock content %}
