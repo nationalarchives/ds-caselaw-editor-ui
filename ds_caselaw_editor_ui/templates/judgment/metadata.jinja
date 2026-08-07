@@ -5,8 +5,6 @@
 {% from "components/button.jinja" import button %}
 {% from "components/text_input.jinja" import text_input %}
 {% from "components/checkboxes.jinja" import checkboxes %}
-{% from "components/document_metadata_item.jinja" import document_metadata_item %}
-{% from "components/document_metadata_claim_value.jinja" import document_metadata_claim_value %}
 {% from "components/card.jinja" import card %}
 {% block aside %}
 {% endblock aside %}
@@ -16,97 +14,46 @@
     {% if document.metadata %}
       <form method="post">
         {{ csrf_input }}
-        {% for key, metadata_item in document.metadata.items() %}
-          {% set resolved = document.metadata_fields.resolve(metadata_item.key) %}
-          {% set active_claims = resolved.claims %}
-          {% set winning_claim = active_claims[-1] if active_claims else none %}
-          {% set is_single_value = metadata_item.value is defined %}
+        {% for section in metadata_claim_sections %}
           <section>
-            {{ heading(tag="h3", content=metadata_item.title) }}
-            {% if metadata_item.description %}
-              <p class="muted">{{ metadata_item.description }}</p>
+            {{ heading(tag="h3", content=section.metadata_item.title) }}
+            {% if section.metadata_item.description %}
+              <p class="muted">{{ section.metadata_item.description }}</p>
             {% endif %}
             <div class="card-list">
-              {% if resolved.has_any_claims %}
-                {% for claim in resolved.all_claims|reversed %}
-                  {% if claim.rejected %}
-                    {% set claim_status = "Rejected" %}
-                    {% set claim_status_badge_variant = "failure" %}
-                    {% set is_current = false %}
-                  {% elif is_single_value and winning_claim and claim.id == winning_claim.id %}
-                    {% set claim_status = "Current" %}
-                    {% set claim_status_badge_variant = "success" %}
-                    {% set is_current = true %}
-                  {% elif not is_single_value %}
-                    {% set claim_status = "Current" %}
-                    {% set claim_status_badge_variant = "success" %}
-                    {% set is_current = true %}
-                  {% else %}
-                    {% set claim_status = "Superseded" %}
-                    {% set claim_status_badge_variant = "info" %}
-                    {% set is_current = false %}
+              {% for display_claim in section.display_claims %}
+                {% set card_right_content %}
+                  {{ badge(variant=display_claim.status_badge_variant, content=display_claim.status) }}
+                  {% if display_claim.can_reject %}
+                    {{ checkboxes({
+                                        "idPrefix": display_claim.reject_input_id_prefix,
+                                        "name": display_claim.reject_input_name,
+                                        "classes": "govuk-checkboxes--small",
+                                        "items": [{
+                                        "value": display_claim.reject_input_value,
+                                        "text":"Mark as rejected"
+                                        }]
+                                        }) }}
                   {% endif %}
-                  {% set card_right_content %}
-                    {{ badge(variant=claim_status_badge_variant, content=claim_status) }}
-                    {% if is_current %}
-                      {{ checkboxes({
-                                            "idPrefix": "reject-" ~ claim.id,
-                                            "name": "reject_claim_ids",
-                                            "classes": "govuk-checkboxes--small",
-                                            "items": [{"value": claim.id, "text":"Mark as rejected"}]
-                                            }) }}
-                    {% endif %}
-                  {% endset %}
-                  {% call card(right_content=card_right_content, disabled=(True if not is_current)) %}
-                    <p>Value: {{ document_metadata_claim_value(claim) }}</p>
-                    <p>Source: {{ claim.source.value|title }}</p>
-                    <p>Created: {{ claim.timestamp|date("%-d %b %Y %H:%M") }}</p>
-                    {% if user|is_developer %}
-                      <p>
-                        Claim id: <code>{{ claim.id }}</code>
-                      </p>
-                    {% endif %}
-                  {% endcall %}
-                {% endfor %}
-              {% else %}
-                {% if is_single_value and metadata_item.value %}
-                  {% set card_right_content %}
-                    {{ badge(variant="success", content="Current") }}
-                  {% endset %}
-                  {% call card(right_content=card_right_content) %}
+                {% endset %}
+                {% call card(right_content=card_right_content, disabled=(True if not display_claim.is_current)) %}
+                  <p>Value: {{ display_claim.display_value }}</p>
+                  <p>Source: {{ display_claim.source_label }}</p>
+                  {% if display_claim.timestamp %}
+                    <p>Created: {{ display_claim.timestamp|date("%-d %b %Y %H:%M") }}</p>
+                  {% endif %}
+                  {% if display_claim.claim_id and user|is_developer %}
                     <p>
-                      Value:
-                      {% if metadata_item.key == "date" %}
-                        {{ document_metadata_item(metadata_item=metadata_item, date_format="%-d %b %Y") }}
-                      {% else %}
-                        {{ document_metadata_item(metadata_item=metadata_item) }}
-                      {% endif %}
+                      Claim id: <code>{{ display_claim.claim_id }}</code>
                     </p>
-                    <p>Source: Document</p>
-                  {% endcall %}
-                {% elif metadata_item.key == "judges" and metadata_item.values %}
-                  {% for judge_name in metadata_item.values %}
-                    {% set card_right_content %}
-                      {{ badge(variant="success", content="Current") }}
-                      {{ checkboxes({
-                                            "idPrefix": "suppress-body-judge-" ~ loop.index,
-                                            "name": "suppress_body_judges",
-                                            "classes": "govuk-checkboxes--small",
-                                            "items": [{"value": judge_name, "text":"Mark as rejected"}]
-                                            }) }}
-                    {% endset %}
-                    {% call card(right_content=card_right_content) %}
-                      <p>Value: {{ judge_name }}</p>
-                      <p>Source: Document</p>
-                    {% endcall %}
-                  {% endfor %}
-                {% endif %}
-              {% endif %}
+                  {% endif %}
+                {% endcall %}
+              {% endfor %}
               {% call card() %}
                 {{ text_input({
                                 "label": "New claim",
-                                "id_for_label": "new-claim-" ~ metadata_item.key,
-                                "html_name": "new_claim__" ~ metadata_item.key,
+                                "id_for_label": section.new_claim_input_id,
+                                "html_name": section.new_claim_input_name,
                                 "value": ""
                                 }) }}
               {% endcall %}
