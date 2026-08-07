@@ -1,0 +1,39 @@
+.card {
+  display: flex;
+  padding: $space-4;
+  border: 1px solid colour-var("accent-border");
+
+  &--disabled {
+    opacity: 0.4;
+  }
+
+  &__left-content {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+  }
+
+  &__body-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: $space-1;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  &__right-content {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+    align-items: flex-end;
+  }
+}
+
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}

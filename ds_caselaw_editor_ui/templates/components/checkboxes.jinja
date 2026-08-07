@@ -1,0 +1,73 @@
+{% from "govuk_frontend_jinja/components/checkboxes/macro.html" import govukCheckboxes %}
+{% macro checkboxes(params) %}
+  {{ govukCheckboxes(params) }}
+{% endmacro %}
+{% macro checkboxes_examples() %}
+  <h3>Default</h3>
+  {{ checkboxes({
+    "idPrefix": "checkbox",
+    "name": "checkbox",
+    "hint": {
+      "text": "This is the hint text"
+    },
+    "items": [
+      {
+        "value": "option1",
+        "text": "Option 1"
+      },
+      {
+        "value": "option2",
+        "text": "Option 2"
+      },
+      {
+        "value": "option3",
+        "text": "Option 3"
+      }
+    ]
+  }) }}
+  <h3>With error</h3>
+  {{ checkboxes({
+    "idPrefix": "checkbox-with-error",
+    "name": "checkbox-with-error",
+    "errorMessage": {
+      "text": "This is error text"
+    },
+    "items": [
+      {
+        "value": "option1",
+        "text": "Option 1"
+      },
+      {
+        "value": "option2",
+        "text": "Option 2"
+      },
+      {
+        "value": "option3",
+        "text": "Option 3"
+      }
+    ]
+  }) }}
+  <h3>Conditional checkboxes</h3>
+  {{ checkboxes({
+    "idPrefix": "checkbox-with-conditional",
+    "name": "checkbox-with-conditional",
+    "items": [
+      {
+        "value": "option1",
+        "text": "Option 1",
+        "checked": true,
+        "conditional": {
+          "html": "This is something conditional"
+        }
+      },
+      {
+        "value": "option2",
+        "text": "Option 2"
+      },
+      {
+        "value": "option3",
+        "text": "Option 3"
+      }
+    ]
+  }) }}
+{% endmacro %}

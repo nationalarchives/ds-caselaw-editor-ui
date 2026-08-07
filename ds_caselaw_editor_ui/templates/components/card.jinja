@@ -1,0 +1,15 @@
+{% macro card(variant=None, disabled=False, content=None, left_content=None, right_content=None) %}
+  {% set body_content = caller() if caller is defined else content if content is defined else "" %}
+  {% set variant_classes = {"default": ""} %}
+  {% set variant_class = variant_classes.get(variant, variant_classes["default"]) %}
+  {% set disabled_class = "card--disabled" if disabled else "" %}
+  <div class="card {{ variant_class }} {{ disabled_class }} ">
+    {% if left_content %}
+      <div class="card__left-content">{{ left_content }}</div>
+    {% endif %}
+    <div class="card__body-content">{{ body_content }}</div>
+    {% if right_content %}
+      <div class="card__right-content">{{ right_content }}</div>
+    {% endif %}
+  </div>
+{% endmacro %}
