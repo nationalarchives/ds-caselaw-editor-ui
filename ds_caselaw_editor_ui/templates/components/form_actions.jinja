@@ -1,0 +1,6 @@
+{% macro form_actions(attrs={}) %}
+  <div class="form-actions"
+       {% for key, value in attrs.items() %} {{ key }}="{{ value }}"{% endfor %}>
+    <div class="form-actions__container">{{ caller() }}</div>
+  </div>
+{% endmacro %}

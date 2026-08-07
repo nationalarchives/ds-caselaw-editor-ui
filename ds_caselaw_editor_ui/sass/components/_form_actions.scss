@@ -1,0 +1,17 @@
+.form-actions {
+  position: sticky;
+  z-index: 5;
+  bottom: 0;
+
+  margin-top: $space-8;
+  padding: $space-4 0;
+
+  background: brand-colour("white");
+
+  &__container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-3;
+    align-items: center;
+  }
+}

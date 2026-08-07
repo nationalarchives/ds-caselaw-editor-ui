@@ -190,6 +190,10 @@ class TestDocumentMetadata(TestCase):
         self.assertContains(response, "Superseded")
         self.assertContains(response, 'name="reject_claim_ids"')
         self.assertContains(response, 'name="new_claim__court"')
+        self.assertContains(response, 'data-form-actions=""')
+        self.assertContains(response, 'data-form-actions-submit=""')
+        self.assertContains(response, 'data-form-actions-clear=""')
+        self.assertContains(response, "Clear changes")
 
         for metadata_item in judgment.metadata.values():
             self.assertContains(response, metadata_item.title)

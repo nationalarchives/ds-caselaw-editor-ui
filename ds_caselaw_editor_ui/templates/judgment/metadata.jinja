@@ -6,6 +6,7 @@
 {% from "components/text_input.jinja" import text_input %}
 {% from "components/checkboxes.jinja" import checkboxes %}
 {% from "components/card.jinja" import card %}
+{% from "components/form_actions.jinja" import form_actions %}
 {% block aside %}
 {% endblock aside %}
 {% block content %}
@@ -60,7 +61,12 @@
             </div>
           </section>
         {% endfor %}
-        <p>{{ button(content="Update claims") }}</p>
+        {% call form_actions({"data-form-actions": ""}) %}
+          {{ button(content="Update claims", attrs={"data-form-actions-submit": ""}) }}
+          {{ button(content="Clear changes",
+                    variant="secondary",
+                    attrs={"type": "button", "data-form-actions-clear": ""}) }}
+        {% endcall %}
       </form>
     {% else %}
       {% call notification() %}

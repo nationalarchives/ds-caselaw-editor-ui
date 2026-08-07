@@ -18,16 +18,12 @@
 
   &:disabled,
   &[aria-disabled="true"] {
-    background-color: colour-var("button-background");
+    opacity: 0.6;
 
     &:focus,
     &:hover {
       cursor: not-allowed;
-
-      color: colour-var("button-text");
       text-decoration: none;
-
-      background-color: colour-var("button-background");
       outline: none;
     }
   }
