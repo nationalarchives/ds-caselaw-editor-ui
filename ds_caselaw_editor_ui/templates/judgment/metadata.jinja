@@ -14,79 +14,107 @@
   <div class="container">
     {{ heading(content="Metadata for " ~ document.body.name) }}
     {% if document.metadata %}
-      {% for key, metadata_item in document.metadata.items() %}
-        {% set resolved = document.metadata_fields.resolve(metadata_item.key) %}
-        {% set active_claims = resolved.claims %}
-        {% set winning_claim = active_claims[-1] if active_claims else none %}
-        {% set is_single_value = metadata_item.value is defined %}
-        <section>
-          {{ heading(tag="h3", content=metadata_item.title) }}
-          {% if metadata_item.description %}
-            <p class="muted">{{ metadata_item.description }}</p>
-          {% endif %}
-          <div class="card-list">
-            {% if resolved.has_any_claims %}
-              {% for claim in resolved.all_claims|reversed %}
-                {% if claim.rejected %}
-                  {% set claim_status = "Rejected" %}
-                  {% set claim_status_badge_variant = "failure" %}
-                  {% set is_current = false %}
-                {% elif is_single_value and winning_claim and claim.id == winning_claim.id %}
-                  {% set claim_status = "Current" %}
-                  {% set claim_status_badge_variant = "success" %}
-                  {% set is_current = true %}
-                {% elif not is_single_value %}
-                  {% set claim_status = "Current" %}
-                  {% set claim_status_badge_variant = "success" %}
-                  {% set is_current = true %}
-                {% else %}
-                  {% set claim_status = "Superseded" %}
-                  {% set claim_status_badge_variant = "info" %}
-                  {% set is_current = false %}
-                {% endif %}
-                {% set card_right_content %}
-                  {{ badge(variant=claim_status_badge_variant, content=claim_status) }}
-                  {% if is_current %}
-                    {{ checkboxes({"idPrefix": claim.id, "name": "claim_status","classes": "govuk-checkboxes--small", "items": [{"value": "rejected", "text":"Mark as rejected"}]}) }}
-                  {% endif %}
-                {% endset %}
-                {% call card(right_content=card_right_content, disabled=(True if not is_current)) %}
-                  <p>Value: {{ document_metadata_claim_value(claim) }}</p>
-                  <p>Source: {{ claim.source.value|title }}</p>
-                  <p>Created: {{ claim.timestamp|date("%-d %b %Y %H:%M") }}</p>
-                  {% if user|is_developer %}
-                    <p>
-                      Claim id: <code>{{ claim.id }}</code>
-                    </p>
-                  {% endif %}
-                {% endcall %}
-              {% endfor %}
-            {% else %}
-              {% if metadata_item.value %}
-                {% set card_right_content %}
-                  {{ badge(variant="success", content="Current") }}
-                  {{ checkboxes({"idPrefix": key, "name": "claim_status","classes": "govuk-checkboxes--small", "items": [{"value": "rejected", "text":"Mark as rejected"}]}) }}
-                {% endset %}
-                {% call card(right_content=card_right_content) %}
-                  <p>
-                    Value:
-                    {% if metadata_item.key == "date" %}
-                      {{ document_metadata_item(metadata_item=metadata_item, date_format="%-d %b %Y") }}
-                    {% else %}
-                      {{ document_metadata_item(metadata_item=metadata_item) }}
-                    {% endif %}
-                  </p>
-                  <p>Source: Document</p>
-                {% endcall %}
-              {% endif %}
+      <form method="post">
+        {{ csrf_input }}
+        {% for key, metadata_item in document.metadata.items() %}
+          {% set resolved = document.metadata_fields.resolve(metadata_item.key) %}
+          {% set active_claims = resolved.claims %}
+          {% set winning_claim = active_claims[-1] if active_claims else none %}
+          {% set is_single_value = metadata_item.value is defined %}
+          <section>
+            {{ heading(tag="h3", content=metadata_item.title) }}
+            {% if metadata_item.description %}
+              <p class="muted">{{ metadata_item.description }}</p>
             {% endif %}
-            {% call card() %}
-              {{ text_input({"label": "New claim", "value": ""}) }}
-            {% endcall %}
-          </div>
-        </section>
-      {% endfor %}
-      <p>{{ button(content="Update claims") }}</p>
+            <div class="card-list">
+              {% if resolved.has_any_claims %}
+                {% for claim in resolved.all_claims|reversed %}
+                  {% if claim.rejected %}
+                    {% set claim_status = "Rejected" %}
+                    {% set claim_status_badge_variant = "failure" %}
+                    {% set is_current = false %}
+                  {% elif is_single_value and winning_claim and claim.id == winning_claim.id %}
+                    {% set claim_status = "Current" %}
+                    {% set claim_status_badge_variant = "success" %}
+                    {% set is_current = true %}
+                  {% elif not is_single_value %}
+                    {% set claim_status = "Current" %}
+                    {% set claim_status_badge_variant = "success" %}
+                    {% set is_current = true %}
+                  {% else %}
+                    {% set claim_status = "Superseded" %}
+                    {% set claim_status_badge_variant = "info" %}
+                    {% set is_current = false %}
+                  {% endif %}
+                  {% set card_right_content %}
+                    {{ badge(variant=claim_status_badge_variant, content=claim_status) }}
+                    {% if is_current %}
+                      {{ checkboxes({
+                                            "idPrefix": "reject-" ~ claim.id,
+                                            "name": "reject_claim_ids",
+                                            "classes": "govuk-checkboxes--small",
+                                            "items": [{"value": claim.id, "text":"Mark as rejected"}]
+                                            }) }}
+                    {% endif %}
+                  {% endset %}
+                  {% call card(right_content=card_right_content, disabled=(True if not is_current)) %}
+                    <p>Value: {{ document_metadata_claim_value(claim) }}</p>
+                    <p>Source: {{ claim.source.value|title }}</p>
+                    <p>Created: {{ claim.timestamp|date("%-d %b %Y %H:%M") }}</p>
+                    {% if user|is_developer %}
+                      <p>
+                        Claim id: <code>{{ claim.id }}</code>
+                      </p>
+                    {% endif %}
+                  {% endcall %}
+                {% endfor %}
+              {% else %}
+                {% if is_single_value and metadata_item.value %}
+                  {% set card_right_content %}
+                    {{ badge(variant="success", content="Current") }}
+                  {% endset %}
+                  {% call card(right_content=card_right_content) %}
+                    <p>
+                      Value:
+                      {% if metadata_item.key == "date" %}
+                        {{ document_metadata_item(metadata_item=metadata_item, date_format="%-d %b %Y") }}
+                      {% else %}
+                        {{ document_metadata_item(metadata_item=metadata_item) }}
+                      {% endif %}
+                    </p>
+                    <p>Source: Document</p>
+                  {% endcall %}
+                {% elif metadata_item.key == "judges" and metadata_item.values %}
+                  {% for judge_name in metadata_item.values %}
+                    {% set card_right_content %}
+                      {{ badge(variant="success", content="Current") }}
+                      {{ checkboxes({
+                                            "idPrefix": "suppress-body-judge-" ~ loop.index,
+                                            "name": "suppress_body_judges",
+                                            "classes": "govuk-checkboxes--small",
+                                            "items": [{"value": judge_name, "text":"Mark as rejected"}]
+                                            }) }}
+                    {% endset %}
+                    {% call card(right_content=card_right_content) %}
+                      <p>Value: {{ judge_name }}</p>
+                      <p>Source: Document</p>
+                    {% endcall %}
+                  {% endfor %}
+                {% endif %}
+              {% endif %}
+              {% call card() %}
+                {{ text_input({
+                                "label": "New claim",
+                                "id_for_label": "new-claim-" ~ metadata_item.key,
+                                "html_name": "new_claim__" ~ metadata_item.key,
+                                "value": ""
+                                }) }}
+              {% endcall %}
+            </div>
+          </section>
+        {% endfor %}
+        <p>{{ button(content="Update claims") }}</p>
+      </form>
     {% else %}
       {% call notification() %}
         This document does not have any structured metadata.
