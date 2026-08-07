@@ -127,9 +127,9 @@ class MetadataFieldDisplayDecorator:
                 value=value,
                 display_value=self._format_value(value),
                 source_label="Document",
-                status="Suppressed",
-                status_badge_variant="failure",
-                is_current=False,
+                status="Suppressed" if self.active_claims else "Current",
+                status_badge_variant="failure" if self.active_claims else "success",
+                is_current=not self.active_claims,
                 can_reject=False,
                 is_faux=True,
             )
