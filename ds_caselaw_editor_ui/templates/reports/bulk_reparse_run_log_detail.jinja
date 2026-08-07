@@ -2,7 +2,7 @@
 {% block content %}
   <div class="standard-text-template">
     <h1>Bulk reparse run</h1>
-    <h2>{{ object.get_status_display }}: {{ object.start_time }}</h2>
+    <h2>{{ object.get_status_display() }}: {{ object.start_time }}</h2>
     <div class="table">
       <table>
         <tr>
