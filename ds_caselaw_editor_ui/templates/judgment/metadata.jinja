@@ -1,83 +1,73 @@
 {% extends "layouts/judgment.jinja" %}
 {% from "components/heading.jinja" import heading %}
 {% from "components/notification.jinja" import notification %}
-{% from "components/document_metadata_item.jinja" import document_metadata_item %}
-{% from "components/document_metadata_claim_value.jinja" import document_metadata_claim_value %}
+{% from "components/badge.jinja" import badge %}
+{% from "components/button.jinja" import button %}
+{% from "components/text_input.jinja" import text_input %}
+{% from "components/checkboxes.jinja" import checkboxes %}
+{% from "components/card.jinja" import card %}
+{% from "components/form_actions.jinja" import form_actions %}
+{% block aside %}
+{% endblock aside %}
 {% block content %}
   <div class="container">
-    {{ heading(content="Metadata for:") }}
-    {{ heading(tag="h2", weight="normal", content=document.body.name) }}
+    {{ heading(content="Metadata for " ~ document.body.name) }}
     {% if document.metadata %}
-      {% for key, metadata_item in document.metadata.items() %}
-        {% set resolved = document.metadata_fields.resolve(metadata_item.key) %}
-        {% set active_claims = resolved.claims %}
-        {% set winning_claim = active_claims[-1] if active_claims else none %}
-        {% set is_single_value = metadata_item.value is defined %}
-        <section>
-          {{ heading(tag="h2", content=metadata_item.title) }}
-          {% if metadata_item.description %}
-            <p class="muted">{{ metadata_item.description }}</p>
-          {% endif %}
-          {% if resolved.has_any_claims %}
-            <div class="table">
-              <table>
-                <tr>
-                  <th>Status</th>
-                  <th>Value</th>
-                  <th>Source</th>
-                  <th>First seen</th>
-                  {% if user|is_developer %}
-                    <th>Claim id</th>
+      <form method="post">
+        {{ csrf_input }}
+        {% for section in metadata_claim_sections %}
+          <section>
+            {{ heading(tag="h3", content=section.metadata_item.title) }}
+            {% if section.metadata_item.description %}
+              <p class="muted">{{ section.metadata_item.description }}</p>
+            {% endif %}
+            <div class="card-list">
+              {% for display_claim in section.display_claims %}
+                {% set card_right_content %}
+                  {{ badge(variant=display_claim.status_badge_variant, content=display_claim.status) }}
+                  {% if display_claim.can_reject %}
+                    {{ checkboxes({
+                                        "idPrefix": display_claim.reject_input_id_prefix,
+                                        "name": display_claim.reject_input_name,
+                                        "classes": "govuk-checkboxes--small",
+                                        "items": [{
+                                        "value": display_claim.reject_input_value,
+                                        "text":"Mark as rejected"
+                                        }]
+                                        }) }}
                   {% endif %}
-                </tr>
-                {% for claim in resolved.all_claims|reversed %}
-                  {% if claim.rejected %}
-                    {% set is_current = false %}
-                  {% elif is_single_value and winning_claim and claim.id == winning_claim.id %}
-                    {% set is_current = true %}
-                  {% elif not is_single_value %}
-                    {% set is_current = true %}
-                  {% else %}
-                    {% set is_current = false %}
+                {% endset %}
+                {% call card(right_content=card_right_content, disabled=(True if not display_claim.is_current)) %}
+                  <p>Value: {{ display_claim.display_value }}</p>
+                  <p>Source: {{ display_claim.source_label }}</p>
+                  {% if display_claim.timestamp %}
+                    <p>Created: {{ display_claim.timestamp|date("%-d %b %Y %H:%M") }}</p>
                   {% endif %}
-                  <tr {% if claim.rejected %}class="muted"{% endif %}>
-                    <td>
-                      {% if claim.rejected %}
-                        Rejected
-                      {% elif is_current %}
-                        Current
-                      {% else %}
-                        Superseded
-                      {% endif %}
-                    </td>
-                    <td>{{ document_metadata_claim_value(claim) }}</td>
-                    <td>{{ claim.source.value|title }}</td>
-                    <td>{{ claim.timestamp|date("%-d %b %Y %H:%M") }}</td>
-                    {% if user|is_developer %}
-                      <td>
-                        <code>{{ claim.id }}</code>
-                      </td>
-                    {% endif %}
-                  </tr>
-                {% endfor %}
-              </table>
+                  {% if display_claim.claim_id and user|is_developer %}
+                    <p>
+                      Claim id: <code>{{ display_claim.claim_id }}</code>
+                    </p>
+                  {% endif %}
+                {% endcall %}
+              {% endfor %}
+              {% call card() %}
+                {{ text_input({
+                                "label": "New claim",
+                                "id_for_label": section.new_claim_input_id,
+                                "html_name": section.new_claim_input_name,
+                                "value": ""
+                                }) }}
+              {% endcall %}
             </div>
-          {% else %}
-            <p>
-              <strong>Current value:</strong>
-              {% if metadata_item.key == "date" %}
-                {{ document_metadata_item(metadata_item=metadata_item, date_format="%-d %b %Y") }}
-              {% else %}
-                {{ document_metadata_item(metadata_item=metadata_item) }}
-              {% endif %}
-              (from document body)
-            </p>
-            {% call notification() %}
-              No stored claims for this field. The current value comes from the document body.
-            {% endcall %}
-          {% endif %}
-        </section>
-      {% endfor %}
+          </section>
+        {% endfor %}
+        {% call form_actions({"data-form-actions": ""}) %}
+          {{ button(content="Update claims", attrs={"data-form-actions-submit": ""}) }}
+          {{ button(content="Clear changes",
+                    variant="secondary",
+                    attrs={"type": "button", "data-form-actions-clear": ""}) }}
+        {% endcall %}
+      </form>
     {% else %}
       {% call notification() %}
         This document does not have any structured metadata.
