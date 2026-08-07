@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import date
-from typing import Any
+from typing import TYPE_CHECKING, Any, cast
 
 from caselawclient.models.documents.metadata.base import MultipleMetadata, SingleMetadata
 from caselawclient.models.documents.metadata.fields.field import MetadataCategoryValue, MetadataField
@@ -10,6 +10,9 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 from judgments.utils.view_helpers import DocumentView
+
+if TYPE_CHECKING:
+    from caselawclient.models.documents.metadata.types.judges import JudgesMetadata
 
 
 @dataclass
@@ -147,7 +150,10 @@ class MetadataFieldDisplayDecorator:
             "judges": self.document.body.judges,
         }.get(self.metadata_item.key)
 
-        values = value if isinstance(self.metadata_item, MultipleMetadata) else [value]
+        if value is None:
+            return []
+
+        values = value if isinstance(self.metadata_item, MultipleMetadata) and isinstance(value, list) else [value]
         return [body_value for body_value in values if body_value]
 
     def _format_value(self, value):
@@ -191,7 +197,7 @@ class DocumentMetadataView(DocumentView):
 
     def _suppress_body_judges(self, judge_names):
         changed = False
-        judges_metadata = self.document.metadata.get("judges")
+        judges_metadata = cast("JudgesMetadata | None", self.document.metadata.get("judges"))
 
         for judge_name in judge_names:
             cleaned_judge_name = judge_name.strip()

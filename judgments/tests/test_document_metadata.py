@@ -223,7 +223,7 @@ class TestDocumentMetadata(TestCase):
         )
 
         assert response.status_code == 302
-        assert response.url == "/d-a1b2c3/metadata"
+        assert response.headers["Location"] == "/d-a1b2c3/metadata"
         judgment.save_metadata_fields.assert_called_once()
 
         court_claims = judgment.metadata_fields.by_name("court")
