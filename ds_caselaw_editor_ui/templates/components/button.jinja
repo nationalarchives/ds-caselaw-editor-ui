@@ -1,4 +1,10 @@
-{% macro button(href=None, variant=None, size=None, contrast=None, element_type="button", attrs={}, content=None) %}
+{% macro button(href=None,
+  variant=None,
+  size=None,
+  contrast=None,
+  element_type="button",
+  attrs={},
+  content=None) %}
   {% set body_content = caller() if caller is defined else content if content is defined else "" %}
   {% set variant_classes = {"default": "", "danger": "button--danger", "secondary": "button--secondary", "link": "button--link"} %}
   {% set size_classes = {"default": "", "small": "button--small"} %}
@@ -16,15 +22,15 @@
   {% set button_class = ('button ' ~ contrast_class ~ ' ' ~ size_class).strip() %}
   {% if element_type == "input" %}
     <input class="{{ button_class }}"
-           {% for key, value in attrs.items() %}{{ key }}="{{ value }}"{% endfor %} />
+           {% for key, value in attrs.items() %} {{ key }}="{{ value }}"{% endfor %} />
   {% else %}
     {% if href %}
       <a href="{{ href }}"
          class="{{ button_class }}"
-         {% for key, value in attrs.items() %}{{ key }}="{{ value }}"{% endfor %}>
+         {% for key, value in attrs.items() %} {{ key }}="{{ value }}"{% endfor %}>
       {% else %}
         <button class="{{ button_class }}"
-                {% for key, value in attrs.items() %}{{ key }}="{{ value }}"{% endfor %}>
+                {% for key, value in attrs.items() %} {{ key }}="{{ value }}"{% endfor %}>
         {% endif %}
         {{ body_content }}
         {% if href %}
