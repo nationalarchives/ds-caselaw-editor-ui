@@ -37,7 +37,7 @@
                                         }) }}
                   {% endif %}
                 {% endset %}
-                {% call card(right_content=card_right_content, disabled=(True if not display_claim.is_current)) %}
+                {% call card(right_content=card_right_content, disabled=(not display_claim.is_current)) %}
                   <p>Value: {{ display_claim.display_value }}</p>
                   <p>Source: {{ display_claim.source_label }}</p>
                   {% if display_claim.timestamp %}
