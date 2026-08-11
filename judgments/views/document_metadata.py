@@ -69,9 +69,7 @@ class MetadataFieldDisplayDecorator:
         if not self.resolved.has_any_claims:
             return self._fallback_document_claims()
 
-        display_claims = [self._real_claim(claim) for claim in reversed(self.resolved.all_claims)]
-        display_claims.extend(self._faux_suppressed_document_claims())
-        return display_claims
+        return [self._real_claim(claim) for claim in reversed(self.resolved.all_claims)]
 
     def _real_claim(self, claim):
         if claim.rejected:
@@ -119,24 +117,6 @@ class MetadataFieldDisplayDecorator:
                 reject_input_id_prefix=(f"suppress-body-judge-{index}" if self.metadata_item.key == "judges" else None),
             )
             for index, value in enumerate(self._body_values(), start=1)
-        ]
-
-    def _faux_suppressed_document_claims(self):
-        if any(claim.source is MetadataSource.DOCUMENT for claim in self.resolved.all_claims):
-            return []
-
-        return [
-            MetadataDisplayClaim(
-                value=value,
-                display_value=self._format_value(value),
-                source_label="Document",
-                status="Suppressed" if self.active_claims else "Current",
-                status_badge_variant="failure" if self.active_claims else "success",
-                is_current=not self.active_claims,
-                can_reject=False,
-                is_faux=True,
-            )
-            for value in self._body_values()
         ]
 
     def _body_values(self):
