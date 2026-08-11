@@ -5,7 +5,8 @@
   {% if values is not none %}
     {% if values %}
       {% for value in values %}
-        {{ badge(content=value) }}
+        {% set display_value = value.name if value.name is defined else value %}
+        {{ badge(content=display_value) }}
       {% endfor %}
     {% else %}
       {{ None|or_no_data_available_label }}
