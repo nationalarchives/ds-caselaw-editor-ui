@@ -1,4 +1,4 @@
-from typing import Any
+from typing import TYPE_CHECKING, Any, cast
 
 import ds_caselaw_utils as caselawutils
 import environ
@@ -14,6 +14,9 @@ from judgments.templatetags.document_utils import display_datetime
 from judgments.utils import api_client, editors_dict, extract_version_number_from_filename, get_linked_document_uri
 from judgments.utils.link_generators import build_jira_create_link
 from judgments.utils.paginator import paginator
+
+if TYPE_CHECKING:
+    from caselawclient.models.documents.metadata.types.name import NameMetadata
 
 env = environ.Env()
 RESULTS_ORDER = "-date"
@@ -137,7 +140,7 @@ class DocumentViewMixin(TemplateView):
         else:
             context["document_html"] = self.document.content_as_html()
 
-        title = self.document.metadata.get("title")
+        title = cast("NameMetadata | None", self.document.metadata.get("title"))
         context["page_title"] = title.value if title else "Untitled document"
         context["courts"] = caselawutils.courts.get_all(with_jurisdictions=True)
 
