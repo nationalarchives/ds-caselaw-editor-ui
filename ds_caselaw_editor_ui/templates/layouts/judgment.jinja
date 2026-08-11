@@ -7,7 +7,7 @@
 {% from "components/toolbar.jinja" import toolbar, toolbar_section %}
 {% from "components/document_metadata.jinja" import document_metadata %}
 {% block aside %}
-  {{ document_metadata(document=document, preferred_ncn=preferred_ncn) }}
+  {{ document_metadata(document=document) }}
 {% endblock aside %}
 {% block precontent %}
   {% if current_version_number %}

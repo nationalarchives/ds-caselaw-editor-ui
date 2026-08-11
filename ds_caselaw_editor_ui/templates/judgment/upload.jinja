@@ -5,7 +5,7 @@
 {% block content %}
   <div class="container">
     {{ heading(content="Upload a document against:") }}
-    {{ heading(tag="h2", weight="normal", content=judgment.body.name) }}
+    {{ heading(tag="h2", weight="normal", content=page_title) }}
     {% if document.is_published %}
       {% call notification(variant="warning") %}
         You cannot upload documents while this document is published. Unpublish it first to upload additional documents.

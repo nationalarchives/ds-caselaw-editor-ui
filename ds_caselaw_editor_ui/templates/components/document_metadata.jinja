@@ -1,8 +1,11 @@
 {% from "components/icon.jinja" import icon %}
 {% from "components/button.jinja" import button %}
+{% from "components/badge.jinja" import badge %}
 {% from "components/document_metadata_item.jinja" import document_metadata_item %}
-{% macro document_metadata(document=None, preferred_ncn=None, full_details=True) %}
+{% macro document_metadata(document=None) %}
   {% set metadata = document.metadata if document.metadata is defined else {} %}
+  {% set identifiers = document.identifiers if document.identifiers is defined else none %}
+  {% set preferred_identifier = identifiers.preferred() if identifiers else none %}
   <div class="aside__container" data-aside-toggle>
     <button class="aside__toggle" data-aside-toggle-button>
       <span class="icon icon__chevron-left"></span>
@@ -14,38 +17,93 @@
         {{ button(variant="link", size="small", content="Hide", attrs={"data-aside-toggle-button":""}) }}
       </div>
       <dl>
-        {% if full_details %}
-          <div>
-            <dt>NCN</dt>
-            <dd>
-              {{ preferred_ncn.value|or_no_data_available_label }}
-            </dd>
-          </div>
-          <div>
-            <dt>Court</dt>
-            <dd>
-              {{ document_metadata_item(metadata_item=metadata.court) }}
-            </dd>
-          </div>
-          <div>
-            <dt>Judgment date</dt>
-            <dd>
-              {{ document_metadata_item(metadata_item=metadata.date, date_format="%-d %b %Y") }}
-            </dd>
-          </div>
-          <div>
-            <dt>Name</dt>
-            <dd>
-              {{ document_metadata_item(metadata_item=metadata.title) }}
-            </dd>
-          </div>
-          <div>
-            <dt>Identifiers</dt>
-            <dd>
+        <div class="aside__section-heading"
+             data-test-id="metadata-section-heading">
+          <dt role="heading" aria-level="3">Metadata</dt>
+          <dd aria-hidden="true">
+          </dd>
+        </div>
+        <div>
+          <dt>Title</dt>
+          <dd>
+            {{ document_metadata_item(metadata_item=metadata.title) }}
+          </dd>
+        </div>
+        <div>
+          <dt>Court</dt>
+          <dd>
+            {{ document_metadata_item(metadata_item=metadata.court) }}
+          </dd>
+        </div>
+        <div>
+          <dt>Judgment date</dt>
+          <dd>
+            {{ document_metadata_item(metadata_item=metadata.date, date_format="%-d %b %Y") }}
+          </dd>
+        </div>
+        <div>
+          <dt>Jurisdiction</dt>
+          <dd>
+            {{ document_metadata_item(metadata_item=metadata.jurisdiction) }}
+          </dd>
+        </div>
+        <div>
+          <dt>Case number</dt>
+          <dd>
+            {{ document_metadata_item(metadata_item=metadata.case_number) }}
+          </dd>
+        </div>
+        <div>
+          <dt>Judges</dt>
+          <dd>
+            {{ document_metadata_item(metadata_item=metadata.judges) }}
+          </dd>
+        </div>
+        <div>
+          <dt>Categories</dt>
+          <dd>
+            {{ document_metadata_item(metadata_item=metadata.categories) }}
+          </dd>
+        </div>
+        <div class="aside__section-heading"
+             data-test-id="metadata-section-heading">
+          <dt role="heading" aria-level="3">Identifiers</dt>
+          <dd aria-hidden="true">
+          </dd>
+        </div>
+        <div>
+          <dt>Preferred</dt>
+          <dd>
+            {% if preferred_identifier %}
+              {{ badge(content=preferred_identifier.schema.name ~ ": " ~ preferred_identifier.value) }}
+            {% else %}
               {{ None|or_no_data_available_label }}
-            </dd>
-          </div>
-        {% endif %}
+            {% endif %}
+          </dd>
+        </div>
+        <div>
+          <dt>Other</dt>
+          <dd>
+            {% set identifier_list = identifiers.by_score() if identifiers else [] %}
+            {% set preferred_uuid = preferred_identifier.uuid if preferred_identifier else none %}
+            {% set other = namespace(shown=false) %}
+            {% for identifier in identifier_list %}
+              {% if identifier.uuid != preferred_uuid %}
+                {{ badge(content=identifier.schema.name ~ ": " ~ identifier.value) }}
+                {% set other.shown = true %}
+              {% endif %}
+            {% endfor %}
+            {% if not other.shown %}
+              {{ None|or_no_data_available_label }}
+            {% endif %}
+          </dd>
+        </div>
+        <div class="aside__section-heading"
+             data-test-id="metadata-section-heading">
+          <dt role="heading" aria-level="3">Legacy</dt>
+          <dd aria-hidden="true">
+          </dd>
+        </div>
         <div>
           <dt>TDR ref</dt>
           <dd>
@@ -73,18 +131,6 @@
           </dd>
         </div>
         <div>
-          <dt>Jurisdiction</dt>
-          <dd>
-            {{ document_metadata_item(metadata_item=metadata.jurisdiction) }}
-          </dd>
-        </div>
-        <div>
-          <dt>Case number</dt>
-          <dd>
-            {{ document_metadata_item(metadata_item=metadata.case_number) }}
-          </dd>
-        </div>
-        <div>
           <dt>Source name</dt>
           <dd>
             {{ document.source_name|or_no_data_available_label }}
@@ -94,18 +140,6 @@
           <dt>Source email</dt>
           <dd>
             {{ document.source_email|or_no_data_available_label }}
-          </dd>
-        </div>
-        <div>
-          <dt>Judges</dt>
-          <dd>
-            {{ None|or_no_data_available_label }}
-          </dd>
-        </div>
-        <div>
-          <dt>Categories</dt>
-          <dd>
-            {{ document_metadata_item(metadata_item=metadata.categories) }}
           </dd>
         </div>
         <div>

@@ -3,7 +3,7 @@
 {% block content %}
   <div class="container">
     {{ heading(content="Associated documents for:") }}
-    {{ heading(tag="h2", content=document.body.name) }}
+    {{ heading(tag="h2", content=page_title) }}
     <p>
       <a href="{{ url('full-text-html', linked_document_uri) }}">{{ document.document_noun|title }}</a>
     </p>

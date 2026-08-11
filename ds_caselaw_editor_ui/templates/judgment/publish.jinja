@@ -6,7 +6,7 @@
   <div class="container">
     {% if judgment.is_publishable %}
       {{ heading(content="I want to publish:") }}
-      {{ heading(tag="h2", weight="normal", content=judgment.body.name) }}
+      {{ heading(tag="h2", weight="normal", content=page_title) }}
       {% call notification() %}
         Once published you will not be able to delete identifiers for this document, only mark them as deprecated.
       {% endcall %}

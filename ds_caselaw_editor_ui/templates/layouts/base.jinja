@@ -42,7 +42,7 @@
               <a href="{{ url('home') }}">Find and manage case law</a>
             </li>
             {% block breadcrumbs %}
-              {% if document %}{{ render_breadcrumbs("judgment", document.body.name) }}{% endif %}
+              {% if document %}{{ render_breadcrumbs("judgment", page_title) }}{% endif %}
             {% endblock breadcrumbs %}
           </ol>
         </nav>

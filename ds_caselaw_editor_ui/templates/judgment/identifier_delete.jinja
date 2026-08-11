@@ -4,7 +4,7 @@
 {% block content %}
   <div class="container">
     {{ heading(content="Delete identifier for:") }}
-    {{ heading(tag="h2", weight="normal", content=document.body.name) }}
+    {{ heading(tag="h2", weight="normal", content=page_title) }}
     <p>
       You're about to delete a <b>{{ identifier.schema.name }}</b> with value <b>{{ identifier.value }}</b>.
     </p>

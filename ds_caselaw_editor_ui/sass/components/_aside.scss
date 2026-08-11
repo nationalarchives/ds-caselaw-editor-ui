@@ -117,6 +117,26 @@
           margin: 0;
         }
       }
+
+      .aside__section-heading {
+        gap: 0;
+        margin-top: $space-2;
+        padding-top: $space-3;
+        border-top: 1px solid colour-var("accent-border");
+
+        &:first-child {
+          margin-top: 0;
+          padding-top: 0;
+          border-top: 0;
+        }
+
+        dt {
+          font-size: $typography-sm-text-size;
+          font-weight: $typography-bold-font-weight;
+          color: colour-var("font-base");
+          text-transform: uppercase;
+        }
+      }
     }
 
     @media (min-width: $grid-breakpoint-medium) {

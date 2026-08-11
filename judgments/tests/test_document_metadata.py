@@ -83,7 +83,7 @@ class TestMetadataFieldDisplayDecorator(TestCase):
 
         assert not any(claim.is_faux for claim in section.display_claims)
 
-    def test_faux_suppressed_document_claim_is_added_when_no_document_claim_exists(self):
+    def test_body_claims_are_hidden_when_structured_claims_exist(self):
         judgment = JudgmentFactory.build(
             body=DocumentBodyFactory.build(name="Test v Tested", court="Court of Testing"),
         )
@@ -98,14 +98,10 @@ class TestMetadataFieldDisplayDecorator(TestCase):
         )
 
         section = MetadataFieldDisplayDecorator(judgment, judgment.metadata["court"]).section
-        faux_claims = [claim for claim in section.display_claims if claim.is_faux]
 
-        assert len(faux_claims) == 1
-        assert faux_claims[0].display_value == "Court of Testing"
-        assert faux_claims[0].source_label == "Document"
-        assert faux_claims[0].status == "Suppressed"
-        assert faux_claims[0].is_current is False
-        assert faux_claims[0].can_reject is False
+        assert [claim.display_value for claim in section.display_claims] == ["Editor Court"]
+        assert not any(claim.is_faux for claim in section.display_claims)
+        assert not any(claim.display_value == "Court of Testing" for claim in section.display_claims)
 
     def test_body_derived_judges_can_be_suppressed(self):
         judgment = JudgmentFactory.build(
@@ -236,7 +232,7 @@ class TestDocumentMetadata(TestCase):
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
-    def test_document_metadata_view_shows_faux_suppressed_document_claim(
+    def test_document_metadata_view_hides_body_when_structured_claims_exist(
         self,
         document_type,
         document_exists,
@@ -265,8 +261,8 @@ class TestDocumentMetadata(TestCase):
 
         assert response.status_code == 200
         self.assertContains(response, "Editor Court")
-        self.assertContains(response, "Court of Testing")
-        self.assertContains(response, "Suppressed")
+        self.assertNotContains(response, "Court of Testing")
+        self.assertNotContains(response, "Suppressed")
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")

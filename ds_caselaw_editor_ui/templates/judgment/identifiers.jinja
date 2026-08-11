@@ -4,7 +4,7 @@
 {% block content %}
   <div class="container">
     {{ heading(content="Identifiers for:") }}
-    {{ heading(tag="h2", weight="normal", content=document.body.name) }}
+    {{ heading(tag="h2", weight="normal", content=page_title) }}
     {% if document.identifiers %}
       {{ heading(tag="h2", content="Preferred identifier") }}
       <p>
