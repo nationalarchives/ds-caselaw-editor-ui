@@ -85,13 +85,15 @@
           <dt>Other</dt>
           <dd>
             {% set identifier_list = identifiers.by_score() if identifiers else [] %}
-            {% if preferred_identifier and identifier_list|length > 1 %}
-              {% for identifier in identifier_list %}
-                {% if identifier.uuid != preferred_identifier.uuid %}
-                  {{ badge(content=identifier.schema.name ~ ": " ~ identifier.value) }}
-                {% endif %}
-              {% endfor %}
-            {% else %}
+            {% set preferred_uuid = preferred_identifier.uuid if preferred_identifier else none %}
+            {% set other = namespace(shown=false) %}
+            {% for identifier in identifier_list %}
+              {% if identifier.uuid != preferred_uuid %}
+                {{ badge(content=identifier.schema.name ~ ": " ~ identifier.value) }}
+                {% set other.shown = true %}
+              {% endif %}
+            {% endfor %}
+            {% if not other.shown %}
               {{ None|or_no_data_available_label }}
             {% endif %}
           </dd>

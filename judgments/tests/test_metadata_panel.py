@@ -145,6 +145,54 @@ class TestMetadataPanel(TestCase):
 
         assert root.xpath('//dt[text()="TDR ref"]/following-sibling::dd')[0].text_content().strip() == "TDR-999"
 
+    def test_document_metadata_aside_shows_other_identifiers_without_preferred(self):
+        template = environment(loader=PackageLoader("ds_caselaw_editor_ui", "templates")).from_string(
+            '{% from "components/document_metadata.jinja" import document_metadata %}'
+            "{{ document_metadata(document=document) }}",
+        )
+
+        only = SimpleNamespace(
+            schema=SimpleNamespace(name="Find Case Law Identifier"),
+            value="tn4t35ts",
+            uuid="id-only",
+        )
+
+        class FakeIdentifiers:
+            def preferred(self):
+                return None
+
+            def by_score(self):
+                return [only]
+
+        document = SimpleNamespace(
+            metadata={
+                "title": SimpleNamespace(value="Test v Tested"),
+                "court": SimpleNamespace(value="EWCA-Civil"),
+                "date": SimpleNamespace(value=datetime(2025, 5, 23).date()),
+                "jurisdiction": SimpleNamespace(value=""),
+                "case_number": SimpleNamespace(value=""),
+                "judges": SimpleNamespace(values=[]),
+                "categories": SimpleNamespace(values=[]),
+            },
+            identifiers=FakeIdentifiers(),
+            consignment_reference="",
+            document_noun="judgment",
+            has_ever_been_published=False,
+            first_published_datetime_display=None,
+            source_name="",
+            source_email="",
+        )
+
+        rendered = template.render(document=document)
+        root = lxml.html.fromstring(rendered)
+
+        preferred_dd = root.xpath('//dt[text()="Preferred"]/following-sibling::dd')[0]
+        assert preferred_dd.text_content().strip() == "No data available"
+
+        other_dd = root.xpath('//dt[text()="Other"]/following-sibling::dd')[0]
+        assert "Find Case Law Identifier: tn4t35ts" in other_dd.text_content()
+        assert "No data available" not in other_dd.text_content()
+
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
