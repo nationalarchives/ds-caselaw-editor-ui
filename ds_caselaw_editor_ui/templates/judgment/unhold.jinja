@@ -4,7 +4,7 @@
 {% block content %}
   <div class="container">
     {{ heading(content="I want to take this off hold:") }}
-    {{ heading(tag="h2", weight="normal", content=judgment.metadata.title.value) }}
+    {{ heading(tag="h2", weight="normal", content=page_title) }}
     <form action="{{ url('unhold') }}" method="post">
       {{ csrf_input }}
       <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />

@@ -3,7 +3,7 @@
 {% block content %}
   <div class="container">
     {{ heading(content="Confirmation this has been put on hold:") }}
-    {{ heading(tag="h2", weight="normal", content=document.metadata.title.value) }}
+    {{ heading(tag="h2", weight="normal", content=page_title) }}
     <p>
       <a href="{{ email_issue_link }}">Email the submitter</a>
     </p>

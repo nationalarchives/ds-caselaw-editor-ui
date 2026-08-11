@@ -3,7 +3,7 @@
 {% block content %}
   <div class="container">
     {{ heading(content="Download documents for:") }}
-    {{ heading(tag="h2", weight="normal", content=document.metadata.title.value) }}
+    {{ heading(tag="h2", weight="normal", content=page_title) }}
     {% if document.docx_url %}
       <p>
         <a href="{{ document.docx_url }}" download>Download .DOCX</a>

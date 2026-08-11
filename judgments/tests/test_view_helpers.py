@@ -7,9 +7,10 @@ from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
 from caselawclient.models.documents import DocumentURIString
 from django.contrib.auth.models import Group, User
 from django.http import Http404
-from django.test import Client, TestCase
+from django.test import Client, RequestFactory, TestCase
 
 from judgments.utils.view_helpers import (
+    DocumentView,
     get_document_by_uri_or_404,
     user_is_developer,
     user_is_editor,
@@ -118,3 +119,21 @@ class TestDocumentView(TestCase):
         mock_get_document_by_uri.assert_called_with("eat/2023/1_xml_versions/1-1")
         assert b"capybara" in response.content
         assert b"assets/eat/2023/1/cat.jpg" in response.content
+
+    @patch("judgments.utils.view_helpers.get_linked_document_uri")
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    def test_document_view_falls_back_to_untitled_document_without_title(
+        self,
+        mock_get_document_by_uri,
+        mock_get_linked_document_uri,
+    ):
+        judgment = JudgmentFactory.build(uri=DocumentURIString("eat/2023/1"))
+        judgment.metadata.pop("title", None)
+        mock_get_document_by_uri.return_value = judgment
+
+        request = RequestFactory().get("/eat/2023/1")
+        request.user = User.objects.get_or_create(username="testuser")[0]
+        view = DocumentView()
+        view.setup(request, document_uri="eat/2023/1")
+
+        assert view.get_context_data()["page_title"] == "Untitled document"
