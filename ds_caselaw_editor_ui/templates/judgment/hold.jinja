@@ -4,7 +4,7 @@
 {% block content %}
   <div class="container">
     {{ heading(content="I want to put this on hold:") }}
-    {{ heading(tag="h2", weight="normal", content=judgment.body.name) }}
+    {{ heading(tag="h2", weight="normal", content=judgment.metadata.title.value) }}
     <form action="{{ url('hold') }}" method="post">
       {{ csrf_input }}
       <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />

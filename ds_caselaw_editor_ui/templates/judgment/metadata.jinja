@@ -11,7 +11,7 @@
 {% endblock aside %}
 {% block content %}
   <div class="container">
-    {{ heading(content="Metadata for " ~ document.body.name) }}
+    {{ heading(content="Metadata for " ~ document.metadata.title.value) }}
     {% if document.metadata %}
       <form method="post">
         {{ csrf_input }}

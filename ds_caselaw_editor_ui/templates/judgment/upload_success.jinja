@@ -4,13 +4,13 @@
 {% from "components/button.jinja" import button %}
 {% block banner %}
   {% call notification(variant="success", marginless=True) %}
-    File successfully uploaded to: {{ document.body.name }}
+    File successfully uploaded to: {{ document.metadata.title.value }}
   {% endcall %}
 {% endblock banner %}
 {% block content %}
   <div class="container">
     {{ heading(content="Confirmation that a file has been uploaded for") }}
-    {{ heading(tag="h2", content=document.body.name) }}
+    {{ heading(tag="h2", content=document.metadata.title.value) }}
     {% call button(href='/' ~ document.uri) %}
       Review document
     {% endcall %}

@@ -3,7 +3,7 @@
 {% block content %}
   <div class="container">
     {{ heading(content="Confirmation this has been published") }}
-    {{ heading(tag="h2", weight="normal", content=judgment.body.name) }}
+    {{ heading(tag="h2", weight="normal", content=judgment.metadata.title.value) }}
     <p>
       <a href="{{ judgment.public_uri }}"
          target="_blank"

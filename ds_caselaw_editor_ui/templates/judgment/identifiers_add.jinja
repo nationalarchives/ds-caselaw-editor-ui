@@ -4,7 +4,7 @@
 {% block content %}
   <div class="container">
     {{ heading(content="Add identifiers for:") }}
-    {{ heading(tag="h2", weight="normal", content=document.body.name) }}
+    {{ heading(tag="h2", weight="normal", content=document.metadata.title.value) }}
     {% if document.has_ever_been_published %}
       {% call notification(variant="warning") %}
         You cannot delete new identifiers once added because this document has been published.
