@@ -8,7 +8,7 @@
 {% endblock breadcrumbs %}
 {% block content %}
   {{ search_form() }}
-  {% call documents_table(total_count=total, total_count_postfix="unpublished documents") %}
+  {% call documents_table(total_count=total, total_count_postfix="documents") %}
     {% for document in documents %}{{ documents_table_item(document=document) }}{% endfor %}
   {% endcall %}
   <div class="container">{{ pagination(pagination_data) }}</div>
