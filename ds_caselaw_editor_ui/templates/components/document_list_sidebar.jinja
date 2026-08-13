@@ -1,0 +1,104 @@
+{% from "components/button.jinja" import button %}
+{% macro document_list_sidebar(system_presets,
+  active_preset,
+  publication_status,
+  publication_status_choices,
+  court_options,
+  uses_court_facets,
+  from_year,
+  to_year) %}
+  <aside class="document-list-sidebar">
+    <div class="document-list-sidebar__section">
+      <h2 class="document-list-sidebar__heading">Views</h2>
+      <ul class="document-list-sidebar__presets">
+        {% for preset in system_presets %}
+          <li>
+            <a href="{{ url('home') }}?{{ preset.query_string() }}"
+               class="document-list-sidebar__preset{% if active_preset and active_preset.id == preset.id %} document-list-sidebar__preset--active{% endif %}">
+              {{ preset.label }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="document-list-sidebar__section">
+      <h2 class="document-list-sidebar__heading">Filters</h2>
+      <div class="document-list-sidebar__filters">
+        <div class="document-list-sidebar__actions">
+          <button type="submit" class="button button--small">Apply filters</button>
+          {% set clear_href = url('home') ~ '?' ~ (active_preset.query_string() if active_preset else 'publication_status=unpublished&order=-date') %}
+          {{ button(content="Clear filters", href=clear_href, variant="secondary", size="small") }}
+        </div>
+        <fieldset class="govuk-fieldset document-list-sidebar__fieldset">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Publication status</legend>
+          <div class="govuk-radios govuk-radios--small">
+            {% for value, label in publication_status_choices %}
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input"
+                       type="radio"
+                       id="publication-status-{{ value }}"
+                       name="publication_status"
+                       value="{{ value }}"
+                       {% if publication_status == value %}checked{% endif %} />
+                <label class="govuk-label govuk-radios__label"
+                       for="publication-status-{{ value }}">{{ label }}</label>
+              </div>
+            {% endfor %}
+          </div>
+        </fieldset>
+        <fieldset class="govuk-fieldset document-list-sidebar__fieldset">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+            Court
+            {% if uses_court_facets %}<span class="document-list-sidebar__hint">(matching filters)</span>{% endif %}
+          </legend>
+          <div class="govuk-checkboxes govuk-checkboxes--small document-list-sidebar__courts">
+            {% for option in court_options %}
+              <div class="govuk-checkboxes__item">
+                <input class="govuk-checkboxes__input"
+                       type="checkbox"
+                       id="court-{{ option.value | replace('/', '-') }}"
+                       name="court"
+                       value="{{ option.value }}"
+                       {% if option.checked %}checked{% endif %} />
+                <label class="govuk-label govuk-checkboxes__label"
+                       for="court-{{ option.value | replace('/', '-') }}">
+                  {{ option.label }}
+                  {% if option.count %}<span class="document-list-sidebar__count">({{ option.count }})</span>{% endif %}
+                </label>
+              </div>
+            {% else %}
+              <p class="document-list-sidebar__empty">No courts to show for these filters.</p>
+            {% endfor %}
+          </div>
+        </fieldset>
+        <fieldset class="govuk-fieldset document-list-sidebar__fieldset">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Decision year</legend>
+          <div class="document-list-sidebar__year-range">
+            <div class="govuk-form-group">
+              <label class="govuk-label" for="from_year">From</label>
+              <input class="govuk-input govuk-input--width-4"
+                     id="from_year"
+                     name="from_year"
+                     type="number"
+                     inputmode="numeric"
+                     min="1000"
+                     max="9999"
+                     value="{{ from_year or '' }}" />
+            </div>
+            <div class="govuk-form-group">
+              <label class="govuk-label" for="to_year">To</label>
+              <input class="govuk-input govuk-input--width-4"
+                     id="to_year"
+                     name="to_year"
+                     type="number"
+                     inputmode="numeric"
+                     min="1000"
+                     max="9999"
+                     value="{{ to_year or '' }}" />
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </aside>
+{% endmacro %}

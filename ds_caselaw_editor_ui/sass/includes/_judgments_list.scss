@@ -23,6 +23,24 @@
     font-weight: $typography-normal-font-weight;
   }
 
+  .results__result-header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-4;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    width: 100%;
+  }
+
+  &__order {
+    margin-bottom: 0;
+  }
+
+  &__order-form {
+    margin: 0;
+  }
+
   &__more-info {
     display: inline-block;
     flex: 1;
