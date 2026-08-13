@@ -16,10 +16,10 @@ from .views.document_full_text import (
 )
 from .views.document_history import DocumentHistoryView
 from .views.document_identifiers import AddDocumentIdentifierView, DeleteDocumentIdentifierView, DocumentIdentifiersView
+from .views.document_list import HomeView, ResultsView
 from .views.document_metadata import DocumentMetadataView
 from .views.document_reparse import reparse
 from .views.errors import NotFoundView, PermissionDeniedView, ServerErrorView
-from .views.index import HomeView
 from .views.judgment_edit import EditJudgmentView, edit_view_redirect
 from .views.judgment_hold import (
     HoldDocumentSuccessView,
@@ -37,7 +37,6 @@ from .views.judgment_publish import (
     publish,
     unpublish,
 )
-from .views.results import ResultsView
 from .views.signed_asset import redirect_to_signed_asset
 from .views.stub import CreateStubView, create_stub
 from .views.unlock import unlock
