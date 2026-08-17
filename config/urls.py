@@ -1,7 +1,8 @@
+from allauth.urls import urlpatterns as allauth_urlpatterns
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.views import defaults as default_views
 from django.views.generic.base import TemplateView
 
@@ -19,6 +20,15 @@ from . import views
 handler404 = NotFoundView.as_view()
 handler500 = ServerErrorView.as_view()
 handler403 = PermissionDeniedView.as_view()
+
+# Stop unmatched /accounts/* requests falling through to the judgments catch-all document view
+accounts_urlpatterns = [
+    *allauth_urlpatterns,
+    re_path(
+        r"^.*$",
+        NotFoundView.as_view(),
+    ),
+]
 
 urlpatterns = [
     path(
@@ -47,7 +57,7 @@ urlpatterns = [
         PasswordResetFromKeyDoneView.as_view(),
         name="account_reset_password_from_key_done",
     ),
-    path("accounts/", include("allauth.urls")),
+    path("accounts/", include(accounts_urlpatterns)),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # Your stuff: custom urls includes go here
