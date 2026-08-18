@@ -2,6 +2,30 @@ from unittest.mock import patch
 
 from django.test import TestCase
 from django.urls import resolve, reverse
+from django.urls.resolvers import URLPattern, URLResolver
+
+from config import urls as project_urls
+
+
+def get_project_route_names(urlpatterns):
+    """Collect named route names from the project URL configuration.
+
+    Args:
+        urlpatterns: URL patterns to inspect.
+
+    Returns:
+        A set of route names found in the configured URL patterns.
+    """
+    route_names = set()
+
+    for pattern in urlpatterns:
+        if isinstance(pattern, URLPattern):
+            if pattern.name:
+                route_names.add(pattern.name)
+        elif isinstance(pattern, URLResolver) and str(pattern.pattern) == "":
+            route_names.update(get_project_route_names(pattern.url_patterns))
+
+    return route_names
 
 
 class TestUnmatchedAccountUrls(TestCase):
@@ -50,8 +74,8 @@ class TestJudgmentViewsRequireAuthentication(TestCase):
         assert response.status_code == 302
         assert "/accounts/login" in response["Location"]
 
-    def test_unauthenticated_users_are_redirected_from_auth_protected_top_level_named_urls(self):
-        auth_protected_top_level_urls = [
+    def auth_protected_top_level_urls(self):
+        return [
             reverse("home"),
             reverse("components"),
             reverse("results"),
@@ -77,7 +101,47 @@ class TestJudgmentViewsRequireAuthentication(TestCase):
             reverse("create-stub-document"),
         ]
 
-        for url in auth_protected_top_level_urls:
+    def judgment_view_urls(self, document_uri):
+        return [
+            reverse("associated-documents", kwargs={"document_uri": document_uri}),
+            reverse("edit-document", kwargs={"document_uri": document_uri}),
+            reverse("document-history", kwargs={"document_uri": document_uri}),
+            reverse("document-identifiers", kwargs={"document_uri": document_uri}),
+            reverse("document-identifiers-add", kwargs={"document_uri": document_uri}),
+            reverse(
+                "document-identifier-delete",
+                kwargs={"document_uri": document_uri, "identifier_uuid": "test-identifier"},
+            ),
+            reverse("document-metadata", kwargs={"document_uri": document_uri}),
+            reverse("publish-document", kwargs={"document_uri": document_uri}),
+            reverse("publish-document-success", kwargs={"document_uri": document_uri}),
+            reverse("unpublish-document", kwargs={"document_uri": document_uri}),
+            reverse("unpublish-document-success", kwargs={"document_uri": document_uri}),
+            reverse("hold-document", kwargs={"document_uri": document_uri}),
+            reverse("hold-document-success", kwargs={"document_uri": document_uri}),
+            reverse("unhold-document", kwargs={"document_uri": document_uri}),
+            reverse("unhold-document-success", kwargs={"document_uri": document_uri}),
+            reverse("document-upload", kwargs={"document_uri": document_uri}),
+            reverse("upload-document-success", kwargs={"document_uri": document_uri}),
+            reverse("delete-document", kwargs={"document_uri": document_uri}),
+            reverse("full-text-pdf", kwargs={"document_uri": document_uri}),
+            reverse("document-downloads", kwargs={"document_uri": document_uri}),
+            reverse("full-text-xml", kwargs={"document_uri": document_uri}),
+            reverse("full-text-html", kwargs={"document_uri": document_uri}),
+        ]
+
+    def public_view_urls(self):
+        return [
+            reverse("check"),
+            reverse("account_login"),
+            reverse("account_reset_password"),
+            reverse("account_reset_password_done"),
+            reverse("account_reset_password_from_key", kwargs={"uidb36": "abc", "key": "test-key"}),
+            reverse("account_reset_password_from_key_done"),
+        ]
+
+    def test_unauthenticated_users_are_redirected_from_auth_protected_top_level_named_urls(self):
+        for url in self.auth_protected_top_level_urls():
             with self.subTest(url=url):
                 self.assert_redirects_to_login(url)
 
@@ -88,34 +152,22 @@ class TestJudgmentViewsRequireAuthentication(TestCase):
 
     def test_unauthenticated_users_are_redirected_from_judgment_views(self):
         for document_uri in self.document_uris:
-            judgment_view_urls = [
-                reverse("associated-documents", kwargs={"document_uri": document_uri}),
-                reverse("edit-document", kwargs={"document_uri": document_uri}),
-                reverse("document-history", kwargs={"document_uri": document_uri}),
-                reverse("document-identifiers", kwargs={"document_uri": document_uri}),
-                reverse("document-identifiers-add", kwargs={"document_uri": document_uri}),
-                reverse(
-                    "document-identifier-delete",
-                    kwargs={"document_uri": document_uri, "identifier_uuid": "test-identifier"},
-                ),
-                reverse("document-metadata", kwargs={"document_uri": document_uri}),
-                reverse("publish-document", kwargs={"document_uri": document_uri}),
-                reverse("publish-document-success", kwargs={"document_uri": document_uri}),
-                reverse("unpublish-document", kwargs={"document_uri": document_uri}),
-                reverse("unpublish-document-success", kwargs={"document_uri": document_uri}),
-                reverse("hold-document", kwargs={"document_uri": document_uri}),
-                reverse("hold-document-success", kwargs={"document_uri": document_uri}),
-                reverse("unhold-document", kwargs={"document_uri": document_uri}),
-                reverse("unhold-document-success", kwargs={"document_uri": document_uri}),
-                reverse("document-upload", kwargs={"document_uri": document_uri}),
-                reverse("upload-document-success", kwargs={"document_uri": document_uri}),
-                reverse("delete-document", kwargs={"document_uri": document_uri}),
-                reverse("full-text-pdf", kwargs={"document_uri": document_uri}),
-                reverse("document-downloads", kwargs={"document_uri": document_uri}),
-                reverse("full-text-xml", kwargs={"document_uri": document_uri}),
-                reverse("full-text-html", kwargs={"document_uri": document_uri}),
-            ]
-
-            for url in judgment_view_urls:
+            for url in self.judgment_view_urls(document_uri):
                 with self.subTest(document_uri=document_uri, url=url):
                     self.assert_redirects_to_login(url)
+
+    def test_project_route_names_match_the_explicit_url_lists(self):
+        """Ensure the configured routes stay aligned with the explicit URL lists.
+
+        This will fail if a new route is added to the project's URL config without also
+        being added to one of the explicit URL lists above, which would otherwise leave
+        the tests silently out of sync.
+        """
+        expected_route_names = {
+            resolve(url).url_name
+            for url in self.auth_protected_top_level_urls()
+            + self.judgment_view_urls(self.document_uris[0])
+            + self.public_view_urls()
+        }
+
+        assert get_project_route_names(project_urls.urlpatterns) == expected_route_names
