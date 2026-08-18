@@ -41,17 +41,15 @@ class TestUnmatchedAccountUrls(TestCase):
 
     def test_unmatched_account_urls_do_not_resolve_to_the_document_view(self):
         for url in self.unmatched_urls:
-            with self.subTest(url=url):
-                assert resolve(url).url_name != "full-text-html"
+            assert resolve(url).url_name != "full-text-html"
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     def test_unmatched_account_urls_return_404_without_calling_get_document_by_uri_or_404(self, mock_get_document):
         for url in self.unmatched_urls:
-            with self.subTest(url=url):
-                response = self.client.get(url)
+            response = self.client.get(url)
 
-                assert response.status_code == 404
-                mock_get_document.assert_not_called()
+            assert response.status_code == 404
+            mock_get_document.assert_not_called()
 
     def test_existing_account_urls_still_resolve(self):
         for url_name in [
@@ -61,8 +59,7 @@ class TestUnmatchedAccountUrls(TestCase):
             "account_reset_password_done",
             "account_reset_password_from_key_done",
         ]:
-            with self.subTest(url_name=url_name):
-                assert resolve(reverse(url_name)).url_name == url_name
+            assert resolve(reverse(url_name)).url_name == url_name
 
 
 class TestJudgmentViewsRequireAuthentication(TestCase):
@@ -142,19 +139,16 @@ class TestJudgmentViewsRequireAuthentication(TestCase):
 
     def test_unauthenticated_users_are_redirected_from_auth_protected_top_level_named_urls(self):
         for url in self.auth_protected_top_level_urls():
-            with self.subTest(url=url):
-                self.assert_redirects_to_login(url)
+            self.assert_redirects_to_login(url)
 
     def test_unauthenticated_users_are_redirected_from_auth_protected_legacy_redirect_urls(self):
         for url in ["/edit", "/detail", "/xml"]:
-            with self.subTest(url=url):
-                self.assert_redirects_to_login(url)
+            self.assert_redirects_to_login(url)
 
     def test_unauthenticated_users_are_redirected_from_judgment_views(self):
         for document_uri in self.document_uris:
             for url in self.judgment_view_urls(document_uri):
-                with self.subTest(document_uri=document_uri, url=url):
-                    self.assert_redirects_to_login(url)
+                self.assert_redirects_to_login(url)
 
     def test_project_route_names_match_the_explicit_url_lists(self):
         """Ensure the configured routes stay aligned with the explicit URL lists.
