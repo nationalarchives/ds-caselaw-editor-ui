@@ -2,7 +2,7 @@ from django.views.generic import TemplateView
 
 
 class TemplateViewWithContext(TemplateView):
-    page_title = None
+    page_title: str | None = None
 
     def get_context_data(self, **kwargs):
         return {
