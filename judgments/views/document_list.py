@@ -1,7 +1,11 @@
+from waffle import flag_is_active
+
 from judgments.utils.document_list import PUBLICATION_STATUS_ALL, PUBLICATION_STATUS_UNPUBLISHED
 from judgments.utils.view_helpers import get_document_list_filters, get_search_results_from_filters
 
 from .paginated_view import PaginatedView
+
+DOCUMENT_LIST_QUEUE_FLAG = "document_list_queue"
 
 
 class DocumentListView(PaginatedView):
@@ -26,9 +30,12 @@ class DocumentListView(PaginatedView):
             request=self.request,
             paginator=search_context["paginator"],
         )
+        context["document_list_queue_enabled"] = flag_is_active(self.request, DOCUMENT_LIST_QUEUE_FLAG)
 
         if self.is_results_view:
             context["page_title"] = "Search results"
+        elif context["document_list_queue_enabled"] and filters.matching_preset():
+            context["page_title"] = filters.matching_preset().label
 
         return context
 

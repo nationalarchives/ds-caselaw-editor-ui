@@ -1,0 +1,280 @@
+.document-list {
+  overflow-x: clip;
+
+  // Full-width workspace that never forces the page wider than the viewport
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: $space-3 $space-4 $space-6;
+
+  &__sidebar {
+    min-width: 0;
+
+    @media (min-width: $grid-breakpoint-large) {
+      position: sticky;
+      top: $space-3;
+
+      overflow: hidden auto;
+      align-self: start;
+
+      max-height: calc(100vh - #{$space-6});
+      padding-right: $space-3;
+      border-right: 1px solid colour-var("accent-border");
+    }
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    gap: $space-4;
+
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  // Compact search strip inside the queue column
+  .search-component {
+    max-width: 100%;
+    border: 1px solid colour-var("accent-border");
+    background-color: colour-var("accent-background-light");
+
+    &__container {
+      box-sizing: border-box;
+      max-width: 100%;
+      margin: 0;
+      padding: $space-3 $space-4;
+    }
+
+    h2 {
+      margin-bottom: $space-2;
+
+      font-size: $typography-sm-text-size;
+      font-weight: $typography-bold-font-weight;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    &__filters {
+      gap: $space-4;
+      margin-bottom: $space-2;
+    }
+
+    &__search-input {
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+
+    input[type="search"] {
+      flex: 1 1 12rem;
+      min-width: 0;
+      min-height: 2.5rem;
+      font-size: $typography-sm-text-size;
+    }
+
+    input[type="submit"] {
+      padding: $space-2 $space-6;
+      font-size: $typography-sm-text-size;
+    }
+  }
+
+  // Ticket-queue table — columns shrink to fit; table scrolls only if needed
+  .judgments-list {
+    // Prefer flexible fractions with zero minimums so the grid can fit the viewport
+    $queue-columns: minmax(0, 2.4fr) minmax(0, 1.1fr) minmax(0, 1.3fr)
+      minmax(0, 0.8fr) minmax(0, 0.9fr) minmax(0, 1fr) minmax(0, 0.9fr);
+
+    max-width: 100%;
+
+    &__container {
+      max-width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    &__header {
+      font-size: $typography-md-text-size;
+      font-weight: $typography-bold-font-weight;
+    }
+
+    &__judgments-list-controls-container {
+      margin-bottom: $space-3;
+      padding-bottom: $space-3;
+      border-bottom: 1px solid colour-var("accent-border");
+    }
+
+    &__table {
+      overflow-x: auto;
+
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 100%;
+      border: 1px solid colour-var("accent-border");
+    }
+
+    &__table-header {
+      display: none;
+
+      box-sizing: border-box;
+      width: 100%;
+      min-width: 0;
+      padding: 0;
+      border-bottom: 1px solid colour-var("accent-border");
+
+      background-color: colour-var("accent-background-light");
+
+      @media (min-width: $grid-breakpoint-large) {
+        display: grid;
+        grid-template-columns: $queue-columns;
+        gap: $space-3;
+        align-items: center;
+
+        padding: $space-2 $space-3;
+
+        font-size: $typography-xs-text-size;
+        font-weight: $typography-bold-font-weight;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+    }
+
+    &__list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    &__judgment {
+      display: flex;
+      flex-direction: column;
+      gap: $space-2;
+
+      box-sizing: border-box;
+      width: 100%;
+      min-width: 0;
+      margin: 0;
+      padding: $space-3;
+      border-bottom: 1px solid colour-var("accent-border");
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:hover {
+        background-color: colour-var("accent-background-light");
+      }
+
+      @media (min-width: $grid-breakpoint-large) {
+        display: grid;
+        grid-template-columns: $queue-columns;
+        gap: $space-3;
+        align-items: center;
+
+        padding: $space-3;
+      }
+    }
+
+    &__col {
+      overflow: hidden;
+
+      min-width: 0;
+
+      font-size: $typography-sm-text-size;
+      line-height: $typography-md-line-height;
+      text-overflow: ellipsis;
+    }
+
+    &__col--document {
+      font-size: $typography-md-text-size;
+    }
+
+    &__col--ncn,
+    &__col--court,
+    &__col--submitter,
+    &__col--tdr,
+    &__col--submitted {
+      white-space: nowrap;
+    }
+
+    &__col--submitted {
+      color: colour-var("font-dark");
+
+      @media (min-width: $grid-breakpoint-large) {
+        text-align: right;
+      }
+    }
+
+    &__judgment-details-name {
+      display: inline;
+
+      font-size: inherit;
+      font-weight: $typography-bold-font-weight;
+      line-height: $typography-md-line-height;
+      text-decoration: underline;
+      overflow-wrap: anywhere;
+
+      &:hover {
+        text-decoration-thickness: 2px;
+      }
+    }
+
+    &__mobile-label {
+      display: inline-block;
+      margin-right: $space-1;
+      font-weight: $typography-bold-font-weight;
+
+      &::after {
+        content: ":";
+      }
+
+      @media (min-width: $grid-breakpoint-large) {
+        display: none;
+      }
+    }
+
+    &__submitted-date {
+      display: block;
+    }
+
+    &__submitted-time {
+      display: block;
+      color: colour-var("font-dark");
+    }
+
+    // Neutralise legacy stacked-meta layout leftovers
+    &__judgment-details,
+    &__judgment-submitted,
+    &__judgment-details-meta,
+    &__table-header-details,
+    &__table-header-submitted {
+      display: contents;
+    }
+  }
+
+  .govuk-pagination {
+    margin-top: $space-4;
+  }
+
+  @media (min-width: $grid-breakpoint-large) {
+    display: grid;
+    grid-template-columns: 16.5rem minmax(0, 1fr);
+    gap: 0 $space-5;
+    align-items: start;
+
+    min-height: calc(100vh - 8rem);
+    padding: $space-4 $space-5 $space-6;
+  }
+
+  @media (width >= 1400px) {
+    grid-template-columns: 17.5rem minmax(0, 1fr);
+    padding-right: $space-6;
+    padding-left: $space-6;
+  }
+}
+
+// Ensure the page shell can shrink inside the viewport
+.main-container,
+.main-container__content {
+  min-width: 0;
+  max-width: 100%;
+}

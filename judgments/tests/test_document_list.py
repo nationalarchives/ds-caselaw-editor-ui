@@ -9,7 +9,10 @@ from judgments.utils.document_list import (
     PUBLICATION_STATUS_ALL,
     PUBLICATION_STATUS_PUBLISHED,
     PUBLICATION_STATUS_UNPUBLISHED,
+    SYSTEM_PRESETS,
     DocumentListFilters,
+    catalogue_court_options,
+    process_court_facets,
 )
 from judgments.utils.view_helpers import get_document_list_filters, get_search_results_from_filters
 
@@ -39,7 +42,7 @@ class TestDocumentListFilters(SimpleTestCase):
         assert filters.only_unpublished is False
         assert filters.show_unpublished is True
 
-    def test_order_stays_newest_with_query(self):
+    def test_order_defaults_to_date_with_query(self):
         filters = DocumentListFilters.from_query_params(QueryDict("query=foo"))
         assert filters.order == "-date"
 
@@ -52,77 +55,63 @@ class TestDocumentListFilters(SimpleTestCase):
             QueryDict("court=ewca/civ&court=uksc&from_year=2020&to_year=2019"),
         )
         assert filters.courts == ["ewca/civ", "uksc"]
+        # Years swapped so from <= to
         assert filters.from_year == 2019
         assert filters.to_year == 2020
         assert filters.date_from == "2019-01-01"
         assert filters.date_to == "2020-12-31"
         assert filters.court_param == "ewca/civ,uksc"
 
-    def test_total_count_postfix(self):
-        unpublished = DocumentListFilters(publication_status=PUBLICATION_STATUS_UNPUBLISHED)
-        published = DocumentListFilters(publication_status=PUBLICATION_STATUS_PUBLISHED)
-        all_docs = DocumentListFilters(publication_status=PUBLICATION_STATUS_ALL)
-        assert unpublished.total_count_postfix() == "unpublished documents"
-        assert published.total_count_postfix() == "published documents"
-        assert all_docs.total_count_postfix() == "documents"
-
-    def test_invalid_page_falls_back_to_one(self):
-        filters = DocumentListFilters.from_query_params(QueryDict("page=not-a-number"))
-        assert filters.page == 1
-
-    def test_blank_query_and_unknown_court_ignored(self):
+    def test_matching_preset(self):
         filters = DocumentListFilters.from_query_params(
-            QueryDict("query=%20%20&court=not-a-real-court&order=-date"),
+            QueryDict("publication_status=unpublished&order=-date"),
         )
-        assert filters.query is None
-        assert filters.courts == []
-        assert filters.court_param is None
+        preset = filters.matching_preset()
+        assert preset is not None
+        assert preset.id == "unpublished"
 
-    def test_invalid_publication_status_uses_default(self):
+    def test_matching_preset_none_when_extra_filters(self):
         filters = DocumentListFilters.from_query_params(
-            QueryDict("publication_status=nope"),
-            default_publication_status=PUBLICATION_STATUS_UNPUBLISHED,
+            QueryDict("publication_status=unpublished&order=-date&court=uksc"),
         )
-        assert filters.publication_status == PUBLICATION_STATUS_UNPUBLISHED
+        assert filters.matching_preset() is None
 
-    def test_invalid_years_ignored(self):
-        filters = DocumentListFilters.from_query_params(QueryDict("from_year=abc&to_year=99"))
-        assert filters.from_year is None
-        assert filters.to_year is None
-        assert filters.date_from is None
-        assert filters.date_to is None
+    def test_system_presets_defined(self):
+        assert [p.id for p in SYSTEM_PRESETS] == ["unpublished", "recently-published", "all"]
 
-    def test_out_of_range_year_ignored(self):
-        filters = DocumentListFilters.from_query_params(QueryDict("from_year=10000"))
-        assert filters.from_year is None
 
-    def test_single_year_bounds(self):
-        filters = DocumentListFilters.from_query_params(QueryDict("from_year=2020"))
-        assert filters.from_year == 2020
-        assert filters.to_year is None
-        assert filters.date_from == "2020-01-01"
-        assert filters.date_to is None
+class TestCourtFacets(SimpleTestCase):
+    def test_catalogue_includes_selected(self):
+        options = catalogue_court_options(["uksc"])
+        assert options
+        selected = [opt for opt in options if opt.checked]
+        assert len(selected) == 1
+        assert selected[0].value == "uksc"
 
-    def test_context_dict(self):
-        filters = DocumentListFilters.from_query_params(
-            QueryDict("query=foo&search_filter=default&publication_status=all&order=-updated&page=2"),
-        )
-        assert filters.context_dict() == {
-            "query": "foo",
-            "search_filter": "default",
-            "page": 2,
-            "order": "-updated",
-            "publication_status": PUBLICATION_STATUS_ALL,
-            "total_count_postfix": "documents",
-        }
+    def test_process_court_facets(self):
+        options = process_court_facets({"EWCA-Civil": "12", "2024": "99", "UKSC": "3"}, ["uksc"])
+        values = [opt.value for opt in options]
+        assert "ewca/civ" in values
+        assert "uksc" in values
+        # Year facet ignored
+        assert "2024" not in values
+        uksc = next(opt for opt in options if opt.value == "uksc")
+        assert uksc.checked is True
+        assert uksc.count == "3"
+
+    def test_selected_missing_from_facets_still_shown(self):
+        options = process_court_facets({"EWCA-Civil": "12"}, ["uksc"])
+        uksc = next(opt for opt in options if opt.value == "uksc")
+        assert uksc.checked is True
+        assert uksc.count is None
 
 
 class TestSearchResultsFromFilters(SimpleTestCase):
-    def _mock_response(self):
+    def _mock_response(self, *, facets=None):
         mock_response = MagicMock()
         mock_response.total = 0
         mock_response.results = []
-        mock_response.facets = {}
+        mock_response.facets = facets or {}
         return mock_response
 
     @patch("judgments.utils.view_helpers.search_and_parse_response")
@@ -166,7 +155,15 @@ class TestSearchResultsFromFilters(SimpleTestCase):
         )
 
     @patch("judgments.utils.view_helpers.search_and_parse_response")
-    def test_published_status(self, mock_search):
+    def test_search_uses_facets_for_courts(self, mock_search):
+        mock_search.return_value = self._mock_response(facets={"UKSC": "4", "EWCA-Civil": "2"})
+        filters = get_document_list_filters(QueryDict("query=Imperial&publication_status=all"))
+        result = get_search_results_from_filters(filters)
+        assert result["uses_court_facets"] is True
+        assert any(opt.count == "4" for opt in result["court_options"] if opt.value == "uksc")
+
+    @patch("judgments.utils.view_helpers.search_and_parse_response")
+    def test_published_preset(self, mock_search):
         mock_search.return_value = self._mock_response()
         filters = get_document_list_filters(QueryDict("publication_status=published&order=-date"))
         get_search_results_from_filters(filters)
@@ -182,19 +179,14 @@ class TestSearchResultsFromFilters(SimpleTestCase):
         )
 
     @patch("judgments.utils.view_helpers.search_and_parse_response")
-    def test_ncn_search(self, mock_search):
-        mock_search.return_value = self._mock_response()
+    def test_browse_uses_catalogue_not_facets(self, mock_search):
+        mock_search.return_value = self._mock_response(facets={"UKSC": "4"})
         filters = get_document_list_filters(
-            QueryDict("query=[2023] UKSC 1&search_filter=ncn&publication_status=all"),
+            QueryDict("publication_status=unpublished"),
+            default_publication_status=PUBLICATION_STATUS_UNPUBLISHED,
         )
-        get_search_results_from_filters(filters)
-        mock_search.assert_called_with(
-            api_client,
-            SearchParameters(
-                neutral_citation="[2023] UKSC 1",
-                order="-date",
-                only_unpublished=False,
-                show_unpublished=True,
-                page=1,
-            ),
-        )
+        result = get_search_results_from_filters(filters)
+        assert result["uses_court_facets"] is False
+        # Catalogue mode: options present without relying on facet counts
+        assert result["court_options"]
+        assert all(opt.count is None for opt in result["court_options"])

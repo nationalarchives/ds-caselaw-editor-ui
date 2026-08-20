@@ -11,7 +11,7 @@ from django.views.generic import TemplateView
 
 from judgments.templatetags.document_utils import display_datetime
 from judgments.utils import api_client, editors_dict, extract_version_number_from_filename, get_linked_document_uri
-from judgments.utils.document_list import DocumentListFilters
+from judgments.utils.document_list import DocumentListFilters, court_filter_options
 from judgments.utils.link_generators import build_jira_create_link
 from judgments.utils.paginator import paginator
 
@@ -81,6 +81,7 @@ def get_search_results_from_filters(filters: DocumentListFilters) -> dict[str, A
         "judgments": search_response.results,
         "documents": search_response.results,
         "paginator": paginator(filters.page, search_response.total),
+        "court_options": court_filter_options(filters, search_response.facets),
     }
 
 
