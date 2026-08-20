@@ -1,7 +1,6 @@
 from typing import TYPE_CHECKING, Any, cast
 
 import ds_caselaw_utils as caselawutils
-import environ
 from caselawclient.client_helpers.search_helpers import search_and_parse_response
 from caselawclient.errors import DocumentNotFoundError
 from caselawclient.models.documents import Document, DocumentURIString
@@ -12,14 +11,12 @@ from django.views.generic import TemplateView
 
 from judgments.templatetags.document_utils import display_datetime
 from judgments.utils import api_client, editors_dict, extract_version_number_from_filename, get_linked_document_uri
+from judgments.utils.document_list import DocumentListFilters
 from judgments.utils.link_generators import build_jira_create_link
 from judgments.utils.paginator import paginator
 
 if TYPE_CHECKING:
     from caselawclient.models.documents.metadata.types.name import NameMetadata
-
-env = environ.Env()
-RESULTS_ORDER = "-date"
 
 
 def user_is_superuser(user):
@@ -43,74 +40,48 @@ def user_is_developer(user):
     return user.groups.filter(name="Developers").exists() if user else None
 
 
-def get_search_parameters(
-    params,
-    default_page=1,
-    only_unpublished=False,
-):
-    query = params.get("query")
-    search_filter = params.get("search_filter")
-    page = int(params.get("page", default_page))
-    return {
-        "query": query,
-        "search_filter": search_filter,
-        "page": page,
-        "order": RESULTS_ORDER,
-        "only_unpublished": only_unpublished,
-    }
-
-
-def get_default_search_results(parameters: dict[str, Any]) -> dict[str, Any]:
-    search_parameters = SearchParameters(
-        query=parameters["query"],
-        order=RESULTS_ORDER,
-        only_unpublished=parameters["only_unpublished"],
-        show_unpublished=True,
-        page=parameters["page"],
+def get_document_list_filters(params, *, default_publication_status: str | None = None) -> DocumentListFilters:
+    return DocumentListFilters.from_query_params(
+        params,
+        default_publication_status=default_publication_status,
     )
 
+
+def _search_parameters_from_filters(
+    filters: DocumentListFilters,
+    *,
+    neutral_citation: bool = False,
+) -> SearchParameters:
+    common: dict[str, Any] = {
+        "order": filters.order,
+        "only_unpublished": filters.only_unpublished,
+        "show_unpublished": filters.show_unpublished,
+        "page": filters.page,
+    }
+    if filters.court_param:
+        common["court"] = filters.court_param
+    if filters.date_from:
+        common["date_from"] = filters.date_from
+    if filters.date_to:
+        common["date_to"] = filters.date_to
+
+    if neutral_citation:
+        return SearchParameters(neutral_citation=filters.query, **common)
+    return SearchParameters(query=filters.query, **common)
+
+
+def get_search_results_from_filters(filters: DocumentListFilters) -> dict[str, Any]:
+    neutral_citation = filters.search_filter == "ncn"
+    search_parameters = _search_parameters_from_filters(filters, neutral_citation=neutral_citation)
     search_response = search_and_parse_response(api_client, search_parameters)
 
     return {
-        "query": parameters["query"],
-        "search_filter": parameters["search_filter"],
+        **filters.context_dict(),
         "total": search_response.total,
         "judgments": search_response.results,
-        "order": RESULTS_ORDER,
-        "paginator": paginator(parameters["page"], search_response.total),
+        "documents": search_response.results,
+        "paginator": paginator(filters.page, search_response.total),
     }
-
-
-def get_ncn_results(parameters: dict[str, Any]) -> dict[str, Any]:
-    search_parameters = SearchParameters(
-        neutral_citation=parameters["query"],
-        order=RESULTS_ORDER,
-        only_unpublished=parameters["only_unpublished"],
-        show_unpublished=True,
-        page=parameters["page"],
-    )
-
-    search_response = search_and_parse_response(api_client, search_parameters)
-
-    return {
-        "query": parameters["query"],
-        "search_filter": parameters["search_filter"],
-        "total": search_response.total,
-        "judgments": search_response.results,
-        "order": RESULTS_ORDER,
-        "paginator": paginator(parameters["page"], search_response.total),
-    }
-
-
-def get_search_results(parameters: dict[str, Any]) -> dict[str, Any]:
-    search_filter = parameters["search_filter"]
-
-    match search_filter:
-        case "ncn":
-            return get_ncn_results(parameters)
-
-        case _:
-            return get_default_search_results(parameters)
 
 
 def get_document_by_uri_or_404(uri: str) -> Document:

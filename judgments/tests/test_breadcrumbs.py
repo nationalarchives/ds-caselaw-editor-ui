@@ -13,7 +13,7 @@ from judgments.tests.factories import User
 class TestBreadcrumbs(TestCase):
     client = Client(raise_request_exception=False)
 
-    @patch("judgments.views.index.get_search_results")
+    @patch("judgments.views.document_list.get_search_results_from_filters")
     def test_breadcrumb_when_home(self, mock_get_search_results):
         """
         GIVEN an authenticated user
@@ -26,8 +26,10 @@ class TestBreadcrumbs(TestCase):
             "query": "",
             "total": 0,
             "judgments": [],
+            "documents": [],
             "order": "",
             "paginator": {},
+            "total_count_postfix": "unpublished documents",
         }
         response = self.client.get("/")
         breadcrumb_html = """
@@ -42,7 +44,7 @@ class TestBreadcrumbs(TestCase):
         """
         self.assertContains(response, breadcrumb_html, html=True)
 
-    @patch("judgments.views.results.get_search_results")
+    @patch("judgments.views.document_list.get_search_results_from_filters")
     def test_breadcrumb_when_search_results(self, mock_get_search_results):
         """
         GIVEN an authenticated user
@@ -56,8 +58,10 @@ class TestBreadcrumbs(TestCase):
             "query": "",
             "total": 0,
             "judgments": [],
+            "documents": [],
             "order": "",
             "paginator": {},
+            "total_count_postfix": "documents",
         }
         response = self.client.get("/results?foo")
         breadcrumb_html = """
