@@ -1,6 +1,7 @@
 from unittest.mock import Mock, patch
 
 import pytest
+from caselawclient.errors import MarklogicAPIError
 from caselawclient.factories import JudgmentFactory, PressSummaryFactory
 from caselawclient.models.documents import DocumentURIString
 from caselawclient.models.identifiers.neutral_citation import (
@@ -26,10 +27,11 @@ class TestDocumentEdit(TestCase):
             kwargs={"document_uri": "ewca/civ/2004/63X"},
         )
 
+    @patch("judgments.views.judgment_edit.invalidate_caches")
     @patch("judgments.views.judgment_edit.api_client")
     @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
     @patch("judgments.utils.aws.boto3")
-    def test_edit_judgment_no_ncn_change(self, mock_boto, mock_judgment, api_client):
+    def test_edit_judgment_no_ncn_change(self, mock_boto, mock_judgment, api_client, mock_invalidate_caches):
         judgment = JudgmentFactory.build(
             uri=DocumentURIString("edittest/4321/123"),
             name="Test v Tested",
@@ -64,6 +66,45 @@ class TestDocumentEdit(TestCase):
             "/edittest/4321/123",
             "2023-01-02",
         )
+
+        mock_invalidate_caches.assert_called_once_with(judgment.uri)
+
+    @patch("judgments.views.judgment_edit.invalidate_caches")
+    @patch("judgments.views.judgment_edit.api_client")
+    @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
+    def test_edit_judgment_does_not_invalidate_cache_when_api_save_fails(
+        self,
+        mock_judgment,
+        api_client,
+        mock_invalidate_caches,
+    ):
+        judgment = JudgmentFactory.build(
+            uri=DocumentURIString("edittest/4321/123"),
+            name="Test v Tested",
+        )
+
+        judgment.identifiers.add(NeutralCitationNumber("[4321] UKSC 123"))
+        mock_judgment.return_value = judgment
+
+        api_client.set_document_name.side_effect = MarklogicAPIError("Failed to savae")
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.post(
+            "/pubtest/4321/123/edit",
+            {
+                "judgment_uri": "/edittest/4321/123",
+                "metadata_name": "New Name",
+                "neutral_citation": "[4321] UKSC 123",
+                "court": "Court of Testing",
+                "judgment_date": "2 Jan 2023",
+            },
+        )
+
+        messages = list(get_messages(response.wsgi_request))
+
+        assert "There was an error saving the Document" in messages[0].message
+        mock_invalidate_caches.assert_not_called()
 
     @patch("judgments.views.judgment_edit.update_ncn_of_document")
     @patch("judgments.views.judgment_edit.api_client")
