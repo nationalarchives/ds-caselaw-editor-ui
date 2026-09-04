@@ -109,9 +109,9 @@ class EditJudgmentView(View):
 
         except MarklogicAPIError as e:
             messages.error(request, f"There was an error saving the Document: {e}")
-
-        if not settings.DEBUG:
-            invalidate_caches(judgment.uri)
+        else:
+            if not settings.DEBUG:
+                invalidate_caches(judgment.uri)
 
         if return_to == "html":
             return_path = reverse(
