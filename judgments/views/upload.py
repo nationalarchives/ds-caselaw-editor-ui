@@ -86,7 +86,7 @@ def upload(request):
     file = request.FILES["file"]
     upload_data = file.read()  # the bytes of the file
     upload_asset_to_private_bucket(body=upload_data, s3_key=s3_key)
-    messages.success(request, "Asset successfully uploaded to {s3_key}")
+    messages.success(request, f"Asset successfully uploaded to {s3_key}")
     return HttpResponseRedirect(
         reverse("upload-document-success", kwargs={"document_uri": judgment.uri}),
     )

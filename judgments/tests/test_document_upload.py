@@ -41,9 +41,11 @@ class TestUploadView(TestCase):
         superuser = User.objects.create_superuser(username="clark")
         self.client.force_login(superuser)
 
-        _response = self.client.post("/upload", {"file": pdf, "judgment_uri": "d-a1b2c3"})
+        response = self.client.post("/upload", {"file": pdf, "judgment_uri": "d-a1b2c3"})
+        messages = list(get_messages(response.wsgi_request))
         mock_doc.assert_called_once_with("d-a1b2c3")
         mock_upload.assert_called_once_with(body=b"%PDF-1.7", s3_key="d-a1b2c3/d-a1b2c3.pdf")
+        assert messages[0].message == "Asset successfully uploaded to d-a1b2c3/d-a1b2c3.pdf"
 
     @patch("judgments.views.upload.get_document_by_uri_or_404")
     @patch("judgments.views.upload.upload_asset_to_private_bucket")
