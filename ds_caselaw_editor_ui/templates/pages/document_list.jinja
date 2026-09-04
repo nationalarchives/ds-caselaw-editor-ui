@@ -1,13 +1,43 @@
 {% extends "layouts/base.jinja" %}
 {% from "components/search_form.jinja" import search_form with context %}
 {% from "components/pagination.jinja" import pagination %}
-{% from "components/documents_table.jinja" import documents_table, documents_table_item %}
+{% from "components/documents_table.jinja" import documents_table, documents_table_item, documents_queue_table, documents_queue_table_item %}
+{% from "components/document_list_sidebar.jinja" import document_list_sidebar %}
 {% block breadcrumbs %}
 {% endblock breadcrumbs %}
 {% block content %}
-  {{ search_form() }}
-  {% call documents_table(total_count=total, total_count_postfix=total_count_postfix) %}
-    {% for document in documents %}{{ documents_table_item(document=document) }}{% endfor %}
-  {% endcall %}
-  <div class="container">{{ pagination(pagination_data) }}</div>
+  {% if document_list_queue_enabled %}
+    {# WIP: ticket-queue layout + sidebar behind waffle flag document_list_queue #}
+    <form method="get"
+          action="{{ url('home') }}"
+          class="document-list"
+          id="document-list-form">
+      <div class="document-list__sidebar">
+        {{ document_list_sidebar(system_presets=system_presets,
+                active_preset=active_preset,
+                publication_status=publication_status,
+                publication_status_choices=publication_status_choices,
+                court_options=court_options,
+                uses_court_facets=uses_court_facets,
+                from_year=from_year,
+                to_year=to_year) }}
+      </div>
+      <div class="document-list__main">
+        {{ search_form(embedded=true) }}
+        {% call documents_queue_table(total_count=total,
+          total_count_postfix=total_count_postfix,
+          order=order,
+          order_choices=order_choices) %}
+          {% for document in documents %}{{ documents_queue_table_item(document=document) }}{% endfor %}
+        {% endcall %}
+        {{ pagination(pagination_data) }}
+      </div>
+    </form>
+  {% else %}
+    {{ search_form() }}
+    {% call documents_table(total_count=total, total_count_postfix=total_count_postfix) %}
+      {% for document in documents %}{{ documents_table_item(document=document) }}{% endfor %}
+    {% endcall %}
+    <div class="container">{{ pagination(pagination_data) }}</div>
+  {% endif %}
 {% endblock content %}
