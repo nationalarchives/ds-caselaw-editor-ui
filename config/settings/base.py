@@ -205,7 +205,6 @@ TEMPLATES = [
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
-                "judgments.context_processors.cookie_consent",
                 "judgments.context_processors.environment",
             ],
         },
@@ -221,7 +220,6 @@ TEMPLATES = [
             "context_processors": [
                 "django.template.context_processors.request",
                 "django.contrib.messages.context_processors.messages",
-                "judgments.context_processors.cookie_consent",
                 "judgments.context_processors.environment",
                 "judgments.context_processors.user_context",
             ],
