@@ -2,6 +2,7 @@
 {% from "includes/judgment_navigation.jinja" import judgment_navigation %}
 {% from "includes/document_breadcrumbs.jinja" import render_breadcrumbs %}
 {% from "components/notification.jinja" import notification %}
+{% from "components/cookie-banner/macro.html" import tnaCookieBanner %}
 <!DOCTYPE html>
 <html lang="en-gb">
   <head>
@@ -22,7 +23,8 @@
   </head>
   {% block banner %}
   {% endblock banner %}
-  <body>
+  <body data-tna-cookies-domain="{{ cookie_domain }}">
+    {{ tnaCookieBanner({"serviceName": "Find Case Law", "cookiesUrl": "https://www.nationalarchives.gov.uk/cookies/"}) }}
     {% for message in messages %}
       {% set notification_variant = message.tags if message.tags else "success" %}
       {% call notification(variant=notification_variant, marginless=True) %}

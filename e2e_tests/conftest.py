@@ -12,7 +12,7 @@ def authenticated_page(browser: Browser, base_url: str) -> Page:
     context.add_cookies(
         [
             {
-                "name": "dontShowCookieNotice",
+                "name": "cookie_preferences_set",
                 "value": "true",
                 "domain": "django",
                 "path": "/",

@@ -4,6 +4,7 @@ import TabSet from "./components/tabSet";
 import "./components/document_navigation_links";
 import "./components/aside";
 import "./components/form_actions";
+import "./cookies.js";
 
 (function ($) {
   $.fn.manage_filters = function (options) {
