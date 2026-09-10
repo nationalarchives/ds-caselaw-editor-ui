@@ -61,7 +61,6 @@ urlpatterns = [
     # redirect to signed asset URLs
     path("signed-asset/<path:key>", redirect_to_signed_asset, name="signed-asset"),
     # Judgment verbs
-    path("upload", upload, name="upload"),
     path("publish", publish, name="publish"),
     path("unpublish", unpublish, name="unpublish"),
     path("hold", hold, name="hold"),
