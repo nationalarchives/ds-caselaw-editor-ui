@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Any
+from urllib.parse import urlencode
 
 from ds_caselaw_utils import courts as all_courts
 
@@ -32,11 +33,63 @@ PUBLICATION_STATUSES = frozenset(
 
 DEFAULT_ORDER = "-date"
 
+PRESET_UNPUBLISHED = "unpublished"
+PRESET_PUBLISHED = "published"
+PRESET_ALL = "all"
+
 COURTS_BY_PARAM = {
     court.canonical_param: court
     for court in list(all_courts.get_listable_courts()) + list(all_courts.get_listable_tribunals())
     if court.canonical_param
 }
+
+
+@dataclass(frozen=True)
+class SystemPreset:
+    """Named system view: a stable id over publication status + order defaults."""
+
+    id: str
+    label: str
+    publication_status: str
+    order: str = DEFAULT_ORDER
+
+    def as_query_params(self) -> dict[str, str]:
+        return {
+            "publication_status": self.publication_status,
+            "order": self.order,
+        }
+
+    def query_string(self) -> str:
+        return urlencode(self.as_query_params())
+
+
+SYSTEM_PRESETS: tuple[SystemPreset, ...] = (
+    SystemPreset(
+        id=PRESET_UNPUBLISHED,
+        label="Unpublished documents",
+        publication_status=PUBLICATION_STATUS_UNPUBLISHED,
+    ),
+    SystemPreset(
+        id=PRESET_PUBLISHED,
+        label="Published documents",
+        publication_status=PUBLICATION_STATUS_PUBLISHED,
+    ),
+    SystemPreset(
+        id=PRESET_ALL,
+        label="All documents",
+        publication_status=PUBLICATION_STATUS_ALL,
+    ),
+)
+
+SYSTEM_PRESETS_BY_ID = {preset.id: preset for preset in SYSTEM_PRESETS}
+
+
+def get_system_preset(preset_id: str) -> SystemPreset:
+    try:
+        return SYSTEM_PRESETS_BY_ID[preset_id]
+    except KeyError as exc:
+        msg = f"Unknown system preset: {preset_id}"
+        raise KeyError(msg) from exc
 
 
 @dataclass
@@ -51,19 +104,23 @@ class DocumentListFilters:
     to_year: int | None = None
 
     @classmethod
-    def from_query_params(cls, params, *, default_publication_status: str | None = None) -> DocumentListFilters:
+    def from_query_params(
+        cls,
+        params,
+        *,
+        default_preset: SystemPreset | None = None,
+    ) -> DocumentListFilters:
         """Parse request GET params into filters.
 
-        When the request has no publication_status, ``default_publication_status``
-        is used — home defaults to unpublished, results to all.
+        When the request has no publication_status (or an invalid one), defaults
+        come from ``default_preset``, falling back to the unpublished preset.
+        Missing/invalid order falls back to that preset's order.
         """
+        if default_preset is None:
+            default_preset = get_system_preset(PRESET_UNPUBLISHED)
+
         raw_status = params.get("publication_status")
-        if raw_status in PUBLICATION_STATUSES:
-            publication_status = raw_status
-        elif default_publication_status:
-            publication_status = default_publication_status
-        else:
-            publication_status = PUBLICATION_STATUS_ALL
+        publication_status = raw_status if raw_status in PUBLICATION_STATUSES else default_preset.publication_status
 
         query = params.get("query") or None
         if query is not None:
@@ -71,7 +128,7 @@ class DocumentListFilters:
 
         order = params.get("order") or None
         if order not in ORDER_VALUES:
-            order = DEFAULT_ORDER
+            order = default_preset.order
 
         courts = params.getlist("court") if hasattr(params, "getlist") else []
         courts = [c for c in courts if c in COURTS_BY_PARAM]
@@ -132,6 +189,24 @@ class DocumentListFilters:
             return "published documents"
         return "documents"
 
+    def matching_preset(self) -> SystemPreset | None:
+        """Return the system preset that exactly matches the current filters.
+
+        A preset is only active when publication status and order match and there
+        are no search/court/year refinements (page alone does not clear it).
+        """
+        for preset in SYSTEM_PRESETS:
+            if (
+                self.publication_status == preset.publication_status
+                and self.order == preset.order
+                and not self.query
+                and not self.courts
+                and self.from_year is None
+                and self.to_year is None
+            ):
+                return preset
+        return None
+
     def context_dict(self) -> dict[str, Any]:
         return {
             "query": self.query,
@@ -140,6 +215,7 @@ class DocumentListFilters:
             "order": self.order,
             "publication_status": self.publication_status,
             "total_count_postfix": self.total_count_postfix(),
+            "active_preset": self.matching_preset(),
         }
 
 
