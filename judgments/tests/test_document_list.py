@@ -7,7 +7,7 @@ from django.test import SimpleTestCase
 from judgments.utils import api_client
 from judgments.utils.document_list import (
     PRESET_ALL,
-    PRESET_RECENTLY_PUBLISHED,
+    PRESET_PUBLISHED,
     PRESET_UNPUBLISHED,
     PUBLICATION_STATUS_ALL,
     PUBLICATION_STATUS_PUBLISHED,
@@ -141,10 +141,10 @@ class TestDocumentListFilters(SimpleTestCase):
     def test_system_presets_defined(self):
         assert [preset.id for preset in SYSTEM_PRESETS] == [
             PRESET_UNPUBLISHED,
-            PRESET_RECENTLY_PUBLISHED,
+            PRESET_PUBLISHED,
             PRESET_ALL,
         ]
-        assert get_system_preset(PRESET_RECENTLY_PUBLISHED).publication_status == PUBLICATION_STATUS_PUBLISHED
+        assert get_system_preset(PRESET_PUBLISHED).publication_status == PUBLICATION_STATUS_PUBLISHED
 
 
 class TestSearchResultsFromFilters(SimpleTestCase):

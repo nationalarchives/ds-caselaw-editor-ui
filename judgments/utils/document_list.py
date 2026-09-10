@@ -34,7 +34,7 @@ PUBLICATION_STATUSES = frozenset(
 DEFAULT_ORDER = "-date"
 
 PRESET_UNPUBLISHED = "unpublished"
-PRESET_RECENTLY_PUBLISHED = "recently-published"
+PRESET_PUBLISHED = "published"
 PRESET_ALL = "all"
 
 COURTS_BY_PARAM = {
@@ -70,8 +70,8 @@ SYSTEM_PRESETS: tuple[SystemPreset, ...] = (
         publication_status=PUBLICATION_STATUS_UNPUBLISHED,
     ),
     SystemPreset(
-        id=PRESET_RECENTLY_PUBLISHED,
-        label="Recently published",
+        id=PRESET_PUBLISHED,
+        label="Published documents",
         publication_status=PUBLICATION_STATUS_PUBLISHED,
     ),
     SystemPreset(
