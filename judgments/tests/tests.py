@@ -4,8 +4,10 @@ from unittest.mock import MagicMock, patch
 from caselawclient.search_parameters import SearchParameters
 from django.contrib.auth.models import User
 from django.test import TestCase
+from waffle.testutils import override_flag
 
 from judgments.utils import api_client
+from judgments.views.document_list import DOCUMENT_LIST_QUEUE_FLAG
 
 
 def assert_match(regex, string):
@@ -71,6 +73,29 @@ class TestSearchResults(TestCase):
                 page=1,
             ),
         )
+
+    @patch("judgments.utils.view_helpers.search_and_parse_response")
+    def test_home_flag_off_keeps_classic_list(self, mock_search):
+        mock_search.return_value = self._mock_search_response()
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        response = self.client.get("/")
+        decoded = response.content.decode("utf-8")
+        assert response.status_code == 200
+        assert "document-list-sidebar" not in decoded
+        assert "Document details" in decoded
+
+    @patch("judgments.utils.view_helpers.search_and_parse_response")
+    @override_flag(DOCUMENT_LIST_QUEUE_FLAG, active=True)
+    def test_home_flag_on_shows_queue_and_sidebar(self, mock_search):
+        mock_search.return_value = self._mock_search_response()
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        response = self.client.get("/")
+        decoded = response.content.decode("utf-8")
+        assert response.status_code == 200
+        assert "document-list-sidebar" in decoded
+        assert "document-list-form" in decoded
+        assert "Order by" in decoded
+        assert "Unpublished documents" in decoded
 
 
 class TestCheckPrefixUrls(TestCase):

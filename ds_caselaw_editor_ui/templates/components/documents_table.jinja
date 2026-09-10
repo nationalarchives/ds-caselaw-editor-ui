@@ -64,3 +64,80 @@
     </div>
   </li>
 {% endmacro %}
+{% macro documents_queue_table(total_count=None,
+  total_count_postfix=None,
+  order=None,
+  order_choices=None) %}
+  <div class="judgments-list">
+    <div class="judgments-list__container">
+      <div class="judgments-list__judgments-list-controls-container">
+        <div class="results__result-header">
+          <p class="judgments-list__header">{{ total_count|intcomma }} {{ total_count_postfix }}</p>
+          {% if order_choices %}
+            <div class="govuk-form-group judgments-list__order">
+              <label class="govuk-label" for="order">Order by</label>
+              <select class="govuk-select"
+                      id="order"
+                      name="order"
+                      onchange="this.form.requestSubmit()">
+                {% for value, label in order_choices %}
+                  <option value="{{ value }}" {% if order == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="judgments-list__table">
+        <div class="judgments-list__table-header" aria-hidden="true">
+          <div class="judgments-list__col judgments-list__col--document">Document</div>
+          <div class="judgments-list__col judgments-list__col--ncn">NCN</div>
+          <div class="judgments-list__col judgments-list__col--court">Court</div>
+          <div class="judgments-list__col judgments-list__col--status">Status</div>
+          <div class="judgments-list__col judgments-list__col--submitter">Submitter</div>
+          <div class="judgments-list__col judgments-list__col--tdr">TDR ref</div>
+          <div class="judgments-list__col judgments-list__col--submitted">Submitted</div>
+        </div>
+        <ul class="judgments-list__list">
+          {{ caller() }}
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endmacro %}
+{% macro documents_queue_table_item(document=None) %}
+  <li class="judgments-list__judgment">
+    <div class="judgments-list__col judgments-list__col--document">
+      <a class="judgments-list__judgment-details-name"
+         href="{{ url('full-text-html', document.uri) }}">{{ document.name or "[Untitled Document]" }}</a>
+    </div>
+    <div class="judgments-list__col judgments-list__col--ncn">
+      <span class="judgments-list__mobile-label">NCN</span>
+      {{ document.neutral_citation or "—" }}
+    </div>
+    <div class="judgments-list__col judgments-list__col--court">
+      <span class="judgments-list__mobile-label">Court</span>
+      {{ document.court.name or "—" }}
+    </div>
+    <div class="judgments-list__col judgments-list__col--status">
+      <span class="judgments-list__mobile-label">Status</span>
+      {% set badge_variant = get_badge_variant_from_status(document.metadata.editor_status) %}
+      {% call badge(variant=badge_variant, size="small") %}
+        {{ document.metadata.editor_status }}
+      {% endcall %}
+    </div>
+    <div class="judgments-list__col judgments-list__col--submitter">
+      <span class="judgments-list__mobile-label">Submitter</span>
+      {{ document.metadata.author or "—" }}
+    </div>
+    <div class="judgments-list__col judgments-list__col--tdr">
+      <span class="judgments-list__mobile-label">TDR ref</span>
+      {{ document.metadata.consignment_reference or "—" }}
+    </div>
+    <div class="judgments-list__col judgments-list__col--submitted">
+      <span class="judgments-list__mobile-label">Submitted</span>
+      <span class="judgments-list__submitted-date">{{ document.metadata.submission_datetime|date }}</span>
+      <span class="judgments-list__submitted-time">{{ document.metadata.submission_datetime|time }}</span>
+    </div>
+  </li>
+{% endmacro %}
