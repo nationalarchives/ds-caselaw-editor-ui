@@ -1,0 +1,87 @@
+.document-list-sidebar {
+  &__section {
+    margin-bottom: $space-5;
+    padding-bottom: $space-4;
+    border-bottom: 1px solid colour-var("accent-border");
+
+    &:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+  }
+
+  &__heading {
+    margin: 0 0 $space-2;
+
+    font-family: $font-roboto;
+    font-size: $typography-sm-text-size;
+    font-weight: $typography-bold-font-weight;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  &__presets {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__preset {
+    display: block;
+
+    padding: $space-2 $space-3;
+    border-left: 3px solid transparent;
+
+    font-size: $typography-sm-text-size;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      background-color: colour-var("accent-background-light");
+    }
+
+    &--active {
+      border-left-color: colour-var("accent-brand");
+      font-weight: $typography-bold-font-weight;
+      background-color: colour-var("accent-background-light");
+    }
+  }
+
+  &__fieldset {
+    margin: 0 0 $space-4;
+  }
+
+  &__hint {
+    font-weight: $typography-normal-font-weight;
+    color: colour-var("font-dark");
+  }
+
+  &__count {
+    color: colour-var("font-dark");
+  }
+
+  &__empty {
+    margin: 0;
+    font-size: $typography-sm-text-size;
+    color: colour-var("font-dark");
+  }
+
+  &__courts {
+    overflow-y: auto;
+    max-height: 14rem;
+  }
+
+  &__year-range {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-3;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-2;
+    align-items: center;
+  }
+}

@@ -20,7 +20,8 @@
     margin-top: $space-8;
   }
 
-  input[type="submit"] {
+  input[type="submit"],
+  .button {
     @include call-to-action-button;
 
     padding-right: $space-12;
