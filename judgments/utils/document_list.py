@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Any
+from urllib.parse import urlencode
 
 from ds_caselaw_utils import courts as all_courts
 
@@ -32,11 +33,68 @@ PUBLICATION_STATUSES = frozenset(
 
 DEFAULT_ORDER = "-date"
 
+SAVED_VIEW_UNPUBLISHED = "unpublished"
+SAVED_VIEW_PUBLISHED = "published"
+SAVED_VIEW_ALL = "all"
+
+
+class InvalidDocumentListFilterError(ValueError):
+    """Raised when a filter query param is present but not an allowed value."""
+
+
 COURTS_BY_PARAM = {
     court.canonical_param: court
     for court in list(all_courts.get_listable_courts()) + list(all_courts.get_listable_tribunals())
     if court.canonical_param
 }
+
+
+@dataclass(frozen=True)
+class SavedViewPreset:
+    """Named saved view: a stable id over publication status + order defaults."""
+
+    id: str
+    label: str
+    publication_status: str
+    order: str = DEFAULT_ORDER
+
+    def as_query_params(self) -> dict[str, str]:
+        return {
+            "publication_status": self.publication_status,
+            "order": self.order,
+        }
+
+    def query_string(self) -> str:
+        return urlencode(self.as_query_params())
+
+
+SAVED_VIEW_PRESETS: tuple[SavedViewPreset, ...] = (
+    SavedViewPreset(
+        id=SAVED_VIEW_UNPUBLISHED,
+        label="Unpublished documents",
+        publication_status=PUBLICATION_STATUS_UNPUBLISHED,
+    ),
+    SavedViewPreset(
+        id=SAVED_VIEW_PUBLISHED,
+        label="Published documents",
+        publication_status=PUBLICATION_STATUS_PUBLISHED,
+    ),
+    SavedViewPreset(
+        id=SAVED_VIEW_ALL,
+        label="All documents",
+        publication_status=PUBLICATION_STATUS_ALL,
+    ),
+)
+
+SAVED_VIEW_PRESETS_BY_ID = {preset.id: preset for preset in SAVED_VIEW_PRESETS}
+
+
+def get_saved_view_preset(preset_id: str) -> SavedViewPreset:
+    try:
+        return SAVED_VIEW_PRESETS_BY_ID[preset_id]
+    except KeyError as exc:
+        msg = f"Unknown saved view preset: {preset_id}"
+        raise KeyError(msg) from exc
 
 
 @dataclass
@@ -51,27 +109,39 @@ class DocumentListFilters:
     to_year: int | None = None
 
     @classmethod
-    def from_query_params(cls, params, *, default_publication_status: str | None = None) -> DocumentListFilters:
-        """Parse request GET params into filters.
+    def from_query_params(
+        cls,
+        params,
+        *,
+        base_saved_view: SavedViewPreset,
+    ) -> DocumentListFilters:
+        """Parse request GET params into filters stacked on ``base_saved_view``.
 
-        When the request has no publication_status, ``default_publication_status``
-        is used — home defaults to unpublished, results to all.
+        When publication_status or order are omitted, they come from the base
+        saved view. If either param is present but not an allowed value, raise
+        ``InvalidDocumentListFilterError``.
         """
         raw_status = params.get("publication_status")
-        if raw_status in PUBLICATION_STATUSES:
+        if raw_status in (None, ""):
+            publication_status = base_saved_view.publication_status
+        elif raw_status in PUBLICATION_STATUSES:
             publication_status = raw_status
-        elif default_publication_status:
-            publication_status = default_publication_status
         else:
-            publication_status = PUBLICATION_STATUS_ALL
+            msg = f"Invalid publication_status: {raw_status}"
+            raise InvalidDocumentListFilterError(msg)
 
         query = params.get("query") or None
         if query is not None:
             query = query.strip() or None
 
-        order = params.get("order") or None
-        if order not in ORDER_VALUES:
-            order = DEFAULT_ORDER
+        raw_order = params.get("order")
+        if raw_order in (None, ""):
+            order = base_saved_view.order
+        elif raw_order in ORDER_VALUES:
+            order = raw_order
+        else:
+            msg = f"Invalid order: {raw_order}"
+            raise InvalidDocumentListFilterError(msg)
 
         courts = params.getlist("court") if hasattr(params, "getlist") else []
         courts = [c for c in courts if c in COURTS_BY_PARAM]
@@ -131,6 +201,24 @@ class DocumentListFilters:
         if self.publication_status == PUBLICATION_STATUS_PUBLISHED:
             return "published documents"
         return "documents"
+
+    def matching_saved_view(self) -> SavedViewPreset | None:
+        """Return the saved view preset that exactly matches the current filters.
+
+        A saved view is only active when publication status and order match and there
+        are no search/court/year refinements (page alone does not clear it).
+        """
+        for preset in SAVED_VIEW_PRESETS:
+            if (
+                self.publication_status == preset.publication_status
+                and self.order == preset.order
+                and not self.query
+                and not self.courts
+                and self.from_year is None
+                and self.to_year is None
+            ):
+                return preset
+        return None
 
     def context_dict(self) -> dict[str, Any]:
         return {

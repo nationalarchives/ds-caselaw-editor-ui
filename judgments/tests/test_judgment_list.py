@@ -72,3 +72,17 @@ class TestJudgmentView(TestCase):
         assert "Test Judgment 2" in decoded_response
         assert "Author Two" in decoded_response
         assert "TDR-2023-CD2" in decoded_response
+
+    def test_invalid_publication_status_returns_400(self):
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.get(reverse("home"), {"publication_status": "nope"})
+
+        assert response.status_code == 400
+
+    def test_invalid_order_returns_400(self):
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.get(reverse("results"), {"order": "not-a-real-order"})
+
+        assert response.status_code == 400

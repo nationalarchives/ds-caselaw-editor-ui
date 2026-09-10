@@ -1,4 +1,11 @@
-from judgments.utils.document_list import PUBLICATION_STATUS_ALL, PUBLICATION_STATUS_UNPUBLISHED
+from django.core.exceptions import BadRequest
+
+from judgments.utils.document_list import (
+    SAVED_VIEW_ALL,
+    SAVED_VIEW_UNPUBLISHED,
+    InvalidDocumentListFilterError,
+    get_saved_view_preset,
+)
 from judgments.utils.view_helpers import get_document_list_filters, get_search_results_from_filters
 
 from .paginated_view import PaginatedView
@@ -9,16 +16,20 @@ class DocumentListView(PaginatedView):
 
     template_engine = "jinja"
     template_name = "pages/document_list.jinja"
-    default_publication_status = PUBLICATION_STATUS_UNPUBLISHED
+    base_saved_view_id: str
     is_results_view = False
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        filters = get_document_list_filters(
-            self.request.GET,
-            default_publication_status=self.default_publication_status,
-        )
+        try:
+            filters = get_document_list_filters(
+                self.request.GET,
+                base_saved_view=get_saved_view_preset(self.base_saved_view_id),
+            )
+        except InvalidDocumentListFilterError as exc:
+            raise BadRequest(str(exc)) from exc
+
         search_context = get_search_results_from_filters(filters)
 
         context.update(search_context)
@@ -34,12 +45,12 @@ class DocumentListView(PaginatedView):
 
 
 class HomeView(DocumentListView):
-    default_publication_status = PUBLICATION_STATUS_UNPUBLISHED
+    base_saved_view_id = SAVED_VIEW_UNPUBLISHED
 
 
 class ResultsView(DocumentListView):
-    """Search/results alias of the document list; defaults to all documents."""
+    """Search/results alias of the document list; stacked on all documents."""
 
     template_name = "judgment/results.jinja"
-    default_publication_status = PUBLICATION_STATUS_ALL
+    base_saved_view_id = SAVED_VIEW_ALL
     is_results_view = True
