@@ -11,7 +11,7 @@ from django.views.generic import TemplateView
 
 from judgments.templatetags.document_utils import display_datetime
 from judgments.utils import api_client, editors_dict, extract_version_number_from_filename, get_linked_document_uri
-from judgments.utils.document_list import DocumentListFilters
+from judgments.utils.document_list import DocumentListFilters, SavedViewPreset
 from judgments.utils.link_generators import build_jira_create_link
 from judgments.utils.paginator import paginator
 
@@ -40,10 +40,14 @@ def user_is_developer(user):
     return user.groups.filter(name="Developers").exists() if user else None
 
 
-def get_document_list_filters(params, *, default_publication_status: str | None = None) -> DocumentListFilters:
+def get_document_list_filters(
+    params,
+    *,
+    base_saved_view: SavedViewPreset,
+) -> DocumentListFilters:
     return DocumentListFilters.from_query_params(
         params,
-        default_publication_status=default_publication_status,
+        base_saved_view=base_saved_view,
     )
 
 
