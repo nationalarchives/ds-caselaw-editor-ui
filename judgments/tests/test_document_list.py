@@ -20,15 +20,13 @@ from judgments.utils.view_helpers import get_document_list_filters, get_search_r
 
 
 class TestDocumentListFilters(SimpleTestCase):
-    def test_defaults_to_unpublished_when_requested(self):
-        filters = DocumentListFilters.from_query_params(
-            QueryDict(""),
-            default_publication_status=PUBLICATION_STATUS_UNPUBLISHED,
-        )
+    def test_defaults_to_unpublished_preset(self):
+        filters = DocumentListFilters.from_query_params(QueryDict(""))
         assert filters.publication_status == PUBLICATION_STATUS_UNPUBLISHED
         assert filters.only_unpublished is True
         assert filters.show_unpublished is True
         assert filters.order == "-date"
+        assert filters.matching_preset() == get_system_preset(PRESET_UNPUBLISHED)
 
     def test_published_uses_show_unpublished_false(self):
         filters = DocumentListFilters.from_query_params(
@@ -83,12 +81,12 @@ class TestDocumentListFilters(SimpleTestCase):
         assert filters.courts == []
         assert filters.court_param is None
 
-    def test_invalid_publication_status_uses_default(self):
+    def test_invalid_publication_status_uses_default_preset(self):
         filters = DocumentListFilters.from_query_params(
             QueryDict("publication_status=nope"),
-            default_publication_status=PUBLICATION_STATUS_UNPUBLISHED,
+            default_preset=get_system_preset(PRESET_ALL),
         )
-        assert filters.publication_status == PUBLICATION_STATUS_UNPUBLISHED
+        assert filters.publication_status == PUBLICATION_STATUS_ALL
 
     def test_invalid_years_ignored(self):
         filters = DocumentListFilters.from_query_params(QueryDict("from_year=abc&to_year=99"))
@@ -122,14 +120,13 @@ class TestDocumentListFilters(SimpleTestCase):
             "active_preset": None,
         }
 
-    def test_defaults_from_system_preset(self):
+    def test_defaults_from_explicit_preset(self):
         filters = DocumentListFilters.from_query_params(
             QueryDict(""),
-            default_preset=get_system_preset(PRESET_UNPUBLISHED),
+            default_preset=get_system_preset(PRESET_ALL),
         )
-        assert filters.publication_status == PUBLICATION_STATUS_UNPUBLISHED
-        assert filters.order == "-date"
-        assert filters.matching_preset() == get_system_preset(PRESET_UNPUBLISHED)
+        assert filters.publication_status == PUBLICATION_STATUS_ALL
+        assert filters.matching_preset() == get_system_preset(PRESET_ALL)
 
     def test_matching_preset_none_when_extra_filters(self):
         filters = DocumentListFilters.from_query_params(
@@ -158,10 +155,7 @@ class TestSearchResultsFromFilters(SimpleTestCase):
     @patch("judgments.utils.view_helpers.search_and_parse_response")
     def test_home_defaults_unpublished(self, mock_search):
         mock_search.return_value = self._mock_response()
-        filters = get_document_list_filters(
-            QueryDict(""),
-            default_preset=get_system_preset(PRESET_UNPUBLISHED),
-        )
+        filters = get_document_list_filters(QueryDict(""))
         get_search_results_from_filters(filters)
         mock_search.assert_called_with(
             api_client,

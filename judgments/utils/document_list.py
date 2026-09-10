@@ -109,38 +109,26 @@ class DocumentListFilters:
         params,
         *,
         default_preset: SystemPreset | None = None,
-        default_publication_status: str | None = None,
     ) -> DocumentListFilters:
         """Parse request GET params into filters.
 
-        When the request has no publication_status, defaults come from
-        ``default_preset`` (preferred) or ``default_publication_status``.
-        Missing/invalid order falls back to the preset's order when a preset
-        is supplied, otherwise ``DEFAULT_ORDER``.
+        When the request has no publication_status (or an invalid one), defaults
+        come from ``default_preset``, falling back to the unpublished preset.
+        Missing/invalid order falls back to that preset's order.
         """
-        if default_preset is None and default_publication_status is not None:
-            default_preset = SystemPreset(
-                id="legacy-default",
-                label="",
-                publication_status=default_publication_status,
-            )
+        if default_preset is None:
+            default_preset = get_system_preset(PRESET_UNPUBLISHED)
 
         raw_status = params.get("publication_status")
-        if raw_status in PUBLICATION_STATUSES:
-            publication_status = raw_status
-        elif default_preset is not None:
-            publication_status = default_preset.publication_status
-        else:
-            publication_status = PUBLICATION_STATUS_ALL
+        publication_status = raw_status if raw_status in PUBLICATION_STATUSES else default_preset.publication_status
 
         query = params.get("query") or None
         if query is not None:
             query = query.strip() or None
 
-        default_order = default_preset.order if default_preset is not None else DEFAULT_ORDER
         order = params.get("order") or None
         if order not in ORDER_VALUES:
-            order = default_order
+            order = default_preset.order
 
         courts = params.getlist("court") if hasattr(params, "getlist") else []
         courts = [c for c in courts if c in COURTS_BY_PARAM]

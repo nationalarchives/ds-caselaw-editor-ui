@@ -44,12 +44,10 @@ def get_document_list_filters(
     params,
     *,
     default_preset: SystemPreset | None = None,
-    default_publication_status: str | None = None,
 ) -> DocumentListFilters:
     return DocumentListFilters.from_query_params(
         params,
         default_preset=default_preset,
-        default_publication_status=default_publication_status,
     )
 
 
