@@ -6,10 +6,15 @@ from django.test import SimpleTestCase
 
 from judgments.utils import api_client
 from judgments.utils.document_list import (
+    PRESET_ALL,
+    PRESET_RECENTLY_PUBLISHED,
+    PRESET_UNPUBLISHED,
     PUBLICATION_STATUS_ALL,
     PUBLICATION_STATUS_PUBLISHED,
     PUBLICATION_STATUS_UNPUBLISHED,
+    SYSTEM_PRESETS,
     DocumentListFilters,
+    get_system_preset,
 )
 from judgments.utils.view_helpers import get_document_list_filters, get_search_results_from_filters
 
@@ -114,7 +119,32 @@ class TestDocumentListFilters(SimpleTestCase):
             "order": "-updated",
             "publication_status": PUBLICATION_STATUS_ALL,
             "total_count_postfix": "documents",
+            "active_preset": None,
         }
+
+    def test_defaults_from_system_preset(self):
+        filters = DocumentListFilters.from_query_params(
+            QueryDict(""),
+            default_preset=get_system_preset(PRESET_UNPUBLISHED),
+        )
+        assert filters.publication_status == PUBLICATION_STATUS_UNPUBLISHED
+        assert filters.order == "-date"
+        assert filters.matching_preset() == get_system_preset(PRESET_UNPUBLISHED)
+
+    def test_matching_preset_none_when_extra_filters(self):
+        filters = DocumentListFilters.from_query_params(
+            QueryDict("publication_status=unpublished&order=-date&court=uksc"),
+            default_preset=get_system_preset(PRESET_UNPUBLISHED),
+        )
+        assert filters.matching_preset() is None
+
+    def test_system_presets_defined(self):
+        assert [preset.id for preset in SYSTEM_PRESETS] == [
+            PRESET_UNPUBLISHED,
+            PRESET_RECENTLY_PUBLISHED,
+            PRESET_ALL,
+        ]
+        assert get_system_preset(PRESET_RECENTLY_PUBLISHED).publication_status == PUBLICATION_STATUS_PUBLISHED
 
 
 class TestSearchResultsFromFilters(SimpleTestCase):
@@ -130,7 +160,7 @@ class TestSearchResultsFromFilters(SimpleTestCase):
         mock_search.return_value = self._mock_response()
         filters = get_document_list_filters(
             QueryDict(""),
-            default_publication_status=PUBLICATION_STATUS_UNPUBLISHED,
+            default_preset=get_system_preset(PRESET_UNPUBLISHED),
         )
         get_search_results_from_filters(filters)
         mock_search.assert_called_with(
@@ -139,6 +169,26 @@ class TestSearchResultsFromFilters(SimpleTestCase):
                 query=None,
                 order="-date",
                 only_unpublished=True,
+                show_unpublished=True,
+                page=1,
+            ),
+        )
+
+    @patch("judgments.utils.view_helpers.search_and_parse_response")
+    def test_results_defaults_to_all_preset(self, mock_search):
+        mock_search.return_value = self._mock_response()
+        filters = get_document_list_filters(
+            QueryDict(""),
+            default_preset=get_system_preset(PRESET_ALL),
+        )
+        assert filters.matching_preset() == get_system_preset(PRESET_ALL)
+        get_search_results_from_filters(filters)
+        mock_search.assert_called_with(
+            api_client,
+            SearchParameters(
+                query=None,
+                order="-date",
+                only_unpublished=False,
                 show_unpublished=True,
                 page=1,
             ),
