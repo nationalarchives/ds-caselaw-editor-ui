@@ -27,14 +27,14 @@
                   {{ badge(variant=display_claim.status_badge_variant, content=display_claim.status) }}
                   {% if display_claim.can_reject %}
                     {{ checkboxes({
-                                        "idPrefix": display_claim.reject_input_id_prefix,
-                                        "name": display_claim.reject_input_name,
-                                        "classes": "govuk-checkboxes--small",
-                                        "items": [{
-                                        "value": display_claim.reject_input_value,
-                                        "text":"Mark as rejected"
-                                        }]
-                                        }) }}
+                      "idPrefix": display_claim.reject_input_id_prefix,
+                      "name": display_claim.reject_input_name,
+                      "classes": "govuk-checkboxes--small",
+                      "items": [{
+                        "value": display_claim.reject_input_value,
+                        "text":"Mark as rejected"
+                      }]
+                    }) }}
                   {% endif %}
                 {% endset %}
                 {% call card(right_content=card_right_content, disabled=(not display_claim.is_current)) %}
@@ -52,11 +52,11 @@
               {% endfor %}
               {% call card() %}
                 {{ text_input({
-                                "label": "New claim",
-                                "id_for_label": section.new_claim_input_id,
-                                "html_name": section.new_claim_input_name,
-                                "value": ""
-                                }) }}
+                  "label": "New claim",
+                  "id_for_label": section.new_claim_input_id,
+                  "html_name": section.new_claim_input_name,
+                  "value": ""
+                }) }}
               {% endcall %}
             </div>
           </section>
@@ -64,8 +64,8 @@
         {% call form_actions({"data-form-actions": ""}) %}
           {{ button(content="Update claims", attrs={"data-form-actions-submit": ""}) }}
           {{ button(content="Clear changes",
-                    variant="secondary",
-                    attrs={"type": "button", "data-form-actions-clear": ""}) }}
+            variant="secondary",
+            attrs={"type": "button", "data-form-actions-clear": ""}) }}
         {% endcall %}
       </form>
     {% else %}

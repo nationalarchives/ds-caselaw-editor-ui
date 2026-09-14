@@ -25,7 +25,7 @@
     "formGroup":   { "classes": width_class ~ " " ~ margin_class },
     "errorMessage": errors,
     "attributes":   { "list": datalist_id }
-    }) }}
+  }) }}
   <datalist id="{{ datalist_id }}">
     {% for choice in choices %}
       {% if choice[0] %}<option value="{{ choice[0] }}">{{ choice[1] }}</option>{% endif %}
