@@ -72,7 +72,7 @@ class TestStubView(TestCase):
     @patch("judgments.views.stub.api_client.insert_document_xml")
     @patch("judgments.views.stub.api_client.set_property")
     @patch("judgments.views.stub.api_client.get_document_by_uri")
-    def test_judgment_stub_post(  # noqa: PLR0913 -- too many args
+    def test_judgment_stub_post(  # noqa: PLR0913 PLR0917 -- too many args
         self,
         mock_get_doc,
         mock_set_property,

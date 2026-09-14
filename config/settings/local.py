@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-from .base import *  # noqa: F403
+from .base import *
 from .base import MIDDLEWARE, ROOT_DIR, TEMPLATES, env
 
 # GENERAL
@@ -36,7 +36,7 @@ EMAIL_BACKEND = env(
 # WhiteNoise
 # ------------------------------------------------------------------------------
 # http://whitenoise.evans.io/en/latest/django.html#using-whitenoise-in-development
-INSTALLED_APPS = ["whitenoise.runserver_nostatic"] + INSTALLED_APPS  # noqa: F405
+INSTALLED_APPS = ["whitenoise.runserver_nostatic"] + INSTALLED_APPS
 
 SECRET_KEY = "not-secret-whatsoever"  # noqa: S105
 
