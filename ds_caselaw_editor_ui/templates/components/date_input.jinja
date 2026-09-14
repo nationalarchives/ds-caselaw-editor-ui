@@ -10,14 +10,14 @@
     "id":        field.id_for_label,
     "namePrefix": field.html_name,
     "fieldset": {
-    "legend": { "text": field.label, "classes": "govuk-fieldset__legend--s" }
+      "legend": { "text": field.label, "classes": "govuk-fieldset__legend--s" }
     },
     "hint":         { "text": field.help_text } if field.help_text else None,
     "items": [
-    { "name": "day",   "value": day,   "classes": inputClass },
-    { "name": "month", "value": month, "classes": inputClass },
-    { "name": "year",  "value": year,  "classes": "govuk-input--width-4" ~ (" govuk-input--error" if field.errors else "") }
-  ],
-  "errorMessage": errors
+      { "name": "day",   "value": day,   "classes": inputClass },
+      { "name": "month", "value": month, "classes": inputClass },
+      { "name": "year",  "value": year,  "classes": "govuk-input--width-4" ~ (" govuk-input--error" if field.errors else "") }
+    ],
+    "errorMessage": errors
   }) }}
 {% endmacro %}

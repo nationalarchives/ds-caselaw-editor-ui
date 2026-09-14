@@ -28,16 +28,18 @@
       <a href="{{ href }}"
          class="{{ button_class }}"
          {% for key, value in attrs.items() %} {{ key }}="{{ value }}"{% endfor %}>
-      {% else %}
-        <button class="{{ button_class }}"
-                {% for key, value in attrs.items() %} {{ key }}="{{ value }}"{% endfor %}>
-        {% endif %}
-        {{ body_content }}
-        {% if href %}
+    {% else %}
+      {# djlint:off H054 H043 #}
+      <button class="{{ button_class }}"
+              {% for key, value in attrs.items() %} {{ key }}="{{ value }}"{% endfor %}>
+        {# djlint:on H054 H043 #}
+    {% endif %}
+      {{ body_content }}
+      {% if href %}
         </a>
       {% else %}
-      </button>
-    {% endif %}
+        </button>
+      {% endif %}
   {% endif %}
 {% endmacro %}
 {% macro button_variant_examples() %}

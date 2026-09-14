@@ -7,7 +7,7 @@
   {% set identifiers = document.identifiers if document.identifiers is defined else none %}
   {% set preferred_identifier = identifiers.preferred() if identifiers else none %}
   <div class="aside__container" data-aside-toggle>
-    <button class="aside__toggle" data-aside-toggle-button>
+    <button type="button" class="aside__toggle" data-aside-toggle-button>
       <span class="icon icon__chevron-left"></span>
       <span>Metadata</span>
     </button>
