@@ -64,10 +64,10 @@ def _search_parameters_from_filters(
     }
     if filters.court_param:
         common["court"] = filters.court_param
-    if filters.date_from:
-        common["date_from"] = filters.date_from
-    if filters.date_to:
-        common["date_to"] = filters.date_to
+    if filters.search_date_from:
+        common["date_from"] = filters.search_date_from
+    if filters.search_date_to:
+        common["date_to"] = filters.search_date_to
 
     if neutral_citation:
         return SearchParameters(neutral_citation=filters.query, **common)

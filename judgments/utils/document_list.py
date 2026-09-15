@@ -208,6 +208,24 @@ class DocumentListFilters:
         return f"{self.to_year:04d}-12-31"
 
     @property
+    def search_date_from(self) -> str | None:
+        """Decision-date lower bound for MarkLogic (may infer from a lone year field)."""
+        if self.from_year is not None:
+            return self.date_from
+        if self.to_year is not None:
+            return f"{self.to_year:04d}-01-01"
+        return None
+
+    @property
+    def search_date_to(self) -> str | None:
+        """Decision-date upper bound for MarkLogic (may infer from a lone year field)."""
+        if self.to_year is not None:
+            return self.date_to
+        if self.from_year is not None:
+            return f"{self.from_year:04d}-12-31"
+        return None
+
+    @property
     def court_param(self) -> str | None:
         if not self.courts:
             return None
@@ -225,20 +243,16 @@ class DocumentListFilters:
         return "documents"
 
     def matching_saved_view(self) -> SavedViewPreset | None:
-        """Return the saved view preset that exactly matches the current filters.
+        """Return the saved view preset matching publication status, if any.
 
-        A saved view is only active when publication status and order match and there
-        are no search/court/year refinements (page alone does not clear it).
+        Search query, order, and decision-year refinements do not clear the active
+        saved view. Court sidebar filters do (page alone does not).
         """
+        if self.courts:
+            return None
+
         for preset in SAVED_VIEW_PRESETS:
-            if (
-                self.publication_status == preset.publication_status
-                and self.order == preset.order
-                and not self.query
-                and not self.courts
-                and self.from_year is None
-                and self.to_year is None
-            ):
+            if self.publication_status == preset.publication_status:
                 return preset
         return None
 
