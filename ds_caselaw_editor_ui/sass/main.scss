@@ -31,10 +31,6 @@ $govuk-assets-path: "/static/govuk-assets/";
 @import "includes/login";
 @import "includes/icons";
 
-// Cookies
-@import "includes/cookie_consent/ds-cookie-consent";
-@import "includes/cookie_consent/cookie-consent";
-
 // Navigation
 @import "includes/document_navigation_links";
 @import "includes/footer";

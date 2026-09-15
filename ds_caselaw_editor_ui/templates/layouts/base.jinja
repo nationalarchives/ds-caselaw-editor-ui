@@ -19,7 +19,6 @@
       <link href="{{ static('css/main.css') }}" rel="stylesheet" />
     {% endblock css %}
     <script defer src="{{ static('js/dist/app.js') }}"></script>
-    <script defer src="{{ static('js/dist/cookie_consent.js') }}"></script>
   </head>
   {% block banner %}
   {% endblock banner %}
@@ -30,7 +29,6 @@
         {{ message }}
       {% endcall %}
     {% endfor %}
-    {% include "includes/cookie_consent/cookie_banner.html" %}
     <a id="skip-to-main-content" href="#main-content">Skip to Main Content</a>
     {% include "includes/environment_banner.jinja" %}
     <header class="page-header">
