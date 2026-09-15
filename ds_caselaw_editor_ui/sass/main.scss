@@ -71,6 +71,8 @@ $govuk-assets-path: "/static/govuk-assets/";
 
 // Components
 @import "components/content";
+@import "components/document_list";
+@import "components/document_list_sidebar";
 @import "components/panel";
 @import "components/button";
 @import "components/navigation_tabs";

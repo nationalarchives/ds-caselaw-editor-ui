@@ -1,4 +1,5 @@
 from django.core.exceptions import BadRequest
+from waffle import flag_is_active
 
 from judgments.utils.document_list import (
     SAVED_VIEW_ALL,
@@ -9,6 +10,8 @@ from judgments.utils.document_list import (
 from judgments.utils.view_helpers import get_document_list_filters, get_search_results_from_filters
 
 from .paginated_view import PaginatedView
+
+DOCUMENT_LIST_QUEUE_FLAG = "document_list_queue"
 
 
 class DocumentListView(PaginatedView):
@@ -37,9 +40,14 @@ class DocumentListView(PaginatedView):
             request=self.request,
             paginator=search_context["paginator"],
         )
+        context["document_list_queue_enabled"] = flag_is_active(self.request, DOCUMENT_LIST_QUEUE_FLAG)
 
         if self.is_results_view:
             context["page_title"] = "Search results"
+        else:
+            matching_saved_view = filters.matching_saved_view()
+            if context["document_list_queue_enabled"] and matching_saved_view is not None:
+                context["page_title"] = matching_saved_view.label
 
         return context
 
