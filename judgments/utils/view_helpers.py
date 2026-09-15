@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, cast
+from typing import Any
 
 import ds_caselaw_utils as caselawutils
 from caselawclient.client_helpers.search_helpers import search_and_parse_response
@@ -14,9 +14,6 @@ from judgments.utils import api_client, editors_dict, extract_version_number_fro
 from judgments.utils.document_list import DocumentListFilters, SavedViewPreset, court_filter_options
 from judgments.utils.link_generators import build_jira_create_link
 from judgments.utils.paginator import paginator
-
-if TYPE_CHECKING:
-    from caselawclient.models.documents.metadata.types.name import NameMetadata
 
 
 def user_is_superuser(user):
@@ -116,8 +113,7 @@ class DocumentViewMixin(TemplateView):
         else:
             context["document_html"] = self.document.content_as_html()
 
-        title = cast("NameMetadata | None", self.document.metadata.get("title"))
-        context["page_title"] = title.value if title else "Untitled document"
+        context["page_title"] = self.document.metadata.title.value
         context["courts"] = caselawutils.courts.get_all(with_jurisdictions=True)
 
         context["editors"] = editors_dict()
