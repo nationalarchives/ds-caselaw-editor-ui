@@ -107,6 +107,13 @@ class TestDocumentListFilters(SimpleTestCase):
         assert filters.to_year is None
         assert filters.date_from == "2020-01-01"
         assert filters.date_to is None
+        assert filters.search_date_from == "2020-01-01"
+        assert filters.search_date_to == "2020-12-31"
+
+    def test_search_date_bounds_from_to_only(self):
+        filters = parse("to_year=2018")
+        assert filters.search_date_from == "2018-01-01"
+        assert filters.search_date_to == "2018-12-31"
 
     def test_context_dict(self):
         filters = parse("query=foo&search_filter=default&publication_status=all&order=-updated&page=2")
@@ -122,7 +129,7 @@ class TestDocumentListFilters(SimpleTestCase):
             "order_choices": ORDER_CHOICES,
             "publication_status_choices": PUBLICATION_STATUS_CHOICES,
             "saved_view_presets": SAVED_VIEW_PRESETS,
-            "active_saved_view": None,
+            "active_saved_view": ALL_VIEW,
             "uses_court_facets": True,
             "total_count_postfix": "documents",
             "clear_filters_query_string": ("publication_status=all&order=-updated&query=foo&search_filter=default"),
@@ -161,6 +168,18 @@ class TestDocumentListFilters(SimpleTestCase):
         assert "court=ewca%2Fciv" in cleared
         assert "from_year=2020" in cleared
         assert "to_year=2021" in cleared
+
+    def test_matching_saved_view_keeps_preset_with_query_and_order(self):
+        filters = parse("publication_status=unpublished&query=foo&order=-updated")
+        assert filters.matching_saved_view() == UNPUBLISHED_VIEW
+
+    def test_matching_saved_view_none_when_courts_with_query(self):
+        filters = parse("publication_status=unpublished&query=foo&court=uksc")
+        assert filters.matching_saved_view() is None
+
+    def test_matching_saved_view_keeps_preset_with_decision_year(self):
+        filters = parse("publication_status=unpublished&from_year=2020")
+        assert filters.matching_saved_view() == UNPUBLISHED_VIEW
 
     def test_saved_view_applies_status_and_order(self):
         for preset in SAVED_VIEW_PRESETS:
@@ -235,6 +254,23 @@ class TestSearchResultsFromFilters(SimpleTestCase):
                 only_unpublished=False,
                 show_unpublished=True,
                 page=1,
+            ),
+        )
+
+    @patch("judgments.utils.view_helpers.search_and_parse_response")
+    def test_single_from_year_search_params(self, mock_search):
+        mock_search.return_value = self._mock_response()
+        get_search_results_from_filters(self._filters("publication_status=all&from_year=2020"))
+        mock_search.assert_called_with(
+            api_client,
+            SearchParameters(
+                query=None,
+                order="-date",
+                only_unpublished=False,
+                show_unpublished=True,
+                page=1,
+                date_from="2020-01-01",
+                date_to="2020-12-31",
             ),
         )
 
