@@ -40,7 +40,7 @@
     "@nationalarchives/frontend": "1.4.1",
     "@tsparticles/engine": "4.4.0",
     "@tsparticles/preset-confetti": "4.4.0",
-    "govuk-frontend": "6.5.0",
+    "govuk-frontend": "6.5.1",
     "nodemon": "3.1.14",
     "sass": "1.104.1"
   }
