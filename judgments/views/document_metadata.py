@@ -1,18 +1,20 @@
 from dataclasses import dataclass
 from datetime import date
-from typing import TYPE_CHECKING, Any, cast
+from typing import Any
 
 from caselawclient.models.documents.metadata.base import MultipleMetadata, SingleMetadata
-from caselawclient.models.documents.metadata.fields.field import MetadataCategoryValue, MetadataField
+from caselawclient.models.documents.metadata.fields.field import (
+    MetadataCategoryValue,
+    MetadataDateValue,
+    MetadataField,
+    MetadataStringValue,
+)
 from caselawclient.models.documents.metadata.fields.source import MetadataSource
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 from judgments.utils.view_helpers import DocumentView
-
-if TYPE_CHECKING:
-    from caselawclient.models.documents.metadata.types.judges import JudgesMetadata
 
 
 @dataclass
@@ -137,6 +139,12 @@ class MetadataFieldDisplayDecorator:
         return [body_value for body_value in values if body_value]
 
     def _format_value(self, value):
+        if isinstance(value, MetadataDateValue):
+            return value.value.strftime("%-d %b %Y")
+
+        if isinstance(value, MetadataStringValue):
+            return value.value
+
         if isinstance(value, date):
             return value.strftime("%-d %b %Y")
 
@@ -158,7 +166,7 @@ class DocumentMetadataView(DocumentView):
         context["view"] = "document_metadata"
         context["metadata_claim_sections"] = [
             MetadataFieldDisplayDecorator(self.document, metadata_item).section
-            for metadata_item in self.document.metadata.values()
+            for metadata_item in self.document.metadata
         ]
         return context
 
@@ -177,16 +185,13 @@ class DocumentMetadataView(DocumentView):
 
     def _suppress_body_judges(self, judge_names):
         changed = False
-        judges_metadata = cast("JudgesMetadata | None", self.document.metadata.get("judges"))
+        judges_metadata = self.document.metadata.judges
 
         for judge_name in judge_names:
             cleaned_judge_name = judge_name.strip()
             if not cleaned_judge_name:
                 continue
 
-            if judges_metadata is None:
-                messages.error(self.request, "Judge metadata is not available for this document.")
-                return False, changed
             if cleaned_judge_name not in judges_metadata.values:
                 messages.error(self.request, f'Judge "{cleaned_judge_name}" does not exist for this document.')
                 return False, changed
@@ -199,7 +204,7 @@ class DocumentMetadataView(DocumentView):
     def _add_new_claims(self, post_data):
         changed = False
 
-        for metadata_item in self.document.metadata.values():
+        for metadata_item in self.document.metadata:
             for value in post_data.getlist(f"new_claim__{metadata_item.key}"):
                 cleaned_value = value.strip()
                 if not cleaned_value:
@@ -211,7 +216,7 @@ class DocumentMetadataView(DocumentView):
                     claim_value = (
                         MetadataCategoryValue(name=cleaned_value)
                         if metadata_item.key == "categories"
-                        else cleaned_value
+                        else MetadataStringValue(cleaned_value)
                     )
                     self.document.metadata_fields.add(
                         MetadataField(
