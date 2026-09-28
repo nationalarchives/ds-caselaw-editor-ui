@@ -28,7 +28,7 @@
               <tr>
                 <td>{{ court.name }}</td>
                 <td>{{ court.type }}</td>
-                <td>{{ court.document_count }}</td>
+                <td>{{ court.document_count|intcomma }}</td>
               </tr>
             {% endfor %}
           </tbody>
