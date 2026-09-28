@@ -37,6 +37,7 @@ from .views.judgment_publish import (
     publish,
     unpublish,
 )
+from .views.metrics import MetricsView
 from .views.signed_asset import redirect_to_signed_asset
 from .views.stub import CreateStubView, create_stub
 from .views.unlock import unlock
@@ -77,6 +78,7 @@ urlpatterns = [
     path("xml", xml_view_redirect),
     # Reports
     path("reports", reports.Index.as_view(), name="reports"),
+    path("metrics", MetricsView.as_view(), name="metrics"),
     path(
         "reports/awaiting-parse",
         reports.AwaitingParse.as_view(),

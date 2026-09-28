@@ -1,0 +1,15 @@
+.metrics {
+  @include container;
+
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+  padding-bottom: $space-8;
+
+  &__summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-4;
+    justify-content: space-between;
+  }
+}
