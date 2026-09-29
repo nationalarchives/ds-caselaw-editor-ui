@@ -1,9 +1,14 @@
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 from unittest.mock import Mock, patch
 
 from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
 from caselawclient.models.documents import DocumentURIString
-from caselawclient.models.documents.metadata.fields.field import MetadataCategoryValue, MetadataField
+from caselawclient.models.documents.metadata.fields.field import (
+    MetadataCategoryValue,
+    MetadataDateValue,
+    MetadataField,
+    MetadataStringValue,
+)
 from caselawclient.models.documents.metadata.fields.source import MetadataSource
 from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
@@ -19,7 +24,7 @@ class TestMetadataFieldDisplayDecorator(TestCase):
             body=DocumentBodyFactory.build(name="Test v Tested", court="Court of Testing"),
         )
 
-        section = MetadataFieldDisplayDecorator(judgment, judgment.metadata["court"]).section
+        section = MetadataFieldDisplayDecorator(judgment, judgment.metadata.court).section
 
         assert section.new_claim_input_id == "new-claim-court"
         assert section.new_claim_input_name == "new_claim__court"
@@ -41,7 +46,7 @@ class TestMetadataFieldDisplayDecorator(TestCase):
             MetadataField(
                 id="document-claim",
                 name="court",
-                value="Document Court",
+                value=MetadataStringValue("Document Court"),
                 source=MetadataSource.DOCUMENT,
                 timestamp=datetime(2020, 1, 1, tzinfo=UTC),
             ),
@@ -50,7 +55,7 @@ class TestMetadataFieldDisplayDecorator(TestCase):
             MetadataField(
                 id="editor-claim",
                 name="court",
-                value="Editor Court",
+                value=MetadataStringValue("Editor Court"),
                 source=MetadataSource.EDITOR,
                 timestamp=datetime(2024, 1, 1, tzinfo=UTC),
             ),
@@ -59,14 +64,14 @@ class TestMetadataFieldDisplayDecorator(TestCase):
             MetadataField(
                 id="rejected-claim",
                 name="court",
-                value="Rejected Court",
+                value=MetadataStringValue("Rejected Court"),
                 source=MetadataSource.EXTERNAL,
                 timestamp=datetime(2024, 6, 1, tzinfo=UTC),
                 rejected=True,
             ),
         )
 
-        section = MetadataFieldDisplayDecorator(judgment, judgment.metadata["court"]).section
+        section = MetadataFieldDisplayDecorator(judgment, judgment.metadata.court).section
         claims_by_id = {claim.claim_id: claim for claim in section.display_claims}
 
         assert claims_by_id["editor-claim"].status == "Current"
@@ -91,13 +96,13 @@ class TestMetadataFieldDisplayDecorator(TestCase):
             MetadataField(
                 id="editor-claim",
                 name="court",
-                value="Editor Court",
+                value=MetadataStringValue("Editor Court"),
                 source=MetadataSource.EDITOR,
                 timestamp=datetime(2024, 1, 1, tzinfo=UTC),
             ),
         )
 
-        section = MetadataFieldDisplayDecorator(judgment, judgment.metadata["court"]).section
+        section = MetadataFieldDisplayDecorator(judgment, judgment.metadata.court).section
 
         assert [claim.display_value for claim in section.display_claims] == ["Editor Court"]
         assert not any(claim.is_faux for claim in section.display_claims)
@@ -109,7 +114,7 @@ class TestMetadataFieldDisplayDecorator(TestCase):
         )
         judgment.body.judges = ["Judge One", "Judge Two"]
 
-        section = MetadataFieldDisplayDecorator(judgment, judgment.metadata["judges"]).section
+        section = MetadataFieldDisplayDecorator(judgment, judgment.metadata.judges).section
 
         assert [claim.display_value for claim in section.display_claims] == ["Judge One", "Judge Two"]
         assert all(claim.can_reject for claim in section.display_claims)
@@ -121,7 +126,7 @@ class TestMetadataFieldDisplayDecorator(TestCase):
         judgment = JudgmentFactory.build(
             body=DocumentBodyFactory.build(name="Test v Tested", document_date_as_string="2024-02-03"),
         )
-        date_section = MetadataFieldDisplayDecorator(judgment, judgment.metadata["date"]).section
+        date_section = MetadataFieldDisplayDecorator(judgment, judgment.metadata.date).section
 
         assert date_section.display_claims[0].display_value == "3 Feb 2024"
 
@@ -134,9 +139,50 @@ class TestMetadataFieldDisplayDecorator(TestCase):
                 timestamp=datetime(2024, 1, 1, tzinfo=UTC),
             ),
         )
-        category_section = MetadataFieldDisplayDecorator(judgment, judgment.metadata["categories"]).section
+        category_section = MetadataFieldDisplayDecorator(judgment, judgment.metadata.categories).section
 
         assert category_section.display_claims[0].display_value == "Subcategory (Category)"
+
+    def test_formats_structured_metadata_claim_values(self):
+        judgment = JudgmentFactory.build(
+            body=DocumentBodyFactory.build(name="Test v Tested", document_date_as_string="1999-01-01"),
+        )
+        judgment.metadata_fields.add(
+            MetadataField(
+                id="date-claim",
+                name="date",
+                value=MetadataDateValue(date(2024, 2, 3)),
+                source=MetadataSource.EDITOR,
+                timestamp=datetime(2024, 1, 1, tzinfo=UTC),
+            ),
+        )
+        judgment.metadata_fields.add(
+            MetadataField(
+                id="title-claim",
+                name="title",
+                value=MetadataStringValue("Structured Title"),
+                source=MetadataSource.EDITOR,
+                timestamp=datetime(2024, 1, 1, tzinfo=UTC),
+            ),
+        )
+        judgment.metadata_fields.add(
+            MetadataField(
+                id="judge-claim",
+                name="judges",
+                value=MetadataStringValue("Lady Justice Smith"),
+                source=MetadataSource.EDITOR,
+                timestamp=datetime(2024, 1, 1, tzinfo=UTC),
+            ),
+        )
+
+        date_section = MetadataFieldDisplayDecorator(judgment, judgment.metadata.date).section
+        assert date_section.display_claims[0].display_value == "3 Feb 2024"
+
+        title_section = MetadataFieldDisplayDecorator(judgment, judgment.metadata.title).section
+        assert title_section.display_claims[0].display_value == "Structured Title"
+
+        judges_section = MetadataFieldDisplayDecorator(judgment, judgment.metadata.judges).section
+        assert judges_section.display_claims[0].display_value == "Lady Justice Smith"
 
 
 class TestDocumentMetadata(TestCase):
@@ -154,7 +200,7 @@ class TestDocumentMetadata(TestCase):
         judgment.metadata_fields.add(
             MetadataField(
                 name="court",
-                value="Legacy Court",
+                value=MetadataStringValue("Legacy Court"),
                 source=MetadataSource.DOCUMENT,
                 timestamp=datetime(2020, 1, 1, tzinfo=UTC),
             ),
@@ -162,7 +208,7 @@ class TestDocumentMetadata(TestCase):
         judgment.metadata_fields.add(
             MetadataField(
                 name="court",
-                value="Winning Court",
+                value=MetadataStringValue("Winning Court"),
                 source=MetadataSource.EDITOR,
                 timestamp=datetime(2024, 6, 1, tzinfo=UTC),
             ),
@@ -191,7 +237,7 @@ class TestDocumentMetadata(TestCase):
         self.assertContains(response, 'data-form-actions-clear=""')
         self.assertContains(response, "Clear changes")
 
-        for metadata_item in judgment.metadata.values():
+        for metadata_item in judgment.metadata:
             self.assertContains(response, metadata_item.title)
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
@@ -223,7 +269,10 @@ class TestDocumentMetadata(TestCase):
         judgment.save_metadata_fields.assert_called_once()
 
         court_claims = judgment.metadata_fields.by_name("court")
-        assert [claim.value for claim in court_claims] == ["First Court", "Second Court"]
+        assert [claim.value for claim in court_claims] == [
+            MetadataStringValue("First Court"),
+            MetadataStringValue("Second Court"),
+        ]
         assert all(claim.source is MetadataSource.EDITOR for claim in court_claims)
 
         category_claims = judgment.metadata_fields.by_name("categories")
@@ -248,7 +297,7 @@ class TestDocumentMetadata(TestCase):
         judgment.metadata_fields.add(
             MetadataField(
                 name="court",
-                value="Editor Court",
+                value=MetadataStringValue("Editor Court"),
                 source=MetadataSource.EDITOR,
                 timestamp=datetime(2024, 6, 1, tzinfo=UTC),
             ),
@@ -278,7 +327,7 @@ class TestDocumentMetadata(TestCase):
         claim = MetadataField(
             id="claim-1",
             name="court",
-            value="Rejected Court",
+            value=MetadataStringValue("Rejected Court"),
             source=MetadataSource.EXTERNAL,
             timestamp=datetime(2024, 6, 1, tzinfo=UTC),
         )
@@ -327,7 +376,10 @@ class TestDocumentMetadata(TestCase):
 
         judge_claims = judgment.metadata_fields.by_name("judges")
         assert len(judge_claims) == 2
-        assert {claim.value: claim.rejected for claim in judge_claims} == {
+        rejected_by_judge = {
+            claim.value.value: claim.rejected for claim in judge_claims if isinstance(claim.value, MetadataStringValue)
+        }
+        assert rejected_by_judge == {
             "Judge One": True,
             "Judge Two": False,
         }

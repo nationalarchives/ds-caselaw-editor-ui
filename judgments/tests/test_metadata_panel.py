@@ -5,7 +5,7 @@ from unittest.mock import patch
 import lxml.html
 from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
 from caselawclient.models.documents import DocumentURIString
-from caselawclient.models.documents.metadata.fields.field import MetadataField
+from caselawclient.models.documents.metadata.fields.field import MetadataField, MetadataStringValue
 from caselawclient.models.documents.metadata.fields.source import MetadataSource
 from caselawclient.models.identifiers.fclid import FindCaseLawIdentifier
 from caselawclient.models.identifiers.neutral_citation import NeutralCitationNumber
@@ -238,7 +238,7 @@ class TestMetadataPanel(TestCase):
         judgment.metadata_fields.add(
             MetadataField(
                 name="judges",
-                value="Lord Justice Underhill",
+                value=MetadataStringValue("Lord Justice Underhill"),
                 source=MetadataSource.DOCUMENT,
             ),
         )

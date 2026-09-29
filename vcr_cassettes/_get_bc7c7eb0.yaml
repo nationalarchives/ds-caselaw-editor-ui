@@ -1,0 +1,755 @@
+interactions:
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24user+as+xs%3Astring+external%3B%0Adeclare+variable+%24role+as+xs%3Astring+external%3B%0A%0Alet+%24user_roles+%3A%3D+xdmp%3Auser-roles%28%24user%29%0Alet+%24role_id+%3A%3D+xdmp%3Arole%28%24role%29%0A%0Areturn+fn%3Aboolean%28index-of%28%24role_id%2C+%24user_roles%29%29%0A&vars=%7B%22role%22%3A%22admin%22%2C%22user%22%3A%22cassette_user%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://cf-58785-alb-7dtx0v08wfpa-167285526.eu-west-2.elb.amazonaws.com:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "boolean"}, "body": "true", "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Tue, 15 Sep 2026 11:50:12 GMT
+        Server:
+          - MarkLogic 11.3.6
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+null%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+2%2C+%22page-size%22%3A+10%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22-date%22%2C+%22from%22%3A+%22%22%2C+%22to%22%3A+%22%22%2C+%22show_unpublished%22%3A+%22true%22%2C+%22only_unpublished%22%3A+%22true%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://cf-58785-alb-7dtx0v08wfpa-167285526.eu-west-2.elb.amazonaws.com:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"652\" start=\"11\" page-length=\"10\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:result
+          index=\"11\" uri=\"/ewhc/ch/2024/2915.xml\" path=\"fn:doc(&quot;/ewhc/ch/2024/2915.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2024-09-09\" name=\"judgment\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"LEE JAMES BOOTLE v GHL PROPERTY MANAGEMENT AND DEVELOPMENT LIMITED\"
+          xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2024-11-22T15:29:52\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">EWHC-Chancery</uk:court>\n      <uk:cite
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">[1999] UKSC 1732</uk:cite>\n      <uk:hash
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">92a843eec390f139e982f66ea4dd9604a3e526c3c86f8b7835fc111fad43e558</uk:hash>\n      <uk:jurisdiction
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\"/>\n      <neutralCitation
+          style=\"font-weight:bold\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\">[2024]
+          EWHC 2915 (Ch)</neutralCitation>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\">\n      <identifiers
+          xmlns:prop=\"http://marklogic.com/xdmp/property\">\n\t<identifier>\n\t  <namespace>ukncn</namespace>\n\t  <uuid>id-54763658-1fee-431b-941b-bf8d949227d2</uuid>\n\t  <value>[1999]
+          UKSC 1732</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>uksc/1999/1732</url_slug>\n\t</identifier>\n\t<identifier>\n\t  <namespace>fclid</namespace>\n\t  <uuid>id-ac19f1a5-7ecd-46f3-992f-49c1a4f960b6</uuid>\n\t  <value>tnzv3mp7</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>tna.tnzv3mp7</url_slug>\n\t</identifier>\n\t<identifier>\n\t  <namespace>ukncn</namespace>\n\t  <uuid>id-4141a2c5-6eaa-4be4-902f-10e66890478c</uuid>\n\t  <value>[2019]
+          UKSC 123</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>uksc/2019/123</url_slug>\n\t</identifier>\n      </identifiers>\n    </search:extracted>\n  </search:result>\n  <search:result
+          index=\"12\" uri=\"/d-8a888d55-0e9b-4b4d-aebf-50725fa1659a.xml\" path=\"fn:doc(&quot;/d-8a888d55-0e9b-4b4d-aebf-50725fa1659a.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2024-03-27\" name=\"judgment\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"TOM HAYES v REX\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2025-11-18T17:08:24\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2026-06-23T14:54:27\" name=\"tna-enriched\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">EWCA-Criminal</uk:court>\n      <uk:cite
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">[2024] EWCA Crim
+          304</uk:cite>\n      <uk:hash xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">d4ff43dc95134f547c6e22eb0c81dd5d0c463e729129d2f3fe40b049fe2d3dd5</uk:hash>\n      <neutralCitation
+          xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\">[2024] EWCA Crim
+          304</neutralCitation>\n    </search:extracted>\n    <search:extracted kind=\"identifiers\"
+          xmlns:map=\"http://marklogic.com/xdmp/map\">\n      <identifiers xmlns:prop=\"http://marklogic.com/xdmp/property\">\n\t<identifier>\n\t  <namespace>ukncn</namespace>\n\t  <uuid>id-6b371ef4-3405-499b-a0c5-41fb225ae216</uuid>\n\t  <value>[2024]
+          EWCA Crim 304</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>ewca/crim/2024/304</url_slug>\n\t</identifier>\n      </identifiers>\n    </search:extracted>\n  </search:result>\n  <search:result
+          index=\"13\" uri=\"/d-f701de11-8918-474d-890c-07ef2a509c7d.xml\" path=\"fn:doc(&quot;/d-f701de11-8918-474d-890c-07ef2a509c7d.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2024-01-05\" name=\"judgment\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"Houda Chehaib v King\u2019s College Hospital NHS Foundation Trust
+          &amp; Ors\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2024-11-20T12:05:18\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">EWHC-KBD</uk:court>\n      <uk:cite
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">[2024] EWHC 2 (KB)</uk:cite>\n      <uk:hash
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">0ed6b90100c5d1ce336a18432f455fdeb7e853a6304cb3f5674a59670e8565f8</uk:hash>\n      <neutralCitation
+          xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\">[2024] EWHC 2 (KB)</neutralCitation>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\">\n      <identifiers
+          xmlns:prop=\"http://marklogic.com/xdmp/property\">\n\t<identifier>\n\t  <namespace>ukncn</namespace>\n\t  <uuid>id-9896f956-e343-4764-b453-5ccf9255d83c</uuid>\n\t  <value>[2024]
+          EWHC 2 (KB)</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>ewhc/kb/2024/2</url_slug>\n\t</identifier>\n\t<identifier>\n\t  <namespace>fclid</namespace>\n\t  <uuid>id-391324a9-840d-4cfb-ba66-71e5ad9ee07c</uuid>\n\t  <value>zbnxcnhr</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>tna.zbnxcnhr</url_slug>\n\t</identifier>\n      </identifiers>\n    </search:extracted>\n  </search:result>\n  <search:result
+          index=\"14\" uri=\"/d-7ce13deb-ca9a-4eee-992a-20a174e58f9e.xml\" path=\"fn:doc(&quot;/d-7ce13deb-ca9a-4eee-992a-20a174e58f9e.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2024-01-05\" name=\"judgment\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"Houda Chehaib v King\u2019s College Hospital NHS Foundation Trust
+          &amp; Ors\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2024-11-20T12:05:18\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">EWHC-KBD</uk:court>\n      <uk:cite
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">[2024] EWHC 2 (KB)</uk:cite>\n      <uk:hash
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">0ed6b90100c5d1ce336a18432f455fdeb7e853a6304cb3f5674a59670e8565f8</uk:hash>\n      <neutralCitation
+          xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\">[2024] EWHC 2 (KB)</neutralCitation>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\">\n      <identifiers
+          xmlns:prop=\"http://marklogic.com/xdmp/property\">\n\t<identifier>\n\t  <namespace>ukncn</namespace>\n\t  <uuid>id-1fd8d3d0-f176-44de-a1d3-6b86f3b051c6</uuid>\n\t  <value>[2024]
+          EWHC 2 (KB)</value>\n\t  <url_slug>d-7ce13deb-ca9a-4eee-992a-20a174e58f9e</url_slug>\n\t</identifier>\n      </identifiers>\n    </search:extracted>\n  </search:result>\n  <search:result
+          index=\"15\" uri=\"/d-8819bf3c-4fcd-432c-ac13-0d6d605767b8.xml\" path=\"fn:doc(&quot;/d-8819bf3c-4fcd-432c-ac13-0d6d605767b8.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2023-10-12\" name=\"judgment\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2026-07-08T15:16:08\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">UKPC</uk:court>\n      <uk:cite
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">[2023] UKPC 36</uk:cite>\n      <uk:hash
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">8e562300094c897e34809cb37656d1fe99cd45ae7e28dd41e5808edf9b7a3a9e</uk:hash>\n      <neutralCitation
+          style=\"font-family:''Times New Roman''\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\">[2023]
+          UKPC 36</neutralCitation>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\">\n      <identifiers
+          xmlns:prop=\"http://marklogic.com/xdmp/property\">\n\t<identifier>\n\t  <namespace>ukncn</namespace>\n\t  <uuid>id-ff1b4f17-ca64-4ee9-84b3-2d976c35dad7</uuid>\n\t  <value>[2023]
+          UKPC 36</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>ukpc/2023/36</url_slug>\n\t</identifier>\n\t<identifier>\n\t  <namespace>fclid</namespace>\n\t  <uuid>id-75532b7b-a840-475e-abc1-9cffd6bfcf7e</uuid>\n\t  <value>vc4pc8np</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>tna.vc4pc8np</url_slug>\n\t</identifier>\n      </identifiers>\n    </search:extracted>\n  </search:result>\n  <search:result
+          index=\"16\" uri=\"/eat/2023/123.xml\" path=\"fn:doc(&quot;/eat/2023/123.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2023-09-01\" name=\"judgment\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"LONDON UNITED BUSWAYS LIMITED v MR KAMAL HAMID DANKALI\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2025-11-18T17:01:04\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">EAT</uk:court>\n      <uk:cite
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">[2023] EAT 123</uk:cite>\n      <uk:hash
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">17bf6f5842cf30295ed0e2240e3de4cf74ef88dec1f5d7ccba8230d7aee3a0ae</uk:hash>\n      <neutralCitation
+          style=\"text-decoration-line:underline;text-decoration-style:solid;font-family:''Times
+          New Roman'';font-size:12pt;color:#000000\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\">[2023]
+          EAT 123</neutralCitation>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\">\n      <identifiers
+          xmlns:prop=\"http://marklogic.com/xdmp/property\">\n\t<identifier>\n\t  <namespace>ukncn</namespace>\n\t  <uuid>id-631a237a-aebc-4c04-b93e-29ead488d368</uuid>\n\t  <value>[2023]
+          EAT 123</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>eat/2023/123</url_slug>\n\t</identifier>\n      </identifiers>\n    </search:extracted>\n  </search:result>\n  <search:result
+          index=\"17\" uri=\"/d-47518a7b-dccf-4160-abfe-955110e6112b.xml\" path=\"fn:doc(&quot;/d-47518a7b-dccf-4160-abfe-955110e6112b.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2023-06-09\" name=\"judgment\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"PALLADIAN PARTNERS LP v THE REPUBLIC OF ARGENTINA.\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2025-02-20T16:33:23\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">EWHC-KBD-Commercial</uk:court>\n      <uk:cite
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">[2023] EWHC 1421
+          (Comm)</uk:cite>\n      <uk:hash xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">ccda55a4f1286569291e35517742f3de7e88fc2ea2645a0d9ead12760195ec30</uk:hash>\n      <uk:jurisdiction
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\"/>\n      <neutralCitation
+          style=\"font-weight:bold\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\">[2023]
+          EWHC 1421 (Comm)</neutralCitation>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\">\n      <identifiers
+          xmlns:prop=\"http://marklogic.com/xdmp/property\">\n\t<identifier>\n\t  <namespace>fclid</namespace>\n\t  <uuid>id-a6b1cff9-c5d9-4cad-9861-b0e700488954</uuid>\n\t  <value>63jprdvy</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>tna.63jprdvy</url_slug>\n\t</identifier>\n\t<identifier>\n\t  <namespace>ukncn</namespace>\n\t  <uuid>id-8b3d5457-22f9-469b-b1e3-2e2791a97f76</uuid>\n\t  <value>[2023]
+          EWHC 1421 (Comm)</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>ewhc/comm/2023/1421</url_slug>\n\t</identifier>\n      </identifiers>\n    </search:extracted>\n  </search:result>\n  <search:result
+          index=\"18\" uri=\"/d-055208f6-0498-495c-9c5c-604a0b96fea1.xml\" path=\"fn:doc(&quot;/d-055208f6-0498-495c-9c5c-604a0b96fea1.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2023-05-26\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"COLLEEN CAIRNS (1) KIM MOORE (2) v THE COMMITTEE OF THE PAINSHAWFIELD,
+          BATT HOUSE AND BIRCHES NOOK ESTATE AND OTHERS\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2026-06-03T14:41:16\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">UKUT-LC</uk:court>\n      <uk:cite
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">[2023] UKUT 119 (LC)</uk:cite>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
+          index=\"19\" uri=\"/d-ae35e5e9-0b81-4873-8682-20975a6780d4.xml\" path=\"fn:doc(&quot;/d-ae35e5e9-0b81-4873-8682-20975a6780d4.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2023-02-09\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"Alan Stewardson v Registrar of Approved Driving Instructors\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2026-03-17T12:09:12\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">UKFTT-GRC</uk:court>\n      <uk:jurisdiction
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">Transport</uk:jurisdiction>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\">\n      <identifiers
+          xmlns:prop=\"http://marklogic.com/xdmp/property\">\n\t<identifier>\n\t  <namespace>fclid</namespace>\n\t  <uuid>id-394d61ba-d5ae-434e-8550-fa8b5c266d6f</uuid>\n\t  <value>hqp2yr2c</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>tna.hqp2yr2c</url_slug>\n\t</identifier>\n      </identifiers>\n    </search:extracted>\n  </search:result>\n  <search:result
+          index=\"20\" uri=\"/d-be927f64-8b26-43d6-86d9-184380b473fc.xml\" path=\"fn:doc(&quot;/d-be927f64-8b26-43d6-86d9-184380b473fc.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2023-01-31\" name=\"judgment\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"MARKS AND SPENCER PLC v ALDI STORES LIMITED\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2025-03-06T16:44:47\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">EWHC-Chancery-IPEC</uk:court>\n      <uk:cite
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">[2023] EWHC 178 (IPEC)</uk:cite>\n      <uk:hash
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">4b91d9a963bbd1b8f7c06381d6c4d51714a35a6780b89586b8fe042909cb4889</uk:hash>\n      <neutralCitation
+          xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\">[2023] EWHC 178
+          (IPEC)</neutralCitation>\n    </search:extracted>\n    <search:extracted kind=\"identifiers\"
+          xmlns:map=\"http://marklogic.com/xdmp/map\">\n      <identifiers xmlns:prop=\"http://marklogic.com/xdmp/property\">\n\t<identifier>\n\t  <namespace>ukncn</namespace>\n\t  <uuid>id-8163a6d3-a24c-44c3-be0f-b7fff1a09a9a</uuid>\n\t  <value>[2023]
+          EWHC 178 (IPEC)</value>\n\t  <url_slug>d-be927f64-8b26-43d6-86d9-184380b473fc</url_slug>\n\t</identifier>\n      </identifiers>\n    </search:extracted>\n  </search:result>\n  <search:facet
+          name=\"court\" type=\"xs:string\">\n    <search:facet-value name=\"\" count=\"1\"/>\n    <search:facet-value
+          name=\"EAT\" count=\"14\">EAT</search:facet-value>\n    <search:facet-value
+          name=\"EWCA-Civil\" count=\"6\">EWCA-Civil</search:facet-value>\n    <search:facet-value
+          name=\"EWCA-Criminal\" count=\"1\">EWCA-Criminal</search:facet-value>\n    <search:facet-value
+          name=\"EWCC\" count=\"2\">EWCC</search:facet-value>\n    <search:facet-value
+          name=\"EWFC\" count=\"29\">EWFC</search:facet-value>\n    <search:facet-value
+          name=\"EWHC-Chancery\" count=\"1\">EWHC-Chancery</search:facet-value>\n    <search:facet-value
+          name=\"EWHC-Chancery-IPEC\" count=\"44\">EWHC-Chancery-IPEC</search:facet-value>\n    <search:facet-value
+          name=\"EWHC-Chancery-Patents\" count=\"1\">EWHC-Chancery-Patents</search:facet-value>\n    <search:facet-value
+          name=\"EWHC-Family\" count=\"1\">EWHC-Family</search:facet-value>\n  </search:facet>\n  <search:facet
+          name=\"year\" type=\"xs:gYear\">\n    <search:facet-value name=\"1111\" count=\"7\">1111</search:facet-value>\n    <search:facet-value
+          name=\"1212\" count=\"1\">1212</search:facet-value>\n    <search:facet-value
+          name=\"1232\" count=\"1\">1232</search:facet-value>\n    <search:facet-value
+          name=\"1292\" count=\"1\">1292</search:facet-value>\n    <search:facet-value
+          name=\"1812\" count=\"1\">1812</search:facet-value>\n    <search:facet-value
+          name=\"1963\" count=\"1\">1963</search:facet-value>\n    <search:facet-value
+          name=\"1982\" count=\"1\">1982</search:facet-value>\n    <search:facet-value
+          name=\"1988\" count=\"1\">1988</search:facet-value>\n    <search:facet-value
+          name=\"1991\" count=\"1\">1991</search:facet-value>\n    <search:facet-value
+          name=\"1999\" count=\"1\">1999</search:facet-value>\n  </search:facet>\n  <search:metrics>\n    <search:query-resolution-time>PT0.020241S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.002535S</search:facet-resolution-time>\n    <search:snippet-resolution-time>PT0.000162S</search:snippet-resolution-time>\n    <search:extract-resolution-time>PT0.005565S</search:extract-resolution-time>\n    <search:total-time>PT0.029639S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Tue, 15 Sep 2026 11:50:13 GMT
+        Server:
+          - MarkLogic 11.3.6
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uris+as+json%3Aarray+external%3B%0Alet+%24properties+%3A%3D+%28%0A++++fn%3AQName%28%22%22%2C+%27editor-priority%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27assigned-to%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27editor-hold%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-name%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-email%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-consignment-reference%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27published%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27email-received-at%27%29%0A%29%0A%0Areturn+%3Cproperty-results%3E%7B%0Afor+%24uri+in+json%3Aarray-values%28%24uris%29%0A++return+%3Cproperty-result+uri%3D%27%7B%24uri%7D%27%3E+%7B%0A++++for+%24prop+in+%24properties%0A++++++return+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A++%7D+%3C%2Fproperty-result%3E%0A%7D%3C%2Fproperty-results%3E%0A&vars=%7B%22uris%22%3A+%5B%22%2Fewhc%2Fch%2F2024%2F2915.xml%22%5D%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://cf-58785-alb-7dtx0v08wfpa-167285526.eu-west-2.elb.amazonaws.com:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "element()", "X-Path": "/property-results"}, "body": "<property-results><property-result
+          uri=\"/ewhc/ch/2024/2915.xml\"><editor-hold>false</editor-hold><source-name>Mark
+          Halliwell</source-name><source-email>hhj.mark.halliwell@ejudiciary.net</source-email><transfer-consignment-reference>TDR-2024-CJ6R</transfer-consignment-reference><transfer-received-at>2024-11-22T15:28:29Z</transfer-received-at><published>false</published></property-result></property-results>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Tue, 15 Sep 2026 11:50:13 GMT
+        Server:
+          - MarkLogic 11.3.6
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Alet+%24timestamp+%3A%3D+xdmp%3Adocument-timestamp%28+%24uri+%29%0A%0Areturn+xdmp%3Atimestamp-to-wallclock%28+%24timestamp+%29%0A&vars=%7B%22uri%22%3A+%22%2Fewhc%2Fch%2F2024%2F2915.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://cf-58785-alb-7dtx0v08wfpa-167285526.eu-west-2.elb.amazonaws.com:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "dateTime"}, "body": "2026-09-02T10:48:09.069076", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Tue, 15 Sep 2026 11:50:13 GMT
+        Server:
+          - MarkLogic 11.3.6
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uris+as+json%3Aarray+external%3B%0Alet+%24properties+%3A%3D+%28%0A++++fn%3AQName%28%22%22%2C+%27editor-priority%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27assigned-to%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27editor-hold%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-name%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-email%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-consignment-reference%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27published%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27email-received-at%27%29%0A%29%0A%0Areturn+%3Cproperty-results%3E%7B%0Afor+%24uri+in+json%3Aarray-values%28%24uris%29%0A++return+%3Cproperty-result+uri%3D%27%7B%24uri%7D%27%3E+%7B%0A++++for+%24prop+in+%24properties%0A++++++return+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A++%7D+%3C%2Fproperty-result%3E%0A%7D%3C%2Fproperty-results%3E%0A&vars=%7B%22uris%22%3A+%5B%22%2Fd-8a888d55-0e9b-4b4d-aebf-50725fa1659a.xml%22%5D%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://cf-58785-alb-7dtx0v08wfpa-167285526.eu-west-2.elb.amazonaws.com:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "element()", "X-Path": "/property-results"}, "body": "<property-results><property-result
+          uri=\"/d-8a888d55-0e9b-4b4d-aebf-50725fa1659a.xml\"><editor-hold>false</editor-hold><source-name>Anthony
+          Hashemi</source-name><source-email>anthony.hashemi@nationalarchives.gov.uk</source-email><transfer-consignment-reference>TDR-2025-36JX</transfer-consignment-reference><transfer-received-at>2025-11-18T17:07:04Z</transfer-received-at><published>false</published></property-result></property-results>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Tue, 15 Sep 2026 11:50:13 GMT
+        Server:
+          - MarkLogic 11.3.6
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Alet+%24timestamp+%3A%3D+xdmp%3Adocument-timestamp%28+%24uri+%29%0A%0Areturn+xdmp%3Atimestamp-to-wallclock%28+%24timestamp+%29%0A&vars=%7B%22uri%22%3A+%22%2Fd-8a888d55-0e9b-4b4d-aebf-50725fa1659a.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://cf-58785-alb-7dtx0v08wfpa-167285526.eu-west-2.elb.amazonaws.com:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "dateTime"}, "body": "2026-09-02T10:56:16.103453", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Tue, 15 Sep 2026 11:50:13 GMT
+        Server:
+          - MarkLogic 11.3.6
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uris+as+json%3Aarray+external%3B%0Alet+%24properties+%3A%3D+%28%0A++++fn%3AQName%28%22%22%2C+%27editor-priority%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27assigned-to%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27editor-hold%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-name%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-email%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-consignment-reference%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27published%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27email-received-at%27%29%0A%29%0A%0Areturn+%3Cproperty-results%3E%7B%0Afor+%24uri+in+json%3Aarray-values%28%24uris%29%0A++return+%3Cproperty-result+uri%3D%27%7B%24uri%7D%27%3E+%7B%0A++++for+%24prop+in+%24properties%0A++++++return+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A++%7D+%3C%2Fproperty-result%3E%0A%7D%3C%2Fproperty-results%3E%0A&vars=%7B%22uris%22%3A+%5B%22%2Fd-f701de11-8918-474d-890c-07ef2a509c7d.xml%22%5D%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://cf-58785-alb-7dtx0v08wfpa-167285526.eu-west-2.elb.amazonaws.com:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "element()", "X-Path": "/property-results"}, "body": "<property-results><property-result
+          uri=\"/d-f701de11-8918-474d-890c-07ef2a509c7d.xml\"><editor-hold>false</editor-hold></property-result></property-results>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Tue, 15 Sep 2026 11:50:13 GMT
+        Server:
+          - MarkLogic 11.3.6
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Alet+%24timestamp+%3A%3D+xdmp%3Adocument-timestamp%28+%24uri+%29%0A%0Areturn+xdmp%3Atimestamp-to-wallclock%28+%24timestamp+%29%0A&vars=%7B%22uri%22%3A+%22%2Fd-f701de11-8918-474d-890c-07ef2a509c7d.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://cf-58785-alb-7dtx0v08wfpa-167285526.eu-west-2.elb.amazonaws.com:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "dateTime"}, "body": "2026-09-02T10:42:50.034962", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Tue, 15 Sep 2026 11:50:13 GMT
+        Server:
+          - MarkLogic 11.3.6
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uris+as+json%3Aarray+external%3B%0Alet+%24properties+%3A%3D+%28%0A++++fn%3AQName%28%22%22%2C+%27editor-priority%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27assigned-to%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27editor-hold%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-name%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-email%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-consignment-reference%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27published%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27email-received-at%27%29%0A%29%0A%0Areturn+%3Cproperty-results%3E%7B%0Afor+%24uri+in+json%3Aarray-values%28%24uris%29%0A++return+%3Cproperty-result+uri%3D%27%7B%24uri%7D%27%3E+%7B%0A++++for+%24prop+in+%24properties%0A++++++return+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A++%7D+%3C%2Fproperty-result%3E%0A%7D%3C%2Fproperty-results%3E%0A&vars=%7B%22uris%22%3A+%5B%22%2Fd-7ce13deb-ca9a-4eee-992a-20a174e58f9e.xml%22%5D%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://cf-58785-alb-7dtx0v08wfpa-167285526.eu-west-2.elb.amazonaws.com:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "element()", "X-Path": "/property-results"}, "body": "<property-results><property-result
+          uri=\"/d-7ce13deb-ca9a-4eee-992a-20a174e58f9e.xml\"/></property-results>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Tue, 15 Sep 2026 11:50:13 GMT
+        Server:
+          - MarkLogic 11.3.6
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Alet+%24timestamp+%3A%3D+xdmp%3Adocument-timestamp%28+%24uri+%29%0A%0Areturn+xdmp%3Atimestamp-to-wallclock%28+%24timestamp+%29%0A&vars=%7B%22uri%22%3A+%22%2Fd-7ce13deb-ca9a-4eee-992a-20a174e58f9e.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://cf-58785-alb-7dtx0v08wfpa-167285526.eu-west-2.elb.amazonaws.com:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "dateTime"}, "body": "2026-09-02T10:50:45.337277", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Tue, 15 Sep 2026 11:50:13 GMT
+        Server:
+          - MarkLogic 11.3.6
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uris+as+json%3Aarray+external%3B%0Alet+%24properties+%3A%3D+%28%0A++++fn%3AQName%28%22%22%2C+%27editor-priority%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27assigned-to%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27editor-hold%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-name%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-email%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-consignment-reference%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27published%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27email-received-at%27%29%0A%29%0A%0Areturn+%3Cproperty-results%3E%7B%0Afor+%24uri+in+json%3Aarray-values%28%24uris%29%0A++return+%3Cproperty-result+uri%3D%27%7B%24uri%7D%27%3E+%7B%0A++++for+%24prop+in+%24properties%0A++++++return+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A++%7D+%3C%2Fproperty-result%3E%0A%7D%3C%2Fproperty-results%3E%0A&vars=%7B%22uris%22%3A+%5B%22%2Fd-8819bf3c-4fcd-432c-ac13-0d6d605767b8.xml%22%5D%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://cf-58785-alb-7dtx0v08wfpa-167285526.eu-west-2.elb.amazonaws.com:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "element()", "X-Path": "/property-results"}, "body": "<property-results><property-result
+          uri=\"/d-8819bf3c-4fcd-432c-ac13-0d6d605767b8.xml\"><source-name>Daniel Collishaw-Schepman</source-name><source-email>daniel.collishaw-schepman@nationalarchives.gov.uk</source-email><transfer-consignment-reference>TDR-2026-CBL7L</transfer-consignment-reference><transfer-received-at>2026-07-08T15:14:56Z</transfer-received-at><published>false</published></property-result></property-results>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Tue, 15 Sep 2026 11:50:13 GMT
+        Server:
+          - MarkLogic 11.3.6
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Alet+%24timestamp+%3A%3D+xdmp%3Adocument-timestamp%28+%24uri+%29%0A%0Areturn+xdmp%3Atimestamp-to-wallclock%28+%24timestamp+%29%0A&vars=%7B%22uri%22%3A+%22%2Fd-8819bf3c-4fcd-432c-ac13-0d6d605767b8.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://cf-58785-alb-7dtx0v08wfpa-167285526.eu-west-2.elb.amazonaws.com:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "dateTime"}, "body": "2026-09-02T10:59:17.076635", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Tue, 15 Sep 2026 11:50:13 GMT
+        Server:
+          - MarkLogic 11.3.6
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uris+as+json%3Aarray+external%3B%0Alet+%24properties+%3A%3D+%28%0A++++fn%3AQName%28%22%22%2C+%27editor-priority%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27assigned-to%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27editor-hold%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-name%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-email%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-consignment-reference%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27published%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27email-received-at%27%29%0A%29%0A%0Areturn+%3Cproperty-results%3E%7B%0Afor+%24uri+in+json%3Aarray-values%28%24uris%29%0A++return+%3Cproperty-result+uri%3D%27%7B%24uri%7D%27%3E+%7B%0A++++for+%24prop+in+%24properties%0A++++++return+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A++%7D+%3C%2Fproperty-result%3E%0A%7D%3C%2Fproperty-results%3E%0A&vars=%7B%22uris%22%3A+%5B%22%2Feat%2F2023%2F123.xml%22%5D%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://cf-58785-alb-7dtx0v08wfpa-167285526.eu-west-2.elb.amazonaws.com:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "element()", "X-Path": "/property-results"}, "body": "<property-results><property-result
+          uri=\"/eat/2023/123.xml\"><source-name>Anthony Hashemi</source-name><source-email>anthony.hashemi@nationalarchives.gov.uk</source-email><transfer-consignment-reference>TDR-2025-36JW</transfer-consignment-reference><transfer-received-at>2025-11-18T16:59:34Z</transfer-received-at><published>false</published></property-result></property-results>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Tue, 15 Sep 2026 11:50:14 GMT
+        Server:
+          - MarkLogic 11.3.6
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Alet+%24timestamp+%3A%3D+xdmp%3Adocument-timestamp%28+%24uri+%29%0A%0Areturn+xdmp%3Atimestamp-to-wallclock%28+%24timestamp+%29%0A&vars=%7B%22uri%22%3A+%22%2Feat%2F2023%2F123.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://cf-58785-alb-7dtx0v08wfpa-167285526.eu-west-2.elb.amazonaws.com:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "dateTime"}, "body": "2026-09-02T10:50:14.633189", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Tue, 15 Sep 2026 11:50:14 GMT
+        Server:
+          - MarkLogic 11.3.6
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uris+as+json%3Aarray+external%3B%0Alet+%24properties+%3A%3D+%28%0A++++fn%3AQName%28%22%22%2C+%27editor-priority%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27assigned-to%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27editor-hold%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-name%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-email%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-consignment-reference%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27published%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27email-received-at%27%29%0A%29%0A%0Areturn+%3Cproperty-results%3E%7B%0Afor+%24uri+in+json%3Aarray-values%28%24uris%29%0A++return+%3Cproperty-result+uri%3D%27%7B%24uri%7D%27%3E+%7B%0A++++for+%24prop+in+%24properties%0A++++++return+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A++%7D+%3C%2Fproperty-result%3E%0A%7D%3C%2Fproperty-results%3E%0A&vars=%7B%22uris%22%3A+%5B%22%2Fd-47518a7b-dccf-4160-abfe-955110e6112b.xml%22%5D%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://cf-58785-alb-7dtx0v08wfpa-167285526.eu-west-2.elb.amazonaws.com:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "element()", "X-Path": "/property-results"}, "body": "<property-results><property-result
+          uri=\"/d-47518a7b-dccf-4160-abfe-955110e6112b.xml\"><editor-hold>false</editor-hold><source-name>Emma
+          Peacock</source-name><source-email>emma.peacock@nationalarchives.gov.uk</source-email><transfer-consignment-reference>TDR-2025-TDHG</transfer-consignment-reference><transfer-received-at>2025-02-20T16:30:53Z</transfer-received-at><published>false</published></property-result></property-results>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Tue, 15 Sep 2026 11:50:14 GMT
+        Server:
+          - MarkLogic 11.3.6
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Alet+%24timestamp+%3A%3D+xdmp%3Adocument-timestamp%28+%24uri+%29%0A%0Areturn+xdmp%3Atimestamp-to-wallclock%28+%24timestamp+%29%0A&vars=%7B%22uri%22%3A+%22%2Fd-47518a7b-dccf-4160-abfe-955110e6112b.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://cf-58785-alb-7dtx0v08wfpa-167285526.eu-west-2.elb.amazonaws.com:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "dateTime"}, "body": "2026-09-02T10:40:59.163359", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Tue, 15 Sep 2026 11:50:14 GMT
+        Server:
+          - MarkLogic 11.3.6
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uris+as+json%3Aarray+external%3B%0Alet+%24properties+%3A%3D+%28%0A++++fn%3AQName%28%22%22%2C+%27editor-priority%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27assigned-to%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27editor-hold%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-name%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-email%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-consignment-reference%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27published%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27email-received-at%27%29%0A%29%0A%0Areturn+%3Cproperty-results%3E%7B%0Afor+%24uri+in+json%3Aarray-values%28%24uris%29%0A++return+%3Cproperty-result+uri%3D%27%7B%24uri%7D%27%3E+%7B%0A++++for+%24prop+in+%24properties%0A++++++return+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A++%7D+%3C%2Fproperty-result%3E%0A%7D%3C%2Fproperty-results%3E%0A&vars=%7B%22uris%22%3A+%5B%22%2Fd-055208f6-0498-495c-9c5c-604a0b96fea1.xml%22%5D%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://cf-58785-alb-7dtx0v08wfpa-167285526.eu-west-2.elb.amazonaws.com:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "element()", "X-Path": "/property-results"}, "body": "<property-results><property-result
+          uri=\"/d-055208f6-0498-495c-9c5c-604a0b96fea1.xml\"/></property-results>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Tue, 15 Sep 2026 11:50:14 GMT
+        Server:
+          - MarkLogic 11.3.6
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Alet+%24timestamp+%3A%3D+xdmp%3Adocument-timestamp%28+%24uri+%29%0A%0Areturn+xdmp%3Atimestamp-to-wallclock%28+%24timestamp+%29%0A&vars=%7B%22uri%22%3A+%22%2Fd-055208f6-0498-495c-9c5c-604a0b96fea1.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://cf-58785-alb-7dtx0v08wfpa-167285526.eu-west-2.elb.amazonaws.com:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "dateTime"}, "body": "2026-09-02T10:55:31.030385", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Tue, 15 Sep 2026 11:50:14 GMT
+        Server:
+          - MarkLogic 11.3.6
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uris+as+json%3Aarray+external%3B%0Alet+%24properties+%3A%3D+%28%0A++++fn%3AQName%28%22%22%2C+%27editor-priority%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27assigned-to%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27editor-hold%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-name%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-email%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-consignment-reference%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27published%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27email-received-at%27%29%0A%29%0A%0Areturn+%3Cproperty-results%3E%7B%0Afor+%24uri+in+json%3Aarray-values%28%24uris%29%0A++return+%3Cproperty-result+uri%3D%27%7B%24uri%7D%27%3E+%7B%0A++++for+%24prop+in+%24properties%0A++++++return+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A++%7D+%3C%2Fproperty-result%3E%0A%7D%3C%2Fproperty-results%3E%0A&vars=%7B%22uris%22%3A+%5B%22%2Fd-ae35e5e9-0b81-4873-8682-20975a6780d4.xml%22%5D%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://cf-58785-alb-7dtx0v08wfpa-167285526.eu-west-2.elb.amazonaws.com:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "element()", "X-Path": "/property-results"}, "body": "<property-results><property-result
+          uri=\"/d-ae35e5e9-0b81-4873-8682-20975a6780d4.xml\"/></property-results>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Tue, 15 Sep 2026 11:50:14 GMT
+        Server:
+          - MarkLogic 11.3.6
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Alet+%24timestamp+%3A%3D+xdmp%3Adocument-timestamp%28+%24uri+%29%0A%0Areturn+xdmp%3Atimestamp-to-wallclock%28+%24timestamp+%29%0A&vars=%7B%22uri%22%3A+%22%2Fd-ae35e5e9-0b81-4873-8682-20975a6780d4.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://cf-58785-alb-7dtx0v08wfpa-167285526.eu-west-2.elb.amazonaws.com:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "dateTime"}, "body": "2026-09-02T10:50:47.019726", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Tue, 15 Sep 2026 11:50:14 GMT
+        Server:
+          - MarkLogic 11.3.6
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uris+as+json%3Aarray+external%3B%0Alet+%24properties+%3A%3D+%28%0A++++fn%3AQName%28%22%22%2C+%27editor-priority%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27assigned-to%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27editor-hold%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-name%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-email%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-consignment-reference%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27published%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27email-received-at%27%29%0A%29%0A%0Areturn+%3Cproperty-results%3E%7B%0Afor+%24uri+in+json%3Aarray-values%28%24uris%29%0A++return+%3Cproperty-result+uri%3D%27%7B%24uri%7D%27%3E+%7B%0A++++for+%24prop+in+%24properties%0A++++++return+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A++%7D+%3C%2Fproperty-result%3E%0A%7D%3C%2Fproperty-results%3E%0A&vars=%7B%22uris%22%3A+%5B%22%2Fd-be927f64-8b26-43d6-86d9-184380b473fc.xml%22%5D%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://cf-58785-alb-7dtx0v08wfpa-167285526.eu-west-2.elb.amazonaws.com:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "element()", "X-Path": "/property-results"}, "body": "<property-results><property-result
+          uri=\"/d-be927f64-8b26-43d6-86d9-184380b473fc.xml\"/></property-results>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Tue, 15 Sep 2026 11:50:14 GMT
+        Server:
+          - MarkLogic 11.3.6
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uri+as+xs%3Astring+external%3B%0A%0Alet+%24timestamp+%3A%3D+xdmp%3Adocument-timestamp%28+%24uri+%29%0A%0Areturn+xdmp%3Atimestamp-to-wallclock%28+%24timestamp+%29%0A&vars=%7B%22uri%22%3A+%22%2Fd-be927f64-8b26-43d6-86d9-184380b473fc.xml%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://cf-58785-alb-7dtx0v08wfpa-167285526.eu-west-2.elb.amazonaws.com:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "dateTime"}, "body": "2026-09-02T10:39:41.06577", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Tue, 15 Sep 2026 11:50:14 GMT
+        Server:
+          - MarkLogic 11.3.6
+      status:
+        code: 200
+        message: OK
+version: 1
