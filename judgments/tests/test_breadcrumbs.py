@@ -166,10 +166,9 @@ class TestBreadcrumbs(TestCase):
         self.client.force_login(User.objects.get_or_create(username="testuser")[0])
         judgment = JudgmentFactory.build(
             uri=DocumentURIString("eat/2023/1"),
-            name="",
             document_noun="judgment",
+            body=DocumentBodyFactory.build(name=""),
         )
-        judgment.body.name = ""
         mock_get_document_by_uri.return_value = judgment
         response = self.client.get("/eat/2023/1")
         breadcrumb_html = """

@@ -127,8 +127,7 @@ class TestDocumentView(TestCase):
         mock_get_document_by_uri,
         mock_get_linked_document_uri,
     ):
-        judgment = JudgmentFactory.build(uri=DocumentURIString("eat/2023/1"))
-        judgment.metadata.pop("title", None)
+        judgment = JudgmentFactory.build(uri=DocumentURIString("eat/2023/1"), body=DocumentBodyFactory.build(name=""))
         mock_get_document_by_uri.return_value = judgment
 
         request = RequestFactory().get("/eat/2023/1")

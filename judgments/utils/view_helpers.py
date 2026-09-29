@@ -113,7 +113,8 @@ class DocumentViewMixin(TemplateView):
         else:
             context["document_html"] = self.document.content_as_html()
 
-        context["page_title"] = self.document.metadata.title.value or "Untitled document"
+        title = self.document.metadata.title.value
+        context["page_title"] = title or "Untitled document"
         context["courts"] = caselawutils.courts.get_all(with_jurisdictions=True)
 
         context["editors"] = editors_dict()
