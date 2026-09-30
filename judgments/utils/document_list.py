@@ -96,8 +96,8 @@ def get_saved_view_preset(preset_id: str) -> SavedViewPreset:
 
 def _listable_courts() -> list[Any]:
     court_groups = [
-        *all_courts.get_grouped_show_in_public_directory_courts(),
-        *all_courts.get_grouped_show_in_public_directory_tribunals(),
+        *all_courts.get_grouped_show_to_editors_courts(),
+        *all_courts.get_grouped_show_to_editors_tribunals(),
     ]
 
     return [court for group in court_groups for court in group.courts if court.canonical_param]
