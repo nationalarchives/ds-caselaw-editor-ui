@@ -9,7 +9,7 @@
     </li>
     <li>Press Summary</li>
   {% elif document_type == "judgment" %}
-    <li>{{ title or "[Untitled Document]" }}</li>
+    <li>{{ "[Untitled Document]" if not title or title == "Untitled document" else title }}</li>
   {% elif title %}
     <li>{{ title }}</li>
   {% endif %}
