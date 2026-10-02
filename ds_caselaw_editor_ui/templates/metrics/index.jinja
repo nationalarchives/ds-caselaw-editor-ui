@@ -1,0 +1,39 @@
+{% extends "layouts/base.jinja" %}
+{% from "components/heading.jinja" import heading %}
+{% from "components/metric.jinja" import metric %}
+{% block content %}
+  <div class="metrics">
+    {{ heading(content="Metrics", size="h1") }}
+    <section>
+      {{ heading(tag="h2", content="Publication totals") }}
+      <div class="metrics__summary">
+        {% for item in summary_metrics %}
+          {{ metric(label=item.label, value=item.value) }}
+        {% endfor %}
+      </div>
+    </section>
+    <section>
+      {{ heading(tag="h2", content="Documents by courts and tribunals") }}
+      <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Documents</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for court in cases_by_court %}
+              <tr>
+                <td>{{ court.name }}</td>
+                <td>{{ court.type }}</td>
+                <td>{{ court.document_count|intcomma }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+{% endblock content %}

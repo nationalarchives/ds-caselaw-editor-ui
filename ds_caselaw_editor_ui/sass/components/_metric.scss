@@ -1,0 +1,21 @@
+.metric {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: $space-4;
+  justify-content: space-between;
+
+  padding: $space-4;
+  border-top: 4px solid colour-var("accent-brand");
+
+  background: colour-var("accent-background-light");
+
+  &__value {
+    font-size: $typography-xl-text-size;
+    font-weight: $typography-bold-font-weight;
+  }
+
+  &__label {
+    font-weight: $typography-bold-font-weight;
+  }
+}
