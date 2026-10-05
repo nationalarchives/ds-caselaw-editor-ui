@@ -30,8 +30,8 @@ class MetricsView(TemplateView):
     def _get_court_and_tribunal_document_counts(self) -> list[CourtOrTribunalDocumentCount]:
         court_and_tribunal_document_counts: list[CourtOrTribunalDocumentCount] = []
         grouped_courts_and_tribunals = [
-            ("Court", courts.get_grouped_listable_courts()),
-            ("Tribunal", courts.get_grouped_listable_tribunals()),
+            ("Court", courts.get_grouped_show_to_editors_courts()),
+            ("Tribunal", courts.get_grouped_show_to_editors_tribunals()),
         ]
 
         for court_type, groups in grouped_courts_and_tribunals:

@@ -21,10 +21,10 @@ class TestMetricsView(SimpleTestCase):
         court = SimpleNamespace(name="Example Court", canonical_param="example-court")
         court_without_documents = SimpleNamespace(name="Empty Court", canonical_param="empty-court")
         tribunal = SimpleNamespace(name="Example Tribunal", canonical_param="example-tribunal")
-        mock_courts.get_grouped_listable_courts.return_value = [
+        mock_courts.get_grouped_show_to_editors_courts.return_value = [
             SimpleNamespace(courts=[court, court_without_documents]),
         ]
-        mock_courts.get_grouped_listable_tribunals.return_value = [SimpleNamespace(courts=[tribunal])]
+        mock_courts.get_grouped_show_to_editors_tribunals.return_value = [SimpleNamespace(courts=[tribunal])]
         mock_search_judgments_and_parse_response.side_effect = [
             SimpleNamespace(total="10"),
             SimpleNamespace(total="0"),
