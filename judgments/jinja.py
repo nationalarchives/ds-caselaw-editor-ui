@@ -34,6 +34,10 @@ from judgments.templatetags.user_permissions import (
 from judgments.utils.permissions import editors_only_hint, editors_or_developers_hint
 
 
+def component_class_names(*values):
+    return " ".join(class_name for value in values if value for class_name in str(value).split())
+
+
 def reversed_filter(value):
     try:
         return list(value)[::-1]
@@ -125,6 +129,7 @@ def environment(**options):
             "crispy": crispy,
             "editors_only_hint": editors_only_hint,
             "editors_or_developers_hint": editors_or_developers_hint,
+            "component_class_names": component_class_names,
         },
     )
 

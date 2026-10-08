@@ -1,0 +1,12 @@
+{% from "components/heading.jinja" import heading %}
+{% from "components/metric.jinja" import metric %}
+{% macro metrics_summary(metrics=None) %}
+  <section>
+    {{ heading(tag="h2", content="Publication totals") }}
+    <div class="metrics__summary">
+      {% for item in metrics %}
+        {{ metric(label=item.label, value=item.value) }}
+      {% endfor %}
+    </div>
+  </section>
+{% endmacro %}

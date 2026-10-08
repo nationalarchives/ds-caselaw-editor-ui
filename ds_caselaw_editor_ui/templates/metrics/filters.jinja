@@ -1,0 +1,70 @@
+{% from "components/details.jinja" import details %}
+{% from "components/checkboxes.jinja" import checkboxes %}
+{% from "components/notification.jinja" import notification %}
+{% from "components/button.jinja" import button %}
+{% from "components/badge.jinja" import badge %}
+{% macro metrics_filters(form=None, court_options=None, tribunal_options=None, selected_filters=None) %}
+  <form method="get">
+    {% if form.non_field_errors() %}
+      {% call notification(variant="failure") %}
+        {% for error in form.non_field_errors() %}<p>{{ error }}</p>{% endfor %}
+      {% endcall %}
+    {% endif %}
+    <div class="metrics__filters">
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-label--s"
+               for="{{ form.start_date.id_for_label }}">{{ form.start_date.label }}</label>
+        {{ form.start_date }}
+        {% for error in form.start_date.errors %}<p class="govuk-error-message">{{ error }}</p>{% endfor %}
+      </div>
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-label--s"
+               for="{{ form.end_date.id_for_label }}">{{ form.end_date.label }}</label>
+        {{ form.end_date }}
+        {% for error in form.end_date.errors %}<p class="govuk-error-message">{{ error }}</p>{% endfor %}
+      </div>
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-label--s"
+               for="{{ form.bucketing.id_for_label }}">{{ form.bucketing.label }}</label>
+        {{ form.bucketing }}
+        {% for error in form.bucketing.errors %}<p class="govuk-error-message">{{ error }}</p>{% endfor %}
+      </div>
+    </div>
+    {% call details(title="Filter by courts and tribunals") %}
+      <p>Select one or more, or leave blank to include them all</p>
+      {% if form.courts.errors %}
+        {% call notification(variant="failure") %}
+          {% for error in form.courts.errors() %}<p>{{ error }}</p>{% endfor %}
+        {% endcall %}
+      {% endif %}
+      <div class="metrics__filters">
+        {% set court_checkbox_params = {
+          "idPrefix": "id_courts",
+          "name": "courts",
+          "fieldset": {"legend": {"text": "Courts"}},
+          "items": court_options
+        } %}
+        {{ checkboxes(court_checkbox_params) }}
+        {% set tribunal_checkbox_params = {
+          "idPrefix": "id_tribunals",
+          "name": "courts",
+          "fieldset": {"legend": {"text": "Tribunals"}},
+          "items": tribunal_options
+        } %}
+        {{ checkboxes(tribunal_checkbox_params) }}
+      </div>
+    {% endcall %}
+    {% if selected_filters %}
+      <div class="metrics__filters metrics__filters--applied">
+        {% for selected_filter in selected_filters %}
+          <a href="{{ selected_filter.remove_url }}">
+            {% call badge() %}
+              {{ selected_filter.label }} ×
+            {% endcall %}
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {{ button(content="Apply filters") }}
+  </form>
+{% endmacro %}

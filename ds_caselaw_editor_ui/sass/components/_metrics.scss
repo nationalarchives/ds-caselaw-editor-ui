@@ -6,6 +6,28 @@
   gap: $space-6;
   padding-bottom: $space-8;
 
+  .details {
+    margin: $space-4 0;
+  }
+
+  &__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-4;
+
+    .govuk-form-group {
+      margin-bottom: 0;
+    }
+  }
+
+  &__filters--applied {
+    margin-bottom: $space-4;
+
+    .badge {
+      border: 0;
+    }
+  }
+
   &__summary {
     display: flex;
     flex-wrap: wrap;
