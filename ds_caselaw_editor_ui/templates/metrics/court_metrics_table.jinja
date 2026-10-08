@@ -1,0 +1,26 @@
+{% from "components/heading.jinja" import heading %}
+{% macro court_metrics_table(metrics=None) %}
+  <section>
+    {{ heading(tag="h2", content="Documents by courts and tribunals") }}
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Documents</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in metrics %}
+            <tr>
+              <td>{{ row.name }}</td>
+              <td>{{ row.type }}</td>
+              <td>{{ row.document_count|intcomma }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% endmacro %}

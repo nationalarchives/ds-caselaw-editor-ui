@@ -1,39 +1,21 @@
 {% extends "layouts/base.jinja" %}
 {% from "components/heading.jinja" import heading %}
-{% from "components/metric.jinja" import metric %}
+{% from "metrics/filters.jinja" import metrics_filters %}
+{% from "metrics/summary.jinja" import metrics_summary %}
+{% from "metrics/lifecycle_metrics_table.jinja" import lifecycle_metrics_table %}
+{% from "metrics/submission_metrics_table.jinja" import submission_metrics_table %}
+{% from "metrics/court_metrics_table.jinja" import court_metrics_table %}
 {% block content %}
   <div class="metrics">
     {{ heading(content="Metrics", size="h1") }}
-    <section>
-      {{ heading(tag="h2", content="Publication totals") }}
-      <div class="metrics__summary">
-        {% for item in summary_metrics %}
-          {{ metric(label=item.label, value=item.value) }}
-        {% endfor %}
-      </div>
-    </section>
-    <section>
-      {{ heading(tag="h2", content="Documents by courts and tribunals") }}
-      <div class="table">
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Type</th>
-              <th>Documents</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for court in cases_by_court %}
-              <tr>
-                <td>{{ court.name }}</td>
-                <td>{{ court.type }}</td>
-                <td>{{ court.document_count|intcomma }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </section>
+    {{ metrics_filters(form=filter_form, court_options=court_options, tribunal_options=tribunal_options, selected_filters=selected_court_filters) }}
+    {{ metrics_summary(metrics=summary_metrics) }}
+    {% for item in lifecycle_metrics %}
+      {{ lifecycle_metrics_table(metrics=item) }}
+    {% endfor %}
+    {% for item in submission_metrics %}
+      {{ submission_metrics_table(metrics=item) }}
+    {% endfor %}
+    {{ court_metrics_table(metrics=cases_by_court) }}
   </div>
 {% endblock content %}
