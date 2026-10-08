@@ -1,0 +1,44 @@
+{% from "components/heading.jinja" import heading %}
+{% macro lifecycle_metrics_table(metrics=None) %}
+  <section>
+    {{ heading(tag="h2", content=metrics.label) }}
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>Period</th>
+            <th>Documents measured</th>
+            <th>Median time</th>
+            <th>Mean time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in metrics.rows %}
+            <tr>
+              <td title="{{ row.period_raw }}">{{ row.period }}</td>
+              <td>{{ row.count|intcomma }}</td>
+              <td>
+                {% if row.median is not none %}
+                  <span title="{{ row.median.raw }} seconds">{{ row.median.display }}</span>
+                {% else %}
+                  No data
+                {% endif %}
+              </td>
+              <td>
+                {% if row.mean is not none %}
+                  <span title="{{ row.mean.raw }} seconds">{{ row.mean.display }}</span>
+                {% else %}
+                  No data
+                {% endif %}
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="4">No metrics available for this period.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% endmacro %}

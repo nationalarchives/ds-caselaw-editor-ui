@@ -27,6 +27,10 @@ from judgments.templatetags.navigation_tags import get_navigation_items
 from judgments.templatetags.user_permissions import is_developer, is_editor, is_superuser
 
 
+def component_class_names(*values):
+    return " ".join(class_name for value in values if value for class_name in str(value).split())
+
+
 def reversed_filter(value):
     try:
         return list(value)[::-1]
@@ -116,6 +120,7 @@ def environment(**options):
             "get_badge_variant_from_status": get_badge_variant_from_status,
             "get_navigation_items": get_document_navigation_items,
             "crispy": crispy,
+            "component_class_names": component_class_names,
         },
     )
 
