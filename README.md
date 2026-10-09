@@ -106,6 +106,8 @@ root# exit
 $
 ```
 
+Superusers get no special permissions in the editor UI. To be able to publish, edit and so on, create a group called `Editors` in the Django admin and add your user to it. The app logs a system check warning (`judgments.W001`) until this group exists.
+
 ### 7. Run a 'development' web server
 
 ```console
