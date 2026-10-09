@@ -1,6 +1,7 @@
 from django.apps import AppConfig, apps
 from django.conf import settings
-from django.core.checks import Error, register
+from django.core.checks import Warning as CheckWarning
+from django.core.checks import register
 from django.db import DatabaseError
 
 
@@ -25,9 +26,9 @@ def check_editors_group_exists(app_configs, **kwargs):
         return []
 
     return [
-        Error(
+        CheckWarning(
             f'There is no "{settings.EDITORS_GROUP_NAME}" group, so nobody can perform editing actions.',
             hint=f'Create a group named "{settings.EDITORS_GROUP_NAME}" and add the editing users to it.',
-            id="judgments.E001",
+            id="judgments.W001",
         ),
     ]

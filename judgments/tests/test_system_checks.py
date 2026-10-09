@@ -5,8 +5,8 @@ from judgments.apps import check_editors_group_exists
 
 
 @pytest.mark.django_db
-def test_editors_group_missing_is_an_error():
-    assert [error.id for error in check_editors_group_exists(None)] == ["judgments.E001"]
+def test_editors_group_missing_is_a_warning():
+    assert [warning.id for warning in check_editors_group_exists(None)] == ["judgments.W001"]
 
 
 @pytest.mark.django_db
