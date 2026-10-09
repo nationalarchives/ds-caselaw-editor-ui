@@ -13,8 +13,10 @@
           <li>
             {% if active_navigation_endpoint == "stub" %}
               Create a stub
-            {% else %}
+            {% elif user|can_edit %}
               <a href="{{ url('create-stub-document') }}">Create a stub</a>
+            {% else %}
+              <span title="{{ editors_only_hint() }}" aria-disabled="true">Create a stub</span>
             {% endif %}
           </li>
           {% if user|is_superuser %}

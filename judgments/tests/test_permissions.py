@@ -2,7 +2,7 @@ import pytest
 from django.contrib.auth.models import Group, User
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
-from django.test import RequestFactory
+from django.test import RequestFactory, override_settings
 from django.views import View
 
 from judgments.utils.permissions import (
@@ -10,6 +10,8 @@ from judgments.utils.permissions import (
     EditorRequiredMixin,
     editor_or_developer_required,
     editor_required,
+    editors_only_hint,
+    editors_or_developers_hint,
 )
 
 
@@ -110,3 +112,9 @@ def test_editor_or_developer_required_allows_editors_and_developers(user_fixture
 def test_editor_or_developer_required_denies_others(user_fixture, request):
     with pytest.raises(PermissionDenied):
         editor_or_developer_function_view(request_as("post", request.getfixturevalue(user_fixture)))
+
+
+@override_settings(EDITORS_GROUP_NAME="Curators", DEVELOPERS_GROUP_NAME="Engineers")
+def test_hints_use_configured_group_names():
+    assert editors_only_hint() == "Only members of the Curators group can do this"
+    assert editors_or_developers_hint() == "Only members of the Curators or Engineers groups can do this"

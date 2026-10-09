@@ -18,7 +18,7 @@
                 {{ field }}
               {% endif %}
             {% endfor %}
-            {% call button() %}
+            {% call button(disabled=not user|can_edit) %}
               Stub document
             {% endcall %}
           </form>

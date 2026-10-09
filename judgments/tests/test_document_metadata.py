@@ -174,7 +174,7 @@ class TestDocumentMetadata(TestCase):
         )
         mock_judgment.return_value = judgment
 
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        self.client.force_login(make_editor())
 
         metadata_uri = reverse("document-metadata", kwargs={"document_uri": judgment.uri})
 
