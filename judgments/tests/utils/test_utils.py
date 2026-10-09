@@ -128,15 +128,15 @@ class TestVersionUtils:
 
 class TestEditorsDict:
     @pytest.mark.django_db
-    def test_print_name_sorting(self, settings):
-        settings.EDITORS_GROUP_ID = None
+    def test_print_name_sorting(self):
+        group = Group.objects.create(name="Editors")
 
-        UserFactory.create(username="joe_bloggs", first_name="", last_name="")
+        UserFactory.create(username="joe_bloggs", first_name="", last_name="").groups.add(group)
         UserFactory.create(
             username="ann_example",
             first_name="Ann",
             last_name="Example",
-        )
+        ).groups.add(group)
 
         assert editors_dict() == [
             {"name": "ann_example", "print_name": "Ann Example"},
@@ -144,9 +144,8 @@ class TestEditorsDict:
         ]
 
     @pytest.mark.django_db
-    def test_exclude_non_editors(self, settings):
+    def test_exclude_non_editors(self):
         group = Group.objects.create(name="Editors")
-        settings.EDITORS_GROUP_ID = group.id
 
         UserFactory.create(username="non_editor", first_name="", last_name="")
         editor = UserFactory.create(username="editor", first_name="", last_name="")
@@ -158,30 +157,8 @@ class TestEditorsDict:
         ]
 
     @pytest.mark.django_db
-    def test_exclude_inactive_without_editor_group(self, settings):
-        settings.EDITORS_GROUP_ID = None
-
-        UserFactory.create(
-            username="active_user",
-            first_name="",
-            last_name="",
-            is_active=True,
-        )
-        UserFactory.create(
-            username="inactive_user",
-            first_name="",
-            last_name="",
-            is_active=False,
-        )
-
-        assert editors_dict() == [
-            {"name": "active_user", "print_name": "active_user"},
-        ]
-
-    @pytest.mark.django_db
-    def test_exclude_inactive_with_editor_group(self, settings):
+    def test_exclude_inactive_editors(self):
         group = Group.objects.create(name="Editors")
-        settings.EDITORS_GROUP_ID = group.id
 
         UserFactory.create(
             username="active_non_editor",
