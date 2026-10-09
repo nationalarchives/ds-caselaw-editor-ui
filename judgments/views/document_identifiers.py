@@ -11,6 +11,7 @@ from django.http import Http404
 from django.urls import reverse
 from django.views.generic import FormView
 
+from judgments.utils.permissions import EditorRequiredMixin
 from judgments.utils.view_helpers import DocumentView, DocumentViewMixin
 
 if TYPE_CHECKING:
@@ -57,7 +58,7 @@ class AddIdentifierForm(forms.Form):
         self.helper.layout = Layout("type", "value", "deprecated", Button("submit", "Submit"))
 
 
-class AddDocumentIdentifierView(DocumentViewMixin, FormView):
+class AddDocumentIdentifierView(EditorRequiredMixin, DocumentViewMixin, FormView):
     template_engine = "jinja"
     template_name = "judgment/identifiers_add.jinja"
     form_class = AddIdentifierForm
@@ -159,7 +160,7 @@ def check_safe_to_delete_identifier(document: Document, identifier_uuid: str):
         )
 
 
-class DeleteDocumentIdentifierView(DocumentViewMixin, FormView):
+class DeleteDocumentIdentifierView(EditorRequiredMixin, DocumentViewMixin, FormView):
     template_engine = "jinja"
     template_name = "judgment/identifier_delete.jinja"
     form_class = DeleteIdentifierForm

@@ -1,14 +1,14 @@
 from unittest.mock import Mock, patch
 
-from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
 from django.test import TestCase
 from django.urls import reverse
+from factories import make_editor
 
 
 class TestDocumentEnrich(TestCase):
     def setUp(self):
-        self.user = User.objects.get_or_create(username="user")[0]
+        self.user = make_editor("user")
 
     @patch("judgments.views.enrich.get_document_by_uri_or_404")
     def test_document_enrich_failure(self, mock_document):

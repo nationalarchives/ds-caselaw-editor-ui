@@ -4,6 +4,7 @@ from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
 from django.test import TestCase
+from factories import make_editor
 from lxml import etree
 
 from judgments.views.stub import ANNOTATION
@@ -85,8 +86,7 @@ class TestStubView(TestCase):
         # with (judgment_template_path).open("rb") as f:
         #     template = f.read()
         mock_render_stub.return_value = '<akomaNtoso xmlns="http://docs.oasis-open.org/legaldocml/ns/akn/3.0" xmlns:uk="https://caselaw.nationalarchives.gov.uk/akn"><uk:test/></akomaNtoso>'
-        superuser = User.objects.create_superuser(username="clark")
-        self.client.force_login(superuser)
+        self.client.force_login(make_editor())
         _response = self.client.post(
             "/create_stub",
             post_data,
@@ -127,8 +127,7 @@ class TestStubView(TestCase):
     @patch("judgments.views.stub.render_stub_xml", return_value=b"<xml />")
     @patch("judgments.views.stub.api_client.insert_document_xml")
     def test_judgment_stub_post_invalid_court(self, mock_insert_xml, mock_render_stub, mock_uuid, mock_courts):
-        superuser = User.objects.create_superuser(username="clark")
-        self.client.force_login(superuser)
+        self.client.force_login(make_editor())
         modified_post_data = dict(**post_data)
         modified_post_data["court_code"] = "not_a_court_code"
         response = self.client.post(

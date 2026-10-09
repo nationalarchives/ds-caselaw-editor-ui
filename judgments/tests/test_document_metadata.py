@@ -13,6 +13,7 @@ from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
+from factories import make_editor
 
 from judgments.views.document_metadata import MetadataFieldDisplayDecorator
 
@@ -212,7 +213,7 @@ class TestDocumentMetadata(TestCase):
         judgment.save_metadata_fields = Mock()  # type:ignore[method-assign]
         mock_judgment.return_value = judgment
 
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        self.client.force_login(make_editor())
 
         response = self.client.post(
             reverse("document-metadata", kwargs={"document_uri": judgment.uri}),
@@ -293,7 +294,7 @@ class TestDocumentMetadata(TestCase):
         judgment.save_metadata_fields = Mock()  # type:ignore[method-assign]
         mock_judgment.return_value = judgment
 
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        self.client.force_login(make_editor())
 
         response = self.client.post(
             reverse("document-metadata", kwargs={"document_uri": judgment.uri}),
@@ -322,7 +323,7 @@ class TestDocumentMetadata(TestCase):
         judgment.save_metadata_fields = Mock()  # type:ignore[method-assign]
         mock_judgment.return_value = judgment
 
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        self.client.force_login(make_editor())
 
         response = self.client.post(
             reverse("document-metadata", kwargs={"document_uri": judgment.uri}),
@@ -358,7 +359,7 @@ class TestDocumentMetadata(TestCase):
         judgment.save_metadata_fields = Mock()  # type:ignore[method-assign]
         mock_judgment.return_value = judgment
 
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        self.client.force_login(make_editor())
 
         response = self.client.post(
             reverse("document-metadata", kwargs={"document_uri": judgment.uri}),

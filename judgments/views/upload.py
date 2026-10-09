@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 from judgments.templatetags.navigation_tags import get_navigation_items_logic
+from judgments.utils.permissions import editor_required
 from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_404
 
 MAX_UPLOAD_SIZE = 20 * 1024 * 1024  # 20 MB
@@ -72,6 +73,7 @@ class UploadDocumentSuccessView(DocumentView):
         return context
 
 
+@editor_required
 def upload(request):
     judgment_uri = request.POST.get("judgment_uri", None)
     judgment = get_document_by_uri_or_404(judgment_uri)

@@ -1,13 +1,13 @@
 from unittest.mock import Mock, patch
 
-from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
+from factories import make_editor
 
 
 class TestDocumentReparse(TestCase):
     def setUp(self):
-        self.user = User.objects.get_or_create(username="user")[0]
+        self.user = make_editor("user")
 
     @patch("judgments.views.document_reparse.get_document_by_uri_or_404")
     def test_document_reparse_flow(self, mock_document):
