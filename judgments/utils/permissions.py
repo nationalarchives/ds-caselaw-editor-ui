@@ -2,6 +2,7 @@ from collections.abc import Callable
 from functools import wraps
 from typing import Any, Concatenate
 
+from django.conf import settings
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from django.http import HttpRequest
@@ -9,6 +10,14 @@ from django.http import HttpRequest
 from judgments.utils.view_helpers import user_can_edit, user_is_developer, user_is_editor_or_developer
 
 SAFE_METHODS = ("GET", "HEAD", "OPTIONS")
+
+
+def editors_only_hint() -> str:
+    return f"Only members of the {settings.EDITORS_GROUP_NAME} group can do this"
+
+
+def editors_or_developers_hint() -> str:
+    return f"Only members of the {settings.EDITORS_GROUP_NAME} or {settings.DEVELOPERS_GROUP_NAME} groups can do this"
 
 
 class _GroupRequiredMixin(UserPassesTestMixin):

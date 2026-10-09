@@ -43,33 +43,25 @@
       {% call button(size="small", href=jira_create_link, attrs={"target": "_blank", "rel":"noopener noreferrer"}) %}
         Create in Jira
       {% endcall %}
-      {% if user|is_superuser or user|is_editor %}
-        <form action="{{ url('enrich') }}" method="post">
+      <form action="{{ url('enrich') }}" method="post">
+        {{ csrf_input }}
+        <input type="hidden" name="document_uri" value="{{ document.uri }}" />
+        {% call button(size="small", disabled=not user|is_editor_or_developer, disabled_reason=editors_or_developers_hint()) %}
+          Request enrichment
+        {% endcall %}
+      </form>
+      {% if waffle.flag("reparse") %}
+        <form action="{{ url('reparse') }}" method="post">
           {{ csrf_input }}
           <input type="hidden" name="document_uri" value="{{ document.uri }}" />
-          {% call button(size="small") %}
-            Request enrichment
+          {% call button(size="small", disabled=not user|is_editor_or_developer, disabled_reason=editors_or_developers_hint()) %}
+            Reparse
           {% endcall %}
         </form>
-        {% if waffle.flag("reparse") %}
-          <form action="{{ url('reparse') }}" method="post">
-            {{ csrf_input }}
-            <input type="hidden" name="document_uri" value="{{ document.uri }}" />
-            {% call button(size="small") %}
-              Reparse
-            {% endcall %}
-          </form>
-        {% endif %}
-        {% call button(variant="danger", size="small", href=url("delete-document", document.uri)) %}
-          Delete
-        {% endcall %}
-      {% else %}
-        {% if document.is_failure %}
-          {% call button(variant="danger", size="small", href=url("delete-document", document.uri)) %}
-            Delete
-          {% endcall %}
-        {% endif %}
       {% endif %}
+      {% call button(variant="danger", size="small", href=url("delete-document", document.uri), disabled=not user|can_edit) %}
+        Delete
+      {% endcall %}
     {% endcall %}
   {% endcall %}
   {% if document.is_locked %}
@@ -77,7 +69,13 @@
       <div class="container">
         <p>This document is locked: "{{ document.checkout_message }}"</p>
         <p>
-          <a href="{{ url('unlock') }}?judgment_uri={{ document.uri }}">Unlock it</a>
+          {% if user|is_editor_or_developer %}
+            <a href="{{ url('unlock') }}?judgment_uri={{ document.uri }}">Unlock it</a>
+          {% else %}
+            {% call button(size="small", disabled=True, disabled_reason=editors_or_developers_hint()) %}
+              Unlock it
+            {% endcall %}
+          {% endif %}
         </p>
       </div>
     {% endcall %}

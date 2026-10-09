@@ -8,6 +8,7 @@ from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
+from factories import make_editor
 from waffle.testutils import override_flag
 
 
@@ -82,7 +83,7 @@ class TestIdentifierViewDeleteDisablement(TestCase):
         )
         mock_judgment.return_value = judgment
 
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        self.client.force_login(make_editor())
 
         identifiers_uri = reverse("document-identifiers", kwargs={"document_uri": judgment.uri})
 

@@ -10,7 +10,7 @@
       <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
       <input type="hidden" name="hold" value="true" />
       {% if waffle.flag("notes_on_state_change") %}{{ note_form() }}{% endif %}
-      {{ button(content="Put on hold") }}
+      {{ button(content="Put on hold", disabled=not user|can_edit) }}
       <p>
         <a href="{{ url('full-text-html', document.uri) }}">Go back to review</a>
       </p>
