@@ -16,6 +16,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
+from judgments.utils.permissions import EditorRequiredMixin
 from judgments.utils.view_helpers import DocumentView
 
 
@@ -156,7 +157,7 @@ class MetadataFieldDisplayDecorator:
         return value
 
 
-class DocumentMetadataView(DocumentView):
+class DocumentMetadataView(EditorRequiredMixin, DocumentView):
     template_engine = "jinja"
     template_name = "judgment/metadata.jinja"
 

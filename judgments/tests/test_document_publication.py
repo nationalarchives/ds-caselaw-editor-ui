@@ -6,6 +6,7 @@ from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
+from factories import make_editor
 
 
 class TestJudgmentPublish(TestCase):
@@ -53,7 +54,7 @@ class TestJudgmentPublish(TestCase):
         judgment.uri = "pubtest/4321/123"
         mock_judgment.return_value = judgment
 
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        self.client.force_login(make_editor())
 
         response = self.client.post(
             reverse("publish"),
@@ -146,7 +147,7 @@ class TestJudgmentUnpublish(TestCase):
         judgment.uri = "pubtest/4321/123"
         mock_judgment.return_value = judgment
 
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        self.client.force_login(make_editor())
 
         response = self.client.post(
             reverse("unpublish"),

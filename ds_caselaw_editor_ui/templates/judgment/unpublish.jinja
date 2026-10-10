@@ -9,7 +9,7 @@
       {{ csrf_input }}
       <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
       {% if waffle.flag("notes_on_state_change") %}{{ note_form() }}{% endif %}
-      {{ button(content="Unpublish") }}
+      {{ button(content="Unpublish", disabled=not user|can_edit) }}
       <p>
         <a href="{{ url('full-text-html', document.uri) }}">Go back to review</a>
       </p>

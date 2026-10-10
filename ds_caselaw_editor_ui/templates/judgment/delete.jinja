@@ -8,7 +8,7 @@
     <form action="{{ url('delete') }}" method="post">
       {{ csrf_input }}
       <input type="hidden" name="judgment_uri" value="{{ judgment.uri }}" />
-      {{ button(variant="danger", content="Delete document") }}
+      {{ button(variant="danger", content="Delete document", disabled=not user|can_edit) }}
       <p>
         <a href="{{ url('full-text-html', document.uri) }}">Go back to review</a>
       </p>

@@ -6,6 +6,7 @@ from caselawclient.models.identifiers.neutral_citation import NeutralCitationNum
 from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
 from django.test import TestCase
+from factories import make_editor
 
 
 class TestDeleteIdentifierView(TestCase):
@@ -118,7 +119,7 @@ class TestDeleteIdentifierForm(TestCase):
 
         mock_judgment.return_value = judgment
 
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        self.client.force_login(make_editor())
 
         with patch.object(judgment, "save_identifiers") as patched_save:
             self.client.post("/d-a1b2c3/identifiers/id-1234/delete", data={})
@@ -149,7 +150,7 @@ class TestDeleteIdentifierForm(TestCase):
 
         mock_judgment.return_value = judgment
 
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        self.client.force_login(make_editor())
 
         with patch.object(judgment, "save_identifiers") as patched_save:
             response = self.client.post("/d-a1b2c3/identifiers/id-1234/delete", data={})
@@ -179,7 +180,7 @@ class TestDeleteIdentifierForm(TestCase):
 
         mock_judgment.return_value = judgment
 
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        self.client.force_login(make_editor())
 
         with patch.object(judgment, "save_identifiers") as patched_save:
             response = self.client.post("/d-a1b2c3/identifiers/id-5678/delete", data={})

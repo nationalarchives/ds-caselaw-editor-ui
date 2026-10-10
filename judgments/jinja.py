@@ -24,7 +24,14 @@ from judgments.templatetags.document_utils import (
     render_json,
 )
 from judgments.templatetags.navigation_tags import get_navigation_items
-from judgments.templatetags.user_permissions import is_developer, is_editor, is_superuser
+from judgments.templatetags.user_permissions import (
+    can_edit,
+    is_developer,
+    is_editor,
+    is_editor_or_developer,
+    is_superuser,
+)
+from judgments.utils.permissions import editors_only_hint, editors_or_developers_hint
 
 
 def reversed_filter(value):
@@ -116,12 +123,16 @@ def environment(**options):
             "get_badge_variant_from_status": get_badge_variant_from_status,
             "get_navigation_items": get_document_navigation_items,
             "crispy": crispy,
+            "editors_only_hint": editors_only_hint,
+            "editors_or_developers_hint": editors_or_developers_hint,
         },
     )
 
     env.filters["is_superuser"] = is_superuser
     env.filters["is_editor"] = is_editor
     env.filters["is_developer"] = is_developer
+    env.filters["can_edit"] = can_edit
+    env.filters["is_editor_or_developer"] = is_editor_or_developer
     env.filters["date"] = format_date
     env.filters["time"] = format_time
     env.filters["display_datetime"] = display_datetime

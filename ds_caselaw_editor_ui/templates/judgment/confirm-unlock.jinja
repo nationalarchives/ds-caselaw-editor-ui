@@ -6,7 +6,11 @@
       <form method="post">
         {{ csrf_input }}
         <input type="hidden" name="judgment_uri" value="{{ judgment_uri }}" />
-        <button class="button-cta" type="submit">Unlock document</button>
+        <button class="button-cta"
+                type="submit"
+                {% if not user|is_editor_or_developer %}disabled aria-disabled="true" title="{{ editors_or_developers_hint() }}"{% endif %}>
+          Unlock document
+        </button>
         <span class="judgment-component__back-button"><a href="{{ url('full-text-html', judgment_uri) }}">Back to document</a></span>
       </form>
     </div>
