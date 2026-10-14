@@ -10,7 +10,7 @@ from caselawclient.Client import DEFAULT_USER_AGENT, MarklogicApiClient
 from caselawclient.models.documents import DocumentURIString
 from caselawclient.models.press_summaries import PressSummary
 from django.conf import settings
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import User
 
 api_client = MarklogicApiClient(
     host=settings.MARKLOGIC_HOST,
@@ -94,11 +94,7 @@ def extract_version_number_from_filename(version_string: str) -> int:
 
 
 def editors_dict():
-    if settings.EDITORS_GROUP_ID:
-        editors_group = Group.objects.get(id=settings.EDITORS_GROUP_ID)
-        editors = editors_group.user_set.filter(is_active=True)
-    else:
-        editors = User.objects.filter(is_active=True)
+    editors = User.objects.filter(is_active=True, groups__name=settings.EDITORS_GROUP_NAME)
 
     return sorted(
         [

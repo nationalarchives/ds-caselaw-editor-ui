@@ -4,7 +4,9 @@
   contrast=None,
   element_type="button",
   attrs={},
-  content=None) %}
+  content=None,
+  disabled=False,
+  disabled_reason=None) %}
   {% set body_content = caller() if caller is defined else content if content is defined else "" %}
   {% set variant_classes = {"default": "", "danger": "button--danger", "secondary": "button--secondary", "link": "button--link"} %}
   {% set size_classes = {"default": "", "small": "button--small"} %}
@@ -23,6 +25,20 @@
   {% if element_type == "input" %}
     <input class="{{ button_class }}"
            {% for key, value in attrs.items() %} {{ key }}="{{ value }}"{% endfor %} />
+  {% elif disabled %}
+    {# A disabled control is always a button, even when it would otherwise link somewhere. #}
+    {# djlint:off H054 H043 #}
+    {# aria-disabled rather than disabled keeps the control keyboard-focusable, so the reason can be announced. #}
+    {% set reason = disabled_reason or editors_only_hint() %}
+    <button class="{{ button_class }}"
+            type="button"
+            aria-disabled="true"
+            title="{{ reason }}"
+            {% for key, value in attrs.items() %} {{ key }}="{{ value }}"{% endfor %}>
+      {# djlint:on H054 H043 #}
+      {{ body_content }}
+      <span class="govuk-visually-hidden">({{ reason }})</span>
+    </button>
   {% else %}
     {% if href %}
       <a href="{{ href }}"

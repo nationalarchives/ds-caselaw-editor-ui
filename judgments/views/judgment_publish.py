@@ -4,6 +4,7 @@ from django.urls import reverse
 
 from judgments.utils.aws import invalidate_caches
 from judgments.utils.link_generators import build_confirmation_email_link
+from judgments.utils.permissions import editor_required
 from judgments.utils.view_helpers import DocumentView, get_document_by_uri_or_404
 
 
@@ -33,6 +34,7 @@ class PublishDocumentSuccessView(DocumentView):
         return context
 
 
+@editor_required
 def publish(request):
     judgment_uri = request.POST.get("judgment_uri")
     judgment = get_document_by_uri_or_404(judgment_uri)
@@ -64,6 +66,7 @@ class UnpublishDocumentSuccessView(DocumentView):
         return context
 
 
+@editor_required
 def unpublish(request):
     judgment_uri = request.POST.get("judgment_uri", None)
     judgment = get_document_by_uri_or_404(judgment_uri)

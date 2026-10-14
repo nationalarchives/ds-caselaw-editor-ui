@@ -60,7 +60,7 @@
                   {% if document.has_ever_been_published %}
                     {{ button(variant="danger", size="small", attrs={"disabled":"true"}, content="Delete") }}
                   {% else %}
-                    {{ button(variant="danger", size="small", href=url("document-identifier-delete", document.uri, identifier.uuid) , content="Delete") }}
+                    {{ button(variant="danger", size="small", href=url("document-identifier-delete", document.uri, identifier.uuid), content="Delete", disabled=not user|can_edit) }}
                   {% endif %}
                 </td>
               {% endif %}
@@ -78,7 +78,7 @@
       {% endcall %}
     {% endif %}
     {% if waffle.flag("identifier_editing") %}
-      {{ button(href=url("document-identifiers-add", document.uri) , content="Add new identifier") }}
+      {{ button(href=url("document-identifiers-add", document.uri), content="Add new identifier", disabled=not user|can_edit) }}
     {% endif %}
     {% if user|is_developer %}
       <h3>System identifiers</h3>

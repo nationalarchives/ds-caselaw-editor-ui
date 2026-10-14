@@ -29,7 +29,7 @@
             {{ textarea({"label": "Name", "id_for_label": "metadata_name", "html_name": "metadata_name", "value": document.body.name, "rows": 2, "width": "full", "margin": "small"}) }}
           {% endcall %}
           {% call metadata_body_row() %}
-            {% call button() %}
+            {% call button(disabled=not user|can_edit) %}
               Save
             {% endcall %}
           {% endcall %}

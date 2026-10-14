@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
+from factories import make_editor
 
 
 class TestUploadView(TestCase):
@@ -38,8 +39,7 @@ class TestUploadView(TestCase):
         )
         mock_doc.return_value = document
         pdf = SimpleUploadedFile("file.pdf", b"%PDF-1.7", content_type="application/pdf")
-        superuser = User.objects.create_superuser(username="clark")
-        self.client.force_login(superuser)
+        self.client.force_login(make_editor())
 
         response = self.client.post("/upload", {"file": pdf, "judgment_uri": "d-a1b2c3"})
         messages = list(get_messages(response.wsgi_request))
@@ -57,8 +57,7 @@ class TestUploadView(TestCase):
         mock_doc.return_value = document
 
         pdf = SimpleUploadedFile("file.pdf", b"%PDF-1.7" + b"x" * 30 * 1024 * 1024, content_type="application/pdf")
-        superuser = User.objects.create_superuser(username="clark")
-        self.client.force_login(superuser)
+        self.client.force_login(make_editor())
 
         response = self.client.post("/upload", {"file": pdf, "judgment_uri": "d-a1b2c3"})
         mock_upload.assert_not_called()
@@ -75,8 +74,7 @@ class TestUploadView(TestCase):
         mock_doc.return_value = document
         # if the document does not have the magic PDF bytes
         not_pdf = SimpleUploadedFile("file.pdf", b"not-a-pdf", content_type="application/pdf")
-        superuser = User.objects.create_superuser(username="clark")
-        self.client.force_login(superuser)
+        self.client.force_login(make_editor())
 
         response = self.client.post("/upload", {"file": not_pdf, "judgment_uri": "d-a1b2c3"})
         # user is redirected back to the upload page

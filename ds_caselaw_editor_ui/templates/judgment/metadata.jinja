@@ -61,8 +61,8 @@
             </div>
           </section>
         {% endfor %}
-        {% call form_actions({"data-form-actions": ""}) %}
-          {{ button(content="Update claims", attrs={"data-form-actions-submit": ""}) }}
+        {% call form_actions({"data-form-actions": ""} if user|can_edit else {}) %}
+          {{ button(content="Update claims", disabled=not user|can_edit, attrs={"data-form-actions-submit": ""}) }}
           {{ button(content="Clear changes",
             variant="secondary",
             attrs={"type": "button", "data-form-actions-clear": ""}) }}

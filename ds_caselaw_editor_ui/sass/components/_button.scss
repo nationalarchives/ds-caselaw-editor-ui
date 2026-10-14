@@ -2,6 +2,20 @@
   @include call-to-action-button;
 
   position: relative;
+
+  &[aria-disabled="true"] {
+    opacity: 0.6;
+
+    &:focus,
+    &:hover {
+      cursor: not-allowed;
+    }
+  }
+}
+
+// The unlock confirmation uses the vendored .button-cta, whose disabled rule removes the focus outline.
+.button-cta[aria-disabled="true"]:focus {
+  @include focus-default;
 }
 
 .button {
@@ -24,7 +38,15 @@
     &:hover {
       cursor: not-allowed;
       text-decoration: none;
+    }
+
+    &:hover:not(:focus) {
       outline: none;
+    }
+
+    // Focusable disabled controls keep a visible focus indicator, including on the danger variant.
+    &:focus {
+      @include focus-default;
     }
   }
 

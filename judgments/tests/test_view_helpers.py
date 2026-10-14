@@ -12,8 +12,10 @@ from django.test import Client, RequestFactory, TestCase
 from judgments.utils.view_helpers import (
     DocumentView,
     get_document_by_uri_or_404,
+    user_can_edit,
     user_is_developer,
     user_is_editor,
+    user_is_editor_or_developer,
     user_is_superuser,
 )
 
@@ -72,6 +74,18 @@ class TestGroupCheck(TestCase):
         assert user_is_developer(self.super_user) is False
         assert user_is_developer(self.editor_user) is False
         assert user_is_developer(self.developer_user) is True
+
+    def test_can_edit(self):
+        assert user_can_edit(self.standard_user) is False
+        assert user_can_edit(self.super_user) is False
+        assert user_can_edit(self.editor_user) is True
+        assert user_can_edit(self.developer_user) is False
+
+    def test_is_editor_or_developer(self):
+        assert user_is_editor_or_developer(self.standard_user) is False
+        assert user_is_editor_or_developer(self.super_user) is False
+        assert user_is_editor_or_developer(self.editor_user) is True
+        assert user_is_editor_or_developer(self.developer_user) is True
 
 
 @pytest.mark.django_db

@@ -11,6 +11,7 @@ from django.views.generic import View
 
 from judgments.utils import api_client
 from judgments.utils.aws import invalidate_caches
+from judgments.utils.permissions import EditorRequiredMixin
 from judgments.utils.view_helpers import get_document_by_uri_or_404
 
 
@@ -38,7 +39,7 @@ def update_ncn_of_document(document: Document, new_neutral_citation_number_strin
     api_client.set_judgment_citation(document.uri, new_neutral_citation.value)
 
 
-class EditJudgmentView(View):
+class EditJudgmentView(EditorRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         return HttpResponseRedirect(
             reverse("full-text-html", kwargs={"document_uri": kwargs["document_uri"]}),

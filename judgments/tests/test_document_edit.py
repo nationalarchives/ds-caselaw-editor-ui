@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
 from django.test import TestCase
 from django.urls import reverse
+from factories import make_editor
 
 from judgments.views.judgment_edit import CannotUpdateNCNOfNonJudgment, update_ncn_of_document
 
@@ -40,7 +41,7 @@ class TestDocumentEdit(TestCase):
         judgment.identifiers.add(NeutralCitationNumber("[4321] UKSC 123"))
         mock_judgment.return_value = judgment
 
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        self.client.force_login(make_editor())
         User.objects.get_or_create(username="testuser2")
 
         self.client.post(
@@ -88,7 +89,7 @@ class TestDocumentEdit(TestCase):
 
         api_client.set_document_name.side_effect = MarklogicAPIError("Failed to savae")
 
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        self.client.force_login(make_editor())
 
         response = self.client.post(
             "/pubtest/4321/123/edit",
@@ -118,7 +119,7 @@ class TestDocumentEdit(TestCase):
         judgment.identifiers.add(NeutralCitationNumber("[4321] UKSC 123"))
         mock_judgment.return_value = judgment
 
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        self.client.force_login(make_editor())
         User.objects.get_or_create(username="testuser2")
 
         self.client.post(
@@ -143,7 +144,7 @@ class TestDocumentEdit(TestCase):
         judgment.identifiers.add(NeutralCitationNumber("[4321] UKSC 123"))
         mock_judgment.return_value = judgment
 
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        self.client.force_login(make_editor())
         User.objects.get_or_create(username="testuser2")
 
         response = self.client.post(

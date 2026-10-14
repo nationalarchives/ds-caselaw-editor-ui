@@ -6,6 +6,7 @@ from caselawclient.errors import DocumentNotFoundError
 from caselawclient.models.documents import Document, DocumentURIString
 from caselawclient.models.identifiers.neutral_citation import NeutralCitationNumber
 from caselawclient.search_parameters import SearchParameters
+from django.conf import settings
 from django.http import Http404
 from django.views.generic import TemplateView
 
@@ -20,21 +21,44 @@ def user_is_superuser(user):
     """
     return: True if the User is a superuser
     """
-    return user.is_superuser if user else None
+    return user.is_superuser
+
+
+def _user_group_names(user) -> set[str]:
+    """
+    return: the names of the groups the User belongs to, looked up once per User object
+    """
+    if not hasattr(user, "cached_group_names"):
+        user.cached_group_names = set(user.groups.values_list("name", flat=True))
+    return user.cached_group_names
 
 
 def user_is_editor(user):
     """
-    return: True if the User is part of the "Editors" group
+    return: True if the User is part of the Editors group
     """
-    return user.groups.filter(name="Editors").exists() if user else None
+    return settings.EDITORS_GROUP_NAME in _user_group_names(user)
 
 
 def user_is_developer(user):
     """
-    return: True if the User is part of the "Developers" group
+    return: True if the User is part of the Developers group
     """
-    return user.groups.filter(name="Developers").exists() if user else None
+    return settings.DEVELOPERS_GROUP_NAME in _user_group_names(user)
+
+
+def user_can_edit(user):
+    """
+    return: True if the User may perform mutating actions. Superusers get no special treatment.
+    """
+    return user_is_editor(user)
+
+
+def user_is_editor_or_developer(user):
+    """
+    return: True if the User is part of the Editors or the Developers group
+    """
+    return user_is_editor(user) or user_is_developer(user)
 
 
 def get_document_list_filters(

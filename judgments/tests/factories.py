@@ -9,6 +9,7 @@ from caselawclient.models.documents.versions import VersionAnnotation, VersionTy
 from caselawclient.models.identifiers import Identifier
 from caselawclient.responses.search_result import SearchResult, SearchResultMetadata
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from factory.faker import faker
 
 User = get_user_model()
@@ -22,6 +23,12 @@ class UserFactory(factory.django.DjangoModelFactory):
     email = username
     first_name = factory.Faker("first_name")
     last_name = factory.Faker("last_name")
+
+
+def make_editor(username="testuser"):
+    editor = User.objects.get_or_create(username=username)[0]
+    editor.groups.add(Group.objects.get_or_create(name="Editors")[0])
+    return editor
 
 
 class DocumentVersionFactory(DocumentFactory):

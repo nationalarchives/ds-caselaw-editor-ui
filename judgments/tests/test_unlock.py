@@ -6,6 +6,7 @@ from caselawclient.models.documents import DocumentURIString
 from django.contrib.auth.models import User
 from django.test import Client
 from django.urls import reverse
+from factories import make_editor
 
 
 @pytest.mark.django_db
@@ -30,7 +31,7 @@ def test_break_lock_post(messages, break_checkout, mock_judgment):
     mock_judgment.return_value = judgment
 
     client = Client()
-    client.force_login(User.objects.get_or_create(username="testuser")[0])
+    client.force_login(make_editor())
 
     response = client.post("/unlock", data={"judgment_uri": "/ewca/civ/2023/1"})
     break_checkout.assert_called_with("ewca/civ/2023/1")

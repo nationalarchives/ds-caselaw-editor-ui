@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
 from judgments.utils import api_client
+from judgments.utils.permissions import editor_or_developer_required
 from judgments.utils.view_helpers import get_document_by_uri_or_404
 
 
@@ -33,6 +34,7 @@ def unlock_get(request):
     )
 
 
+@editor_or_developer_required
 def unlock_post(request):
     """Unlock the judgment in Marklogic and return to edit judgment"""
 

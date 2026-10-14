@@ -1,3 +1,4 @@
+from collections.abc import Callable
 from typing import TYPE_CHECKING
 
 from caselawclient.models.documents import Document
@@ -9,12 +10,26 @@ from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.urls import reverse
+from django.utils.html import format_html
 from django.views.generic import FormView
 
-from judgments.utils.view_helpers import DocumentView, DocumentViewMixin
+from judgments.utils.permissions import EditorRequiredMixin, editors_only_hint
+from judgments.utils.view_helpers import DocumentView, DocumentViewMixin, user_can_edit
 
 if TYPE_CHECKING:
     from caselawclient.models.identifiers import Identifier
+
+
+def permission_button(factory: Callable[..., Button], label: str, *, disabled: bool) -> Button:
+    """A submit button which, when disabled, stays keyboard-focusable and explains why."""
+    if not disabled:
+        return factory("submit", label)
+    hint = editors_only_hint()
+    return factory(
+        "submit",
+        format_html('{} <span class="govuk-visually-hidden">({})</span>', label, hint),
+        **{"type": "button", "aria-disabled": "true", "title": hint},
+    )
 
 
 class DocumentIdentifiersView(DocumentView):
@@ -40,7 +55,7 @@ class DocumentIdentifiersView(DocumentView):
 
 
 class AddIdentifierForm(forms.Form):
-    def __init__(self, *args, type_choices=None, **kwargs):
+    def __init__(self, *args, type_choices=None, disabled=False, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.fields["type"] = forms.ChoiceField(
@@ -54,10 +69,15 @@ class AddIdentifierForm(forms.Form):
             required=False,
         )
         self.helper = FormHelper()
-        self.helper.layout = Layout("type", "value", "deprecated", Button("submit", "Submit"))
+        self.helper.layout = Layout(
+            "type",
+            "value",
+            "deprecated",
+            permission_button(Button, "Submit", disabled=disabled),
+        )
 
 
-class AddDocumentIdentifierView(DocumentViewMixin, FormView):
+class AddDocumentIdentifierView(EditorRequiredMixin, DocumentViewMixin, FormView):
     template_engine = "jinja"
     template_name = "judgment/identifiers_add.jinja"
     form_class = AddIdentifierForm
@@ -78,6 +98,7 @@ class AddDocumentIdentifierView(DocumentViewMixin, FormView):
         kwargs["type_choices"] = self._identifier_types_to_form_list(
             self.document.identifiers.valid_new_identifier_types(type(self.document)),
         )
+        kwargs["disabled"] = not user_can_edit(self.request.user)
         return kwargs
 
     def form_valid(self, form):
@@ -138,11 +159,11 @@ class AddDocumentIdentifierView(DocumentViewMixin, FormView):
 
 
 class DeleteIdentifierForm(forms.Form):
-    def __init__(self, *args, type_choices=None, **kwargs):
+    def __init__(self, *args, disabled=False, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
-        self.helper.layout = Layout(Button.warning("submit", "Delete"))
+        self.helper.layout = Layout(permission_button(Button.warning, "Delete", disabled=disabled))
 
 
 def check_safe_to_delete_identifier(document: Document, identifier_uuid: str):
@@ -159,10 +180,15 @@ def check_safe_to_delete_identifier(document: Document, identifier_uuid: str):
         )
 
 
-class DeleteDocumentIdentifierView(DocumentViewMixin, FormView):
+class DeleteDocumentIdentifierView(EditorRequiredMixin, DocumentViewMixin, FormView):
     template_engine = "jinja"
     template_name = "judgment/identifier_delete.jinja"
     form_class = DeleteIdentifierForm
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["disabled"] = not user_can_edit(self.request.user)
+        return kwargs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

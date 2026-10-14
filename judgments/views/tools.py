@@ -1,20 +1,10 @@
 from caselawclient.types import MarkLogicDocumentURIString
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.http import HttpRequest
 from django.views.generic import TemplateView
 
 from judgments.utils import api_client
-from judgments.utils.view_helpers import user_is_developer
+from judgments.utils.permissions import DeveloperRequiredMixin
 
 MISSING_FCLID_REPORT_LIMIT = 200
-
-
-class DeveloperRequiredMixin(UserPassesTestMixin):
-    raise_exception = True
-    request: HttpRequest
-
-    def test_func(self) -> bool:
-        return bool(user_is_developer(self.request.user))
 
 
 class ToolsIndex(DeveloperRequiredMixin, TemplateView):

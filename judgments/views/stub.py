@@ -8,7 +8,7 @@ from caselawclient.models.judgments import Judgment
 from caselawclient.types import DocumentURIString
 from django import forms
 from django.contrib import messages
-from django.core.exceptions import PermissionDenied, ValidationError
+from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -18,10 +18,7 @@ from ds_caselaw_utils.types import CourtCode
 from lxml import etree
 
 from judgments.utils import api_client
-from judgments.utils.view_helpers import (
-    user_is_editor,
-    user_is_superuser,
-)
+from judgments.utils.permissions import editor_required
 
 ANNOTATION = VersionAnnotation(
     VersionType.SUBMISSION,
@@ -224,11 +221,8 @@ def list_from_string(s):
     return [line.strip() for line in s.split("\n") if line.strip()]
 
 
+@editor_required
 def create_stub(request):
-    if not (user_is_superuser(request.user) or user_is_editor(request.user)):
-        msg = "Only superusers and editors can create documents"
-        raise PermissionDenied(msg)
-
     stub_form = StubForm(request.POST)
     if not stub_form.is_valid():
         messages.error(request, str(stub_form.errors))
