@@ -4,6 +4,7 @@ from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
 from django.test import TestCase
+from editing import editing_order, record, tracking_editing_session
 from factories import make_editor
 from lxml import etree
 
@@ -86,6 +87,11 @@ class TestStubView(TestCase):
         # with (judgment_template_path).open("rb") as f:
         #     template = f.read()
         mock_render_stub.return_value = '<akomaNtoso xmlns="http://docs.oasis-open.org/legaldocml/ns/akn/3.0" xmlns:uk="https://caselaw.nationalarchives.gov.uk/akn"><uk:test/></akomaNtoso>'
+        order = editing_order()
+        document = MagicMock()
+        document.editing_session = tracking_editing_session(order)
+        document.save_identifiers.side_effect = record(order, "save_identifiers")
+        mock_get_doc.return_value = document
         self.client.force_login(make_editor())
         _response = self.client.post(
             "/create_stub",
@@ -121,6 +127,7 @@ class TestStubView(TestCase):
         assert b"ns0" not in document_xml_bytes
         assert b"<uk:" in document_xml_bytes
         assert b"<akomaNtoso " in document_xml_bytes
+        assert order == ["editing_session", "save_identifiers", "editing_session_end"]
 
     @patch("judgments.views.stub.courts.get_all", return_value=[make_mock_court()])
     @patch("judgments.views.stub.uuid4", return_value="uuid")

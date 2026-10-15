@@ -6,6 +6,7 @@ from caselawclient.models.identifiers.neutral_citation import NeutralCitationNum
 from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
 from django.test import TestCase
+from editing import editing_order, record, tracking_editing_session
 from factories import make_editor
 
 
@@ -121,11 +122,15 @@ class TestDeleteIdentifierForm(TestCase):
 
         self.client.force_login(make_editor())
 
-        with patch.object(judgment, "save_identifiers") as patched_save:
+        order = editing_order()
+        with (
+            patch.object(judgment, "editing_session", tracking_editing_session(order)),
+            patch.object(judgment, "save_identifiers", side_effect=record(order, "save_identifiers")),
+        ):
             self.client.post("/d-a1b2c3/identifiers/id-1234/delete", data={})
 
             assert judgment.identifiers == {}
-            patched_save.assert_called()
+            assert order == ["editing_session", "save_identifiers", "editing_session_end"]
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
@@ -152,11 +157,15 @@ class TestDeleteIdentifierForm(TestCase):
 
         self.client.force_login(make_editor())
 
-        with patch.object(judgment, "save_identifiers") as patched_save:
+        order = editing_order()
+        with (
+            patch.object(judgment, "editing_session", tracking_editing_session(order)),
+            patch.object(judgment, "save_identifiers", side_effect=record(order, "save_identifiers")),
+        ):
             response = self.client.post("/d-a1b2c3/identifiers/id-1234/delete", data={})
 
             assert response.status_code == 403
-            patched_save.assert_not_called()
+            assert order == []
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
@@ -182,8 +191,12 @@ class TestDeleteIdentifierForm(TestCase):
 
         self.client.force_login(make_editor())
 
-        with patch.object(judgment, "save_identifiers") as patched_save:
+        order = editing_order()
+        with (
+            patch.object(judgment, "editing_session", tracking_editing_session(order)),
+            patch.object(judgment, "save_identifiers", side_effect=record(order, "save_identifiers")),
+        ):
             response = self.client.post("/d-a1b2c3/identifiers/id-5678/delete", data={})
 
             assert response.status_code == 404
-            patched_save.assert_not_called()
+            assert order == []

@@ -33,7 +33,9 @@ class Command(BaseCommand):
 
                     self.stdout.write(f"{prefix_string}: {document_object.name}:")
 
-                    if new_fclid := document_object.assign_fclid_if_missing():
+                    with document_object.editing_session():
+                        new_fclid = document_object.assign_fclid_if_missing()
+                    if new_fclid:
                         self.stdout.write(f"\tAssigned FCLID {new_fclid.value}.")
                     else:
                         self.stdout.write("\tFAILED to assign FCLID!")

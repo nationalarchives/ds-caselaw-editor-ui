@@ -1,4 +1,4 @@
-from unittest.mock import Mock, patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 from django.contrib.auth.models import Group, User
@@ -57,7 +57,7 @@ def test_enrich_reparse_and_unlock_are_forbidden_to_others(client, action, kind)
 def test_enrich_reparse_and_unlock_are_allowed_to_developers(client, action):
     client.force_login(make_user("developer"))
 
-    document = Mock(uri="d-a1b2c3")
+    document = MagicMock(uri="d-a1b2c3")
 
     with (
         patch("judgments.views.enrich.get_document_by_uri_or_404", return_value=document),

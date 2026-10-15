@@ -2,6 +2,7 @@ from unittest.mock import Mock, call, patch
 
 from django.core.management import call_command
 from django.test import TestCase
+from editing import editing_order, record, tracking_editing_session
 
 
 class CommandsTestCase(TestCase):
@@ -17,8 +18,14 @@ class CommandsTestCase(TestCase):
             ["/test/456.xml", None, None],
         ]
 
+        order_1 = editing_order()
+        order_2 = editing_order()
         document_1 = Mock()
         document_2 = Mock()
+        document_1.editing_session = tracking_editing_session(order_1)
+        document_2.editing_session = tracking_editing_session(order_2)
+        document_1.enrich.side_effect = record(order_1, "enrich")
+        document_2.enrich.side_effect = record(order_2, "enrich")
 
         mock_api_client.get_document_by_uri.side_effect = [document_1, document_2]
 
@@ -28,8 +35,8 @@ class CommandsTestCase(TestCase):
             [call("test/123"), call("test/456")],
         )
 
-        document_1.enrich.assert_called_once()
-        document_2.enrich.assert_called_once()
+        assert order_1 == ["editing_session", "enrich", "editing_session_end"]
+        assert order_2 == ["editing_session", "enrich", "editing_session_end"]
 
     @patch("judgments.management.commands.enrich_next_in_reenrichment_queue.api_client")
     @patch(
@@ -43,8 +50,14 @@ class CommandsTestCase(TestCase):
             ["/test/456.xml", None, None],
         ]
 
+        order_1 = editing_order()
+        order_2 = editing_order()
         document_1 = Mock()
         document_2 = Mock()
+        document_1.editing_session = tracking_editing_session(order_1)
+        document_2.editing_session = tracking_editing_session(order_2)
+        document_1.enrich.side_effect = record(order_1, "enrich")
+        document_2.enrich.side_effect = record(order_2, "enrich")
 
         mock_api_client.get_document_by_uri.side_effect = [document_1, document_2]
 
@@ -52,5 +65,5 @@ class CommandsTestCase(TestCase):
 
         mock_api_client.get_document_by_uri.assert_has_calls([call("test/123")])
 
-        document_1.enrich.assert_called_once()
-        document_2.enrich.assert_not_called()
+        assert order_1 == ["editing_session", "enrich", "editing_session_end"]
+        assert order_2 == []

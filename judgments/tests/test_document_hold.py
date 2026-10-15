@@ -6,6 +6,7 @@ from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
+from editing import editing_order, record, tracking_editing_session
 from factories import make_editor
 
 
@@ -38,8 +39,11 @@ class TestDocumentHold(TestCase):
     @patch("judgments.views.judgment_hold.invalidate_caches")
     @patch("judgments.views.judgment_hold.get_document_by_uri_or_404")
     def test_document_hold_flow(self, mock_judgment, mock_invalidate_caches):
+        order = editing_order()
         judgment = Mock()
-        judgment.uri = "a uri"
+        judgment.uri = "holdtest/4321/123"
+        judgment.editing_session = tracking_editing_session(order)
+        judgment.hold.side_effect = record(order, "hold")
         mock_judgment.return_value = judgment
 
         self.client.force_login(make_editor())
@@ -56,8 +60,8 @@ class TestDocumentHold(TestCase):
             "hold-document-success",
             kwargs={"document_uri": judgment.uri},
         )
-        mock_judgment.return_value.hold.assert_called_once()
-        mock_judgment.return_value.unhold.assert_not_called()
+        assert order == ["editing_session", "hold", "editing_session_end"]
+        judgment.unhold.assert_not_called()
         mock_invalidate_caches.assert_called_once()
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
@@ -123,8 +127,11 @@ class TestJudgmentUnhold(TestCase):
     @patch("judgments.views.judgment_hold.invalidate_caches")
     @patch("judgments.views.judgment_hold.get_document_by_uri_or_404")
     def test_document_unhold_flow(self, mock_judgment, mock_invalidate_caches):
+        order = editing_order()
         judgment = Mock()
-        judgment.uri = "a uri"
+        judgment.uri = "unholdtest/4321/123"
+        judgment.editing_session = tracking_editing_session(order)
+        judgment.unhold.side_effect = record(order, "unhold")
         mock_judgment.return_value = judgment
 
         self.client.force_login(make_editor())
@@ -141,8 +148,8 @@ class TestJudgmentUnhold(TestCase):
             "unhold-document-success",
             kwargs={"document_uri": judgment.uri},
         )
-        mock_judgment.return_value.unhold.assert_called_once()
-        mock_judgment.return_value.hold.assert_not_called()
+        assert order == ["editing_session", "unhold", "editing_session_end"]
+        judgment.hold.assert_not_called()
         mock_invalidate_caches.assert_called_once()
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")

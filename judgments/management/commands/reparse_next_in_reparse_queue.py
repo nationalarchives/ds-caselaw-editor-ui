@@ -39,7 +39,9 @@ class Command(BaseCommand):
 
         sys.stdout.write(f"Attempting to reparse document {document.body.name}...\n")
         try:
-            if document.reparse():  # This returns `False` if the document fails `can_reparse` checks.
+            with document.editing_session():
+                reparsed = document.reparse()  # This returns `False` if the document fails `can_reparse` checks.
+            if reparsed:
                 sys.stdout.write("Reparse attempted.\n")
                 run_log.detail += f"\nAttempted {document_uri}"
                 run_log.documents_attempted += 1
