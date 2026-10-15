@@ -1,5 +1,5 @@
 import datetime
-from typing import Any, TypeAlias
+from typing import TYPE_CHECKING, Any, TypeAlias
 from unittest.mock import Mock
 
 import factory
@@ -11,6 +11,9 @@ from caselawclient.responses.search_result import SearchResult, SearchResultMeta
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from factory.faker import faker
+
+if TYPE_CHECKING:
+    from caselawclient.Client import MarklogicApiClient
 
 User = get_user_model()
 
@@ -39,14 +42,20 @@ class DocumentVersionFactory(DocumentFactory):
     @classmethod
     def build(
         cls,
-        uri=default_document_uri,
-        api_client=None,
+        uri: DocumentURIString | str | None = default_document_uri,
+        api_client: "MarklogicApiClient | None" = None,
         identifiers: list[Identifier] | None = None,
         editing_lock_held: bool = False,
         **kwargs: Any,
     ) -> DocumentClass:
         kwargs["populate_versions"] = False
-        document = super().build(identifiers=identifiers, editing_lock_held=editing_lock_held, **kwargs)
+        document = super().build(
+            uri=DocumentURIString(uri) if uri is not None else None,
+            api_client=api_client,
+            identifiers=identifiers,
+            editing_lock_held=editing_lock_held,
+            **kwargs,
+        )
 
         # Note: this function was created for the Editor version of DocumentFactory, and
         # moved to the API Client version. It's entirely possible that some parts don't make
