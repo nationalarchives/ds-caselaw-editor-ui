@@ -3668,4 +3668,1474 @@ interactions:
       status:
         code: 200
         message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22uksc%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.007052S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000202S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.007582S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:14 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ukpc%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006944S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000157S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.007516S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:14 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ewca%2Fciv%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006688S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.00013S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.007147S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:14 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ewca%2Fcrim%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006363S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000131S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.006818S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:14 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ewhc%2Fadmin%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.00642S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.00013S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.006891S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:14 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ewhc%2Fadmlty%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.007179S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000147S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.007947S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:14 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ewhc%2Fch%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.007638S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000153S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.008163S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:15 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ewhc%2Fbp%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006552S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000122S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.006996S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:15 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ewhc%2Fcomm%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006723S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000124S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.007178S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:15 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ewhc%2Ffam%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006606S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000133S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.007073S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:15 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ewhc%2Fipec%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006269S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.00013S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.006752S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:15 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ewhc%2Fkb%22%2C+%22ewhc%2Fqb%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.00632S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000125S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.006774S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:15 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ewhc%2Fmercantile%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.007069S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000129S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.007535S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:15 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ewhc%2Fpat%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006997S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000139S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.007511S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:15 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ewhc%2Fkb%22%2C+%22ewhc%2Fqb%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006444S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000141S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.006976S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:15 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ewhc%2Fcosts%22%2C+%22ewhc%2Fscco%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006342S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000126S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.00679S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:15 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ewhc%2Ftcc%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006312S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000132S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.006869S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:15 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ewcr%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006667S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000125S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.007124S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:16 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ewcc%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.00609S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000121S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.006517S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:16 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ewfc%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006245S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000132S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.006709S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:16 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ewcop%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006125S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000207S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.006695S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:16 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ukiptrib%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.005943S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000123S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.006379S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:16 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22siac%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006544S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000121S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.006987S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:16 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22poac%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006201S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000119S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.006641S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:16 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22paac%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006065S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000123S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.006517S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:16 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22eat%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.00665S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000123S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.007125S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:16 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ukut%2Faac%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.007312S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.00013S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.007765S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:16 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ukait%22%2C+%22ukut%2Fiac%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006224S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000124S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.006697S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:16 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ukut%2Flc%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006053S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000125S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.006507S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:16 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ukut%2Ftcc%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.007047S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000127S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.007573S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:17 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ukftt%2Fhesc%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006493S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000121S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.006929S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:17 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ukftt%2Fgrc%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006271S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000119S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.006716S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:17 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ukftt%2Fiac%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006127S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.00012S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.00657S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:17 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ukftt%2Ftc%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006051S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000122S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.006506S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:17 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ftt%2Fclaims%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.00615S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.00012S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.006581S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:17 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ukftt%2Fcredit%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006815S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000143S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.007304S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:17 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ukftt%2Festate%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.007005S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000124S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.007453S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:17 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ukfsmt%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.0069S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.00014S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.007377S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:17 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ukit%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.00712S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000139S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.007689S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:17 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ukist%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006687S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000126S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.007144S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:17 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ukprt%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006004S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.00014S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.00651S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:17 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ukspc%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006355S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000123S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.006801S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:18 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ftt%2Ftransport%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006469S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000123S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.006924S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:18 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+%5B%22ukvat%22%5D%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.006449S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000151S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.006941S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:18 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+null%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22judgment%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.007204S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000125S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.007666S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:18 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+null%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+1%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22%22%2C+%22from%22%3A+%222026-07-16%22%2C+%22to%22%3A+%222026-10-16%22%2C+%22show_unpublished%22%3A+%22false%22%2C+%22only_unpublished%22%3A+%22false%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"0\" start=\"1\" page-length=\"1\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:facet
+          name=\"court\" type=\"xs:string\"/>\n  <search:facet name=\"year\" type=\"xs:gYear\"/>\n  <search:metrics>\n    <search:query-resolution-time>PT0.004335S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.000129S</search:facet-resolution-time>\n    <search:extract-resolution-time/>\n    <search:total-time>PT0.004759S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:18 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Aimport+module+namespace+filters+%3D+%22https%3A%2F%2Fcaselaw.nationalarchives.gov.uk%2Fsearch%2Ffilters%22+at+%22%2Fjudgments%2Fsearch%2Ffilters.xqy%22%3B%0A%0Adeclare+variable+%24metric+as+xs%3Astring+external%3B%0Adeclare+variable+%24date_property+as+xs%3Astring+external%3B%0Adeclare+variable+%24buckets+as+xs%3Astring+external%3B%0Adeclare+variable+%24search_parameters+as+xs%3Astring+external%3B%0A%0Alet+%24document-query+%3A%3D+filters%3Abuild-search-query%28xdmp%3Afrom-json-string%28%24search_parameters%29%29%0Alet+%24reference+%3A%3D+cts%3Aelement-reference%28fn%3AQName%28%22%22%2C+%24metric%29%2C+%22type%3Dlong%22%29%0Alet+%24date-name+%3A%3D+fn%3AQName%28%22%22%2C+%24date_property%29%0Alet+%24options+%3A%3D+%28%22properties%22%2C+%22fragment-frequency%22%29%0Alet+%24result+%3A%3D+map%3Amap%28%29%0Alet+%24_+%3A%3D%0A++++for+%24bucket+in+json%3Aarray-values%28xdmp%3Afrom-json-string%28%24buckets%29%29%0A++++let+%24query+%3A%3D+cts%3Aand-query%28%28%0A++++++++cts%3Adocument-fragment-query%28%24document-query%29%2C%0A++++++++cts%3Aelement-range-query%28%24date-name%2C+%22%3E%3D%22%2C+xs%3AdateTime%28map%3Aget%28%24bucket%2C+%22start%22%29%29%29%2C%0A++++++++cts%3Aelement-range-query%28%24date-name%2C+%22%3C%22%2C+xs%3AdateTime%28map%3Aget%28%24bucket%2C+%22end%22%29%29%29%2C%0A++++++++%28%3A+1970-01-01+is+the+unknown-publication-date+sentinel.+%3A%29%0A++++++++cts%3Anot-query%28cts%3Aelement-range-query%28%24date-name%2C+%22%3D%22%2C+xs%3AdateTime%28%221970-01-01T00%3A00%3A00Z%22%29%29%29%0A++++%29%29%0A++++let+%24count+%3A%3D+cts%3Acount-aggregate%28%24reference%2C+%24options%2C+%24query%29%0A++++let+%24statistics+%3A%3D+map%3Amap%28%29%0A++++++++%3D%3E+map%3Awith%28%22count%22%2C+%24count%29%0A++++++++%3D%3E+map%3Awith%28%22sum%22%2C+if+%28%24count+%3D+0%29+then+0+else+cts%3Asum-aggregate%28%24reference%2C+%24options%2C+%24query%29%29%0A++++++++%3D%3E+map%3Awith%28%22mean%22%2C+if+%28%24count+%3D+0%29+then+null-node+%7B%7D+else+cts%3Aavg-aggregate%28%24reference%2C+%24options%2C+%24query%29%29%0A++++++++%3D%3E+map%3Awith%28%22median%22%2C+if+%28%24count+%3D+0%29+then+null-node+%7B%7D+else+cts%3Amedian%28cts%3Avalues%28%24reference%2C+%28%29%2C+%24options%2C+%24query%29%29%29%0A++++return+map%3Aput%28%24result%2C+map%3Aget%28%24bucket%2C+%22label%22%29%2C+%24statistics%29%0Areturn+xdmp%3Ato-json-string%28%24result%29%0A&vars=%7B%22metric%22%3A+%22tdr_to_first_publish%22%2C+%22date_property%22%3A+%22first_published_datetime%22%2C+%22buckets%22%3A+%22%5B%7B%5C%22label%5C%22%3A+%5C%222026-07%5C%22%2C+%5C%22start%5C%22%3A+%5C%222026-07-16T00%3A00%3A00%2B00%3A00%5C%22%2C+%5C%22end%5C%22%3A+%5C%222026-08-01T00%3A00%3A00%2B00%3A00%5C%22%7D%2C+%7B%5C%22label%5C%22%3A+%5C%222026-08%5C%22%2C+%5C%22start%5C%22%3A+%5C%222026-08-01T00%3A00%3A00%2B00%3A00%5C%22%2C+%5C%22end%5C%22%3A+%5C%222026-09-01T00%3A00%3A00%2B00%3A00%5C%22%7D%2C+%7B%5C%22label%5C%22%3A+%5C%222026-09%5C%22%2C+%5C%22start%5C%22%3A+%5C%222026-09-01T00%3A00%3A00%2B00%3A00%5C%22%2C+%5C%22end%5C%22%3A+%5C%222026-10-01T00%3A00%3A00%2B00%3A00%5C%22%7D%2C+%7B%5C%22label%5C%22%3A+%5C%222026-10%5C%22%2C+%5C%22start%5C%22%3A+%5C%222026-10-01T00%3A00%3A00%2B00%3A00%5C%22%2C+%5C%22end%5C%22%3A+%5C%222026-10-16T00%3A00%3A00%2B00%3A00%5C%22%7D%5D%22%2C+%22search_parameters%22%3A+%22%7B%5C%22court%5C%22%3A+null%2C+%5C%22judge%5C%22%3A+%5C%22%5C%22%2C+%5C%22page%5C%22%3A+1%2C+%5C%22page-size%5C%22%3A+10%2C+%5C%22q%5C%22%3A+%5C%22%5C%22%2C+%5C%22party%5C%22%3A+%5C%22%5C%22%2C+%5C%22neutral_citation%5C%22%3A+%5C%22%5C%22%2C+%5C%22document_name%5C%22%3A+%5C%22%5C%22%2C+%5C%22consignment_number%5C%22%3A+%5C%22%5C%22%2C+%5C%22specific_keyword%5C%22%3A+%5C%22%5C%22%2C+%5C%22order%5C%22%3A+%5C%22%5C%22%2C+%5C%22from%5C%22%3A+%5C%22%5C%22%2C+%5C%22to%5C%22%3A+%5C%22%5C%22%2C+%5C%22show_unpublished%5C%22%3A+%5C%22false%5C%22%2C+%5C%22only_unpublished%5C%22%3A+%5C%22false%5C%22%2C+%5C%22only_with_html_representation%5C%22%3A+%5C%22false%5C%22%2C+%5C%22collections%5C%22%3A+%5C%22%5C%22%2C+%5C%22quoted_phrases%5C%22%3A+%5B%5D%7D%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "string"}, "body": "{\"2026-10\":{\"sum\":0, \"mean\":null,
+          \"median\":null, \"count\":0}, \"2026-09\":{\"sum\":0, \"mean\":null, \"median\":null,
+          \"count\":0}, \"2026-07\":{\"sum\":0, \"mean\":null, \"median\":null, \"count\":0},
+          \"2026-08\":{\"sum\":0, \"mean\":null, \"median\":null, \"count\":0}}", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:18 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Aimport+module+namespace+filters+%3D+%22https%3A%2F%2Fcaselaw.nationalarchives.gov.uk%2Fsearch%2Ffilters%22+at+%22%2Fjudgments%2Fsearch%2Ffilters.xqy%22%3B%0A%0Adeclare+variable+%24metric+as+xs%3Astring+external%3B%0Adeclare+variable+%24date_property+as+xs%3Astring+external%3B%0Adeclare+variable+%24buckets+as+xs%3Astring+external%3B%0Adeclare+variable+%24search_parameters+as+xs%3Astring+external%3B%0A%0Alet+%24document-query+%3A%3D+filters%3Abuild-search-query%28xdmp%3Afrom-json-string%28%24search_parameters%29%29%0Alet+%24reference+%3A%3D+cts%3Aelement-reference%28fn%3AQName%28%22%22%2C+%24metric%29%2C+%22type%3Dlong%22%29%0Alet+%24date-name+%3A%3D+fn%3AQName%28%22%22%2C+%24date_property%29%0Alet+%24options+%3A%3D+%28%22properties%22%2C+%22fragment-frequency%22%29%0Alet+%24result+%3A%3D+map%3Amap%28%29%0Alet+%24_+%3A%3D%0A++++for+%24bucket+in+json%3Aarray-values%28xdmp%3Afrom-json-string%28%24buckets%29%29%0A++++let+%24query+%3A%3D+cts%3Aand-query%28%28%0A++++++++cts%3Adocument-fragment-query%28%24document-query%29%2C%0A++++++++cts%3Aelement-range-query%28%24date-name%2C+%22%3E%3D%22%2C+xs%3AdateTime%28map%3Aget%28%24bucket%2C+%22start%22%29%29%29%2C%0A++++++++cts%3Aelement-range-query%28%24date-name%2C+%22%3C%22%2C+xs%3AdateTime%28map%3Aget%28%24bucket%2C+%22end%22%29%29%29%2C%0A++++++++%28%3A+1970-01-01+is+the+unknown-publication-date+sentinel.+%3A%29%0A++++++++cts%3Anot-query%28cts%3Aelement-range-query%28%24date-name%2C+%22%3D%22%2C+xs%3AdateTime%28%221970-01-01T00%3A00%3A00Z%22%29%29%29%0A++++%29%29%0A++++let+%24count+%3A%3D+cts%3Acount-aggregate%28%24reference%2C+%24options%2C+%24query%29%0A++++let+%24statistics+%3A%3D+map%3Amap%28%29%0A++++++++%3D%3E+map%3Awith%28%22count%22%2C+%24count%29%0A++++++++%3D%3E+map%3Awith%28%22sum%22%2C+if+%28%24count+%3D+0%29+then+0+else+cts%3Asum-aggregate%28%24reference%2C+%24options%2C+%24query%29%29%0A++++++++%3D%3E+map%3Awith%28%22mean%22%2C+if+%28%24count+%3D+0%29+then+null-node+%7B%7D+else+cts%3Aavg-aggregate%28%24reference%2C+%24options%2C+%24query%29%29%0A++++++++%3D%3E+map%3Awith%28%22median%22%2C+if+%28%24count+%3D+0%29+then+null-node+%7B%7D+else+cts%3Amedian%28cts%3Avalues%28%24reference%2C+%28%29%2C+%24options%2C+%24query%29%29%29%0A++++return+map%3Aput%28%24result%2C+map%3Aget%28%24bucket%2C+%22label%22%29%2C+%24statistics%29%0Areturn+xdmp%3Ato-json-string%28%24result%29%0A&vars=%7B%22metric%22%3A+%22tdr_to_latest_publish%22%2C+%22date_property%22%3A+%22latest_published_datetime%22%2C+%22buckets%22%3A+%22%5B%7B%5C%22label%5C%22%3A+%5C%222026-07%5C%22%2C+%5C%22start%5C%22%3A+%5C%222026-07-16T00%3A00%3A00%2B00%3A00%5C%22%2C+%5C%22end%5C%22%3A+%5C%222026-08-01T00%3A00%3A00%2B00%3A00%5C%22%7D%2C+%7B%5C%22label%5C%22%3A+%5C%222026-08%5C%22%2C+%5C%22start%5C%22%3A+%5C%222026-08-01T00%3A00%3A00%2B00%3A00%5C%22%2C+%5C%22end%5C%22%3A+%5C%222026-09-01T00%3A00%3A00%2B00%3A00%5C%22%7D%2C+%7B%5C%22label%5C%22%3A+%5C%222026-09%5C%22%2C+%5C%22start%5C%22%3A+%5C%222026-09-01T00%3A00%3A00%2B00%3A00%5C%22%2C+%5C%22end%5C%22%3A+%5C%222026-10-01T00%3A00%3A00%2B00%3A00%5C%22%7D%2C+%7B%5C%22label%5C%22%3A+%5C%222026-10%5C%22%2C+%5C%22start%5C%22%3A+%5C%222026-10-01T00%3A00%3A00%2B00%3A00%5C%22%2C+%5C%22end%5C%22%3A+%5C%222026-10-16T00%3A00%3A00%2B00%3A00%5C%22%7D%5D%22%2C+%22search_parameters%22%3A+%22%7B%5C%22court%5C%22%3A+null%2C+%5C%22judge%5C%22%3A+%5C%22%5C%22%2C+%5C%22page%5C%22%3A+1%2C+%5C%22page-size%5C%22%3A+10%2C+%5C%22q%5C%22%3A+%5C%22%5C%22%2C+%5C%22party%5C%22%3A+%5C%22%5C%22%2C+%5C%22neutral_citation%5C%22%3A+%5C%22%5C%22%2C+%5C%22document_name%5C%22%3A+%5C%22%5C%22%2C+%5C%22consignment_number%5C%22%3A+%5C%22%5C%22%2C+%5C%22specific_keyword%5C%22%3A+%5C%22%5C%22%2C+%5C%22order%5C%22%3A+%5C%22%5C%22%2C+%5C%22from%5C%22%3A+%5C%22%5C%22%2C+%5C%22to%5C%22%3A+%5C%22%5C%22%2C+%5C%22show_unpublished%5C%22%3A+%5C%22false%5C%22%2C+%5C%22only_unpublished%5C%22%3A+%5C%22false%5C%22%2C+%5C%22only_with_html_representation%5C%22%3A+%5C%22false%5C%22%2C+%5C%22collections%5C%22%3A+%5C%22%5C%22%2C+%5C%22quoted_phrases%5C%22%3A+%5B%5D%7D%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "string"}, "body": "{\"2026-10\":{\"sum\":0, \"mean\":null,
+          \"median\":null, \"count\":0}, \"2026-09\":{\"sum\":0, \"mean\":null, \"median\":null,
+          \"count\":0}, \"2026-07\":{\"sum\":0, \"mean\":null, \"median\":null, \"count\":0},
+          \"2026-08\":{\"sum\":0, \"mean\":null, \"median\":null, \"count\":0}}", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:18 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Aimport+module+namespace+filters+%3D+%22https%3A%2F%2Fcaselaw.nationalarchives.gov.uk%2Fsearch%2Ffilters%22+at+%22%2Fjudgments%2Fsearch%2Ffilters.xqy%22%3B%0A%0Adeclare+variable+%24metric+as+xs%3Astring+external%3B%0Adeclare+variable+%24date_property+as+xs%3Astring+external%3B%0Adeclare+variable+%24buckets+as+xs%3Astring+external%3B%0Adeclare+variable+%24search_parameters+as+xs%3Astring+external%3B%0A%0Alet+%24document-query+%3A%3D+filters%3Abuild-search-query%28xdmp%3Afrom-json-string%28%24search_parameters%29%29%0Alet+%24reference+%3A%3D+cts%3Aelement-reference%28fn%3AQName%28%22%22%2C+%24metric%29%2C+%22type%3Dlong%22%29%0Alet+%24date-name+%3A%3D+fn%3AQName%28%22%22%2C+%24date_property%29%0Alet+%24options+%3A%3D+%28%22properties%22%2C+%22fragment-frequency%22%29%0Alet+%24result+%3A%3D+map%3Amap%28%29%0Alet+%24_+%3A%3D%0A++++for+%24bucket+in+json%3Aarray-values%28xdmp%3Afrom-json-string%28%24buckets%29%29%0A++++let+%24query+%3A%3D+cts%3Aand-query%28%28%0A++++++++cts%3Adocument-fragment-query%28%24document-query%29%2C%0A++++++++cts%3Aelement-range-query%28%24date-name%2C+%22%3E%3D%22%2C+xs%3AdateTime%28map%3Aget%28%24bucket%2C+%22start%22%29%29%29%2C%0A++++++++cts%3Aelement-range-query%28%24date-name%2C+%22%3C%22%2C+xs%3AdateTime%28map%3Aget%28%24bucket%2C+%22end%22%29%29%29%2C%0A++++++++%28%3A+1970-01-01+is+the+unknown-publication-date+sentinel.+%3A%29%0A++++++++cts%3Anot-query%28cts%3Aelement-range-query%28%24date-name%2C+%22%3D%22%2C+xs%3AdateTime%28%221970-01-01T00%3A00%3A00Z%22%29%29%29%0A++++%29%29%0A++++let+%24count+%3A%3D+cts%3Acount-aggregate%28%24reference%2C+%24options%2C+%24query%29%0A++++let+%24statistics+%3A%3D+map%3Amap%28%29%0A++++++++%3D%3E+map%3Awith%28%22count%22%2C+%24count%29%0A++++++++%3D%3E+map%3Awith%28%22sum%22%2C+if+%28%24count+%3D+0%29+then+0+else+cts%3Asum-aggregate%28%24reference%2C+%24options%2C+%24query%29%29%0A++++++++%3D%3E+map%3Awith%28%22mean%22%2C+if+%28%24count+%3D+0%29+then+null-node+%7B%7D+else+cts%3Aavg-aggregate%28%24reference%2C+%24options%2C+%24query%29%29%0A++++++++%3D%3E+map%3Awith%28%22median%22%2C+if+%28%24count+%3D+0%29+then+null-node+%7B%7D+else+cts%3Amedian%28cts%3Avalues%28%24reference%2C+%28%29%2C+%24options%2C+%24query%29%29%29%0A++++return+map%3Aput%28%24result%2C+map%3Aget%28%24bucket%2C+%22label%22%29%2C+%24statistics%29%0Areturn+xdmp%3Ato-json-string%28%24result%29%0A&vars=%7B%22metric%22%3A+%22submissions_before_first_publish%22%2C+%22date_property%22%3A+%22first_published_datetime%22%2C+%22buckets%22%3A+%22%5B%7B%5C%22label%5C%22%3A+%5C%222026-07%5C%22%2C+%5C%22start%5C%22%3A+%5C%222026-07-16T00%3A00%3A00%2B00%3A00%5C%22%2C+%5C%22end%5C%22%3A+%5C%222026-08-01T00%3A00%3A00%2B00%3A00%5C%22%7D%2C+%7B%5C%22label%5C%22%3A+%5C%222026-08%5C%22%2C+%5C%22start%5C%22%3A+%5C%222026-08-01T00%3A00%3A00%2B00%3A00%5C%22%2C+%5C%22end%5C%22%3A+%5C%222026-09-01T00%3A00%3A00%2B00%3A00%5C%22%7D%2C+%7B%5C%22label%5C%22%3A+%5C%222026-09%5C%22%2C+%5C%22start%5C%22%3A+%5C%222026-09-01T00%3A00%3A00%2B00%3A00%5C%22%2C+%5C%22end%5C%22%3A+%5C%222026-10-01T00%3A00%3A00%2B00%3A00%5C%22%7D%2C+%7B%5C%22label%5C%22%3A+%5C%222026-10%5C%22%2C+%5C%22start%5C%22%3A+%5C%222026-10-01T00%3A00%3A00%2B00%3A00%5C%22%2C+%5C%22end%5C%22%3A+%5C%222026-10-16T00%3A00%3A00%2B00%3A00%5C%22%7D%5D%22%2C+%22search_parameters%22%3A+%22%7B%5C%22court%5C%22%3A+null%2C+%5C%22judge%5C%22%3A+%5C%22%5C%22%2C+%5C%22page%5C%22%3A+1%2C+%5C%22page-size%5C%22%3A+10%2C+%5C%22q%5C%22%3A+%5C%22%5C%22%2C+%5C%22party%5C%22%3A+%5C%22%5C%22%2C+%5C%22neutral_citation%5C%22%3A+%5C%22%5C%22%2C+%5C%22document_name%5C%22%3A+%5C%22%5C%22%2C+%5C%22consignment_number%5C%22%3A+%5C%22%5C%22%2C+%5C%22specific_keyword%5C%22%3A+%5C%22%5C%22%2C+%5C%22order%5C%22%3A+%5C%22%5C%22%2C+%5C%22from%5C%22%3A+%5C%22%5C%22%2C+%5C%22to%5C%22%3A+%5C%22%5C%22%2C+%5C%22show_unpublished%5C%22%3A+%5C%22false%5C%22%2C+%5C%22only_unpublished%5C%22%3A+%5C%22false%5C%22%2C+%5C%22only_with_html_representation%5C%22%3A+%5C%22false%5C%22%2C+%5C%22collections%5C%22%3A+%5C%22%5C%22%2C+%5C%22quoted_phrases%5C%22%3A+%5B%5D%7D%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "string"}, "body": "{\"2026-10\":{\"sum\":0, \"mean\":null,
+          \"median\":null, \"count\":0}, \"2026-09\":{\"sum\":0, \"mean\":null, \"median\":null,
+          \"count\":0}, \"2026-07\":{\"sum\":0, \"mean\":null, \"median\":null, \"count\":0},
+          \"2026-08\":{\"sum\":0, \"mean\":null, \"median\":null, \"count\":0}}", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Fri, 16 Oct 2026 14:59:19 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
 version: 1
