@@ -5,6 +5,7 @@ from django.core.management import call_command
 from django.test import TestCase
 from editing import editing_order, record, tracking_editing_session
 
+from judgments.management.commands.assign_missing_fclids import NUMBER_PER_LOOP
 from judgments.models import BulkReparseRunLog
 from judgments.models.telemetry import RunStatus
 
@@ -157,4 +158,39 @@ class CommandsTestCase(TestCase):
         call_command("assign_missing_fclids")
 
         assert mock_api_client.get_missing_fclid.call_count == 2
+        assert order == ["editing_session", "assign_fclid", "editing_session_end"]
+
+    @patch("judgments.management.commands.assign_missing_fclids.api_client")
+    def test_assign_fclids_looks_past_a_full_page_of_blocked_documents(self, mock_api_client):
+        blocked = [f"/blocked-{i}.xml" for i in range(NUMBER_PER_LOOP)]
+        ready_uri = "/ready.xml"
+        busy = Mock()
+        ready = Mock()
+        busy.editing_session = checked_out_session
+        order = editing_order()
+        ready.editing_session = tracking_editing_session(order)
+        fclid = Mock()
+        fclid.value = "fclid-1"
+        ready.assign_fclid_if_missing.side_effect = record(order, "assign_fclid", result=fclid)
+
+        mock_api_client.get_missing_fclid.side_effect = [
+            blocked,
+            [*blocked, ready_uri],
+            blocked,
+        ]
+
+        def document_for(uri):
+            if str(uri) == "ready":
+                return ready
+            return busy
+
+        mock_api_client.get_document_by_uri.side_effect = document_for
+
+        call_command("assign_missing_fclids")
+
+        assert mock_api_client.get_missing_fclid.call_args_list == [
+            call(maximum_records=NUMBER_PER_LOOP),
+            call(maximum_records=NUMBER_PER_LOOP * 2),
+            call(maximum_records=NUMBER_PER_LOOP * 2),
+        ]
         assert order == ["editing_session", "assign_fclid", "editing_session_end"]
