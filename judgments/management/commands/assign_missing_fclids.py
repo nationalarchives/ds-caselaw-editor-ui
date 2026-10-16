@@ -1,3 +1,4 @@
+from caselawclient.errors import MarklogicCheckoutConflictError
 from caselawclient.models.identifiers.exceptions import IdentifierValidationException
 from caselawclient.types import MarkLogicDocumentURIString
 from django.core.management.base import BaseCommand
@@ -20,6 +21,7 @@ class Command(BaseCommand):
 
             documents_missing_fclid = api_client.get_missing_fclid(maximum_records=NUMBER_PER_LOOP)
             total = len(documents_missing_fclid)
+            assigned_this_loop = 0
 
             for i, document in enumerate(documents_missing_fclid):
                 doc_count += 1
@@ -36,6 +38,7 @@ class Command(BaseCommand):
                     with document_object.editing_session():
                         new_fclid = document_object.assign_fclid_if_missing()
                     if new_fclid:
+                        assigned_this_loop += 1
                         self.stdout.write(f"\tAssigned FCLID {new_fclid.value}.")
                     else:
                         self.stdout.write("\tFAILED to assign FCLID!")
@@ -45,3 +48,9 @@ class Command(BaseCommand):
                         f"{prefix_string}: FAILED to assign FCLID for document at {document} with exception:",
                     )
                     self.stdout.write("\t" + str(e))
+                except MarklogicCheckoutConflictError:
+                    self.stdout.write(f"{prefix_string}: skipped {document}, already checked out.")
+
+            # Busy documents stay in the missing-FCLID results. Stop when a pass assigns nothing.
+            if assigned_this_loop == 0:
+                break
