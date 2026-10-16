@@ -36,7 +36,8 @@ class HoldDocumentSuccessView(DocumentView):
 def hold(request):
     judgment_uri = request.POST.get("judgment_uri", None)
     judgment = get_document_by_uri_or_404(judgment_uri)
-    judgment.hold()
+    with judgment.editing_session():
+        judgment.hold()
     invalidate_caches(judgment.uri)
     messages.success(request, "Document successfully put on hold")
     return HttpResponseRedirect(
@@ -70,7 +71,8 @@ class UnholdDocumentSuccessView(DocumentView):
 def unhold(request):
     judgment_uri = request.POST.get("judgment_uri", "")
     judgment = get_document_by_uri_or_404(judgment_uri)
-    judgment.unhold()
+    with judgment.editing_session():
+        judgment.unhold()
     invalidate_caches(judgment.uri)
     messages.success(request, "Document successfully taken off hold")
     return HttpResponseRedirect(

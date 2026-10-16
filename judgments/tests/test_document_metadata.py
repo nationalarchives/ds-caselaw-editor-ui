@@ -1,5 +1,5 @@
 from datetime import UTC, datetime
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
 from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
 from caselawclient.models.documents import DocumentURIString
@@ -13,6 +13,7 @@ from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
+from editing import editing_order, record, tracking_editing_session
 from factories import make_editor
 
 from judgments.views.document_metadata import MetadataFieldDisplayDecorator
@@ -210,22 +211,26 @@ class TestDocumentMetadata(TestCase):
             uri=DocumentURIString("d-a1b2c3"),
             body=DocumentBodyFactory.build(name="Test v Tested", court="Court of Testing"),
         )
-        judgment.save_metadata_fields = Mock()  # type:ignore[method-assign]
         mock_judgment.return_value = judgment
 
         self.client.force_login(make_editor())
 
-        response = self.client.post(
-            reverse("document-metadata", kwargs={"document_uri": judgment.uri}),
-            data={
-                "new_claim__court": ["First Court", "Second Court", " "],
-                "new_claim__categories": ["Public law"],
-            },
-        )
+        order = editing_order()
+        with (
+            patch.object(judgment, "editing_session", tracking_editing_session(order)),
+            patch.object(judgment, "save_metadata_fields", side_effect=record(order, "save_metadata_fields")),
+        ):
+            response = self.client.post(
+                reverse("document-metadata", kwargs={"document_uri": judgment.uri}),
+                data={
+                    "new_claim__court": ["First Court", "Second Court", " "],
+                    "new_claim__categories": ["Public law"],
+                },
+            )
 
         assert response.status_code == 302
         assert response.headers["Location"] == "/d-a1b2c3/metadata"
-        judgment.save_metadata_fields.assert_called_once()
+        assert order == ["editing_session", "save_metadata_fields", "editing_session_end"]
 
         court_claims = judgment.metadata_fields.by_name("court")
         assert [claim.value for claim in court_claims] == [
@@ -291,18 +296,22 @@ class TestDocumentMetadata(TestCase):
             timestamp=datetime(2024, 6, 1, tzinfo=UTC),
         )
         judgment.metadata_fields.add(claim)
-        judgment.save_metadata_fields = Mock()  # type:ignore[method-assign]
         mock_judgment.return_value = judgment
 
         self.client.force_login(make_editor())
 
-        response = self.client.post(
-            reverse("document-metadata", kwargs={"document_uri": judgment.uri}),
-            data={"reject_claim_ids": [claim.id]},
-        )
+        order = editing_order()
+        with (
+            patch.object(judgment, "editing_session", tracking_editing_session(order)),
+            patch.object(judgment, "save_metadata_fields", side_effect=record(order, "save_metadata_fields")),
+        ):
+            response = self.client.post(
+                reverse("document-metadata", kwargs={"document_uri": judgment.uri}),
+                data={"reject_claim_ids": [claim.id]},
+            )
 
         assert response.status_code == 302
-        judgment.save_metadata_fields.assert_called_once()
+        assert order == ["editing_session", "save_metadata_fields", "editing_session_end"]
         assert judgment.metadata_fields[claim.id].rejected is True
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
@@ -320,18 +329,22 @@ class TestDocumentMetadata(TestCase):
             ),
         )
         judgment.body.judges = ["Judge One", "Judge Two"]
-        judgment.save_metadata_fields = Mock()  # type:ignore[method-assign]
         mock_judgment.return_value = judgment
 
         self.client.force_login(make_editor())
 
-        response = self.client.post(
-            reverse("document-metadata", kwargs={"document_uri": judgment.uri}),
-            data={"suppress_body_judges": ["Judge One"]},
-        )
+        order = editing_order()
+        with (
+            patch.object(judgment, "editing_session", tracking_editing_session(order)),
+            patch.object(judgment, "save_metadata_fields", side_effect=record(order, "save_metadata_fields")),
+        ):
+            response = self.client.post(
+                reverse("document-metadata", kwargs={"document_uri": judgment.uri}),
+                data={"suppress_body_judges": ["Judge One"]},
+            )
 
         assert response.status_code == 302
-        judgment.save_metadata_fields.assert_called_once()
+        assert order == ["editing_session", "save_metadata_fields", "editing_session_end"]
 
         judge_claims = judgment.metadata_fields.by_name("judges")
         assert len(judge_claims) == 2
@@ -356,15 +369,19 @@ class TestDocumentMetadata(TestCase):
             uri=DocumentURIString("d-a1b2c3"),
             body=DocumentBodyFactory.build(name="Test v Tested", court="Court of Testing"),
         )
-        judgment.save_metadata_fields = Mock()  # type:ignore[method-assign]
         mock_judgment.return_value = judgment
 
         self.client.force_login(make_editor())
 
-        response = self.client.post(
-            reverse("document-metadata", kwargs={"document_uri": judgment.uri}),
-            data={"reject_claim_ids": ["missing-claim"]},
-        )
+        order = editing_order()
+        with (
+            patch.object(judgment, "editing_session", tracking_editing_session(order)),
+            patch.object(judgment, "save_metadata_fields", side_effect=record(order, "save_metadata_fields")),
+        ):
+            response = self.client.post(
+                reverse("document-metadata", kwargs={"document_uri": judgment.uri}),
+                data={"reject_claim_ids": ["missing-claim"]},
+            )
 
         assert response.status_code == 302
-        judgment.save_metadata_fields.assert_not_called()
+        assert order == []

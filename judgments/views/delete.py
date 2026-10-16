@@ -28,7 +28,8 @@ def delete(request):
             msg,
         )
 
-    document.delete()
+    with document.editing_session():
+        document.delete()
     invalidate_caches(document.uri)
 
     messages.success(

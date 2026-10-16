@@ -38,7 +38,8 @@ class PublishDocumentSuccessView(DocumentView):
 def publish(request):
     judgment_uri = request.POST.get("judgment_uri")
     judgment = get_document_by_uri_or_404(judgment_uri)
-    judgment.publish()
+    with judgment.editing_session():
+        judgment.publish()
     invalidate_caches(judgment.uri)
     messages.success(request, "Document successfully published")
     return HttpResponseRedirect(
@@ -70,7 +71,8 @@ class UnpublishDocumentSuccessView(DocumentView):
 def unpublish(request):
     judgment_uri = request.POST.get("judgment_uri", None)
     judgment = get_document_by_uri_or_404(judgment_uri)
-    judgment.unpublish()
+    with judgment.editing_session():
+        judgment.unpublish()
     invalidate_caches(judgment.uri)
     messages.success(
         request,

@@ -145,7 +145,8 @@ class AddDocumentIdentifierView(EditorRequiredMixin, DocumentViewMixin, FormView
             return self.form_invalid(form)
 
         # Everything checks out - save the identifiers to the database.
-        self.document.save_identifiers()
+        with self.document.editing_session():
+            self.document.save_identifiers()
 
         messages.success(
             self.request,
@@ -209,7 +210,8 @@ class DeleteDocumentIdentifierView(EditorRequiredMixin, DocumentViewMixin, FormV
         del self.document.identifiers[self.kwargs["identifier_uuid"]]
 
         # Save the identifiers to the database. This runs validations as part of save operations, so if we've ended up here but the result is invalid it won't be committed.
-        self.document.save_identifiers()
+        with self.document.editing_session():
+            self.document.save_identifiers()
 
         messages.success(self.request, f'{identifier.schema.name} with value "{identifier.value}" has been deleted.')
 

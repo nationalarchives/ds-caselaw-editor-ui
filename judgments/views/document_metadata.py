@@ -246,7 +246,8 @@ class DocumentMetadataView(EditorRequiredMixin, DocumentView):
         changed = reject_changed or suppress_changed or add_changed
 
         if changed:
-            self.document.save_metadata_fields()
+            with self.document.editing_session():
+                self.document.save_metadata_fields()
             messages.success(request, "Metadata claims updated successfully.")
         else:
             messages.info(request, "No metadata claim changes submitted.")

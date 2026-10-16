@@ -4,7 +4,7 @@ from datetime import UTC, datetime
 
 import environ
 from botocore.exceptions import EndpointConnectionError
-from caselawclient.errors import MarklogicResourceLockedError
+from caselawclient.errors import MarklogicCheckoutConflictError, MarklogicResourceLockedError
 from django.core.management.base import BaseCommand, CommandParser
 
 from judgments.models import BulkReparseRunLog
@@ -39,7 +39,9 @@ class Command(BaseCommand):
 
         sys.stdout.write(f"Attempting to reparse document {document.body.name}...\n")
         try:
-            if document.reparse():  # This returns `False` if the document fails `can_reparse` checks.
+            with document.editing_session():
+                reparsed = document.reparse()  # This returns `False` if the document fails `can_reparse` checks.
+            if reparsed:
                 sys.stdout.write("Reparse attempted.\n")
                 run_log.detail += f"\nAttempted {document_uri}"
                 run_log.documents_attempted += 1
@@ -47,7 +49,7 @@ class Command(BaseCommand):
                 sys.stdout.write("Reparse skipped.\n")
                 run_log.detail += f"\nSkipped {document_uri}"
                 run_log.documents_skipped += 1
-        except (EndpointConnectionError, MarklogicResourceLockedError) as e:
+        except (EndpointConnectionError, MarklogicResourceLockedError, MarklogicCheckoutConflictError) as e:
             sys.stdout.write(f"Reparse failed: {e}\n")
             run_log.detail += f"\nFAILED {document_uri}: {e}"
             run_log.documents_failed += 1

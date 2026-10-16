@@ -68,39 +68,40 @@ class EditJudgmentView(EditorRequiredMixin, View):
                 )
 
             else:
-                # If there is a submitted NCN, and EITHER one doesn't already exist OR one does exist and the value is different, process changes
-                if form_neutral_citation != "" and (
-                    existing_preferred_ncn is None or form_neutral_citation != existing_preferred_ncn.value
-                ):
-                    update_ncn_of_document(judgment, form_neutral_citation)
+                with judgment.editing_session():
+                    # If there is a submitted NCN, and EITHER one doesn't already exist OR one does exist and the value is different, process changes
+                    if form_neutral_citation != "" and (
+                        existing_preferred_ncn is None or form_neutral_citation != existing_preferred_ncn.value
+                    ):
+                        update_ncn_of_document(judgment, form_neutral_citation)
 
-                # Set name
-                new_name = request.POST["metadata_name"]
-                api_client.set_document_name(judgment_uri, new_name)
+                    # Set name
+                    new_name = request.POST["metadata_name"]
+                    api_client.set_document_name(judgment_uri, new_name)
 
-                # Set court
-                new_court = request.POST["court"]
-                api_client.set_document_court_and_jurisdiction(judgment_uri, new_court)
+                    # Set court
+                    new_court = request.POST["court"]
+                    api_client.set_document_court_and_jurisdiction(judgment_uri, new_court)
 
-                # Date
-                new_date = request.POST["judgment_date"]
-                try:
-                    new_date_as_date = datetime.datetime.strptime(new_date, r"%d %b %Y")
-                except ValueError:
-                    messages.error(
-                        request,
-                        f"Could not parse the date '{new_date}', should be like '2 Jan 2024'.",
-                    )
-                    return HttpResponseRedirect(
-                        reverse(
-                            "full-text-html",
-                            kwargs={"document_uri": kwargs["document_uri"]},
-                        ),
-                    )
-                new_date_as_iso = new_date_as_date.strftime(r"%Y-%m-%d")
-                api_client.set_judgment_date(judgment_uri, new_date_as_iso)
+                    # Date
+                    new_date = request.POST["judgment_date"]
+                    try:
+                        new_date_as_date = datetime.datetime.strptime(new_date, r"%d %b %Y")
+                    except ValueError:
+                        messages.error(
+                            request,
+                            f"Could not parse the date '{new_date}', should be like '2 Jan 2024'.",
+                        )
+                        return HttpResponseRedirect(
+                            reverse(
+                                "full-text-html",
+                                kwargs={"document_uri": kwargs["document_uri"]},
+                            ),
+                        )
+                    new_date_as_iso = new_date_as_date.strftime(r"%Y-%m-%d")
+                    api_client.set_judgment_date(judgment_uri, new_date_as_iso)
 
-                messages.success(request, "Document successfully updated")
+                    messages.success(request, "Document successfully updated")
 
         except (NCNValidationException, CannotUpdateNCNOfNonJudgment) as e:
             messages.error(

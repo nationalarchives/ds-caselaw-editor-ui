@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
 from django.test import TestCase
 from django.urls import reverse
+from editing import editing_order, record, tracking_editing_session
 from factories import make_editor
 
 from judgments.views.judgment_edit import CannotUpdateNCNOfNonJudgment, update_ncn_of_document
@@ -40,20 +41,25 @@ class TestDocumentEdit(TestCase):
 
         judgment.identifiers.add(NeutralCitationNumber("[4321] UKSC 123"))
         mock_judgment.return_value = judgment
+        order = editing_order()
+        api_client.set_document_name.side_effect = record(order, "set_document_name")
+        api_client.set_document_court_and_jurisdiction.side_effect = record(order, "set_court")
+        api_client.set_judgment_date.side_effect = record(order, "set_judgment_date")
 
         self.client.force_login(make_editor())
         User.objects.get_or_create(username="testuser2")
 
-        self.client.post(
-            "/pubtest/4321/123/edit",
-            {
-                "judgment_uri": "/edittest/4321/123",
-                "metadata_name": "New Name",
-                "neutral_citation": "[4321] UKSC 123",
-                "court": "Court of Testing",
-                "judgment_date": "2 Jan 2023",
-            },
-        )
+        with patch.object(judgment, "editing_session", tracking_editing_session(order)):
+            self.client.post(
+                "/pubtest/4321/123/edit",
+                {
+                    "judgment_uri": "/edittest/4321/123",
+                    "metadata_name": "New Name",
+                    "neutral_citation": "[4321] UKSC 123",
+                    "court": "Court of Testing",
+                    "judgment_date": "2 Jan 2023",
+                },
+            )
 
         api_client.set_document_name.assert_called_with(
             "/edittest/4321/123",
@@ -68,6 +74,13 @@ class TestDocumentEdit(TestCase):
             "2023-01-02",
         )
 
+        assert order == [
+            "editing_session",
+            "set_document_name",
+            "set_court",
+            "set_judgment_date",
+            "editing_session_end",
+        ]
         mock_invalidate_caches.assert_called_once_with(judgment.uri)
 
     @patch("judgments.views.judgment_edit.invalidate_caches")
@@ -86,53 +99,78 @@ class TestDocumentEdit(TestCase):
 
         judgment.identifiers.add(NeutralCitationNumber("[4321] UKSC 123"))
         mock_judgment.return_value = judgment
+        order = editing_order()
 
-        api_client.set_document_name.side_effect = MarklogicAPIError("Failed to savae")
+        def fail_to_set_name(*args, **kwargs):
+            order.append("set_document_name")
+            message = "Failed to savae"
+            raise MarklogicAPIError(message)
+
+        api_client.set_document_name.side_effect = fail_to_set_name
 
         self.client.force_login(make_editor())
 
-        response = self.client.post(
-            "/pubtest/4321/123/edit",
-            {
-                "judgment_uri": "/edittest/4321/123",
-                "metadata_name": "New Name",
-                "neutral_citation": "[4321] UKSC 123",
-                "court": "Court of Testing",
-                "judgment_date": "2 Jan 2023",
-            },
-        )
+        with patch.object(judgment, "editing_session", tracking_editing_session(order)):
+            response = self.client.post(
+                "/pubtest/4321/123/edit",
+                {
+                    "judgment_uri": "/edittest/4321/123",
+                    "metadata_name": "New Name",
+                    "neutral_citation": "[4321] UKSC 123",
+                    "court": "Court of Testing",
+                    "judgment_date": "2 Jan 2023",
+                },
+            )
 
         messages = list(get_messages(response.wsgi_request))
 
         assert "There was an error saving the Document" in messages[0].message
+        assert order == ["editing_session", "set_document_name"]
         mock_invalidate_caches.assert_not_called()
 
-    @patch("judgments.views.judgment_edit.update_ncn_of_document")
     @patch("judgments.views.judgment_edit.api_client")
     @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
     @patch("judgments.utils.aws.boto3")
-    def test_edit_judgment_ncn_change(self, mock_boto, mock_judgment, api_client, mock_update_ncn_of_document):
+    def test_edit_judgment_ncn_change(self, mock_boto, mock_judgment, api_client):
         judgment = JudgmentFactory.build(
             uri=DocumentURIString("uksc/4321/123"),
             name="Test v Tested",
         )
         judgment.identifiers.add(NeutralCitationNumber("[4321] UKSC 123"))
         mock_judgment.return_value = judgment
+        order = editing_order()
+        api_client.set_judgment_citation.side_effect = record(order, "set_judgment_citation")
+        api_client.set_document_name.side_effect = record(order, "set_document_name")
+        api_client.set_document_court_and_jurisdiction.side_effect = record(order, "set_court")
+        api_client.set_judgment_date.side_effect = record(order, "set_judgment_date")
 
         self.client.force_login(make_editor())
         User.objects.get_or_create(username="testuser2")
 
-        self.client.post(
-            "/uksc/4321/123/edit",
-            {
-                "judgment_uri": "/uksc/4321/123",
-                "metadata_name": "New Name",
-                "neutral_citation": "[2023] EWCC 456",
-                "court": "Court of Testing",
-                "judgment_date": "2 Jan 2023",
-            },
-        )
-        mock_update_ncn_of_document.assert_called_once_with(judgment, "[2023] EWCC 456")
+        with (
+            patch.object(judgment, "editing_session", tracking_editing_session(order)),
+            patch.object(judgment, "save_identifiers", side_effect=record(order, "save_identifiers")),
+        ):
+            self.client.post(
+                "/uksc/4321/123/edit",
+                {
+                    "judgment_uri": "/uksc/4321/123",
+                    "metadata_name": "New Name",
+                    "neutral_citation": "[2023] EWCC 456",
+                    "court": "Court of Testing",
+                    "judgment_date": "2 Jan 2023",
+                },
+            )
+        api_client.set_judgment_citation.assert_called_once_with("uksc/4321/123", "[2023] EWCC 456")
+        assert order == [
+            "editing_session",
+            "save_identifiers",
+            "set_judgment_citation",
+            "set_document_name",
+            "set_court",
+            "set_judgment_date",
+            "editing_session_end",
+        ]
 
     @patch("judgments.views.judgment_edit.api_client")
     @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
@@ -143,23 +181,29 @@ class TestDocumentEdit(TestCase):
         )
         judgment.identifiers.add(NeutralCitationNumber("[4321] UKSC 123"))
         mock_judgment.return_value = judgment
+        order = editing_order()
+        api_client.set_document_name.side_effect = record(order, "set_document_name")
+        api_client.set_document_court_and_jurisdiction.side_effect = record(order, "set_court")
 
         self.client.force_login(make_editor())
         User.objects.get_or_create(username="testuser2")
 
-        response = self.client.post(
-            "/pubtest/4321/123/edit",
-            {
-                "judgment_uri": "/edittest/4321/123",
-                "metadata_name": "New Name",
-                "neutral_citation": "[4321] UKSC 123",
-                "court": "Court of Testing",
-                "judgment_date": "Kittens",
-            },
-        )
+        with patch.object(judgment, "editing_session", tracking_editing_session(order)):
+            response = self.client.post(
+                "/pubtest/4321/123/edit",
+                {
+                    "judgment_uri": "/edittest/4321/123",
+                    "metadata_name": "New Name",
+                    "neutral_citation": "[4321] UKSC 123",
+                    "court": "Court of Testing",
+                    "judgment_date": "Kittens",
+                },
+            )
 
         messages = list(get_messages(response.wsgi_request))
         assert "Could not parse the date" in messages[0].message
+        assert order == ["editing_session", "set_document_name", "set_court", "editing_session_end"]
+        api_client.set_judgment_date.assert_not_called()
 
 
 class TestUpdateNCNOfDocument(TestCase):

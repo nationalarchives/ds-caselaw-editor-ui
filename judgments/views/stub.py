@@ -282,8 +282,9 @@ def create_stub(request):
 
     if ncn.strip():
         document = api_client.get_document_by_uri(document_uri)
-        document.identifiers.add(NeutralCitationNumber(ncn.strip()))
-        document.save_identifiers()
+        with document.editing_session():
+            document.identifiers.add(NeutralCitationNumber(ncn.strip()))
+            document.save_identifiers()
 
     messages.success(
         request,

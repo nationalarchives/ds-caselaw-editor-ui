@@ -6,6 +6,7 @@ from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
+from editing import editing_order, record, tracking_editing_session
 from factories import make_editor
 
 
@@ -50,8 +51,11 @@ class TestJudgmentPublish(TestCase):
         mock_judgment,
         mock_invalidate_caches,
     ):
+        order = editing_order()
         judgment = Mock()
         judgment.uri = "pubtest/4321/123"
+        judgment.editing_session = tracking_editing_session(order)
+        judgment.publish.side_effect = record(order, "publish")
         mock_judgment.return_value = judgment
 
         self.client.force_login(make_editor())
@@ -68,8 +72,8 @@ class TestJudgmentPublish(TestCase):
             "publish-document-success",
             kwargs={"document_uri": judgment.uri},
         )
-        mock_judgment.return_value.publish.assert_called_once()
-        mock_judgment.return_value.unpublish.assert_not_called()
+        assert order == ["editing_session", "publish", "editing_session_end"]
+        judgment.unpublish.assert_not_called()
         mock_invalidate_caches.assert_called_once()
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
@@ -143,8 +147,11 @@ class TestJudgmentUnpublish(TestCase):
     @patch("judgments.views.judgment_publish.invalidate_caches")
     @patch("judgments.views.judgment_publish.get_document_by_uri_or_404")
     def test_document_unpublish_flow(self, mock_judgment, mock_invalidate_caches):
+        order = editing_order()
         judgment = Mock()
         judgment.uri = "pubtest/4321/123"
+        judgment.editing_session = tracking_editing_session(order)
+        judgment.unpublish.side_effect = record(order, "unpublish")
         mock_judgment.return_value = judgment
 
         self.client.force_login(make_editor())
@@ -161,8 +168,8 @@ class TestJudgmentUnpublish(TestCase):
             "unpublish-document-success",
             kwargs={"document_uri": judgment.uri},
         )
-        mock_judgment.return_value.publish.assert_not_called()
-        mock_judgment.return_value.unpublish.assert_called_once()
+        assert order == ["editing_session", "unpublish", "editing_session_end"]
+        judgment.publish.assert_not_called()
         mock_invalidate_caches.assert_called_once()
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
