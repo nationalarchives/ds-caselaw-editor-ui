@@ -1,6 +1,7 @@
-import contextlib
 import os
+import signal
 import subprocess
+from contextlib import contextmanager, suppress
 
 from invoke import run as local
 from invoke.exceptions import UnexpectedExit
@@ -34,9 +35,61 @@ def container_exec(cmd, container_name="django", check_returncode=False):
     return result
 
 
+@contextmanager
 def background_exec(cmd, logfile):
-    "Run a command in the background and capture logs."
-    local(f"nohup {cmd} &> {logfile}.log &")
+    """Run a child process for the duration of a task, capturing its logs."""
+    with open(f"{logfile}.log", "w") as output:
+        process = subprocess.Popen(
+            cmd,
+            stdout=output,
+            stderr=subprocess.STDOUT,
+            start_new_session=True,
+        )
+
+        try:
+            yield process
+        finally:
+            # npm spawns Node, so stop the whole group rather than just npm.
+            with suppress(ProcessLookupError):
+                os.killpg(process.pid, signal.SIGTERM)
+
+            try:
+                with suppress(subprocess.TimeoutExpired):
+                    process.wait(timeout=5)
+            finally:
+                with suppress(ProcessLookupError):
+                    os.killpg(process.pid, signal.SIGKILL)
+
+                process.wait()
+
+
+@contextmanager
+def run_lifecycle(c):
+    """Handle termination signals and stop services when `run` exits."""
+    shutting_down = False
+
+    def terminate(signum, frame):
+        nonlocal shutting_down
+
+        # Do not let a second signal interrupt cleanup.
+        if shutting_down:
+            return
+
+        shutting_down = True
+        raise SystemExit(128 + signum)
+
+    signals = (signal.SIGTERM, signal.SIGHUP)
+    previous_handlers = {sig: signal.signal(sig, terminate) for sig in signals}
+
+    try:
+        yield
+    finally:
+        shutting_down = True
+        try:
+            stop(c)
+        finally:
+            for sig, handler in previous_handlers.items():
+                signal.signal(sig, handler)
 
 
 def postgres_exec(cmd, check_returncode=False):
@@ -92,21 +145,25 @@ def collectstatic(c):
 
 @task
 def run(c):
-    start(c, "django")
-    npm_install(c)
-    background_exec("npm run watch", "assets")
-    django_exec("pip install -r requirements/local.txt -U")
-    django_exec("python manage.py migrate")
-    collectstatic(c)
-    # Piping Marklogic logs to marklogic.log
-    try:
-        local("docker logs marklogic > marklogic.log")
-    except UnexpectedExit:
-        print("Unable to collect MarkLogic logs!")
-    with contextlib.suppress(KeyboardInterrupt):
-        django_exec("python manage.py runserver 0.0.0.0:3000")
+    with run_lifecycle(c):
+        try:
+            start(c, "django")
+            npm_install(c)
 
-    stop(c, "django")
+            with background_exec(["npm", "run", "watch"], "assets"):
+                django_exec("pip install -r requirements/local.txt -U")
+                django_exec("python manage.py migrate")
+                collectstatic(c)
+
+                try:
+                    local("docker logs marklogic > marklogic.log")
+                except UnexpectedExit:
+                    print("Unable to collect MarkLogic logs!")
+
+                django_exec("python manage.py runserver 0.0.0.0:3000")
+
+        except KeyboardInterrupt:
+            pass
 
 
 @task
