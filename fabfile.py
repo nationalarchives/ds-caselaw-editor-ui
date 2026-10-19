@@ -46,30 +46,50 @@ def background_exec(cmd, logfile):
             start_new_session=True,
         )
 
-        def terminate(signum, frame):
-            raise SystemExit(128 + signum)
-
-        previous_handlers = {sig: signal.signal(sig, terminate) for sig in (signal.SIGTERM, signal.SIGHUP)}
-
         try:
             yield process
         finally:
+            # npm spawns Node, so stop the whole group rather than just npm.
+            with suppress(ProcessLookupError):
+                os.killpg(process.pid, signal.SIGTERM)
+
             try:
-                # npm spawns Node, so stop the whole group rather than just npm.
-                with suppress(ProcessLookupError):
-                    os.killpg(process.pid, signal.SIGTERM)
-
-                try:
-                    with suppress(subprocess.TimeoutExpired):
-                        process.wait(timeout=5)
-                finally:
-                    with suppress(ProcessLookupError):
-                        os.killpg(process.pid, signal.SIGKILL)
-
-                    process.wait()
+                with suppress(subprocess.TimeoutExpired):
+                    process.wait(timeout=5)
             finally:
-                for sig, handler in previous_handlers.items():
-                    signal.signal(sig, handler)
+                with suppress(ProcessLookupError):
+                    os.killpg(process.pid, signal.SIGKILL)
+
+                process.wait()
+
+
+@contextmanager
+def run_lifecycle(c):
+    """Handle termination signals and stop services when `run` exits."""
+    shutting_down = False
+
+    def terminate(signum, frame):
+        nonlocal shutting_down
+
+        # Do not let a second signal interrupt cleanup.
+        if shutting_down:
+            return
+
+        shutting_down = True
+        raise SystemExit(128 + signum)
+
+    signals = (signal.SIGTERM, signal.SIGHUP)
+    previous_handlers = {sig: signal.signal(sig, terminate) for sig in signals}
+
+    try:
+        yield
+    finally:
+        shutting_down = True
+        try:
+            stop(c)
+        finally:
+            for sig, handler in previous_handlers.items():
+                signal.signal(sig, handler)
 
 
 def postgres_exec(cmd, check_returncode=False):
@@ -125,29 +145,25 @@ def collectstatic(c):
 
 @task
 def run(c):
-    try:
-        start(c, "django")
-        npm_install(c)
+    with run_lifecycle(c):
+        try:
+            start(c, "django")
+            npm_install(c)
 
-        with background_exec(["npm", "run", "watch"], "assets"):
-            django_exec("pip install -r requirements/local.txt -U")
-            django_exec("python manage.py migrate")
-            collectstatic(c)
+            with background_exec(["npm", "run", "watch"], "assets"):
+                django_exec("pip install -r requirements/local.txt -U")
+                django_exec("python manage.py migrate")
+                collectstatic(c)
 
-            try:
-                local("docker logs marklogic > marklogic.log")
-            except UnexpectedExit:
-                print("Unable to collect MarkLogic logs!")
+                try:
+                    local("docker logs marklogic > marklogic.log")
+                except UnexpectedExit:
+                    print("Unable to collect MarkLogic logs!")
 
-            django_exec("python manage.py runserver 0.0.0.0:3000")
+                django_exec("python manage.py runserver 0.0.0.0:3000")
 
-    except KeyboardInterrupt:
-        pass
-
-    finally:
-        stop(c, "django")
-        stop(c, "postgres")
-        stop(c, "marklogic")
+        except KeyboardInterrupt:
+            pass
 
 
 @task
