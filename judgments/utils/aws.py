@@ -7,26 +7,23 @@ env = environ.Env()
 
 
 def invalidate_caches(uri: str) -> None:
+    invalidations: list[tuple[str | None, list[str]]] = [
+        (env("CLOUDFRONT_PUBLIC_DISTRIBUTION_ID", default=None), ["/*"]),
+        (env("CLOUDFRONT_ASSETS_DISTRIBUTION_ID", default=None), [f"/{uri}/*"]),
+        (env("CLOUDFRONT_EDITOR_DISTRIBUTION_ID", default=None), ["/*"]),
+    ]
+    if not any(distribution_id for distribution_id, _ in invalidations):
+        return
+
     aws = boto3.session.Session()
     cloudfront = aws.client("cloudfront")
-    cloudfront.create_invalidation(
-        DistributionId=env("CLOUDFRONT_PUBLIC_DISTRIBUTION_ID", default=None),
-        InvalidationBatch={
-            "Paths": {"Quantity": 1, "Items": ["/*"]},
-            "CallerReference": str(time.time()),
-        },
-    )
-    cloudfront.create_invalidation(
-        DistributionId=env("CLOUDFRONT_ASSETS_DISTRIBUTION_ID", default=None),
-        InvalidationBatch={
-            "Paths": {"Quantity": 1, "Items": [f"/{uri}/*"]},
-            "CallerReference": str(time.time()),
-        },
-    )
-    cloudfront.create_invalidation(
-        DistributionId=env("CLOUDFRONT_EDITOR_DISTRIBUTION_ID", default=None),
-        InvalidationBatch={
-            "Paths": {"Quantity": 1, "Items": ["/*"]},
-            "CallerReference": str(time.time()),
-        },
-    )
+    for distribution_id, paths in invalidations:
+        if not distribution_id:
+            continue
+        cloudfront.create_invalidation(
+            DistributionId=distribution_id,
+            InvalidationBatch={
+                "Paths": {"Quantity": len(paths), "Items": paths},
+                "CallerReference": str(time.time()),
+            },
+        )

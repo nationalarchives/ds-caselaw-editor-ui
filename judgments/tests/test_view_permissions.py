@@ -2,6 +2,9 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 from django.contrib.auth.models import Group, User
+from waffle.testutils import override_flag
+
+from judgments.templatetags.navigation_tags import DOCUMENT_MERGE_FLAG
 
 EDITOR_ONLY_ACTIONS = [
     "/publish",
@@ -37,6 +40,17 @@ def test_editor_only_actions_are_forbidden_to_non_editors(client, action, kind):
 
     with patch("judgments.utils.view_helpers.get_document_by_uri_or_404"):
         response = client.post(action)
+
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db
+@override_flag(DOCUMENT_MERGE_FLAG, active=True)
+@pytest.mark.parametrize("kind", ["standard", "developer", "superuser"])
+def test_merge_is_forbidden_to_non_editors(client, kind):
+    client.force_login(make_user(kind))
+
+    response = client.post("/merge", {"source_uri": "d-source", "target_uri": "d-target"})
 
     assert response.status_code == 403
 
