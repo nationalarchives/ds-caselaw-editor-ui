@@ -10,7 +10,7 @@
     "start-sass": "npx sass --watch --load-path=node_modules ds_caselaw_editor_ui/sass/main.scss:ds_caselaw_editor_ui/static/css/main.css",
     "start-scripts": "npx webpack --watch",
     "build": "npx webpack && npx sass --quiet-deps --load-path=node_modules ds_caselaw_editor_ui/sass/main.scss:ds_caselaw_editor_ui/static/css/main.css  --style=compressed",
-    "watch": "npx nodemon --watch './ds_caselaw_editor_ui/sass/*' --watch './ds_caselaw_editor_ui/static/js/*' --exec 'npm run start-sass && npm run start-scripts'",
+    "watch": "npm-run-all --parallel start-sass start-scripts",
     "lint:scss": "npx stylelint '**/*.scss'"
   },
   "repository": {
@@ -42,6 +42,7 @@
     "@tsparticles/preset-confetti": "4.4.0",
     "govuk-frontend": "6.5.1",
     "nodemon": "3.1.14",
+    "npm-run-all": "4.1.5",
     "sass": "1.105.1"
   }
 }

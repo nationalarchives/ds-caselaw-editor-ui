@@ -1,0 +1,86 @@
+{% extends "layouts/judgment.jinja" %}
+{% from "components/heading.jinja" import heading %}
+{% from "components/notification.jinja" import notification %}
+{% from "components/badge.jinja" import badge %}
+{% from "components/button.jinja" import button %}
+{% macro comparison_values(values) %}
+  {% if values %}
+    {% for value in values %}<div>{{ value }}</div>{% endfor %}
+  {% else %}
+    —
+  {% endif %}
+{% endmacro %}
+{% block content %}
+  <div class="container">
+    {{ heading(content="Merge into " ~ target_title) }}
+    {{ heading(tag="h2", weight="normal", content="From " ~ page_title) }}
+    {% call notification(variant="warning") %}
+      The source document's content becomes the new version of the target. The source document is deleted. This page shows the metadata that will change, not a comparison of the document text.
+    {% endcall %}
+    <p>
+      <a href="{{ url('full-text-html', target.uri) }}"
+         target="_blank"
+         rel="noopener noreferrer">Open the target document</a>
+    </p>
+    {% if not can_merge %}
+      {% call notification(variant="warning") %}
+        These documents cannot be merged:
+      {% endcall %}
+      <ul>
+        {% for message in merge_failure_messages %}<li>{{ message }}</li>{% endfor %}
+      </ul>
+    {% endif %}
+    {% for section in comparison_sections %}
+      {{ heading(tag="h2", content=section.title) }}
+      <div class="table">
+        <table class="merge-comparison">
+          <thead>
+            <tr>
+              <th scope="col">Field</th>
+              <th scope="col">Target</th>
+              <th scope="col">Source</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in section.rows %}
+              <tr {% if row.changed %}class="merge-comparison__row--changed"{% endif %}>
+                <th scope="row">{{ row.label }}</th>
+                <td>{{ comparison_values(row.target_values) }}</td>
+                <td>
+                  {{ comparison_values(row.source_values) }}
+                  {% if row.changed %}
+                    {{ badge(variant="info", size="small", content="Will change") }}
+                    {% if row.detail %}<p class="muted">{{ row.detail }}</p>{% endif %}
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endfor %}
+    {% if can_merge %}
+      <form action="{{ url('merge') }}" method="post" aria-label="Confirm merge">
+        {{ csrf_input }}
+        <input type="hidden" name="source_uri" value="{{ document.uri }}" />
+        <input type="hidden" name="target_uri" value="{{ target.uri }}" />
+        <div class="note-form__container">
+          <label class="note-form__label" for="merge-note">Note (optional)</label>
+          <textarea class="note-form__text-area"
+                    id="merge-note"
+                    name="note"
+                    rows="4"
+                    placeholder="Merged from {{ document.uri }}"></textarea>
+          <p class="muted">Stored on the new version of the target document. Leave this blank to use the placeholder text.</p>
+        </div>
+        {{ button(content="Merge", disabled=not user|can_edit) }}
+      </form>
+    {% endif %}
+    <p>
+      <a href="{{ url('merge-document', document.uri) }}">Choose a different target</a>
+    </p>
+    <p>
+      <a href="{{ url('full-text-html', document.uri) }}">Go back to review</a>
+    </p>
+  </div>
+{% endblock content %}
