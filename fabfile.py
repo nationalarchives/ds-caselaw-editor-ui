@@ -2,6 +2,7 @@ import os
 import signal
 import subprocess
 from contextlib import contextmanager, suppress
+from pathlib import Path
 
 from invoke import run as local
 from invoke.exceptions import UnexpectedExit
@@ -20,6 +21,54 @@ if os.path.exists(".env"):
 LOCAL_DATABASE_NAME = os.getenv("POSTGRES_DB")
 LOCAL_DATABASE_USERNAME = os.getenv("POSTGRES_USER")
 LOCAL_DB_DUMP_DIR = "database_dumps"
+
+
+def _marklogic_repo_path() -> Path:
+    if env_path := os.getenv("CASELAW_MARKLOGIC_PATH"):
+        return Path(env_path).expanduser()
+    candidates = [
+        Path(__file__).resolve().parent.parent / "ds-caselaw-marklogic",
+        Path("~/repositories/github.com/nationalarchives/ds-caselaw-marklogic").expanduser(),
+    ]
+    for candidate in candidates:
+        if (candidate / "build.gradle").is_file():
+            return candidate.resolve()
+    return candidates[0].resolve()
+
+
+def _api_client_repo_path() -> Path:
+    if env_path := os.getenv("CASELAW_API_CLIENT_PATH"):
+        return Path(env_path).expanduser()
+    candidates = [
+        Path(__file__).resolve().parent.parent / "ds-caselaw-custom-api-client",
+        Path("/apiclient"),
+        Path("~/repositories/github.com/nationalarchives/ds-caselaw-custom-api-client").expanduser(),
+    ]
+    for candidate in candidates:
+        script = candidate / "script" / "create_marklogic_test_user"
+        if script.is_file():
+            return candidate.resolve()
+    message = (
+        "Could not find ds-caselaw-custom-api-client (script/create_marklogic_test_user). "
+        "Set CASELAW_API_CLIENT_PATH or mount the repo at ../ds-caselaw-custom-api-client."
+    )
+    raise SystemExit(message)
+
+
+def _create_local_marklogic_test_user(marklogic_repo: Path) -> None:
+    """Create a non-admin MarkLogic user with caselaw-editor-ui roles (required for TDE SQL)."""
+    script = _api_client_repo_path() / "script" / "create_marklogic_test_user"
+    test_user = os.getenv("MARKLOGIC_USER", "caselaw-api-client-test")
+    test_password = os.getenv("MARKLOGIC_PASSWORD", "local-marklogic-dev")
+    manage_url = os.getenv("MARKLOGIC_MANAGE_URL", "http://127.0.0.1:8002")
+    admin_user = os.getenv("MARKLOGIC_ADMIN_USER", "admin")
+    admin_password = os.getenv("MARKLOGIC_ADMIN_PASSWORD", "admin")
+    local(
+        f"MARKLOGIC_USER={test_user} MARKLOGIC_PASSWORD={test_password} "
+        f"MARKLOGIC_MANAGE_URL={manage_url} MARKLOGIC_ADMIN_USER={admin_user} "
+        f"MARKLOGIC_ADMIN_PASSWORD={admin_password} {script} {marklogic_repo}",
+    )
+
 
 # -----------------------------------------------------------------------------
 # Helpers
@@ -129,9 +178,38 @@ def start(c, container_name=None):
 @task
 def npm_install(c):
     """
-    Install NPM packages
+    Install NPM packages and build frontend assets for local dev.
     """
     local("npm install")
+    local("npm run build")
+
+
+@task(optional=["noinput"])
+def reset_fixtures(c, noinput=""):
+    """
+    Reload the MarkLogic test document corpus from the API client harness (local MarkLogic only).
+    """
+    flag = " --noinput" if noinput else ""
+    django_exec(f"python manage.py reset_local_fixtures{flag}", check_returncode=True)
+
+
+@task
+def deploy_marklogic(c):
+    """
+    Deploy the caselaw MarkLogic application (same as API client CI integration tests).
+    """
+    marklogic_repo = _marklogic_repo_path()
+    if not (marklogic_repo / "build.gradle").is_file():
+        print(
+            f"Could not find ds-caselaw-marklogic at {marklogic_repo}. Set CASELAW_MARKLOGIC_PATH to your checkout.",
+        )
+        raise SystemExit(1)
+
+    local("docker network create caselaw || true")
+    local(
+        f"cd {marklogic_repo} && gradle mlWaitTillReady mlDeploy mlDeployViewSchemas mlReloadSchemas -PmlDatabaseNamesAndReplicaCounts=",
+    )
+    _create_local_marklogic_test_user(marklogic_repo)
 
 
 @task
