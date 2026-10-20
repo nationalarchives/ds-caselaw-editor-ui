@@ -1,23 +1,23 @@
-{% macro search_form(embedded=false) %}
+{% macro search_form(embedded=false, form_action=None, clear_href=None, heading="Search for documents") %}
   <div class="search-component">
     <div class="search-component__container">
       {% if embedded %}
         <div role="search"
              aria-label="Search by keyword or neutral citation"
-             id="analytics-basic-search">{{ _search_form_fields() }}</div>
+             id="analytics-basic-search">{{ _search_form_fields(clear_href=clear_href, heading=heading) }}</div>
       {% else %}
-        <form action="{{ url('results') }}"
+        <form action="{{ form_action or url('results') }}"
               role="search"
               aria-label="Search by keyword or neutral citation"
               id="analytics-basic-search">
-          {{ _search_form_fields() }}
+          {{ _search_form_fields(clear_href=clear_href, heading=heading) }}
         </form>
       {% endif %}
     </div>
   </div>
 {% endmacro %}
-{% macro _search_form_fields() %}
-  <h2>Search for documents</h2>
+{% macro _search_form_fields(clear_href=None, heading="Search for documents") %}
+  <h2>{{ heading }}</h2>
   <div class="search-component__filters govuk-radios govuk-radios--small">
     <div class="search-component__filter govuk-radios__item">
       <input class="govuk-radios__input"
@@ -46,9 +46,14 @@
            value="{{ query or "" }}" />
     {% if document_list_queue_enabled %}
       <button type="submit" class="button">Search</button>
-      <a href="{{ url('home') }}?{{ clear_search_query_string }}">Clear search</a>
     {% else %}
       <input type="submit" value="Search" />
+    {% endif %}
+    {% if clear_href %}
+      <a href="{{ clear_href }}">Clear search</a>
+    {% elif document_list_queue_enabled %}
+      <a href="{{ url('home') }}?{{ clear_search_query_string }}">Clear search</a>
+    {% else %}
       <a href="">Clear search</a>
     {% endif %}
   </div>

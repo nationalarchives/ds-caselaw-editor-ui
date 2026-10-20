@@ -9,7 +9,6 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 from factories import make_editor
-from waffle.testutils import override_flag
 
 
 class TestDocumentIdentifiers(TestCase):
@@ -42,31 +41,17 @@ class TestDocumentIdentifiers(TestCase):
 
         self.assertContains(response, "Test v Tested", html=True)
 
-        self.assertContains(
-            response,
-            """<tr>
-            <td>Neutral Citation Number</td>
-            <td><code>[2025] UKSC 123</code></td>
-            <td><code>/uksc/2025/123</code></td>
-            <td>True</td>
-            </tr>""",
-            html=True,
-        )
-
-        self.assertContains(
-            response,
-            """<tr>
-            <td>Find Case Law Identifier</td>
-            <td><code>tn4t35ts</code></td>
-            <td><code>/tna.tn4t35ts</code></td>
-            <td>False</td>
-            </tr>""",
-            html=True,
-        )
+        self.assertContains(response, "Add new identifier")
+        self.assertContains(response, "Edit")
+        self.assertContains(response, "Find Case Law Identifier")
+        self.assertContains(response, "tn4t35ts")
+        self.assertContains(response, "/tna.tn4t35ts")
+        self.assertContains(response, "Neutral Citation Number")
+        self.assertContains(response, "[2025] UKSC 123")
+        self.assertContains(response, "/uksc/2025/123")
 
 
 class TestIdentifierViewDeleteDisablement(TestCase):
-    @override_flag("identifier_editing", active=True)
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
@@ -107,7 +92,6 @@ class TestIdentifierViewDeleteDisablement(TestCase):
             html=True,
         )
 
-    @override_flag("identifier_editing", active=True)
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")

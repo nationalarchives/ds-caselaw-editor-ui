@@ -41,6 +41,11 @@ class TestInvalidation:
         assert third.kwargs["DistributionId"] == "EDITOR"
         assert third.kwargs["InvalidationBatch"]["Paths"]["Items"] == ["/*"]
 
+    @patch("judgments.utils.aws.boto3")
+    def test_invalidation_skipped_when_distribution_ids_unset(self, mockboto):
+        invalidate_caches("test/merge_target")
+        mockboto.session.Session.assert_not_called()
+
 
 class TestPaginator:
     def test_paginator_2500(self):
