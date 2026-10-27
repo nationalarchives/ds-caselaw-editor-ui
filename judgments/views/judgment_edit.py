@@ -11,6 +11,7 @@ from django.views.generic import View
 
 from judgments.utils import api_client
 from judgments.utils.aws import invalidate_caches
+from judgments.utils.metadata_editing import save_judgment_title_from_document_form
 from judgments.utils.permissions import EditorRequiredMixin
 from judgments.utils.view_helpers import get_document_by_uri_or_404
 
@@ -75,9 +76,7 @@ class EditJudgmentView(EditorRequiredMixin, View):
                     ):
                         update_ncn_of_document(judgment, form_neutral_citation)
 
-                    # Set name
-                    new_name = request.POST["metadata_name"]
-                    api_client.set_document_name(judgment_uri, new_name)
+                    save_judgment_title_from_document_form(judgment, request.POST["metadata_name"])
 
                     # Set court
                     new_court = request.POST["court"]

@@ -17,6 +17,7 @@ from django.urls import reverse
 from jinja2 import PackageLoader
 
 from judgments.jinja import environment
+from judgments.tests.helpers.metadata_claims import judgment_with_title_claim
 
 
 class TestMetadataPanel(TestCase):
@@ -45,6 +46,38 @@ class TestMetadataPanel(TestCase):
         assert b'<input type="hidden" name="judgment_uri" value="hvtest/4321/123" />' in response.content
         assert root.xpath("//input[@id='court']/@value")[0] == "Court of Testing"
         assert root.xpath("//textarea[@id='metadata_name']")[0].text == "Test v Tested"
+        assert response.status_code == 200
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_metadata_panel_shows_resolved_structured_title_in_form(
+        self,
+        document_type,
+        document_exists,
+        mock_judgment,
+    ):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
+        judgment = judgment_with_title_claim(
+            body_name="Body title from XML",
+            title_claim="Resolved structured title",
+            source=MetadataSource.DOCUMENT,
+            uri=DocumentURIString("hvtest/4321/123"),
+            html="<h1>Test Judgment</h1>",
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.get(
+            reverse("full-text-html", kwargs={"document_uri": judgment.uri}),
+        )
+
+        root = lxml.html.fromstring(response.content)
+
+        assert root.xpath("//textarea[@id='metadata_name']")[0].text == "Resolved structured title"
         assert response.status_code == 200
 
     def test_metadata_item_renders_scalar_value(self):
