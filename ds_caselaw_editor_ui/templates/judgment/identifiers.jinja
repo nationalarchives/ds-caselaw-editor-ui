@@ -23,7 +23,7 @@
             <th>Value</th>
             <th>Public URL</th>
             <th>Deprecated</th>
-            {% if waffle.flag("identifier_editing") %}<th>Edit</th>{% endif %}
+            <th>Edit</th>
             {% if user|is_developer %}
               <th>Human readable</th>
               <th>Score</th>
@@ -55,15 +55,13 @@
                 {% endif %}
               </td>
               <td>{{ identifier.deprecated }}</td>
-              {% if waffle.flag("identifier_editing") %}
-                <td>
-                  {% if document.has_ever_been_published %}
-                    {{ button(variant="danger", size="small", attrs={"disabled":"true"}, content="Delete") }}
-                  {% else %}
-                    {{ button(variant="danger", size="small", href=url("document-identifier-delete", document.uri, identifier.uuid), content="Delete", disabled=not user|can_edit) }}
-                  {% endif %}
-                </td>
-              {% endif %}
+              <td>
+                {% if document.has_ever_been_published %}
+                  {{ button(variant="danger", size="small", attrs={"disabled":"true"}, content="Delete") }}
+                {% else %}
+                  {{ button(variant="danger", size="small", href=url("document-identifier-delete", document.uri, identifier.uuid), content="Delete", disabled=not user|can_edit) }}
+                {% endif %}
+              </td>
               {% if user|is_developer %}
                 <td>{{ identifier.schema.human_readable }}</td>
                 <td>{{ identifier.score }}</td>
@@ -77,9 +75,7 @@
         This document does not have any stored identifiers.
       {% endcall %}
     {% endif %}
-    {% if waffle.flag("identifier_editing") %}
-      {{ button(href=url("document-identifiers-add", document.uri), content="Add new identifier", disabled=not user|can_edit) }}
-    {% endif %}
+    {{ button(href=url("document-identifiers-add", document.uri), content="Add new identifier", disabled=not user|can_edit) }}
     {% if user|is_developer %}
       <h3>System identifiers</h3>
       <table class="table">

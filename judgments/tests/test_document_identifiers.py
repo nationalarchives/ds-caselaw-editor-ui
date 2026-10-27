@@ -9,7 +9,8 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 from factories import make_editor
-from waffle.testutils import override_flag
+
+from judgments.utils.permissions import editors_only_hint
 
 
 class TestDocumentIdentifiers(TestCase):
@@ -24,13 +25,13 @@ class TestDocumentIdentifiers(TestCase):
             uri=DocumentURIString("d-a1b2c3"),
             body=DocumentBodyFactory.build(name="Test v Tested"),
             identifiers=[
-                NeutralCitationNumber(value="[2025] UKSC 123", deprecated=True),
-                FindCaseLawIdentifier(value="tn4t35ts"),
+                NeutralCitationNumber(uuid="id-ncn", value="[2025] UKSC 123", deprecated=True),
+                FindCaseLawIdentifier(uuid="id-fclid", value="tn4t35ts"),
             ],
         )
         mock_judgment.return_value = judgment
 
-        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+        self.client.force_login(make_editor())
 
         identifiers_uri = reverse("document-identifiers", kwargs={"document_uri": judgment.uri})
 
@@ -42,6 +43,8 @@ class TestDocumentIdentifiers(TestCase):
 
         self.assertContains(response, "Test v Tested", html=True)
 
+        self.assertContains(response, "Add new identifier")
+
         self.assertContains(
             response,
             """<tr>
@@ -49,6 +52,7 @@ class TestDocumentIdentifiers(TestCase):
             <td><code>[2025] UKSC 123</code></td>
             <td><code>/uksc/2025/123</code></td>
             <td>True</td>
+            <td><a href="/d-a1b2c3/identifiers/id-ncn/delete" class="button button--danger button--small">Delete</a></td>
             </tr>""",
             html=True,
         )
@@ -60,13 +64,58 @@ class TestDocumentIdentifiers(TestCase):
             <td><code>tn4t35ts</code></td>
             <td><code>/tna.tn4t35ts</code></td>
             <td>False</td>
+            <td><a href="/d-a1b2c3/identifiers/id-fclid/delete" class="button button--danger button--small">Delete</a></td>
             </tr>""",
+            html=True,
+        )
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_document_identifiers_view_non_editor_disabled_controls(
+        self,
+        document_type,
+        document_exists,
+        mock_judgment,
+    ):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
+        judgment = JudgmentFactory.build(
+            uri=DocumentURIString("d-a1b2c3"),
+            body=DocumentBodyFactory.build(name="Test v Tested"),
+            identifiers=[
+                NeutralCitationNumber(uuid="id-1234", value="[2025] UKSC 123"),
+            ],
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="testuser")[0])
+
+        response = self.client.get(reverse("document-identifiers", kwargs={"document_uri": judgment.uri}))
+
+        assert response.status_code == 200
+
+        hint = editors_only_hint()
+        self.assertContains(
+            response,
+            f"""<tr>
+            <td>Neutral Citation Number</td>
+            <td><code>[2025] UKSC 123</code></td>
+            <td><code>/uksc/2025/123</code></td>
+            <td>False</td>
+            <td><button class="button button--danger button--small" type="button" aria-disabled="true" title="{hint}">Delete <span class="govuk-visually-hidden">({hint})</span></button></td>
+            </tr>""",
+            html=True,
+        )
+        self.assertContains(
+            response,
+            f'<button class="button" type="button" aria-disabled="true" title="{hint}">Add new identifier <span class="govuk-visually-hidden">({hint})</span></button>',
             html=True,
         )
 
 
 class TestIdentifierViewDeleteDisablement(TestCase):
-    @override_flag("identifier_editing", active=True)
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
@@ -107,7 +156,6 @@ class TestIdentifierViewDeleteDisablement(TestCase):
             html=True,
         )
 
-    @override_flag("identifier_editing", active=True)
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
