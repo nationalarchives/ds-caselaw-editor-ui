@@ -1,5 +1,3 @@
-import datetime
-
 from caselawclient.Client import MarklogicAPIError
 from caselawclient.models.documents import Document
 from caselawclient.models.identifiers.neutral_citation import NCNValidationException, NeutralCitationNumber
@@ -11,6 +9,7 @@ from django.views.generic import View
 
 from judgments.utils import api_client
 from judgments.utils.aws import invalidate_caches
+from judgments.utils.metadata_editing import save_judgment_date_from_preview_form
 from judgments.utils.permissions import EditorRequiredMixin
 from judgments.utils.view_helpers import get_document_by_uri_or_404
 
@@ -83,11 +82,10 @@ class EditJudgmentView(EditorRequiredMixin, View):
                     new_court = request.POST["court"]
                     api_client.set_document_court_and_jurisdiction(judgment_uri, new_court)
 
-                    # Date
-                    new_date = request.POST["judgment_date"]
                     try:
-                        new_date_as_date = datetime.datetime.strptime(new_date, r"%d %b %Y")
+                        save_judgment_date_from_preview_form(judgment, request.POST["judgment_date"])
                     except ValueError:
+                        new_date = request.POST["judgment_date"]
                         messages.error(
                             request,
                             f"Could not parse the date '{new_date}', should be like '2 Jan 2024'.",
@@ -98,8 +96,6 @@ class EditJudgmentView(EditorRequiredMixin, View):
                                 kwargs={"document_uri": kwargs["document_uri"]},
                             ),
                         )
-                    new_date_as_iso = new_date_as_date.strftime(r"%Y-%m-%d")
-                    api_client.set_judgment_date(judgment_uri, new_date_as_iso)
 
                     messages.success(request, "Document successfully updated")
 
