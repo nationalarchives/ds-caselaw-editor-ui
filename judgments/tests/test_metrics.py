@@ -1,6 +1,6 @@
-from datetime import date
+from datetime import date, timedelta
 from types import SimpleNamespace
-from unittest.mock import ANY, call, patch
+from unittest.mock import call, patch
 from urllib.parse import parse_qs, urlparse
 
 from caselawclient.search_parameters import SearchParameters
@@ -116,8 +116,8 @@ class TestMetricsView(SimpleTestCase):
         mock_get_metrics.assert_any_call(
             metric="tdr_to_first_publish",
             bucketing="monthly",
-            start_date=ANY,
-            end_date=ANY,
+            start_date=start_date,
+            end_date=end_date + timedelta(days=1),
             search_parameters=SearchParameters(),
         )
 
@@ -207,7 +207,7 @@ class TestMetricsView(SimpleTestCase):
             metric="tdr_to_first_publish",
             bucketing="daily",
             start_date=date(2026, 9, 1),
-            end_date=date(2026, 9, 30),
+            end_date=date(2026, 10, 1),
             search_parameters=SearchParameters(court="example-court,example-tribunal"),
         )
 
