@@ -1,5 +1,6 @@
 {% extends "layouts/judgment.jinja" %}
 {% from "components/heading.jinja" import heading %}
+{% from "components/button.jinja" import button %}
 {% from "includes/judgment/history/orphaned_events.jinja" import orphaned_events %}
 {% from "includes/judgment/history/structured_submission.jinja" import structured_submission %}
 {% block content %}
@@ -7,15 +8,20 @@
     <div class="document-history">
       {% for submission in structured_history | reversed %}
         {% if submission.submission_type == "structured" %}
-          {{ structured_submission(submission=submission, expand=loop.first, document_uri=document_uri,user=user) }}
+          {{ structured_submission(submission=submission, expand=loop.first, document_uri=document_uri, document=document, user=user) }}
         {% elif submission.submission_type == "orphan" %}
-          {{ orphaned_events(submission=submission, expand=loop.first, document_uri=document_uri,user=user) }}
+          {{ orphaned_events(submission=submission, expand=loop.first, document_uri=document_uri, document=document, user=user) }}
         {% else %}
           <h2>Legacy version {{ submission.marklogic_version }}</h2>
           <p>
             <time datetime="{{ submission.datetime|date('c') }}">{{ submission.datetime|display_datetime }}</time>
           </p>
           {% if submission.annotation %}<p>{{ submission.annotation }}</p>{% endif %}
+          {% if not is_current_document_version(document, submission.marklogic_version) %}
+            <p>
+              {{ button(content="Restore this version", href=url('document-version-restore', document_uri, submission.marklogic_version), variant="link", size="small", disabled=is_document_restore_disabled(document, user), disabled_reason=get_document_restore_disabled_reason(document, user)) }}
+            </p>
+          {% endif %}
           {% if user|is_developer %}
             <p>
               <small class="muted">Event #{{ submission.event_sequence_number }} • Submission #{{ submission.submission_sequence_number }} • MarkLogic version #{{ submission.marklogic_version }}</small>

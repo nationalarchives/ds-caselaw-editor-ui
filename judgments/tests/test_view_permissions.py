@@ -13,6 +13,7 @@ EDITOR_ONLY_ACTIONS = [
     "/create_stub",
     "/d-a1b2c3/edit",
     "/d-a1b2c3/metadata",
+    "/d-a1b2c3/history/1/restore",
     "/d-a1b2c3/identifiers/add",
     "/d-a1b2c3/identifiers/id-1234/delete",
 ]

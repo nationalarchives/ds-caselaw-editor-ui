@@ -1,14 +1,27 @@
 import json
+import logging
 from datetime import datetime
 from typing import Any, Literal, NotRequired, TypedDict
 from uuid import uuid4
 
+from caselawclient.errors import MarklogicAPIError
 from caselawclient.models.documents import Document
+from caselawclient.models.documents.exceptions import (
+    CannotRestoreDocumentWithoutConsignmentReference,
+    CannotRestorePublishedDocument,
+)
 from caselawclient.models.documents.versions import VersionType
+from django.contrib import messages
+from django.http import Http404, HttpResponseRedirect
+from django.urls import reverse
 
+from judgments.utils.permissions import EditorRequiredMixin
 from judgments.utils.view_helpers import DocumentView
 
 VersionAnnotationDict = dict[str, Any]
+logger = logging.getLogger(__name__)
+
+PUBLISHED_RESTORE_MESSAGE = "This document needs to be unpublished before you can restore to this version."
 
 
 class EventDict(TypedDict):
@@ -202,3 +215,73 @@ class DocumentHistoryView(DocumentView):
         context["view"] = "document_history"
 
         return context
+
+
+class DocumentVersionView(DocumentView):
+    def get_version_number(self) -> int:
+        return int(self.kwargs["version_number"])
+
+    def validate_version_exists(self) -> None:
+        version_number = self.get_version_number()
+        if not any(version["version"] == version_number for version in self.document.versions):
+            msg = f"Version {version_number} does not exist for document {self.document.uri}"
+            raise Http404(msg)
+
+    def get_context_data(self, **kwargs):
+        self.validate_version_exists()
+        context = super().get_context_data(**kwargs)
+        context["restored_version_number"] = self.get_version_number()
+        context["view"] = "document_history"
+        return context
+
+
+class RestoreDocumentVersionView(EditorRequiredMixin, DocumentVersionView):
+    template_engine = "jinja"
+    template_name = "judgment/version_restore.jinja"
+
+    def post(self, request, *args, **kwargs):
+        self.validate_version_exists()
+        version_number = self.get_version_number()
+        redirect_url = reverse(
+            "document-version-restore",
+            kwargs={"document_uri": self.document.uri, "version_number": version_number},
+        )
+
+        try:
+            with self.document.editing_session():
+                self.document.restore_version(
+                    version_number,
+                    automated=False,
+                    action_requested_by=request.user.get_full_name() or request.user.get_username(),
+                )
+        except CannotRestorePublishedDocument:
+            messages.error(request, PUBLISHED_RESTORE_MESSAGE)
+        except CannotRestoreDocumentWithoutConsignmentReference:
+            messages.error(
+                request,
+                "This version cannot be restored because the document does not have the consignment information "
+                "needed to restore its files.",
+            )
+        except (MarklogicAPIError, ValueError) as exc:
+            messages.error(request, f"The document could not be restored: {exc}")
+        except Exception:
+            logger.exception(
+                "Unexpected error restoring %s to version %s",
+                self.document.uri,
+                version_number,
+            )
+            messages.error(request, "The document could not be restored because of an unexpected error.")
+        else:
+            return HttpResponseRedirect(
+                reverse(
+                    "document-version-restore-success",
+                    kwargs={"document_uri": self.document.uri, "version_number": version_number},
+                ),
+            )
+
+        return HttpResponseRedirect(redirect_url)
+
+
+class RestoreDocumentVersionSuccessView(DocumentVersionView):
+    template_engine = "jinja"
+    template_name = "judgment/version_restore_success.jinja"

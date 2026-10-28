@@ -1,4 +1,6 @@
 import json
+from types import SimpleNamespace
+from unittest.mock import patch
 
 from caselawclient.models.documents import (
     DOCUMENT_STATUS_HOLD,
@@ -8,8 +10,61 @@ from caselawclient.models.documents import (
 )
 from django.test import TestCase
 
-from judgments.templatetags.document_utils import display_annotation_type, get_dict_key_with_hyphen, render_json
+from judgments.templatetags.document_utils import (
+    display_annotation_type,
+    get_dict_key_with_hyphen,
+    is_current_document_version,
+    render_json,
+)
 from judgments.templatetags.status_tag_css import status_tag
+from judgments.templatetags.user_permissions import (
+    DOCUMENT_RESTORE_PUBLISHED_DISABLED_REASON,
+    get_document_restore_disabled_reason,
+    is_document_restore_disabled,
+)
+from judgments.utils.permissions import editors_only_hint
+
+
+class TestIsCurrentDocumentVersion:
+    def test_highest_version_is_current(self):
+        document = SimpleNamespace(versions=[{"version": 2}, {"version": 3}, {"version": 1}])
+
+        assert is_current_document_version(document, 3) is True
+        assert is_current_document_version(document, 2) is False
+
+    def test_document_without_versions_has_no_current_version(self):
+        document = SimpleNamespace(versions=[])
+
+        assert is_current_document_version(document, 1) is False
+
+
+class TestDocumentRestoreDisabled:
+    @patch("judgments.templatetags.user_permissions.user_can_edit", return_value=True)
+    def test_restore_is_enabled_for_editor_when_document_is_unpublished(self, mock_user_can_edit):
+        document = SimpleNamespace(is_published=False)
+        user = object()
+
+        assert is_document_restore_disabled(document, user) is False
+        assert get_document_restore_disabled_reason(document, user) is None
+        mock_user_can_edit.assert_called_with(user)
+
+    @patch("judgments.templatetags.user_permissions.user_can_edit", return_value=True)
+    def test_restore_is_disabled_when_document_is_published(self, mock_user_can_edit):
+        document = SimpleNamespace(is_published=True)
+        user = object()
+
+        assert is_document_restore_disabled(document, user) is True
+        assert get_document_restore_disabled_reason(document, user) == DOCUMENT_RESTORE_PUBLISHED_DISABLED_REASON
+        mock_user_can_edit.assert_not_called()
+
+    @patch("judgments.templatetags.user_permissions.user_can_edit", return_value=False)
+    def test_restore_is_disabled_when_user_cannot_edit(self, mock_user_can_edit):
+        document = SimpleNamespace(is_published=False)
+        user = object()
+
+        assert is_document_restore_disabled(document, user) is True
+        assert get_document_restore_disabled_reason(document, user) == editors_only_hint()
+        mock_user_can_edit.assert_called_with(user)
 
 
 class TestStatusTagColour:
