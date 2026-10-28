@@ -1,4 +1,4 @@
-from datetime import UTC, date, datetime
+from datetime import UTC, date, datetime, timedelta
 from typing import Any, Literal, TypedDict, cast
 from urllib.parse import urlencode
 
@@ -361,6 +361,7 @@ class MetricsView(TemplateView):
         filters: MetricFilters,
         search_parameters: SearchParameters,
     ) -> list[MetricTable]:
+        end_date = filters["end_date"] + timedelta(days=1)
         metric_types: tuple[tuple[str, LifecycleMetric], ...] = (
             ("Time to first publication", "tdr_to_first_publish"),
             ("Time to latest publication", "tdr_to_latest_publish"),
@@ -373,7 +374,7 @@ class MetricsView(TemplateView):
                         metric=metric,
                         bucketing=filters["bucketing"],
                         start_date=filters["start_date"],
-                        end_date=filters["end_date"],
+                        end_date=end_date,
                         search_parameters=search_parameters,
                     ),
                     filters["bucketing"],
@@ -387,6 +388,7 @@ class MetricsView(TemplateView):
         filters: MetricFilters,
         search_parameters: SearchParameters,
     ) -> list[MetricTable]:
+        end_date = filters["end_date"] + timedelta(days=1)
         return [
             {
                 "label": "Submissions before first publication",
@@ -395,7 +397,7 @@ class MetricsView(TemplateView):
                         metric="submissions_before_first_publish",
                         bucketing=filters["bucketing"],
                         start_date=filters["start_date"],
-                        end_date=filters["end_date"],
+                        end_date=end_date,
                         search_parameters=search_parameters,
                     ),
                     filters["bucketing"],
