@@ -5,6 +5,7 @@ from waffle import flag_is_active
 register = template.Library()
 
 DOCUMENT_METADATA_FLAG = "document_metadata"
+DOCUMENT_MERGE_FLAG = "document_merge"
 
 
 def get_document_url(view, document):
@@ -111,6 +112,18 @@ def get_metadata_navigation_item(view, document, request=None):
     }
 
 
+def get_merge_navigation_item(view, document, request=None):
+    if not request or not flag_is_active(request, DOCUMENT_MERGE_FLAG):
+        return None
+
+    return {
+        "id": "merge",
+        "selected": view == "merge_document",
+        "label": "Merge",
+        "url": get_document_url("merge-document", document),
+    }
+
+
 def get_navigation_items_logic(view, document, linked_document_uri=None, request=None):
 
     base_navigation = [
@@ -122,6 +135,7 @@ def get_navigation_items_logic(view, document, linked_document_uri=None, request
         get_history_navigation_item(view, document),
         get_download_navigation_item(view, document),
         get_upload_navigation_item(view=view, document=document),
+        get_merge_navigation_item(view, document, request=request),
     ]
 
     filtered_navigation = [item for item in base_navigation if item is not None]
