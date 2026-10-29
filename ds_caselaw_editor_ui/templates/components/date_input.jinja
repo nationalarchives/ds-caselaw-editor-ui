@@ -1,4 +1,28 @@
 {% from "govuk_frontend_jinja/components/date-input/macro.html" import govukDateInput %}
+{% macro govuk_date_input(field) %}
+  {% set value = field.value if field is mapping else none %}
+  {% set day = value.day|string if value else "" %}
+  {% set month = value.month|string if value else "" %}
+  {% set year = value.year|string if value else "" %}
+  {% set label_classes = {"default": "govuk-fieldset__legend--s", "extra-small": "govuk-fieldset__legend--xs"} %}
+  {% set legend_class = label_classes.get(field.label_size, label_classes["default"]) %}
+  {% set margin_classes = {"default": "", "small": "govuk-form-group govuk-!-margin-bottom-4"} %}
+  {% set form_group_class = margin_classes.get(field.margin, "") %}
+  {{ govukDateInput({
+    "id": field.id_for_label,
+    "namePrefix": field.html_name,
+    "formGroup": { "classes": form_group_class } if form_group_class else None,
+    "fieldset": {
+      "legend": { "text": field.label, "classes": legend_class }
+    },
+    "hint": { "text": field.help_text } if field.help_text else None,
+    "items": [
+      { "name": "day", "value": day, "classes": "govuk-input--width-2" },
+      { "name": "month", "value": month, "classes": "govuk-input--width-2" },
+      { "name": "year", "value": year, "classes": "govuk-input--width-4" }
+    ]
+  }) }}
+{% endmacro %}
 {% macro date_input(field) %}
   {% set errors = {"text": field.errors | join(", ")} if field.errors else None %}
   {% set inputClass = "govuk-input--width-2 govuk-input--error" if field.errors else "govuk-input--width-2" %}

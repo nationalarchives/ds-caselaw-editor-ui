@@ -1,6 +1,7 @@
 {% from "components/metadata.jinja" import metadata_container, metadata_body, metadata_body_row, metadata_aside %}
 {% from "components/panel.jinja" import panel %}
 {% from "components/text_input.jinja" import text_input %}
+{% from "components/date_input.jinja" import govuk_date_input %}
 {% from "components/textarea.jinja" import textarea %}
 {% from "components/datalist_input.jinja" import datalist_input %}
 {% from "components/field_display.jinja" import field_display %}
@@ -22,8 +23,13 @@
               {% set _ = court_options.append((court.code, court.name)) %}
             {% endfor %}
             {{ datalist_input({"label": "Court", "id_for_label": "court", "html_name": "court", "choices": court_options, "value": document.body.court_and_jurisdiction_identifier_string, "width": "one-half", "margin": "small" }) }}
-            {% set document_date_value = document.body.document_date_as_date | date("%-d %b %Y") %}
-            {{ text_input({"label": "Judgment date", "value": document_date_value, "id_for_label": "judgment_date", "html_name": "judgment_date", "width": "one-third", "margin": "small"}) }}
+            {{ govuk_date_input({
+              "label": "Judgment date",
+              "id_for_label": "judgment_date",
+              "html_name": "judgment_date",
+              "value": document.metadata.date.value,
+              "margin": "small",
+            }) }}
           {% endcall %}
           {% call metadata_body_row() %}
             {{ textarea({"label": "Title", "id_for_label": "metadata_name", "html_name": "metadata_name", "value": document.metadata.title.value, "rows": 2, "width": "full", "margin": "small"}) }}
