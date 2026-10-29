@@ -21,12 +21,15 @@ from judgments.templatetags.document_utils import (
     display_datetime,
     get_dict_key_with_hyphen,
     get_title_to_display_in_html,
+    is_current_document_version,
     render_json,
 )
 from judgments.templatetags.navigation_tags import get_navigation_items
 from judgments.templatetags.user_permissions import (
     can_edit,
+    get_document_restore_disabled_reason,
     is_developer,
+    is_document_restore_disabled,
     is_editor,
     is_editor_or_developer,
     is_superuser,
@@ -126,6 +129,9 @@ def environment(**options):
             "url": jinja_url,
             "get_badge_variant_from_status": get_badge_variant_from_status,
             "get_navigation_items": get_document_navigation_items,
+            "is_current_document_version": is_current_document_version,
+            "is_document_restore_disabled": is_document_restore_disabled,
+            "get_document_restore_disabled_reason": get_document_restore_disabled_reason,
             "crispy": crispy,
             "editors_only_hint": editors_only_hint,
             "editors_or_developers_hint": editors_or_developers_hint,
