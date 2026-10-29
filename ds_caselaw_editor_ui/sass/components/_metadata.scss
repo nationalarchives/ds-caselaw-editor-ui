@@ -1,4 +1,6 @@
 .metadata {
+  $metadata-part-label-scale: 0.8;
+
   &__container {
     display: flex;
     gap: $space-8;
@@ -33,7 +35,6 @@
   }
 
   &__body-row--edit-primary-fields {
-    $date-part-label-scale: 0.6;
     $date-input-column-width: 2.75em;
     $date-input-year-column-width: 4.5em;
 
@@ -104,7 +105,7 @@
 
       .metadata__grid-secondary--spacer {
         min-height: calc(
-          #{$typography-sm-line-height} * #{$date-part-label-scale}
+          #{$typography-sm-line-height} * #{$metadata-part-label-scale}
         );
       }
 
@@ -144,7 +145,7 @@
         .govuk-date-input__label {
           margin-bottom: 1px;
           font-size: calc(
-            #{$typography-sm-text-size} * #{$date-part-label-scale}
+            #{$typography-sm-text-size} * #{$metadata-part-label-scale}
           );
           line-height: 1;
         }
@@ -154,6 +155,28 @@
         box-sizing: border-box;
         width: 100%;
         max-width: 100%;
+      }
+    }
+  }
+
+  &__body-row--edit-title-field {
+    margin-top: $space-2;
+
+    .metadata__grid-primary.govuk-label {
+      margin-bottom: 0;
+    }
+
+    .metadata__grid-secondary--spacer {
+      min-height: calc(
+        #{$typography-sm-line-height} * #{$metadata-part-label-scale}
+      );
+    }
+
+    .metadata__grid-control {
+      margin-top: 0;
+
+      .govuk-form-group {
+        margin-bottom: 0;
       }
     }
   }

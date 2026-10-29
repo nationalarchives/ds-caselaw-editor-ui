@@ -15,7 +15,8 @@
   {% set variant_classes = {
     "default": "",
     "vertical": "metadata__body-row--vertical",
-    "edit-primary-fields": "metadata__body-row--edit-primary-fields"
+    "edit-primary-fields": "metadata__body-row--edit-primary-fields",
+    "edit-title-field": "metadata__body-row--edit-title-field"
   } %}
   {% set variant_class = variant_classes.get(variant, variant_classes["default"]) %}
   <div class="metadata__body-row {{ variant_class }}">{{ caller() }}</div>
