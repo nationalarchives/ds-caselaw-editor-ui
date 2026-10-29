@@ -29,6 +29,18 @@ def test_parse_govuk_date_from_post_rejects_invalid_calendar_date():
         )
 
 
+def test_parse_govuk_date_from_post_rejects_empty_date():
+    with pytest.raises(GovukDateParseError, match="Enter the judgment date"):
+        parse_govuk_date_from_post(
+            {
+                "judgment_date-day": "",
+                "judgment_date-month": "",
+                "judgment_date-year": "",
+            },
+            "judgment_date",
+        )
+
+
 def test_parse_govuk_date_from_post_rejects_partial_date():
     with pytest.raises(GovukDateParseError, match="Enter the full judgment date"):
         parse_govuk_date_from_post(
