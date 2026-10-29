@@ -26,6 +26,65 @@
     ]
   }) }}
 {% endmacro %}
+{% macro govuk_date_input_grid(field) %}
+  {% set value = field.value if field is mapping else none %}
+  {% set day = value.day|string if value else "" %}
+  {% set month = value.month|string if value else "" %}
+  {% set year = value.year|string if value else "" %}
+  {% set id_prefix = field.id_for_label %}
+  {% set name_prefix = field.html_name %}
+  {% set legend_id = id_prefix ~ "-legend" %}
+  <div class="metadata__field-column metadata__field-column--date">
+    <label class="metadata__grid-primary metadata__grid-primary--date govuk-label govuk-label--s"
+           id="{{ legend_id }}">{{ field.label }}</label>
+    <div class="metadata__grid-secondary metadata__grid-secondary--date">
+      <div class="govuk-date-input metadata__date-part-labels">
+        <div class="govuk-date-input__item">
+          <label class="govuk-label govuk-date-input__label" for="{{ id_prefix }}-day">Day</label>
+        </div>
+        <div class="govuk-date-input__item">
+          <label class="govuk-label govuk-date-input__label"
+                 for="{{ id_prefix }}-month">Month</label>
+        </div>
+        <div class="govuk-date-input__item">
+          <label class="govuk-label govuk-date-input__label"
+                 for="{{ id_prefix }}-year">Year</label>
+        </div>
+      </div>
+    </div>
+    <div class="metadata__grid-control metadata__grid-control--date">
+      <div class="govuk-date-input"
+           id="{{ id_prefix }}"
+           role="group"
+           aria-labelledby="{{ legend_id }}">
+        <div class="govuk-date-input__item">
+          <input class="govuk-input govuk-input--width-2 govuk-date-input__input"
+                 id="{{ id_prefix }}-day"
+                 name="{{ name_prefix }}-day"
+                 type="text"
+                 inputmode="numeric"
+                 value="{{ day }}" />
+        </div>
+        <div class="govuk-date-input__item">
+          <input class="govuk-input govuk-input--width-2 govuk-date-input__input"
+                 id="{{ id_prefix }}-month"
+                 name="{{ name_prefix }}-month"
+                 type="text"
+                 inputmode="numeric"
+                 value="{{ month }}" />
+        </div>
+        <div class="govuk-date-input__item">
+          <input class="govuk-input govuk-input--width-4 govuk-date-input__input"
+                 id="{{ id_prefix }}-year"
+                 name="{{ name_prefix }}-year"
+                 type="text"
+                 inputmode="numeric"
+                 value="{{ year }}" />
+        </div>
+      </div>
+    </div>
+  </div>
+{% endmacro %}
 {% macro date_input(field) %}
   {% set errors = {"text": field.errors | join(", ")} if field.errors else None %}
   {% set inputClass = "govuk-input--width-2 govuk-input--error" if field.errors else "govuk-input--width-2" %}
