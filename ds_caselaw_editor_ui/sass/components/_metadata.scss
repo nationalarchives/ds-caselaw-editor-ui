@@ -33,14 +33,25 @@
   }
 
   &__body-row--edit-primary-fields {
+    $date-part-label-scale: 0.6;
+
     @media (min-width: $grid-breakpoint-medium) {
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
       grid-template-rows: auto auto auto;
-      gap: $space-1 $space-4;
+      gap: 0 $space-4;
 
       .metadata__field-column {
         display: contents;
+      }
+
+      .metadata__grid-primary.govuk-label {
+        margin-bottom: 0;
+      }
+
+      .metadata__grid-secondary {
+        margin: 0;
+        padding: 0;
       }
 
       .metadata__grid-primary--ncn {
@@ -86,14 +97,23 @@
       .metadata__grid-control--date {
         grid-column: 3;
         grid-row: 3;
+        margin-top: 0;
       }
 
       .metadata__grid-secondary--spacer {
-        min-height: $typography-sm-line-height;
+        min-height: calc(
+          #{$typography-sm-line-height} * #{$date-part-label-scale}
+        );
       }
 
       .metadata__grid-control--ncn,
       .metadata__grid-control--court {
+        margin-top: 0;
+
+        .govuk-form-group {
+          margin-bottom: 0;
+        }
+
         .govuk-input {
           width: 100%;
           max-width: 100%;
@@ -103,6 +123,28 @@
       .metadata__date-part-labels,
       .metadata__grid-control--date .govuk-date-input {
         flex-wrap: nowrap;
+      }
+
+      .metadata__date-part-labels {
+        line-height: 1;
+
+        .govuk-date-input__item {
+          margin-right: $space-1;
+          margin-bottom: 0;
+        }
+
+        .govuk-date-input__label {
+          margin-bottom: 1px;
+          font-size: calc(
+            #{$typography-sm-text-size} * #{$date-part-label-scale}
+          );
+          line-height: 1;
+        }
+      }
+
+      .metadata__grid-control--date .govuk-date-input__item {
+        margin-right: $space-1;
+        margin-bottom: 0;
       }
     }
   }
@@ -116,7 +158,7 @@
   &__field-column {
     display: flex;
     flex-direction: column;
-    gap: $space-1;
+    gap: 0;
   }
 
   &__aside {
