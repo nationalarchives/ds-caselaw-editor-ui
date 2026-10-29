@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@nationalarchives/ds-caselaw-frontend": "github:nationalarchives/ds-caselaw-frontend#v2.0.17",
-    "@nationalarchives/frontend": "1.5.0",
+    "@nationalarchives/frontend": "1.6.1",
     "@tsparticles/engine": "4.5.0",
     "@tsparticles/preset-confetti": "4.5.0",
     "govuk-frontend": "6.6.0",
