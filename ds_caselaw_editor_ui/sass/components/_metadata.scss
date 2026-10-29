@@ -160,7 +160,14 @@
   }
 
   &__body-row--edit-title-field {
+    flex-direction: column;
+    align-items: stretch;
     margin-top: $space-2;
+    margin-bottom: $space-4;
+
+    .metadata__field-column--title {
+      width: 100%;
+    }
 
     .metadata__grid-primary.govuk-label {
       margin-bottom: 0;
@@ -172,13 +179,24 @@
       );
     }
 
-    .metadata__grid-control {
+    .metadata__grid-control--title {
+      width: 100%;
       margin-top: 0;
 
       .govuk-form-group {
+        width: 100%;
         margin-bottom: 0;
       }
+
+      .govuk-textarea {
+        box-sizing: border-box;
+        width: 100%;
+      }
     }
+  }
+
+  &__body-row--edit-actions {
+    flex-direction: column;
   }
 
   &__grid-secondary--spacer {

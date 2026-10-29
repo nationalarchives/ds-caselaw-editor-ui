@@ -30,7 +30,7 @@
           {% call metadata_body_row(variant="edit-title-field") %}
             {{ metadata_grid_textarea("title", "Title", "metadata_name", "metadata_name", document.metadata.title.value, 2) }}
           {% endcall %}
-          {% call metadata_body_row() %}
+          {% call metadata_body_row(variant="edit-actions") %}
             {% call button(disabled=not user|can_edit) %}
               Save
             {% endcall %}
