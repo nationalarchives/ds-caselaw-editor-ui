@@ -16,15 +16,13 @@
       <input type="hidden" name="judgment_uri" value="{{ document_uri }}" />
       {% call metadata_container() %}
         {% call metadata_body() %}
-          {% call metadata_body_row() %}
-            {{ text_input({"label": "NCN", "id_for_label": "neutral_citation", "html_name": "neutral_citation", "value": preferred_ncn.value, "width": "one-third", "margin": "small"}) }}
+          {% call metadata_body_row(variant="edit-primary-fields") %}
+            {{ text_input({"label": "NCN", "id_for_label": "neutral_citation", "html_name": "neutral_citation", "value": preferred_ncn.value, "margin": "small"}) }}
             {% set court_options = [] %}
             {% for court in courts %}
               {% set _ = court_options.append((court.code, court.name)) %}
             {% endfor %}
-            {{ datalist_input({"label": "Court", "id_for_label": "court", "html_name": "court", "choices": court_options, "value": document.body.court_and_jurisdiction_identifier_string, "width": "one-half", "margin": "small" }) }}
-          {% endcall %}
-          {% call metadata_body_row() %}
+            {{ datalist_input({"label": "Court", "id_for_label": "court", "html_name": "court", "choices": court_options, "value": document.body.court_and_jurisdiction_identifier_string, "margin": "small" }) }}
             {{ govuk_date_input({
               "label": "Judgment date",
               "id_for_label": "judgment_date",

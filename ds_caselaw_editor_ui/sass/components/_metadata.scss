@@ -32,6 +32,23 @@
     flex-direction: column;
   }
 
+  &__body-row--edit-primary-fields {
+    @media (min-width: $grid-breakpoint-medium) {
+      align-items: flex-start;
+
+      > .govuk-form-group:not(.metadata__date-field) {
+        flex: 1 1 0;
+        width: auto;
+        min-width: 0;
+        max-width: none;
+
+        .govuk-input {
+          max-width: 100%;
+        }
+      }
+    }
+  }
+
   &__date-field {
     flex: 0 0 auto;
     max-width: 100%;

@@ -12,7 +12,11 @@
   <div class="metadata__body {{ variant_class }}">{{ caller() }}</div>
 {% endmacro %}
 {% macro metadata_body_row(variant=None) %}
-  {% set variant_classes = {"default": "", "vertical": "metadata__body-row--vertical"} %}
+  {% set variant_classes = {
+    "default": "",
+    "vertical": "metadata__body-row--vertical",
+    "edit-primary-fields": "metadata__body-row--edit-primary-fields"
+  } %}
   {% set variant_class = variant_classes.get(variant, variant_classes["default"]) %}
   <div class="metadata__body-row {{ variant_class }}">{{ caller() }}</div>
 {% endmacro %}
