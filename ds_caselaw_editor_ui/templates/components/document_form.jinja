@@ -26,7 +26,7 @@
             {{ text_input({"label": "Judgment date", "value": document_date_value, "id_for_label": "judgment_date", "html_name": "judgment_date", "width": "one-third", "margin": "small"}) }}
           {% endcall %}
           {% call metadata_body_row() %}
-            {{ textarea({"label": "Name", "id_for_label": "metadata_name", "html_name": "metadata_name", "value": document.body.name, "rows": 2, "width": "full", "margin": "small"}) }}
+            {{ textarea({"label": "Title", "id_for_label": "metadata_name", "html_name": "metadata_name", "value": document.metadata.title.value, "rows": 2, "width": "full", "margin": "small"}) }}
           {% endcall %}
           {% call metadata_body_row() %}
             {% call button(disabled=not user|can_edit) %}
