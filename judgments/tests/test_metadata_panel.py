@@ -14,10 +14,12 @@ from caselawclient.types import DocumentCategory
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
+from factories import make_editor
 from jinja2 import PackageLoader
 
 from judgments.jinja import environment
 from judgments.tests.helpers.metadata_claims import judgment_with_title_claim
+from judgments.utils.metadata_display import MetadataFieldDisplayDecorator
 
 
 class TestMetadataPanel(TestCase):
@@ -177,6 +179,60 @@ class TestMetadataPanel(TestCase):
         assert "Find Case Law Identifier: tn4t35ts" in other_dd.text_content()
 
         assert root.xpath('//dt[text()="TDR ref"]/following-sibling::dd')[0].text_content().strip() == "TDR-999"
+
+    def test_document_metadata_aside_judges_editable_for_editors(self):
+        template = environment(loader=PackageLoader("ds_caselaw_editor_ui", "templates")).from_string(
+            '{% from "components/document_metadata.jinja" import document_metadata %}'
+            "{{ document_metadata(document=document) }}",
+        )
+
+        judgment = JudgmentFactory.build(
+            uri=DocumentURIString("d-a1b2c3"),
+            body=DocumentBodyFactory.build(name="Test v Tested"),
+        )
+        judgment.body.judges = ["Lord Justice Test"]
+        metadata_judges_section = MetadataFieldDisplayDecorator(judgment, judgment.metadata.judges).section
+
+        class FakeRequest:
+            def get_full_path(self):
+                return "/d-a1b2c3/html"
+
+        rendered = template.render(
+            document=judgment,
+            user=make_editor(),
+            metadata_judges_section=metadata_judges_section,
+            request=FakeRequest(),
+            csrf_input="",
+        )
+        root = lxml.html.fromstring(rendered)
+
+        judges_dd = root.xpath('//dt[text()="Judges"]/following-sibling::dd')[0]
+        assert judges_dd.xpath('.//form[@action="/d-a1b2c3/metadata"]')
+        assert 'name="new_claim__judges"' in rendered
+        assert 'name="return_to"' in rendered
+        assert "Lord Justice Test" in judges_dd.text_content()
+
+    def test_document_metadata_aside_judges_read_only_for_non_editors(self):
+        template = environment(loader=PackageLoader("ds_caselaw_editor_ui", "templates")).from_string(
+            '{% from "components/document_metadata.jinja" import document_metadata %}'
+            "{{ document_metadata(document=document) }}",
+        )
+
+        judgment = JudgmentFactory.build(
+            body=DocumentBodyFactory.build(name="Test v Tested"),
+        )
+        judgment.body.judges = ["Lord Justice Test"]
+        metadata_judges_section = MetadataFieldDisplayDecorator(judgment, judgment.metadata.judges).section
+
+        rendered = template.render(
+            document=judgment,
+            user=User.objects.get_or_create(username="not-an-editor")[0],
+            metadata_judges_section=metadata_judges_section,
+            csrf_input="",
+        )
+
+        assert 'name="new_claim__judges"' not in rendered
+        assert "Lord Justice Test" in rendered
 
     def test_document_metadata_aside_shows_other_identifiers_without_preferred(self):
         template = environment(loader=PackageLoader("ds_caselaw_editor_ui", "templates")).from_string(

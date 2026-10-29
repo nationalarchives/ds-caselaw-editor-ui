@@ -1,0 +1,71 @@
+{% from "components/badge.jinja" import badge %}
+{% from "components/text_input.jinja" import text_input %}
+{% from "components/checkboxes.jinja" import checkboxes %}
+{% from "components/card.jinja" import card %}
+{% macro metadata_claim_section(section, variant="full", show_history=true) %}
+  {% set claims = section.display_claims if show_history else section.current_display_claims %}
+  {% if variant == "compact" %}
+    <div class="aside__metadata-judges">
+      {% for display_claim in claims %}
+        <div class="aside__metadata-judge">
+          {{ badge(content=display_claim.display_value) }}
+          {% if display_claim.can_reject %}
+            {{ checkboxes({
+              "idPrefix": display_claim.reject_input_id_prefix,
+              "name": display_claim.reject_input_name,
+              "classes": "govuk-checkboxes--small",
+              "items": [{
+                "value": display_claim.reject_input_value,
+                "text": "Remove"
+              }]
+            }) }}
+          {% endif %}
+        </div>
+      {% endfor %}
+      {{ text_input({
+        "label": "Add judge",
+        "id_for_label": section.new_claim_input_id,
+        "html_name": section.new_claim_input_name,
+        "value": "",
+        "width": "full"
+      }) }}
+    </div>
+  {% else %}
+    {% for display_claim in claims %}
+      {% set card_right_content %}
+        {{ badge(variant=display_claim.status_badge_variant, content=display_claim.status) }}
+        {% if display_claim.can_reject %}
+          {{ checkboxes({
+            "idPrefix": display_claim.reject_input_id_prefix,
+            "name": display_claim.reject_input_name,
+            "classes": "govuk-checkboxes--small",
+            "items": [{
+              "value": display_claim.reject_input_value,
+              "text":"Mark as rejected"
+            }]
+          }) }}
+        {% endif %}
+      {% endset %}
+      {% call card(right_content=card_right_content, disabled=(not display_claim.is_current)) %}
+        <p>Value: {{ display_claim.display_value }}</p>
+        <p>Source: {{ display_claim.source_label }}</p>
+        {% if display_claim.timestamp %}
+          <p>Created: {{ display_claim.timestamp|date("%-d %b %Y %H:%M") }}</p>
+        {% endif %}
+        {% if display_claim.claim_id and user|is_developer %}
+          <p>
+            Claim id: <code>{{ display_claim.claim_id }}</code>
+          </p>
+        {% endif %}
+      {% endcall %}
+    {% endfor %}
+    {% call card() %}
+      {{ text_input({
+        "label": "New claim",
+        "id_for_label": section.new_claim_input_id,
+        "html_name": section.new_claim_input_name,
+        "value": ""
+      }) }}
+    {% endcall %}
+  {% endif %}
+{% endmacro %}
