@@ -23,12 +23,15 @@
               {% set _ = court_options.append((court.code, court.name)) %}
             {% endfor %}
             {{ datalist_input({"label": "Court", "id_for_label": "court", "html_name": "court", "choices": court_options, "value": document.body.court_and_jurisdiction_identifier_string, "width": "one-half", "margin": "small" }) }}
+          {% endcall %}
+          {% call metadata_body_row() %}
             {{ govuk_date_input({
               "label": "Judgment date",
               "id_for_label": "judgment_date",
               "html_name": "judgment_date",
               "value": document.metadata.date.value,
               "margin": "small",
+              "form_group_classes": "metadata__date-field",
             }) }}
           {% endcall %}
           {% call metadata_body_row() %}

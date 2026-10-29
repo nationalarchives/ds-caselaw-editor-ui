@@ -32,6 +32,15 @@
     flex-direction: column;
   }
 
+  &__date-field {
+    flex: 0 0 auto;
+    max-width: 100%;
+
+    .govuk-date-input {
+      flex-wrap: nowrap;
+    }
+  }
+
   &__aside {
     display: flex;
     flex-direction: column;

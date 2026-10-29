@@ -6,12 +6,15 @@
   {% set year = value.year|string if value else "" %}
   {% set label_classes = {"default": "govuk-fieldset__legend--s", "extra-small": "govuk-fieldset__legend--xs"} %}
   {% set legend_class = label_classes.get(field.label_size, label_classes["default"]) %}
-  {% set margin_classes = {"default": "", "small": "govuk-form-group govuk-!-margin-bottom-4"} %}
-  {% set form_group_class = margin_classes.get(field.margin, "") %}
+  {% set form_group_classes = field.form_group_classes if field.form_group_classes is defined else "" %}
+  {% if field.margin == "small" %}
+    {% set form_group_classes = form_group_classes ~ " govuk-!-margin-bottom-4" %}
+  {% endif %}
+  {% set form_group_classes = form_group_classes.strip() %}
   {{ govukDateInput({
     "id": field.id_for_label,
     "namePrefix": field.html_name,
-    "formGroup": { "classes": form_group_class } if form_group_class else None,
+    "formGroup": { "classes": form_group_classes } if form_group_classes else None,
     "fieldset": {
       "legend": { "text": field.label, "classes": legend_class }
     },
