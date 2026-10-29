@@ -34,7 +34,7 @@ def build_confirmation_email_link(
     subject_string = f"Notification of publication [TDR ref: {document.consignment_reference}]"
 
     email_context = {
-        "judgment_name": document.body.name,
+        "judgment_name": document.metadata.title.value,
         "reference": document.consignment_reference,
         "public_judgment_url": document.public_uri,
         "submitter": document.source_name,
@@ -59,7 +59,7 @@ def build_raise_issue_email_link(
 ) -> str:
     subject_string = f"Issue(s) found with {document.consignment_reference}"
     email_context = {
-        "judgment_name": document.body.name,
+        "judgment_name": document.metadata.title.value,
         "reference": document.consignment_reference,
         "user_signature": signature,
         "submitter": document.source_name or "XXXXXX",
@@ -81,9 +81,11 @@ def _get_jira_link_summary_string_for_document(document: Document) -> str:
     best_human_identifier: Identifier | None = document.best_human_identifier
 
     if best_human_identifier:
-        summary_string = f"{best_human_identifier.value} / {document.body.name} / {document.consignment_reference}"
+        summary_string = (
+            f"{best_human_identifier.value} / {document.metadata.title.value} / {document.consignment_reference}"
+        )
     else:
-        summary_string = f"{document.body.name} / {document.consignment_reference}"
+        summary_string = f"{document.metadata.title.value} / {document.consignment_reference}"
 
     return summary_string
 

@@ -1,4 +1,6 @@
-from caselawclient.factories import DocumentFactory, JudgmentFactory
+from caselawclient.factories import DocumentBodyFactory, DocumentFactory, JudgmentFactory
+from caselawclient.models.documents.metadata.fields.field import MetadataField, MetadataStringValue
+from caselawclient.models.documents.metadata.fields.source import MetadataSource
 from caselawclient.models.identifiers.fclid import FindCaseLawIdentifier
 from caselawclient.models.identifiers.neutral_citation import NeutralCitationNumber
 from django.test.client import RequestFactory
@@ -11,6 +13,20 @@ from judgments.utils.link_generators import (
     build_jira_create_link,
     build_raise_issue_email_link,
 )
+
+
+def judgment_with_structured_title():
+    judgment = JudgmentFactory.build(
+        body=DocumentBodyFactory.build(name="Body name from XML"),
+    )
+    judgment.metadata_fields.add(
+        MetadataField(
+            name="title",
+            value=MetadataStringValue("Resolved metadata title"),
+            source=MetadataSource.EDITOR,
+        ),
+    )
+    return judgment
 
 
 class TestLinkGeneratorUtils:
@@ -51,12 +67,26 @@ This is an email.""",
         assert "Judgment%20v%20Judgement" in link
         assert "Test%20Signature" in link
 
+    def test_build_confirmation_email_link_uses_metadata_title(self):
+        judgment = judgment_with_structured_title()
+        link = build_confirmation_email_link(judgment, "Test Signature")
+
+        assert "Resolved%20metadata%20title" in link
+        assert "Body%20name%20from%20XML" not in link
+
     def test_build_raise_issue_email_link(self):
         judgment = JudgmentFactory.build()
         link = build_raise_issue_email_link(judgment, "Test Signature")
 
         assert "mailto:uploader@example.com" in link
         assert "TDR-12345" in link
+
+    def test_build_raise_issue_email_link_uses_metadata_title(self):
+        judgment = judgment_with_structured_title()
+        link = build_raise_issue_email_link(judgment, "Test Signature")
+
+        assert "Resolved%20metadata%20title" in link
+        assert "Body%20name%20from%20XML" not in link
 
     def test_get_jira_link_summary_string_for_document_with_no_human_identifier(self):
         document = DocumentFactory.build()
@@ -68,6 +98,10 @@ This is an email.""",
         assert (
             _get_jira_link_summary_string_for_document(document) == "[2024] UKSC 123 / Judgment v Judgement / TDR-12345"
         )
+
+    def test_get_jira_link_summary_string_uses_metadata_title(self):
+        document = judgment_with_structured_title()
+        assert _get_jira_link_summary_string_for_document(document) == "Resolved metadata title / TDR-12345"
 
     def test_get_jira_link_description_string_for_document_with_no_identifiers(self):
         document = DocumentFactory.build(identifiers=[])
