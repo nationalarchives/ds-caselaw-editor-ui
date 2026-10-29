@@ -15,6 +15,7 @@ from django.contrib import messages
 from django.http import Http404, HttpResponseRedirect
 from django.urls import reverse
 
+from judgments.templatetags.document_utils import is_current_document_version
 from judgments.utils.permissions import EditorRequiredMixin
 from judgments.utils.view_helpers import DocumentView
 
@@ -227,8 +228,15 @@ class DocumentVersionView(DocumentView):
             msg = f"Version {version_number} does not exist for document {self.document.uri}"
             raise Http404(msg)
 
-    def get_context_data(self, **kwargs):
+    def validate_version_is_restorable(self) -> None:
         self.validate_version_exists()
+        version_number = self.get_version_number()
+        if is_current_document_version(self.document, version_number):
+            msg = f"Version {version_number} is the current version of document {self.document.uri}"
+            raise Http404(msg)
+
+    def get_context_data(self, **kwargs):
+        self.validate_version_is_restorable()
         context = super().get_context_data(**kwargs)
         context["restored_version_number"] = self.get_version_number()
         context["view"] = "document_history"
@@ -240,7 +248,7 @@ class RestoreDocumentVersionView(EditorRequiredMixin, DocumentVersionView):
     template_name = "judgment/version_restore.jinja"
 
     def post(self, request, *args, **kwargs):
-        self.validate_version_exists()
+        self.validate_version_is_restorable()
         version_number = self.get_version_number()
         redirect_url = reverse(
             "document-version-restore",

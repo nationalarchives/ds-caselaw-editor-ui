@@ -597,7 +597,7 @@ class TestRestoreDocumentVersionView(TestCase):
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     def test_confirmation_hides_restore_when_published(self, mock_get_document):
-        document = self.build_document(is_published=True)
+        document = self.build_document(is_published=True, latest_version_number=124)
         mock_get_document.return_value = document
         self.client.force_login(make_editor())
 
@@ -625,9 +625,31 @@ class TestRestoreDocumentVersionView(TestCase):
         assert response.status_code == 404
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    def test_current_version_confirmation_returns_not_found(self, mock_get_document):
+        document = self.build_document()
+        mock_get_document.return_value = document
+        self.client.force_login(make_editor())
+
+        response = self.client.get(self.restore_url())
+
+        assert response.status_code == 404
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    def test_current_version_cannot_be_restored_by_direct_post(self, mock_get_document):
+        document = self.build_document()
+        document.restore_version = Mock()
+        mock_get_document.return_value = document
+        self.client.force_login(make_editor())
+
+        response = self.client.post(self.restore_url())
+
+        assert response.status_code == 404
+        document.restore_version.assert_not_called()
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     def test_editor_can_restore_version(self, mock_get_document):
         order = editing_order()
-        document = self.build_document()
+        document = self.build_document(latest_version_number=124)
         document.editing_session = tracking_editing_session(order)
         document.restore_version = Mock(side_effect=record(order, "restore_version"))
         mock_get_document.return_value = document
@@ -661,7 +683,7 @@ class TestRestoreDocumentVersionView(TestCase):
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     def test_published_race_redirects_back_to_confirmation(self, mock_get_document):
-        document = self.build_document()
+        document = self.build_document(latest_version_number=124)
         document.editing_session = Mock(return_value=nullcontext())
         document.restore_version = Mock(side_effect=CannotRestorePublishedDocument)
         mock_get_document.return_value = document
