@@ -34,6 +34,8 @@
 
   &__body-row--edit-primary-fields {
     $date-part-label-scale: 0.6;
+    $date-input-column-width: 2.75em;
+    $date-input-year-column-width: 4.5em;
 
     @media (min-width: $grid-breakpoint-medium) {
       display: grid;
@@ -120,18 +122,24 @@
         }
       }
 
-      .metadata__date-part-labels,
-      .metadata__grid-control--date .govuk-date-input {
-        flex-wrap: nowrap;
+      .metadata__date-input-columns {
+        display: grid;
+        grid-template-columns:
+          $date-input-column-width $date-input-column-width
+          $date-input-year-column-width;
+        column-gap: $space-1;
+        font-size: $typography-md-text-size;
+
+        .govuk-date-input__item {
+          display: block;
+          margin-right: 0;
+          margin-bottom: 0;
+          vertical-align: initial;
+        }
       }
 
       .metadata__date-part-labels {
         line-height: 1;
-
-        .govuk-date-input__item {
-          margin-right: $space-1;
-          margin-bottom: 0;
-        }
 
         .govuk-date-input__label {
           margin-bottom: 1px;
@@ -142,9 +150,10 @@
         }
       }
 
-      .metadata__grid-control--date .govuk-date-input__item {
-        margin-right: $space-1;
-        margin-bottom: 0;
+      .metadata__grid-control--date .govuk-input {
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 100%;
       }
     }
   }
