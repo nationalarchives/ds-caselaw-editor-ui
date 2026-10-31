@@ -2,6 +2,8 @@
 {% from "components/button.jinja" import button %}
 {% from "components/badge.jinja" import badge %}
 {% from "components/document_metadata_item.jinja" import document_metadata_item %}
+{% from "components/document_metadata_claim_section.jinja" import metadata_claim_section %}
+{% from "components/form_actions.jinja" import form_actions %}
 {% macro document_metadata(document=None) %}
   {% set metadata = document.metadata if document.metadata is defined else {} %}
   {% set identifiers = document.identifiers if document.identifiers is defined else none %}
@@ -56,7 +58,23 @@
         <div>
           <dt>Judges</dt>
           <dd>
-            {{ document_metadata_item(metadata_item=metadata.judges) }}
+            {% if metadata_judges_section is defined and metadata_judges_section and user is defined and user|can_edit %}
+              <form method="post"
+                    action="{{ url('document-metadata', document.uri) }}"
+                    class="aside__metadata-judges-form">
+                {{ csrf_input }}
+                <input type="hidden" name="return_to" value="{{ request.get_full_path() }}" />
+                {{ metadata_claim_section(metadata_judges_section, variant="compact", show_history=false) }}
+                {% call form_actions({"data-form-actions": ""}) %}
+                  {{ button(content="Update judges", attrs={"data-form-actions-submit": ""}) }}
+                  {{ button(content="Clear changes",
+                    variant="secondary",
+                    attrs={"type": "button", "data-form-actions-clear": ""}) }}
+                {% endcall %}
+              </form>
+            {% else %}
+              {{ document_metadata_item(metadata_item=metadata.judges) }}
+            {% endif %}
           </dd>
         </div>
         <div>
