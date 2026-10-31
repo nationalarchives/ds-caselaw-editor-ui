@@ -41,6 +41,27 @@ class TestInvalidation:
         assert third.kwargs["DistributionId"] == "EDITOR"
         assert third.kwargs["InvalidationBatch"]["Paths"]["Items"] == ["/*"]
 
+    @patch("judgments.utils.aws.boto3")
+    def test_invalidation_skipped_when_distribution_ids_unset(self, mockboto):
+        invalidate_caches("test/merge_target")
+        mockboto.session.Session.assert_not_called()
+
+    @patch.dict(
+        os.environ,
+        {
+            "CLOUDFRONT_INVALIDATION_ACCESS_KEY_ID": "KEY",
+            "CLOUDFRONT_INVALIDATION_ACCESS_SECRET": "SECRET",
+            "CLOUDFRONT_ASSETS_DISTRIBUTION_ID": "ASSETS",
+        },
+        clear=True,
+    )
+    @patch("judgments.utils.aws.boto3")
+    def test_invalidation_skips_unset_distribution_ids(self, mockboto):
+        invalidate_caches("ewhc/2022/1")
+        cf = mockboto.session.Session.return_value.client.return_value
+        cf.create_invalidation.assert_called_once()
+        assert cf.create_invalidation.mock_calls[0].kwargs["DistributionId"] == "ASSETS"
+
 
 class TestPaginator:
     def test_paginator_2500(self):

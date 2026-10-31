@@ -1,4 +1,5 @@
 {% from "components/badge.jinja" import badge %}
+{% from "components/button.jinja" import button %}
 {% macro documents_table(total_count=None, total_count_postfix=None) %}
   <div class="judgments-list">
     <div class="judgments-list__container">
@@ -20,11 +21,13 @@
     </div>
   </div>
 {% endmacro %}
-{% macro documents_table_item(document=None) %}
+{% macro documents_table_item(document=None, name_content=None) %}
   <li class="judgments-list__judgment">
     <div class="judgments-list__judgment-details">
       <div class="judgments-list__judgment-details-name">
-        <a href="{{ url('full-text-html', document.uri) }}">{{ document.name or "[Untitled Document]" }}</a>
+        <a href="{{ url('full-text-html', document.uri) }}"
+           {% if name_content %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ document.name or "[Untitled Document]" }}</a>
+        {% if name_content %}{{ name_content }}{% endif %}
       </div>
       <ul class="judgments-list__judgment-details-meta">
         <li class="judgments-list__judgment-details-submitted-mobile">
