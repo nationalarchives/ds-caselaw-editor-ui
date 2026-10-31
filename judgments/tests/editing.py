@@ -21,6 +21,14 @@ def tracking_editing_session(order: list[str]):
     return editing_session
 
 
+def document_form_judgment_date_fields(*, day: int = 2, month: int = 1, year: int = 2023) -> dict[str, str]:
+    return {
+        "judgment_date-day": str(day),
+        "judgment_date-month": str(month),
+        "judgment_date-year": str(year),
+    }
+
+
 def record(order: list[str], event: str, result=None):
     def side_effect(*args, **kwargs):
         order.append(event)

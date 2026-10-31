@@ -1,9 +1,7 @@
 {% from "components/metadata.jinja" import metadata_container, metadata_body, metadata_body_row, metadata_aside %}
 {% from "components/panel.jinja" import panel %}
-{% from "components/text_input.jinja" import text_input %}
-{% from "components/textarea.jinja" import textarea %}
-{% from "components/datalist_input.jinja" import datalist_input %}
-{% from "components/field_display.jinja" import field_display %}
+{% from "components/date_input.jinja" import govuk_date_input_grid %}
+{% from "components/metadata_form_grid.jinja" import metadata_grid_text_input, metadata_grid_datalist_input, metadata_grid_textarea %}
 {% from "components/button.jinja" import button %}
 {% macro document_form() %}
   {% call panel() %}
@@ -15,20 +13,24 @@
       <input type="hidden" name="judgment_uri" value="{{ document_uri }}" />
       {% call metadata_container() %}
         {% call metadata_body() %}
-          {% call metadata_body_row() %}
-            {{ text_input({"label": "NCN", "id_for_label": "neutral_citation", "html_name": "neutral_citation", "value": preferred_ncn.value, "width": "one-third", "margin": "small"}) }}
+          {% call metadata_body_row(variant="edit-primary-fields") %}
+            {{ metadata_grid_text_input("ncn", "NCN", "neutral_citation", "neutral_citation", preferred_ncn.value) }}
             {% set court_options = [] %}
             {% for court in courts %}
               {% set _ = court_options.append((court.code, court.name)) %}
             {% endfor %}
-            {{ datalist_input({"label": "Court", "id_for_label": "court", "html_name": "court", "choices": court_options, "value": document.body.court_and_jurisdiction_identifier_string, "width": "one-half", "margin": "small" }) }}
-            {% set document_date_value = document.body.document_date_as_date | date("%-d %b %Y") %}
-            {{ text_input({"label": "Judgment date", "value": document_date_value, "id_for_label": "judgment_date", "html_name": "judgment_date", "width": "one-third", "margin": "small"}) }}
+            {{ metadata_grid_datalist_input("court", "Court", "court", "court", document.body.court_and_jurisdiction_identifier_string, court_options) }}
+            {{ govuk_date_input_grid({
+              "label": "Judgment date",
+              "id_for_label": "judgment_date",
+              "html_name": "judgment_date",
+              "value": document.metadata.date.value,
+            }) }}
           {% endcall %}
-          {% call metadata_body_row() %}
-            {{ textarea({"label": "Title", "id_for_label": "metadata_name", "html_name": "metadata_name", "value": document.metadata.title.value, "rows": 2, "width": "full", "margin": "small"}) }}
+          {% call metadata_body_row(variant="edit-title-field") %}
+            {{ metadata_grid_textarea("title", "Title", "metadata_name", "metadata_name", document.metadata.title.value, 2) }}
           {% endcall %}
-          {% call metadata_body_row() %}
+          {% call metadata_body_row(variant="edit-actions") %}
             {% call button(disabled=not user|can_edit) %}
               Save
             {% endcall %}
