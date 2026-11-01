@@ -118,6 +118,33 @@
         }
       }
 
+      .aside__metadata-judges-form {
+        display: flex;
+        flex-direction: column;
+        gap: $space-3;
+        width: 100%;
+
+        .form-actions {
+          margin: 0;
+        }
+      }
+
+      .aside__metadata-judges {
+        display: flex;
+        flex-direction: column;
+        gap: $space-3;
+        width: 100%;
+      }
+
+      .aside__metadata-judge {
+        display: flex;
+        flex-direction: column;
+        gap: $space-1;
+        align-items: flex-start;
+
+        width: 100%;
+      }
+
       .aside__section-heading {
         gap: 0;
         margin-top: $space-2;
