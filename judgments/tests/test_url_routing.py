@@ -104,6 +104,14 @@ class TestJudgmentViewsRequireAuthentication(TestCase):
             reverse("associated-documents", kwargs={"document_uri": document_uri}),
             reverse("edit-document", kwargs={"document_uri": document_uri}),
             reverse("document-history", kwargs={"document_uri": document_uri}),
+            reverse(
+                "document-version-restore",
+                kwargs={"document_uri": document_uri, "version_number": 1},
+            ),
+            reverse(
+                "document-version-restore-success",
+                kwargs={"document_uri": document_uri, "version_number": 1},
+            ),
             reverse("document-identifiers", kwargs={"document_uri": document_uri}),
             reverse("document-identifiers-add", kwargs={"document_uri": document_uri}),
             reverse(

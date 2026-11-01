@@ -1,18 +1,22 @@
 import json
+from contextlib import nullcontext
 from datetime import datetime
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
 from caselawclient.models.documents import DocumentURIString
+from caselawclient.models.documents.exceptions import CannotRestorePublishedDocument
 from caselawclient.models.documents.versions import VersionAnnotation, VersionType
 from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import Group, User
+from django.contrib.messages import get_messages
 from django.test import TestCase
 from django.urls import reverse
-from factories import DocumentVersionFactory
+from editing import editing_order, record, tracking_editing_session
+from factories import DocumentVersionFactory, make_editor
 
 from judgments.views import document_history
-from judgments.views.document_history import DocumentHistorySequencer
+from judgments.views.document_history import PUBLISHED_RESTORE_MESSAGE, DocumentHistorySequencer
 
 
 class TestStructuredDocumentHistoryLogic(TestCase):
@@ -510,3 +514,201 @@ class TestStructuredDocumentHistoryView(TestCase):
             response,
             "Submission 2",
         )  # Validates we've not broken the submission stack somewhere
+
+
+class TestRestoreDocumentVersionView(TestCase):
+    document_uri = DocumentURIString("test/4321/123")
+    version_number = 123
+
+    def setUp(self):
+        document_exists_patcher = patch("judgments.utils.api_client.document_exists", return_value=False)
+        document_exists_patcher.start()
+        self.addCleanup(document_exists_patcher.stop)
+
+    def build_document(self, *, is_published=False, latest_version_number=123):
+        document = JudgmentFactory.build(
+            uri=self.document_uri,
+            body=DocumentBodyFactory.build(name="Test v Tested"),
+        )
+        document.is_published = is_published
+        document.versions = [
+            {
+                "uri": DocumentURIString(f"{self.document_uri}/_xml_versions/{version_number}-123"),
+                "version": version_number,
+            }
+            for version_number in range(latest_version_number, self.version_number - 1, -1)
+        ]
+        document.versions_as_documents = [
+            DocumentVersionFactory.build(
+                uri=self.document_uri,
+                name="Test v Tested",
+                annotation=VersionAnnotation(
+                    VersionType.EDIT,
+                    automated=False,
+                    message="Edited document",
+                ),
+                version_number=self.version_number,
+                version_created_datetime=datetime(2023, 1, 1),
+            ),
+        ]
+        return document
+
+    def restore_url(self):
+        return reverse(
+            "document-version-restore",
+            kwargs={"document_uri": self.document_uri, "version_number": self.version_number},
+        )
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    def test_history_links_to_restore_for_editor_when_unpublished(self, mock_get_document):
+        document = self.build_document(latest_version_number=124)
+        mock_get_document.return_value = document
+        self.client.force_login(make_editor())
+
+        response = self.client.get(reverse("document-history", kwargs={"document_uri": self.document_uri}))
+
+        assert response.status_code == 200
+        self.assertContains(response, f'href="{self.restore_url()}"')
+        self.assertContains(response, "Restore this version")
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    def test_history_does_not_link_to_restore_current_version(self, mock_get_document):
+        document = self.build_document()
+        mock_get_document.return_value = document
+        self.client.force_login(make_editor())
+
+        response = self.client.get(reverse("document-history", kwargs={"document_uri": self.document_uri}))
+
+        assert response.status_code == 200
+        self.assertNotContains(response, f'href="{self.restore_url()}"')
+        self.assertNotContains(response, "Restore this version")
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    def test_history_disables_restore_when_published(self, mock_get_document):
+        document = self.build_document(is_published=True, latest_version_number=124)
+        mock_get_document.return_value = document
+        self.client.force_login(make_editor())
+
+        response = self.client.get(reverse("document-history", kwargs={"document_uri": self.document_uri}))
+
+        assert response.status_code == 200
+        self.assertNotContains(response, f'href="{self.restore_url()}"')
+        self.assertContains(response, "Unpublish this document first to restore to this version")
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    def test_confirmation_hides_restore_when_published(self, mock_get_document):
+        document = self.build_document(is_published=True, latest_version_number=124)
+        mock_get_document.return_value = document
+        self.client.force_login(make_editor())
+
+        response = self.client.get(self.restore_url())
+
+        assert response.status_code == 200
+        self.assertContains(
+            response,
+            PUBLISHED_RESTORE_MESSAGE,
+        )
+        self.assertContains(response, reverse("unpublish-document", kwargs={"document_uri": self.document_uri}))
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    def test_invalid_version_returns_not_found(self, mock_get_document):
+        mock_get_document.return_value = self.build_document()
+        self.client.force_login(make_editor())
+
+        response = self.client.get(
+            reverse(
+                "document-version-restore",
+                kwargs={"document_uri": self.document_uri, "version_number": 999},
+            ),
+        )
+
+        assert response.status_code == 404
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    def test_current_version_confirmation_returns_not_found(self, mock_get_document):
+        document = self.build_document()
+        mock_get_document.return_value = document
+        self.client.force_login(make_editor())
+
+        response = self.client.get(self.restore_url())
+
+        assert response.status_code == 404
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    def test_current_version_cannot_be_restored_by_direct_post(self, mock_get_document):
+        document = self.build_document()
+        document.restore_version = Mock()
+        mock_get_document.return_value = document
+        self.client.force_login(make_editor())
+
+        response = self.client.post(self.restore_url())
+
+        assert response.status_code == 404
+        document.restore_version.assert_not_called()
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    def test_editor_can_restore_version(self, mock_get_document):
+        order = editing_order()
+        document = self.build_document(latest_version_number=124)
+        document.editing_session = tracking_editing_session(order)
+        document.restore_version = Mock(side_effect=record(order, "restore_version"))
+        mock_get_document.return_value = document
+        self.client.force_login(make_editor())
+
+        response = self.client.post(self.restore_url())
+
+        assert response.status_code == 302
+        assert response["Location"] == reverse(
+            "document-version-restore-success",
+            kwargs={"document_uri": self.document_uri, "version_number": self.version_number},
+        )
+        assert order == ["editing_session", "restore_version", "editing_session_end"]
+        document.restore_version.assert_called_once_with(
+            self.version_number,
+            automated=False,
+            action_requested_by="testuser",
+        )
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    def test_non_editor_cannot_restore_version(self, mock_get_document):
+        document = self.build_document()
+        document.restore_version = Mock()
+        mock_get_document.return_value = document
+        self.client.force_login(User.objects.create(username="standard-user"))
+
+        response = self.client.post(self.restore_url())
+
+        assert response.status_code == 403
+        document.restore_version.assert_not_called()
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    def test_published_race_redirects_back_to_confirmation(self, mock_get_document):
+        document = self.build_document(latest_version_number=124)
+        document.editing_session = Mock(return_value=nullcontext())
+        document.restore_version = Mock(side_effect=CannotRestorePublishedDocument)
+        mock_get_document.return_value = document
+        self.client.force_login(make_editor())
+
+        response = self.client.post(self.restore_url())
+
+        assert response.status_code == 302
+        assert response["Location"] == self.restore_url()
+        messages = list(get_messages(response.wsgi_request))
+        assert [str(message) for message in messages] == [
+            PUBLISHED_RESTORE_MESSAGE,
+        ]
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    def test_success_page_shows_restored_and_current_versions(self, mock_get_document):
+        mock_get_document.return_value = self.build_document(latest_version_number=124)
+        self.client.force_login(make_editor())
+
+        response = self.client.get(
+            reverse(
+                "document-version-restore-success",
+                kwargs={"document_uri": self.document_uri, "version_number": self.version_number},
+            ),
+        )
+
+        assert response.status_code == 200
+        self.assertContains(response, "Confirmation this document has been restored to version 123")
