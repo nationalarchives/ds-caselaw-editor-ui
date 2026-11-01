@@ -15,7 +15,7 @@ from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
 from django.test import TestCase
 from django.urls import reverse
-from editing import editing_order, record, tracking_editing_session
+from editing import document_form_judgment_date_fields, editing_order, record, tracking_editing_session
 from factories import make_editor
 
 from judgments.tests.helpers.metadata_claims import judgment_with_title_claim
@@ -62,7 +62,7 @@ class TestDocumentEdit(TestCase):
                     "metadata_name": "New Name",
                     "neutral_citation": "[4321] UKSC 123",
                     "court": "Court of Testing",
-                    "judgment_date": "2 Jan 2023",
+                    **document_form_judgment_date_fields(),
                 },
             )
 
@@ -125,7 +125,7 @@ class TestDocumentEdit(TestCase):
                     "metadata_name": "New Name",
                     "neutral_citation": "[4321] UKSC 123",
                     "court": "Court of Testing",
-                    "judgment_date": "2 Jan 2023",
+                    **document_form_judgment_date_fields(),
                 },
             )
 
@@ -165,7 +165,7 @@ class TestDocumentEdit(TestCase):
                     "metadata_name": "New Name",
                     "neutral_citation": "[2023] EWCC 456",
                     "court": "Court of Testing",
-                    "judgment_date": "2 Jan 2023",
+                    **document_form_judgment_date_fields(),
                 },
             )
         api_client.set_judgment_citation.assert_called_once_with("uksc/4321/123", "[2023] EWCC 456")
@@ -205,12 +205,14 @@ class TestDocumentEdit(TestCase):
                     "metadata_name": "New Name",
                     "neutral_citation": "[4321] UKSC 123",
                     "court": "Court of Testing",
-                    "judgment_date": "Kittens",
+                    "judgment_date-day": "31",
+                    "judgment_date-month": "2",
+                    "judgment_date-year": "2023",
                 },
             )
 
         messages = list(get_messages(response.wsgi_request))
-        assert "Could not parse the date" in messages[0].message
+        assert "Enter a real date" in messages[0].message
         assert order == ["editing_session", "save_metadata_fields", "set_court", "editing_session_end"]
         api_client.set_judgment_date.assert_not_called()
 
@@ -246,7 +248,7 @@ class TestDocumentEdit(TestCase):
                     "metadata_name": "Test v Tested",
                     "neutral_citation": "[4321] UKSC 123",
                     "court": "Court of Testing",
-                    "judgment_date": "2 Jan 2023",
+                    **document_form_judgment_date_fields(),
                 },
             )
 
@@ -287,7 +289,7 @@ class TestDocumentEdit(TestCase):
                     "metadata_name": "Resolved structured title",
                     "neutral_citation": "[4321] UKSC 123",
                     "court": "Court of Testing",
-                    "judgment_date": "2 Jan 2023",
+                    **document_form_judgment_date_fields(),
                 },
             )
 
@@ -328,7 +330,7 @@ class TestDocumentEdit(TestCase):
                     "metadata_name": "Editor updated title",
                     "neutral_citation": "[4321] UKSC 123",
                     "court": "Court of Testing",
-                    "judgment_date": "2 Jan 2023",
+                    **document_form_judgment_date_fields(),
                 },
             )
 
