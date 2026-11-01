@@ -2,7 +2,7 @@ from caselawclient.factories import JudgmentFactory
 from django.test import RequestFactory, TestCase
 from waffle.testutils import override_flag
 
-from judgments.templatetags.navigation_tags import DOCUMENT_METADATA_FLAG, get_navigation_items
+from judgments.templatetags.navigation_tags import DOCUMENT_MERGE_FLAG, DOCUMENT_METADATA_FLAG, get_navigation_items
 
 
 class TestNavigationTags(TestCase):
@@ -30,6 +30,7 @@ class TestNavigationTags(TestCase):
             {"id": "upload", "selected": False, "label": "Upload", "url": "/test/2023/123/upload"},
         ]
         assert not any(item["id"] == "metadata" for item in navigation_items)
+        assert not any(item["id"] == "merge" for item in navigation_items)
 
     @override_flag(DOCUMENT_METADATA_FLAG, active=True)
     def test_get_navigation_items_includes_metadata_when_flag_active(self):
@@ -48,6 +49,25 @@ class TestNavigationTags(TestCase):
             "selected": False,
             "label": "Metadata",
             "url": "/test/2023/123/metadata",
+        } in navigation_items
+
+    @override_flag(DOCUMENT_MERGE_FLAG, active=True)
+    def test_get_navigation_items_includes_merge_when_flag_active(self):
+        judgment = JudgmentFactory.build(is_published=False)
+
+        context = {
+            "view": "merge_document",
+            "document": judgment,
+            "request": self.request,
+        }
+
+        navigation_items = get_navigation_items(context)
+
+        assert {
+            "id": "merge",
+            "selected": True,
+            "label": "Merge",
+            "url": "/test/2023/123/merge",
         } in navigation_items
 
     def test_get_navigation_items_published(self):

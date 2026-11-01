@@ -1,12 +1,17 @@
-{% macro note_form() %}
+{% macro note_form(label="Add a note for the editorial team (optional)", field_id="write-a-note", field_name="write-a-note", rows=8, placeholder="", hint="") %}
   <div class="note-form__container">
     {# djlint:off H042 #}
-    <label class="note-form__label" for="write-a-note">Add a note for the editoral team (optional)</label>
+    <label class="note-form__label" for="{{ field_id }}">{{ label }}</label>
     {# djlint:on H042 #}
+    {% if hint %}
+      {% set hint_id = field_id ~ "-hint" %}
+    {% endif %}
     <textarea class="note-form__text-area"
-              id="write-a-note"
-              name="write-a-note"
-              rows="8"
-              aria-describedby="write-a-note"></textarea>
+              id="{{ field_id }}"
+              name="{{ field_name }}"
+              rows="{{ rows }}"
+              placeholder="{{ placeholder }}"
+              {% if hint %}aria-describedby="{{ hint_id }}"{% endif %}></textarea>
+    {% if hint %}<p id="{{ hint_id }}">{{ hint }}</p>{% endif %}
   </div>
 {% endmacro %}
