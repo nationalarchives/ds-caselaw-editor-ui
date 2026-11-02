@@ -35,6 +35,7 @@ services:
       MARKLOGIC_USE_HTTPS: ${MARKLOGIC_USE_HTTPS:-false}
       WSGI_AUTH_EXCLUDE_PATHS: ${WSGI_AUTH_EXCLUDE_PATHS:-/check}
       JIRA_INSTANCE: ${JIRA_INSTANCE:-placeholder.atlassian.net}
+      JIRA_PROJECTS_BY_COURT: "${JIRA_PROJECTS_BY_COURT:-{}}"
       MAILGUN_API_KEY: ${MAILGUN_API_KEY:-placeholder}
       MAILGUN_DOMAIN: ${MAILGUN_DOMAIN:-placeholder}
     env_file:

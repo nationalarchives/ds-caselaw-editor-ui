@@ -325,6 +325,10 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = ["gds"]
 CRISPY_TEMPLATE_PACK = "gds"
 
 JIRA_INSTANCE = env("JIRA_INSTANCE")
+DEFAULT_JIRA_PROJECT = {"pid": "10090", "issuetype": "10320"}
+
+# NOTE: To find the pid/issuetype, call the api with the relevant project key, e.g. https://national-archives.atlassian.net/rest/api/3/project/CLFI
+JIRA_PROJECTS_BY_COURT = env.json("JIRA_PROJECTS_BY_COURT", default={"UKFTT": {"pid": "12623", "issuetype": "13193"}})
 
 EDITORS_GROUP_NAME = "Editors"
 DEVELOPERS_GROUP_NAME = "Developers"

@@ -1,3 +1,5 @@
+from urllib.parse import parse_qs, urlparse
+
 from caselawclient.factories import DocumentBodyFactory, DocumentFactory, JudgmentFactory
 from caselawclient.models.documents.metadata.fields.field import MetadataField, MetadataStringValue
 from caselawclient.models.documents.metadata.fields.source import MetadataSource
@@ -140,9 +142,60 @@ TDR ref: TDR-12345
 
     def test_build_jira_create_link(self, settings):
         settings.JIRA_INSTANCE = "tna-test.jira.com"
+        settings.DEFAULT_JIRA_PROJECT = {"pid": "10090", "issuetype": "10320"}
+        settings.JIRA_PROJECTS_BY_COURT = {}
         judgment = JudgmentFactory.build()
         request = RequestFactory().get(judgment.uri)
         link = build_jira_create_link(judgment, request)
 
         assert "https://tna-test.jira.com/secure/CreateIssueDetails!init.jspa?" in link
         assert r"http%3A%2F%2Ftestserver%2Ftest%2F2023%2F123" in link
+        assert parse_qs(urlparse(link).query)["pid"] == ["10090"]
+        assert parse_qs(urlparse(link).query)["issuetype"] == ["10320"]
+
+    def test_build_jira_create_link_uses_project_for_document_court(self, settings):
+        settings.JIRA_INSTANCE = "tna-test.jira.com"
+        settings.DEFAULT_JIRA_PROJECT = {"pid": "10090", "issuetype": "10320"}
+        settings.JIRA_PROJECTS_BY_COURT = {
+            "UKFTT": {"pid": "12623", "issuetype": "13193"},
+            "UKSC": {"pid": "10100", "issuetype": "10400"},
+        }
+        judgment = JudgmentFactory.build(body=DocumentBodyFactory.build(court="UKFTT"))
+        request = RequestFactory().get(judgment.uri)
+
+        link = build_jira_create_link(judgment, request)
+        query = parse_qs(urlparse(link).query)
+
+        assert "https://tna-test.jira.com/secure/CreateIssueDetails!init.jspa?" in link
+        assert query["pid"] == ["12623"]
+        assert query["issuetype"] == ["13193"]
+
+    def test_build_jira_create_link_uses_default_project_for_unmapped_court(self, settings):
+        settings.JIRA_INSTANCE = "tna-test.jira.com"
+        settings.DEFAULT_JIRA_PROJECT = {"pid": "10090", "issuetype": "10320"}
+        settings.JIRA_PROJECTS_BY_COURT = {
+            "UKFTT": {"pid": "12623", "issuetype": "13193"},
+        }
+        judgment = JudgmentFactory.build(body=DocumentBodyFactory.build(court="UKSC"))
+        request = RequestFactory().get(judgment.uri)
+
+        link = build_jira_create_link(judgment, request)
+        query = parse_qs(urlparse(link).query)
+
+        assert query["pid"] == ["10090"]
+        assert query["issuetype"] == ["10320"]
+
+    def test_build_jira_create_link_is_case_insensitive_for_court_lookup(self, settings):
+        settings.JIRA_INSTANCE = "tna-test.jira.com"
+        settings.DEFAULT_JIRA_PROJECT = {"pid": "10090", "issuetype": "10320"}
+        settings.JIRA_PROJECTS_BY_COURT = {
+            "uKfTt": {"pid": "12623", "issuetype": "13193"},
+        }
+        judgment = JudgmentFactory.build(body=DocumentBodyFactory.build(court="UkFtT"))
+        request = RequestFactory().get(judgment.uri)
+
+        link = build_jira_create_link(judgment, request)
+        query = parse_qs(urlparse(link).query)
+
+        assert query["pid"] == ["12623"]
+        assert query["issuetype"] == ["13193"]
