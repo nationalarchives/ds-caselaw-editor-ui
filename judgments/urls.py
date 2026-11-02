@@ -14,7 +14,11 @@ from .views.document_full_text import (
     xml_view,
     xml_view_redirect,
 )
-from .views.document_history import DocumentHistoryView
+from .views.document_history import (
+    DocumentHistoryView,
+    RestoreDocumentVersionSuccessView,
+    RestoreDocumentVersionView,
+)
 from .views.document_identifiers import AddDocumentIdentifierView, DeleteDocumentIdentifierView, DocumentIdentifiersView
 from .views.document_list import HomeView, ResultsView
 from .views.document_metadata import DocumentMetadataView
@@ -118,6 +122,16 @@ urlpatterns = [
         "<path:document_uri>/history",
         DocumentHistoryView.as_view(),
         name="document-history",
+    ),
+    path(
+        "<path:document_uri>/history/<int:version_number>/restore",
+        RestoreDocumentVersionView.as_view(),
+        name="document-version-restore",
+    ),
+    path(
+        "<path:document_uri>/history/<int:version_number>/restored",
+        RestoreDocumentVersionSuccessView.as_view(),
+        name="document-version-restore-success",
     ),
     path(
         "<path:document_uri>/identifiers",

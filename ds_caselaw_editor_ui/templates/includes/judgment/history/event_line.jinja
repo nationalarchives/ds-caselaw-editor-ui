@@ -1,4 +1,5 @@
-{% macro event_line(event=None, document_uri=None, user=None) %}
+{% from "components/button.jinja" import button %}
+{% macro event_line(event=None, document_uri=None, document=None, user=None) %}
   <tr>
     <td>
       <p>
@@ -9,6 +10,8 @@
             Enriched
           {% elif event.data.type == "edit" %}
             Edited
+          {% elif event.data.type == "restore" %}
+            Restored
           {% endif %}
         </b>
       </p>
@@ -26,7 +29,11 @@
         </p>
       {% endif %}
       <p>
-        <small><a href="{{ url('full-text-html', document_uri) }}?version_uri={{ event.document.uri }}">View this version</a></small>
+        {{ button(content="View this version", href=url('full-text-html', document_uri) ~ "?version_uri=" ~ event.document.uri, variant="link", size="small") }}
+        {% if not is_current_document_version(document, event.marklogic_version) %}
+          |
+          {{ button(content="Restore this version", href=url('document-version-restore', document_uri, event.marklogic_version), variant="link", size="small", disabled=is_document_restore_disabled(document, user), disabled_reason=get_document_restore_disabled_reason(document, user)) }}
+        {% endif %}
       </p>
       {% if user|is_developer %}
         <p>

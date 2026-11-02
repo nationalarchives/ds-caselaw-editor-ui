@@ -1,0 +1,14 @@
+{% extends "layouts/judgment.jinja" %}
+{% from "components/heading.jinja" import heading %}
+{% from "components/notification.jinja" import notification %}
+{% block content %}
+  <div class="container">
+    {{ heading(content="Confirmation this document has been restored to version " ~ restored_version_number) }}
+    <p>
+      <a href="{{ url('document-history', document.uri) }}">View document history</a>
+    </p>
+    <p>
+      <a href="{{ url('full-text-html', document.uri) }}">Go back to document review</a>
+    </p>
+  </div>
+{% endblock content %}

@@ -5,6 +5,13 @@ from django import template
 register = template.Library()
 
 
+@register.simple_tag
+def is_current_document_version(document, version_number):
+    if not document.versions:
+        return False
+    return version_number == max(version["version"] for version in document.versions)
+
+
 @register.filter
 def get_title_to_display_in_html(document_title, document_type):
     if document_type == "press_summary":

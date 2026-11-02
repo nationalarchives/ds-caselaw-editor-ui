@@ -1,0 +1,31 @@
+{% extends "layouts/judgment.jinja" %}
+{% from "components/button.jinja" import button %}
+{% from "components/heading.jinja" import heading %}
+{% from "components/notification.jinja" import notification %}
+{% block content %}
+  <div class="container">
+    {{ heading(content="Restore version " ~ restored_version_number ~ "?") }}
+    {% if document.is_published %}
+      {% call notification(variant="warning") %}
+        This document needs to be unpublished before you can restore to this version.
+      {% endcall %}
+      <p>
+        <a href="{{ url('unpublish-document', document.uri) }}">Unpublish this document</a>
+      </p>
+    {% else %}
+      <p>Restoring this version will create a new current version of the document.</p>
+      <p>
+        The existing version history will be retained, and the document and its associated files will be restored to their state at version {{ restored_version_number }}.
+      </p>
+      <form method="post">
+        {{ csrf_input }}
+        {% call button(disabled=is_document_restore_disabled(document, user), disabled_reason=get_document_restore_disabled_reason(document, user)) %}
+          Restore version {{ restored_version_number }}
+        {% endcall %}
+      </form>
+    {% endif %}
+    <p>
+      <a href="{{ url('document-history', document.uri) }}">Go back to document history</a>
+    </p>
+  </div>
+{% endblock content %}
