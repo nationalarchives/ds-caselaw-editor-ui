@@ -110,10 +110,19 @@ def _get_jira_link_description_string_for_document(document: Document, request: 
     )
 
 
+def _get_jira_project_for_document(document: Document) -> dict[str, str]:
+    court_code = document.metadata.court.value.casefold()
+    projects_by_court = {
+        configured_code.casefold(): project for configured_code, project in settings.JIRA_PROJECTS_BY_COURT.items()
+    }
+    return projects_by_court.get(court_code, settings.DEFAULT_JIRA_PROJECT)
+
+
 def build_jira_create_link(document: Document, request: HttpRequest) -> str:
+    jira_project = _get_jira_project_for_document(document)
     params = {
-        "pid": "10090",
-        "issuetype": "10320",
+        "pid": jira_project["pid"],
+        "issuetype": jira_project["issuetype"],
         "priority": "3",
         "summary": _get_jira_link_summary_string_for_document(document),
         "description": _get_jira_link_description_string_for_document(document, request),
