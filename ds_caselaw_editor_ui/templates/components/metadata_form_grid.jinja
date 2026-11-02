@@ -1,0 +1,61 @@
+{% from "govuk_frontend_jinja/components/input/macro.html" import govukInput %}
+{% from "govuk_frontend_jinja/components/textarea/macro.html" import govukTextarea %}
+{% macro metadata_grid_text_input(column, label, id_for_label, html_name, value) %}
+  <div class="metadata__field-column metadata__field-column--{{ column }}">
+    <label class="metadata__grid-primary metadata__grid-primary--{{ column }} govuk-label govuk-label--s"
+           for="{{ id_for_label }}">{{ label }}</label>
+    <div class="metadata__grid-secondary metadata__grid-secondary--{{ column }} metadata__grid-secondary--spacer"
+         aria-hidden="true"></div>
+    <div class="metadata__grid-control metadata__grid-control--{{ column }}">
+      {{ govukInput({
+        "label": { "text": label, "classes": "govuk-visually-hidden" },
+        "id": id_for_label,
+        "name": html_name,
+        "value": value,
+        "formGroup": { "classes": "govuk-!-margin-bottom-0" },
+      }) }}
+    </div>
+  </div>
+{% endmacro %}
+{% macro metadata_grid_datalist_input(column, label, id_for_label, html_name, value, choices) %}
+  {% set datalist_id = id_for_label ~ "-list" %}
+  <div class="metadata__field-column metadata__field-column--{{ column }}">
+    <label class="metadata__grid-primary metadata__grid-primary--{{ column }} govuk-label govuk-label--s"
+           for="{{ id_for_label }}">{{ label }}</label>
+    <div class="metadata__grid-secondary metadata__grid-secondary--{{ column }} metadata__grid-secondary--spacer"
+         aria-hidden="true"></div>
+    <div class="metadata__grid-control metadata__grid-control--{{ column }}">
+      {{ govukInput({
+        "label": { "text": label, "classes": "govuk-visually-hidden" },
+        "id": id_for_label,
+        "name": html_name,
+        "value": value,
+        "formGroup": { "classes": "govuk-!-margin-bottom-0" },
+        "attributes": { "list": datalist_id },
+      }) }}
+      <datalist id="{{ datalist_id }}">
+        {% for choice in choices %}
+          {% if choice[0] %}<option value="{{ choice[0] }}">{{ choice[1] }}</option>{% endif %}
+        {% endfor %}
+      </datalist>
+    </div>
+  </div>
+{% endmacro %}
+{% macro metadata_grid_textarea(column, label, id_for_label, html_name, value, rows=2) %}
+  <div class="metadata__field-column metadata__field-column--{{ column }}">
+    <label class="metadata__grid-primary metadata__grid-primary--{{ column }} govuk-label govuk-label--s"
+           for="{{ id_for_label }}">{{ label }}</label>
+    <div class="metadata__grid-secondary metadata__grid-secondary--{{ column }} metadata__grid-secondary--spacer"
+         aria-hidden="true"></div>
+    <div class="metadata__grid-control metadata__grid-control--{{ column }}">
+      {{ govukTextarea({
+        "label": { "text": label, "classes": "govuk-visually-hidden" },
+        "id": id_for_label,
+        "name": html_name,
+        "value": value or "",
+        "rows": rows,
+        "formGroup": { "classes": "govuk-!-width-full govuk-!-margin-bottom-0" },
+      }) }}
+    </div>
+  </div>
+{% endmacro %}
