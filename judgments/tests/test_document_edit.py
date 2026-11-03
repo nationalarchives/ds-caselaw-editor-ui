@@ -215,9 +215,10 @@ class TestDocumentEdit(TestCase):
             )
 
         messages = list(get_messages(response.wsgi_request))
-        assert "Enter a real date" in messages[0].message
-        assert order == ["editing_session", "save_metadata_fields", "set_court", "editing_session_end"]
+        assert messages[0].message == "Enter a real date"
+        assert order == []
         api_client.set_judgment_date.assert_not_called()
+        api_client.set_document_court_and_jurisdiction.assert_not_called()
 
     @patch("judgments.views.judgment_edit.invalidate_caches")
     @patch("judgments.views.judgment_edit.api_client")

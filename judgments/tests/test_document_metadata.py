@@ -12,6 +12,7 @@ from caselawclient.models.documents.metadata.fields.field import (
 from caselawclient.models.documents.metadata.fields.source import MetadataSource
 from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
+from django.contrib.messages import get_messages
 from django.test import TestCase
 from django.urls import reverse
 from editing import editing_order, record, tracking_editing_session
@@ -326,6 +327,43 @@ class TestDocumentMetadata(TestCase):
         assert order == []
         assert judgment.metadata_fields.by_name("court") == []
         assert judgment.metadata_fields.by_name("date") == []
+
+        messages = list(get_messages(response.wsgi_request))
+        assert len(messages) == 1
+        assert messages[0].level_tag == "error"
+        assert messages[0].message == "Enter a real date for the new claim"
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_document_metadata_post_rejects_incomplete_govuk_date_without_saving(
+        self,
+        document_type,
+        document_exists,
+        mock_judgment,
+    ):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
+        judgment = JudgmentFactory.build(
+            uri=DocumentURIString("d-a1b2c3"),
+            body=DocumentBodyFactory.build(name="Test v Tested", court="Court of Testing"),
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(make_editor())
+
+        response = self.client.post(
+            reverse("document-metadata", kwargs={"document_uri": judgment.uri}),
+            data={
+                "new_claim__date-day": "15",
+                "new_claim__date-month": "",
+                "new_claim__date-year": "2024",
+            },
+        )
+
+        messages = list(get_messages(response.wsgi_request))
+        assert messages[0].message == "Enter the full date for the new claim"
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")

@@ -3,6 +3,7 @@ from datetime import date
 import pytest
 
 from judgments.utils.govuk_date import (
+    METADATA_NEW_DATE_CLAIM_MESSAGES,
     GovukDateParseError,
     parse_govuk_date_from_post,
     parse_optional_govuk_date_from_post,
@@ -71,6 +72,19 @@ def test_parse_optional_govuk_date_from_post_returns_none_when_empty():
         )
         is None
     )
+
+
+def test_parse_optional_govuk_date_from_post_uses_custom_messages():
+    with pytest.raises(GovukDateParseError, match="Enter the full date for the new claim"):
+        parse_optional_govuk_date_from_post(
+            {
+                "new_claim__date-day": "1",
+                "new_claim__date-month": "",
+                "new_claim__date-year": "2024",
+            },
+            "new_claim__date",
+            messages=METADATA_NEW_DATE_CLAIM_MESSAGES,
+        )
 
 
 def test_parse_optional_govuk_date_from_post_parses_when_present():

@@ -16,7 +16,11 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from judgments.utils.govuk_date import GovukDateParseError, parse_optional_govuk_date_from_post
+from judgments.utils.govuk_date import (
+    METADATA_NEW_DATE_CLAIM_MESSAGES,
+    GovukDateParseError,
+    parse_optional_govuk_date_from_post,
+)
 from judgments.utils.permissions import EditorRequiredMixin
 from judgments.utils.view_helpers import DocumentView
 
@@ -204,7 +208,11 @@ class DocumentMetadataView(EditorRequiredMixin, DocumentView):
 
     def _add_new_claims(self, post_data) -> tuple[bool, bool]:
         try:
-            submitted_date = parse_optional_govuk_date_from_post(post_data, "new_claim__date")
+            submitted_date = parse_optional_govuk_date_from_post(
+                post_data,
+                "new_claim__date",
+                messages=METADATA_NEW_DATE_CLAIM_MESSAGES,
+            )
         except GovukDateParseError as error:
             messages.error(self.request, str(error))
             return False, False
