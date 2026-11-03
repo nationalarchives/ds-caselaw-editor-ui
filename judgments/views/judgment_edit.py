@@ -10,7 +10,10 @@ from django.views.generic import View
 from judgments.utils import api_client
 from judgments.utils.aws import invalidate_caches
 from judgments.utils.govuk_date import GovukDateParseError, parse_govuk_date_from_post
-from judgments.utils.metadata_editing import save_judgment_title_from_document_form
+from judgments.utils.metadata_editing import (
+    save_judgment_date_from_document_form,
+    save_judgment_title_from_document_form,
+)
 from judgments.utils.permissions import EditorRequiredMixin
 from judgments.utils.view_helpers import get_document_by_uri_or_404
 
@@ -91,6 +94,8 @@ class EditJudgmentView(EditorRequiredMixin, View):
                                 kwargs={"document_uri": kwargs["document_uri"]},
                             ),
                         )
+
+                    save_judgment_date_from_document_form(judgment, new_date)
                     api_client.set_judgment_date(judgment_uri, new_date.isoformat())
 
                     messages.success(request, "Document successfully updated")
