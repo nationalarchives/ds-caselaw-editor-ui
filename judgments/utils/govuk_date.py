@@ -15,6 +15,17 @@ class GovukDateParseError(ValueError):
     pass
 
 
+def parse_optional_govuk_date_from_post(data: Mapping[str, str], name_prefix: str) -> date | None:
+    day = data.get(f"{name_prefix}-day", "").strip()
+    month = data.get(f"{name_prefix}-month", "").strip()
+    year = data.get(f"{name_prefix}-year", "").strip()
+
+    if not day and not month and not year:
+        return None
+
+    return parse_govuk_date_from_post(data, name_prefix)
+
+
 def parse_govuk_date_from_post(data: Mapping[str, str], name_prefix: str) -> date:
     day = data.get(f"{name_prefix}-day", "").strip()
     month = data.get(f"{name_prefix}-month", "").strip()

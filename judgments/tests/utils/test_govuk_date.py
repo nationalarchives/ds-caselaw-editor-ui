@@ -1,6 +1,12 @@
+from datetime import date
+
 import pytest
 
-from judgments.utils.govuk_date import GovukDateParseError, parse_govuk_date_from_post
+from judgments.utils.govuk_date import (
+    GovukDateParseError,
+    parse_govuk_date_from_post,
+    parse_optional_govuk_date_from_post,
+)
 
 
 def test_parse_govuk_date_from_post():
@@ -51,3 +57,28 @@ def test_parse_govuk_date_from_post_rejects_partial_date():
             },
             "judgment_date",
         )
+
+
+def test_parse_optional_govuk_date_from_post_returns_none_when_empty():
+    assert (
+        parse_optional_govuk_date_from_post(
+            {
+                "judgment_date-day": "",
+                "judgment_date-month": "",
+                "judgment_date-year": "",
+            },
+            "judgment_date",
+        )
+        is None
+    )
+
+
+def test_parse_optional_govuk_date_from_post_parses_when_present():
+    assert parse_optional_govuk_date_from_post(
+        {
+            "judgment_date-day": "2",
+            "judgment_date-month": "1",
+            "judgment_date-year": "2023",
+        },
+        "judgment_date",
+    ) == date(2023, 1, 2)

@@ -16,6 +16,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
+from judgments.utils.govuk_date import GovukDateParseError, parse_optional_govuk_date_from_post
 from judgments.utils.permissions import EditorRequiredMixin
 from judgments.utils.view_helpers import DocumentView
 
@@ -201,10 +202,19 @@ class DocumentMetadataView(EditorRequiredMixin, DocumentView):
 
         return True, changed
 
-    def _add_new_claims(self, post_data):
+    def _add_new_claims(self, post_data) -> tuple[bool, bool]:
+        try:
+            submitted_date = parse_optional_govuk_date_from_post(post_data, "new_claim__date")
+        except GovukDateParseError as error:
+            messages.error(self.request, str(error))
+            return False, False
+
         changed = False
 
         for metadata_item in self.document.metadata:
+            if metadata_item.key == "date":
+                continue
+
             for value in post_data.getlist(f"new_claim__{metadata_item.key}"):
                 cleaned_value = value.strip()
                 if not cleaned_value:
@@ -216,8 +226,6 @@ class DocumentMetadataView(EditorRequiredMixin, DocumentView):
                     claim_value: MetadataFieldValue
                     if metadata_item.key == "categories":
                         claim_value = MetadataCategoryValue(name=cleaned_value)
-                    elif metadata_item.key == "date":
-                        claim_value = MetadataDateValue(date.fromisoformat(cleaned_value))
                     elif metadata_item.key == "parties":
                         claim_value = MetadataPartyValue(name=cleaned_value)
                     else:
@@ -231,7 +239,17 @@ class DocumentMetadataView(EditorRequiredMixin, DocumentView):
                     )
                 changed = True
 
-        return changed
+        if submitted_date is not None:
+            self.document.metadata_fields.add(
+                MetadataField(
+                    name="date",
+                    value=MetadataDateValue(submitted_date),
+                    source=MetadataSource.EDITOR,
+                ),
+            )
+            changed = True
+
+        return True, changed
 
     def post(self, request, *args, **kwargs):
         reject_success, reject_changed = self._reject_claims(request.POST.getlist("reject_claim_ids"))
@@ -242,7 +260,10 @@ class DocumentMetadataView(EditorRequiredMixin, DocumentView):
         if not suppress_success:
             return HttpResponseRedirect(self.get_success_url())
 
-        add_changed = self._add_new_claims(request.POST)
+        add_success, add_changed = self._add_new_claims(request.POST)
+        if not add_success:
+            return HttpResponseRedirect(self.get_success_url())
+
         changed = reject_changed or suppress_changed or add_changed
 
         if changed:
