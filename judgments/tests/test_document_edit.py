@@ -1,10 +1,11 @@
+from datetime import date
 from unittest.mock import Mock, patch
 
 import pytest
 from caselawclient.errors import MarklogicAPIError
 from caselawclient.factories import DocumentBodyFactory, JudgmentFactory, PressSummaryFactory
 from caselawclient.models.documents import DocumentURIString
-from caselawclient.models.documents.metadata.fields.field import MetadataStringValue
+from caselawclient.models.documents.metadata.fields.field import MetadataDateValue, MetadataStringValue
 from caselawclient.models.documents.metadata.fields.source import MetadataSource
 from caselawclient.models.identifiers.neutral_citation import (
     NCNCannotConvertToValidURLSlugException,
@@ -85,6 +86,7 @@ class TestDocumentEdit(TestCase):
             "editing_session",
             "save_metadata_fields",
             "set_court",
+            "save_metadata_fields",
             "set_judgment_date",
             "editing_session_end",
         ]
@@ -175,6 +177,7 @@ class TestDocumentEdit(TestCase):
             "set_judgment_citation",
             "save_metadata_fields",
             "set_court",
+            "save_metadata_fields",
             "set_judgment_date",
             "editing_session_end",
         ]
@@ -248,12 +251,13 @@ class TestDocumentEdit(TestCase):
                     "metadata_name": "Test v Tested",
                     "neutral_citation": "[4321] UKSC 123",
                     "court": "Court of Testing",
-                    **document_form_judgment_date_fields(),
+                    **document_form_judgment_date_fields(day=3, month=2, year=2023),
                 },
             )
 
         assert "save_metadata_fields" not in order
         assert judgment.metadata_fields.by_name("title") == []
+        assert judgment.metadata_fields.by_name("date") == []
 
     @patch("judgments.views.judgment_edit.invalidate_caches")
     @patch("judgments.views.judgment_edit.api_client")
@@ -289,12 +293,13 @@ class TestDocumentEdit(TestCase):
                     "metadata_name": "Resolved structured title",
                     "neutral_citation": "[4321] UKSC 123",
                     "court": "Court of Testing",
-                    **document_form_judgment_date_fields(),
+                    **document_form_judgment_date_fields(day=3, month=2, year=2023),
                 },
             )
 
         assert "save_metadata_fields" not in order
         assert len(judgment.metadata_fields.by_name("title")) == 1
+        assert judgment.metadata_fields.by_name("date") == []
 
     @patch("judgments.views.judgment_edit.invalidate_caches")
     @patch("judgments.views.judgment_edit.api_client")
@@ -343,6 +348,64 @@ class TestDocumentEdit(TestCase):
             "editing_session",
             "save_metadata_fields",
             "set_court",
+            "save_metadata_fields",
+            "set_judgment_date",
+            "editing_session_end",
+        ]
+
+
+class TestEditJudgmentDateMetadata(TestCase):
+    @patch("judgments.views.judgment_edit.invalidate_caches")
+    @patch("judgments.views.judgment_edit.api_client")
+    @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
+    def test_edit_judgment_adds_date_claim_when_document_has_no_date_claim_or_body_date(
+        self,
+        mock_judgment,
+        api_client,
+        mock_invalidate_caches,
+    ):
+        judgment = JudgmentFactory.build(
+            uri=DocumentURIString("edittest/4321/123"),
+            body=DocumentBodyFactory.build(name="Test v Tested", document_date_as_string=None),
+        )
+        judgment.identifiers.add(NeutralCitationNumber("[4321] UKSC 123"))
+        mock_judgment.return_value = judgment
+
+        assert judgment.metadata.date.value is None
+        assert judgment.metadata_fields.by_name("date") == []
+
+        order = editing_order()
+        api_client.set_document_court_and_jurisdiction.side_effect = record(order, "set_court")
+        api_client.set_judgment_date.side_effect = record(order, "set_judgment_date")
+
+        self.client.force_login(make_editor())
+
+        with (
+            patch.object(judgment, "editing_session", tracking_editing_session(order)),
+            patch.object(judgment, "save_metadata_fields", side_effect=record(order, "save_metadata_fields")),
+        ):
+            self.client.post(
+                "/pubtest/4321/123/edit",
+                {
+                    "judgment_uri": "/edittest/4321/123",
+                    "metadata_name": "Test v Tested",
+                    "neutral_citation": "[4321] UKSC 123",
+                    "court": "Court of Testing",
+                    **document_form_judgment_date_fields(),
+                },
+            )
+
+        date_claims = judgment.metadata_fields.by_name("date")
+        assert len(date_claims) == 1
+        assert date_claims[0].value == MetadataDateValue(date(2023, 1, 2))
+        assert date_claims[0].source is MetadataSource.EDITOR
+        assert judgment.metadata.date.value == date(2023, 1, 2)
+
+        api_client.set_judgment_date.assert_called_with("/edittest/4321/123", "2023-01-02")
+        assert order == [
+            "editing_session",
+            "set_court",
+            "save_metadata_fields",
             "set_judgment_date",
             "editing_session_end",
         ]
