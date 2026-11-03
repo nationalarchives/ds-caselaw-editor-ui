@@ -10,6 +10,7 @@ Superusers get no special treatment: a superuser must also be in the `Editors` g
 - Add and delete identifiers
 - Upload documents
 - Create stubs
+- Merge one document into another, when document merge is switched on
 
 ### Editors and Developers can:
 

@@ -21,6 +21,7 @@ from .views.document_history import (
 )
 from .views.document_identifiers import AddDocumentIdentifierView, DeleteDocumentIdentifierView, DocumentIdentifiersView
 from .views.document_list import HomeView, ResultsView
+from .views.document_merge import MergeDocumentReviewView, MergeDocumentSearchView, merge
 from .views.document_metadata import DocumentMetadataView
 from .views.document_reparse import reparse
 from .views.errors import NotFoundView, PermissionDeniedView, ServerErrorView
@@ -71,6 +72,7 @@ urlpatterns = [
     path("hold", hold, name="hold"),
     path("unhold", unhold, name="unhold"),
     path("delete", delete, name="delete"),
+    path("merge", merge, name="merge"),
     path("enrich", enrich, name="enrich"),
     path("reparse", reparse, name="reparse"),
     path("unlock", unlock, name="unlock"),
@@ -207,6 +209,16 @@ urlpatterns = [
         "<path:document_uri>/delete",
         DeleteDocumentView.as_view(),
         name="delete-document",
+    ),
+    path(
+        "<path:document_uri>/merge/review",
+        MergeDocumentReviewView.as_view(),
+        name="merge-document-review",
+    ),
+    path(
+        "<path:document_uri>/merge",
+        MergeDocumentSearchView.as_view(),
+        name="merge-document",
     ),
     path(
         "<path:document_uri>/pdf",

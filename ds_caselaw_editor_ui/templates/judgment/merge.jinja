@@ -1,0 +1,40 @@
+{% extends "layouts/judgment.jinja" %}
+{% from "components/heading.jinja" import heading %}
+{% from "components/notification.jinja" import notification %}
+{% from "components/pagination.jinja" import pagination %}
+{% from "components/button.jinja" import button %}
+{% from "components/documents_table.jinja" import documents_table, documents_table_item %}
+{% from "components/search_form.jinja" import search_form with context %}
+{% block content %}
+  <div class="container">
+    {{ heading(content="Choose a document to merge this into") }}
+    {{ heading(tag="h2", weight="normal", content=page_title) }}
+    {% call notification() %}
+      The document you choose is kept. This document's content becomes a new version of it, and this document is then deleted.
+    {% endcall %}
+    {{ search_form(form_action=url("merge-document", document.uri),
+      clear_href=url("merge-document", document.uri),
+      heading="Search for a target document") }}
+    {% if total > 0 %}
+      {% if merge_results %}
+        {% call documents_table(total_count=total, total_count_postfix=total_count_postfix) %}
+          {% for result in merge_results %}
+            {% set document_item_name_content %}
+              {{ button(size="small", href=result.select_url, content="Select as target") }}
+            {% endset %}
+            {{ documents_table_item(document=result.document, name_content=document_item_name_content) }}
+          {% endfor %}
+        {% endcall %}
+      {% else %}
+        {% call notification() %}
+          No merge targets on this page. Other pages may still list documents you can merge into.
+        {% endcall %}
+      {% endif %}
+      <div class="container">{{ pagination(pagination_data) }}</div>
+    {% else %}
+      {% call notification() %}
+        No other documents matched. Try a different search.
+      {% endcall %}
+    {% endif %}
+  </div>
+{% endblock content %}
