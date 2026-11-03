@@ -31,6 +31,7 @@ class TestMetadataFieldDisplayDecorator(TestCase):
 
         assert section.new_claim_input_id == "new-claim-court"
         assert section.new_claim_input_name == "new_claim__court"
+        assert section.new_claim_field_kind == "text"
         assert len(section.display_claims) == 1
 
         claim = section.display_claims[0]
@@ -132,6 +133,7 @@ class TestMetadataFieldDisplayDecorator(TestCase):
         date_section = MetadataFieldDisplayDecorator(judgment, judgment.metadata.date).section
 
         assert date_section.display_claims[0].display_value == "3 Feb 2024"
+        assert date_section.new_claim_field_kind == "date"
 
         judgment.metadata_fields.add(
             MetadataField(

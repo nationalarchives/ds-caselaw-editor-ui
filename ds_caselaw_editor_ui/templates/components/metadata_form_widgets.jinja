@@ -1,0 +1,53 @@
+{% from "components/text_input.jinja" import text_input %}
+{% from "components/date_input.jinja" import govuk_date_input, govuk_date_input_grid %}
+{% from "components/metadata_form_grid.jinja" import metadata_grid_text_input, metadata_grid_textarea %}
+{% from "govuk_frontend_jinja/components/textarea/macro.html" import govukTextarea %}
+{% macro metadata_form_field(field_kind, layout, label, id_for_label, html_name, value=none, column=none, rows=2) %}
+  {% if field_kind == "date" %}
+    {% if layout == "grid" %}
+      {{ govuk_date_input_grid({
+        "label": label,
+        "id_for_label": id_for_label,
+        "html_name": html_name,
+        "value": value,
+      }) }}
+    {% else %}
+      {{ govuk_date_input({
+        "label": label,
+        "id_for_label": id_for_label,
+        "html_name": html_name,
+        "value": value,
+      }) }}
+    {% endif %}
+  {% elif field_kind == "textarea" %}
+    {% if layout == "grid" %}
+      {{ metadata_grid_textarea(column or "field", label, id_for_label, html_name, value, rows) }}
+    {% else %}
+      {{ govukTextarea({
+        "label": { "text": label, "classes": "govuk-label--s" },
+        "id": id_for_label,
+        "name": html_name,
+        "value": value or "",
+        "rows": rows,
+      }) }}
+    {% endif %}
+  {% elif layout == "grid" %}
+    {{ metadata_grid_text_input(column or "field", label, id_for_label, html_name, value or "") }}
+  {% else %}
+    {{ text_input({
+      "label": label,
+      "id_for_label": id_for_label,
+      "html_name": html_name,
+      "value": value or "",
+    }) }}
+  {% endif %}
+{% endmacro %}
+{% macro metadata_new_claim_input(section) %}
+  {{ metadata_form_field(
+    section.new_claim_field_kind,
+    "card",
+    "New claim",
+    section.new_claim_input_id,
+    section.new_claim_input_name,
+  ) }}
+{% endmacro %}

@@ -21,6 +21,11 @@ from judgments.utils.govuk_date import (
     GovukDateParseError,
     parse_optional_govuk_date_from_post,
 )
+from judgments.utils.metadata_form_fields import (
+    MetadataFormFieldKind,
+    form_field_kind_for_metadata_key,
+    new_claim_post_name_prefix,
+)
 from judgments.utils.permissions import EditorRequiredMixin
 from judgments.utils.view_helpers import DocumentView
 
@@ -53,7 +58,11 @@ class MetadataDisplaySection:
 
     @property
     def new_claim_input_name(self):
-        return f"new_claim__{self.metadata_item.key}"
+        return new_claim_post_name_prefix(self.metadata_item.key)
+
+    @property
+    def new_claim_field_kind(self) -> str:
+        return form_field_kind_for_metadata_key(self.metadata_item.key).value
 
 
 class MetadataFieldDisplayDecorator:
@@ -210,7 +219,7 @@ class DocumentMetadataView(EditorRequiredMixin, DocumentView):
         try:
             submitted_date = parse_optional_govuk_date_from_post(
                 post_data,
-                "new_claim__date",
+                new_claim_post_name_prefix("date"),
                 messages=METADATA_NEW_DATE_CLAIM_MESSAGES,
             )
         except GovukDateParseError as error:
@@ -220,10 +229,10 @@ class DocumentMetadataView(EditorRequiredMixin, DocumentView):
         changed = False
 
         for metadata_item in self.document.metadata:
-            if metadata_item.key == "date":
+            if form_field_kind_for_metadata_key(metadata_item.key) is MetadataFormFieldKind.DATE:
                 continue
 
-            for value in post_data.getlist(f"new_claim__{metadata_item.key}"):
+            for value in post_data.getlist(new_claim_post_name_prefix(metadata_item.key)):
                 cleaned_value = value.strip()
                 if not cleaned_value:
                     continue
