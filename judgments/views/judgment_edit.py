@@ -9,7 +9,7 @@ from django.views.generic import View
 
 from judgments.utils import api_client
 from judgments.utils.aws import invalidate_caches
-from judgments.utils.govuk_date import GovukDateParseError, parse_govuk_date_from_post
+from judgments.utils.govuk_date import JUDGMENT_DATE_FIELD_MESSAGES, GovukDateParseError, parse_govuk_date_from_post
 from judgments.utils.metadata_editing import (
     save_judgment_date_from_document_form,
     save_judgment_title_from_document_form,
@@ -71,6 +71,21 @@ class EditJudgmentView(EditorRequiredMixin, View):
                 )
 
             else:
+                try:
+                    new_date = parse_govuk_date_from_post(
+                        request.POST,
+                        "judgment_date",
+                        messages=JUDGMENT_DATE_FIELD_MESSAGES,
+                    )
+                except GovukDateParseError as error:
+                    messages.error(request, str(error))
+                    return HttpResponseRedirect(
+                        reverse(
+                            "full-text-html",
+                            kwargs={"document_uri": kwargs["document_uri"]},
+                        ),
+                    )
+
                 with judgment.editing_session():
                     # If there is a submitted NCN, and EITHER one doesn't already exist OR one does exist and the value is different, process changes
                     if form_neutral_citation != "" and (
@@ -83,17 +98,6 @@ class EditJudgmentView(EditorRequiredMixin, View):
                     # Set court
                     new_court = request.POST["court"]
                     api_client.set_document_court_and_jurisdiction(judgment_uri, new_court)
-
-                    try:
-                        new_date = parse_govuk_date_from_post(request.POST, "judgment_date")
-                    except GovukDateParseError as error:
-                        messages.error(request, str(error))
-                        return HttpResponseRedirect(
-                            reverse(
-                                "full-text-html",
-                                kwargs={"document_uri": kwargs["document_uri"]},
-                            ),
-                        )
 
                     save_judgment_date_from_document_form(judgment, new_date)
                     api_client.set_judgment_date(judgment_uri, new_date.isoformat())

@@ -1,16 +1,18 @@
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 from unittest.mock import patch
 
 from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
 from caselawclient.models.documents import DocumentURIString
 from caselawclient.models.documents.metadata.fields.field import (
     MetadataCategoryValue,
+    MetadataDateValue,
     MetadataField,
     MetadataStringValue,
 )
 from caselawclient.models.documents.metadata.fields.source import MetadataSource
 from caselawclient.models.judgments import Judgment
 from django.contrib.auth.models import User
+from django.contrib.messages import get_messages
 from django.test import TestCase
 from django.urls import reverse
 from editing import editing_order, record, tracking_editing_session
@@ -192,6 +194,8 @@ class TestDocumentMetadata(TestCase):
         self.assertContains(response, "Superseded")
         self.assertContains(response, 'name="reject_claim_ids"')
         self.assertContains(response, 'name="new_claim__court"')
+        self.assertContains(response, 'name="new_claim__date-day"')
+        self.assertNotContains(response, 'name="new_claim__date"')
         self.assertContains(response, 'data-form-actions=""')
         self.assertContains(response, 'data-form-actions-submit=""')
         self.assertContains(response, 'data-form-actions-clear=""')
@@ -241,6 +245,125 @@ class TestDocumentMetadata(TestCase):
 
         category_claims = judgment.metadata_fields.by_name("categories")
         assert category_claims[0].value == MetadataCategoryValue(name="Public law")
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_document_metadata_post_adds_date_claim_from_govuk_fields(
+        self,
+        document_type,
+        document_exists,
+        mock_judgment,
+    ):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
+        judgment = JudgmentFactory.build(
+            uri=DocumentURIString("d-a1b2c3"),
+            body=DocumentBodyFactory.build(name="Test v Tested", document_date_as_string=None),
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(make_editor())
+
+        order = editing_order()
+        with (
+            patch.object(judgment, "editing_session", tracking_editing_session(order)),
+            patch.object(judgment, "save_metadata_fields", side_effect=record(order, "save_metadata_fields")),
+        ):
+            response = self.client.post(
+                reverse("document-metadata", kwargs={"document_uri": judgment.uri}),
+                data={
+                    "new_claim__date-day": "15",
+                    "new_claim__date-month": "6",
+                    "new_claim__date-year": "2024",
+                },
+            )
+
+        assert response.status_code == 302
+        assert order == ["editing_session", "save_metadata_fields", "editing_session_end"]
+
+        date_claims = judgment.metadata_fields.by_name("date")
+        assert len(date_claims) == 1
+        assert date_claims[0].value == MetadataDateValue(date(2024, 6, 15))
+        assert date_claims[0].source is MetadataSource.EDITOR
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_document_metadata_post_rejects_invalid_govuk_date_without_saving(
+        self,
+        document_type,
+        document_exists,
+        mock_judgment,
+    ):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
+        judgment = JudgmentFactory.build(
+            uri=DocumentURIString("d-a1b2c3"),
+            body=DocumentBodyFactory.build(name="Test v Tested", court="Court of Testing"),
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(make_editor())
+
+        order = editing_order()
+        with (
+            patch.object(judgment, "editing_session", tracking_editing_session(order)),
+            patch.object(judgment, "save_metadata_fields", side_effect=record(order, "save_metadata_fields")),
+        ):
+            response = self.client.post(
+                reverse("document-metadata", kwargs={"document_uri": judgment.uri}),
+                data={
+                    "new_claim__court": ["New Court"],
+                    "new_claim__date-day": "31",
+                    "new_claim__date-month": "2",
+                    "new_claim__date-year": "2023",
+                },
+            )
+
+        assert response.status_code == 302
+        assert order == []
+        assert judgment.metadata_fields.by_name("court") == []
+        assert judgment.metadata_fields.by_name("date") == []
+
+        messages = list(get_messages(response.wsgi_request))
+        assert len(messages) == 1
+        assert messages[0].level_tag == "error"
+        assert messages[0].message == "Enter a real date for the new claim"
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_document_metadata_post_rejects_incomplete_govuk_date_without_saving(
+        self,
+        document_type,
+        document_exists,
+        mock_judgment,
+    ):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
+        judgment = JudgmentFactory.build(
+            uri=DocumentURIString("d-a1b2c3"),
+            body=DocumentBodyFactory.build(name="Test v Tested", court="Court of Testing"),
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(make_editor())
+
+        response = self.client.post(
+            reverse("document-metadata", kwargs={"document_uri": judgment.uri}),
+            data={
+                "new_claim__date-day": "15",
+                "new_claim__date-month": "",
+                "new_claim__date-year": "2024",
+            },
+        )
+
+        messages = list(get_messages(response.wsgi_request))
+        assert messages[0].message == "Enter the full date for the new claim"
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")

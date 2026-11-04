@@ -4,6 +4,7 @@
 {% from "components/badge.jinja" import badge %}
 {% from "components/button.jinja" import button %}
 {% from "components/text_input.jinja" import text_input %}
+{% from "components/date_input.jinja" import govuk_date_input %}
 {% from "components/checkboxes.jinja" import checkboxes %}
 {% from "components/card.jinja" import card %}
 {% from "components/form_actions.jinja" import form_actions %}
@@ -51,12 +52,20 @@
                 {% endcall %}
               {% endfor %}
               {% call card() %}
-                {{ text_input({
-                  "label": "New claim",
-                  "id_for_label": section.new_claim_input_id,
-                  "html_name": section.new_claim_input_name,
-                  "value": ""
-                }) }}
+                {% if section.metadata_item.key == "date" %}
+                  {{ govuk_date_input({
+                    "label": "New claim",
+                    "id_for_label": section.new_claim_input_id,
+                    "html_name": section.new_claim_input_name,
+                  }) }}
+                {% else %}
+                  {{ text_input({
+                    "label": "New claim",
+                    "id_for_label": section.new_claim_input_id,
+                    "html_name": section.new_claim_input_name,
+                    "value": ""
+                  }) }}
+                {% endif %}
               {% endcall %}
             </div>
           </section>
