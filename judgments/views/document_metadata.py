@@ -215,15 +215,31 @@ class DocumentMetadataView(EditorRequiredMixin, DocumentView):
 
         return True, changed
 
+    def _parse_optional_date_claims(self, post_data) -> tuple[bool, dict[str, date]]:
+        parsed_dates: dict[str, date] = {}
+
+        for metadata_item in self.document.metadata:
+            if form_field_kind_for_metadata_key(metadata_item.key) is not MetadataFormFieldKind.DATE:
+                continue
+
+            try:
+                submitted_date = parse_optional_govuk_date_from_post(
+                    post_data,
+                    new_claim_post_name_prefix(metadata_item.key),
+                    messages=METADATA_NEW_DATE_CLAIM_MESSAGES,
+                )
+            except GovukDateParseError as error:
+                messages.error(self.request, str(error))
+                return False, {}
+
+            if submitted_date is not None:
+                parsed_dates[metadata_item.key] = submitted_date
+
+        return True, parsed_dates
+
     def _add_new_claims(self, post_data) -> tuple[bool, bool]:
-        try:
-            submitted_date = parse_optional_govuk_date_from_post(
-                post_data,
-                new_claim_post_name_prefix("date"),
-                messages=METADATA_NEW_DATE_CLAIM_MESSAGES,
-            )
-        except GovukDateParseError as error:
-            messages.error(self.request, str(error))
+        parse_success, date_claims = self._parse_optional_date_claims(post_data)
+        if not parse_success:
             return False, False
 
         changed = False
@@ -256,10 +272,10 @@ class DocumentMetadataView(EditorRequiredMixin, DocumentView):
                     )
                 changed = True
 
-        if submitted_date is not None:
+        for metadata_key, submitted_date in date_claims.items():
             self.document.metadata_fields.add(
                 MetadataField(
-                    name="date",
+                    name=metadata_key,
                     value=MetadataDateValue(submitted_date),
                     source=MetadataSource.EDITOR,
                 ),
