@@ -99,8 +99,6 @@ class EditJudgmentView(EditorRequiredMixin, View):
                     new_court = request.POST["court"]
                     api_client.set_document_court_and_jurisdiction(judgment_uri, new_court)
 
-                    api_client.set_document_court_and_jurisdiction(judgment_uri, new_court)
-
                     save_judgment_date_from_document_form(judgment, new_date)
                     api_client.set_judgment_date(judgment_uri, new_date.isoformat())
 
