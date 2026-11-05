@@ -6,6 +6,61 @@
 
   background-color: colour-var("background");
 
+  &.details--panel {
+    margin: 0;
+    padding: 0;
+    border: 0;
+
+    &[open] {
+      .details__summary {
+        &::before {
+          top: $space-4;
+          transform: rotate(90deg);
+        }
+      }
+    }
+
+    .details__text {
+      padding: 0;
+    }
+
+    .details__summary {
+      position: relative;
+
+      padding: $space-4;
+      border-bottom: 1px solid colour-var("accent-border");
+
+      font-size: $typography-sm-text-size;
+      font-weight: $typography-bold-font-weight;
+      list-style: none;
+
+      background: colour-var("accent-background-light");
+
+      &::before {
+        content: " ";
+
+        position: absolute;
+        top: $space-6;
+        right: $space-4;
+        transform: rotate(-90deg);
+
+        display: inline-block;
+
+        width: $space-4;
+        height: $space-4;
+        margin: 0;
+
+        background: url($fa_chevron_left) right no-repeat;
+        background-size: contain;
+      }
+
+      &:focus {
+        background: colour-var("accent-background-light");
+        outline: none;
+      }
+    }
+  }
+
   &.details--centered {
     display: flex;
     flex-direction: column;
