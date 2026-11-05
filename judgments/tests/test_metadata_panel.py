@@ -252,11 +252,11 @@ class TestMetadataPanel(TestCase):
         )
         root = lxml.html.fromstring(rendered)
 
-        # judges_dd = root.xpath('//dt[contains(., "Judge/s")]/following-sibling::dd')[0]
+        judges_dd = root.xpath('//dt[normalize-space(.)="Judges"]/following-sibling::dd')[0]
         edit_form = root.xpath('//form[@id="document-edit-form"]')[0]
         assert edit_form.get("action").endswith("/d-a1b2c3/edit")
-        assert len(edit_form.xpath('.//input[@name="new_claim__judges"]')) == 1
-        assert edit_form.xpath(".//*[@data-metadata-compact-draft]")
+        assert len(judges_dd.xpath('.//input[@name="new_claim__judges"]')) == 1
+        assert judges_dd.xpath(".//*[@data-metadata-compact-draft]")
         assert "data-metadata-compact-draft" in rendered
         assert "data-metadata-compact-add" in rendered
         assert "data-metadata-compact-list" in rendered
