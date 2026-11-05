@@ -1,17 +1,10 @@
 {% extends "layouts/judgment.jinja" %}
 {% from "components/notification.jinja" import notification %}
 {% from "components/document_metadata.jinja" import document_metadata with context %}
-{% from "components/tabs.jinja" import tabs, tab %}
 {% block aside %}
   {{ document_metadata(document=document) }}
 {% endblock aside %}
 {% block content %}
-  {% if document.pdf_url %}
-    {% call tabs() %}
-      {{ tab(id="html", name="html", index=0, selected=True, url=url("full-text-html", document.uri) , label="HTML view") }}
-      {{ tab(id="pdf", name="pdf", index=1, url=url("full-text-pdf", document.uri) , label="PDF view") }}
-    {% endcall %}
-  {% endif %}
   {% if document.body.failed_to_parse %}
     <div class="container">
       {% call notification(variant="failure") %}
