@@ -55,6 +55,7 @@
       }
 
       &:focus {
+        z-index: auto;
         background: colour-var("accent-background-light");
         outline: none;
       }
