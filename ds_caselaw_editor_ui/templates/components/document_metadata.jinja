@@ -37,187 +37,189 @@
         {{ csrf_input }}
         <input type="hidden" name="return_to" value="html" />
         <input type="hidden" name="judgment_uri" value="{{ document.uri }}" />
-        {% call details(title="Editable metadata", variant="panel", open=True) %}
-          <dl>
-            <div>
-              <dt>Title</dt>
-              <dd>
-                {{ govukInput({
-                  "label": { "text": "Title", "classes": "govuk-visually-hidden" },
-                  "id": "metadata_name",
-                  "name": "metadata_name",
-                  "value": metadata.title.value,
-                }) }}
-              </dd>
-            </div>
-            <div>
-              <dt>Court</dt>
-              <dd>
-                <datalist id="court-list">
-                  {% for court in courts|default([]) %}
-                    {% if court.code %}<option value="{{ court.code }}">{{ court.name }}</option>{% endif %}
-                  {% endfor %}
-                </datalist>
-                {{ govukInput({
-                  "label": { "text": "Court", "classes": "govuk-visually-hidden" },
-                  "id": "court",
-                  "name": "court",
-                  "value": court_value,
-                  "attributes": { "list": "court-list" },
-                }) }}
-              </dd>
-            </div>
-            <div>
-              <dt>Judgment date</dt>
-              <dd>
-                {{ govukDateInput({
-                  "id": "judgment_date",
-                  "namePrefix": "judgment_date",
-                  "fieldset": {
-                    "legend": { "text": "Judgment date", "classes": "govuk-visually-hidden" }
-                  },
-                  "items": [
-                    {
-                      "name": "day",
-                      "value": judgment_date.day|string if judgment_date else "",
-                      "classes": "govuk-input--width-2"
+        <div class="aside__form-content">
+          {% call details(title="Editable metadata", variant="panel", open=True) %}
+            <dl>
+              <div>
+                <dt>Title</dt>
+                <dd>
+                  {{ govukInput({
+                    "label": { "text": "Title", "classes": "govuk-visually-hidden" },
+                    "id": "metadata_name",
+                    "name": "metadata_name",
+                    "value": metadata.title.value,
+                  }) }}
+                </dd>
+              </div>
+              <div>
+                <dt>Court</dt>
+                <dd>
+                  <datalist id="court-list">
+                    {% for court in courts|default([]) %}
+                      {% if court.code %}<option value="{{ court.code }}">{{ court.name }}</option>{% endif %}
+                    {% endfor %}
+                  </datalist>
+                  {{ govukInput({
+                    "label": { "text": "Court", "classes": "govuk-visually-hidden" },
+                    "id": "court",
+                    "name": "court",
+                    "value": court_value,
+                    "attributes": { "list": "court-list" },
+                  }) }}
+                </dd>
+              </div>
+              <div>
+                <dt>Judgment date</dt>
+                <dd>
+                  {{ govukDateInput({
+                    "id": "judgment_date",
+                    "namePrefix": "judgment_date",
+                    "fieldset": {
+                      "legend": { "text": "Judgment date", "classes": "govuk-visually-hidden" }
                     },
-                    {
-                      "name": "month",
-                      "value": judgment_date.month|string if judgment_date else "",
-                      "classes": "govuk-input--width-2"
-                    },
-                    {
-                      "name": "year",
-                      "value": judgment_date.year|string if judgment_date else "",
-                      "classes": "govuk-input--width-4"
-                    }
-                  ]
-                }) }}
-              </dd>
-            </div>
-            <div>
-              <dt>Judges</dt>
-              <dd>
-                {% if metadata_judges_section is defined and metadata_judges_section and can_edit_document %}
-                  {{ metadata_claim_section(metadata_judges_section, variant="compact", show_history=false) }}
-                {% else %}
-                  {{ document_metadata_item(metadata_item=metadata.judges) }}
-                {% endif %}
-              </dd>
-            </div>
-          </dl>
-        {% endcall %}
-        {% call details(title="Identifiers", variant="panel") %}
-          <dl>
-            <div>
-              <dt>NCN</dt>
-              <dd>
-                {{ govukInput({
-                  "label": { "text": "NCN", "classes": "govuk-visually-hidden" },
-                  "id": "neutral_citation",
-                  "name": "neutral_citation",
-                  "value": preferred_ncn.value if preferred_ncn else "",
-                }) }}
-              </dd>
-            </div>
-            <div>
-              <dt>Other</dt>
-              <dd>
-                {% set identifier_list = identifiers.by_score() if identifiers else [] %}
-                {% set preferred_uuid = preferred_identifier.uuid if preferred_identifier else none %}
-                {% set other = namespace(shown=false) %}
-                {% for identifier in identifier_list %}
-                  {% if identifier.uuid != preferred_uuid %}
-                    {{ badge(content=identifier.schema.name ~ ": " ~ identifier.value) }}
-                    {% set other.shown = true %}
-                  {% endif %}
-                {% endfor %}
-                {% if not other.shown %}
-                  {{ None|or_no_data_available_label }}
-                {% endif %}
-              </dd>
-            </div>
-          </dl>
-        {% endcall %}
-        {% call details(title="Other metadata", variant="panel") %}
-          <dl>
-            <div>
-              <dt>Jurisdiction</dt>
-              <dd>
-                {{ document_metadata_item(metadata_item=metadata.jurisdiction) }}
-              </dd>
-            </div>
-            <div>
-              <dt>Case number</dt>
-              <dd>
-                {{ document_metadata_item(metadata_item=metadata.case_number) }}
-              </dd>
-            </div>
-            <div>
-              <dt>TDR ref</dt>
-              <dd>
-                {{ document.consignment_reference|or_no_data_available_label }}
-              </dd>
-            </div>
-            <div>
-              <dt>Type</dt>
-              <dd>
-                {{ document.document_noun|title }}
-              </dd>
-            </div>
-            <div>
-              <dt>First pub</dt>
-              <dd>
-                {% if document.has_ever_been_published %}
-                  {% if document.first_published_datetime_display %}
-                    {{ document.first_published_datetime_display | date("%-d %b %Y %H:%M") }}
+                    "items": [
+                      {
+                        "name": "day",
+                        "value": judgment_date.day|string if judgment_date else "",
+                        "classes": "govuk-input--width-2"
+                      },
+                      {
+                        "name": "month",
+                        "value": judgment_date.month|string if judgment_date else "",
+                        "classes": "govuk-input--width-2"
+                      },
+                      {
+                        "name": "year",
+                        "value": judgment_date.year|string if judgment_date else "",
+                        "classes": "govuk-input--width-4"
+                      }
+                    ]
+                  }) }}
+                </dd>
+              </div>
+              <div>
+                <dt>Judges</dt>
+                <dd>
+                  {% if metadata_judges_section is defined and metadata_judges_section and can_edit_document %}
+                    {{ metadata_claim_section(metadata_judges_section, variant="compact", show_history=false) }}
                   {% else %}
-                    Unknown
+                    {{ document_metadata_item(metadata_item=metadata.judges) }}
                   {% endif %}
-                {% else %}
+                </dd>
+              </div>
+            </dl>
+          {% endcall %}
+          {% call details(title="Identifiers", variant="panel") %}
+            <dl>
+              <div>
+                <dt>NCN</dt>
+                <dd>
+                  {{ govukInput({
+                    "label": { "text": "NCN", "classes": "govuk-visually-hidden" },
+                    "id": "neutral_citation",
+                    "name": "neutral_citation",
+                    "value": preferred_ncn.value if preferred_ncn else "",
+                  }) }}
+                </dd>
+              </div>
+              <div>
+                <dt>Other</dt>
+                <dd>
+                  {% set identifier_list = identifiers.by_score() if identifiers else [] %}
+                  {% set preferred_uuid = preferred_identifier.uuid if preferred_identifier else none %}
+                  {% set other = namespace(shown=false) %}
+                  {% for identifier in identifier_list %}
+                    {% if identifier.uuid != preferred_uuid %}
+                      {{ badge(content=identifier.schema.name ~ ": " ~ identifier.value) }}
+                      {% set other.shown = true %}
+                    {% endif %}
+                  {% endfor %}
+                  {% if not other.shown %}
+                    {{ None|or_no_data_available_label }}
+                  {% endif %}
+                </dd>
+              </div>
+            </dl>
+          {% endcall %}
+          {% call details(title="Other metadata", variant="panel") %}
+            <dl>
+              <div>
+                <dt>Jurisdiction</dt>
+                <dd>
+                  {{ document_metadata_item(metadata_item=metadata.jurisdiction) }}
+                </dd>
+              </div>
+              <div>
+                <dt>Case number</dt>
+                <dd>
+                  {{ document_metadata_item(metadata_item=metadata.case_number) }}
+                </dd>
+              </div>
+              <div>
+                <dt>TDR ref</dt>
+                <dd>
+                  {{ document.consignment_reference|or_no_data_available_label }}
+                </dd>
+              </div>
+              <div>
+                <dt>Type</dt>
+                <dd>
+                  {{ document.document_noun|title }}
+                </dd>
+              </div>
+              <div>
+                <dt>First pub</dt>
+                <dd>
+                  {% if document.has_ever_been_published %}
+                    {% if document.first_published_datetime_display %}
+                      {{ document.first_published_datetime_display | date("%-d %b %Y %H:%M") }}
+                    {% else %}
+                      Unknown
+                    {% endif %}
+                  {% else %}
+                    {{ None|or_no_data_available_label }}
+                  {% endif %}
+                </dd>
+              </div>
+              <div>
+                <dt>Source name</dt>
+                <dd>
+                  {{ document.source_name|or_no_data_available_label }}
+                </dd>
+              </div>
+              <div>
+                <dt>Source email</dt>
+                <dd>
+                  {{ document.source_email|or_no_data_available_label }}
+                </dd>
+              </div>
+              <div>
+                <dt>Parties</dt>
+                <dd>
                   {{ None|or_no_data_available_label }}
-                {% endif %}
-              </dd>
-            </div>
-            <div>
-              <dt>Source name</dt>
-              <dd>
-                {{ document.source_name|or_no_data_available_label }}
-              </dd>
-            </div>
-            <div>
-              <dt>Source email</dt>
-              <dd>
-                {{ document.source_email|or_no_data_available_label }}
-              </dd>
-            </div>
-            <div>
-              <dt>Parties</dt>
-              <dd>
-                {{ None|or_no_data_available_label }}
-              </dd>
-            </div>
-            <div>
-              <dt>Categories</dt>
-              <dd>
-                {{ document_metadata_item(metadata_item=metadata.categories) }}
-              </dd>
-            </div>
-          </dl>
+                </dd>
+              </div>
+              <div>
+                <dt>Categories</dt>
+                <dd>
+                  {{ document_metadata_item(metadata_item=metadata.categories) }}
+                </dd>
+              </div>
+            </dl>
+          {% endcall %}
+        </div>
+        {% call form_actions({"data-form-actions": ""}) %}
+          {{ button(content="Save",
+            disabled=not can_edit_document,
+            size="small",
+            attrs={"type": "submit", "data-form-actions-submit": ""}) }}
+          {{ button(content="Clear changes",
+            variant="secondary",
+            disabled=not can_edit_document,
+            size="small",
+            attrs={"type": "button", "data-form-actions-clear": ""}) }}
         {% endcall %}
       </form>
-      {% call form_actions({"data-form-actions": ""}) %}
-        {{ button(content="Save",
-          disabled=not can_edit_document,
-          size="small",
-          attrs={"type": "submit", "data-form-actions-submit": ""}) }}
-        {{ button(content="Clear changes",
-          variant="secondary",
-          disabled=not can_edit_document,
-          size="small",
-          attrs={"type": "button", "data-form-actions-clear": ""}) }}
-      {% endcall %}
     </div>
   </div>
 {% endmacro %}
