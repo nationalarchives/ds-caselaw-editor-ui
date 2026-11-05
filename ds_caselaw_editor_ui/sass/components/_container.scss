@@ -6,7 +6,75 @@
     flex: 1;
   }
 
+  &__aside-resizer {
+    display: none;
+  }
+
   @media (min-width: $grid-breakpoint-medium) {
     flex-direction: row;
+
+    &__content {
+      min-width: 0;
+    }
+
+    &__aside {
+      position: sticky;
+      top: 0;
+
+      flex: 0 0 auto;
+
+      width: 385px;
+      min-width: 385px;
+      height: 100vh;
+
+      &:has(.aside__container.collapsed) {
+        min-width: 34px;
+        max-width: 34px;
+
+        .main-container__aside-resizer {
+          display: none;
+        }
+      }
+
+      &:not(:has(> :not(.main-container__aside-resizer))) {
+        display: none;
+      }
+    }
+
+    &__aside-resizer {
+      touch-action: none;
+      cursor: col-resize;
+
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      bottom: 0;
+      left: -4px;
+
+      display: block;
+
+      width: 9px;
+
+      &::after {
+        content: "";
+
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 4px;
+
+        width: 1px;
+
+        background: colour-var("font-base");
+      }
+
+      &:hover::after,
+      &:focus-visible::after,
+      .main-container__aside.is-resizing &::after {
+        left: 3px;
+        width: 3px;
+        background: colour-var("accent-border");
+      }
+    }
   }
 }
