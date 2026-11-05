@@ -107,9 +107,6 @@
         }
 
         dd {
-          display: flex;
-          flex-wrap: wrap;
-          gap: $space-2;
           margin: 0;
 
           &:has(> .aside__metadata-compact-form) {
