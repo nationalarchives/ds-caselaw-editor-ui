@@ -2,6 +2,7 @@
 {% from "components/button.jinja" import button %}
 {% from "components/badge.jinja" import badge %}
 {% from "components/details.jinja" import details %}
+{% from "govuk_frontend_jinja/components/date-input/macro.html" import govukDateInput %}
 {% from "govuk_frontend_jinja/components/input/macro.html" import govukInput %}
 {% from "components/document_metadata_item.jinja" import document_metadata_item %}
 {% from "components/document_metadata_claim_section.jinja" import metadata_claim_section with context %}
@@ -10,6 +11,13 @@
   {% set metadata = document.metadata if document.metadata is defined else {} %}
   {% set identifiers = document.identifiers if document.identifiers is defined else none %}
   {% set preferred_identifier = identifiers.preferred() if identifiers else none %}
+  {% set judgment_date = metadata.date.value %}
+  {% if document.body is defined %}
+    {% set court_value = document.body.court_and_jurisdiction_identifier_string %}
+  {% else %}
+    {% set court_value = metadata.court.value %}
+  {% endif %}
+  {% set can_edit_document = user is defined and user|can_edit %}
   <div class="aside__container" data-aside-toggle>
     <button type="button" class="aside__toggle" data-aside-toggle-button>
       <span class="icon icon__chevron-left"></span>
@@ -22,13 +30,14 @@
       </div>
       {% call details(title="Editable metadata", variant="panel", open=True) %}
         <form aria-label="Edit judgment"
+              id="document-edit-form"
               method="post"
-              action="{{ url('edit-document', judgment.uri) }}"
+              action="{{ url('edit-document', document.uri) }}"
               data-document-edit-form>
           <dl>
             {{ csrf_input }}
             <input type="hidden" name="return_to" value="html" />
-            <input type="hidden" name="judgment_uri" value="{{ document_uri }}" />
+            <input type="hidden" name="judgment_uri" value="{{ document.uri }}" />
             <div>
               <dt>Title</dt>
               <dd>
@@ -43,16 +52,50 @@
             <div>
               <dt>Court</dt>
               <dd>
-                {{ document_metadata_item(metadata_item=metadata.court) }}
+                <datalist id="court-list">
+                  {% for court in courts|default([]) %}
+                    {% if court.code %}<option value="{{ court.code }}">{{ court.name }}</option>{% endif %}
+                  {% endfor %}
+                </datalist>
+                {{ govukInput({
+                  "label": { "text": "Court", "classes": "govuk-visually-hidden" },
+                  "id": "court",
+                  "name": "court",
+                  "value": court_value,
+                  "attributes": { "list": "court-list" },
+                }) }}
               </dd>
             </div>
             <div>
               <dt>Judgment date</dt>
               <dd>
-                {{ document_metadata_item(metadata_item=metadata.date, date_format="%-d %b %Y") }}
+                {{ govukDateInput({
+                  "id": "judgment_date",
+                  "namePrefix": "judgment_date",
+                  "fieldset": {
+                    "legend": { "text": "Judgment date", "classes": "govuk-visually-hidden" }
+                  },
+                  "items": [
+                    {
+                      "name": "day",
+                      "value": judgment_date.day|string if judgment_date else "",
+                      "classes": "govuk-input--width-2"
+                    },
+                    {
+                      "name": "month",
+                      "value": judgment_date.month|string if judgment_date else "",
+                      "classes": "govuk-input--width-2"
+                    },
+                    {
+                      "name": "year",
+                      "value": judgment_date.year|string if judgment_date else "",
+                      "classes": "govuk-input--width-4"
+                    }
+                  ]
+                }) }}
               </dd>
             </div>
-            {% call button(disabled=not user|can_edit) %}
+            {% call button(disabled=not can_edit_document) %}
               Save
             {% endcall %}
           </dl>
@@ -92,13 +135,15 @@
       {% call details(title="Identifiers", variant="panel") %}
         <dl>
           <div>
-            <dt>Preferred</dt>
+            <dt>NCN</dt>
             <dd>
-              {% if preferred_identifier %}
-                {{ badge(content=preferred_identifier.schema.name ~ ": " ~ preferred_identifier.value) }}
-              {% else %}
-                {{ None|or_no_data_available_label }}
-              {% endif %}
+              {{ govukInput({
+                "label": { "text": "NCN", "classes": "govuk-visually-hidden" },
+                "id": "neutral_citation",
+                "name": "neutral_citation",
+                "value": preferred_ncn.value if preferred_ncn else "",
+                "attributes": { "form": "document-edit-form" },
+              }) }}
             </dd>
           </div>
           <div>
@@ -118,6 +163,9 @@
               {% endif %}
             </dd>
           </div>
+          {% call button(disabled=not can_edit_document, attrs={"form":"document-edit-form"}) %}
+            Save
+          {% endcall %}
         </dl>
       {% endcall %}
       {% call details(title="Other metadata", variant="panel") %}

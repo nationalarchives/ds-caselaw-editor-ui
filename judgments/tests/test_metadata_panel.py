@@ -36,6 +36,7 @@ class TestMetadataPanel(TestCase):
             uri=DocumentURIString("hvtest/4321/123"),
             html="<h1>Test Judgment</h1>",
             body=DocumentBodyFactory.build(name="Test v Tested"),
+            identifiers=[NeutralCitationNumber("[2023] UKSC 1")],
         )
         mock_judgment.return_value = judgment
 
@@ -49,7 +50,13 @@ class TestMetadataPanel(TestCase):
 
         assert b'<input type="hidden" name="judgment_uri" value="hvtest/4321/123" />' in response.content
         assert root.xpath("//input[@id='court']/@value")[0] == "Court of Testing"
-        assert root.xpath("//textarea[@id='metadata_name']")[0].text == "Test v Tested"
+        assert root.xpath("//input[@id='metadata_name']/@value")[0] == "Test v Tested"
+        assert root.xpath("//input[@id='judgment_date-day']/@value")[0] == "3"
+        assert root.xpath("//input[@id='judgment_date-month']/@value")[0] == "2"
+        assert root.xpath("//input[@id='judgment_date-year']/@value")[0] == "2023"
+        assert root.xpath("//input[@id='neutral_citation']/@value")[0] == "[2023] UKSC 1"
+        assert root.xpath("//input[@id='neutral_citation']/@form")[0] == "document-edit-form"
+        assert not root.xpath("//div[contains(@class, 'metadata__container')]")
         assert response.status_code == 200
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
@@ -81,7 +88,7 @@ class TestMetadataPanel(TestCase):
 
         root = lxml.html.fromstring(response.content)
 
-        assert root.xpath("//textarea[@id='metadata_name']")[0].text == "Resolved structured title"
+        assert root.xpath("//input[@id='metadata_name']/@value")[0] == "Resolved structured title"
         assert response.status_code == 200
 
     def test_metadata_item_renders_scalar_value(self):
@@ -142,6 +149,7 @@ class TestMetadataPanel(TestCase):
                 return [preferred, other]
 
         document = SimpleNamespace(
+            uri="test/2025/1",
             metadata={
                 "title": SimpleNamespace(value="Test v Tested"),
                 "court": SimpleNamespace(value="EWCA-Civil"),
@@ -163,8 +171,8 @@ class TestMetadataPanel(TestCase):
         rendered = template.render(document=document)
         root = lxml.html.fromstring(rendered)
 
-        section_headings = root.xpath('//*[@data-test-id="metadata-section-heading"]/dt/text()')
-        assert section_headings == ["Metadata", "Identifiers", "Legacy"]
+        section_headings = root.xpath("//details/summary/span/text()")
+        assert section_headings == ["Editable metadata", "Identifiers", "Other metadata"]
 
         judges_dd = root.xpath('//dt[normalize-space(.)="Judges"]/following-sibling::dd')[0]
         assert "Lord Justice Test" in judges_dd.text_content()
@@ -293,6 +301,7 @@ class TestMetadataPanel(TestCase):
                 return [only]
 
         document = SimpleNamespace(
+            uri="test/2025/1",
             metadata={
                 "title": SimpleNamespace(value="Test v Tested"),
                 "court": SimpleNamespace(value="EWCA-Civil"),
@@ -378,9 +387,10 @@ class TestMetadataPanel(TestCase):
             reverse("full-text-html", kwargs={"document_uri": judgment.uri}),
         )
 
-        self.assertContains(response, 'data-test-id="metadata-section-heading"')
-        self.assertContains(response, "Legacy")
-        self.assertContains(response, "Lord Justice Underhill")
+        root = lxml.html.fromstring(response.content)
+        section_headings = root.xpath("//details/summary/span/text()")
+        assert section_headings == ["Editable metadata", "Identifiers", "Other metadata"]
+        assert "Lord Justice Underhill" in root.text_content()
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
