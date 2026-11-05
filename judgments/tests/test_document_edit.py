@@ -5,7 +5,11 @@ import pytest
 from caselawclient.errors import MarklogicAPIError
 from caselawclient.factories import DocumentBodyFactory, JudgmentFactory, PressSummaryFactory
 from caselawclient.models.documents import DocumentURIString
-from caselawclient.models.documents.metadata.fields.field import MetadataDateValue, MetadataStringValue
+from caselawclient.models.documents.metadata.fields.field import (
+    MetadataDateValue,
+    MetadataField,
+    MetadataStringValue,
+)
 from caselawclient.models.documents.metadata.fields.source import MetadataSource
 from caselawclient.models.identifiers.neutral_citation import (
     NCNCannotConvertToValidURLSlugException,
@@ -44,6 +48,14 @@ class TestDocumentEdit(TestCase):
         )
 
         judgment.identifiers.add(NeutralCitationNumber("[4321] UKSC 123"))
+        judgment.body.judges = ["Lord Justice Body"]
+        editor_judge_claim = MetadataField(
+            id="editor-judge",
+            name="judges",
+            value=MetadataStringValue("Lord Justice Previous"),
+            source=MetadataSource.EDITOR,
+        )
+        judgment.metadata_fields.add(editor_judge_claim)
         mock_judgment.return_value = judgment
         order = editing_order()
         api_client.set_document_court_and_jurisdiction.side_effect = record(order, "set_court")
@@ -63,6 +75,9 @@ class TestDocumentEdit(TestCase):
                     "metadata_name": "New Name",
                     "neutral_citation": "[4321] UKSC 123",
                     "court": "Court of Testing",
+                    "new_claim__judges": ["Lord Justice Example"],
+                    "reject_claim_ids": [editor_judge_claim.id],
+                    "suppress_body_judges": ["Lord Justice Body"],
                     **document_form_judgment_date_fields(),
                 },
             )
@@ -81,6 +96,8 @@ class TestDocumentEdit(TestCase):
             "/edittest/4321/123",
             "2023-01-02",
         )
+        assert judgment.metadata.judges.values == ["Lord Justice Example"]
+        assert editor_judge_claim.id not in judgment.metadata_fields
 
         assert order == [
             "editing_session",
@@ -88,6 +105,7 @@ class TestDocumentEdit(TestCase):
             "set_court",
             "save_metadata_fields",
             "set_judgment_date",
+            "save_metadata_fields",
             "editing_session_end",
         ]
         mock_invalidate_caches.assert_called_once_with(judgment.uri)

@@ -55,7 +55,12 @@ class TestMetadataPanel(TestCase):
         assert root.xpath("//input[@id='judgment_date-month']/@value")[0] == "2"
         assert root.xpath("//input[@id='judgment_date-year']/@value")[0] == "2023"
         assert root.xpath("//input[@id='neutral_citation']/@value")[0] == "[2023] UKSC 1"
-        assert root.xpath("//input[@id='neutral_citation']/@form")[0] == "document-edit-form"
+        edit_form = root.xpath("//form[@id='document-edit-form']")[0]
+        assert edit_form.xpath(".//input[@id='metadata_name']")
+        assert edit_form.xpath(".//input[@id='court']")
+        assert edit_form.xpath(".//input[@id='judgment_date-day']")
+        assert edit_form.xpath(".//input[@id='neutral_citation']")
+        assert len(edit_form.xpath(".//button[@data-form-actions-submit]")) == 1
         assert not root.xpath("//div[contains(@class, 'metadata__container')]")
         assert response.status_code == 200
 
@@ -126,7 +131,7 @@ class TestMetadataPanel(TestCase):
 
     def test_document_metadata_aside_sections_and_judges(self):
         template = environment(loader=PackageLoader("ds_caselaw_editor_ui", "templates")).from_string(
-            '{% from "components/document_metadata.jinja" import document_metadata %}'
+            '{% from "components/document_metadata.jinja" import document_metadata with context %}'
             "{{ document_metadata(document=document) }}",
         )
 
@@ -168,7 +173,7 @@ class TestMetadataPanel(TestCase):
             source_email="",
         )
 
-        rendered = template.render(document=document)
+        rendered = template.render(document=document, preferred_ncn=preferred)
         root = lxml.html.fromstring(rendered)
 
         section_headings = root.xpath("//details/summary/span/text()")
@@ -182,8 +187,8 @@ class TestMetadataPanel(TestCase):
         assert "Civil" in categories_dd.text_content()
         assert "DocumentCategory" not in categories_dd.text_content()
 
-        preferred_dd = root.xpath('//dt[text()="Preferred"]/following-sibling::dd')[0]
-        assert "Neutral Citation Number: [2023] EWCA Civ 1" in preferred_dd.text_content()
+        ncn_dd = root.xpath('//dt[text()="NCN"]/following-sibling::dd')[0]
+        assert ncn_dd.xpath('.//input[@value="[2023] EWCA Civ 1"]')
 
         other_dd = root.xpath('//dt[text()="Other"]/following-sibling::dd')[0]
         assert "Find Case Law Identifier: tn4t35ts" in other_dd.text_content()
@@ -247,16 +252,20 @@ class TestMetadataPanel(TestCase):
         )
         root = lxml.html.fromstring(rendered)
 
-        judges_dd = root.xpath('//dt[contains(., "Judge/s")]/following-sibling::dd')[0]
-        assert judges_dd.xpath('.//form[contains(@action, "/d-a1b2c3/metadata")]')
+        # judges_dd = root.xpath('//dt[contains(., "Judge/s")]/following-sibling::dd')[0]
+        edit_form = root.xpath('//form[@id="document-edit-form"]')[0]
+        assert edit_form.get("action").endswith("/d-a1b2c3/edit")
+        assert len(edit_form.xpath('.//input[@name="new_claim__judges"]')) == 1
+        assert edit_form.xpath(".//*[@data-metadata-compact-draft]")
         assert "data-metadata-compact-draft" in rendered
-        assert 'name="return_to"' in rendered
         assert "data-metadata-compact-add" in rendered
         assert "data-metadata-compact-list" in rendered
-        assert "aside__metadata-compact-form" in rendered
         assert "aside__metadata-compact-entry" in rendered
         assert "button--success" in rendered
         assert 'aria-label="Remove Lord Justice Test"' in rendered
+        assert "Update judges" not in rendered
+        assert len(edit_form.xpath(".//button[@data-form-actions-submit]")) == 1
+        assert "Remove Lord Justice Test" in rendered
         assert "Lord Justice Test" in rendered
 
     def test_document_metadata_aside_judges_read_only_for_non_editors(self):
@@ -323,8 +332,8 @@ class TestMetadataPanel(TestCase):
         rendered = template.render(document=document)
         root = lxml.html.fromstring(rendered)
 
-        preferred_dd = root.xpath('//dt[text()="Preferred"]/following-sibling::dd')[0]
-        assert preferred_dd.text_content().strip() == "No data available"
+        ncn_dd = root.xpath('//dt[text()="NCN"]/following-sibling::dd')[0]
+        assert ncn_dd.xpath('.//input[@value=""]')
 
         other_dd = root.xpath('//dt[text()="Other"]/following-sibling::dd')[0]
         assert "Find Case Law Identifier: tn4t35ts" in other_dd.text_content()
@@ -353,7 +362,7 @@ class TestMetadataPanel(TestCase):
         )
 
         self.assertContains(response, "Identifiers")
-        self.assertContains(response, "Preferred")
+        self.assertContains(response, "NCN")
         self.assertContains(response, "Other")
         preferred = judgment.identifiers.preferred()
         assert preferred is not None

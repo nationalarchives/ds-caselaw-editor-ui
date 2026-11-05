@@ -183,7 +183,8 @@
     }
 
     @media (min-width: $grid-breakpoint-medium) {
-      display: block;
+      display: flex;
+      flex-direction: column;
       min-height: 100%;
       border-bottom: 0;
     }
