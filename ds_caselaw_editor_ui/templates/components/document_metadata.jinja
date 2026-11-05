@@ -28,16 +28,17 @@
         <span>Metadata</span>
         {{ button(variant="link", size="small", content="Hide panel", attrs={"data-aside-toggle-button":""}) }}
       </div>
-      {% call details(title="Editable metadata", variant="panel", open=True) %}
-        <form aria-label="Edit judgment"
-              id="document-edit-form"
-              method="post"
-              action="{{ url('edit-document', document.uri) }}"
-              data-document-edit-form>
+      <form aria-label="Edit judgment"
+            id="document-edit-form"
+            method="post"
+            action="{{ url('edit-document', document.uri) }}"
+            data-document-edit-form
+            {% if metadata_judges_section is defined and metadata_judges_section and can_edit_document %} data-metadata-compact-form data-new-claim-input-name="{{ metadata_judges_section.new_claim_input_name }}" {% endif %}>
+        {{ csrf_input }}
+        <input type="hidden" name="return_to" value="html" />
+        <input type="hidden" name="judgment_uri" value="{{ document.uri }}" />
+        {% call details(title="Editable metadata", variant="panel", open=True) %}
           <dl>
-            {{ csrf_input }}
-            <input type="hidden" name="return_to" value="html" />
-            <input type="hidden" name="judgment_uri" value="{{ document.uri }}" />
             <div>
               <dt>Title</dt>
               <dd>
@@ -95,144 +96,127 @@
                 }) }}
               </dd>
             </div>
-            {% call button(disabled=not can_edit_document) %}
-              Save
-            {% endcall %}
-          </dl>
-        </form>
-        <dl>
-          <div>
-            <dt>
-              {% if metadata_judges_section is defined and metadata_judges_section and user is defined and user|can_edit %}Judge/s{% else %}Judges{% endif %}
-            </dt>
-            <dd>
-              {% if metadata_judges_section is defined and metadata_judges_section and user is defined and user|can_edit %}
-                <form method="post"
-                      class="aside__metadata-compact-form"
-                      action="{{ url('document-metadata', document.uri) }}"
-                      data-metadata-compact-form
-                      data-new-claim-input-name="{{ metadata_judges_section.new_claim_input_name }}">
-                  {{ csrf_input }}
-                  <input type="hidden" name="return_to" value="{{ request.get_full_path() }}" />
+            <div>
+              <dt>Judges</dt>
+              <dd>
+                {% if metadata_judges_section is defined and metadata_judges_section and can_edit_document %}
                   {{ metadata_claim_section(metadata_judges_section, variant="compact", show_history=false) }}
-                  {% call form_actions({"data-form-actions": ""}, classes="form-actions--inline") %}
-                    {{ button(content="Update judges",
-                      size="small",
-                      attrs={"type": "submit", "data-form-actions-submit": ""}) }}
-                    {{ button(content="Clear changes",
-                      variant="secondary",
-                      size="small",
-                      attrs={"type": "button", "data-form-actions-clear": ""}) }}
-                  {% endcall %}
-                </form>
-              {% else %}
-                {{ document_metadata_item(metadata_item=metadata.judges) }}
-              {% endif %}
-            </dd>
-          </div>
-        </dl>
-      {% endcall %}
-      {% call details(title="Identifiers", variant="panel") %}
-        <dl>
-          <div>
-            <dt>NCN</dt>
-            <dd>
-              {{ govukInput({
-                "label": { "text": "NCN", "classes": "govuk-visually-hidden" },
-                "id": "neutral_citation",
-                "name": "neutral_citation",
-                "value": preferred_ncn.value if preferred_ncn else "",
-                "attributes": { "form": "document-edit-form" },
-              }) }}
-            </dd>
-          </div>
-          <div>
-            <dt>Other</dt>
-            <dd>
-              {% set identifier_list = identifiers.by_score() if identifiers else [] %}
-              {% set preferred_uuid = preferred_identifier.uuid if preferred_identifier else none %}
-              {% set other = namespace(shown=false) %}
-              {% for identifier in identifier_list %}
-                {% if identifier.uuid != preferred_uuid %}
-                  {{ badge(content=identifier.schema.name ~ ": " ~ identifier.value) }}
-                  {% set other.shown = true %}
-                {% endif %}
-              {% endfor %}
-              {% if not other.shown %}
-                {{ None|or_no_data_available_label }}
-              {% endif %}
-            </dd>
-          </div>
-          {% call button(disabled=not can_edit_document, attrs={"form":"document-edit-form"}) %}
-            Save
-          {% endcall %}
-        </dl>
-      {% endcall %}
-      {% call details(title="Other metadata", variant="panel") %}
-        <dl>
-          <div>
-            <dt>Jurisdiction</dt>
-            <dd>
-              {{ document_metadata_item(metadata_item=metadata.jurisdiction) }}
-            </dd>
-          </div>
-          <div>
-            <dt>Case number</dt>
-            <dd>
-              {{ document_metadata_item(metadata_item=metadata.case_number) }}
-            </dd>
-          </div>
-          <div>
-            <dt>TDR ref</dt>
-            <dd>
-              {{ document.consignment_reference|or_no_data_available_label }}
-            </dd>
-          </div>
-          <div>
-            <dt>Type</dt>
-            <dd>
-              {{ document.document_noun|title }}
-            </dd>
-          </div>
-          <div>
-            <dt>First pub</dt>
-            <dd>
-              {% if document.has_ever_been_published %}
-                {% if document.first_published_datetime_display %}
-                  {{ document.first_published_datetime_display | date("%-d %b %Y %H:%M") }}
                 {% else %}
-                  Unknown
+                  {{ document_metadata_item(metadata_item=metadata.judges) }}
                 {% endif %}
-              {% else %}
+              </dd>
+            </div>
+          </dl>
+        {% endcall %}
+        {% call details(title="Identifiers", variant="panel") %}
+          <dl>
+            <div>
+              <dt>NCN</dt>
+              <dd>
+                {{ govukInput({
+                  "label": { "text": "NCN", "classes": "govuk-visually-hidden" },
+                  "id": "neutral_citation",
+                  "name": "neutral_citation",
+                  "value": preferred_ncn.value if preferred_ncn else "",
+                }) }}
+              </dd>
+            </div>
+            <div>
+              <dt>Other</dt>
+              <dd>
+                {% set identifier_list = identifiers.by_score() if identifiers else [] %}
+                {% set preferred_uuid = preferred_identifier.uuid if preferred_identifier else none %}
+                {% set other = namespace(shown=false) %}
+                {% for identifier in identifier_list %}
+                  {% if identifier.uuid != preferred_uuid %}
+                    {{ badge(content=identifier.schema.name ~ ": " ~ identifier.value) }}
+                    {% set other.shown = true %}
+                  {% endif %}
+                {% endfor %}
+                {% if not other.shown %}
+                  {{ None|or_no_data_available_label }}
+                {% endif %}
+              </dd>
+            </div>
+          </dl>
+        {% endcall %}
+        {% call details(title="Other metadata", variant="panel") %}
+          <dl>
+            <div>
+              <dt>Jurisdiction</dt>
+              <dd>
+                {{ document_metadata_item(metadata_item=metadata.jurisdiction) }}
+              </dd>
+            </div>
+            <div>
+              <dt>Case number</dt>
+              <dd>
+                {{ document_metadata_item(metadata_item=metadata.case_number) }}
+              </dd>
+            </div>
+            <div>
+              <dt>TDR ref</dt>
+              <dd>
+                {{ document.consignment_reference|or_no_data_available_label }}
+              </dd>
+            </div>
+            <div>
+              <dt>Type</dt>
+              <dd>
+                {{ document.document_noun|title }}
+              </dd>
+            </div>
+            <div>
+              <dt>First pub</dt>
+              <dd>
+                {% if document.has_ever_been_published %}
+                  {% if document.first_published_datetime_display %}
+                    {{ document.first_published_datetime_display | date("%-d %b %Y %H:%M") }}
+                  {% else %}
+                    Unknown
+                  {% endif %}
+                {% else %}
+                  {{ None|or_no_data_available_label }}
+                {% endif %}
+              </dd>
+            </div>
+            <div>
+              <dt>Source name</dt>
+              <dd>
+                {{ document.source_name|or_no_data_available_label }}
+              </dd>
+            </div>
+            <div>
+              <dt>Source email</dt>
+              <dd>
+                {{ document.source_email|or_no_data_available_label }}
+              </dd>
+            </div>
+            <div>
+              <dt>Parties</dt>
+              <dd>
                 {{ None|or_no_data_available_label }}
-              {% endif %}
-            </dd>
-          </div>
-          <div>
-            <dt>Source name</dt>
-            <dd>
-              {{ document.source_name|or_no_data_available_label }}
-            </dd>
-          </div>
-          <div>
-            <dt>Source email</dt>
-            <dd>
-              {{ document.source_email|or_no_data_available_label }}
-            </dd>
-          </div>
-          <div>
-            <dt>Parties</dt>
-            <dd>
-              {{ None|or_no_data_available_label }}
-            </dd>
-          </div>
-          <div>
-            <dt>Categories</dt>
-            <dd>
-              {{ document_metadata_item(metadata_item=metadata.categories) }}
-            </dd>
-          </div>
-        </dl>
+              </dd>
+            </div>
+            <div>
+              <dt>Categories</dt>
+              <dd>
+                {{ document_metadata_item(metadata_item=metadata.categories) }}
+              </dd>
+            </div>
+          </dl>
+        {% endcall %}
+      </form>
+      {% call form_actions({"data-form-actions": ""}) %}
+        {{ button(content="Save",
+          disabled=not can_edit_document,
+          size="small",
+          attrs={"type": "submit", "data-form-actions-submit": ""}) }}
+        {{ button(content="Clear changes",
+          variant="secondary",
+          disabled=not can_edit_document,
+          size="small",
+          attrs={"type": "button", "data-form-actions-clear": ""}) }}
       {% endcall %}
     </div>
   </div>

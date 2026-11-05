@@ -137,9 +137,10 @@ const initMetadataCompactForm = (form) => {
   let pendingIndex = 0;
 
   const documentEditForm = document.querySelector("[data-document-edit-form]");
-  const documentEditFormInitialState = documentEditForm
-    ? formEntriesKey(documentEditForm)
-    : null;
+  const documentEditFormInitialState =
+    documentEditForm && documentEditForm !== form
+      ? formEntriesKey(documentEditForm)
+      : null;
 
   const addPendingValue = () => {
     const value = draftInput.value.trim();
@@ -181,6 +182,7 @@ const initMetadataCompactForm = (form) => {
 
     if (
       documentEditForm &&
+      documentEditForm !== form &&
       documentEditFormInitialState !== null &&
       formEntriesKey(documentEditForm) !== documentEditFormInitialState &&
       !window.confirm(
