@@ -6,6 +6,7 @@ register = template.Library()
 
 DOCUMENT_METADATA_FLAG = "document_metadata"
 DOCUMENT_MERGE_FLAG = "document_merge"
+METADATA_ASIDE_JUDGES_FLAG = "metadata_aside_judges"
 
 
 def get_document_url(view, document):

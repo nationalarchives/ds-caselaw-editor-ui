@@ -7,7 +7,8 @@
   {% call panel() %}
     <form aria-label="Edit judgment"
           method="post"
-          action="{{ url('edit-document', judgment.uri) }}">
+          action="{{ url('edit-document', judgment.uri) }}"
+          data-document-edit-form>
       {{ csrf_input }}
       <input type="hidden" name="return_to" value="html" />
       <input type="hidden" name="judgment_uri" value="{{ document_uri }}" />

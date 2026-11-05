@@ -9,11 +9,14 @@ from caselawclient.search_parameters import SearchParameters
 from django.conf import settings
 from django.http import Http404
 from django.views.generic import TemplateView
+from waffle import flag_is_active
 
 from judgments.templatetags.document_utils import display_datetime
+from judgments.templatetags.navigation_tags import METADATA_ASIDE_JUDGES_FLAG
 from judgments.utils import api_client, editors_dict, extract_version_number_from_filename, get_linked_document_uri
 from judgments.utils.document_list import DocumentListFilters, SavedViewPreset, court_filter_options
 from judgments.utils.link_generators import build_jira_create_link
+from judgments.utils.metadata_display import MetadataFieldDisplayDecorator
 from judgments.utils.paginator import paginator
 
 
@@ -162,6 +165,16 @@ class DocumentViewMixin(TemplateView):
                 context["first_published_date"] = "Unknown"
         else:
             context["first_published_date"] = "—"
+
+        if (
+            self.document.metadata
+            and user_can_edit(self.request.user)
+            and flag_is_active(self.request, METADATA_ASIDE_JUDGES_FLAG)
+        ):
+            context["metadata_judges_section"] = MetadataFieldDisplayDecorator(
+                self.document,
+                self.document.metadata.judges,
+            ).section
 
         return context
 

@@ -101,7 +101,7 @@
       margin: 0;
       padding: $space-3 $space-4;
 
-      div {
+      > div {
         display: flex;
         flex-direction: column;
         gap: $space-2;
@@ -115,6 +115,56 @@
           flex-wrap: wrap;
           gap: $space-2;
           margin: 0;
+
+          &:has(> .aside__metadata-compact-form) {
+            display: block;
+            width: 100%;
+          }
+        }
+      }
+
+      .aside__metadata-compact-form {
+        display: flex;
+        flex-direction: column;
+        gap: $space-3;
+        width: 100%;
+      }
+
+      .aside__metadata-compact-list {
+        display: flex;
+        flex-direction: column;
+        gap: $space-2;
+      }
+
+      .aside__metadata-compact-entry {
+        display: flex;
+        gap: $space-2;
+        align-items: center;
+        justify-content: space-between;
+
+        .govuk-form-group {
+          margin-bottom: 0;
+        }
+
+        .govuk-checkboxes {
+          margin-bottom: 0;
+        }
+
+        .govuk-checkboxes__label {
+          font-size: $typography-sm-text-size;
+          color: colour-var("form-error-border");
+        }
+      }
+
+      .aside__metadata-compact-add-row {
+        display: flex;
+        gap: $space-2;
+        align-items: flex-start;
+        margin-top: $space-2;
+
+        .govuk-input {
+          flex: 1 1 auto;
+          margin-bottom: 0;
         }
       }
 

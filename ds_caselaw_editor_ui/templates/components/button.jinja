@@ -8,7 +8,13 @@
   disabled=False,
   disabled_reason=None) %}
   {% set body_content = caller() if caller is defined else content if content is defined else "" %}
-  {% set variant_classes = {"default": "", "danger": "button--danger", "secondary": "button--secondary", "link": "button--link"} %}
+  {% set variant_classes = {
+    "default": "",
+    "danger": "button--danger",
+    "success": "button--success",
+    "secondary": "button--secondary",
+    "link": "button--link"
+  } %}
   {% set size_classes = {"default": "", "small": "button--small"} %}
   {% set variant_class = variant_classes.get(variant, variant_classes['default']) %}
   {% set size_class = size_classes.get(size, size_classes['default']) %}

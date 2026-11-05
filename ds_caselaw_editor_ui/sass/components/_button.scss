@@ -65,6 +65,21 @@
     }
   }
 
+  &--success {
+    border: 2px solid brand-colour("forest");
+    color: colour-var("accent-button-text");
+    background-color: brand-colour("forest");
+
+    &:visited,
+    &:focus,
+    &:hover {
+      border-color: brand-colour("forest");
+      color: colour-var("accent-button-text");
+      background-color: brand-colour("forest");
+      outline-color: brand-colour("forest");
+    }
+  }
+
   &--secondary {
     margin: 0;
     border: 2px solid colour-var("link");

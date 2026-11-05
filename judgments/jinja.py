@@ -6,7 +6,6 @@ from caselawclient.models.documents import (
     DOCUMENT_STATUS_PUBLISHED,
 )
 from crispy_forms.utils import render_crispy_form
-from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import reverse
 from jinja2 import (
     ChoiceLoader,
@@ -35,6 +34,7 @@ from judgments.templatetags.user_permissions import (
     is_superuser,
 )
 from judgments.utils.permissions import editors_only_hint, editors_or_developers_hint
+from judgments.utils.static_files import versioned_static
 
 
 def component_class_names(*values):
@@ -125,7 +125,7 @@ def environment(**options):
     )
     env.globals.update(
         {
-            "static": staticfiles_storage.url,
+            "static": versioned_static,
             "url": jinja_url,
             "get_badge_variant_from_status": get_badge_variant_from_status,
             "get_navigation_items": get_document_navigation_items,
