@@ -302,6 +302,21 @@ jobs:
         run: docker compose run --rm django python manage.py migrate --settings=config.settings.test
       - name: Create E2E super user
         run: docker compose run --rm -e DJANGO_SUPERUSER_PASSWORD=password django python manage.py createsuperuser --no-input --username root --email test@example.com
+      - name: Add E2E user to Editors group
+        run: |
+          docker compose run --rm django python manage.py shell -c "
+          from django.contrib.auth.models import Group, User
+          editors, _ = Group.objects.get_or_create(name='Editors')
+          User.objects.get(username='root').groups.add(editors)
+          "
+      - name: Enable metadata aside judges flag for e2e
+        run: |
+          docker compose run --rm django python manage.py shell -c "
+          from waffle.models import Flag
+          flag, _ = Flag.objects.get_or_create(name='metadata_aside_judges')
+          flag.everyone = True
+          flag.save()
+          "
       - name: Setup django server for e2e tests
         run: docker compose up -d django
 

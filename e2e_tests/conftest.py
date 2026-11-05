@@ -6,6 +6,7 @@ from playwright.sync_api import Browser, Page
 
 @pytest.fixture(scope="module")
 def authenticated_page(browser: Browser, base_url: str) -> Page:
+    """Log in as root (CI adds root to the Editors group after createsuperuser)."""
     username = os.getenv("E2E_LOGIN_USER", "root")
     password = os.getenv("E2E_LOGIN_PASSWORD", "password")
     context = browser.new_context(base_url=base_url)
@@ -17,3 +18,9 @@ def authenticated_page(browser: Browser, base_url: str) -> Page:
     page.wait_for_load_state("networkidle")
     yield page
     context.close()
+
+
+@pytest.fixture(scope="module")
+def authenticated_editor_page(authenticated_page: Page) -> Page:
+    """Editor-capable session; requires the user to belong to the Editors group."""
+    return authenticated_page

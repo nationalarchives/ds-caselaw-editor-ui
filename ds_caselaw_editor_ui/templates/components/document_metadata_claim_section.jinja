@@ -1,0 +1,97 @@
+{% from "components/badge.jinja" import badge %}
+{% from "components/button.jinja" import button %}
+{% from "components/checkboxes.jinja" import checkboxes %}
+{% from "components/card.jinja" import card %}
+{% from "components/metadata_form_widgets.jinja" import metadata_new_claim_input %}
+{% macro aside_metadata_compact_entry(display_value, remove_checkboxes=none, hidden_name=none, pending=false) %}
+  <div class="aside__metadata-compact-entry"
+       {% if pending %} data-metadata-compact-pending{% endif %}>
+    <span class="aside__metadata-compact-entry__name">{{ display_value }}</span>
+    {% if remove_checkboxes %}
+      <div class="aside__metadata-compact-entry__remove">{{ checkboxes(remove_checkboxes) }}</div>
+    {% endif %}
+    {% if hidden_name %}
+      <input type="hidden" name="{{ hidden_name }}" value="{{ display_value }}" />
+    {% endif %}
+  </div>
+{% endmacro %}
+{% macro metadata_claim_section(section, variant="full", show_history=true) %}
+  {% set claims = section.display_claims if show_history else section.current_display_claims %}
+  {% if variant == "compact" %}
+    <div class="aside__metadata-compact-list" data-metadata-compact-list>
+      {% for display_claim in claims %}
+        {{ aside_metadata_compact_entry(
+          display_claim.display_value,
+          remove_checkboxes={
+            "idPrefix": display_claim.reject_input_id_prefix,
+            "name": display_claim.reject_input_name,
+            "classes": "govuk-checkboxes--small",
+            "items": [{
+              "value": display_claim.reject_input_value,
+              "text": "Remove " ~ display_claim.display_value
+            }]
+          } if display_claim.can_reject else none
+        ) }}
+      {% endfor %}
+      <template data-metadata-compact-pending-template>
+        {{ aside_metadata_compact_entry(
+          "",
+          remove_checkboxes={
+            "idPrefix": "pending-claim-__INDEX__",
+            "classes": "govuk-checkboxes--small",
+            "items": [{
+              "value": "remove",
+              "text": "Remove __VALUE__"
+            }]
+          },
+          hidden_name=section.new_claim_input_name,
+          pending=true
+        ) }}
+      </template>
+      <div class="aside__metadata-compact-add-row" data-metadata-compact-add-row>
+        <input class="govuk-input govuk-!-width-full"
+               id="{{ section.new_claim_input_id }}-draft"
+               type="text"
+               autocomplete="off"
+               aria-label="New judge name"
+               data-metadata-compact-draft="" />
+        {{ button(content="Add",
+          variant="success",
+          size="small",
+          attrs={"type": "button", "data-metadata-compact-add": ""}) }}
+      </div>
+    </div>
+  {% else %}
+    {% for display_claim in claims %}
+      {% set card_right_content %}
+        {{ badge(variant=display_claim.status_badge_variant, content=display_claim.status) }}
+        {% if display_claim.can_reject %}
+          {{ checkboxes({
+            "idPrefix": display_claim.reject_input_id_prefix,
+            "name": display_claim.reject_input_name,
+            "classes": "govuk-checkboxes--small",
+            "items": [{
+              "value": display_claim.reject_input_value,
+              "text": display_claim.reject_checkbox_text
+            }]
+          }) }}
+        {% endif %}
+      {% endset %}
+      {% call card(right_content=card_right_content, disabled=(not display_claim.is_current)) %}
+        <p>Value: {{ display_claim.display_value }}</p>
+        <p>Source: {{ display_claim.source_label }}</p>
+        {% if display_claim.timestamp %}
+          <p>Created: {{ display_claim.timestamp|date("%-d %b %Y %H:%M") }}</p>
+        {% endif %}
+        {% if display_claim.claim_id and user|is_developer %}
+          <p>
+            Claim id: <code>{{ display_claim.claim_id }}</code>
+          </p>
+        {% endif %}
+      {% endcall %}
+    {% endfor %}
+    {% call card() %}
+      {{ metadata_new_claim_input(section) }}
+    {% endcall %}
+  {% endif %}
+{% endmacro %}

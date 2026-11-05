@@ -17,7 +17,9 @@ from django.test import TestCase
 from django.urls import reverse
 from editing import editing_order, record, tracking_editing_session
 from factories import make_editor
+from waffle.testutils import override_flag
 
+from judgments.templatetags.navigation_tags import METADATA_ASIDE_JUDGES_FLAG
 from judgments.views.document_metadata import MetadataFieldDisplayDecorator
 
 
@@ -125,6 +127,73 @@ class TestMetadataFieldDisplayDecorator(TestCase):
         assert section.display_claims[0].reject_input_name == "suppress_body_judges"
         assert section.display_claims[0].reject_input_value == "Judge One"
         assert section.display_claims[0].reject_input_id_prefix == "suppress-body-judge-1"
+        assert section.display_claims[0].reject_checkbox_text == "Reject Judge One"
+
+    def test_judge_claim_checkbox_labels_reflect_delete_vs_reject(self):
+        judgment = JudgmentFactory.build(
+            body=DocumentBodyFactory.build(name="Test v Tested", court="Court of Testing"),
+        )
+        judgment.metadata_fields.add(
+            MetadataField(
+                id="document-judge",
+                name="judges",
+                value=MetadataStringValue("Lady Justice Document"),
+                source=MetadataSource.DOCUMENT,
+                timestamp=datetime(2020, 1, 1, tzinfo=UTC),
+            ),
+        )
+        judgment.metadata_fields.add(
+            MetadataField(
+                id="editor-judge",
+                name="judges",
+                value=MetadataStringValue("Lord Justice Editor"),
+                source=MetadataSource.EDITOR,
+                timestamp=datetime(2024, 1, 1, tzinfo=UTC),
+            ),
+        )
+
+        section = MetadataFieldDisplayDecorator(judgment, judgment.metadata.judges).section
+        labels_by_id = {claim.claim_id: claim.reject_checkbox_text for claim in section.display_claims}
+
+        assert labels_by_id["editor-judge"] == "Delete Lord Justice Editor"
+        assert labels_by_id["document-judge"] == "Reject Lady Justice Document"
+
+    def test_current_display_claims_excludes_rejected_and_superseded(self):
+        judgment = JudgmentFactory.build(
+            body=DocumentBodyFactory.build(name="Test v Tested", court="Court of Testing"),
+        )
+        judgment.metadata_fields.add(
+            MetadataField(
+                id="document-claim",
+                name="court",
+                value=MetadataStringValue("Document Court"),
+                source=MetadataSource.DOCUMENT,
+                timestamp=datetime(2020, 1, 1, tzinfo=UTC),
+            ),
+        )
+        judgment.metadata_fields.add(
+            MetadataField(
+                id="editor-claim",
+                name="court",
+                value=MetadataStringValue("Editor Court"),
+                source=MetadataSource.EDITOR,
+                timestamp=datetime(2024, 1, 1, tzinfo=UTC),
+            ),
+        )
+        judgment.metadata_fields.add(
+            MetadataField(
+                id="rejected-claim",
+                name="court",
+                value=MetadataStringValue("Rejected Court"),
+                source=MetadataSource.EXTERNAL,
+                timestamp=datetime(2024, 6, 1, tzinfo=UTC),
+                rejected=True,
+            ),
+        )
+
+        section = MetadataFieldDisplayDecorator(judgment, judgment.metadata.court).section
+
+        assert [claim.display_value for claim in section.current_display_claims] == ["Editor Court"]
 
     def test_formats_dates_and_category_values(self):
         judgment = JudgmentFactory.build(
@@ -442,6 +511,103 @@ class TestDocumentMetadata(TestCase):
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
     @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_document_metadata_post_can_readd_editor_judge_after_removal(
+        self,
+        document_type,
+        document_exists,
+        mock_judgment,
+    ):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
+        judge_name = "Lord Justice Example"
+        judgment = JudgmentFactory.build(
+            uri=DocumentURIString("d-a1b2c3"),
+            body=DocumentBodyFactory.build(name="Test v Tested", court="Court of Testing"),
+        )
+        claim = MetadataField(
+            id="judge-claim-1",
+            name="judges",
+            value=MetadataStringValue(judge_name),
+            source=MetadataSource.EDITOR,
+            timestamp=datetime(2024, 6, 1, tzinfo=UTC),
+        )
+        judgment.metadata_fields.add(claim)
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(make_editor())
+        metadata_uri = reverse("document-metadata", kwargs={"document_uri": judgment.uri})
+
+        order = editing_order()
+        with (
+            patch.object(judgment, "editing_session", tracking_editing_session(order)),
+            patch.object(judgment, "save_metadata_fields", side_effect=record(order, "save_metadata_fields")),
+        ):
+            remove_response = self.client.post(
+                metadata_uri,
+                data={"reject_claim_ids": [claim.id]},
+            )
+            assert remove_response.status_code == 302
+            assert claim.id not in judgment.metadata_fields
+
+            readd_response = self.client.post(
+                metadata_uri,
+                data={"new_claim__judges": [judge_name]},
+            )
+
+        assert readd_response.status_code == 302
+        judge_names = [
+            claim.value.value
+            for claim in judgment.metadata_fields.by_name("judges")
+            if not claim.rejected and isinstance(claim.value, MetadataStringValue)
+        ]
+        assert judge_names == [judge_name]
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_document_metadata_post_rejects_non_editor_judge_claim(
+        self,
+        document_type,
+        document_exists,
+        mock_judgment,
+    ):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
+        judgment = JudgmentFactory.build(
+            uri=DocumentURIString("d-a1b2c3"),
+            body=DocumentBodyFactory.build(name="Test v Tested", court="Court of Testing"),
+        )
+        claim = MetadataField(
+            id="document-judge",
+            name="judges",
+            value=MetadataStringValue("Lady Justice Document"),
+            source=MetadataSource.DOCUMENT,
+            timestamp=datetime(2020, 1, 1, tzinfo=UTC),
+        )
+        judgment.metadata_fields.add(claim)
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(make_editor())
+
+        order = editing_order()
+        with (
+            patch.object(judgment, "editing_session", tracking_editing_session(order)),
+            patch.object(judgment, "save_metadata_fields", side_effect=record(order, "save_metadata_fields")),
+        ):
+            response = self.client.post(
+                reverse("document-metadata", kwargs={"document_uri": judgment.uri}),
+                data={"reject_claim_ids": [claim.id]},
+            )
+
+        assert response.status_code == 302
+        assert claim.id in judgment.metadata_fields
+        assert judgment.metadata_fields[claim.id].rejected is True
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
     def test_document_metadata_post_suppresses_body_derived_judge(self, document_type, document_exists, mock_judgment):
         document_type.return_value = Judgment
         document_exists.return_value = None
@@ -510,3 +676,98 @@ class TestDocumentMetadata(TestCase):
 
         assert response.status_code == 302
         assert order == []
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    @override_flag(METADATA_ASIDE_JUDGES_FLAG, active=True)
+    def test_document_metadata_post_redirects_to_return_to(self, document_type, document_exists, mock_judgment):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
+        judgment = JudgmentFactory.build(
+            uri=DocumentURIString("d-a1b2c3"),
+            body=DocumentBodyFactory.build(name="Test v Tested", court="Court of Testing"),
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(make_editor())
+
+        return_path = "/d-a1b2c3/html"
+        order = editing_order()
+        with (
+            patch.object(judgment, "editing_session", tracking_editing_session(order)),
+            patch.object(judgment, "save_metadata_fields", side_effect=record(order, "save_metadata_fields")),
+        ):
+            response = self.client.post(
+                reverse("document-metadata", kwargs={"document_uri": judgment.uri}),
+                data={
+                    "return_to": return_path,
+                    "new_claim__judges": ["Lord Justice Example"],
+                },
+            )
+
+        assert response.status_code == 302
+        assert response.headers["Location"] == return_path
+        assert order == ["editing_session", "save_metadata_fields", "editing_session_end"]
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    @override_flag(METADATA_ASIDE_JUDGES_FLAG, active=False)
+    def test_document_metadata_post_from_aside_ignored_when_flag_inactive(
+        self,
+        document_type,
+        document_exists,
+        mock_judgment,
+    ):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
+        judgment = JudgmentFactory.build(
+            uri=DocumentURIString("d-a1b2c3"),
+            body=DocumentBodyFactory.build(name="Test v Tested", court="Court of Testing"),
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(make_editor())
+
+        return_path = "/d-a1b2c3/html"
+        order = editing_order()
+        with (
+            patch.object(judgment, "editing_session", tracking_editing_session(order)),
+            patch.object(judgment, "save_metadata_fields", side_effect=record(order, "save_metadata_fields")),
+        ):
+            response = self.client.post(
+                reverse("document-metadata", kwargs={"document_uri": judgment.uri}),
+                data={
+                    "return_to": return_path,
+                    "new_claim__judges": ["Lord Justice Example"],
+                },
+            )
+
+        assert response.status_code == 302
+        assert response.headers["Location"] == return_path
+        assert order == []
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    def test_document_metadata_post_forbidden_for_non_editor(self, document_type, document_exists, mock_judgment):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+
+        judgment = JudgmentFactory.build(
+            uri=DocumentURIString("d-a1b2c3"),
+            body=DocumentBodyFactory.build(name="Test v Tested", court="Court of Testing"),
+        )
+        mock_judgment.return_value = judgment
+
+        self.client.force_login(User.objects.get_or_create(username="not-an-editor")[0])
+
+        response = self.client.post(
+            reverse("document-metadata", kwargs={"document_uri": judgment.uri}),
+            data={"new_claim__judges": ["Lord Justice Example"]},
+        )
+
+        assert response.status_code == 403

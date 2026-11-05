@@ -12,22 +12,28 @@ const initFormActions = (container) => {
   const clearButton = container.querySelector("[data-form-actions-clear]");
   const initialState = formState(form);
 
+  const setControlEnabled = (control, enabled) => {
+    if (!control) return;
+
+    if (enabled) {
+      control.removeAttribute("disabled");
+      control.setAttribute("aria-disabled", "false");
+    } else {
+      control.setAttribute("disabled", "disabled");
+      control.setAttribute("aria-disabled", "true");
+    }
+  };
+
   const updateButtonState = () => {
     const hasChanges = formState(form) !== initialState;
 
-    if (submitButton) {
-      submitButton.disabled = !hasChanges;
-      submitButton.setAttribute("aria-disabled", String(!hasChanges));
-    }
-
-    if (clearButton) {
-      clearButton.disabled = !hasChanges;
-      clearButton.setAttribute("aria-disabled", String(!hasChanges));
-    }
+    setControlEnabled(submitButton, hasChanges);
+    setControlEnabled(clearButton, hasChanges);
   };
 
   form.addEventListener("input", updateButtonState);
   form.addEventListener("change", updateButtonState);
+  form.addEventListener("click", updateButtonState);
 
   if (clearButton) {
     clearButton.addEventListener("click", () => {

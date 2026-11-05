@@ -37,8 +37,16 @@ EMAIL_BACKEND = env(
 # ------------------------------------------------------------------------------
 # http://whitenoise.evans.io/en/latest/django.html#using-whitenoise-in-development
 INSTALLED_APPS = ["whitenoise.runserver_nostatic"] + INSTALLED_APPS
+WHITENOISE_AUTOREFRESH = True
+WHITENOISE_MAX_AGE = 0
 
 SECRET_KEY = "not-secret-whatsoever"  # noqa: S105
+
+# Jinja2 (base.py sets auto_reload from DEBUG before local sets DEBUG=True)
+# ------------------------------------------------------------------------------
+for _template in TEMPLATES:
+    if _template.get("BACKEND") == "django.template.backends.jinja2.Jinja2":
+        _template["OPTIONS"]["auto_reload"] = True
 
 
 # django-debug-toolbar
