@@ -2,6 +2,7 @@
 {% from "components/button.jinja" import button %}
 {% from "components/badge.jinja" import badge %}
 {% from "components/details.jinja" import details %}
+{% from "govuk_frontend_jinja/components/input/macro.html" import govukInput %}
 {% from "components/document_metadata_item.jinja" import document_metadata_item %}
 {% from "components/document_metadata_claim_section.jinja" import metadata_claim_section with context %}
 {% from "components/form_actions.jinja" import form_actions %}
@@ -19,38 +20,44 @@
         <span>Metadata</span>
         {{ button(variant="link", size="small", content="Hide panel", attrs={"data-aside-toggle-button":""}) }}
       </div>
-      {% call details(title="Editable metadata", variant="panel") %}
+      {% call details(title="Editable metadata", variant="panel", open=True) %}
+        <form aria-label="Edit judgment"
+              method="post"
+              action="{{ url('edit-document', judgment.uri) }}"
+              data-document-edit-form>
+          <dl>
+            {{ csrf_input }}
+            <input type="hidden" name="return_to" value="html" />
+            <input type="hidden" name="judgment_uri" value="{{ document_uri }}" />
+            <div>
+              <dt>Title</dt>
+              <dd>
+                {{ govukInput({
+                  "label": { "text": "Title", "classes": "govuk-visually-hidden" },
+                  "id": "metadata_name",
+                  "name": "metadata_name",
+                  "value": metadata.title.value,
+                }) }}
+              </dd>
+            </div>
+            <div>
+              <dt>Court</dt>
+              <dd>
+                {{ document_metadata_item(metadata_item=metadata.court) }}
+              </dd>
+            </div>
+            <div>
+              <dt>Judgment date</dt>
+              <dd>
+                {{ document_metadata_item(metadata_item=metadata.date, date_format="%-d %b %Y") }}
+              </dd>
+            </div>
+            {% call button(disabled=not user|can_edit) %}
+              Save
+            {% endcall %}
+          </dl>
+        </form>
         <dl>
-          <div>
-            <dt>Title</dt>
-            <dd>
-              {{ document_metadata_item(metadata_item=metadata.title) }}
-            </dd>
-          </div>
-          <div>
-            <dt>Court</dt>
-            <dd>
-              {{ document_metadata_item(metadata_item=metadata.court) }}
-            </dd>
-          </div>
-          <div>
-            <dt>Judgment date</dt>
-            <dd>
-              {{ document_metadata_item(metadata_item=metadata.date, date_format="%-d %b %Y") }}
-            </dd>
-          </div>
-          <div>
-            <dt>Jurisdiction</dt>
-            <dd>
-              {{ document_metadata_item(metadata_item=metadata.jurisdiction) }}
-            </dd>
-          </div>
-          <div>
-            <dt>Case number</dt>
-            <dd>
-              {{ document_metadata_item(metadata_item=metadata.case_number) }}
-            </dd>
-          </div>
           <div>
             <dt>
               {% if metadata_judges_section is defined and metadata_judges_section and user is defined and user|can_edit %}Judge/s{% else %}Judges{% endif %}
@@ -78,12 +85,6 @@
               {% else %}
                 {{ document_metadata_item(metadata_item=metadata.judges) }}
               {% endif %}
-            </dd>
-          </div>
-          <div>
-            <dt>Categories</dt>
-            <dd>
-              {{ document_metadata_item(metadata_item=metadata.categories) }}
             </dd>
           </div>
         </dl>
@@ -121,6 +122,18 @@
       {% endcall %}
       {% call details(title="Other metadata", variant="panel") %}
         <dl>
+          <div>
+            <dt>Jurisdiction</dt>
+            <dd>
+              {{ document_metadata_item(metadata_item=metadata.jurisdiction) }}
+            </dd>
+          </div>
+          <div>
+            <dt>Case number</dt>
+            <dd>
+              {{ document_metadata_item(metadata_item=metadata.case_number) }}
+            </dd>
+          </div>
           <div>
             <dt>TDR ref</dt>
             <dd>
@@ -163,6 +176,12 @@
             <dt>Parties</dt>
             <dd>
               {{ None|or_no_data_available_label }}
+            </dd>
+          </div>
+          <div>
+            <dt>Categories</dt>
+            <dd>
+              {{ document_metadata_item(metadata_item=metadata.categories) }}
             </dd>
           </div>
         </dl>
