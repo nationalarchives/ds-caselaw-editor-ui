@@ -52,6 +52,17 @@
                 </dd>
               </div>
               <div>
+                <dt>NCN</dt>
+                <dd>
+                  {{ govukInput({
+                    "label": { "text": "NCN", "classes": "govuk-visually-hidden" },
+                    "id": "neutral_citation",
+                    "name": "neutral_citation",
+                    "value": preferred_ncn.value if preferred_ncn else "",
+                  }) }}
+                </dd>
+              </div>
+              <div>
                 <dt>Court</dt>
                 <dd>
                   <datalist id="court-list">
@@ -112,14 +123,9 @@
           {% call details(title="Identifiers", variant="panel") %}
             <dl>
               <div>
-                <dt>NCN</dt>
+                <dt>Case number</dt>
                 <dd>
-                  {{ govukInput({
-                    "label": { "text": "NCN", "classes": "govuk-visually-hidden" },
-                    "id": "neutral_citation",
-                    "name": "neutral_citation",
-                    "value": preferred_ncn.value if preferred_ncn else "",
-                  }) }}
+                  {{ document_metadata_item(metadata_item=metadata.case_number) }}
                 </dd>
               </div>
               <div>
@@ -147,12 +153,6 @@
                 <dt>Jurisdiction</dt>
                 <dd>
                   {{ document_metadata_item(metadata_item=metadata.jurisdiction) }}
-                </dd>
-              </div>
-              <div>
-                <dt>Case number</dt>
-                <dd>
-                  {{ document_metadata_item(metadata_item=metadata.case_number) }}
                 </dd>
               </div>
               <div>

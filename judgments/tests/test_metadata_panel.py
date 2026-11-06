@@ -55,6 +55,15 @@ class TestMetadataPanel(TestCase):
         assert root.xpath("//input[@id='judgment_date-month']/@value")[0] == "2"
         assert root.xpath("//input[@id='judgment_date-year']/@value")[0] == "2023"
         assert root.xpath("//input[@id='neutral_citation']/@value")[0] == "[2023] UKSC 1"
+        editable_metadata = root.xpath(
+            '//details[summary/*[normalize-space(.)="Editable metadata"]]',
+        )[0]
+        identifiers = root.xpath('//details[summary/*[normalize-space(.)="Identifiers"]]')[0]
+        other_metadata = root.xpath('//details[summary/*[normalize-space(.)="Other metadata"]]')[0]
+        assert editable_metadata.xpath('.//input[@id="neutral_citation"]')
+        assert not identifiers.xpath('.//input[@id="neutral_citation"]')
+        assert identifiers.xpath('.//dt[normalize-space(.)="Case number"]')
+        assert not other_metadata.xpath('.//dt[normalize-space(.)="Case number"]')
         edit_form = root.xpath("//form[@id='document-edit-form']")[0]
         assert edit_form.xpath(".//input[@id='metadata_name']")
         assert edit_form.xpath(".//input[@id='court']")
