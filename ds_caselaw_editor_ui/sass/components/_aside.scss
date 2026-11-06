@@ -161,6 +161,12 @@
           font-size: $typography-sm-text-size;
           color: colour-var("form-error-border");
         }
+
+        .aside__metadata-compact-new-input {
+          flex: 1 1 auto;
+          min-width: 0;
+          margin-bottom: 0;
+        }
       }
 
       .aside__metadata-compact-add-row {
