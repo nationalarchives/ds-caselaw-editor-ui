@@ -3,12 +3,22 @@
 {% from "components/checkboxes.jinja" import checkboxes %}
 {% from "components/card.jinja" import card %}
 {% from "components/metadata_form_widgets.jinja" import metadata_new_claim_input %}
-{% macro aside_metadata_compact_entry(display_value, remove_checkboxes=none, hidden_name=none, pending=false) %}
+{% macro aside_metadata_compact_entry(display_value, remove_input=none, hidden_name=none, pending=false) %}
   <div class="aside__metadata-compact-entry"
        {% if pending %} data-metadata-compact-pending{% endif %}>
     <span class="aside__metadata-compact-entry__name">{{ display_value }}</span>
-    {% if remove_checkboxes %}
-      <div class="aside__metadata-compact-entry__remove">{{ checkboxes(remove_checkboxes) }}</div>
+    {% if remove_input %}
+      <div class="aside__metadata-compact-entry__remove">
+        <input class="govuk-visually-hidden aside__metadata-compact-remove-input"
+               id="{{ remove_input.id }}"
+               type="checkbox"
+               {% if remove_input.name %}name="{{ remove_input.name }}"{% endif %}
+               value="{{ remove_input.value }}" />
+        <label class="button button--link button--small aside__metadata-compact-remove-label"
+               for="{{ remove_input.id }}">
+          Remove<span class="govuk-visually-hidden" data-metadata-compact-remove-name> {{ display_value }}</span>
+        </label>
+      </div>
     {% endif %}
     {% if hidden_name %}
       <input type="hidden" name="{{ hidden_name }}" value="{{ display_value }}" />
@@ -22,27 +32,19 @@
       {% for display_claim in claims %}
         {{ aside_metadata_compact_entry(
           display_claim.display_value,
-          remove_checkboxes={
-            "idPrefix": display_claim.reject_input_id_prefix,
+          remove_input={
+            "id": display_claim.reject_input_id_prefix,
             "name": display_claim.reject_input_name,
-            "classes": "govuk-checkboxes--small",
-            "items": [{
-              "value": display_claim.reject_input_value,
-              "text": "Remove " ~ display_claim.display_value
-            }]
+            "value": display_claim.reject_input_value
           } if display_claim.can_reject else none
         ) }}
       {% endfor %}
       <template data-metadata-compact-pending-template>
         {{ aside_metadata_compact_entry(
           "",
-          remove_checkboxes={
-            "idPrefix": "pending-claim-__INDEX__",
-            "classes": "govuk-checkboxes--small",
-            "items": [{
-              "value": "remove",
-              "text": "Remove __VALUE__"
-            }]
+          remove_input={
+            "id": "pending-claim-__INDEX__",
+            "value": "remove"
           },
           hidden_name=section.new_claim_input_name,
           pending=true
