@@ -264,23 +264,53 @@ class TestMetadataPanel(TestCase):
         judges_dd = root.xpath('//dt[normalize-space(.)="Judges"]/following-sibling::dd')[0]
         edit_form = root.xpath('//form[@id="document-edit-form"]')[0]
         assert edit_form.get("action").endswith("/d-a1b2c3/edit")
-        assert len(judges_dd.xpath('.//input[@name="new_claim__judges"]')) == 1
-        assert judges_dd.xpath(".//*[@data-metadata-compact-draft]")
-        assert "data-metadata-compact-draft" in rendered
+        assert not judges_dd.xpath('.//input[@name="new_claim__judges"]')
+        assert judges_dd.xpath(".//template[@data-metadata-compact-new-template]")
         assert "data-metadata-compact-add" in rendered
         assert "data-metadata-compact-list" in rendered
         assert "aside__metadata-compact-entry" in rendered
-        assert "button--success" in rendered
+        assert "Add another judge" in rendered
         assert "Update judges" not in rendered
         assert len(edit_form.xpath(".//button[@data-form-actions-submit]")) == 1
         remove_input = judges_dd.xpath('.//input[@name="suppress_body_judges"]')[0]
         remove_label = judges_dd.xpath('.//label[contains(@class, "aside__metadata-compact-remove-label")]')[0]
         assert "govuk-visually-hidden" in remove_input.get("class")
+        assert "disabled" in remove_input.attrib
         assert remove_label.text.strip() == "Remove"
         assert remove_label.xpath('.//span[contains(@class, "govuk-visually-hidden")]')[0].text.strip() == (
             "Lord Justice Test"
         )
         assert "Lord Justice Test" in rendered
+
+    def test_document_metadata_aside_shows_required_judge_input_when_there_are_no_judges(self):
+        template = environment(loader=PackageLoader("ds_caselaw_editor_ui", "templates")).from_string(
+            '{% from "components/document_metadata.jinja" import document_metadata with context %}'
+            "{{ document_metadata(document=document) }}",
+        )
+        judgment = JudgmentFactory.build(
+            uri=DocumentURIString("d-a1b2c3"),
+            body=DocumentBodyFactory.build(name="Test v Tested"),
+        )
+        judgment.body.judges = []
+        metadata_judges_section = MetadataFieldDisplayDecorator(judgment, judgment.metadata.judges).section
+
+        rendered = template.render(
+            document=judgment,
+            user=make_editor(),
+            metadata_judges_section=metadata_judges_section,
+            csrf_input="",
+        )
+        root = lxml.html.fromstring(rendered)
+        judges_dd = root.xpath('//dt[normalize-space(.)="Judges"]/following-sibling::dd')[0]
+        new_entries = judges_dd.xpath(
+            ".//div[@data-metadata-compact-list]/div[@data-metadata-compact-new-entry]",
+        )
+
+        assert len(new_entries) == 1
+        new_judge_input = new_entries[0].xpath(".//input[@data-metadata-compact-new-input]")[0]
+        assert "required" in new_judge_input.attrib
+        assert new_judge_input.get("name") is None
+        assert "Add another judge" in judges_dd.text_content()
 
     def test_document_metadata_aside_judges_read_only_for_non_editors(self):
         template = environment(loader=PackageLoader("ds_caselaw_editor_ui", "templates")).from_string(
