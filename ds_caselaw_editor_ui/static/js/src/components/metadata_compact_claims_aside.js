@@ -136,9 +136,10 @@ const initMetadataCompactForm = (form) => {
 
   let pendingIndex = 0;
 
+  const isDocumentEditForm = form.matches("[data-document-edit-form]");
   const documentEditForm = document.querySelector("[data-document-edit-form]");
   const documentEditFormInitialState =
-    documentEditForm && documentEditForm !== form
+    !isDocumentEditForm && documentEditForm && documentEditForm !== form
       ? formEntriesKey(documentEditForm)
       : null;
 
@@ -181,12 +182,13 @@ const initMetadataCompactForm = (form) => {
     }
 
     if (
+      !isDocumentEditForm &&
       documentEditForm &&
       documentEditForm !== form &&
       documentEditFormInitialState !== null &&
       formEntriesKey(documentEditForm) !== documentEditFormInitialState &&
       !window.confirm(
-        "You have unsaved changes in the judgment form. Updating judges will reload the page and those edits will be lost. Continue?",
+        "You have unsaved changes. To save them, select Cancel and click the Save button. Continue without saving?",
       )
     ) {
       event.preventDefault();
