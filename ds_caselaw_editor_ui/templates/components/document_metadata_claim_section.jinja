@@ -28,7 +28,10 @@
             "classes": "govuk-checkboxes--small",
             "items": [{
               "value": display_claim.reject_input_value,
-              "text": "Remove " ~ display_claim.display_value
+              "text": "Remove",
+              "attributes": {
+                "aria-label": "Remove " ~ display_claim.display_value
+              }
             }]
           } if display_claim.can_reject else none
         ) }}
@@ -41,7 +44,10 @@
             "classes": "govuk-checkboxes--small",
             "items": [{
               "value": "remove",
-              "text": "Remove __VALUE__"
+              "text": "Remove",
+              "attributes": {
+                "aria-label": "Remove __VALUE__"
+              }
             }]
           },
           hidden_name=section.new_claim_input_name,
