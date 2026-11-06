@@ -278,19 +278,6 @@ User.objects.get(username='root').groups.add(editors)
 
 CI E2E runs the same step after `createsuperuser`.
 
-Aside judge editing is behind the **`metadata_aside_judges`** waffle flag (off by default after migrate). Turn it on in Django admin under Flags, or:
-
-```console
-docker compose exec django python manage.py shell -c "
-from waffle.models import Flag
-flag, _ = Flag.objects.get_or_create(name='metadata_aside_judges')
-flag.everyone = True
-flag.save()
-"
-```
-
-CI E2E enables this flag before Playwright runs.
-
 ## Deleting judgments on production
 
 Currently there is no way for the editors to delete a judgment from the production site, if the judgment has been assigned

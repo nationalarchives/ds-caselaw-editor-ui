@@ -248,7 +248,7 @@ class TestMetadataPanel(TestCase):
         assert "aside__metadata-compact-form" in rendered
         assert "aside__metadata-compact-entry" in rendered
         assert "button--success" in rendered
-        assert "Remove Lord Justice Test" in rendered
+        assert 'aria-label="Remove Lord Justice Test"' in rendered
         assert "Lord Justice Test" in rendered
 
     def test_document_metadata_aside_judges_read_only_for_non_editors(self):

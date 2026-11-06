@@ -31,10 +31,14 @@ const replaceIndexPlaceholder = (entry, index) => {
   });
 };
 
-const setRemoveLabel = (entry, value) => {
+const setRemoveCheckboxCopy = (entry, value) => {
   const label = entry.querySelector(".govuk-checkboxes__label");
   if (label) {
-    label.textContent = `Remove ${value}`;
+    label.textContent = "Remove";
+  }
+  const checkbox = entry.querySelector('input[type="checkbox"]');
+  if (checkbox) {
+    checkbox.setAttribute("aria-label", `Remove ${value}`);
   }
 };
 
@@ -64,7 +68,7 @@ const preparePendingEntry = (form, entry, index, value) => {
   entry.dataset.metadataCompactPending = "";
   entry.querySelector(".aside__metadata-compact-entry__name").textContent =
     value;
-  setRemoveLabel(entry, value);
+  setRemoveCheckboxCopy(entry, value);
 
   entry
     .querySelectorAll('input[type="hidden"]')
