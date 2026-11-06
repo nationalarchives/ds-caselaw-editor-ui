@@ -265,7 +265,13 @@ class TestMetadataPanel(TestCase):
         assert 'aria-label="Remove Lord Justice Test"' in rendered
         assert "Update judges" not in rendered
         assert len(edit_form.xpath(".//button[@data-form-actions-submit]")) == 1
-        assert "Remove Lord Justice Test" in rendered
+        remove_input = judges_dd.xpath('.//input[@name="suppress_body_judges"]')[0]
+        remove_label = judges_dd.xpath('.//label[contains(@class, "aside__metadata-compact-remove-label")]')[0]
+        assert "govuk-visually-hidden" in remove_input.get("class")
+        assert remove_label.text.strip() == "Remove"
+        assert remove_label.xpath('.//span[contains(@class, "govuk-visually-hidden")]')[0].text.strip() == (
+            "Lord Justice Test"
+        )
         assert "Lord Justice Test" in rendered
 
     def test_document_metadata_aside_judges_read_only_for_non_editors(self):

@@ -148,15 +148,16 @@
         align-items: center;
         justify-content: space-between;
 
-        .govuk-form-group {
-          margin-bottom: 0;
+        &:has(.aside__metadata-compact-remove-input:checked) {
+          display: none;
         }
 
-        .govuk-checkboxes {
-          margin-bottom: 0;
+        .aside__metadata-compact-remove-input:focus-visible
+          + .aside__metadata-compact-remove-label {
+          @include focus-default;
         }
 
-        .govuk-checkboxes__label {
+        .aside__metadata-compact-remove-label {
           font-size: $typography-sm-text-size;
           color: colour-var("form-error-border");
         }
