@@ -40,7 +40,8 @@
         {% endcall %}
       {% endcall %}
     {% endcall %}
-    {% if metadata_aside_judges_enabled|default(false) and document.pdf_url and document_html %}
+    {% set is_document_review_view = view in ["judgment_html", "judgment_pdf"] %}
+    {% if metadata_aside_judges_enabled|default(false) and is_document_review_view and document.pdf_url and document_html %}
       {% call tabs(variant="toolbar") %}
         {{ tab(id="html", name="html", index=0, selected=(True if view == "judgment_html"), url=url("full-text-html", document.uri) , label="HTML view") }}
         {{ tab(id="pdf", name="pdf", index=1, selected=(True if view == "judgment_pdf"), url=url("full-text-pdf", document.uri) , label="PDF view") }}
