@@ -55,7 +55,6 @@
       }
 
       &:focus {
-        z-index: auto;
         background: colour-var("accent-background-light");
         outline: none;
       }
@@ -198,5 +197,11 @@
     @media (min-width: $grid-breakpoint-medium) {
       font-size: $typography-md-text-size;
     }
+  }
+}
+
+.main-container--metadata-panel-editing {
+  .details.details--panel .details__summary:focus {
+    z-index: auto;
   }
 }

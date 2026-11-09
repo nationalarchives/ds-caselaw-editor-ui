@@ -7,7 +7,8 @@
 {% from "components/document_metadata_item.jinja" import document_metadata_item %}
 {% from "components/document_metadata_claim_section.jinja" import metadata_claim_section with context %}
 {% from "components/form_actions.jinja" import form_actions %}
-{% macro document_metadata(document=None) %}
+{% from "components/document_metadata_legacy.jinja" import legacy_document_metadata with context %}
+{% macro editable_document_metadata(document=None) %}
   {% set metadata = document.metadata if document.metadata is defined else {} %}
   {% set identifiers = document.identifiers if document.identifiers is defined else none %}
   {% set preferred_identifier = identifiers.preferred() if identifiers else none %}
@@ -208,7 +209,7 @@
             </dl>
           {% endcall %}
         </div>
-        {% call form_actions({"data-form-actions": ""}) %}
+        {% call form_actions({"data-form-actions": ""}, classes="form-actions--panel") %}
           {{ button(content="Save",
             disabled=not can_edit_document,
             size="small",
@@ -222,4 +223,11 @@
       </form>
     </div>
   </div>
+{% endmacro %}
+{% macro document_metadata(document=None) %}
+  {% if metadata_aside_judges_enabled|default(false) %}
+    {{ editable_document_metadata(document) }}
+  {% else %}
+    {{ legacy_document_metadata(document) }}
+  {% endif %}
 {% endmacro %}

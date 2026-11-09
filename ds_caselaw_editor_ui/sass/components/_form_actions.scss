@@ -1,7 +1,11 @@
 .form-actions {
-  margin-top: auto;
-  padding: $space-4;
-  border-top: 1px solid colour-var("accent-border");
+  position: sticky;
+  z-index: 5;
+  bottom: 0;
+
+  margin-top: $space-8;
+  padding: $space-4 0;
+
   background: brand-colour("white");
 
   &__container {
@@ -9,6 +13,12 @@
     flex-wrap: wrap;
     gap: $space-3;
     align-items: center;
+  }
+
+  &--panel {
+    margin-top: auto;
+    padding: $space-4;
+    border-top: 1px solid colour-var("accent-border");
   }
 
   &--inline {

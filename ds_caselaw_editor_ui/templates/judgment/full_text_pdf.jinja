@@ -1,9 +1,20 @@
 {% extends "layouts/judgment.jinja" %}
 {% from "components/document_metadata.jinja" import document_metadata with context %}
+{% from "components/document_form.jinja" import document_form with context %}
+{% from "components/tabs.jinja" import tabs, tab %}
 {% block aside %}
   {{ document_metadata(document=document) }}
 {% endblock aside %}
 {% block content %}
+  {% if not metadata_aside_judges_enabled|default(false) %}
+    {% if document_type == "judgment" %}{{ document_form() }}{% endif %}
+    {% if document_html %}
+      {% call tabs() %}
+        {{ tab(id="html", name="html", index=0, url=url("full-text-html", document.uri) , label="HTML view") }}
+        {{ tab(id="pdf", name="pdf", index=1, selected=True, url=url("full-text-pdf", document.uri) , label="PDF view") }}
+      {% endcall %}
+    {% endif %}
+  {% endif %}
   <object data="{{ document.pdf_url }}"
           type="application/pdf"
           width="100%"

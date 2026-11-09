@@ -49,18 +49,21 @@
     </header>
     {% block precontent %}
     {% endblock precontent %}
-    <main id="main-content" class="main-container">
+    <main id="main-content"
+          class="main-container{% if metadata_aside_judges_enabled|default(false) %} main-container--metadata-panel-editing{% endif %}">
       <div class="main-container__content">
         {% block content %}
         {% endblock content %}
       </div>
       <div class="main-container__aside">
-        <div class="main-container__aside-resizer"
-             data-aside-resizer
-             role="separator"
-             aria-label="Resize metadata panel"
-             aria-orientation="vertical"
-             tabindex="0"></div>
+        {% if metadata_aside_judges_enabled|default(false) %}
+          <div class="main-container__aside-resizer"
+               data-aside-resizer
+               role="separator"
+               aria-label="Resize metadata panel"
+               aria-orientation="vertical"
+               tabindex="0"></div>
+        {% endif %}
         {% block aside %}
         {% endblock aside %}
       </div>

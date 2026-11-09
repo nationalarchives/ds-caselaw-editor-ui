@@ -153,6 +153,11 @@ class DocumentViewMixin(TemplateView):
 
         context["linked_document_uri"] = get_linked_document_uri(self.document)
         context["document_type"] = self.document.document_noun.replace(" ", "_")
+        metadata_aside_judges_enabled = flag_is_active(
+            self.request,
+            METADATA_ASIDE_JUDGES_FLAG,
+        )
+        context["metadata_aside_judges_enabled"] = metadata_aside_judges_enabled
 
         context["preferred_ncn"] = self.document.identifiers.preferred(type=NeutralCitationNumber)
 
@@ -166,11 +171,7 @@ class DocumentViewMixin(TemplateView):
         else:
             context["first_published_date"] = "—"
 
-        if (
-            self.document.metadata
-            and user_can_edit(self.request.user)
-            and flag_is_active(self.request, METADATA_ASIDE_JUDGES_FLAG)
-        ):
+        if self.document.metadata and user_can_edit(self.request.user) and metadata_aside_judges_enabled:
             context["metadata_judges_section"] = MetadataFieldDisplayDecorator(
                 self.document,
                 self.document.metadata.judges,

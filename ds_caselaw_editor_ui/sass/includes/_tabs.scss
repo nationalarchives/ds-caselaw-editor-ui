@@ -1,27 +1,46 @@
 .tabs-set {
-  padding: $space-1;
-  border-radius: 5px;
+  width: 100%;
+  margin: auto;
+  text-align: center;
   background: colour-var("accent-background-light");
 
   &__item {
     display: inline-block;
+    margin: 0 $space-1;
 
     label {
+      padding-top: $space-3;
+      border: 2px solid colour-var("link");
+      border-bottom: none;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+
+      font-family: "Open Sans", sans-serif;
+      font-size: $typography-md-text-size;
+      font-weight: $typography-bold-font-weight;
+      color: colour-var("button-text");
+
+      background: colour-var("link");
+
       a {
+        position: relative;
+        top: -0.33rem;
+
         display: inline-block;
 
-        padding: $space-2 $space-4;
-        border-radius: 5px;
+        padding: $space-3 $space-8 0;
 
-        color: brand-colour("navy");
+        color: colour-var("button-text");
         text-decoration: none;
 
-        outline: none;
-
-        &:hover {
-          color: colour-var("contrast-link");
-          background: brand-colour("navy");
+        &:focus {
+          outline-offset: 5px;
         }
+      }
+
+      &:hover {
+        border-color: brand-colour("navy");
+        background: brand-colour("navy");
       }
     }
 
@@ -35,11 +54,73 @@
     }
 
     input[type="radio"]:checked ~ label {
+      border-bottom: 2px solid colour-var("input-background");
+      background: colour-var("input-background");
+
       a {
         cursor: default;
-        color: colour-var("contrast-link");
-        background: brand-colour("navy");
+        color: colour-var("link");
       }
+    }
+  }
+
+  &__divider {
+    border-top: solid 2px colour-var("link");
+  }
+
+  &.tabs-set--primary input[type="radio"]:checked ~ label {
+    border-bottom-color: colour-var("accent-background-light");
+    background: colour-var("accent-background-light");
+  }
+
+  &.tabs-set--toolbar {
+    width: auto;
+    margin: 0;
+    padding: $space-1;
+    border-radius: 5px;
+
+    .tabs-set__item {
+      margin: 0;
+
+      label {
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+
+        font: inherit;
+
+        background: transparent;
+
+        a {
+          position: static;
+
+          padding: $space-2 $space-4;
+          border-radius: 5px;
+
+          color: brand-colour("navy");
+
+          outline: none;
+
+          &:hover {
+            color: colour-var("contrast-link");
+            background: brand-colour("navy");
+          }
+        }
+      }
+
+      input[type="radio"]:checked ~ label {
+        border: 0;
+        background: transparent;
+
+        a {
+          color: colour-var("contrast-link");
+          background: brand-colour("navy");
+        }
+      }
+    }
+
+    .tabs-set__divider {
+      display: none;
     }
   }
 }

@@ -24,6 +24,7 @@ from judgments.tests.helpers.metadata_claims import judgment_with_title_claim
 from judgments.utils.metadata_display import MetadataFieldDisplayDecorator
 
 
+@override_flag(METADATA_ASIDE_JUDGES_FLAG, active=True)
 class TestMetadataPanel(TestCase):
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
@@ -72,6 +73,47 @@ class TestMetadataPanel(TestCase):
         assert len(edit_form.xpath(".//button[@data-form-actions-submit]")) == 1
         assert not root.xpath("//div[contains(@class, 'metadata__container')]")
         assert response.status_code == 200
+
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    @patch("judgments.utils.api_client.document_exists")
+    @patch("judgments.utils.api_client.get_document_type_from_uri")
+    @override_flag(METADATA_ASIDE_JUDGES_FLAG, active=False)
+    def test_metadata_panel_uses_legacy_interface_when_flag_inactive(
+        self,
+        document_type,
+        document_exists,
+        mock_judgment,
+    ):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+        judgment = JudgmentFactory.build(
+            uri=DocumentURIString("hvtest/4321/123"),
+            html="<h1>Test Judgment</h1>",
+            body=DocumentBodyFactory.build(name="Test v Tested"),
+        )
+        judgment.body.judges = ["Lord Justice Test"]
+        mock_judgment.return_value = judgment
+        self.client.force_login(make_editor())
+
+        response = self.client.get(
+            reverse("full-text-html", kwargs={"document_uri": judgment.uri}),
+        )
+        root = lxml.html.fromstring(response.content)
+        metadata_aside = root.xpath("//div[contains(@class, 'main-container__aside')]")[0]
+
+        assert response.status_code == 200
+        assert root.xpath("//form[@data-document-edit-form]")
+        assert root.xpath("//div[contains(@class, 'metadata__container')]")
+        assert not metadata_aside.xpath(".//details")
+        assert metadata_aside.xpath(".//div[contains(@class, 'aside__section-heading')]/dt/text()") == [
+            "Metadata",
+            "Identifiers",
+            "Legacy",
+        ]
+        assert not metadata_aside.xpath(".//form[contains(@class, 'aside__metadata-compact-form')]")
+        assert not metadata_aside.xpath(".//form[@id='document-edit-form']")
+        assert not metadata_aside.xpath(".//*[@data-aside-resizer]")
+        assert not root.xpath("//main[contains(@class, 'main-container--metadata-panel-editing')]")
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
@@ -182,7 +224,11 @@ class TestMetadataPanel(TestCase):
             source_email="",
         )
 
-        rendered = template.render(document=document, preferred_ncn=preferred)
+        rendered = template.render(
+            document=document,
+            preferred_ncn=preferred,
+            metadata_aside_judges_enabled=True,
+        )
         root = lxml.html.fromstring(rendered)
 
         section_headings = root.xpath("//details/summary/span/text()")
@@ -258,6 +304,7 @@ class TestMetadataPanel(TestCase):
             metadata_judges_section=metadata_judges_section,
             request=FakeRequest(),
             csrf_input="",
+            metadata_aside_judges_enabled=True,
         )
         root = lxml.html.fromstring(rendered)
 
@@ -299,6 +346,7 @@ class TestMetadataPanel(TestCase):
             user=make_editor(),
             metadata_judges_section=metadata_judges_section,
             csrf_input="",
+            metadata_aside_judges_enabled=True,
         )
         root = lxml.html.fromstring(rendered)
         judges_dd = root.xpath('//dt[normalize-space(.)="Judges"]/following-sibling::dd')[0]
@@ -329,6 +377,7 @@ class TestMetadataPanel(TestCase):
             user=User.objects.get_or_create(username="not-an-editor")[0],
             metadata_judges_section=metadata_judges_section,
             csrf_input="",
+            metadata_aside_judges_enabled=True,
         )
 
         assert 'name="new_claim__judges"' not in rendered
@@ -336,7 +385,7 @@ class TestMetadataPanel(TestCase):
 
     def test_document_metadata_aside_shows_other_identifiers_without_preferred(self):
         template = environment(loader=PackageLoader("ds_caselaw_editor_ui", "templates")).from_string(
-            '{% from "components/document_metadata.jinja" import document_metadata %}'
+            '{% from "components/document_metadata.jinja" import document_metadata with context %}'
             "{{ document_metadata(document=document) }}",
         )
 
@@ -373,7 +422,7 @@ class TestMetadataPanel(TestCase):
             source_email="",
         )
 
-        rendered = template.render(document=document)
+        rendered = template.render(document=document, metadata_aside_judges_enabled=True)
         root = lxml.html.fromstring(rendered)
 
         ncn_dd = root.xpath('//dt[text()="NCN"]/following-sibling::dd')[0]
