@@ -5,10 +5,6 @@ from playwright.sync_api import Page, expect
 JUDGMENT_URI = "/eat/2023/1"
 
 
-def _claim_row(page: Page, value: str):
-    return page.locator(".aside__metadata-compact-entry").filter(has_text=value)
-
-
 def test_metadata_aside_judges_editor_form(authenticated_editor_page: Page):
     page = authenticated_editor_page
     judge_name = f"E2E Judge {uuid.uuid4()}"
@@ -18,16 +14,22 @@ def test_metadata_aside_judges_editor_form(authenticated_editor_page: Page):
 
     judges_form = page.locator("[data-metadata-compact-form]")
     expect(judges_form).to_be_visible()
-    expect(page.locator("dt").filter(has_text="Judge/s")).to_be_visible()
+    expect(judges_form.locator("dt").filter(has_text="Judges")).to_be_visible()
 
-    page.locator("[data-metadata-compact-draft]").fill(judge_name)
-    page.locator("[data-metadata-compact-add]").click()
+    new_judge_entries = judges_form.locator("[data-metadata-compact-new-entry]")
+    initial_entry_count = new_judge_entries.count()
 
-    pending_row = _claim_row(page, judge_name)
-    expect(pending_row).to_be_visible()
-    expect(pending_row).to_have_attribute("data-metadata-compact-pending", "")
+    judges_form.locator("[data-metadata-compact-add]").click()
+    expect(new_judge_entries).to_have_count(initial_entry_count + 1)
+
+    new_judge_entry = new_judge_entries.last
+    new_judge_input = new_judge_entry.locator("[data-metadata-compact-new-input]")
+    new_judge_input.fill(judge_name)
+
+    expect(new_judge_input).to_have_value(judge_name)
     expect(
-        pending_row.get_by_role("checkbox", name=f"Remove {judge_name}"),
+        new_judge_entry.get_by_role("button", name="Remove", exact=True),
     ).to_be_visible()
-
-    expect(page.get_by_role("button", name="Update judges")).to_be_enabled()
+    expect(
+        judges_form.get_by_role("button", name="Save", exact=True),
+    ).to_be_enabled()
