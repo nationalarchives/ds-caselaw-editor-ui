@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const minimumAsideWidth = 300;
   const minimumContentWidth = 320;
+  const desktopLayout = window.matchMedia("(min-width: 768px)");
 
   const maximumAsideWidth = () =>
     Math.max(minimumAsideWidth, container.clientWidth - minimumContentWidth);
@@ -37,6 +38,11 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const setAsideWidth = (width) => {
+    if (!desktopLayout.matches) {
+      aside.style.removeProperty("width");
+      return;
+    }
+
     const constrainedWidth = Math.min(
       Math.max(width, minimumAsideWidth),
       maximumAsideWidth(),
@@ -45,6 +51,16 @@ document.addEventListener("DOMContentLoaded", () => {
     resizer.setAttribute("aria-valuemin", minimumAsideWidth);
     resizer.setAttribute("aria-valuemax", maximumAsideWidth());
     resizer.setAttribute("aria-valuenow", Math.round(constrainedWidth));
+  };
+
+  const updateAsideWidth = () => {
+    if (!desktopLayout.matches) {
+      aside.style.removeProperty("width");
+      return;
+    }
+
+    if (asideToggleContainer?.classList.contains("collapsed")) return;
+    setAsideWidth(aside.getBoundingClientRect().width);
   };
 
   resizer.addEventListener("pointerdown", (event) => {
@@ -87,12 +103,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("resize", () => {
     setAsideHeight();
-    if (asideToggleContainer?.classList.contains("collapsed")) return;
-    setAsideWidth(aside.getBoundingClientRect().width);
+    updateAsideWidth();
   });
 
   window.addEventListener("scroll", setAsideHeight, { passive: true });
 
   setAsideHeight();
-  setAsideWidth(aside.getBoundingClientRect().width);
+  setAsideWidth();
 });
