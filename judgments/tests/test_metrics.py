@@ -44,6 +44,8 @@ class TestMetricsView(SimpleTestCase):
                     "mean": 90000,
                     "median": 90000,
                     "within_24_hours_count": 1,
+                    "over_24_hours_count": 1,
+                    "over_24_hours_mean": 176400,
                 },
             },
             {
@@ -123,7 +125,7 @@ class TestMetricsView(SimpleTestCase):
                 "period": "August 2026",
                 "period_raw": "2026-08",
                 "count": 2,
-                "mean": {"display": "1 day 1 hour", "raw": 90000},
+                "mean": {"display": "1 hour", "raw": 3600.0},
                 "median": {"display": "1 day 1 hour", "raw": 90000},
                 "within_24_hours_percentage": {
                     "display": "50.0%",
@@ -157,9 +159,11 @@ class TestMetricsView(SimpleTestCase):
             },
             "monthly",
             include_within_24_hours_percentage=True,
+            exclude_over_24_hours_from_mean=True,
         )
 
         assert rows[0]["within_24_hours_percentage"] is None
+        assert rows[0]["mean"] is None
 
     def test_within_24_hours_percentage_has_no_data_when_api_field_is_unavailable(self):
         rows = MetricsView._format_duration_metrics(
@@ -172,9 +176,11 @@ class TestMetricsView(SimpleTestCase):
             },
             "monthly",
             include_within_24_hours_percentage=True,
+            exclude_over_24_hours_from_mean=True,
         )
 
         assert rows[0]["within_24_hours_percentage"] is None
+        assert rows[0]["mean"] is None
 
     @patch("judgments.views.metrics.api_client.get_metrics")
     @patch.object(MetricsView, "_get_tribunal_choices")
@@ -200,6 +206,8 @@ class TestMetricsView(SimpleTestCase):
                 "mean": 3661,
                 "median": 3661,
                 "within_24_hours_count": 1,
+                "over_24_hours_count": 0,
+                "over_24_hours_mean": None,
             },
         }
         request = RequestFactory().get(

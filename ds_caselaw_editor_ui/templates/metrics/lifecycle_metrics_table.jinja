@@ -12,7 +12,11 @@
               <th>First publication within 24 hours</th>
             {% endif %}
             <th>Median time</th>
-            <th>Mean time</th>
+            {% if metrics.show_within_24_hours_percentage %}
+              <th>Mean time (within 24 hours)</th>
+            {% else %}
+              <th>Mean time</th>
+            {% endif %}
           </tr>
         </thead>
         <tbody>

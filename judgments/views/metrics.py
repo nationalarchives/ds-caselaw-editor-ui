@@ -229,6 +229,21 @@ class MetricsView(TemplateView):
             "denominator": denominator,
         }
 
+    @staticmethod
+    def _mean_within_24_hours(values: dict[str, Any]) -> float | None:
+        within_24_hours_count = values.get("within_24_hours_count")
+        over_24_hours_count = values.get("over_24_hours_count")
+        total = values.get("sum")
+        if within_24_hours_count in (None, 0) or over_24_hours_count is None or total is None:
+            return None
+
+        over_24_hours_mean = values.get("over_24_hours_mean")
+        if over_24_hours_count and over_24_hours_mean is None:
+            return None
+
+        over_24_hours_total = over_24_hours_count * (over_24_hours_mean or 0)
+        return (total - over_24_hours_total) / within_24_hours_count
+
     @classmethod
     def _format_duration_metrics(
         cls,
@@ -236,6 +251,7 @@ class MetricsView(TemplateView):
         bucketing: MetricBucketing,
         *,
         include_within_24_hours_percentage: bool = False,
+        exclude_over_24_hours_from_mean: bool = False,
     ) -> list[MetricRow]:
         rows: list[MetricRow] = []
         for period, values in sorted(metrics.items()):
@@ -243,7 +259,9 @@ class MetricsView(TemplateView):
                 "period": cls._format_period(period, bucketing),
                 "period_raw": period,
                 "count": values["count"],
-                "mean": cls._display_duration(values["mean"]),
+                "mean": cls._display_duration(
+                    cls._mean_within_24_hours(values) if exclude_over_24_hours_from_mean else values["mean"],
+                ),
                 "median": cls._display_duration(values["median"]),
             }
             if include_within_24_hours_percentage:
@@ -408,6 +426,7 @@ class MetricsView(TemplateView):
                     ),
                     filters["bucketing"],
                     include_within_24_hours_percentage=show_within_24_hours_percentage,
+                    exclude_over_24_hours_from_mean=show_within_24_hours_percentage,
                 ),
             }
             for label, metric, show_within_24_hours_percentage in metric_types
