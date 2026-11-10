@@ -31,6 +31,11 @@ class DisplayValue(TypedDict):
     raw: int | float
 
 
+class PercentageValue(DisplayValue):
+    numerator: int
+    denominator: int
+
+
 class MetricRow(TypedDict, total=False):
     period: str
     period_raw: str
@@ -38,6 +43,7 @@ class MetricRow(TypedDict, total=False):
     total: int
     mean: DisplayValue | None
     median: DisplayValue | None
+    within_24_hours_percentage: PercentageValue | None
 
 
 class MetricFilters(TypedDict):
@@ -66,6 +72,7 @@ class SummaryMetric(TypedDict):
 class MetricTable(TypedDict):
     label: str
     rows: list[MetricRow]
+    show_within_24_hours_percentage: bool
 
 
 class MetricsContext(TypedDict):
@@ -209,22 +216,43 @@ class MetricsView(TemplateView):
             return None
         return {"display": cls._format_duration(value), "raw": value}
 
+    @staticmethod
+    def _display_percentage(numerator: int | None, denominator: int) -> PercentageValue | None:
+        if numerator is None or denominator == 0:
+            return None
+
+        percentage = numerator / denominator * 100
+        return {
+            "display": f"{percentage:.1f}%",
+            "raw": percentage,
+            "numerator": numerator,
+            "denominator": denominator,
+        }
+
     @classmethod
     def _format_duration_metrics(
         cls,
         metrics: dict[str, Any],
         bucketing: MetricBucketing,
+        *,
+        include_within_24_hours_percentage: bool = False,
     ) -> list[MetricRow]:
-        return [
-            {
+        rows: list[MetricRow] = []
+        for period, values in sorted(metrics.items()):
+            row: MetricRow = {
                 "period": cls._format_period(period, bucketing),
                 "period_raw": period,
                 "count": values["count"],
                 "mean": cls._display_duration(values["mean"]),
                 "median": cls._display_duration(values["median"]),
             }
-            for period, values in sorted(metrics.items())
-        ]
+            if include_within_24_hours_percentage:
+                row["within_24_hours_percentage"] = cls._display_percentage(
+                    values.get("within_24_hours_count"),
+                    values["count"],
+                )
+            rows.append(row)
+        return rows
 
     @classmethod
     def _format_submission_metrics(
@@ -362,13 +390,14 @@ class MetricsView(TemplateView):
         search_parameters: SearchParameters,
     ) -> list[MetricTable]:
         end_date = filters["end_date"] + timedelta(days=1)
-        metric_types: tuple[tuple[str, LifecycleMetric], ...] = (
-            ("Time to first publication", "tdr_to_first_publish"),
-            ("Time to latest publication", "tdr_to_latest_publish"),
+        metric_types: tuple[tuple[str, LifecycleMetric, bool], ...] = (
+            ("Time to first publication", "tdr_to_first_publish", True),
+            ("Time to latest publication", "tdr_to_latest_publish", False),
         )
         return [
             {
                 "label": label,
+                "show_within_24_hours_percentage": show_within_24_hours_percentage,
                 "rows": self._format_duration_metrics(
                     api_client.get_metrics(
                         metric=metric,
@@ -378,9 +407,10 @@ class MetricsView(TemplateView):
                         search_parameters=search_parameters,
                     ),
                     filters["bucketing"],
+                    include_within_24_hours_percentage=show_within_24_hours_percentage,
                 ),
             }
-            for label, metric in metric_types
+            for label, metric, show_within_24_hours_percentage in metric_types
         ]
 
     def _get_submission_metrics(
@@ -392,6 +422,7 @@ class MetricsView(TemplateView):
         return [
             {
                 "label": "Submissions before first publication",
+                "show_within_24_hours_percentage": False,
                 "rows": self._format_submission_metrics(
                     api_client.get_metrics(
                         metric="submissions_before_first_publish",

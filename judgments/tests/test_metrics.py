@@ -37,8 +37,24 @@ class TestMetricsView(SimpleTestCase):
         ]
         mock_search_and_parse_response.return_value = SimpleNamespace(total="17")
         mock_get_metrics.side_effect = [
-            {"2026-08": {"count": 2, "sum": 180000, "mean": 90000, "median": 90000}},
-            {"2026-08": {"count": 2, "sum": 360000, "mean": 180000, "median": 180000}},
+            {
+                "2026-08": {
+                    "count": 2,
+                    "sum": 180000,
+                    "mean": 90000,
+                    "median": 90000,
+                    "within_24_hours_count": 1,
+                },
+            },
+            {
+                "2026-08": {
+                    "count": 2,
+                    "sum": 360000,
+                    "mean": 180000,
+                    "median": 180000,
+                    "within_24_hours_count": 0,
+                },
+            },
             {"2026-08": {"count": 2, "sum": 5, "mean": 2.5, "median": 2.5}},
         ]
 
@@ -109,8 +125,16 @@ class TestMetricsView(SimpleTestCase):
                 "count": 2,
                 "mean": {"display": "1 day 1 hour", "raw": 90000},
                 "median": {"display": "1 day 1 hour", "raw": 90000},
+                "within_24_hours_percentage": {
+                    "display": "50.0%",
+                    "raw": 50.0,
+                    "numerator": 1,
+                    "denominator": 2,
+                },
             },
         ]
+        assert context["lifecycle_metrics"][0]["show_within_24_hours_percentage"] is True
+        assert context["lifecycle_metrics"][1]["show_within_24_hours_percentage"] is False
         assert context["submission_metrics"][0]["rows"][0]["total"] == 5
         assert mock_get_metrics.call_count == 3
         mock_get_metrics.assert_any_call(
@@ -120,6 +144,37 @@ class TestMetricsView(SimpleTestCase):
             end_date=end_date + timedelta(days=1),
             search_parameters=SearchParameters(),
         )
+
+    def test_within_24_hours_percentage_has_no_data_when_bucket_is_empty(self):
+        rows = MetricsView._format_duration_metrics(
+            {
+                "2026-08": {
+                    "count": 0,
+                    "mean": None,
+                    "median": None,
+                    "within_24_hours_count": 0,
+                },
+            },
+            "monthly",
+            include_within_24_hours_percentage=True,
+        )
+
+        assert rows[0]["within_24_hours_percentage"] is None
+
+    def test_within_24_hours_percentage_has_no_data_when_api_field_is_unavailable(self):
+        rows = MetricsView._format_duration_metrics(
+            {
+                "2026-08": {
+                    "count": 2,
+                    "mean": 90000,
+                    "median": 90000,
+                },
+            },
+            "monthly",
+            include_within_24_hours_percentage=True,
+        )
+
+        assert rows[0]["within_24_hours_percentage"] is None
 
     @patch("judgments.views.metrics.api_client.get_metrics")
     @patch.object(MetricsView, "_get_tribunal_choices")
@@ -139,7 +194,13 @@ class TestMetricsView(SimpleTestCase):
         mock_get_court_choices.return_value = [("example-court", "Example Court")]
         mock_get_tribunal_choices.return_value = [("example-tribunal", "Example Tribunal")]
         mock_get_metrics.return_value = {
-            "2026-09-01": {"count": 1, "sum": 3661, "mean": 3661, "median": 3661},
+            "2026-09-01": {
+                "count": 1,
+                "sum": 3661,
+                "mean": 3661,
+                "median": 3661,
+                "within_24_hours_count": 1,
+            },
         }
         request = RequestFactory().get(
             "/metrics",
@@ -184,6 +245,12 @@ class TestMetricsView(SimpleTestCase):
             "count": 1,
             "mean": {"display": "1 hour 1 minute", "raw": 3661},
             "median": {"display": "1 hour 1 minute", "raw": 3661},
+            "within_24_hours_percentage": {
+                "display": "100.0%",
+                "raw": 100.0,
+                "numerator": 1,
+                "denominator": 1,
+            },
         }
         mock_get_counts.assert_called_once_with(
             selected_courts={"example-court", "example-tribunal"},
