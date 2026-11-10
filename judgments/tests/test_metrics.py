@@ -36,8 +36,8 @@ class TestMetricsView(SimpleTestCase):
             SimpleNamespace(total="14"),
         ]
         mock_search_and_parse_response.return_value = SimpleNamespace(total="17")
-        mock_get_metrics.side_effect = [
-            {
+        metric_responses = {
+            "tdr_to_first_publish": {
                 "2026-08": {
                     "count": 2,
                     "sum": 180000,
@@ -48,7 +48,7 @@ class TestMetricsView(SimpleTestCase):
                     "over_24_hours_mean": 176400,
                 },
             },
-            {
+            "tdr_to_latest_publish": {
                 "2026-08": {
                     "count": 2,
                     "sum": 360000,
@@ -57,8 +57,11 @@ class TestMetricsView(SimpleTestCase):
                     "within_24_hours_count": 0,
                 },
             },
-            {"2026-08": {"count": 2, "sum": 5, "mean": 2.5, "median": 2.5}},
-        ]
+            "submissions_before_first_publish": {
+                "2026-08": {"count": 2, "sum": 5, "mean": 2.5, "median": 2.5},
+            },
+        }
+        mock_get_metrics.side_effect = lambda **kwargs: metric_responses[kwargs["metric"]]
 
         context = MetricsView().get_context_data()
 
@@ -71,8 +74,18 @@ class TestMetricsView(SimpleTestCase):
             {"label": "Courts and tribunals", "value": 2},
         ]
         assert context["cases_by_court"] == [
-            {"name": "Example Court", "type": "Court", "document_count": 10},
-            {"name": "Example Tribunal", "type": "Tribunal", "document_count": 4},
+            {
+                "canonical_param": "example-court",
+                "name": "Example Court",
+                "type": "Court",
+                "document_count": 10,
+            },
+            {
+                "canonical_param": "example-tribunal",
+                "name": "Example Tribunal",
+                "type": "Tribunal",
+                "document_count": 4,
+            },
         ]
         start_date, end_date = MetricsView._default_date_range()
         assert mock_search_judgments_and_parse_response.call_args_list == [
@@ -137,14 +150,31 @@ class TestMetricsView(SimpleTestCase):
         ]
         assert context["lifecycle_metrics"][0]["show_within_24_hours_percentage"] is True
         assert context["lifecycle_metrics"][1]["show_within_24_hours_percentage"] is False
+        assert [table["name"] for table in context["court_lifecycle_metrics"]] == [
+            "Example Court",
+            "Example Tribunal",
+        ]
+        assert context["court_lifecycle_metrics"][0]["rows"][0] == {
+            "period": "August 2026",
+            "period_raw": "2026-08",
+            "first_publication": context["lifecycle_metrics"][0]["rows"][0],
+            "latest_publication": context["lifecycle_metrics"][1]["rows"][0],
+        }
         assert context["submission_metrics"][0]["rows"][0]["total"] == 5
-        assert mock_get_metrics.call_count == 3
+        assert mock_get_metrics.call_count == 7
         mock_get_metrics.assert_any_call(
             metric="tdr_to_first_publish",
             bucketing="monthly",
             start_date=start_date,
             end_date=end_date + timedelta(days=1),
             search_parameters=SearchParameters(),
+        )
+        mock_get_metrics.assert_any_call(
+            metric="tdr_to_first_publish",
+            bucketing="monthly",
+            start_date=start_date,
+            end_date=end_date + timedelta(days=1),
+            search_parameters=SearchParameters(court="example-court"),
         )
 
     def test_within_24_hours_percentage_has_no_data_when_bucket_is_empty(self):

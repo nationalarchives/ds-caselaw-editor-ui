@@ -5,6 +5,7 @@
 {% from "metrics/lifecycle_metrics_table.jinja" import lifecycle_metrics_table %}
 {% from "metrics/submission_metrics_table.jinja" import submission_metrics_table %}
 {% from "metrics/court_metrics_table.jinja" import court_metrics_table %}
+{% from "metrics/court_lifecycle_metrics_tables.jinja" import court_lifecycle_metrics_tables %}
 {% block content %}
   <div class="metrics">
     {{ heading(content="Metrics", size="h1") }}
@@ -16,6 +17,7 @@
     {% for item in submission_metrics %}
       {{ submission_metrics_table(metrics=item) }}
     {% endfor %}
+    {{ court_lifecycle_metrics_tables(metrics=court_lifecycle_metrics) }}
     {{ court_metrics_table(metrics=cases_by_court) }}
   </div>
 {% endblock content %}

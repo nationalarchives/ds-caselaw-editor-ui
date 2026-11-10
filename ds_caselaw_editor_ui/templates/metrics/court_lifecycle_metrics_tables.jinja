@@ -1,0 +1,74 @@
+{% from "components/details.jinja" import details %}
+{% from "components/heading.jinja" import heading %}
+{% macro duration(value=None) %}
+  {% if value is not none %}
+    <span title="{{ value.raw }} seconds">{{ value.display }}</span>
+  {% else %}
+    No data
+  {% endif %}
+{% endmacro %}
+{% macro court_lifecycle_metrics_tables(metrics=None) %}
+  <section>
+    {{ heading(tag="h2", content="Lifecycle metrics by court and tribunal") }}
+    {% for court in metrics %}
+      {% call details(title=court.name ~ " (" ~ court.type ~ ")") %}
+        <div class="table">
+          <table>
+            <thead>
+              <tr>
+                <th rowspan="2">Period</th>
+                <th colspan="4">First publication</th>
+                <th colspan="3">Latest publication</th>
+              </tr>
+              <tr>
+                <th>Documents measured</th>
+                <th>Within 24 hours</th>
+                <th>Median time</th>
+                <th>Mean time (within 24 hours)</th>
+                <th>Documents measured</th>
+                <th>Median time</th>
+                <th>Mean time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in court.rows %}
+                <tr>
+                  <td title="{{ row.period_raw }}">{{ row.period }}</td>
+                  {% if row.first_publication is not none %}
+                    <td>{{ row.first_publication.count|intcomma }}</td>
+                    <td>
+                      {% if row.first_publication.within_24_hours_percentage is not none %}
+                        <span title="{{ row.first_publication.within_24_hours_percentage.numerator|intcomma }} of {{ row.first_publication.within_24_hours_percentage.denominator|intcomma }} journeys">
+                          {{ row.first_publication.within_24_hours_percentage.display }}
+                        </span>
+                      {% else %}
+                        No data
+                      {% endif %}
+                    </td>
+                    <td>{{ duration(row.first_publication.median) }}</td>
+                    <td>{{ duration(row.first_publication.mean) }}</td>
+                  {% else %}
+                    <td colspan="4">No data</td>
+                  {% endif %}
+                  {% if row.latest_publication is not none %}
+                    <td>{{ row.latest_publication.count|intcomma }}</td>
+                    <td>{{ duration(row.latest_publication.median) }}</td>
+                    <td>{{ duration(row.latest_publication.mean) }}</td>
+                  {% else %}
+                    <td colspan="3">No data</td>
+                  {% endif %}
+                </tr>
+              {% else %}
+                <tr>
+                  <td colspan="8">No lifecycle metrics available for this period.</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endcall %}
+    {% else %}
+      <p>No lifecycle metrics are available by court or tribunal for this period.</p>
+    {% endfor %}
+  </section>
+{% endmacro %}
