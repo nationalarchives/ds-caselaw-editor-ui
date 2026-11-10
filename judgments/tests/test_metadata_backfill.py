@@ -59,13 +59,20 @@ def _judgment(*, body_name: str, body_date: str, title_claim: str | None = None,
     return judgment
 
 
-def _version_document(*, name: str, document_date_as_string: str, version_type: str):
+def _version_document(
+    *,
+    name: str,
+    document_date_as_string: str,
+    version_type: str,
+    version_number: int = 1,
+):
     version = JudgmentFactory.build(
         body=DocumentBodyFactory.build(
             name=name,
             document_date_as_string=document_date_as_string,
         ),
     )
+    version.version_number = version_number
     version.structured_annotation = {
         "type": version_type,
         "automated": True,
@@ -131,6 +138,56 @@ class TestPlanMetadataBackfill(SimpleTestCase):
         plan = plan_metadata_backfill(judgment)
 
         assert plan.has_changes is False
+
+    def test_uses_newest_submission_when_versions_are_oldest_first(self):
+        judgment = _judgment(
+            body_name="Reparsed title",
+            body_date="2024-01-01",
+            title_claim="Ingest title",
+        )
+        judgment.versions_as_documents = [
+            _version_document(
+                name="Ingest title",
+                document_date_as_string="2024-01-01",
+                version_type=VersionType.SUBMISSION.value,
+                version_number=1,
+            ),
+            _version_document(
+                name="Reparsed title",
+                document_date_as_string="2024-01-01",
+                version_type=VersionType.SUBMISSION.value,
+                version_number=4,
+            ),
+        ]
+
+        plan = plan_metadata_backfill(judgment)
+
+        assert plan.has_changes is False
+
+    def test_promotes_when_only_an_older_submission_matches_the_body(self):
+        judgment = _judgment(
+            body_name="Editor XML title",
+            body_date="2024-01-01",
+            title_claim="Ingest title",
+        )
+        judgment.versions_as_documents = [
+            _version_document(
+                name="Editor XML title",
+                document_date_as_string="2024-01-01",
+                version_type=VersionType.SUBMISSION.value,
+                version_number=1,
+            ),
+            _version_document(
+                name="Ingest title",
+                document_date_as_string="2024-01-01",
+                version_type=VersionType.SUBMISSION.value,
+                version_number=4,
+            ),
+        ]
+
+        plan = plan_metadata_backfill(judgment)
+
+        assert plan.title == "Editor XML title"
 
     def test_promotes_body_date_when_document_claim_is_stale(self):
         judgment = _judgment(
@@ -285,3 +342,55 @@ class TestBackfillBodyMetadataClaimsCommand(SimpleTestCase):
         call_command("backfill_body_metadata_claims", "--apply", "--uri", "test/2023/123")
 
         assert mock_backfill.call_args.kwargs["dry_run"] is False
+
+    @patch("judgments.management.commands.backfill_body_metadata_claims.api_client")
+    @patch("judgments.management.commands.backfill_body_metadata_claims.backfill_document_metadata")
+    def test_uri_mode_honours_limit(self, mock_backfill, mock_api_client):
+        document = _judgment(
+            body_name="Editor XML title",
+            body_date="2024-01-01",
+            title_claim="Ingest title",
+        )
+        mock_api_client.get_document_by_uri.return_value = document
+        mock_backfill.return_value = MetadataBackfillResult(
+            uri="test/2023/1",
+            planned=MetadataBackfillPlan(),
+        )
+
+        call_command(
+            "backfill_body_metadata_claims",
+            "--apply",
+            "--limit",
+            "1",
+            "--uri",
+            "test/2023/1",
+            "--uri",
+            "test/2023/2",
+        )
+
+        mock_api_client.get_document_by_uri.assert_called_once()
+        assert str(mock_api_client.get_document_by_uri.call_args.args[0]) == "test/2023/1"
+
+    @patch("judgments.management.commands.backfill_body_metadata_claims.api_client")
+    @patch("judgments.management.commands.backfill_body_metadata_claims.backfill_document_metadata")
+    def test_uri_mode_without_limit_considers_every_uri(self, mock_backfill, mock_api_client):
+        document = _judgment(
+            body_name="Editor XML title",
+            body_date="2024-01-01",
+            title_claim="Ingest title",
+        )
+        mock_api_client.get_document_by_uri.return_value = document
+        mock_backfill.return_value = MetadataBackfillResult(
+            uri="test/2023/1",
+            planned=MetadataBackfillPlan(),
+        )
+
+        call_command(
+            "backfill_body_metadata_claims",
+            "--uri",
+            "test/2023/1",
+            "--uri",
+            "test/2023/2",
+        )
+
+        assert mock_api_client.get_document_by_uri.call_count == 2

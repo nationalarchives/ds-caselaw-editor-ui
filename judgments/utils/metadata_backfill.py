@@ -70,7 +70,13 @@ class MetadataBackfillResult:
 
 def latest_submission_or_restore_body(document: Document) -> Document | None:
     """Return the newest submission/restore version document, if annotated."""
-    for version in document.versions_as_documents:
+    # MarkLogic usually returns versions newest-first, but that order is not guaranteed.
+    versions = sorted(
+        document.versions_as_documents,
+        key=lambda version: version.version_number,
+        reverse=True,
+    )
+    for version in versions:
         try:
             annotation = version.structured_annotation
         except (ValidationError, ValueError, TypeError, AttributeError):

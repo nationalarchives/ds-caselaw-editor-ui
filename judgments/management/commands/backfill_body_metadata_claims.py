@@ -102,7 +102,8 @@ class Command(BaseCommand):
         limit: int | None,
     ) -> Iterator[DocumentURIString]:
         if uris:
-            yield from uris
+            # ``limit`` is None when unlimited, and slicing with None keeps every URI.
+            yield from uris[:limit]
             return
 
         page = 1
