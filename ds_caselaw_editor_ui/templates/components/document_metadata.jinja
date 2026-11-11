@@ -134,7 +134,7 @@
                 <dt>Other</dt>
                 <dd>
                   {% set identifier_list = identifiers.by_score() if identifiers else [] %}
-                  {% set preferred_uuid = preferred_identifier.uuid if preferred_identifier else none %}
+                  {% set preferred_uuid = preferred_ncn.uuid if preferred_ncn else none %}
                   {% set other = namespace(shown=false) %}
                   {% for identifier in identifier_list %}
                     {% if identifier.uuid != preferred_uuid %}
@@ -210,7 +210,7 @@
             </dl>
           {% endcall %}
         </div>
-        {% call form_actions({"data-form-actions": ""}, classes="form-actions--panel") %}
+        {% call form_actions({"data-form-actions": ""} if can_edit_document else {}, classes="form-actions--panel") %}
           {{ button(content="Save",
             disabled=not can_edit_document,
             size="small",
