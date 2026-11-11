@@ -157,10 +157,10 @@ TDR ref: TDR-12345
         settings.JIRA_INSTANCE = "tna-test.jira.com"
         settings.DEFAULT_JIRA_PROJECT = {"pid": "10090", "issuetype": "10320"}
         settings.JIRA_PROJECTS_BY_COURT = {
-            "UKFTT": {"pid": "12623", "issuetype": "13193"},
+            "UKFTT-IAC": {"pid": "12623", "issuetype": "13193"},
             "UKSC": {"pid": "10100", "issuetype": "10400"},
         }
-        judgment = JudgmentFactory.build(body=DocumentBodyFactory.build(court="UKFTT"))
+        judgment = JudgmentFactory.build(body=DocumentBodyFactory.build(court="UKFTT-IAC"))
         request = RequestFactory().get(judgment.uri)
 
         link = build_jira_create_link(judgment, request)
@@ -174,7 +174,7 @@ TDR ref: TDR-12345
         settings.JIRA_INSTANCE = "tna-test.jira.com"
         settings.DEFAULT_JIRA_PROJECT = {"pid": "10090", "issuetype": "10320"}
         settings.JIRA_PROJECTS_BY_COURT = {
-            "UKFTT": {"pid": "12623", "issuetype": "13193"},
+            "UKFTT-IAC": {"pid": "12623", "issuetype": "13193"},
         }
         judgment = JudgmentFactory.build(body=DocumentBodyFactory.build(court="UKSC"))
         request = RequestFactory().get(judgment.uri)
@@ -189,9 +189,9 @@ TDR ref: TDR-12345
         settings.JIRA_INSTANCE = "tna-test.jira.com"
         settings.DEFAULT_JIRA_PROJECT = {"pid": "10090", "issuetype": "10320"}
         settings.JIRA_PROJECTS_BY_COURT = {
-            "uKfTt": {"pid": "12623", "issuetype": "13193"},
+            "uKfTt-iAc": {"pid": "12623", "issuetype": "13193"},
         }
-        judgment = JudgmentFactory.build(body=DocumentBodyFactory.build(court="UkFtT"))
+        judgment = JudgmentFactory.build(body=DocumentBodyFactory.build(court="UkFtT-IaC"))
         request = RequestFactory().get(judgment.uri)
 
         link = build_jira_create_link(judgment, request)
