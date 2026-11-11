@@ -60,6 +60,7 @@
                     "id": "neutral_citation",
                     "name": "neutral_citation",
                     "value": preferred_ncn.value if preferred_ncn else "",
+                    "attributes": {"readonly": true} if document.document_noun != "judgment" else {},
                   }) }}
                 </dd>
               </div>
