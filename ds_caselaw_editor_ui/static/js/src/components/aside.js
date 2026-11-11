@@ -109,5 +109,5 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", setAsideHeight, { passive: true });
 
   setAsideHeight();
-  setAsideWidth();
+  updateAsideWidth();
 });
