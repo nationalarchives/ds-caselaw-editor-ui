@@ -138,6 +138,46 @@ class TestDocumentEdit(TestCase):
     @patch("judgments.views.judgment_edit.invalidate_caches")
     @patch("judgments.views.judgment_edit.api_client")
     @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
+    def test_edit_judgment_does_not_remove_last_judge(
+        self,
+        mock_judgment,
+        api_client,
+        mock_invalidate_caches,
+    ):
+        judgment = JudgmentFactory.build(
+            uri=DocumentURIString("edittest/4321/123"),
+            body=DocumentBodyFactory.build(name="Test v Tested"),
+        )
+        judgment.body.judges = ["Lord Justice Body"]
+        judgment.identifiers.add(NeutralCitationNumber("[4321] UKSC 123"))
+        mock_judgment.return_value = judgment
+        self.client.force_login(make_editor())
+
+        with (
+            patch.object(judgment, "editing_session"),
+            patch.object(judgment, "save_metadata_fields") as save_metadata_fields,
+        ):
+            response = self.client.post(
+                reverse("edit-document", kwargs={"document_uri": judgment.uri}),
+                {
+                    "judgment_uri": judgment.uri,
+                    "metadata_name": judgment.metadata.title.value,
+                    "neutral_citation": "[4321] UKSC 123",
+                    "court": judgment.body.court_and_jurisdiction_identifier_string,
+                    "suppress_body_judges": ["Lord Justice Body"],
+                    **document_form_judgment_date_fields(day=3, month=2, year=2023),
+                },
+            )
+
+        response_messages = list(get_messages(response.wsgi_request))
+        assert [message.message for message in response_messages] == ["A document must have at least one judge"]
+        save_metadata_fields.assert_not_called()
+        mock_invalidate_caches.assert_not_called()
+        api_client.set_document_court_and_jurisdiction.assert_called_once()
+
+    @patch("judgments.views.judgment_edit.invalidate_caches")
+    @patch("judgments.views.judgment_edit.api_client")
+    @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
     def test_edit_judgment_does_not_invalidate_cache_when_api_save_fails(
         self,
         mock_judgment,

@@ -23,6 +23,10 @@ class CannotUpdateNCNOfNonJudgment(Exception):
     pass
 
 
+class CannotSaveJudgmentWithoutJudges(Exception):
+    pass
+
+
 def update_ncn_of_document(document: Document, new_neutral_citation_number_string: str) -> None:
     """Given a document and a new NCN string, validate that NCN and perform necessary operations to update the document with it."""
 
@@ -56,7 +60,18 @@ class EditJudgmentView(EditorRequiredMixin, View):
         return reverse(view_name, kwargs={"document_uri": judgment.uri})
 
     @staticmethod
-    def _save_judges_from_document_form(judgment: Document, post_data: QueryDict) -> None:
+    def _save_changed_judges(judgment: Document, changed: bool) -> None:
+        if not changed:
+            return
+
+        if not judgment.metadata.judges.values:
+            msg = "A document must have at least one judge"
+            raise CannotSaveJudgmentWithoutJudges(msg)
+
+        judgment.save_metadata_fields()
+
+    @classmethod
+    def _save_judges_from_document_form(cls, judgment: Document, post_data: QueryDict) -> None:
         changed = False
         judges_metadata = judgment.metadata.judges
 
@@ -86,8 +101,7 @@ class EditJudgmentView(EditorRequiredMixin, View):
                 judges_metadata.add_editor_judge(cleaned_judge_name)
                 changed = True
 
-        if changed:
-            judgment.save_metadata_fields()
+        cls._save_changed_judges(judgment, changed)
 
     def get(self, request, *args, **kwargs):
         return HttpResponseRedirect(
@@ -161,6 +175,9 @@ class EditJudgmentView(EditorRequiredMixin, View):
                 request,
                 f"There was an error updating the Document's neutral citation: {e}",
             )
+
+        except CannotSaveJudgmentWithoutJudges as e:
+            messages.error(request, str(e))
 
         except MarklogicAPIError as e:
             messages.error(request, f"There was an error saving the Document: {e}")
