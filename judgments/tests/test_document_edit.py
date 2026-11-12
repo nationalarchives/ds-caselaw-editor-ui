@@ -22,7 +22,9 @@ from django.test import TestCase
 from django.urls import reverse
 from editing import document_form_judgment_date_fields, editing_order, record, tracking_editing_session
 from factories import make_editor
+from waffle.testutils import override_flag
 
+from judgments.templatetags.navigation_tags import METADATA_ASIDE_JUDGES_FLAG
 from judgments.tests.helpers.metadata_claims import judgment_with_title_claim
 from judgments.views.judgment_edit import CannotUpdateNCNOfNonJudgment, update_ncn_of_document
 
@@ -66,6 +68,7 @@ class TestDocumentEdit(TestCase):
     @patch("judgments.views.judgment_edit.api_client")
     @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
     @patch("judgments.utils.aws.boto3")
+    @override_flag(METADATA_ASIDE_JUDGES_FLAG, active=True)
     def test_edit_judgment_no_ncn_change(self, mock_boto, mock_judgment, api_client, mock_invalidate_caches):
         judgment = JudgmentFactory.build(
             uri=DocumentURIString("edittest/4321/123"),
@@ -138,6 +141,7 @@ class TestDocumentEdit(TestCase):
     @patch("judgments.views.judgment_edit.invalidate_caches")
     @patch("judgments.views.judgment_edit.api_client")
     @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
+    @override_flag(METADATA_ASIDE_JUDGES_FLAG, active=True)
     def test_edit_judgment_does_not_remove_last_judge(
         self,
         mock_judgment,
@@ -173,6 +177,40 @@ class TestDocumentEdit(TestCase):
         assert [message.message for message in response_messages] == ["A document must have at least one judge"]
         save_metadata_fields.assert_not_called()
         mock_invalidate_caches.assert_not_called()
+        api_client.set_document_court_and_jurisdiction.assert_called_once()
+
+    @patch("judgments.views.judgment_edit.api_client")
+    @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
+    @override_flag(METADATA_ASIDE_JUDGES_FLAG, active=False)
+    def test_edit_judgment_ignores_judge_fields_when_flag_inactive(self, mock_judgment, api_client):
+        judgment = JudgmentFactory.build(
+            uri=DocumentURIString("edittest/4321/123"),
+            body=DocumentBodyFactory.build(name="Test v Tested"),
+        )
+        judgment.body.judges = ["Lord Justice Body"]
+        judgment.identifiers.add(NeutralCitationNumber("[4321] UKSC 123"))
+        mock_judgment.return_value = judgment
+        self.client.force_login(make_editor())
+
+        with (
+            patch.object(judgment, "editing_session"),
+            patch.object(judgment, "save_metadata_fields") as save_metadata_fields,
+        ):
+            self.client.post(
+                reverse("edit-document", kwargs={"document_uri": judgment.uri}),
+                {
+                    "judgment_uri": judgment.uri,
+                    "metadata_name": judgment.metadata.title.value,
+                    "neutral_citation": "[4321] UKSC 123",
+                    "court": judgment.body.court_and_jurisdiction_identifier_string,
+                    "new_claim__judges": ["Lady Justice Example"],
+                    "suppress_body_judges": ["Lord Justice Body"],
+                    **document_form_judgment_date_fields(day=3, month=2, year=2023),
+                },
+            )
+
+        assert judgment.metadata.judges.values == ["Lord Justice Body"]
+        save_metadata_fields.assert_not_called()
         api_client.set_document_court_and_jurisdiction.assert_called_once()
 
     @patch("judgments.views.judgment_edit.invalidate_caches")

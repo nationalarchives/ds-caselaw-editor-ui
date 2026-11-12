@@ -4,10 +4,12 @@ from caselawclient.models.documents.metadata.fields.source import MetadataSource
 from caselawclient.models.identifiers.neutral_citation import NCNValidationException, NeutralCitationNumber
 from django.conf import settings
 from django.contrib import messages
-from django.http import Http404, HttpResponseRedirect, QueryDict
+from django.http import Http404, HttpRequest, HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import View
+from waffle import flag_is_active
 
+from judgments.templatetags.navigation_tags import METADATA_ASIDE_JUDGES_FLAG
 from judgments.utils import api_client
 from judgments.utils.aws import invalidate_caches
 from judgments.utils.govuk_date import JUDGMENT_DATE_FIELD_MESSAGES, GovukDateParseError, parse_govuk_date_from_post
@@ -71,7 +73,11 @@ class EditJudgmentView(EditorRequiredMixin, View):
         judgment.save_metadata_fields()
 
     @classmethod
-    def _save_judges_from_document_form(cls, judgment: Document, post_data: QueryDict) -> None:
+    def _save_judges_from_document_form(cls, request: HttpRequest, judgment: Document) -> None:
+        if not flag_is_active(request, METADATA_ASIDE_JUDGES_FLAG):
+            return
+
+        post_data = request.POST
         changed = False
         judges_metadata = judgment.metadata.judges
 
@@ -166,7 +172,7 @@ class EditJudgmentView(EditorRequiredMixin, View):
                     save_judgment_date_from_document_form(judgment, new_date)
                     api_client.set_judgment_date(judgment_uri, new_date.isoformat())
 
-                    self._save_judges_from_document_form(judgment, request.POST)
+                    self._save_judges_from_document_form(request, judgment)
 
                     messages.success(request, "Document successfully updated")
 
