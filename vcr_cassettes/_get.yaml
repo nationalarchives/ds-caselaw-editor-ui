@@ -1,165 +1,5 @@
 interactions:
   - request:
-      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24user+as+xs%3Astring+external%3B%0Adeclare+variable+%24role+as+xs%3Astring+external%3B%0A%0Alet+%24user_roles+%3A%3D+xdmp%3Auser-roles%28%24user%29%0Alet+%24role_id+%3A%3D+xdmp%3Arole%28%24role%29%0A%0Areturn+fn%3Aboolean%28index-of%28%24role_id%2C+%24user_roles%29%29%0A&vars=%7B%22role%22%3A%22admin%22%2C%22user%22%3A%22cassette_user%22%7D
-      headers:
-        Accept:
-          - application/xml
-        Content-type:
-          - application/x-www-form-urlencoded
-      method: POST
-      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
-    response:
-      body:
-        string:
-          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
-          {"X-Primitive": "boolean"}, "body": "true", "encoding": "utf-8"}]'
-      headers:
-        Connection:
-          - keep-alive
-        Content-Type:
-          - multipart/mixed; boundary=vcr_cassette_boundary
-        Date:
-          - Fri, 10 Apr 2026 10:30:19 GMT
-        Server:
-          - MarkLogic 11.0.2
-      status:
-        code: 200
-        message: OK
-  - request:
-      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+null%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+10%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22-date%22%2C+%22from%22%3A+%22%22%2C+%22to%22%3A+%22%22%2C+%22show_unpublished%22%3A+%22true%22%2C+%22only_unpublished%22%3A+%22true%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
-      headers:
-        Accept:
-          - multipart/mixed
-        Content-type:
-          - application/x-www-form-urlencoded
-      method: POST
-      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
-    response:
-      body:
-        string:
-          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
-          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
-          snippet-format=\"empty-snippet\" total=\"5694\" start=\"1\" page-length=\"10\"
-          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:result
-          index=\"1\" uri=\"/d-fb7b3b97-182b-4710-bf4c-2f69f9a006fc.xml\" path=\"fn:doc(&quot;/d-fb7b3b97-182b-4710-bf4c-2f69f9a006fc.xml&quot;)\"
-          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
-          kind=\"element\">\n      <FRBRdate date=\"2099-01-17\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
-          value=\"aaa v ccc\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
-          date=\"2026-02-17T17:08:55\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">UKSC</uk:court>\n    </search:extracted>\n    <search:extracted
-          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\">\n      <identifiers
-          xmlns:prop=\"http://marklogic.com/xdmp/property\">\n\t<identifier>\n\t  <namespace>fclid</namespace>\n\t  <uuid>id-796516b3-0ea8-4824-b4c1-504f7c4adb7d</uuid>\n\t  <value>pfc5k5wd</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>tna.pfc5k5wd</url_slug>\n\t</identifier>\n      </identifiers>\n    </search:extracted>\n  </search:result>\n  <search:result
-          index=\"2\" uri=\"/d-bd39a989-cc8c-46be-b979-66a87350485a.xml\" path=\"fn:doc(&quot;/d-bd39a989-cc8c-46be-b979-66a87350485a.xml&quot;)\"
-          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
-          kind=\"element\">\n      <FRBRdate date=\"2026-04-01\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
-          value=\"test\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
-          date=\"2026-04-08T14:31:01\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">SIAC</uk:court>\n    </search:extracted>\n    <search:extracted
-          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
-          index=\"3\" uri=\"/d-1297dc2d-edb8-404f-8061-317013555eda.xml\" path=\"fn:doc(&quot;/d-1297dc2d-edb8-404f-8061-317013555eda.xml&quot;)\"
-          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
-          kind=\"element\">\n      <FRBRdate date=\"2026-03-06\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
-          value=\"wwewq\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
-          date=\"2026-03-09T09:45:34\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">SIAC</uk:court>\n    </search:extracted>\n    <search:extracted
-          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
-          index=\"4\" uri=\"/d-b6cd225c-a0ff-4764-9f2b-99355c2c4b97.xml\" path=\"fn:doc(&quot;/d-b6cd225c-a0ff-4764-9f2b-99355c2c4b97.xml&quot;)\"
-          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
-          kind=\"element\">\n      <FRBRdate date=\"2026-02-12\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
-          value=\"teeeest\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
-          date=\"2026-02-09T11:30:55\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">UKSC</uk:court>\n    </search:extracted>\n    <search:extracted
-          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
-          index=\"5\" uri=\"/d-5b0ecda6-80bc-4e63-bb3f-1fcbc6854222.xml\" path=\"fn:doc(&quot;/d-5b0ecda6-80bc-4e63-bb3f-1fcbc6854222.xml&quot;)\"
-          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
-          kind=\"element\">\n      <FRBRdate date=\"2026-01-29\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
-          value=\"t\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
-          date=\"2026-01-29T16:21:57\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">UKSC</uk:court>\n    </search:extracted>\n    <search:extracted
-          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
-          index=\"6\" uri=\"/d-82cfb855-f341-4863-8fd5-a936c003f02a.xml\" path=\"fn:doc(&quot;/d-82cfb855-f341-4863-8fd5-a936c003f02a.xml&quot;)\"
-          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
-          kind=\"element\">\n      <FRBRdate date=\"2026-01-01\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
-          value=\"Test1550\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
-          date=\"2026-04-08T14:51:00\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">UKSC</uk:court>\n    </search:extracted>\n    <search:extracted
-          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
-          index=\"7\" uri=\"/d-13cc4d44-4623-4c7b-a905-05b71a2faed4.xml\" path=\"fn:doc(&quot;/d-13cc4d44-4623-4c7b-a905-05b71a2faed4.xml&quot;)\"
-          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
-          kind=\"element\">\n      <FRBRdate date=\"2025-08-01\" name=\"judgment\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
-          value=\"TELEDYNE UK LIMITED v JULIAN ALLEN GAO.\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
-          date=\"2025-10-03T13:22:00\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">EWHC-KBD</uk:court>\n      <uk:cite
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">[2025] EWHC 2050
-          (KB)</uk:cite>\n      <uk:hash xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">1a7736dcdb10018730ceca07d63b97eeaca3156cf39f21e90c38bcb6ce9bda32</uk:hash>\n      <uk:jurisdiction
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\"/>\n      <neutralCitation
-          xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\">[2025] EWHC 2050
-          (KB)</neutralCitation>\n    </search:extracted>\n    <search:extracted kind=\"identifiers\"
-          xmlns:map=\"http://marklogic.com/xdmp/map\">\n      <identifiers xmlns:prop=\"http://marklogic.com/xdmp/property\">\n\t<identifier>\n\t  <namespace>ukncn</namespace>\n\t  <uuid>id-02b7b8ef-639e-400d-a24b-766d8a30162d</uuid>\n\t  <value>[2025]
-          EWHC 2050 (KB)</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>ewhc/kb/2025/2050</url_slug>\n\t</identifier>\n\t<identifier>\n\t  <namespace>fclid</namespace>\n\t  <uuid>id-8a3fe3b8-d0db-4706-8d2c-006b57d0fbf6</uuid>\n\t  <value>hqmyr2cj</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>tna.hqmyr2cj</url_slug>\n\t</identifier>\n      </identifiers>\n    </search:extracted>\n  </search:result>\n  <search:result
-          index=\"8\" uri=\"/d-14d53aa1-53b6-4c1e-a1bc-a3a8761fda86.xml\" path=\"fn:doc(&quot;/d-14d53aa1-53b6-4c1e-a1bc-a3a8761fda86.xml&quot;)\"
-          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
-          kind=\"element\">\n      <FRBRdate date=\"2025-08-01\" name=\"judgment\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
-          value=\"TELEDYNE UK LIMITED v JULIAN ALLEN GAO\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
-          date=\"2025-08-05T10:30:54\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">EWHC-KBD</uk:court>\n      <uk:cite
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">[2025] EWHC 2050
-          (KB)</uk:cite>\n      <uk:hash xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">90aea15de3ac0aeee3a744de126b6a8f54230d95a4f3b584205d4c23cf2aaa9e</uk:hash>\n      <uk:jurisdiction
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\"/>\n      <neutralCitation
-          xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\">[2025] EWHC 2050
-          (KB)</neutralCitation>\n    </search:extracted>\n    <search:extracted kind=\"identifiers\"
-          xmlns:map=\"http://marklogic.com/xdmp/map\">\n      <identifiers xmlns:prop=\"http://marklogic.com/xdmp/property\">\n\t<identifier>\n\t  <namespace>ukncn</namespace>\n\t  <uuid>id-18dc1ba7-8f4d-45a3-8a67-91b70b146809</uuid>\n\t  <value>[2025]
-          UKSC 1234</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>uksc/2025/1234</url_slug>\n\t</identifier>\n\t<identifier>\n\t  <namespace>fclid</namespace>\n\t  <uuid>id-bab95a04-0c80-4969-90b9-a5ebfdbdde57</uuid>\n\t  <value>qnxtn2hd</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>tna.qnxtn2hd</url_slug>\n\t</identifier>\n      </identifiers>\n    </search:extracted>\n  </search:result>\n  <search:result
-          index=\"9\" uri=\"/d-1c05d70c-5d2a-4e5c-bbc6-c2379048f20d.xml\" path=\"fn:doc(&quot;/d-1c05d70c-5d2a-4e5c-bbc6-c2379048f20d.xml&quot;)\"
-          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
-          kind=\"element\">\n      <ns0:FRBRdate date=\"2025-01-01\" name=\"decision\"
-          xmlns:ns0=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <ns0:FRBRname
-          value=\"a\" xmlns:ns0=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <ns0:FRBRdate
-          date=\"2026-01-05T16:20:42\" name=\"transform\" xmlns:ns0=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <ns1:court
-          xmlns:ns1=\"https://caselaw.nationalarchives.gov.uk/akn\">UKIST</ns1:court>\n    </search:extracted>\n    <search:extracted
-          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
-          index=\"10\" uri=\"/d-cec741b6-1810-4f6b-a2d6-4915898cc2aa.xml\" path=\"fn:doc(&quot;/d-cec741b6-1810-4f6b-a2d6-4915898cc2aa.xml&quot;)\"
-          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
-          kind=\"element\">\n      <ns0:FRBRdate date=\"2025-01-01\" name=\"decision\"
-          xmlns:ns0=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <ns0:FRBRname
-          value=\"a\" xmlns:ns0=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <ns0:FRBRdate
-          date=\"2026-01-05T16:20:05\" name=\"transform\" xmlns:ns0=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <ns1:court
-          xmlns:ns1=\"https://caselaw.nationalarchives.gov.uk/akn\">UKIST</ns1:court>\n    </search:extracted>\n    <search:extracted
-          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:facet
-          name=\"court\" type=\"xs:string\">\n    <search:facet-value name=\"\" count=\"1\"/>\n    <search:facet-value
-          name=\"EAT\" count=\"14\">EAT</search:facet-value>\n    <search:facet-value
-          name=\"EWCA-Civil\" count=\"4\">EWCA-Civil</search:facet-value>\n    <search:facet-value
-          name=\"EWCA-Criminal\" count=\"1\">EWCA-Criminal</search:facet-value>\n    <search:facet-value
-          name=\"EWFC\" count=\"29\">EWFC</search:facet-value>\n    <search:facet-value
-          name=\"EWHC-Chancery\" count=\"1\">EWHC-Chancery</search:facet-value>\n    <search:facet-value
-          name=\"EWHC-Chancery-Business\" count=\"35\">EWHC-Chancery-Business</search:facet-value>\n    <search:facet-value
-          name=\"EWHC-Chancery-IPEC\" count=\"44\">EWHC-Chancery-IPEC</search:facet-value>\n    <search:facet-value
-          name=\"EWHC-Chancery-Patents\" count=\"1\">EWHC-Chancery-Patents</search:facet-value>\n    <search:facet-value
-          name=\"EWHC-Family\" count=\"1\">EWHC-Family</search:facet-value>\n  </search:facet>\n  <search:facet
-          name=\"year\" type=\"xs:gYear\">\n    <search:facet-value name=\"1111\" count=\"5\">1111</search:facet-value>\n    <search:facet-value
-          name=\"1212\" count=\"1\">1212</search:facet-value>\n    <search:facet-value
-          name=\"1292\" count=\"1\">1292</search:facet-value>\n    <search:facet-value
-          name=\"1812\" count=\"1\">1812</search:facet-value>\n    <search:facet-value
-          name=\"1963\" count=\"1\">1963</search:facet-value>\n    <search:facet-value
-          name=\"1982\" count=\"1\">1982</search:facet-value>\n    <search:facet-value
-          name=\"2000\" count=\"1\">2000</search:facet-value>\n    <search:facet-value
-          name=\"2001\" count=\"3\">2001</search:facet-value>\n    <search:facet-value
-          name=\"2009\" count=\"7\">2009</search:facet-value>\n    <search:facet-value
-          name=\"2010\" count=\"7\">2010</search:facet-value>\n  </search:facet>\n  <search:metrics>\n    <search:query-resolution-time>PT0.008496S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.002485S</search:facet-resolution-time>\n    <search:snippet-resolution-time>PT0.000159S</search:snippet-resolution-time>\n    <search:extract-resolution-time>PT0.00874S</search:extract-resolution-time>\n    <search:total-time>PT0.020968S</search:total-time>\n  </search:metrics>\n</search:response>",
-          "encoding": "utf-8"}]'
-      headers:
-        Connection:
-          - keep-alive
-        Content-Type:
-          - multipart/mixed; boundary=vcr_cassette_boundary
-        Date:
-          - Fri, 10 Apr 2026 10:30:19 GMT
-        Server:
-          - MarkLogic 11.0.2
-      status:
-        code: 200
-        message: OK
-  - request:
       body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uris+as+json%3Aarray+external%3B%0Alet+%24properties+%3A%3D+%28%0A++++fn%3AQName%28%22%22%2C+%27editor-priority%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27assigned-to%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27editor-hold%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-name%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-email%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-consignment-reference%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27published%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27email-received-at%27%29%0A%29%0A%0Areturn+%3Cproperty-results%3E%7B%0Afor+%24uri+in+json%3Aarray-values%28%24uris%29%0A++return+%3Cproperty-result+uri%3D%27%7B%24uri%7D%27%3E+%7B%0A++++for+%24prop+in+%24properties%0A++++++return+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A++%7D+%3C%2Fproperty-result%3E%0A%7D%3C%2Fproperty-results%3E%0A&vars=%7B%22uris%22%3A+%5B%22%2Fd-fb7b3b97-182b-4710-bf4c-2f69f9a006fc.xml%22%5D%7D
       headers:
         Accept:
@@ -713,172 +553,6 @@ interactions:
         code: 200
         message: OK
   - request:
-      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24user+as+xs%3Astring+external%3B%0Adeclare+variable+%24role+as+xs%3Astring+external%3B%0A%0Alet+%24user_roles+%3A%3D+xdmp%3Auser-roles%28%24user%29%0Alet+%24role_id+%3A%3D+xdmp%3Arole%28%24role%29%0A%0Areturn+fn%3Aboolean%28index-of%28%24role_id%2C+%24user_roles%29%29%0A&vars=%7B%22role%22%3A%22admin%22%2C%22user%22%3A%22cassette_user%22%7D
-      headers:
-        Accept:
-          - application/xml
-        Content-type:
-          - application/x-www-form-urlencoded
-      method: POST
-      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
-    response:
-      body:
-        string:
-          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
-          {"X-Primitive": "boolean"}, "body": "true", "encoding": "utf-8"}]'
-      headers:
-        Connection:
-          - keep-alive
-        Content-Type:
-          - multipart/mixed; boundary=vcr_cassette_boundary
-        Date:
-          - Tue, 29 Sep 2026 13:36:18 GMT
-        Server:
-          - MarkLogic 11.3.6
-      status:
-        code: 200
-        message: OK
-  - request:
-      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+null%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+10%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22-date%22%2C+%22from%22%3A+%22%22%2C+%22to%22%3A+%22%22%2C+%22show_unpublished%22%3A+%22true%22%2C+%22only_unpublished%22%3A+%22true%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
-      headers:
-        Accept:
-          - multipart/mixed
-        Content-type:
-          - application/x-www-form-urlencoded
-      method: POST
-      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
-    response:
-      body:
-        string:
-          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
-          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
-          snippet-format=\"empty-snippet\" total=\"653\" start=\"1\" page-length=\"10\"
-          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:result
-          index=\"1\" uri=\"/d-e64b867b-718e-4750-8ce7-c13fd07d8217.xml\" path=\"fn:doc(&quot;/d-e64b867b-718e-4750-8ce7-c13fd07d8217.xml&quot;)\"
-          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
-          kind=\"element\">\n      <FRBRdate date=\"8888-08-08\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
-          value=\"&lt;script&gt;[]\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
-          date=\"2026-01-23T15:22:33\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">UKSC</uk:court>\n      <uk:cite
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">[2000] UKSC 8</uk:cite>\n    </search:extracted>\n    <search:extracted
-          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\">\n      <identifiers
-          xmlns:prop=\"http://marklogic.com/xdmp/property\">\n\t<identifier>\n\t  <namespace>ukncn</namespace>\n\t  <uuid>id-88f58d06-d4c6-48c6-9423-49573e4d7103</uuid>\n\t  <value>[2000]
-          UKSC 8</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>uksc/2000/8</url_slug>\n\t</identifier>\n\t<identifier>\n\t  <namespace>fclid</namespace>\n\t  <uuid>id-e52737dd-a675-4e72-87f4-4c30dfe9103c</uuid>\n\t  <value>c54w7w7f</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>tna.c54w7w7f</url_slug>\n\t</identifier>\n      </identifiers>\n    </search:extracted>\n  </search:result>\n  <search:result
-          index=\"2\" uri=\"/d-86af5078-3d5e-4ab3-a81b-e192fd26b78c.xml\" path=\"fn:doc(&quot;/d-86af5078-3d5e-4ab3-a81b-e192fd26b78c.xml&quot;)\"
-          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
-          kind=\"element\">\n      <FRBRdate date=\"2222-02-02\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
-          value=\"12\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
-          date=\"2026-05-19T15:10:18\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">UKSC</uk:court>\n      <uk:cite
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">[2023] UKSC 230091</uk:cite>\n    </search:extracted>\n    <search:extracted
-          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\">\n      <identifiers
-          xmlns:prop=\"http://marklogic.com/xdmp/property\">\n\t<identifier>\n\t  <namespace>ukncn</namespace>\n\t  <uuid>id-d2a29687-90c2-4168-b833-572800cc415b</uuid>\n\t  <value>[2023]
-          UKSC 230091</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>uksc/2023/230091</url_slug>\n\t</identifier>\n      </identifiers>\n    </search:extracted>\n  </search:result>\n  <search:result
-          index=\"3\" uri=\"/d-bd39a989-cc8c-46be-b979-66a87350485a.xml\" path=\"fn:doc(&quot;/d-bd39a989-cc8c-46be-b979-66a87350485a.xml&quot;)\"
-          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
-          kind=\"element\">\n      <FRBRdate date=\"2026-04-01\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
-          value=\"test\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
-          date=\"2026-04-08T14:31:01\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">SIAC</uk:court>\n    </search:extracted>\n    <search:extracted
-          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
-          index=\"4\" uri=\"/d-1297dc2d-edb8-404f-8061-317013555eda.xml\" path=\"fn:doc(&quot;/d-1297dc2d-edb8-404f-8061-317013555eda.xml&quot;)\"
-          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
-          kind=\"element\">\n      <FRBRdate date=\"2026-03-06\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
-          value=\"wwewq\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
-          date=\"2026-03-09T09:45:34\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">SIAC</uk:court>\n    </search:extracted>\n    <search:extracted
-          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
-          index=\"5\" uri=\"/d-5b0ecda6-80bc-4e63-bb3f-1fcbc6854222.xml\" path=\"fn:doc(&quot;/d-5b0ecda6-80bc-4e63-bb3f-1fcbc6854222.xml&quot;)\"
-          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
-          kind=\"element\">\n      <FRBRdate date=\"2026-01-29\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
-          value=\"t\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
-          date=\"2026-01-29T16:21:57\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">UKSC</uk:court>\n    </search:extracted>\n    <search:extracted
-          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
-          index=\"6\" uri=\"/d-82cfb855-f341-4863-8fd5-a936c003f02a.xml\" path=\"fn:doc(&quot;/d-82cfb855-f341-4863-8fd5-a936c003f02a.xml&quot;)\"
-          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
-          kind=\"element\">\n      <FRBRdate date=\"2026-01-01\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
-          value=\"Test1550\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
-          date=\"2026-04-08T14:51:00\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">UKSC</uk:court>\n    </search:extracted>\n    <search:extracted
-          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
-          index=\"7\" uri=\"/d-14d53aa1-53b6-4c1e-a1bc-a3a8761fda86.xml\" path=\"fn:doc(&quot;/d-14d53aa1-53b6-4c1e-a1bc-a3a8761fda86.xml&quot;)\"
-          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
-          kind=\"element\">\n      <FRBRdate date=\"2025-08-01\" name=\"judgment\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
-          value=\"TELEDYNE UK LIMITED v JULIAN ALLEN GAO\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
-          date=\"2025-08-05T10:30:54\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">EWHC-KBDfdsgdfgdfgdfgdf</uk:court>\n      <uk:cite
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">[2025] EWHC 2050
-          (KB)</uk:cite>\n      <uk:hash xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">90aea15de3ac0aeee3a744de126b6a8f54230d95a4f3b584205d4c23cf2aaa9e</uk:hash>\n      <neutralCitation
-          xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\">[2025] EWHC 2050
-          (KB)</neutralCitation>\n    </search:extracted>\n    <search:extracted kind=\"identifiers\"
-          xmlns:map=\"http://marklogic.com/xdmp/map\">\n      <identifiers xmlns:prop=\"http://marklogic.com/xdmp/property\">\n\t<identifier>\n\t  <namespace>ukncn</namespace>\n\t  <uuid>id-18dc1ba7-8f4d-45a3-8a67-91b70b146809</uuid>\n\t  <value>[2025]
-          UKSC 1234</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>uksc/2025/1234</url_slug>\n\t</identifier>\n\t<identifier>\n\t  <namespace>fclid</namespace>\n\t  <uuid>id-bab95a04-0c80-4969-90b9-a5ebfdbdde57</uuid>\n\t  <value>qnxtn2hd</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>tna.qnxtn2hd</url_slug>\n\t</identifier>\n      </identifiers>\n    </search:extracted>\n  </search:result>\n  <search:result
-          index=\"8\" uri=\"/d-fe7a3fa0-b2fd-46a4-9b76-609ca84bfffa.xml\" path=\"fn:doc(&quot;/d-fe7a3fa0-b2fd-46a4-9b76-609ca84bfffa.xml&quot;)\"
-          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
-          kind=\"element\">\n      <FRBRdate date=\"2025-05-23\" name=\"judgment\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
-          value=\"Tortoise Media Limited, R (on the application of) v Conservative and
-          Unionist Party\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
-          date=\"2025-05-23T09:03:35\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
-          date=\"2026-07-02T16:05:49\" name=\"tna-enriched\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">EWCA-Civil</uk:court>\n      <uk:cite
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">[2025] EWCA Civ 673</uk:cite>\n      <uk:hash
-          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">ec73392c9542a95c9d2658f24cd364a7b32ab86ec3e44cf6b4ac0321dbdc3249</uk:hash>\n      <neutralCitation
-          xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\">[2025] EWCA Civ
-          673</neutralCitation>\n      <neutralCitation style=\"text-decoration-line:none\"
-          xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\">[2023] EWHC 3088
-          (Admin)</neutralCitation>\n    </search:extracted>\n    <search:extracted
-          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
-          index=\"9\" uri=\"/d-1c05d70c-5d2a-4e5c-bbc6-c2379048f20d.xml\" path=\"fn:doc(&quot;/d-1c05d70c-5d2a-4e5c-bbc6-c2379048f20d.xml&quot;)\"
-          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
-          kind=\"element\">\n      <ns0:FRBRdate date=\"2025-01-01\" name=\"decision\"
-          xmlns:ns0=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <ns0:FRBRname
-          value=\"a\" xmlns:ns0=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <ns0:FRBRdate
-          date=\"2026-01-05T16:20:42\" name=\"transform\" xmlns:ns0=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <ns1:court
-          xmlns:ns1=\"https://caselaw.nationalarchives.gov.uk/akn\">UKIST</ns1:court>\n    </search:extracted>\n    <search:extracted
-          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
-          index=\"10\" uri=\"/d-cec741b6-1810-4f6b-a2d6-4915898cc2aa.xml\" path=\"fn:doc(&quot;/d-cec741b6-1810-4f6b-a2d6-4915898cc2aa.xml&quot;)\"
-          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
-          kind=\"element\">\n      <ns0:FRBRdate date=\"2025-01-01\" name=\"decision\"
-          xmlns:ns0=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <ns0:FRBRname
-          value=\"a\" xmlns:ns0=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <ns0:FRBRdate
-          date=\"2026-01-05T16:20:05\" name=\"transform\" xmlns:ns0=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <ns1:court
-          xmlns:ns1=\"https://caselaw.nationalarchives.gov.uk/akn\">UKIST</ns1:court>\n    </search:extracted>\n    <search:extracted
-          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:facet
-          name=\"court\" type=\"xs:string\">\n    <search:facet-value name=\"\" count=\"1\"/>\n    <search:facet-value
-          name=\"EAT\" count=\"14\">EAT</search:facet-value>\n    <search:facet-value
-          name=\"EWCA-Civil\" count=\"6\">EWCA-Civil</search:facet-value>\n    <search:facet-value
-          name=\"EWCA-Criminal\" count=\"1\">EWCA-Criminal</search:facet-value>\n    <search:facet-value
-          name=\"EWCC\" count=\"2\">EWCC</search:facet-value>\n    <search:facet-value
-          name=\"EWFC\" count=\"29\">EWFC</search:facet-value>\n    <search:facet-value
-          name=\"EWHC-Chancery-IPEC\" count=\"45\">EWHC-Chancery-IPEC</search:facet-value>\n    <search:facet-value
-          name=\"EWHC-Chancery-Patents\" count=\"1\">EWHC-Chancery-Patents</search:facet-value>\n    <search:facet-value
-          name=\"EWHC-Family\" count=\"1\">EWHC-Family</search:facet-value>\n    <search:facet-value
-          name=\"EWHC-KBD\" count=\"2\">EWHC-KBD</search:facet-value>\n  </search:facet>\n  <search:facet
-          name=\"year\" type=\"xs:gYear\">\n    <search:facet-value name=\"1111\" count=\"7\">1111</search:facet-value>\n    <search:facet-value
-          name=\"1212\" count=\"1\">1212</search:facet-value>\n    <search:facet-value
-          name=\"1232\" count=\"1\">1232</search:facet-value>\n    <search:facet-value
-          name=\"1292\" count=\"1\">1292</search:facet-value>\n    <search:facet-value
-          name=\"1812\" count=\"1\">1812</search:facet-value>\n    <search:facet-value
-          name=\"1963\" count=\"1\">1963</search:facet-value>\n    <search:facet-value
-          name=\"1982\" count=\"1\">1982</search:facet-value>\n    <search:facet-value
-          name=\"1988\" count=\"1\">1988</search:facet-value>\n    <search:facet-value
-          name=\"1991\" count=\"1\">1991</search:facet-value>\n    <search:facet-value
-          name=\"1999\" count=\"1\">1999</search:facet-value>\n  </search:facet>\n  <search:metrics>\n    <search:query-resolution-time>PT0.01058S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.005036S</search:facet-resolution-time>\n    <search:snippet-resolution-time>PT0.000142S</search:snippet-resolution-time>\n    <search:extract-resolution-time>PT0.003086S</search:extract-resolution-time>\n    <search:total-time>PT0.019821S</search:total-time>\n  </search:metrics>\n</search:response>",
-          "encoding": "utf-8"}]'
-      headers:
-        Connection:
-          - keep-alive
-        Content-Type:
-          - multipart/mixed; boundary=vcr_cassette_boundary
-        Date:
-          - Tue, 29 Sep 2026 13:36:19 GMT
-        Server:
-          - MarkLogic 11.3.6
-      status:
-        code: 200
-        message: OK
-  - request:
       body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uris+as+json%3Aarray+external%3B%0Alet+%24properties+%3A%3D+%28%0A++++fn%3AQName%28%22%22%2C+%27editor-priority%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27assigned-to%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27editor-hold%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-name%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-email%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-consignment-reference%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27published%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27email-received-at%27%29%0A%29%0A%0Areturn+%3Cproperty-results%3E%7B%0Afor+%24uri+in+json%3Aarray-values%28%24uris%29%0A++return+%3Cproperty-result+uri%3D%27%7B%24uri%7D%27%3E+%7B%0A++++for+%24prop+in+%24properties%0A++++++return+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A++%7D+%3C%2Fproperty-result%3E%0A%7D%3C%2Fproperty-results%3E%0A&vars=%7B%22uris%22%3A+%5B%22%2Fd-e64b867b-718e-4750-8ce7-c13fd07d8217.xml%22%5D%7D
       headers:
         Accept:
@@ -1426,6 +1100,327 @@ interactions:
           - Tue, 29 Sep 2026 13:36:20 GMT
         Server:
           - MarkLogic 11.3.6
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24user+as+xs%3Astring+external%3B%0Adeclare+variable+%24role+as+xs%3Astring+external%3B%0A%0Alet+%24user_roles+%3A%3D+xdmp%3Auser-roles%28%24user%29%0Alet+%24role_id+%3A%3D+xdmp%3Arole%28%24role%29%0A%0Areturn+fn%3Aboolean%28index-of%28%24role_id%2C+%24user_roles%29%29%0A&vars=%7B%22role%22%3A%22admin%22%2C%22user%22%3A%22cassette_user%22%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "text/plain", "extra_headers":
+          {"X-Primitive": "boolean"}, "body": "true", "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Thu, 12 Nov 2026 12:34:06 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: module=%2Fjudgments%2Fsearch%2Fsearch-v2.xqy&vars=%7B%22court%22%3A+null%2C+%22judge%22%3A+%22%22%2C+%22page%22%3A+1%2C+%22page-size%22%3A+10%2C+%22q%22%3A+%22%22%2C+%22party%22%3A+%22%22%2C+%22neutral_citation%22%3A+%22%22%2C+%22document_name%22%3A+%22%22%2C+%22consignment_number%22%3A+%22%22%2C+%22specific_keyword%22%3A+%22%22%2C+%22order%22%3A+%22-date%22%2C+%22from%22%3A+%22%22%2C+%22to%22%3A+%22%22%2C+%22show_unpublished%22%3A+%22true%22%2C+%22only_unpublished%22%3A+%22true%22%2C+%22only_with_html_representation%22%3A+%22false%22%2C+%22collections%22%3A+%22%22%2C+%22quoted_phrases%22%3A+%5B%5D%7D
+      headers:
+        Accept:
+          - multipart/mixed
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/invoke
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "document-node()"}, "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<search:response
+          snippet-format=\"empty-snippet\" total=\"655\" start=\"1\" page-length=\"10\"
+          selected=\"include\" xmlns:search=\"http://marklogic.com/appservices/search\">\n  <search:result
+          index=\"1\" uri=\"/d-e64b867b-718e-4750-8ce7-c13fd07d8217.xml\" path=\"fn:doc(&quot;/d-e64b867b-718e-4750-8ce7-c13fd07d8217.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"8888-08-08\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"&lt;script&gt;[]\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2026-01-23T15:22:33\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">UKSC</uk:court>\n      <uk:cite
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">[2000] UKSC 8</uk:cite>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\">\n      <identifiers
+          xmlns:prop=\"http://marklogic.com/xdmp/property\">\n\t<identifier>\n\t  <namespace>ukncn</namespace>\n\t  <uuid>id-88f58d06-d4c6-48c6-9423-49573e4d7103</uuid>\n\t  <value>[2000]
+          UKSC 8</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>uksc/2000/8</url_slug>\n\t</identifier>\n\t<identifier>\n\t  <namespace>fclid</namespace>\n\t  <uuid>id-e52737dd-a675-4e72-87f4-4c30dfe9103c</uuid>\n\t  <value>c54w7w7f</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>tna.c54w7w7f</url_slug>\n\t</identifier>\n      </identifiers>\n    </search:extracted>\n  </search:result>\n  <search:result
+          index=\"2\" uri=\"/d-86af5078-3d5e-4ab3-a81b-e192fd26b78c.xml\" path=\"fn:doc(&quot;/d-86af5078-3d5e-4ab3-a81b-e192fd26b78c.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2078-02-02\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"12\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2026-05-19T15:10:18\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">UKSPC</uk:court>\n      <uk:cite
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">[2023] UKSC 230091</uk:cite>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\">\n      <identifiers
+          xmlns:prop=\"http://marklogic.com/xdmp/property\">\n\t<identifier>\n\t  <namespace>ukncn</namespace>\n\t  <uuid>id-d2a29687-90c2-4168-b833-572800cc415b</uuid>\n\t  <value>[2023]
+          UKSC 230091</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>uksc/2023/230091</url_slug>\n\t</identifier>\n      </identifiers>\n    </search:extracted>\n  </search:result>\n  <search:result
+          index=\"3\" uri=\"/d-bd39a989-cc8c-46be-b979-66a87350485a.xml\" path=\"fn:doc(&quot;/d-bd39a989-cc8c-46be-b979-66a87350485a.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2026-04-01\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"test\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2026-04-08T14:31:01\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">SIAC</uk:court>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
+          index=\"4\" uri=\"/d-1297dc2d-edb8-404f-8061-317013555eda.xml\" path=\"fn:doc(&quot;/d-1297dc2d-edb8-404f-8061-317013555eda.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2026-03-06\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"wwewq\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2026-03-09T09:45:34\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">SIAC</uk:court>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
+          index=\"5\" uri=\"/d-5b0ecda6-80bc-4e63-bb3f-1fcbc6854222.xml\" path=\"fn:doc(&quot;/d-5b0ecda6-80bc-4e63-bb3f-1fcbc6854222.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2026-01-29\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"t\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2026-01-29T16:21:57\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">UKSC</uk:court>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
+          index=\"6\" uri=\"/d-82cfb855-f341-4863-8fd5-a936c003f02a.xml\" path=\"fn:doc(&quot;/d-82cfb855-f341-4863-8fd5-a936c003f02a.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2026-01-01\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"Test1550\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2026-04-08T14:51:00\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">UKSC</uk:court>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
+          index=\"7\" uri=\"/d-1c05d70c-5d2a-4e5c-bbc6-c2379048f20d.xml\" path=\"fn:doc(&quot;/d-1c05d70c-5d2a-4e5c-bbc6-c2379048f20d.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2025-10-15\" name=\"decision\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"nationala archive v bbc ltd\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <ns0:FRBRdate
+          date=\"2026-01-05T16:20:42\" name=\"transform\" xmlns:ns0=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">EWFC</uk:court>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\">\n      <identifiers
+          xmlns:prop=\"http://marklogic.com/xdmp/property\">\n\t<identifier>\n\t  <namespace>ukncn</namespace>\n\t  <uuid>id-3a5b23e7-c728-4bd6-a391-057d7a3188eb</uuid>\n\t  <value>[2026]
+          EWFC 319 (B)</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>ewfc/b/2026/319</url_slug>\n\t</identifier>\n      </identifiers>\n    </search:extracted>\n  </search:result>\n  <search:result
+          index=\"8\" uri=\"/d-fe7a3fa0-b2fd-46a4-9b76-609ca84bfffa.xml\" path=\"fn:doc(&quot;/d-fe7a3fa0-b2fd-46a4-9b76-609ca84bfffa.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2025-05-23\" name=\"judgment\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"Tortoise Media Limited, R (on the application of) v Conservative and
+          Unionist Parties\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2025-05-23T09:03:35\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2026-07-02T16:05:49\" name=\"tna-enriched\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">EWCA-Civil</uk:court>\n      <uk:cite
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">[2025] EWCA Civ 673</uk:cite>\n      <uk:hash
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">ec73392c9542a95c9d2658f24cd364a7b32ab86ec3e44cf6b4ac0321dbdc3249</uk:hash>\n      <neutralCitation
+          xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\">[2025] EWCA Civ
+          673</neutralCitation>\n      <neutralCitation style=\"text-decoration-line:none\"
+          xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\">[2023] EWHC 3088
+          (Admin)</neutralCitation>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\">\n      <identifiers
+          xmlns:prop=\"http://marklogic.com/xdmp/property\">\n\t<identifier>\n\t  <namespace>ukncn</namespace>\n\t  <uuid>id-c0ee63f5-e884-4bd6-aca6-c2da1700ff3b</uuid>\n\t  <value>[2025]
+          EWCA Civ 673</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>ewca/civ/2025/673</url_slug>\n\t</identifier>\n      </identifiers>\n    </search:extracted>\n  </search:result>\n  <search:result
+          index=\"9\" uri=\"/d-cec741b6-1810-4f6b-a2d6-4915898cc2aa.xml\" path=\"fn:doc(&quot;/d-cec741b6-1810-4f6b-a2d6-4915898cc2aa.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <ns0:FRBRdate date=\"2025-01-01\" name=\"decision\"
+          xmlns:ns0=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <ns0:FRBRname
+          value=\"a\" xmlns:ns0=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <ns0:FRBRdate
+          date=\"2026-01-05T16:20:05\" name=\"transform\" xmlns:ns0=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <ns1:court
+          xmlns:ns1=\"https://caselaw.nationalarchives.gov.uk/akn\">UKIST</ns1:court>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\"/>\n  </search:result>\n  <search:result
+          index=\"10\" uri=\"/ewhc/ch/2024/2915.xml\" path=\"fn:doc(&quot;/ewhc/ch/2024/2915.xml&quot;)\"
+          score=\"0\" confidence=\"0\" fitness=\"0\">\n    <search:snippet/>\n    <search:extracted
+          kind=\"element\">\n      <FRBRdate date=\"2024-09-09\" name=\"judgment\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRname
+          value=\"LEE JAMES BOOTLE v GHL PROPERTY MANAGEMENT AND DEVELOPMENT LIMITED\"
+          xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <FRBRdate
+          date=\"2024-11-22T15:29:52\" name=\"transform\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\"/>\n      <uk:court
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">EWHC-Chancery</uk:court>\n      <uk:cite
+          xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">[2024] EWHC 2915
+          (Ch)</uk:cite>\n      <uk:hash xmlns:uk=\"https://caselaw.nationalarchives.gov.uk/akn\">92a843eec390f139e982f66ea4dd9604a3e526c3c86f8b7835fc111fad43e558</uk:hash>\n      <neutralCitation
+          style=\"font-weight:bold\" xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\">[2024]
+          EWHC 2915 (Ch)</neutralCitation>\n    </search:extracted>\n    <search:extracted
+          kind=\"identifiers\" xmlns:map=\"http://marklogic.com/xdmp/map\">\n      <identifiers
+          xmlns:prop=\"http://marklogic.com/xdmp/property\">\n\t<identifier>\n\t  <namespace>ukncn</namespace>\n\t  <uuid>id-54763658-1fee-431b-941b-bf8d949227d2</uuid>\n\t  <value>[1999]
+          UKSC 1732</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>uksc/1999/1732</url_slug>\n\t</identifier>\n\t<identifier>\n\t  <namespace>fclid</namespace>\n\t  <uuid>id-ac19f1a5-7ecd-46f3-992f-49c1a4f960b6</uuid>\n\t  <value>tnzv3mp7</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>tna.tnzv3mp7</url_slug>\n\t</identifier>\n\t<identifier>\n\t  <namespace>ukncn</namespace>\n\t  <uuid>id-4141a2c5-6eaa-4be4-902f-10e66890478c</uuid>\n\t  <value>[2019]
+          UKSC 123</value>\n\t  <deprecated>false</deprecated>\n\t  <url_slug>uksc/2019/123</url_slug>\n\t</identifier>\n      </identifiers>\n    </search:extracted>\n  </search:result>\n  <search:facet
+          name=\"court\" type=\"xs:string\">\n    <search:facet-value name=\"\" count=\"1\"/>\n    <search:facet-value
+          name=\"EAT\" count=\"14\">EAT</search:facet-value>\n    <search:facet-value
+          name=\"EWCA-Civil\" count=\"6\">EWCA-Civil</search:facet-value>\n    <search:facet-value
+          name=\"EWCC\" count=\"2\">EWCC</search:facet-value>\n    <search:facet-value
+          name=\"EWFC\" count=\"30\">EWFC</search:facet-value>\n    <search:facet-value
+          name=\"EWHC-Chancery\" count=\"1\">EWHC-Chancery</search:facet-value>\n    <search:facet-value
+          name=\"EWHC-Chancery-IPEC\" count=\"44\">EWHC-Chancery-IPEC</search:facet-value>\n    <search:facet-value
+          name=\"EWHC-Chancery-Patents\" count=\"1\">EWHC-Chancery-Patents</search:facet-value>\n    <search:facet-value
+          name=\"EWHC-Family\" count=\"1\">EWHC-Family</search:facet-value>\n    <search:facet-value
+          name=\"EWHC-KBD\" count=\"2\">EWHC-KBD</search:facet-value>\n  </search:facet>\n  <search:facet
+          name=\"year\" type=\"xs:gYear\">\n    <search:facet-value name=\"1111\" count=\"7\">1111</search:facet-value>\n    <search:facet-value
+          name=\"1212\" count=\"1\">1212</search:facet-value>\n    <search:facet-value
+          name=\"1232\" count=\"1\">1232</search:facet-value>\n    <search:facet-value
+          name=\"1292\" count=\"1\">1292</search:facet-value>\n    <search:facet-value
+          name=\"1812\" count=\"1\">1812</search:facet-value>\n    <search:facet-value
+          name=\"1963\" count=\"1\">1963</search:facet-value>\n    <search:facet-value
+          name=\"1982\" count=\"1\">1982</search:facet-value>\n    <search:facet-value
+          name=\"1988\" count=\"1\">1988</search:facet-value>\n    <search:facet-value
+          name=\"1991\" count=\"1\">1991</search:facet-value>\n    <search:facet-value
+          name=\"1999\" count=\"1\">1999</search:facet-value>\n  </search:facet>\n  <search:metrics>\n    <search:query-resolution-time>PT0.011274S</search:query-resolution-time>\n    <search:facet-resolution-time>PT0.002945S</search:facet-resolution-time>\n    <search:snippet-resolution-time>PT0.000213S</search:snippet-resolution-time>\n    <search:extract-resolution-time>PT0.003604S</search:extract-resolution-time>\n    <search:total-time>PT0.019432S</search:total-time>\n  </search:metrics>\n</search:response>",
+          "encoding": "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Thu, 12 Nov 2026 12:34:06 GMT
+        Server:
+          - MarkLogic 11.3.7
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: xquery=xquery+version+%221.0-ml%22%3B%0A%0Adeclare+variable+%24uris+as+json%3Aarray+external%3B%0Alet+%24properties+%3A%3D+%28%0A++++fn%3AQName%28%22%22%2C+%27editor-priority%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27assigned-to%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27editor-hold%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-name%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27source-email%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-consignment-reference%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27transfer-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27published%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27email-received-at%27%29%2C%0A++++fn%3AQName%28%22%22%2C+%27metadata_fields%27%29%0A%29%0A%0Areturn+%3Cproperty-results%3E%7B%0Afor+%24uri+in+json%3Aarray-values%28%24uris%29%0A++let+%24timestamp+%3A%3D+xdmp%3Adocument-timestamp%28%24uri%29%0A++return+%3Cproperty-result+uri%3D%27%7B%24uri%7D%27+last-modified%3D%27%7Bif+%28fn%3Aexists%28%24timestamp%29%29+then+xdmp%3Atimestamp-to-wallclock%28%24timestamp%29+else+%28%29%7D%27%3E+%7B%0A++++for+%24prop+in+%24properties%0A++++++return+xdmp%3Adocument-get-properties%28%24uri%2C+%24prop%29%0A++%7D+%3C%2Fproperty-result%3E%0A%7D%3C%2Fproperty-results%3E%0A&vars=%7B%22uris%22%3A+%5B%22%2Fd-e64b867b-718e-4750-8ce7-c13fd07d8217.xml%22%2C+%22%2Fd-86af5078-3d5e-4ab3-a81b-e192fd26b78c.xml%22%2C+%22%2Fd-bd39a989-cc8c-46be-b979-66a87350485a.xml%22%2C+%22%2Fd-1297dc2d-edb8-404f-8061-317013555eda.xml%22%2C+%22%2Fd-5b0ecda6-80bc-4e63-bb3f-1fcbc6854222.xml%22%2C+%22%2Fd-82cfb855-f341-4863-8fd5-a936c003f02a.xml%22%2C+%22%2Fd-1c05d70c-5d2a-4e5c-bbc6-c2379048f20d.xml%22%2C+%22%2Fd-fe7a3fa0-b2fd-46a4-9b76-609ca84bfffa.xml%22%2C+%22%2Fd-cec741b6-1810-4f6b-a2d6-4915898cc2aa.xml%22%2C+%22%2Fewhc%2Fch%2F2024%2F2915.xml%22%5D%7D
+      headers:
+        Accept:
+          - application/xml
+        Content-type:
+          - application/x-www-form-urlencoded
+      method: POST
+      uri: http://ml.external.staging.caselaw.nationalarchives.gov.uk:8011/LATEST/eval
+    response:
+      body:
+        string:
+          'vcr-multipart-parts:[{"content_type": "application/xml", "extra_headers":
+          {"X-Primitive": "element()", "X-Path": "/property-results"}, "body": "<property-results><property-result
+          uri=\"/d-e64b867b-718e-4750-8ce7-c13fd07d8217.xml\" last-modified=\"2026-10-09T14:07:34.296379\"><source-name>cjai</source-name><source-email>cji@djia.invalid</source-email><published>false</published></property-result><property-result
+          uri=\"/d-86af5078-3d5e-4ab3-a81b-e192fd26b78c.xml\" last-modified=\"2026-11-06T10:46:56.743727\"><editor-hold>true</editor-hold><source-name>22</source-name><source-email>22@a122.org</source-email><email-received-at>2222-02-02T00:00:00Z</email-received-at><metadata_fields><metadata
+          id=\"4b7d430b-22e6-43e7-b42e-c7635453329c\" name=\"date\" source=\"editor\"
+          timestamp=\"2026-11-06T10:44:37.684138+00:00\" rejected=\"false\" pack_version=\"1\">2078-02-02</metadata><metadata
+          id=\"b1821c97-525b-4194-8b55-cf9717c9b634\" name=\"title\" source=\"editor\"
+          timestamp=\"2026-11-06T10:45:07.928951+00:00\" rejected=\"false\" pack_version=\"1\">test
+          title</metadata><metadata id=\"4c87b065-168a-40e1-9d85-0921096aa343\" name=\"date\"
+          source=\"editor\" timestamp=\"2026-11-06T10:45:54.075104+00:00\" rejected=\"false\"
+          pack_version=\"1\">2022-12-12</metadata><metadata id=\"e5ef220e-fea6-489c-819d-e76a2eaaf671\"
+          name=\"judges\" source=\"editor\" timestamp=\"2026-11-06T10:46:56.686342+00:00\"
+          rejected=\"false\" pack_version=\"1\">Judgetest1</metadata></metadata_fields></property-result><property-result
+          uri=\"/d-bd39a989-cc8c-46be-b979-66a87350485a.xml\" last-modified=\"2026-10-12T16:01:25.797287\"><editor-hold>true</editor-hold><source-name>test</source-name><source-email>terry.price@nationalarchives.gov.uk</source-email><email-received-at>2026-04-08T15:30:00Z</email-received-at></property-result><property-result
+          uri=\"/d-1297dc2d-edb8-404f-8061-317013555eda.xml\" last-modified=\"2026-09-02T10:56:14.050461\"><editor-hold>true</editor-hold><source-name>test</source-name><source-email>terry.price@nationalarchives.gov.uk</source-email><email-received-at>2026-03-03T08:48:00Z</email-received-at></property-result><property-result
+          uri=\"/d-5b0ecda6-80bc-4e63-bb3f-1fcbc6854222.xml\" last-modified=\"2026-09-02T10:51:48.924109\"><source-name>TestANT</source-name><source-email>Test@ANT.COM</source-email><email-received-at>2026-01-24T20:25:00Z</email-received-at></property-result><property-result
+          uri=\"/d-82cfb855-f341-4863-8fd5-a936c003f02a.xml\" last-modified=\"2026-10-08T08:58:55.466423\"><source-name>James</source-name><source-email>james.harries@dxw.com</source-email><email-received-at>2026-02-02T00:00:00Z</email-received-at></property-result><property-result
+          uri=\"/d-1c05d70c-5d2a-4e5c-bbc6-c2379048f20d.xml\" last-modified=\"2026-11-04T12:36:44.072804\"><editor-hold>false</editor-hold><metadata_fields><metadata
+          id=\"341c8253-23ac-4df8-bf81-b144f9d534b0\" name=\"judges\" source=\"editor\"
+          timestamp=\"2026-10-27T14:13:27.384259+00:00\" rejected=\"false\" pack_version=\"1\">judge
+          terry</metadata><metadata id=\"2c4666c7-223a-4779-b88a-ea2c07b9bf5f\" name=\"judges\"
+          source=\"editor\" timestamp=\"2026-10-27T14:19:30.410081+00:00\" rejected=\"false\"
+          pack_version=\"1\">LORD JUSTICE Solomi, lord justice nat</metadata><metadata
+          id=\"d225de88-c241-4f56-885b-758b00e7c6c0\" name=\"jurisdiction\" source=\"editor\"
+          timestamp=\"2026-10-27T14:33:42.099630+00:00\" rejected=\"false\" pack_version=\"1\">Territorial
+          Jurisdiction</metadata><metadata id=\"5826285f-4f9f-4482-83f5-1952de3cd93f\"
+          name=\"title\" source=\"editor\" timestamp=\"2026-11-04T10:40:11.334870+00:00\"
+          rejected=\"false\" pack_version=\"1\">national archive v bbc ltd</metadata></metadata_fields></property-result><property-result
+          uri=\"/d-fe7a3fa0-b2fd-46a4-9b76-609ca84bfffa.xml\" last-modified=\"2026-11-09T13:01:05.323272\"><editor-hold>true</editor-hold><published>false</published><metadata_fields><metadata
+          id=\"9acff231-da60-4ff5-b7c2-271c3b922b52\" name=\"title\" source=\"document\"
+          timestamp=\"2026-08-10T15:30:36.216221+00:00\" rejected=\"true\" pack_version=\"1\">Tortoise
+          Media Limited, R (on the application of) v Conservative and Unionist Party</metadata><metadata
+          id=\"6e596514-2788-4a77-8a2c-4d8a2b4231d3\" name=\"court\" source=\"document\"
+          timestamp=\"2026-08-10T15:30:36.217484+00:00\" rejected=\"false\" pack_version=\"1\">EWCA-Civil</metadata><metadata
+          id=\"f5c07eba-84ea-4bba-9e57-93c36e37a926\" name=\"date\" source=\"document\"
+          timestamp=\"2026-08-10T15:30:36.217761+00:00\" rejected=\"false\" pack_version=\"1\">2025-05-23</metadata><metadata
+          id=\"8128df16-9177-49e8-baeb-680cac328336\" name=\"judges\" source=\"document\"
+          timestamp=\"2026-08-10T15:30:36.218230+00:00\" rejected=\"true\" pack_version=\"1\">SIR
+          GEOFFREY VOS, MASTER OF THE ROLLS</metadata><metadata id=\"3d0c0cda-1157-4060-b43b-17fd3f5e36d6\"
+          name=\"judges\" source=\"document\" timestamp=\"2026-08-10T15:30:36.218255+00:00\"
+          rejected=\"true\" pack_version=\"1\">LORD JUSTICE DINGEMANS</metadata><metadata
+          id=\"5a4b46e3-5f24-47f8-9c4f-bbbb935b72d4\" name=\"title\" source=\"editor\"
+          timestamp=\"2026-10-07T15:43:24.489220+00:00\" rejected=\"false\" pack_version=\"1\">fwdfw</metadata><metadata
+          id=\"2a41579b-01f2-49ed-863c-3596665260de\" name=\"title\" source=\"editor\"
+          timestamp=\"2026-10-22T15:01:08.994156+00:00\" rejected=\"false\" pack_version=\"1\">Tortoise
+          Media Limited, R (on the application of) v Conservative and Unionist Party</metadata><metadata
+          id=\"8faae066-0582-469e-837d-405a17aaf1fb\" name=\"title\" source=\"editor\"
+          timestamp=\"2026-10-22T15:05:07.518574+00:00\" rejected=\"false\" pack_version=\"1\">nats
+          doc</metadata><metadata id=\"91f6b03f-80f5-45c2-ad2a-f12ce68707cd\" name=\"headnote_summary\"
+          source=\"editor\" timestamp=\"2026-10-22T15:06:37.632178+00:00\" rejected=\"false\"
+          pack_version=\"1\">hello im adding a headnote</metadata><metadata id=\"0277f422-7eff-4380-8961-ab33d9ff3cb4\"
+          name=\"web_archiving_link\" source=\"editor\" timestamp=\"2026-10-22T15:07:44.134858+00:00\"
+          rejected=\"false\" pack_version=\"1\">https://www.bbc.co.uk</metadata><metadata
+          id=\"b6a2a939-727c-4cf0-8af8-0ffd8af9a8dd\" name=\"court\" source=\"editor\"
+          timestamp=\"2026-10-23T09:07:37.150061+00:00\" rejected=\"false\" pack_version=\"1\">nats
+          court</metadata><metadata id=\"776de574-bbd7-4c0a-8637-09ef69988dee\" name=\"case_number\"
+          source=\"editor\" timestamp=\"2026-10-23T09:09:36.513481+00:00\" rejected=\"false\"
+          pack_version=\"1\">CA-2023-002540</metadata><metadata id=\"532ac80d-d244-4cff-8fa8-03d6016d694a\"
+          name=\"categories\" source=\"editor\" timestamp=\"2026-10-23T09:12:15.616363+00:00\"
+          rejected=\"false\" pack_version=\"1\"><name>employment</name><parent/></metadata><metadata
+          id=\"8ed5b843-3d31-4690-a438-61b8f04ba95a\" name=\"categories\" source=\"editor\"
+          timestamp=\"2026-10-23T09:12:27.511874+00:00\" rejected=\"false\" pack_version=\"1\"><name>employment
+          law</name><parent/></metadata><metadata id=\"c5d038b2-2cae-4315-9add-e5c971b1fd0c\"
+          name=\"parties\" source=\"editor\" timestamp=\"2026-10-23T09:16:53.162781+00:00\"
+          rejected=\"false\" pack_version=\"1\"><name>natalie</name></metadata><metadata
+          id=\"f05749f5-b304-4676-8279-2af0140dde7b\" name=\"parties\" source=\"editor\"
+          timestamp=\"2026-10-23T09:17:00.612944+00:00\" rejected=\"false\" pack_version=\"1\"><name>solomi</name></metadata><metadata
+          id=\"343efc55-98c5-454d-a810-255387b88cf0\" name=\"title\" source=\"editor\"
+          timestamp=\"2026-11-06T11:26:52.963505+00:00\" rejected=\"false\" pack_version=\"1\">nats
+          docs</metadata><metadata id=\"1f08d040-6b49-4e79-911f-51936ed48adf\" name=\"judges\"
+          source=\"editor\" timestamp=\"2026-11-09T11:57:11.529953+00:00\" rejected=\"false\"
+          pack_version=\"1\">test</metadata><metadata id=\"2d567982-901d-46d1-ac10-5250983f1ea8\"
+          name=\"title\" source=\"editor\" timestamp=\"2026-11-09T11:57:42.606268+00:00\"
+          rejected=\"false\" pack_version=\"1\">nats docss</metadata><metadata id=\"a67e3e5f-a772-4cba-91de-71ec56626b2c\"
+          name=\"title\" source=\"editor\" timestamp=\"2026-11-09T11:57:51.046594+00:00\"
+          rejected=\"false\" pack_version=\"1\">nats docsss</metadata><metadata id=\"b1c49ef5-766d-428c-a4b2-110501a7558e\"
+          name=\"judges\" source=\"editor\" timestamp=\"2026-11-09T11:57:51.349052+00:00\"
+          rejected=\"false\" pack_version=\"1\">Another one</metadata><metadata id=\"7dfc65ae-a8fc-4d89-9282-0c340363baf8\"
+          name=\"title\" source=\"editor\" timestamp=\"2026-11-09T13:00:43.709346+00:00\"
+          rejected=\"false\" pack_version=\"1\">nats docsssa</metadata><metadata id=\"b7837acc-a133-4f3f-90e7-d7108d3ff6d8\"
+          name=\"title\" source=\"editor\" timestamp=\"2026-11-09T13:01:04.960197+00:00\"
+          rejected=\"false\" pack_version=\"1\">nats docsssab</metadata></metadata_fields></property-result><property-result
+          uri=\"/d-cec741b6-1810-4f6b-a2d6-4915898cc2aa.xml\" last-modified=\"2026-09-02T10:49:41.090796\"/><property-result
+          uri=\"/ewhc/ch/2024/2915.xml\" last-modified=\"2026-11-09T13:00:23.683316\"><editor-hold>false</editor-hold><source-name>Mark
+          Halliwell</source-name><source-email>hhj.mark.halliwell@ejudiciary.net</source-email><transfer-consignment-reference>TDR-2024-CJ6R</transfer-consignment-reference><transfer-received-at>2024-11-22T15:28:29Z</transfer-received-at><published>false</published><metadata_fields><metadata
+          id=\"08c2fbb4-0b87-4335-8a70-8c00538461b6\" name=\"categories\" source=\"editor\"
+          timestamp=\"2026-10-22T15:33:09.803209+00:00\" rejected=\"false\" pack_version=\"1\"><name>Tax</name><parent/></metadata><metadata
+          id=\"d4498ac3-24e4-4026-af49-cb6655e48548\" name=\"categories\" source=\"editor\"
+          timestamp=\"2026-10-22T15:33:23.524575+00:00\" rejected=\"false\" pack_version=\"1\"><name>employment</name><parent/></metadata><metadata
+          id=\"ab76002b-7e68-425b-8677-600a2b8e226f\" name=\"title\" source=\"editor\"
+          timestamp=\"2026-10-22T15:34:33.069092+00:00\" rejected=\"true\" pack_version=\"1\">LEE
+          JAMES BOOTLE v GHL PROPERTY MANAGEMENT AND DEVELOPMENT Ltd</metadata><metadata
+          id=\"0e1371de-b060-406d-8cd2-2956b7f25731\" name=\"title\" source=\"editor\"
+          timestamp=\"2026-10-22T15:35:46.739379+00:00\" rejected=\"true\" pack_version=\"1\">LEE
+          JAMES BOOTLE v GHL PROPERTY MANAGEMENT AND DEVELOPMENT Limited</metadata><metadata
+          id=\"6b1d1f12-8300-44b8-b639-1f3e9837d260\" name=\"title\" source=\"editor\"
+          timestamp=\"2026-10-22T15:37:55.803197+00:00\" rejected=\"false\" pack_version=\"1\">LEE
+          JAMES BOOTLE v GHL PROPERTY MANAGEMENT AND  DEVELOPMENT Limited</metadata><metadata
+          id=\"c6bb536a-cc3c-4bfe-8619-45869fb7082b\" name=\"judges\" source=\"document\"
+          timestamp=\"2026-10-22T15:38:29.786382+00:00\" rejected=\"false\" pack_version=\"1\">His
+          Honour Judge Halliwell sitting as a Judge of the High Court</metadata><metadata
+          id=\"2af9ad1f-fee5-4aeb-9eaf-37dc1d4bd0e6\" name=\"judges\" source=\"editor\"
+          timestamp=\"2026-10-22T15:38:29.786555+00:00\" rejected=\"false\" pack_version=\"1\">LORD
+          JUSTICE Nat</metadata><metadata id=\"a653bfa9-8f70-4bb0-bb4d-238a6cf2f14e\"
+          name=\"judges\" source=\"editor\" timestamp=\"2026-10-22T15:38:52.044198+00:00\"
+          rejected=\"true\" pack_version=\"1\">LORD JUSTICE Terry</metadata><metadata
+          id=\"b0ea01e3-a698-4879-b42a-31dff81e92ed\" name=\"court\" source=\"editor\"
+          timestamp=\"2026-10-23T08:54:26.698013+00:00\" rejected=\"false\" pack_version=\"1\">nats
+          court</metadata><metadata id=\"55d4746c-68d3-4e4d-9f3c-f6c339ca6be2\" name=\"jurisdiction\"
+          source=\"editor\" timestamp=\"2026-10-23T08:59:19.883727+00:00\" rejected=\"false\"
+          pack_version=\"1\">Territorial Jurisdiction</metadata><metadata id=\"177ba9ec-2203-4dd9-8b98-a0b93a8c2130\"
+          name=\"jurisdiction\" source=\"editor\" timestamp=\"2026-10-23T08:59:32.780067+00:00\"
+          rejected=\"false\" pack_version=\"1\">Personal Jurisdiction</metadata><metadata
+          id=\"a3284cba-0473-46ef-8056-c5eb5b5d4ba6\" name=\"court\" source=\"editor\"
+          timestamp=\"2026-10-23T10:45:41.802527+00:00\" rejected=\"false\" pack_version=\"1\">UKFTT-GRC</metadata><metadata
+          id=\"cf940a11-012f-4462-8bf1-5da294f23ae2\" name=\"title\" source=\"editor\"
+          timestamp=\"2026-10-23T11:01:39.741598+00:00\" rejected=\"false\" pack_version=\"1\">LEE
+          JAMES BOOTLE v GHL PROPERTY MANAGEMENT &amp; DEVELOPMENT Ltd</metadata><metadata
+          id=\"52dabdc7-eed4-4770-ae10-3352edb88ed4\" name=\"court\" source=\"editor\"
+          timestamp=\"2026-10-23T11:26:19.747509+00:00\" rejected=\"false\" pack_version=\"1\">terr''s
+          court</metadata><metadata id=\"5d23c340-203d-45c4-9d57-38ebb53afd91\" name=\"title\"
+          source=\"editor\" timestamp=\"2026-11-09T13:00:15.303047+00:00\" rejected=\"false\"
+          pack_version=\"1\">LEE JAMES BOOTLE v GHL PROPERTY MANAGEMENT &amp; DEVELOPMENT
+          Ltds</metadata></metadata_fields></property-result></property-results>", "encoding":
+          "utf-8"}]'
+      headers:
+        Connection:
+          - keep-alive
+        Content-Type:
+          - multipart/mixed; boundary=vcr_cassette_boundary
+        Date:
+          - Thu, 12 Nov 2026 12:34:06 GMT
+        Server:
+          - MarkLogic 11.3.7
       status:
         code: 200
         message: OK
