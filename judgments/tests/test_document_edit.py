@@ -37,6 +37,31 @@ class TestDocumentEdit(TestCase):
             kwargs={"document_uri": "ewca/civ/2004/63X"},
         )
 
+    @patch("judgments.views.judgment_edit.api_client")
+    @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
+    def test_edit_judgment_rejects_non_judgments(self, mock_document, api_client):
+        press_summary = PressSummaryFactory.build(
+            uri=DocumentURIString("press-summary/1"),
+            name="Test press summary",
+        )
+        mock_document.return_value = press_summary
+        self.client.force_login(make_editor())
+
+        response = self.client.post(
+            reverse("edit-document", kwargs={"document_uri": press_summary.uri}),
+            {
+                "judgment_uri": press_summary.uri,
+                "metadata_name": "Changed title",
+                "neutral_citation": "",
+                "court": "UKSC",
+                **document_form_judgment_date_fields(),
+            },
+        )
+
+        assert response.status_code == 404
+        api_client.set_document_court_and_jurisdiction.assert_not_called()
+        api_client.set_judgment_date.assert_not_called()
+
     @patch("judgments.views.judgment_edit.invalidate_caches")
     @patch("judgments.views.judgment_edit.api_client")
     @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")

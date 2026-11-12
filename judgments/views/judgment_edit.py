@@ -4,7 +4,7 @@ from caselawclient.models.documents.metadata.fields.source import MetadataSource
 from caselawclient.models.identifiers.neutral_citation import NCNValidationException, NeutralCitationNumber
 from django.conf import settings
 from django.contrib import messages
-from django.http import HttpResponseRedirect, QueryDict
+from django.http import Http404, HttpResponseRedirect, QueryDict
 from django.urls import reverse
 from django.views.generic import View
 
@@ -44,6 +44,17 @@ def update_ncn_of_document(document: Document, new_neutral_citation_number_strin
 
 
 class EditJudgmentView(EditorRequiredMixin, View):
+    @staticmethod
+    def _get_return_path(judgment: Document, return_to: str | None) -> str:
+        if return_to == "html":
+            view_name = "full-text-html"
+        elif return_to == "pdf":
+            view_name = "full-text-pdf"
+        else:
+            view_name = "edit-document"
+
+        return reverse(view_name, kwargs={"document_uri": judgment.uri})
+
     @staticmethod
     def _save_judges_from_document_form(judgment: Document, post_data: QueryDict) -> None:
         changed = False
@@ -86,6 +97,10 @@ class EditJudgmentView(EditorRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         judgment_uri = request.POST["judgment_uri"]
         judgment = get_document_by_uri_or_404(judgment_uri)
+
+        if judgment.document_noun != "judgment":
+            msg = f"Cannot edit non-judgment at {judgment.uri}"
+            raise Http404(msg)
 
         return_to = request.POST.get("return_to", None)
 
@@ -153,23 +168,7 @@ class EditJudgmentView(EditorRequiredMixin, View):
             if not settings.DEBUG:
                 invalidate_caches(judgment.uri)
 
-        if return_to == "html":
-            return_path = reverse(
-                "full-text-html",
-                kwargs={"document_uri": judgment.uri},
-            )
-        elif return_to == "pdf":
-            return_path = reverse(
-                "full-text-pdf",
-                kwargs={"document_uri": judgment.uri},
-            )
-        else:
-            return_path = reverse(
-                "edit-document",
-                kwargs={"document_uri": judgment.uri},
-            )
-
-        return HttpResponseRedirect(return_path)
+        return HttpResponseRedirect(self._get_return_path(judgment, return_to))
 
 
 def edit_view_redirect(request):

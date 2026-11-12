@@ -3,7 +3,7 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 import lxml.html
-from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
+from caselawclient.factories import DocumentBodyFactory, JudgmentFactory, PressSummaryFactory
 from caselawclient.models.documents import DocumentURIString
 from caselawclient.models.documents.metadata.fields.field import MetadataField, MetadataStringValue
 from caselawclient.models.documents.metadata.fields.source import MetadataSource
@@ -73,6 +73,36 @@ class TestMetadataPanel(TestCase):
         assert len(edit_form.xpath(".//button[@data-form-actions-submit]")) == 1
         assert not root.xpath("//div[contains(@class, 'metadata__container')]")
         assert response.status_code == 200
+
+    def test_metadata_panel_is_read_only_for_non_judgments(self):
+        template = environment(loader=PackageLoader("ds_caselaw_editor_ui", "templates")).from_string(
+            '{% from "components/document_metadata.jinja" import document_metadata with context %}'
+            "{{ document_metadata(document=document) }}",
+        )
+        preferred_ncn = NeutralCitationNumber("[2023] UKSC 1")
+        press_summary = PressSummaryFactory.build(
+            uri=DocumentURIString("press-summary/1"),
+            name="Test press summary",
+            identifiers=[preferred_ncn],
+        )
+
+        rendered = template.render(
+            document=press_summary,
+            preferred_ncn=preferred_ncn,
+            user=make_editor(),
+            metadata_aside_judges_enabled=True,
+        )
+        root = lxml.html.fromstring(rendered)
+
+        assert root.xpath('//details[summary/*[normalize-space(.)="Metadata"]]')
+        assert not root.xpath('//form[@id="document-edit-form"]')
+        assert not root.xpath('//input[@id="metadata_name"]')
+        assert not root.xpath('//input[@id="neutral_citation"]')
+        assert not root.xpath('//input[@id="court"]')
+        assert not root.xpath('//input[starts-with(@id, "judgment_date-")]')
+        assert not root.xpath("//button[@data-form-actions-submit]")
+        assert press_summary.metadata.title.value in root.text_content()
+        assert "[2023] UKSC 1" in root.text_content()
 
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
     @patch("judgments.utils.api_client.document_exists")
