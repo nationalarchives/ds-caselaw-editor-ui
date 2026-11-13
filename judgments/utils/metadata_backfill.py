@@ -15,21 +15,25 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Literal, cast
 
+from caselawclient.models.documents.metadata.fields.collection import MetadataFieldAddResult
 from caselawclient.models.documents.metadata.fields.field import (
     MetadataDateValue,
     MetadataField,
+    MetadataFieldValue,
     MetadataStringValue,
 )
 from caselawclient.models.documents.metadata.fields.source import MetadataSource
-from caselawclient.models.documents.versions import VersionType
-from pydantic import ValidationError
+from caselawclient.models.documents.versions import AnnotationDataDict, VersionType
+from pydantic import TypeAdapter, ValidationError
 
 if TYPE_CHECKING:
     from datetime import date
 
     from caselawclient.models.documents import Document
+    from caselawclient.models.utilities import VersionsDict
 
 FieldName = Literal["title", "date"]
+ClaimStatus = Literal["added", "restored", "already_present"]
 
 _SUBMISSION_OR_RESTORE = {
     VersionType.SUBMISSION.value,
@@ -58,6 +62,14 @@ class MetadataBackfillPlan:
         return names
 
 
+@dataclass(frozen=True)
+class MetadataClaimUpdate:
+    """What ``apply_metadata_backfill_plan`` did with one editor claim."""
+
+    name: FieldName
+    status: ClaimStatus
+
+
 @dataclass
 class MetadataBackfillResult:
     uri: str
@@ -69,21 +81,28 @@ class MetadataBackfillResult:
 
 
 def latest_submission_or_restore_body(document: Document) -> Document | None:
-    """Return the newest submission/restore version document, if annotated."""
+    """Return the newest submission/restore version, loading only that body.
+
+    ``document.versions`` is the version list (URI and number). Annotations are
+    read until the newest submission or restore is found, and only that version's
+    document is loaded. ``versions_as_documents`` would fetch every version body.
+    """
     # MarkLogic usually returns versions newest-first, but that order is not guaranteed.
-    versions = sorted(
-        document.versions_as_documents,
-        key=lambda version: version.version_number,
-        reverse=True,
-    )
+    versions = sorted(document.versions, key=lambda version: version["version"], reverse=True)
     for version in versions:
-        try:
-            annotation = version.structured_annotation
-        except (ValidationError, ValueError, TypeError, AttributeError):
+        annotation = _version_annotation(document, version)
+        if annotation is None or annotation.get("type") not in _SUBMISSION_OR_RESTORE:
             continue
-        if annotation.get("type") in _SUBMISSION_OR_RESTORE:
-            return version
+        return document.api_client.get_document_by_uri(version["uri"])
     return None
+
+
+def _version_annotation(document: Document, version: VersionsDict) -> AnnotationDataDict | None:
+    try:
+        raw_annotation = document.api_client.get_version_annotation(version["uri"])
+        return TypeAdapter(AnnotationDataDict).validate_json(raw_annotation)
+    except (ValidationError, ValueError, TypeError, AttributeError):
+        return None
 
 
 def _winning_document_title(document: Document) -> str | None:
@@ -126,28 +145,71 @@ def plan_metadata_backfill(document: Document) -> MetadataBackfillPlan:
     return MetadataBackfillPlan(title=title_to_promote, date=date_to_promote)
 
 
-def apply_metadata_backfill_plan(document: Document, plan: MetadataBackfillPlan) -> None:
-    """Add editor claims from ``plan`` onto ``document`` in memory."""
+def apply_metadata_backfill_plan(document: Document, plan: MetadataBackfillPlan) -> list[MetadataClaimUpdate]:
+    """Insert editor claims from ``plan``, or restore a rejected claim with the same value.
+
+    ``MetadataFieldsCollection.add`` treats a rejected claim as already present and
+    does not revive it, so a matching rejected editor claim has to be restored or
+    the document-source value keeps winning.
+    """
+    updates: list[MetadataClaimUpdate] = []
     if plan.title is not None:
-        document.metadata_fields.add(
-            MetadataField(
-                name="title",
-                value=MetadataStringValue(plan.title),
-                source=MetadataSource.EDITOR,
-            ),
-        )
+        updates.append(_ensure_editor_claim(document, name="title", value=MetadataStringValue(plan.title)))
     if plan.date is not None:
-        document.metadata_fields.add(
-            MetadataField(
-                name="date",
-                value=MetadataDateValue(plan.date),
-                source=MetadataSource.EDITOR,
-            ),
-        )
+        updates.append(_ensure_editor_claim(document, name="date", value=MetadataDateValue(plan.date)))
+    return updates
 
 
-def backfill_document_metadata(document: Document, *, dry_run: bool) -> MetadataBackfillResult:
-    """Plan and optionally persist editor claims for a single document."""
+def _ensure_editor_claim(
+    document: Document,
+    *,
+    name: FieldName,
+    value: MetadataFieldValue,
+) -> MetadataClaimUpdate:
+    outcome = document.metadata_fields.add(
+        MetadataField(
+            name=name,
+            value=value,
+            source=MetadataSource.EDITOR,
+        ),
+    )
+    if outcome is MetadataFieldAddResult.ADDED:
+        return MetadataClaimUpdate(name=name, status="added")
+
+    existing = _editor_claim(document, name, value)
+    if existing is not None and existing.rejected:
+        existing.restore()
+        return MetadataClaimUpdate(name=name, status="restored")
+    return MetadataClaimUpdate(name=name, status="already_present")
+
+
+def _editor_claim(document: Document, name: str, value: MetadataFieldValue) -> MetadataField | None:
+    for claim in document.metadata_fields.by_name(name):
+        if claim.source is MetadataSource.EDITOR and claim.value == value:
+            return claim
+    return None
+
+
+def backfill_document_metadata(
+    document: Document,
+    *,
+    dry_run: bool,
+    lock_held: bool = False,
+) -> MetadataBackfillResult:
+    """Plan and optionally persist editor claims for a single document.
+
+    ``lock_held`` means the caller already checked the document out, as
+    ``Document.open_for_editing`` does before loading it. A second
+    ``editing_session`` would be rejected.
+    """
+    if dry_run or lock_held:
+        return _backfill_loaded_document(document, persist=not dry_run)
+
+    with document.editing_session():
+        return _backfill_loaded_document(document, persist=True)
+
+
+def _backfill_loaded_document(document: Document, *, persist: bool) -> MetadataBackfillResult:
     plan = plan_metadata_backfill(document)
     result = MetadataBackfillResult(uri=str(document.uri), planned=plan)
 
@@ -160,11 +222,20 @@ def backfill_document_metadata(document: Document, *, dry_run: bool) -> Metadata
     if plan.date is not None:
         result.notes.append(f"date: {document.metadata.date.value!r} -> {plan.date!r}")
 
-    if dry_run:
+    if not persist:
         return result
 
-    with document.editing_session():
-        apply_metadata_backfill_plan(document, plan)
-        document.save_metadata_fields()
+    updates = apply_metadata_backfill_plan(document, plan)
+    for update in updates:
+        if update.status == "restored":
+            result.notes.append(f"{update.name}: restored rejected editor claim")
+        elif update.status == "already_present":
+            result.notes.append(f"{update.name}: editor claim already present")
+
+    if not any(update.status != "already_present" for update in updates):
+        result.skipped_reason = "editor claim already present"
+        return result
+
+    document.save_metadata_fields()
     result.applied = True
     return result

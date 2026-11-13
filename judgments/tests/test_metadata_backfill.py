@@ -1,7 +1,9 @@
+import json
 from datetime import UTC, date, datetime
 from unittest.mock import MagicMock, patch
 
 from caselawclient.factories import DocumentBodyFactory, JudgmentFactory
+from caselawclient.models.documents import DocumentURIString
 from caselawclient.models.documents.metadata.fields.field import (
     MetadataDateValue,
     MetadataField,
@@ -10,11 +12,12 @@ from caselawclient.models.documents.metadata.fields.field import (
 from caselawclient.models.documents.metadata.fields.source import MetadataSource
 from caselawclient.models.documents.versions import VersionType
 from django.core.management import call_command
-from django.test import SimpleTestCase
+from django.test import SimpleTestCase, override_settings
 
 from judgments.utils.metadata_backfill import (
     MetadataBackfillPlan,
     MetadataBackfillResult,
+    MetadataClaimUpdate,
     apply_metadata_backfill_plan,
     backfill_document_metadata,
     plan_metadata_backfill,
@@ -67,12 +70,12 @@ def _version_document(
     version_number: int = 1,
 ):
     version = JudgmentFactory.build(
+        uri=DocumentURIString(f"test/2023/123/_xml_versions/{version_number}-123"),
         body=DocumentBodyFactory.build(
             name=name,
             document_date_as_string=document_date_as_string,
         ),
     )
-    version.version_number = version_number
     version.structured_annotation = {
         "type": version_type,
         "automated": True,
@@ -80,6 +83,21 @@ def _version_document(
         "calling_agent": "t",
     }
     return version
+
+
+def _attach_versions(judgment, *versions) -> None:
+    """Expose version URIs on ``judgment`` and load a body only when asked for one."""
+    judgment.versions = [{"uri": version.uri, "version": version.version_number} for version in versions]
+    by_uri = {version.uri: version for version in versions}
+    judgment.api_client.get_version_annotation.side_effect = lambda uri: json.dumps(by_uri[uri].structured_annotation)
+    judgment.api_client.get_document_by_uri.side_effect = lambda uri: by_uri[uri]
+
+
+def _checked_out(document):
+    session = MagicMock()
+    session.__enter__.return_value = document
+    session.__exit__.return_value = False
+    return session
 
 
 class TestPlanMetadataBackfill(SimpleTestCase):
@@ -108,13 +126,14 @@ class TestPlanMetadataBackfill(SimpleTestCase):
             body_date="2024-01-01",
             title_claim="Ingest title",
         )
-        judgment.versions_as_documents = [
+        _attach_versions(
+            judgment,
             _version_document(
                 name="Ingest title",
                 document_date_as_string="2024-01-01",
                 version_type=VersionType.SUBMISSION.value,
             ),
-        ]
+        )
 
         plan = plan_metadata_backfill(judgment)
 
@@ -127,13 +146,14 @@ class TestPlanMetadataBackfill(SimpleTestCase):
             body_date="2024-01-01",
             title_claim="Ingest title",
         )
-        judgment.versions_as_documents = [
+        _attach_versions(
+            judgment,
             _version_document(
                 name="Reparsed title",
                 document_date_as_string="2024-01-01",
                 version_type=VersionType.SUBMISSION.value,
             ),
-        ]
+        )
 
         plan = plan_metadata_backfill(judgment)
 
@@ -145,24 +165,25 @@ class TestPlanMetadataBackfill(SimpleTestCase):
             body_date="2024-01-01",
             title_claim="Ingest title",
         )
-        judgment.versions_as_documents = [
-            _version_document(
-                name="Ingest title",
-                document_date_as_string="2024-01-01",
-                version_type=VersionType.SUBMISSION.value,
-                version_number=1,
-            ),
-            _version_document(
-                name="Reparsed title",
-                document_date_as_string="2024-01-01",
-                version_type=VersionType.SUBMISSION.value,
-                version_number=4,
-            ),
-        ]
+        older = _version_document(
+            name="Ingest title",
+            document_date_as_string="2024-01-01",
+            version_type=VersionType.SUBMISSION.value,
+            version_number=1,
+        )
+        newer = _version_document(
+            name="Reparsed title",
+            document_date_as_string="2024-01-01",
+            version_type=VersionType.SUBMISSION.value,
+            version_number=4,
+        )
+        _attach_versions(judgment, older, newer)
 
         plan = plan_metadata_backfill(judgment)
 
         assert plan.has_changes is False
+        judgment.api_client.get_document_by_uri.assert_called_once_with(newer.uri)
+        judgment.api_client.get_version_annotation.assert_called_once_with(newer.uri)
 
     def test_promotes_when_only_an_older_submission_matches_the_body(self):
         judgment = _judgment(
@@ -170,7 +191,8 @@ class TestPlanMetadataBackfill(SimpleTestCase):
             body_date="2024-01-01",
             title_claim="Ingest title",
         )
-        judgment.versions_as_documents = [
+        _attach_versions(
+            judgment,
             _version_document(
                 name="Editor XML title",
                 document_date_as_string="2024-01-01",
@@ -183,11 +205,36 @@ class TestPlanMetadataBackfill(SimpleTestCase):
                 version_type=VersionType.SUBMISSION.value,
                 version_number=4,
             ),
-        ]
+        )
 
         plan = plan_metadata_backfill(judgment)
 
         assert plan.title == "Editor XML title"
+
+    def test_does_not_load_a_newer_edit_when_an_older_submission_is_the_baseline(self):
+        judgment = _judgment(
+            body_name="Editor XML title",
+            body_date="2024-01-01",
+            title_claim="Ingest title",
+        )
+        submission = _version_document(
+            name="Ingest title",
+            document_date_as_string="2024-01-01",
+            version_type=VersionType.SUBMISSION.value,
+            version_number=2,
+        )
+        edit = _version_document(
+            name="Editor XML title",
+            document_date_as_string="2024-01-01",
+            version_type=VersionType.EDIT.value,
+            version_number=5,
+        )
+        _attach_versions(judgment, submission, edit)
+
+        plan = plan_metadata_backfill(judgment)
+
+        assert plan.title == "Editor XML title"
+        judgment.api_client.get_document_by_uri.assert_called_once_with(submission.uri)
 
     def test_promotes_body_date_when_document_claim_is_stale(self):
         judgment = _judgment(
@@ -196,13 +243,14 @@ class TestPlanMetadataBackfill(SimpleTestCase):
             title_claim="Same title",
             date_claim=date(2024, 1, 1),
         )
-        judgment.versions_as_documents = [
+        _attach_versions(
+            judgment,
             _version_document(
                 name="Same title",
                 document_date_as_string="2024-01-01",
                 version_type=VersionType.RESTORE.value,
             ),
-        ]
+        )
 
         plan = plan_metadata_backfill(judgment)
 
@@ -248,6 +296,40 @@ class TestPlanMetadataBackfill(SimpleTestCase):
             for claim in judgment.metadata_fields.by_name("title")
         )
 
+    def test_restores_a_rejected_editor_claim_with_the_same_value(self):
+        judgment = _judgment(
+            body_name="Editor XML title",
+            body_date="2024-01-01",
+            title_claim="Ingest title",
+        )
+        _add_claim(
+            judgment,
+            name="title",
+            value=MetadataStringValue("Editor XML title"),
+            source=MetadataSource.EDITOR,
+            claim_id="rejected-editor-title",
+        )
+        judgment.metadata_fields.reject("rejected-editor-title")
+
+        updates = apply_metadata_backfill_plan(judgment, MetadataBackfillPlan(title="Editor XML title"))
+
+        assert updates == [MetadataClaimUpdate(name="title", status="restored")]
+        assert judgment.metadata_fields["rejected-editor-title"].rejected is False
+        editor_claims = [
+            claim for claim in judgment.metadata_fields.by_name("title") if claim.source is MetadataSource.EDITOR
+        ]
+        assert editor_claims == [judgment.metadata_fields["rejected-editor-title"]]
+
+    def test_apply_adds_editor_claims_reports_added(self):
+        judgment = _judgment(
+            body_name="Editor XML title",
+            body_date="2024-01-01",
+            title_claim="Ingest title",
+        )
+        updates = apply_metadata_backfill_plan(judgment, MetadataBackfillPlan(title="Editor XML title"))
+
+        assert updates == [MetadataClaimUpdate(name="title", status="added")]
+
 
 class TestBackfillDocumentMetadata(SimpleTestCase):
     def test_dry_run_does_not_save(self):
@@ -256,13 +338,14 @@ class TestBackfillDocumentMetadata(SimpleTestCase):
             body_date="2024-01-01",
             title_claim="Ingest title",
         )
-        judgment.versions_as_documents = [
+        _attach_versions(
+            judgment,
             _version_document(
                 name="Ingest title",
                 document_date_as_string="2024-01-01",
                 version_type=VersionType.SUBMISSION.value,
             ),
-        ]
+        )
         judgment.editing_session = MagicMock()
         judgment.save_metadata_fields = MagicMock()
 
@@ -280,13 +363,14 @@ class TestBackfillDocumentMetadata(SimpleTestCase):
             body_date="2024-01-01",
             title_claim="Ingest title",
         )
-        judgment.versions_as_documents = [
+        _attach_versions(
+            judgment,
             _version_document(
                 name="Ingest title",
                 document_date_as_string="2024-01-01",
                 version_type=VersionType.SUBMISSION.value,
             ),
-        ]
+        )
         session = MagicMock()
         session.__enter__.return_value = judgment
         session.__exit__.return_value = None
@@ -302,9 +386,11 @@ class TestBackfillDocumentMetadata(SimpleTestCase):
 
 
 class TestBackfillBodyMetadataClaimsCommand(SimpleTestCase):
+    @patch("judgments.management.commands.backfill_body_metadata_claims.invalidate_caches")
     @patch("judgments.management.commands.backfill_body_metadata_claims.api_client")
     @patch("judgments.management.commands.backfill_body_metadata_claims.backfill_document_metadata")
-    def test_uri_mode_calls_backfill(self, mock_backfill, mock_api_client):
+    @override_settings(DEBUG=False)
+    def test_uri_mode_calls_backfill(self, mock_backfill, mock_api_client, mock_invalidate):
         document = _judgment(
             body_name="Editor XML title",
             body_date="2024-01-01",
@@ -322,16 +408,29 @@ class TestBackfillBodyMetadataClaimsCommand(SimpleTestCase):
         mock_api_client.get_document_by_uri.assert_called_once()
         mock_backfill.assert_called_once()
         assert mock_backfill.call_args.kwargs["dry_run"] is True
+        mock_invalidate.assert_not_called()
 
+    @patch("judgments.management.commands.backfill_body_metadata_claims.invalidate_caches")
+    @patch(
+        "judgments.management.commands.backfill_body_metadata_claims.Document.open_for_editing",
+        create=True,
+    )
     @patch("judgments.management.commands.backfill_body_metadata_claims.api_client")
     @patch("judgments.management.commands.backfill_body_metadata_claims.backfill_document_metadata")
-    def test_apply_mode_disables_dry_run(self, mock_backfill, mock_api_client):
+    @override_settings(DEBUG=False)
+    def test_apply_checks_out_before_loading_and_invalidates_cache(
+        self,
+        mock_backfill,
+        mock_api_client,
+        mock_open,
+        mock_invalidate,
+    ):
         document = _judgment(
             body_name="Editor XML title",
             body_date="2024-01-01",
             title_claim="Ingest title",
         )
-        mock_api_client.get_document_by_uri.return_value = document
+        mock_open.return_value = _checked_out(document)
         mock_backfill.return_value = MetadataBackfillResult(
             uri="test/2023/123",
             planned=MetadataBackfillPlan(title="Editor XML title"),
@@ -341,17 +440,25 @@ class TestBackfillBodyMetadataClaimsCommand(SimpleTestCase):
 
         call_command("backfill_body_metadata_claims", "--apply", "--uri", "test/2023/123")
 
-        assert mock_backfill.call_args.kwargs["dry_run"] is False
+        mock_open.assert_called_once()
+        assert str(mock_open.call_args.args[1]) == "test/2023/123"
+        mock_api_client.get_document_by_uri.assert_not_called()
+        assert mock_backfill.call_args.kwargs == {"dry_run": False, "lock_held": True}
+        mock_invalidate.assert_called_once_with("test/2023/123")
 
+    @patch(
+        "judgments.management.commands.backfill_body_metadata_claims.Document.open_for_editing",
+        create=True,
+    )
     @patch("judgments.management.commands.backfill_body_metadata_claims.api_client")
     @patch("judgments.management.commands.backfill_body_metadata_claims.backfill_document_metadata")
-    def test_uri_mode_honours_limit(self, mock_backfill, mock_api_client):
+    def test_uri_mode_honours_limit(self, mock_backfill, mock_api_client, mock_open):
         document = _judgment(
             body_name="Editor XML title",
             body_date="2024-01-01",
             title_claim="Ingest title",
         )
-        mock_api_client.get_document_by_uri.return_value = document
+        mock_open.return_value = _checked_out(document)
         mock_backfill.return_value = MetadataBackfillResult(
             uri="test/2023/1",
             planned=MetadataBackfillPlan(),
@@ -368,8 +475,9 @@ class TestBackfillBodyMetadataClaimsCommand(SimpleTestCase):
             "test/2023/2",
         )
 
-        mock_api_client.get_document_by_uri.assert_called_once()
-        assert str(mock_api_client.get_document_by_uri.call_args.args[0]) == "test/2023/1"
+        mock_open.assert_called_once()
+        assert str(mock_open.call_args.args[1]) == "test/2023/1"
+        mock_api_client.get_document_by_uri.assert_not_called()
 
     @patch("judgments.management.commands.backfill_body_metadata_claims.api_client")
     @patch("judgments.management.commands.backfill_body_metadata_claims.backfill_document_metadata")
