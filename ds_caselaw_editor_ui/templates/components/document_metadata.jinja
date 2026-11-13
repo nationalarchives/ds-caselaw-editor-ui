@@ -4,6 +4,7 @@
 {% from "components/details.jinja" import details %}
 {% from "govuk_frontend_jinja/components/date-input/macro.html" import govukDateInput %}
 {% from "govuk_frontend_jinja/components/input/macro.html" import govukInput %}
+{% from "govuk_frontend_jinja/components/textarea/macro.html" import govukTextarea %}
 {% from "components/document_metadata_item.jinja" import document_metadata_item %}
 {% from "components/document_metadata_claim_section.jinja" import metadata_claim_section with context %}
 {% from "components/form_actions.jinja" import form_actions %}
@@ -48,7 +49,7 @@
               <dt>Title</dt>
               <dd>
                 {% if is_editable_judgment %}
-                  {{ govukInput({
+                  {{ govukTextarea({
                     "label": { "text": "Title", "classes": "govuk-visually-hidden" },
                     "id": "metadata_name",
                     "name": "metadata_name",

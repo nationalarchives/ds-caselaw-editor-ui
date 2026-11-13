@@ -130,6 +130,10 @@
           gap: $space-2;
           margin: 0;
 
+          textarea {
+            field-sizing: content;
+          }
+
           &:has(> .aside__metadata-compact-form) {
             display: block;
             width: 100%;
