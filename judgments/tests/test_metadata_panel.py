@@ -24,6 +24,14 @@ from judgments.tests.helpers.metadata_claims import judgment_with_title_claim
 from judgments.utils.metadata_display import MetadataFieldDisplayDecorator
 
 
+def form_control(element, control_id):
+    return element.xpath(f'.//*[@id="{control_id}"]')[0]
+
+
+def form_control_value(element, control_id):
+    return form_control(element, control_id).value
+
+
 @override_flag(METADATA_ASIDE_JUDGES_FLAG, active=True)
 class TestMetadataPanel(TestCase):
     @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
@@ -50,26 +58,26 @@ class TestMetadataPanel(TestCase):
         root = lxml.html.fromstring(response.content)
 
         assert b'<input type="hidden" name="judgment_uri" value="hvtest/4321/123" />' in response.content
-        assert root.xpath("//input[@id='court']/@value")[0] == "Court of Testing"
-        assert root.xpath("//input[@id='metadata_name']/@value")[0] == "Test v Tested"
-        assert root.xpath("//input[@id='judgment_date-day']/@value")[0] == "3"
-        assert root.xpath("//input[@id='judgment_date-month']/@value")[0] == "2"
-        assert root.xpath("//input[@id='judgment_date-year']/@value")[0] == "2023"
-        assert root.xpath("//input[@id='neutral_citation']/@value")[0] == "[2023] UKSC 1"
+        assert form_control_value(root, "court") == "Court of Testing"
+        assert form_control_value(root, "metadata_name") == "Test v Tested"
+        assert form_control_value(root, "judgment_date-day") == "3"
+        assert form_control_value(root, "judgment_date-month") == "2"
+        assert form_control_value(root, "judgment_date-year") == "2023"
+        assert form_control_value(root, "neutral_citation") == "[2023] UKSC 1"
         editable_metadata = root.xpath(
             '//details[summary/*[normalize-space(.)="Editable metadata"]]',
         )[0]
         identifiers = root.xpath('//details[summary/*[normalize-space(.)="Identifiers"]]')[0]
         other_metadata = root.xpath('//details[summary/*[normalize-space(.)="Other metadata"]]')[0]
-        assert editable_metadata.xpath('.//input[@id="neutral_citation"]')
-        assert not identifiers.xpath('.//input[@id="neutral_citation"]')
+        assert editable_metadata.xpath('.//*[@id="neutral_citation"]')
+        assert not identifiers.xpath('.//*[@id="neutral_citation"]')
         assert identifiers.xpath('.//dt[normalize-space(.)="Case number"]')
         assert not other_metadata.xpath('.//dt[normalize-space(.)="Case number"]')
         edit_form = root.xpath("//form[@id='document-edit-form']")[0]
-        assert edit_form.xpath(".//input[@id='metadata_name']")
-        assert edit_form.xpath(".//input[@id='court']")
-        assert edit_form.xpath(".//input[@id='judgment_date-day']")
-        assert edit_form.xpath(".//input[@id='neutral_citation']")
+        assert edit_form.xpath(".//*[@id='metadata_name']")
+        assert edit_form.xpath(".//*[@id='court']")
+        assert edit_form.xpath(".//*[@id='judgment_date-day']")
+        assert edit_form.xpath(".//*[@id='neutral_citation']")
         assert len(edit_form.xpath(".//button[@data-form-actions-submit]")) == 1
         assert not root.xpath("//div[contains(@class, 'metadata__container')]")
         assert response.status_code == 200
@@ -174,7 +182,7 @@ class TestMetadataPanel(TestCase):
 
         root = lxml.html.fromstring(response.content)
 
-        assert root.xpath("//input[@id='metadata_name']/@value")[0] == "Resolved structured title"
+        assert form_control_value(root, "metadata_name") == "Resolved structured title"
         assert response.status_code == 200
 
     def test_metadata_item_renders_scalar_value(self):
@@ -273,7 +281,7 @@ class TestMetadataPanel(TestCase):
         assert "DocumentCategory" not in categories_dd.text_content()
 
         ncn_dd = root.xpath('//dt[text()="NCN"]/following-sibling::dd')[0]
-        assert ncn_dd.xpath('.//input[@value="[2023] EWCA Civ 1"]')
+        assert form_control_value(ncn_dd, "neutral_citation") == "[2023] EWCA Civ 1"
 
         other_dd = root.xpath('//dt[text()="Other"]/following-sibling::dd')[0]
         assert "Find Case Law Identifier: tn4t35ts" in other_dd.text_content()
@@ -341,7 +349,7 @@ class TestMetadataPanel(TestCase):
         judges_dd = root.xpath('//dt[normalize-space(.)="Judges"]/following-sibling::dd')[0]
         edit_form = root.xpath('//form[@id="document-edit-form"]')[0]
         assert edit_form.get("action").endswith("/d-a1b2c3/edit")
-        assert not judges_dd.xpath('.//input[@name="new_claim__judges"]')
+        assert not judges_dd.xpath('.//*[@name="new_claim__judges"]')
         assert judges_dd.xpath(".//template[@data-metadata-compact-new-template]")
         assert "data-metadata-compact-add" in rendered
         assert "data-metadata-compact-list" in rendered
@@ -385,9 +393,9 @@ class TestMetadataPanel(TestCase):
         )
 
         assert len(new_entries) == 1
-        new_judge_input = new_entries[0].xpath(".//input[@data-metadata-compact-new-input]")[0]
-        assert "required" in new_judge_input.attrib
-        assert new_judge_input.get("name") is None
+        new_judge_control = new_entries[0].xpath(".//*[@data-metadata-compact-new-input]")[0]
+        assert "required" in new_judge_control.attrib
+        assert new_judge_control.get("name") is None
         assert "Add another judge" in judges_dd.text_content()
 
     def test_document_metadata_aside_judges_read_only_for_non_editors(self):
@@ -456,7 +464,7 @@ class TestMetadataPanel(TestCase):
         root = lxml.html.fromstring(rendered)
 
         ncn_dd = root.xpath('//dt[text()="NCN"]/following-sibling::dd')[0]
-        assert ncn_dd.xpath('.//input[@value=""]')
+        assert form_control_value(ncn_dd, "neutral_citation") == ""
 
         other_dd = root.xpath('//dt[text()="Other"]/following-sibling::dd')[0]
         assert "Find Case Law Identifier: tn4t35ts" in other_dd.text_content()
