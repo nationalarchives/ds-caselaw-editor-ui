@@ -27,13 +27,13 @@
   <div class="aside__metadata-compact-entry"
        data-metadata-compact-new-entry
        {% if initial %}data-metadata-compact-initial-new-entry{% endif %}>
-    <input class="govuk-input govuk-!-width-full aside__metadata-compact-new-input"
-           id="{{ input_id }}"
-           type="text"
-           autocomplete="off"
-           aria-label="New judge name"
-           data-metadata-compact-new-input
-           {% if required %}required{% endif %} />
+    <textarea class="govuk-textarea govuk-!-width-full aside__metadata-compact-new-input"
+              id="{{ input_id }}"
+              type="text"
+              autocomplete="off"
+              aria-label="New judge name"
+              data-metadata-compact-new-input
+              {% if required %}required{% endif %}></textarea>
     {{ button(content="Remove",
       variant="link",
       size="small",
