@@ -1,6 +1,11 @@
 {%- macro details(title=None, closed_title=None, open=False, variant=None, stateful=False) -%}
   {%- set body_content = caller() | trim -%}
-  {%- set variant_classes = {"default": "details", "light": "details details--light", "centered": "details details--centered"} -%}
+  {%- set variant_classes = {
+    "default": "details",
+    "light": "details details--light",
+    "centered": "details details--centered",
+    "panel": "details details--panel"
+  } -%}
   {%- set variant_class = variant_classes.get(variant, variant_classes['default']) -%}
   <details {% if stateful %} data-stateful-details{%- endif %}
            class="{{ component_class_names(variant_class) }}"

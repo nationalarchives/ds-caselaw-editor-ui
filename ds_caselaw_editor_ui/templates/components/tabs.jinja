@@ -1,5 +1,5 @@
-{% macro tabs(primary_tabs=False) %}
-  <div class="tabs-set {% if primary_tabs %}tabs-set--primary{% endif %} {% if javascript_enabled %}with-js{% endif %}">
+{% macro tabs(primary_tabs=False, variant=none) %}
+  <div class="tabs-set{% if primary_tabs %} tabs-set--primary{% endif %}{% if variant %} tabs-set--{{ variant }}{% endif %}{% if javascript_enabled %} with-js{% endif %}">
     <form>
       {{ caller() }}
       <div class="tabs-set__divider"></div>

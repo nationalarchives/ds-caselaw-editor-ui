@@ -6,6 +6,7 @@
 {% from "components/navigation_tabs.jinja" import navigation_tabs, navigation_tab %}
 {% from "components/toolbar.jinja" import toolbar, toolbar_section %}
 {% from "components/document_metadata.jinja" import document_metadata with context %}
+{% from "components/tabs.jinja" import tabs, tab %}
 {% block aside %}
   {{ document_metadata(document=document) }}
 {% endblock aside %}
@@ -39,6 +40,13 @@
         {% endcall %}
       {% endcall %}
     {% endcall %}
+    {% set is_document_review_view = view in ["judgment_html", "judgment_pdf"] %}
+    {% if metadata_aside_judges_enabled|default(false) and is_document_review_view and document.pdf_url and document_html %}
+      {% call tabs(variant="toolbar") %}
+        {{ tab(id="html", name="html", index=0, selected=(True if view == "judgment_html"), url=url("full-text-html", document.uri) , label="HTML view") }}
+        {{ tab(id="pdf", name="pdf", index=1, selected=(True if view == "judgment_pdf"), url=url("full-text-pdf", document.uri) , label="PDF view") }}
+      {% endcall %}
+    {% endif %}
     {% call toolbar_section() %}
       {% call button(size="small", href=jira_create_link, attrs={"target": "_blank", "rel":"noopener noreferrer"}) %}
         Create in Jira

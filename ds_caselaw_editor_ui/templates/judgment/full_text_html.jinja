@@ -7,14 +7,14 @@
   {{ document_metadata(document=document) }}
 {% endblock aside %}
 {% block content %}
-  {% if document_type == "judgment" %}
-    {{ document_form() }}
-  {% endif %}
-  {% if document.pdf_url %}
-    {% call tabs() %}
-      {{ tab(id="html", name="html", index=0, selected=True, url=url("full-text-html", document.uri) , label="HTML view") }}
-      {{ tab(id="pdf", name="pdf", index=1, url=url("full-text-pdf", document.uri) , label="PDF view") }}
-    {% endcall %}
+  {% if not metadata_aside_judges_enabled|default(false) %}
+    {% if document_type == "judgment" %}{{ document_form() }}{% endif %}
+    {% if document.pdf_url %}
+      {% call tabs() %}
+        {{ tab(id="html", name="html", index=0, selected=True, url=url("full-text-html", document.uri) , label="HTML view") }}
+        {{ tab(id="pdf", name="pdf", index=1, url=url("full-text-pdf", document.uri) , label="PDF view") }}
+      {% endcall %}
+    {% endif %}
   {% endif %}
   {% if document.body.failed_to_parse %}
     <div class="container">

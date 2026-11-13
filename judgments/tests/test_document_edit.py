@@ -5,7 +5,11 @@ import pytest
 from caselawclient.errors import MarklogicAPIError
 from caselawclient.factories import DocumentBodyFactory, JudgmentFactory, PressSummaryFactory
 from caselawclient.models.documents import DocumentURIString
-from caselawclient.models.documents.metadata.fields.field import MetadataDateValue, MetadataStringValue
+from caselawclient.models.documents.metadata.fields.field import (
+    MetadataDateValue,
+    MetadataField,
+    MetadataStringValue,
+)
 from caselawclient.models.documents.metadata.fields.source import MetadataSource
 from caselawclient.models.identifiers.neutral_citation import (
     NCNCannotConvertToValidURLSlugException,
@@ -18,7 +22,9 @@ from django.test import TestCase
 from django.urls import reverse
 from editing import document_form_judgment_date_fields, editing_order, record, tracking_editing_session
 from factories import make_editor
+from waffle.testutils import override_flag
 
+from judgments.templatetags.navigation_tags import METADATA_ASIDE_JUDGES_FLAG
 from judgments.tests.helpers.metadata_claims import judgment_with_title_claim
 from judgments.views.judgment_edit import CannotUpdateNCNOfNonJudgment, update_ncn_of_document
 
@@ -33,10 +39,36 @@ class TestDocumentEdit(TestCase):
             kwargs={"document_uri": "ewca/civ/2004/63X"},
         )
 
+    @patch("judgments.views.judgment_edit.api_client")
+    @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
+    def test_edit_judgment_rejects_non_judgments(self, mock_document, api_client):
+        press_summary = PressSummaryFactory.build(
+            uri=DocumentURIString("press-summary/1"),
+            name="Test press summary",
+        )
+        mock_document.return_value = press_summary
+        self.client.force_login(make_editor())
+
+        response = self.client.post(
+            reverse("edit-document", kwargs={"document_uri": press_summary.uri}),
+            {
+                "judgment_uri": press_summary.uri,
+                "metadata_name": "Changed title",
+                "neutral_citation": "",
+                "court": "UKSC",
+                **document_form_judgment_date_fields(),
+            },
+        )
+
+        assert response.status_code == 404
+        api_client.set_document_court_and_jurisdiction.assert_not_called()
+        api_client.set_judgment_date.assert_not_called()
+
     @patch("judgments.views.judgment_edit.invalidate_caches")
     @patch("judgments.views.judgment_edit.api_client")
     @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
     @patch("judgments.utils.aws.boto3")
+    @override_flag(METADATA_ASIDE_JUDGES_FLAG, active=True)
     def test_edit_judgment_no_ncn_change(self, mock_boto, mock_judgment, api_client, mock_invalidate_caches):
         judgment = JudgmentFactory.build(
             uri=DocumentURIString("edittest/4321/123"),
@@ -44,6 +76,14 @@ class TestDocumentEdit(TestCase):
         )
 
         judgment.identifiers.add(NeutralCitationNumber("[4321] UKSC 123"))
+        judgment.body.judges = ["Lord Justice Body"]
+        editor_judge_claim = MetadataField(
+            id="editor-judge",
+            name="judges",
+            value=MetadataStringValue("Lord Justice Previous"),
+            source=MetadataSource.EDITOR,
+        )
+        judgment.metadata_fields.add(editor_judge_claim)
         mock_judgment.return_value = judgment
         order = editing_order()
         api_client.set_document_court_and_jurisdiction.side_effect = record(order, "set_court")
@@ -63,6 +103,9 @@ class TestDocumentEdit(TestCase):
                     "metadata_name": "New Name",
                     "neutral_citation": "[4321] UKSC 123",
                     "court": "Court of Testing",
+                    "new_claim__judges": ["Lord Justice Example"],
+                    "reject_claim_ids": [editor_judge_claim.id],
+                    "suppress_body_judges": ["Lord Justice Body"],
                     **document_form_judgment_date_fields(),
                 },
             )
@@ -81,6 +124,8 @@ class TestDocumentEdit(TestCase):
             "/edittest/4321/123",
             "2023-01-02",
         )
+        assert judgment.metadata.judges.values == ["Lord Justice Example"]
+        assert editor_judge_claim.id not in judgment.metadata_fields
 
         assert order == [
             "editing_session",
@@ -88,9 +133,85 @@ class TestDocumentEdit(TestCase):
             "set_court",
             "save_metadata_fields",
             "set_judgment_date",
+            "save_metadata_fields",
             "editing_session_end",
         ]
         mock_invalidate_caches.assert_called_once_with(judgment.uri)
+
+    @patch("judgments.views.judgment_edit.invalidate_caches")
+    @patch("judgments.views.judgment_edit.api_client")
+    @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
+    @override_flag(METADATA_ASIDE_JUDGES_FLAG, active=True)
+    def test_edit_judgment_does_not_remove_last_judge(
+        self,
+        mock_judgment,
+        api_client,
+        mock_invalidate_caches,
+    ):
+        judgment = JudgmentFactory.build(
+            uri=DocumentURIString("edittest/4321/123"),
+            body=DocumentBodyFactory.build(name="Test v Tested"),
+        )
+        judgment.body.judges = ["Lord Justice Body"]
+        judgment.identifiers.add(NeutralCitationNumber("[4321] UKSC 123"))
+        mock_judgment.return_value = judgment
+        self.client.force_login(make_editor())
+
+        with (
+            patch.object(judgment, "editing_session"),
+            patch.object(judgment, "save_metadata_fields") as save_metadata_fields,
+        ):
+            response = self.client.post(
+                reverse("edit-document", kwargs={"document_uri": judgment.uri}),
+                {
+                    "judgment_uri": judgment.uri,
+                    "metadata_name": judgment.metadata.title.value,
+                    "neutral_citation": "[4321] UKSC 123",
+                    "court": judgment.body.court_and_jurisdiction_identifier_string,
+                    "suppress_body_judges": ["Lord Justice Body"],
+                    **document_form_judgment_date_fields(day=3, month=2, year=2023),
+                },
+            )
+
+        response_messages = list(get_messages(response.wsgi_request))
+        assert [message.message for message in response_messages] == ["A document must have at least one judge"]
+        save_metadata_fields.assert_not_called()
+        mock_invalidate_caches.assert_not_called()
+        api_client.set_document_court_and_jurisdiction.assert_called_once()
+
+    @patch("judgments.views.judgment_edit.api_client")
+    @patch("judgments.views.judgment_edit.get_document_by_uri_or_404")
+    @override_flag(METADATA_ASIDE_JUDGES_FLAG, active=False)
+    def test_edit_judgment_ignores_judge_fields_when_flag_inactive(self, mock_judgment, api_client):
+        judgment = JudgmentFactory.build(
+            uri=DocumentURIString("edittest/4321/123"),
+            body=DocumentBodyFactory.build(name="Test v Tested"),
+        )
+        judgment.body.judges = ["Lord Justice Body"]
+        judgment.identifiers.add(NeutralCitationNumber("[4321] UKSC 123"))
+        mock_judgment.return_value = judgment
+        self.client.force_login(make_editor())
+
+        with (
+            patch.object(judgment, "editing_session"),
+            patch.object(judgment, "save_metadata_fields") as save_metadata_fields,
+        ):
+            self.client.post(
+                reverse("edit-document", kwargs={"document_uri": judgment.uri}),
+                {
+                    "judgment_uri": judgment.uri,
+                    "metadata_name": judgment.metadata.title.value,
+                    "neutral_citation": "[4321] UKSC 123",
+                    "court": judgment.body.court_and_jurisdiction_identifier_string,
+                    "new_claim__judges": ["Lady Justice Example"],
+                    "suppress_body_judges": ["Lord Justice Body"],
+                    **document_form_judgment_date_fields(day=3, month=2, year=2023),
+                },
+            )
+
+        assert judgment.metadata.judges.values == ["Lord Justice Body"]
+        save_metadata_fields.assert_not_called()
+        api_client.set_document_court_and_jurisdiction.assert_called_once()
 
     @patch("judgments.views.judgment_edit.invalidate_caches")
     @patch("judgments.views.judgment_edit.api_client")

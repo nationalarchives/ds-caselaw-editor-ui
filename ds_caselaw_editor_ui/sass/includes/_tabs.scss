@@ -28,7 +28,7 @@
 
         display: inline-block;
 
-        padding: $space-3 $space-8 0 $space-8;
+        padding: $space-3 $space-8 0;
 
         color: colour-var("button-text");
         text-decoration: none;
@@ -68,10 +68,59 @@
     border-top: solid 2px colour-var("link");
   }
 
-  &.tabs-set--primary {
-    input[type="radio"]:checked ~ label {
-      border-bottom-color: colour-var("accent-background-light");
-      background: colour-var("accent-background-light");
+  &.tabs-set--primary input[type="radio"]:checked ~ label {
+    border-bottom-color: colour-var("accent-background-light");
+    background: colour-var("accent-background-light");
+  }
+
+  &.tabs-set--toolbar {
+    width: auto;
+    margin: 0;
+    padding: $space-1;
+    border-radius: 5px;
+
+    .tabs-set__item {
+      margin: 0;
+
+      label {
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+
+        font: inherit;
+
+        background: transparent;
+
+        a {
+          position: static;
+
+          padding: $space-2 $space-4;
+          border-radius: 5px;
+
+          color: brand-colour("navy");
+
+          outline: none;
+
+          &:hover {
+            color: colour-var("contrast-link");
+            background: brand-colour("navy");
+          }
+        }
+      }
+
+      input[type="radio"]:checked ~ label {
+        border: 0;
+        background: transparent;
+
+        a {
+          color: colour-var("contrast-link");
+          background: brand-colour("navy");
+        }
+      }
+    }
+
+    .tabs-set__divider {
+      display: none;
     }
   }
 }

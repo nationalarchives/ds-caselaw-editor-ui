@@ -1,45 +1,18 @@
-const PENDING_INDEX_PLACEHOLDER = "__INDEX__";
-const PENDING_VALUE_PLACEHOLDER = "__VALUE__";
-
-const uniquifyEntryIds = (entry, suffix) => {
-  const idMap = new Map();
-  entry.querySelectorAll("[id]").forEach((node) => {
-    const nextId = `${node.id}-pending-${suffix}`;
-    idMap.set(node.id, nextId);
-    node.id = nextId;
-  });
-  entry.querySelectorAll("[for]").forEach((node) => {
-    const currentFor = node.getAttribute("for");
-    if (currentFor && idMap.has(currentFor)) {
-      node.setAttribute("for", idMap.get(currentFor));
-    }
-  });
-};
+const NEW_INPUT_INDEX_PLACEHOLDER = "__INDEX__";
 
 const replaceIndexPlaceholder = (entry, index) => {
   entry.querySelectorAll("[id]").forEach((node) => {
-    node.id = node.id.replaceAll(PENDING_INDEX_PLACEHOLDER, String(index));
+    node.id = node.id.replaceAll(NEW_INPUT_INDEX_PLACEHOLDER, String(index));
   });
   entry.querySelectorAll("[for]").forEach((node) => {
     const labelFor = node.getAttribute("for");
     if (labelFor) {
       node.setAttribute(
         "for",
-        labelFor.replaceAll(PENDING_INDEX_PLACEHOLDER, String(index)),
+        labelFor.replaceAll(NEW_INPUT_INDEX_PLACEHOLDER, String(index)),
       );
     }
   });
-};
-
-const setRemoveCheckboxCopy = (entry, value) => {
-  const label = entry.querySelector(".govuk-checkboxes__label");
-  if (label) {
-    label.textContent = "Remove";
-  }
-  const checkbox = entry.querySelector('input[type="checkbox"]');
-  if (checkbox) {
-    checkbox.setAttribute("aria-label", `Remove ${value}`);
-  }
 };
 
 const newClaimInputName = (form) => form.dataset.newClaimInputName;
@@ -50,145 +23,156 @@ const formEntriesKey = (form) => {
   return Array.from(data.entries()).sort().toString();
 };
 
-const wirePendingRemove = (form, entry) => {
-  const claimInputName = newClaimInputName(form);
-  const checkbox = entry.querySelector('input[type="checkbox"]');
-  const hidden = entry.querySelector(`input[name="${claimInputName}"]`);
-  if (!checkbox || !hidden) {
-    return;
-  }
-
-  checkbox.addEventListener("change", () => {
-    hidden.disabled = checkbox.checked;
-    form.dispatchEvent(new Event("input", { bubbles: true }));
-  });
-};
-
-const preparePendingEntry = (form, entry, index, value) => {
-  entry.dataset.metadataCompactPending = "";
-  entry.querySelector(".aside__metadata-compact-entry__name").textContent =
-    value;
-  setRemoveCheckboxCopy(entry, value);
-
-  entry
-    .querySelectorAll('input[type="hidden"]')
-    .forEach((node) => node.remove());
-
-  const hidden = document.createElement("input");
-  hidden.type = "hidden";
-  hidden.name = newClaimInputName(form);
-  hidden.value = value;
-  entry.appendChild(hidden);
-
-  const checkbox = entry.querySelector('input[type="checkbox"]');
-  if (checkbox) {
-    checkbox.checked = false;
-    checkbox.removeAttribute("name");
-    checkbox.value = "remove";
-    uniquifyEntryIds(entry, index);
-  }
-
-  wirePendingRemove(form, entry);
-  return entry;
-};
-
-const createPendingEntry = (form, claimList, template, index, value) => {
-  const prototype = claimList.querySelector(
-    ".aside__metadata-compact-entry:not([data-metadata-compact-pending])",
-  );
-
-  let entry = null;
-  if (prototype) {
-    entry = prototype.cloneNode(true);
-  } else {
-    entry = template.content
-      .querySelector(".aside__metadata-compact-entry")
-      ?.cloneNode(true);
-    if (entry) {
-      replaceIndexPlaceholder(entry, index);
-    }
-  }
-
-  if (!entry) {
-    return null;
-  }
-
-  return preparePendingEntry(form, entry, index, value);
-};
-
-const clearPendingEntries = (form) => {
-  form
-    .querySelectorAll("[data-metadata-compact-pending]")
-    .forEach((entry) => entry.remove());
+const setControlDisabled = (control, disabled) => {
+  control.toggleAttribute("disabled", disabled);
+  control.setAttribute("aria-disabled", String(disabled));
 };
 
 const initMetadataCompactForm = (form) => {
-  if (!form.dataset.newClaimInputName) {
-    return;
-  }
+  if (!form.dataset.newClaimInputName) return;
 
   const claimList = form.querySelector("[data-metadata-compact-list]");
   const addRow = form.querySelector("[data-metadata-compact-add-row]");
   const addButton = form.querySelector("[data-metadata-compact-add]");
-  const draftInput = form.querySelector("[data-metadata-compact-draft]");
-  const pendingTemplate = form.querySelector(
-    "[data-metadata-compact-pending-template]",
+  const newEntryTemplate = form.querySelector(
+    "[data-metadata-compact-new-template]",
   );
-  if (!claimList || !addRow || !addButton || !draftInput || !pendingTemplate) {
-    return;
-  }
+  if (!claimList || !addRow || !addButton || !newEntryTemplate) return;
 
-  let pendingIndex = 0;
+  const startedWithoutPersistedJudges = !form.querySelector(
+    ".aside__metadata-compact-remove-input",
+  );
+  let nextInputIndex = form.querySelectorAll(
+    "[data-metadata-compact-new-entry]",
+  ).length;
 
+  const isDocumentEditForm = form.matches("[data-document-edit-form]");
   const documentEditForm = document.querySelector("[data-document-edit-form]");
-  const documentEditFormInitialState = documentEditForm
-    ? formEntriesKey(documentEditForm)
-    : null;
+  const documentEditFormInitialState =
+    !isDocumentEditForm && documentEditForm && documentEditForm !== form
+      ? formEntriesKey(documentEditForm)
+      : null;
 
-  const addPendingValue = () => {
-    const value = draftInput.value.trim();
-    if (!value) {
-      return;
+  const syncNewInputName = (input) => {
+    if (input.value.trim()) {
+      input.name = newClaimInputName(form);
+    } else {
+      input.removeAttribute("name");
     }
-
-    const entry = createPendingEntry(
-      form,
-      claimList,
-      pendingTemplate,
-      pendingIndex,
-      value,
-    );
-    if (!entry) {
-      return;
-    }
-
-    pendingIndex += 1;
-    claimList.insertBefore(entry, addRow);
-    draftInput.value = "";
-    draftInput.focus();
-    form.dispatchEvent(new Event("input", { bubbles: true }));
   };
 
-  addButton.addEventListener("click", addPendingValue);
+  const updateRemoveControls = () => {
+    const persistedRemoveInputs = Array.from(
+      form.querySelectorAll(".aside__metadata-compact-remove-input"),
+    );
+    const newEntries = Array.from(
+      form.querySelectorAll("[data-metadata-compact-new-entry]"),
+    );
+    const activePersistedCount = persistedRemoveInputs.filter(
+      (input) => !input.checked,
+    ).length;
+    const activeNewCount = newEntries.filter((entry) =>
+      entry.querySelector("[data-metadata-compact-new-input]")?.value.trim(),
+    ).length;
+    const activeJudgeCount = activePersistedCount + activeNewCount;
 
-  draftInput.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      addPendingValue();
-    }
+    persistedRemoveInputs.forEach((input) => {
+      const disabled = !input.checked && activeJudgeCount <= 1;
+      const label = input
+        .closest(".aside__metadata-compact-entry")
+        ?.querySelector(".aside__metadata-compact-remove-label");
+      setControlDisabled(input, disabled);
+      if (label) {
+        label.setAttribute("aria-disabled", String(disabled));
+        label.toggleAttribute("title", disabled);
+        if (disabled) label.title = "At least one judge is required";
+      }
+    });
+
+    newEntries.forEach((entry, index) => {
+      const input = entry.querySelector("[data-metadata-compact-new-input]");
+      const removeButton = entry.querySelector(
+        "[data-metadata-compact-remove-new]",
+      );
+      if (!input || !removeButton) return;
+
+      input.required =
+        activePersistedCount === 0 && activeNewCount === 0 && index === 0;
+
+      const hasValue = Boolean(input.value.trim());
+      const disabled = hasValue
+        ? activeJudgeCount <= 1
+        : activeJudgeCount === 0 && newEntries.length <= 1;
+      setControlDisabled(removeButton, disabled);
+      removeButton.toggleAttribute("title", disabled);
+      if (disabled) removeButton.title = "At least one judge is required";
+    });
+  };
+
+  const wireNewEntry = (entry) => {
+    const input = entry.querySelector("[data-metadata-compact-new-input]");
+    const removeButton = entry.querySelector(
+      "[data-metadata-compact-remove-new]",
+    );
+    if (!input || !removeButton) return;
+
+    input.addEventListener("input", () => {
+      syncNewInputName(input);
+      updateRemoveControls();
+    });
+
+    removeButton.addEventListener("click", () => {
+      entry.remove();
+      if (
+        startedWithoutPersistedJudges &&
+        !form.querySelector("[data-metadata-compact-initial-new-entry]")
+      ) {
+        const firstRemainingEntry = form.querySelector(
+          "[data-metadata-compact-new-entry]",
+        );
+        if (firstRemainingEntry) {
+          firstRemainingEntry.dataset.metadataCompactInitialNewEntry = "";
+        }
+      }
+      updateRemoveControls();
+      form.dispatchEvent(new Event("input", { bubbles: true }));
+    });
+  };
+
+  form
+    .querySelectorAll("[data-metadata-compact-new-entry]")
+    .forEach(wireNewEntry);
+  form
+    .querySelectorAll(".aside__metadata-compact-remove-input")
+    .forEach((input) => input.addEventListener("change", updateRemoveControls));
+
+  addButton.addEventListener("click", () => {
+    const entry = newEntryTemplate.content
+      .querySelector("[data-metadata-compact-new-entry]")
+      ?.cloneNode(true);
+    if (!entry) return;
+
+    replaceIndexPlaceholder(entry, nextInputIndex);
+    nextInputIndex += 1;
+    claimList.insertBefore(entry, addRow);
+    wireNewEntry(entry);
+    updateRemoveControls();
+    entry.querySelector("[data-metadata-compact-new-input]")?.focus();
   });
 
   form.addEventListener("submit", (event) => {
-    if (draftInput.value.trim()) {
-      addPendingValue();
-    }
+    form
+      .querySelectorAll("[data-metadata-compact-new-input]")
+      .forEach(syncNewInputName);
 
     if (
+      !isDocumentEditForm &&
       documentEditForm &&
+      documentEditForm !== form &&
       documentEditFormInitialState !== null &&
       formEntriesKey(documentEditForm) !== documentEditFormInitialState &&
       !window.confirm(
-        "You have unsaved changes in the judgment form. Updating judges will reload the page and those edits will be lost. Continue?",
+        "You have unsaved changes. To save them, select Cancel and click the Save button. Continue without saving?",
       )
     ) {
       event.preventDefault();
@@ -198,12 +182,23 @@ const initMetadataCompactForm = (form) => {
   const clearButton = form.querySelector("[data-form-actions-clear]");
   if (clearButton) {
     clearButton.addEventListener("click", () => {
-      clearPendingEntries(form);
-      pendingIndex = 0;
-      draftInput.value = "";
+      form
+        .querySelectorAll(
+          "[data-metadata-compact-new-entry]:not([data-metadata-compact-initial-new-entry])",
+        )
+        .forEach((entry) => entry.remove());
+      form
+        .querySelectorAll("[data-metadata-compact-new-input]")
+        .forEach(syncNewInputName);
+      nextInputIndex = form.querySelectorAll(
+        "[data-metadata-compact-new-entry]",
+      ).length;
+      updateRemoveControls();
       form.dispatchEvent(new Event("change", { bubbles: true }));
     });
   }
+
+  updateRemoveControls();
 };
 
 document.addEventListener("DOMContentLoaded", () => {

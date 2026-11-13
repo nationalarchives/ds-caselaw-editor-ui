@@ -15,6 +15,13 @@
     align-items: center;
   }
 
+  &--panel {
+    margin-top: auto;
+    padding: $space-4;
+    border-top: 1px solid colour-var("accent-border");
+    border-left: 1px solid colour-var("accent-border");
+  }
+
   &--inline {
     position: static;
     margin: 0;

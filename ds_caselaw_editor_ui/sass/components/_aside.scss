@@ -35,8 +35,8 @@
 
       overflow-y: scroll;
 
-      min-width: 320px;
-      max-width: 360px;
+      min-width: 385px;
+      max-width: 385px;
       max-height: 100vh;
     }
   }
@@ -83,7 +83,7 @@
     align-items: center;
     justify-content: space-between;
 
-    padding: $space-2 $space-4;
+    padding: $space-4;
     border-bottom: 1px solid colour-var("accent-border");
 
     font-weight: $typography-bold-font-weight;
@@ -92,6 +92,19 @@
   &__content {
     display: none;
     border-bottom: 1px solid colour-var("font-base");
+
+    > form {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .aside__form-content {
+      overflow-y: auto;
+      flex: 1;
+      min-height: 0;
+    }
 
     dl {
       display: flex;
@@ -105,6 +118,7 @@
         display: flex;
         flex-direction: column;
         gap: $space-2;
+        font-size: $typography-sm-text-size;
 
         dt {
           color: colour-var("accent-border");
@@ -142,10 +156,7 @@
         align-items: center;
         justify-content: space-between;
 
-        .govuk-form-group {
-          margin-bottom: 0;
-        }
-
+        .govuk-form-group,
         .govuk-checkboxes {
           margin-bottom: 0;
         }
@@ -153,6 +164,26 @@
         .govuk-checkboxes__label {
           font-size: $typography-sm-text-size;
           color: colour-var("form-error-border");
+        }
+
+        &:has(.aside__metadata-compact-remove-input:checked) {
+          display: none;
+        }
+
+        .aside__metadata-compact-remove-input:focus-visible
+          + .aside__metadata-compact-remove-label {
+          @include focus-default;
+        }
+
+        .aside__metadata-compact-remove-label {
+          font-size: $typography-sm-text-size;
+          color: colour-var("form-error-border");
+        }
+
+        .aside__metadata-compact-new-input {
+          flex: 1 1 auto;
+          min-width: 0;
+          margin-bottom: 0;
         }
       }
 
@@ -194,6 +225,42 @@
       min-height: 100vh;
       border-bottom: 0;
       border-left: 1px solid colour-var("font-base");
+    }
+  }
+}
+
+.main-container--metadata-panel-editing {
+  .aside__content dl > div dd {
+    display: block;
+  }
+}
+
+@media (min-width: $grid-breakpoint-medium) {
+  .main-container--metadata-panel-editing {
+    .aside__container {
+      position: static;
+
+      overflow: hidden;
+
+      width: 100%;
+      min-width: 0;
+      max-width: none;
+      height: 100%;
+      max-height: none;
+
+      &.collapsed {
+        min-width: 34px;
+        max-width: 34px;
+      }
+    }
+
+    .aside__content {
+      display: flex;
+      flex-direction: column;
+
+      height: 100%;
+      min-height: 0;
+      border-left: 0;
     }
   }
 }

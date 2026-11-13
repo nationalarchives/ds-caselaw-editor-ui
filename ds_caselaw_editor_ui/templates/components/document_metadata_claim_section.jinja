@@ -3,16 +3,41 @@
 {% from "components/checkboxes.jinja" import checkboxes %}
 {% from "components/card.jinja" import card %}
 {% from "components/metadata_form_widgets.jinja" import metadata_new_claim_input %}
-{% macro aside_metadata_compact_entry(display_value, remove_checkboxes=none, hidden_name=none, pending=false) %}
-  <div class="aside__metadata-compact-entry"
-       {% if pending %} data-metadata-compact-pending{% endif %}>
+{% macro aside_metadata_compact_entry(display_value, remove_input=none) %}
+  <div class="aside__metadata-compact-entry">
     <span class="aside__metadata-compact-entry__name">{{ display_value }}</span>
-    {% if remove_checkboxes %}
-      <div class="aside__metadata-compact-entry__remove">{{ checkboxes(remove_checkboxes) }}</div>
+    {% if remove_input %}
+      <div class="aside__metadata-compact-entry__remove">
+        <input class="govuk-visually-hidden aside__metadata-compact-remove-input"
+               id="{{ remove_input.id }}"
+               type="checkbox"
+               {% if remove_input.name %}name="{{ remove_input.name }}"{% endif %}
+               {% if remove_input.disabled %}disabled{% endif %}
+               value="{{ remove_input.value }}" />
+        <label class="button button--link button--small aside__metadata-compact-remove-label"
+               for="{{ remove_input.id }}"
+               {% if remove_input.disabled %}aria-disabled="true" title="At least one judge is required"{% endif %}>
+          Remove<span class="govuk-visually-hidden" data-metadata-compact-remove-name> {{ display_value }}</span>
+        </label>
+      </div>
     {% endif %}
-    {% if hidden_name %}
-      <input type="hidden" name="{{ hidden_name }}" value="{{ display_value }}" />
-    {% endif %}
+  </div>
+{% endmacro %}
+{% macro aside_metadata_compact_new_entry(input_id, required=false, initial=false) %}
+  <div class="aside__metadata-compact-entry"
+       data-metadata-compact-new-entry
+       {% if initial %}data-metadata-compact-initial-new-entry{% endif %}>
+    <input class="govuk-input govuk-!-width-full aside__metadata-compact-new-input"
+           id="{{ input_id }}"
+           type="text"
+           autocomplete="off"
+           aria-label="New judge name"
+           data-metadata-compact-new-input
+           {% if required %}required{% endif %} />
+    {{ button(content="Remove",
+      variant="link",
+      size="small",
+      attrs={"type": "button", "data-metadata-compact-remove-new": ""}) }}
   </div>
 {% endmacro %}
 {% macro metadata_claim_section(section, variant="full", show_history=true) %}
@@ -22,47 +47,27 @@
       {% for display_claim in claims %}
         {{ aside_metadata_compact_entry(
           display_claim.display_value,
-          remove_checkboxes={
-            "idPrefix": display_claim.reject_input_id_prefix,
+          remove_input={
+            "id": display_claim.reject_input_id_prefix,
             "name": display_claim.reject_input_name,
-            "classes": "govuk-checkboxes--small",
-            "items": [{
-              "value": display_claim.reject_input_value,
-              "text": "Remove",
-              "attributes": {
-                "aria-label": "Remove " ~ display_claim.display_value
-              }
-            }]
+            "value": display_claim.reject_input_value,
+            "disabled": claims|length == 1
           } if display_claim.can_reject else none
         ) }}
       {% endfor %}
-      <template data-metadata-compact-pending-template>
-        {{ aside_metadata_compact_entry(
-          "",
-          remove_checkboxes={
-            "idPrefix": "pending-claim-__INDEX__",
-            "classes": "govuk-checkboxes--small",
-            "items": [{
-              "value": "remove",
-              "text": "Remove",
-              "attributes": {
-                "aria-label": "Remove __VALUE__"
-              }
-            }]
-          },
-          hidden_name=section.new_claim_input_name,
-          pending=true
+      {% if not claims %}
+        {{ aside_metadata_compact_new_entry(
+          section.new_claim_input_id ~ "-0",
+          required=true,
+          initial=true
         ) }}
+      {% endif %}
+      <template data-metadata-compact-new-template>
+        {{ aside_metadata_compact_new_entry(section.new_claim_input_id ~ "-__INDEX__") }}
       </template>
       <div class="aside__metadata-compact-add-row" data-metadata-compact-add-row>
-        <input class="govuk-input govuk-!-width-full"
-               id="{{ section.new_claim_input_id }}-draft"
-               type="text"
-               autocomplete="off"
-               aria-label="New judge name"
-               data-metadata-compact-draft="" />
-        {{ button(content="Add",
-          variant="success",
+        {{ button(content="Add another judge",
+          variant="link",
           size="small",
           attrs={"type": "button", "data-metadata-compact-add": ""}) }}
       </div>
