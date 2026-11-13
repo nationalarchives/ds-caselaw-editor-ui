@@ -4,11 +4,13 @@ from typing import TYPE_CHECKING, Any
 
 from caselawclient.client_helpers.search_helpers import search_and_parse_response
 from caselawclient.errors import MarklogicCheckoutConflictError
-from caselawclient.models.documents import DocumentURIString
+from caselawclient.models.documents import Document, DocumentURIString
 from caselawclient.search_parameters import SearchParameters
+from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError, CommandParser
 
 from judgments.utils import api_client
+from judgments.utils.aws import invalidate_caches
 from judgments.utils.metadata_backfill import (
     MetadataBackfillPlan,
     MetadataBackfillResult,
@@ -81,8 +83,13 @@ class Command(BaseCommand):
             result = self._backfill_uri(document_uri, dry_run=dry_run)
             self._write_result(result)
 
+            if result.applied:
+                self._invalidate_cache(result.uri)
+
             if result.error:
                 failed += 1
+            elif result.skipped_reason and not result.applied:
+                skipped += 1
             elif result.planned.has_changes:
                 changed += 1
                 if result.applied:
@@ -135,8 +142,12 @@ class Command(BaseCommand):
     def _backfill_uri(self, document_uri: DocumentURIString, *, dry_run: bool) -> MetadataBackfillResult:
         empty_plan = MetadataBackfillPlan()
         try:
-            document = api_client.get_document_by_uri(document_uri)
-            return backfill_document_metadata(document, dry_run=dry_run)
+            if dry_run:
+                document = api_client.get_document_by_uri(document_uri)
+                return backfill_document_metadata(document, dry_run=True)
+            # Check out before loading so the plan and the write see the same document.
+            with Document.open_for_editing(api_client, document_uri) as document:
+                return backfill_document_metadata(document, dry_run=False, lock_held=True)
         except MarklogicCheckoutConflictError:
             return MetadataBackfillResult(
                 uri=str(document_uri),
@@ -150,11 +161,19 @@ class Command(BaseCommand):
                 error=str(exc),
             )
 
+    def _invalidate_cache(self, uri: str) -> None:
+        if settings.DEBUG:
+            return
+        try:
+            invalidate_caches(uri)
+        except Exception as exc:  # noqa: BLE001 - a saved claim should still be reported if CloudFront fails
+            self.stderr.write(f"{uri}: saved, but cache invalidation failed: {exc}")
+
     def _write_result(self, result: MetadataBackfillResult) -> None:
         if result.error:
             self.stderr.write(f"{result.uri}: ERROR {result.error}")
             return
-        if not result.planned.has_changes:
+        if result.skipped_reason and not result.applied:
             self.stdout.write(f"{result.uri}: skipped ({result.skipped_reason})")
             return
         status = "applied" if result.applied else "planned"
