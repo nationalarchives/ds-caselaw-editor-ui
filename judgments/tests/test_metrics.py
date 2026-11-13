@@ -1,13 +1,17 @@
 from datetime import date, timedelta
+from io import BytesIO
 from types import SimpleNamespace
-from unittest.mock import call, patch
+from typing import Any
+from unittest.mock import MagicMock, call, patch
 from urllib.parse import parse_qs, urlparse
 
 from caselawclient.search_parameters import SearchParameters
 from django.test import RequestFactory, SimpleTestCase
+from openpyxl import load_workbook
 
 from judgments.utils import api_client
-from judgments.views.metrics import MetricsView
+from judgments.utils.metrics_xlsx import build_metrics_workbook
+from judgments.views.metrics import MetricsView, MetricsXlsxView
 
 
 class TestMetricsView(SimpleTestCase):
@@ -161,6 +165,12 @@ class TestMetricsView(SimpleTestCase):
             "latest_publication": context["lifecycle_metrics"][1]["rows"][0],
         }
         assert context["submission_metrics"][0]["rows"][0]["total"] == 5
+        assert len(context["raw_metrics"]) == 7
+        assert context["raw_metrics"][0] == {
+            "metric": "tdr_to_first_publish",
+            "court": "example-court",
+            "response": metric_responses["tdr_to_first_publish"],
+        }
         assert mock_get_metrics.call_count == 7
         mock_get_metrics.assert_any_call(
             metric="tdr_to_first_publish",
@@ -261,6 +271,12 @@ class TestMetricsView(SimpleTestCase):
         assert context["tribunal_options"] == [
             {"value": "example-tribunal", "text": "Example Tribunal", "checked": True},
         ]
+        assert parse_qs(urlparse(context["download_url"]).query) == {
+            "start_date": ["2026-09-01"],
+            "end_date": ["2026-09-30"],
+            "bucketing": ["daily"],
+            "courts": ["example-court", "example-tribunal"],
+        }
         assert [item["label"] for item in context["selected_court_filters"]] == [
             "Example Court",
             "Example Tribunal",
@@ -346,3 +362,151 @@ class TestMetricsView(SimpleTestCase):
         assert filters["start_date"] == date(2026, 7, 7)
         assert filters["end_date"] == date(2026, 10, 7)
         mock_default_date_range.assert_called_once_with()
+
+
+class TestMetricsXlsxView(SimpleTestCase):
+    def test_builds_workbook_with_display_and_raw_metrics_sheets(self):
+        percentage = {"display": "50.0%", "raw": 50.0, "numerator": 1, "denominator": 2}
+        duration = {"display": "1 hour", "raw": 3600}
+        first_publication_row = {
+            "period": "August 2026",
+            "period_raw": "2026-08",
+            "count": 2,
+            "mean": duration,
+            "median": duration,
+            "within_24_hours_percentage": percentage,
+        }
+        latest_publication_row = {
+            "period": "August 2026",
+            "period_raw": "2026-08",
+            "count": 2,
+            "mean": duration,
+            "median": duration,
+        }
+        context: dict[str, Any] = {
+            "summary_metrics": [{"label": "Total documents", "value": 2}],
+            "lifecycle_metrics": [
+                {
+                    "label": "Time to first publication",
+                    "show_within_24_hours_percentage": True,
+                    "rows": [first_publication_row],
+                },
+                {
+                    "label": "Time to latest publication",
+                    "show_within_24_hours_percentage": False,
+                    "rows": [latest_publication_row],
+                },
+            ],
+            "submission_metrics": [
+                {
+                    "rows": [
+                        {
+                            "period_raw": "2026-08",
+                            "count": 2,
+                            "total": 3,
+                            "median": {"display": "1.5", "raw": 1.5},
+                            "mean": {"display": "1.5", "raw": 1.5},
+                        },
+                    ],
+                },
+            ],
+            "court_lifecycle_metrics": [
+                {
+                    "name": "Example Court",
+                    "type": "Court",
+                    "rows": [
+                        {
+                            "period_raw": "2026-08",
+                            "first_publication": first_publication_row,
+                            "latest_publication": latest_publication_row,
+                        },
+                    ],
+                },
+            ],
+            "cases_by_court": [{"name": "Example Court", "type": "Court", "document_count": 2}],
+            "raw_metrics": [
+                {
+                    "metric": "tdr_to_first_publish",
+                    "court": "example-court",
+                    "response": {
+                        "2026-08": {
+                            "count": 2,
+                            "sum": 7200,
+                            "mean": 3600,
+                            "median": 3600,
+                            "within_24_hours_count": 1,
+                        },
+                    },
+                },
+            ],
+        }
+
+        workbook = load_workbook(BytesIO(build_metrics_workbook(context)))
+
+        assert workbook.sheetnames == [
+            "Summary",
+            "First publication",
+            "Latest publication",
+            "Submissions",
+            "Court lifecycle",
+            "Documents by court",
+            "Raw metrics",
+        ]
+        assert workbook["First publication"]["C2"].value == 1
+        raw_headers = [cell.value for cell in workbook["Raw metrics"][1]]
+        raw_values = [cell.value for cell in workbook["Raw metrics"][2]]
+        assert dict(zip(raw_headers, raw_values, strict=True)) == {
+            "Metric": "tdr_to_first_publish",
+            "Court filter": "example-court",
+            "Period": "2026-08",
+            "count": 2,
+            "mean": 3600,
+            "median": 3600,
+            "sum": 7200,
+            "within_24_hours_count": 1,
+        }
+
+    @patch("judgments.views.metrics.build_metrics_workbook", return_value=b"workbook")
+    @patch.object(MetricsXlsxView, "_get_metrics_context", return_value=MagicMock())
+    @patch.object(MetricsXlsxView, "_get_tribunal_choices", return_value=[])
+    @patch.object(
+        MetricsXlsxView,
+        "_get_court_choices",
+        return_value=[("ewcc", "County Court"), ("ewca/civ", "Civil Court")],
+    )
+    def test_downloads_workbook_with_filename_from_filters(
+        self,
+        mock_court_choices,
+        mock_tribunal_choices,
+        mock_get_metrics_context,
+        mock_build_metrics_workbook,
+    ):
+        request = RequestFactory().get(
+            "/metrics.xlsx",
+            {
+                "start_date": "2026-08-12",
+                "end_date": "2026-11-20",
+                "bucketing": "daily",
+                "courts": ["ewcc", "ewca/civ"],
+            },
+        )
+        response = MetricsXlsxView.as_view()(request)
+
+        mock_court_choices.assert_called_once_with()
+        mock_tribunal_choices.assert_called_once_with()
+        assert response.status_code == 200
+        assert response.content == b"workbook"
+        assert response["Content-Type"] == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        assert (
+            response["Content-Disposition"]
+            == 'attachment; filename="metrics_2026-08-12_2026-11-20_daily_ewcc_ewca-civ.xlsx"'
+        )
+        mock_get_metrics_context.assert_called_once_with(
+            {
+                "start_date": date(2026, 8, 12),
+                "end_date": date(2026, 11, 20),
+                "bucketing": "daily",
+                "courts": ["ewcc", "ewca/civ"],
+            },
+        )
+        mock_build_metrics_workbook.assert_called_once_with(mock_get_metrics_context.return_value)

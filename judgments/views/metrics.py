@@ -10,14 +10,17 @@ from caselawclient.search_parameters import SearchParameters
 from dateutil.relativedelta import relativedelta
 from django import forms
 from django.core.exceptions import ValidationError
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.urls import reverse
 from django.views.generic import TemplateView
 from ds_caselaw_utils import courts
 
 from judgments.utils import api_client
+from judgments.utils.metrics_xlsx import build_metrics_workbook
 
 MetricBucketing = Literal["daily", "monthly"]
 LifecycleMetric = Literal["tdr_to_first_publish", "tdr_to_latest_publish"]
+MetricName = Literal["tdr_to_first_publish", "tdr_to_latest_publish", "submissions_before_first_publish"]
 
 
 class CourtOrTribunalDocumentCount(TypedDict):
@@ -89,10 +92,17 @@ class CourtLifecycleMetricTable(TypedDict):
     rows: list[CourtLifecycleMetricRow]
 
 
+class RawMetricResponse(TypedDict):
+    metric: str
+    court: str
+    response: dict[str, Any]
+
+
 class MetricsContext(TypedDict):
     cases_by_court: list[CourtOrTribunalDocumentCount]
     court_lifecycle_metrics: list[CourtLifecycleMetricTable]
     lifecycle_metrics: list[MetricTable]
+    raw_metrics: list[RawMetricResponse]
     submission_metrics: list[MetricTable]
     summary_metrics: list[SummaryMetric]
 
@@ -133,6 +143,25 @@ class MetricsFilterForm(forms.Form):
 class MetricsView(TemplateView):
     template_engine = "jinja"
     template_name = "metrics/index.jinja"
+    _raw_metric_responses: list[RawMetricResponse]
+
+    def _get_metric_response(
+        self,
+        *,
+        metric: MetricName,
+        filters: MetricFilters,
+        search_parameters: SearchParameters,
+        court: str,
+    ) -> dict[str, Any]:
+        response = api_client.get_metrics(
+            metric=metric,
+            bucketing=filters["bucketing"],
+            start_date=filters["start_date"],
+            end_date=filters["end_date"] + timedelta(days=1),
+            search_parameters=search_parameters,
+        )
+        self._raw_metric_responses.append({"metric": metric, "court": court, "response": response})
+        return response
 
     @staticmethod
     def _get_documents_count(
@@ -368,6 +397,22 @@ class MetricsView(TemplateView):
         ]
 
     @staticmethod
+    def _get_download_url(filters: MetricFilters | None) -> str | None:
+        if filters is None:
+            return None
+        return f"{reverse('metrics-xlsx')}?{
+            urlencode(
+                {
+                    'start_date': filters['start_date'].isoformat(),
+                    'end_date': filters['end_date'].isoformat(),
+                    'bucketing': filters['bucketing'],
+                    'courts': filters['courts'],
+                },
+                doseq=True,
+            )
+        }"
+
+    @staticmethod
     def _get_checkbox_options(
         choices: list[tuple[str, str]],
         selected_courts: set[str],
@@ -424,7 +469,6 @@ class MetricsView(TemplateView):
         filters: MetricFilters,
         search_parameters: SearchParameters,
     ) -> list[MetricTable]:
-        end_date = filters["end_date"] + timedelta(days=1)
         metric_types: tuple[tuple[str, LifecycleMetric, bool], ...] = (
             ("Time to first publication", "tdr_to_first_publish", True),
             ("Time to latest publication", "tdr_to_latest_publish", False),
@@ -434,12 +478,11 @@ class MetricsView(TemplateView):
                 "label": label,
                 "show_within_24_hours_percentage": show_within_24_hours_percentage,
                 "rows": self._format_duration_metrics(
-                    api_client.get_metrics(
+                    self._get_metric_response(
                         metric=metric,
-                        bucketing=filters["bucketing"],
-                        start_date=filters["start_date"],
-                        end_date=end_date,
+                        filters=filters,
                         search_parameters=search_parameters,
+                        court=",".join(filters["courts"]),
                     ),
                     filters["bucketing"],
                     include_within_24_hours_percentage=show_within_24_hours_percentage,
@@ -484,23 +527,20 @@ class MetricsView(TemplateView):
         filters: MetricFilters,
         document_counts: list[CourtOrTribunalDocumentCount],
     ) -> list[CourtLifecycleMetricTable]:
-        end_date = filters["end_date"] + timedelta(days=1)
         tables: list[CourtLifecycleMetricTable] = []
         for court in document_counts:
             search_parameters = SearchParameters(court=court["canonical_param"])
-            first_publication_metrics = api_client.get_metrics(
+            first_publication_metrics = self._get_metric_response(
                 metric="tdr_to_first_publish",
-                bucketing=filters["bucketing"],
-                start_date=filters["start_date"],
-                end_date=end_date,
+                filters=filters,
                 search_parameters=search_parameters,
+                court=court["canonical_param"],
             )
-            latest_publication_metrics = api_client.get_metrics(
+            latest_publication_metrics = self._get_metric_response(
                 metric="tdr_to_latest_publish",
-                bucketing=filters["bucketing"],
-                start_date=filters["start_date"],
-                end_date=end_date,
+                filters=filters,
                 search_parameters=search_parameters,
+                court=court["canonical_param"],
             )
             tables.append(
                 {
@@ -520,18 +560,16 @@ class MetricsView(TemplateView):
         filters: MetricFilters,
         search_parameters: SearchParameters,
     ) -> list[MetricTable]:
-        end_date = filters["end_date"] + timedelta(days=1)
         return [
             {
                 "label": "Submissions before first publication",
                 "show_within_24_hours_percentage": False,
                 "rows": self._format_submission_metrics(
-                    api_client.get_metrics(
+                    self._get_metric_response(
                         metric="submissions_before_first_publish",
-                        bucketing=filters["bucketing"],
-                        start_date=filters["start_date"],
-                        end_date=end_date,
+                        filters=filters,
                         search_parameters=search_parameters,
+                        court=",".join(filters["courts"]),
                     ),
                     filters["bucketing"],
                 ),
@@ -539,11 +577,13 @@ class MetricsView(TemplateView):
         ]
 
     def _get_metrics_context(self, filters: MetricFilters | None) -> MetricsContext:
+        self._raw_metric_responses: list[RawMetricResponse] = []
         if filters is None:
             return {
                 "cases_by_court": [],
                 "court_lifecycle_metrics": [],
                 "lifecycle_metrics": [],
+                "raw_metrics": [],
                 "submission_metrics": [],
                 "summary_metrics": self._get_summary_metrics(
                     [],
@@ -555,11 +595,15 @@ class MetricsView(TemplateView):
         court_filter = ",".join(filters["courts"]) or None
         document_counts, summary_metrics = self._get_document_metrics(filters, court_filter=court_filter)
         search_parameters = SearchParameters(court=court_filter)
+        court_lifecycle_metrics = self._get_court_lifecycle_metrics(filters, document_counts)
+        lifecycle_metrics = self._get_lifecycle_metrics(filters, search_parameters)
+        submission_metrics = self._get_submission_metrics(filters, search_parameters)
         return {
             "cases_by_court": document_counts,
-            "court_lifecycle_metrics": self._get_court_lifecycle_metrics(filters, document_counts),
-            "lifecycle_metrics": self._get_lifecycle_metrics(filters, search_parameters),
-            "submission_metrics": self._get_submission_metrics(filters, search_parameters),
+            "court_lifecycle_metrics": court_lifecycle_metrics,
+            "lifecycle_metrics": lifecycle_metrics,
+            "raw_metrics": self._raw_metric_responses,
+            "submission_metrics": submission_metrics,
             "summary_metrics": summary_metrics,
         }
 
@@ -575,6 +619,7 @@ class MetricsView(TemplateView):
                 "filter_form": filter_form,
                 "court_options": self._get_checkbox_options(court_choices, selected_courts),
                 "tribunal_options": self._get_checkbox_options(tribunal_choices, selected_courts),
+                "download_url": self._get_download_url(metric_filters),
                 "selected_court_filters": self._get_selected_court_filters(
                     [*court_choices, *tribunal_choices],
                     metric_filters,
@@ -583,3 +628,29 @@ class MetricsView(TemplateView):
             },
         )
         return context
+
+
+class MetricsXlsxView(MetricsView):
+    @staticmethod
+    def _get_filename(filters: MetricFilters) -> str:
+        parts = [
+            "metrics",
+            filters["start_date"].isoformat(),
+            filters["end_date"].isoformat(),
+            filters["bucketing"],
+            *(court.replace("/", "-") for court in filters["courts"]),
+        ]
+        return f"{'_'.join(parts)}.xlsx"
+
+    def get(self, request, *args, **kwargs):
+        court_choices = [*self._get_court_choices(), *self._get_tribunal_choices()]
+        _, metric_filters = self._get_metric_filters(court_choices)
+        if metric_filters is None:
+            return HttpResponseBadRequest("The metrics filters are invalid.")
+
+        response = HttpResponse(
+            build_metrics_workbook(cast("dict[str, Any]", self._get_metrics_context(metric_filters))),
+            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        )
+        response["Content-Disposition"] = f'attachment; filename="{self._get_filename(metric_filters)}"'
+        return response

@@ -42,7 +42,7 @@ from .views.judgment_publish import (
     publish,
     unpublish,
 )
-from .views.metrics import MetricsView
+from .views.metrics import MetricsView, MetricsXlsxView
 from .views.signed_asset import redirect_to_signed_asset
 from .views.stub import CreateStubView, create_stub
 from .views.unlock import unlock
@@ -85,6 +85,7 @@ urlpatterns = [
     # Reports
     path("reports", reports.Index.as_view(), name="reports"),
     path("metrics", MetricsView.as_view(), name="metrics"),
+    path("metrics.xlsx", MetricsXlsxView.as_view(), name="metrics-xlsx"),
     path(
         "reports/awaiting-parse",
         reports.AwaitingParse.as_view(),
