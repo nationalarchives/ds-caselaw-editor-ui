@@ -21,6 +21,7 @@ LifecycleMetric = Literal["tdr_to_first_publish", "tdr_to_latest_publish"]
 
 
 class CourtOrTribunalDocumentCount(TypedDict):
+    canonical_param: str
     name: str
     type: str
     document_count: int
@@ -31,6 +32,11 @@ class DisplayValue(TypedDict):
     raw: int | float
 
 
+class PercentageValue(DisplayValue):
+    numerator: int
+    denominator: int
+
+
 class MetricRow(TypedDict, total=False):
     period: str
     period_raw: str
@@ -38,6 +44,7 @@ class MetricRow(TypedDict, total=False):
     total: int
     mean: DisplayValue | None
     median: DisplayValue | None
+    within_24_hours_percentage: PercentageValue | None
 
 
 class MetricFilters(TypedDict):
@@ -66,10 +73,25 @@ class SummaryMetric(TypedDict):
 class MetricTable(TypedDict):
     label: str
     rows: list[MetricRow]
+    show_within_24_hours_percentage: bool
+
+
+class CourtLifecycleMetricRow(TypedDict):
+    period: str
+    period_raw: str
+    first_publication: MetricRow | None
+    latest_publication: MetricRow | None
+
+
+class CourtLifecycleMetricTable(TypedDict):
+    name: str
+    type: str
+    rows: list[CourtLifecycleMetricRow]
 
 
 class MetricsContext(TypedDict):
     cases_by_court: list[CourtOrTribunalDocumentCount]
+    court_lifecycle_metrics: list[CourtLifecycleMetricTable]
     lifecycle_metrics: list[MetricTable]
     submission_metrics: list[MetricTable]
     summary_metrics: list[SummaryMetric]
@@ -165,16 +187,18 @@ class MetricsView(TemplateView):
         for court_type, groups in grouped_courts_and_tribunals:
             for group in groups:
                 for court_or_tribunal in group.courts:
-                    if selected_courts and court_or_tribunal.canonical_param not in selected_courts:
+                    canonical_param = court_or_tribunal.canonical_param
+                    if not canonical_param or (selected_courts and canonical_param not in selected_courts):
                         continue
                     documents_count = self._get_documents_count(
-                        court=court_or_tribunal.canonical_param,
+                        court=canonical_param,
                         start_date=start_date,
                         end_date=end_date,
                     )
                     if documents_count:
                         court_and_tribunal_document_counts.append(
                             {
+                                "canonical_param": canonical_param,
                                 "name": str(court_or_tribunal.name),
                                 "type": court_type,
                                 "document_count": documents_count,
@@ -209,22 +233,61 @@ class MetricsView(TemplateView):
             return None
         return {"display": cls._format_duration(value), "raw": value}
 
+    @staticmethod
+    def _display_percentage(numerator: int | None, denominator: int) -> PercentageValue | None:
+        if numerator is None or denominator == 0:
+            return None
+
+        percentage = numerator / denominator * 100
+        return {
+            "display": f"{percentage:.1f}%",
+            "raw": percentage,
+            "numerator": numerator,
+            "denominator": denominator,
+        }
+
+    @staticmethod
+    def _mean_within_24_hours(values: dict[str, Any]) -> float | None:
+        within_24_hours_count = values.get("within_24_hours_count")
+        over_24_hours_count = values.get("over_24_hours_count")
+        total = values.get("sum")
+        if within_24_hours_count in (None, 0) or over_24_hours_count is None or total is None:
+            return None
+
+        over_24_hours_mean = values.get("over_24_hours_mean")
+        if over_24_hours_count and over_24_hours_mean is None:
+            return None
+
+        over_24_hours_total = over_24_hours_count * (over_24_hours_mean or 0)
+        return (total - over_24_hours_total) / within_24_hours_count
+
     @classmethod
     def _format_duration_metrics(
         cls,
         metrics: dict[str, Any],
         bucketing: MetricBucketing,
+        *,
+        include_within_24_hours_percentage: bool = False,
+        exclude_over_24_hours_from_mean: bool = False,
     ) -> list[MetricRow]:
-        return [
-            {
+        rows: list[MetricRow] = []
+        for period, values in sorted(metrics.items()):
+            row: MetricRow = {
                 "period": cls._format_period(period, bucketing),
                 "period_raw": period,
                 "count": values["count"],
-                "mean": cls._display_duration(values["mean"]),
+                "mean": cls._display_duration(
+                    cls._mean_within_24_hours(values) if exclude_over_24_hours_from_mean else values["mean"],
+                ),
                 "median": cls._display_duration(values["median"]),
             }
-            for period, values in sorted(metrics.items())
-        ]
+            if include_within_24_hours_percentage:
+                row["within_24_hours_percentage"] = cls._display_percentage(
+                    values.get("within_24_hours_count"),
+                    values["count"],
+                )
+            rows.append(row)
+        return rows
 
     @classmethod
     def _format_submission_metrics(
@@ -362,13 +425,14 @@ class MetricsView(TemplateView):
         search_parameters: SearchParameters,
     ) -> list[MetricTable]:
         end_date = filters["end_date"] + timedelta(days=1)
-        metric_types: tuple[tuple[str, LifecycleMetric], ...] = (
-            ("Time to first publication", "tdr_to_first_publish"),
-            ("Time to latest publication", "tdr_to_latest_publish"),
+        metric_types: tuple[tuple[str, LifecycleMetric, bool], ...] = (
+            ("Time to first publication", "tdr_to_first_publish", True),
+            ("Time to latest publication", "tdr_to_latest_publish", False),
         )
         return [
             {
                 "label": label,
+                "show_within_24_hours_percentage": show_within_24_hours_percentage,
                 "rows": self._format_duration_metrics(
                     api_client.get_metrics(
                         metric=metric,
@@ -378,10 +442,78 @@ class MetricsView(TemplateView):
                         search_parameters=search_parameters,
                     ),
                     filters["bucketing"],
+                    include_within_24_hours_percentage=show_within_24_hours_percentage,
+                    exclude_over_24_hours_from_mean=show_within_24_hours_percentage,
                 ),
             }
-            for label, metric in metric_types
+            for label, metric, show_within_24_hours_percentage in metric_types
         ]
+
+    @classmethod
+    def _combine_court_lifecycle_metrics(
+        cls,
+        first_publication_metrics: dict[str, Any],
+        latest_publication_metrics: dict[str, Any],
+        bucketing: MetricBucketing,
+    ) -> list[CourtLifecycleMetricRow]:
+        first_publication_rows = {
+            row["period_raw"]: row
+            for row in cls._format_duration_metrics(
+                first_publication_metrics,
+                bucketing,
+                include_within_24_hours_percentage=True,
+                exclude_over_24_hours_from_mean=True,
+            )
+        }
+        latest_publication_rows = {
+            row["period_raw"]: row for row in cls._format_duration_metrics(latest_publication_metrics, bucketing)
+        }
+
+        return [
+            {
+                "period": cls._format_period(period, bucketing),
+                "period_raw": period,
+                "first_publication": first_publication_rows.get(period),
+                "latest_publication": latest_publication_rows.get(period),
+            }
+            for period in sorted(first_publication_rows.keys() | latest_publication_rows.keys())
+        ]
+
+    def _get_court_lifecycle_metrics(
+        self,
+        filters: MetricFilters,
+        document_counts: list[CourtOrTribunalDocumentCount],
+    ) -> list[CourtLifecycleMetricTable]:
+        end_date = filters["end_date"] + timedelta(days=1)
+        tables: list[CourtLifecycleMetricTable] = []
+        for court in document_counts:
+            search_parameters = SearchParameters(court=court["canonical_param"])
+            first_publication_metrics = api_client.get_metrics(
+                metric="tdr_to_first_publish",
+                bucketing=filters["bucketing"],
+                start_date=filters["start_date"],
+                end_date=end_date,
+                search_parameters=search_parameters,
+            )
+            latest_publication_metrics = api_client.get_metrics(
+                metric="tdr_to_latest_publish",
+                bucketing=filters["bucketing"],
+                start_date=filters["start_date"],
+                end_date=end_date,
+                search_parameters=search_parameters,
+            )
+            tables.append(
+                {
+                    "name": court["name"],
+                    "type": court["type"],
+                    "rows": self._combine_court_lifecycle_metrics(
+                        first_publication_metrics,
+                        latest_publication_metrics,
+                        filters["bucketing"],
+                    ),
+                },
+            )
+        return tables
 
     def _get_submission_metrics(
         self,
@@ -392,6 +524,7 @@ class MetricsView(TemplateView):
         return [
             {
                 "label": "Submissions before first publication",
+                "show_within_24_hours_percentage": False,
                 "rows": self._format_submission_metrics(
                     api_client.get_metrics(
                         metric="submissions_before_first_publish",
@@ -409,6 +542,7 @@ class MetricsView(TemplateView):
         if filters is None:
             return {
                 "cases_by_court": [],
+                "court_lifecycle_metrics": [],
                 "lifecycle_metrics": [],
                 "submission_metrics": [],
                 "summary_metrics": self._get_summary_metrics(
@@ -423,6 +557,7 @@ class MetricsView(TemplateView):
         search_parameters = SearchParameters(court=court_filter)
         return {
             "cases_by_court": document_counts,
+            "court_lifecycle_metrics": self._get_court_lifecycle_metrics(filters, document_counts),
             "lifecycle_metrics": self._get_lifecycle_metrics(filters, search_parameters),
             "submission_metrics": self._get_submission_metrics(filters, search_parameters),
             "summary_metrics": summary_metrics,

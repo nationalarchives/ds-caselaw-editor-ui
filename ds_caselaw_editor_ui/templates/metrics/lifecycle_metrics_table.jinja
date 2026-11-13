@@ -8,8 +8,15 @@
           <tr>
             <th>Period</th>
             <th>Documents measured</th>
+            {% if metrics.show_within_24_hours_percentage %}
+              <th>First publication within 24 hours</th>
+            {% endif %}
             <th>Median time</th>
-            <th>Mean time</th>
+            {% if metrics.show_within_24_hours_percentage %}
+              <th>Mean time (within 24 hours)</th>
+            {% else %}
+              <th>Mean time</th>
+            {% endif %}
           </tr>
         </thead>
         <tbody>
@@ -17,6 +24,17 @@
             <tr>
               <td title="{{ row.period_raw }}">{{ row.period }}</td>
               <td>{{ row.count|intcomma }}</td>
+              {% if metrics.show_within_24_hours_percentage %}
+                <td>
+                  {% if row.within_24_hours_percentage is not none %}
+                    <span title="{{ row.within_24_hours_percentage.numerator|intcomma }} of {{ row.within_24_hours_percentage.denominator|intcomma }} journeys">
+                      {{ row.within_24_hours_percentage.display }}
+                    </span>
+                  {% else %}
+                    No data
+                  {% endif %}
+                </td>
+              {% endif %}
               <td>
                 {% if row.median is not none %}
                   <span title="{{ row.median.raw }} seconds">{{ row.median.display }}</span>
@@ -34,7 +52,7 @@
             </tr>
           {% else %}
             <tr>
-              <td colspan="4">No metrics available for this period.</td>
+              <td colspan="{{ 5 if metrics.show_within_24_hours_percentage else 4 }}">No metrics available for this period.</td>
             </tr>
           {% endfor %}
         </tbody>
