@@ -99,6 +99,8 @@ class TestJudgmentViewsRequireAuthentication(TestCase):
             reverse("create-stub-document"),
             reverse("metrics"),
             reverse("metrics-xlsx"),
+            reverse("metrics-journeys"),
+            reverse("metrics-courts"),
         ]
 
     def judgment_view_urls(self, document_uri):

@@ -1,0 +1,15 @@
+{% extends "metrics/base.jinja" %}
+{% from "metrics/lifecycle_metrics_table.jinja" import lifecycle_metrics_table %}
+{% from "metrics/submission_metrics_table.jinja" import submission_metrics_table %}
+{% from "metrics/outlier_metrics_table.jinja" import outlier_metrics_table %}
+{% block metrics_content %}
+  {% for item in lifecycle_metrics %}
+    {{ lifecycle_metrics_table(metrics=item) }}
+  {% endfor %}
+  {% if outlier_metrics %}
+    {{ outlier_metrics_table(metrics=outlier_metrics, threshold=outlier_threshold) }}
+  {% endif %}
+  {% if submission_metrics %}
+    {{ submission_metrics_table(metrics=submission_metrics) }}
+  {% endif %}
+{% endblock metrics_content %}

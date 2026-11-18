@@ -1,0 +1,33 @@
+{% from "components/details.jinja" import details %}
+{% from "components/heading.jinja" import heading %}
+{% macro publication_row(row) %}
+  <tr>
+    <td title="{{ row.period_raw }}">{{ row.period }}</td>
+    <td>{{ row.count|intcomma }}</td>
+  </tr>
+{% endmacro %}
+{% macro court_publication_metrics_tables(metrics=None) %}
+  <section>
+    {{ heading(tag="h2", content="Publications by court and tribunal") }}
+    {% for court in metrics %}
+      {% call details(title=court.name ~ " (" ~ court.type ~ ")", open=True) %}
+        <div class="table">
+          <table>
+            <thead>
+              <tr>
+                <th>Period</th>
+                <th>Publications</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in court.rows %}
+                {{ publication_row(row) }}
+              {% endfor %}
+            </tbody>
+            {% if court.total_row %}<tfoot>{{ publication_row(court.total_row) }}</tfoot>{% endif %}
+          </table>
+        </div>
+      {% endcall %}
+    {% endfor %}
+  </section>
+{% endmacro %}

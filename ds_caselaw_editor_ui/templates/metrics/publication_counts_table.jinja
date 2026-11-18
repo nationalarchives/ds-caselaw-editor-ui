@@ -1,0 +1,40 @@
+{% from "components/heading.jinja" import heading %}
+{% macro publication_count_row(row) %}
+  <tr>
+    <td title="{{ row.period_raw }}">{{ row.period }}</td>
+    <td>{{ row.court_documents|intcomma }}</td>
+    <td>{{ row.tribunal_documents|intcomma }}</td>
+    <td>{{ row.press_summaries|intcomma }}</td>
+    <td>{{ row.total_documents|intcomma }}</td>
+  </tr>
+{% endmacro %}
+{% macro publication_counts_table(metrics=None) %}
+  <section>
+    {{ heading(tag="h2", content="Publications over time") }}
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>Period</th>
+            <th>Court documents</th>
+            <th>Tribunal documents</th>
+            <th>Press summaries</th>
+            <th>Total documents</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in metrics.rows %}
+            {{ publication_count_row(row) }}
+          {% else %}
+            <tr>
+              <td colspan="5">No publications are available for this period.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+        {% if metrics.total_row %}
+          <tfoot>{{ publication_count_row(metrics.total_row) }}</tfoot>
+        {% endif %}
+      </table>
+    </div>
+  </section>
+{% endmacro %}
