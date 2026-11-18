@@ -11,6 +11,13 @@ def _raw(value: dict[str, Any] | None) -> int | float | None:
     return None if value is None else value["raw"]
 
 
+def _table_rows(table: dict[str, Any]) -> list[dict[str, Any]]:
+    rows = list(table["rows"])
+    if table.get("total_row") is not None:
+        rows.append(table["total_row"])
+    return rows
+
+
 def _append_rows(worksheet: Worksheet, headers: list[str], rows: Iterable[Iterable[Any]]) -> None:
     worksheet.append(headers)
     for row in rows:
@@ -34,6 +41,24 @@ def _add_summary_sheet(workbook: Workbook, context: dict[str, Any]) -> None:
     )
 
 
+def _add_publication_counts_sheet(workbook: Workbook, context: dict[str, Any]) -> None:
+    rows = (
+        (
+            row["period_raw"],
+            row["court_documents"],
+            row["tribunal_documents"],
+            row["press_summaries"],
+            row["total_documents"],
+        )
+        for row in _table_rows(context["publication_counts"])
+    )
+    _append_rows(
+        workbook.create_sheet("Publications"),
+        ["Period", "Court documents", "Tribunal documents", "Press summaries", "Total documents"],
+        rows,
+    )
+
+
 def _add_lifecycle_sheets(workbook: Workbook, context: dict[str, Any]) -> None:
     for table in context["lifecycle_metrics"]:
         is_first_publication = table["show_within_24_hours_percentage"]
@@ -45,15 +70,15 @@ def _add_lifecycle_sheets(workbook: Workbook, context: dict[str, Any]) -> None:
                     "Within 24 hours percentage",
                 ],
             )
-            headers.extend(
-                [
-                    "Median time (seconds)",
-                    "Mean time within 24 hours (seconds)" if is_first_publication else "Mean time (seconds)",
-                ],
-            )
+        headers.extend(
+            [
+                "Median time (seconds)",
+                "Mean time within 24 hours (seconds)" if is_first_publication else "Mean time (seconds)",
+            ],
+        )
 
         rows = []
-        for row in table["rows"]:
+        for row in _table_rows(table):
             values = [row["period_raw"], row["count"]]
             if is_first_publication:
                 percentage = row.get("within_24_hours_percentage")
@@ -79,8 +104,7 @@ def _add_submission_sheet(workbook: Workbook, context: dict[str, Any]) -> None:
             _raw(row.get("median")),
             _raw(row.get("mean")),
         )
-        for table in context["submission_metrics"]
-        for row in table["rows"]
+        for row in _table_rows(context["submission_metrics"])
     )
     _append_rows(
         workbook.create_sheet("Submissions"),
@@ -89,10 +113,51 @@ def _add_submission_sheet(workbook: Workbook, context: dict[str, Any]) -> None:
     )
 
 
+def _add_outlier_sheet(workbook: Workbook, context: dict[str, Any]) -> None:
+    rows = (
+        (
+            row["period_raw"],
+            row["count"],
+            _raw(row["minimum"]),
+            _raw(row["maximum"]),
+            _raw(row["mean"]),
+            _raw(row["median"]),
+            _raw(row["standard_deviation"]),
+        )
+        for row in _table_rows(context["outlier_metrics"])
+    )
+    _append_rows(
+        workbook.create_sheet("Outliers"),
+        [
+            "Period",
+            "Journeys",
+            "Minimum time (seconds)",
+            "Maximum time (seconds)",
+            "Mean time (seconds)",
+            "Median time (seconds)",
+            "Population standard deviation (seconds)",
+        ],
+        rows,
+    )
+
+
+def _add_court_publication_sheet(workbook: Workbook, context: dict[str, Any]) -> None:
+    rows = (
+        (court["name"], court["type"], row["period_raw"], row["count"])
+        for court in context["court_publication_metrics"]
+        for row in _table_rows(court)
+    )
+    _append_rows(
+        workbook.create_sheet("Court publications"),
+        ["Court or tribunal", "Type", "Period", "Publications"],
+        rows,
+    )
+
+
 def _add_court_lifecycle_sheet(workbook: Workbook, context: dict[str, Any]) -> None:
     rows = []
     for court in context["court_lifecycle_metrics"]:
-        for row in court["rows"]:
+        for row in _table_rows(court):
             first = row["first_publication"]
             latest = row["latest_publication"]
             percentage = None if first is None else first.get("within_24_hours_percentage")
@@ -131,14 +196,6 @@ def _add_court_lifecycle_sheet(workbook: Workbook, context: dict[str, Any]) -> N
     )
 
 
-def _add_documents_by_court_sheet(workbook: Workbook, context: dict[str, Any]) -> None:
-    _append_rows(
-        workbook.create_sheet("Documents by court"),
-        ["Court or tribunal", "Type", "Documents"],
-        ((row["name"], row["type"], row["document_count"]) for row in context["cases_by_court"]),
-    )
-
-
 def _add_raw_metrics_sheet(workbook: Workbook, context: dict[str, Any]) -> None:
     raw_metrics = context["raw_metrics"]
     value_keys = sorted(
@@ -172,10 +229,12 @@ def build_metrics_workbook(context: dict[str, Any]) -> bytes:
     workbook.remove(workbook.active)
 
     _add_summary_sheet(workbook, context)
+    _add_publication_counts_sheet(workbook, context)
     _add_lifecycle_sheets(workbook, context)
+    _add_outlier_sheet(workbook, context)
     _add_submission_sheet(workbook, context)
+    _add_court_publication_sheet(workbook, context)
     _add_court_lifecycle_sheet(workbook, context)
-    _add_documents_by_court_sheet(workbook, context)
     _add_raw_metrics_sheet(workbook, context)
 
     output = BytesIO()
