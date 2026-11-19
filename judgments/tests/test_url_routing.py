@@ -98,6 +98,7 @@ class TestJudgmentViewsRequireAuthentication(TestCase):
             reverse("tools_missing_fclid"),
             reverse("create-stub-document"),
             reverse("metrics"),
+            reverse("metrics-xlsx"),
         ]
 
     def judgment_view_urls(self, document_uri):

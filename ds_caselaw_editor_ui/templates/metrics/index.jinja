@@ -6,9 +6,15 @@
 {% from "metrics/submission_metrics_table.jinja" import submission_metrics_table %}
 {% from "metrics/court_metrics_table.jinja" import court_metrics_table %}
 {% from "metrics/court_lifecycle_metrics_tables.jinja" import court_lifecycle_metrics_tables %}
+{% from "components/button.jinja" import button %}
 {% block content %}
   <div class="metrics">
-    {{ heading(content="Metrics", size="h1") }}
+    <div class="metrics__title">
+      {{ heading(content="Metrics", size="h1") }}
+      {% if download_url %}
+        {{ button(content="Download as spreadsheet", href=download_url, variant="secondary", size="small") }}
+      {% endif %}
+    </div>
     {{ metrics_filters(form=filter_form, court_options=court_options, tribunal_options=tribunal_options, selected_filters=selected_court_filters) }}
     {{ metrics_summary(metrics=summary_metrics) }}
     {% for item in lifecycle_metrics %}

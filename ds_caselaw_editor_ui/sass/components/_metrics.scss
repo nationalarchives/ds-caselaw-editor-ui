@@ -10,6 +10,19 @@
     margin: $space-4 0;
   }
 
+  &__title {
+    display: flex;
+    gap: $space-4;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: $space-4;
+
+    h1 {
+      margin: 0;
+    }
+  }
+
   &__filters {
     display: flex;
     flex-wrap: wrap;
