@@ -258,6 +258,46 @@ class TestJourneyMetrics(MetricsViewTestCase):
 
 
 class TestCourtMetrics(MetricsViewTestCase):
+    def test_combined_lifecycle_total_uses_single_period_as_metric_total(self):
+        single_period_metrics = {
+            "2026-08": metric_statistics(count=1),
+            "total": metric_statistics(count=1),
+        }
+        multiple_period_metrics = {
+            "2026-08": metric_statistics(count=2),
+            "2026-09": metric_statistics(count=3),
+            "total": metric_statistics(count=5),
+        }
+
+        for first_metrics, latest_metrics, expected_first_count, expected_latest_count in (
+            (single_period_metrics, multiple_period_metrics, 1, 5),
+            (multiple_period_metrics, single_period_metrics, 5, 1),
+        ):
+            with self.subTest(expected_first_count=expected_first_count):
+                first_publication = CourtMetricsView._duration_table(
+                    "Time to first publication",
+                    first_metrics,
+                    "monthly",
+                    show_within_24_hours_percentage=True,
+                )
+                latest_publication = CourtMetricsView._duration_table(
+                    "Time to latest publication",
+                    latest_metrics,
+                    "monthly",
+                    show_within_24_hours_percentage=False,
+                )
+                rows, total_row = CourtMetricsView._combine_court_lifecycle_metrics(
+                    first_publication,
+                    latest_publication,
+                )
+
+                assert len(rows) == 2
+                assert total_row is not None
+                assert total_row["first_publication"] is not None
+                assert total_row["latest_publication"] is not None
+                assert total_row["first_publication"]["count"] == expected_first_count
+                assert total_row["latest_publication"]["count"] == expected_latest_count
+
     @patch("judgments.views.metrics.api_client.get_metrics")
     @patch("judgments.views.metrics.api_client.get_publication_counts")
     def test_does_not_fetch_metrics_until_a_court_is_selected(self, mock_get_counts, mock_get_metrics):

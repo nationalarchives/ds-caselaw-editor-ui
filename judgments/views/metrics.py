@@ -708,9 +708,13 @@ class CourtMetricsView(BaseMetricsView):
             for period in sorted(first_rows.keys() | latest_rows.keys())
         ]
         first_total = first_publication["total_row"]
+        if first_total is None and len(first_rows) == 1:
+            first_total = next(iter(first_rows.values()))
         latest_total = latest_publication["total_row"]
+        if latest_total is None and len(latest_rows) == 1:
+            latest_total = next(iter(latest_rows.values()))
         total_row: CourtLifecycleMetricRow | None = None
-        if first_total is not None or latest_total is not None:
+        if len(rows) > 1 and (first_total is not None or latest_total is not None):
             total_row = {
                 "period": "Total",
                 "period_raw": "total",
