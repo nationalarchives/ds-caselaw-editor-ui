@@ -45,7 +45,12 @@ def _add_lifecycle_sheets(workbook: Workbook, context: dict[str, Any]) -> None:
                     "Within 24 hours percentage",
                 ],
             )
-        headers.extend(["Median time (seconds)", "Mean time (seconds)"])
+            headers.extend(
+                [
+                    "Median time (seconds)",
+                    "Mean time within 24 hours (seconds)" if is_first_publication else "Mean time (seconds)",
+                ],
+            )
 
         rows = []
         for row in table["rows"]:
@@ -117,7 +122,7 @@ def _add_court_lifecycle_sheet(workbook: Workbook, context: dict[str, Any]) -> N
             "First publication within 24 hours count",
             "First publication within 24 hours percentage",
             "First publication median time (seconds)",
-            "First publication mean time (seconds)",
+            "First publication mean time within 24 hours (seconds)",
             "Latest publication documents measured",
             "Latest publication median time (seconds)",
             "Latest publication mean time (seconds)",

@@ -160,7 +160,10 @@ class MetricsView(TemplateView):
             end_date=filters["end_date"] + timedelta(days=1),
             search_parameters=search_parameters,
         )
-        self._raw_metric_responses.append({"metric": metric, "court": court, "response": response})
+        if not any(
+            recorded["metric"] == metric and recorded["court"] == court for recorded in self._raw_metric_responses
+        ):
+            self._raw_metric_responses.append({"metric": metric, "court": court, "response": response})
         return response
 
     @staticmethod
