@@ -17,6 +17,8 @@ from urllib.parse import parse_qsl, urlencode
 import vcr
 import vcr.stubs
 
+from judgments.feature_flags import WAFFLE_FLAG_NAMES
+
 logger = logging.getLogger(__name__)
 
 VCR_MODE = os.getenv("VCR_MODE", "playback")
@@ -345,7 +347,15 @@ def cassette_name_for_request(method: str, path: str, query_string: str = "") ->
     if not query_string:
         return base
 
-    sorted_params = urlencode(sorted(parse_qsl(query_string, keep_blank_values=True)))
+    cassette_params = [
+        parameter
+        for parameter in parse_qsl(query_string, keep_blank_values=True)
+        if parameter[0] not in WAFFLE_FLAG_NAMES
+    ]
+    if not cassette_params:
+        return base
+
+    sorted_params = urlencode(sorted(cassette_params))
     param_hash = hashlib.sha256(sorted_params.encode()).hexdigest()[:8]
 
     return f"{base}_{param_hash}"

@@ -16,6 +16,7 @@ from jinja2 import (
     select_autoescape,
 )
 
+from judgments.feature_flags import WAFFLE_FLAG_NAMES
 from judgments.templatetags.document_utils import (
     display_datetime,
     get_dict_key_with_hyphen,
@@ -136,6 +137,7 @@ def environment(**options):
             "editors_only_hint": editors_only_hint,
             "editors_or_developers_hint": editors_or_developers_hint,
             "component_class_names": component_class_names,
+            "waffle_flags": WAFFLE_FLAG_NAMES,
         },
     )
 

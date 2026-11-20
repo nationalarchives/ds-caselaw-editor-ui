@@ -24,7 +24,7 @@ from editing import document_form_judgment_date_fields, editing_order, record, t
 from factories import make_editor
 from waffle.testutils import override_flag
 
-from judgments.templatetags.navigation_tags import METADATA_ASIDE_JUDGES_FLAG
+from judgments.feature_flags import METADATA_ASIDE_JUDGES_FLAG
 from judgments.tests.helpers.metadata_claims import judgment_with_title_claim
 from judgments.views.judgment_edit import CannotUpdateNCNOfNonJudgment, update_ncn_of_document
 

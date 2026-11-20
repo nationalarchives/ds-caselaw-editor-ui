@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.views.generic import View
 from waffle import flag_is_active
 
-from judgments.templatetags.navigation_tags import METADATA_ASIDE_JUDGES_FLAG
+from judgments.feature_flags import METADATA_ASIDE_JUDGES_FLAG
 from judgments.utils import api_client
 from judgments.utils.aws import invalidate_caches
 from judgments.utils.govuk_date import JUDGMENT_DATE_FIELD_MESSAGES, GovukDateParseError, parse_govuk_date_from_post

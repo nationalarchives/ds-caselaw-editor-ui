@@ -8,6 +8,8 @@ from .base import MIDDLEWARE, ROOT_DIR, TEMPLATES, env
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
 DEBUG = True
+WAFFLE_CREATE_MISSING_FLAGS = True
+WAFFLE_OVERRIDE = True
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ["*"]

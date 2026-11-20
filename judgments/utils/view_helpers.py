@@ -11,8 +11,8 @@ from django.http import Http404
 from django.views.generic import TemplateView
 from waffle import flag_is_active
 
+from judgments.feature_flags import METADATA_ASIDE_JUDGES_FLAG
 from judgments.templatetags.document_utils import display_datetime
-from judgments.templatetags.navigation_tags import METADATA_ASIDE_JUDGES_FLAG
 from judgments.utils import api_client, editors_dict, extract_version_number_from_filename, get_linked_document_uri
 from judgments.utils.document_list import DocumentListFilters, SavedViewPreset, court_filter_options
 from judgments.utils.link_generators import build_jira_create_link

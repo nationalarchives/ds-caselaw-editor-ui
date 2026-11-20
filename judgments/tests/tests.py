@@ -6,8 +6,8 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from waffle.testutils import override_flag
 
+from judgments.feature_flags import DOCUMENT_LIST_QUEUE_FLAG
 from judgments.utils import api_client
-from judgments.views.document_list import DOCUMENT_LIST_QUEUE_FLAG
 
 
 def assert_match(regex, string):
