@@ -2,6 +2,8 @@
 VCR configuration for recording and replaying HTTP requests.
 """
 
+from __future__ import annotations
+
 import base64
 import gzip
 import hashlib
@@ -12,12 +14,16 @@ import zlib
 from email.parser import BytesParser
 from email.policy import default
 from pathlib import Path
+from typing import TYPE_CHECKING, Any
 from urllib.parse import parse_qsl, urlencode
 
 import vcr
 import vcr.stubs
 
 from judgments.feature_flags import WAFFLE_FLAG_NAMES
+
+if TYPE_CHECKING:
+    from contextlib import AbstractContextManager
 
 logger = logging.getLogger(__name__)
 
@@ -255,7 +261,8 @@ def _extract_all_parts_from_multipart(raw_body: str | bytes, content_type: str) 
             continue
 
         part_ct = part.get_content_type() or "application/octet-stream"
-        payload = part.get_payload(decode=True) or b""
+        decoded_payload = part.get_payload(decode=True)
+        payload = decoded_payload if isinstance(decoded_payload, bytes) else b""
 
         if part_ct == "application/json" and payload:
             try:
@@ -365,15 +372,24 @@ class VCRContext:
     def __init__(self, cassette_name: str):
         self.cassette_name = cassette_name
         self.vcr = get_vcr_instance()
-        self.cassette = None
+        self.cassette: AbstractContextManager[Any] | None = None
 
     @classmethod
-    def for_request(cls, method: str, path: str, query_string: str = "") -> "VCRContext":
+    def for_request(cls, method: str, path: str, query_string: str = "") -> VCRContext:
         return cls(cassette_name_for_request(method, path, query_string))
 
     def __enter__(self):
-        self.cassette = self.vcr.use_cassette(f"{self.cassette_name}.yaml", allow_playback_repeats=True)
-        return self.cassette.__enter__()
+        cassette = self.vcr.use_cassette(f"{self.cassette_name}.yaml", allow_playback_repeats=True)
+        if cassette is None:
+            msg = "VCR did not return a cassette context manager"
+            raise RuntimeError(msg)
+
+        self.cassette = cassette
+        return cassette.__enter__()
 
     def __exit__(self, *args):
+        if self.cassette is None:
+            msg = "VCR cassette context manager has not been entered"
+            raise RuntimeError(msg)
+
         return self.cassette.__exit__(*args)
