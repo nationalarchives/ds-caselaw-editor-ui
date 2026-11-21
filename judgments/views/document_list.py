@@ -1,6 +1,7 @@
 from django.core.exceptions import BadRequest
 from waffle import flag_is_active
 
+from judgments.feature_flags import DOCUMENT_LIST_QUEUE_FLAG
 from judgments.utils.document_list import (
     SAVED_VIEW_ALL,
     SAVED_VIEW_UNPUBLISHED,
@@ -10,8 +11,6 @@ from judgments.utils.document_list import (
 from judgments.utils.view_helpers import get_document_list_filters, get_search_results_from_filters
 
 from .paginated_view import PaginatedView
-
-DOCUMENT_LIST_QUEUE_FLAG = "document_list_queue"
 
 
 class DocumentListView(PaginatedView):

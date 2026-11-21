@@ -2,11 +2,9 @@ from django import template
 from django.urls import reverse
 from waffle import flag_is_active
 
-register = template.Library()
+from judgments.feature_flags import DOCUMENT_MERGE_FLAG, DOCUMENT_METADATA_FLAG
 
-DOCUMENT_METADATA_FLAG = "document_metadata"
-DOCUMENT_MERGE_FLAG = "document_merge"
-METADATA_ASIDE_JUDGES_FLAG = "metadata_aside_judges"
+register = template.Library()
 
 
 def get_document_url(view, document):

@@ -4,7 +4,7 @@ import pytest
 from django.contrib.auth.models import Group, User
 from waffle.testutils import override_flag
 
-from judgments.templatetags.navigation_tags import DOCUMENT_MERGE_FLAG
+from judgments.feature_flags import DOCUMENT_MERGE_FLAG
 
 EDITOR_ONLY_ACTIONS = [
     "/publish",

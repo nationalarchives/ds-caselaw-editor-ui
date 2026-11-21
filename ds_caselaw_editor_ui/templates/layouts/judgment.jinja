@@ -58,7 +58,7 @@
           Request enrichment
         {% endcall %}
       </form>
-      {% if waffle.flag("reparse") %}
+      {% if waffle.flag(waffle_flags.reparse) %}
         <form action="{{ url('reparse') }}" method="post">
           {{ csrf_input }}
           <input type="hidden" name="document_uri" value="{{ document.uri }}" />

@@ -37,6 +37,7 @@ unfixable = ["ERA"]
 "*" = ["RET505"]  # disagree with if X: return Y else: return Z being wrong
 "manage.py" = ["B904"]
 "*/tests/*" = ["S101", "SLF001"]
+"e2e_tests/**/test_*.py" = ["S101", "SLF001"]
 "fabfile.py" = ["S603", "S607", "PLW1510",  # TODO: should probably rework these
                "T201"]  # OK to have prints here
 "merge_production_dotenvs_in_dotenv.py" = ["S101"]  # TODO: fix this

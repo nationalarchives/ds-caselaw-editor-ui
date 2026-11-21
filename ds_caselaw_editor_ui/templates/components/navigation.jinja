@@ -30,7 +30,7 @@
               <a href="{{ url('admin:index') }}">Admin</a>
             </li>
           {% endif %}
-          {% if waffle.flag("reports") %}
+          {% if waffle.flag(waffle_flags.reports) %}
             <li>
               <a href="{{ url('reports') }}">Reports</a>
             </li>
