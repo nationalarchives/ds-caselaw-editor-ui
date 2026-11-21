@@ -3,7 +3,7 @@
 {% from "components/notification.jinja" import notification %}
 {% from "components/button.jinja" import button %}
 {% from "components/badge.jinja" import badge %}
-{% macro metrics_filters(form=None, court_options=None, tribunal_options=None, selected_filters=None) %}
+{% macro metrics_filters(form=None, court_options=None, tribunal_options=None, selected_filters=None, court_filter_hint=None, court_filters_open=False, download_url=None) %}
   <form method="get">
     {% if form.non_field_errors() %}
       {% call notification(variant="failure") %}
@@ -30,8 +30,8 @@
         {% for error in form.bucketing.errors %}<p class="govuk-error-message">{{ error }}</p>{% endfor %}
       </div>
     </div>
-    {% call details(title="Filter by courts and tribunals") %}
-      <p>Select one or more, or leave blank to include them all</p>
+    {% call details(title="Filter by courts and tribunals", open=court_filters_open) %}
+      <p>{{ court_filter_hint }}</p>
       {% if form.courts.errors %}
         {% call notification(variant="failure") %}
           {% for error in form.courts.errors() %}<p>{{ error }}</p>{% endfor %}
@@ -65,6 +65,11 @@
         {% endfor %}
       </div>
     {% endif %}
-    {{ button(content="Apply filters") }}
+    <div class="metrics__filter-actions">
+      {{ button(content="Apply filters") }}
+      {% if download_url %}
+        {{ button(content="Download as spreadsheet", href=download_url, variant="secondary") }}
+      {% endif %}
+    </div>
   </form>
 {% endmacro %}

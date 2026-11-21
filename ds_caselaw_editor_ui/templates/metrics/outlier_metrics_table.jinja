@@ -1,0 +1,53 @@
+{% from "components/heading.jinja" import heading %}
+{% macro duration(value=None) %}
+  {% if value is not none %}
+    <span title="{{ value.raw }} seconds">{{ value.display }}</span>
+  {% else %}
+    No data
+  {% endif %}
+{% endmacro %}
+{% macro outlier_row(row) %}
+  <tr>
+    <td title="{{ row.period_raw }}">{{ row.period }}</td>
+    <td>{{ row.count|intcomma }}</td>
+    <td>
+      {% if row.minimum is not none and row.maximum is not none %}
+        {{ duration(row.minimum) }} to {{ duration(row.maximum) }}
+      {% else %}
+        No data
+      {% endif %}
+    </td>
+    <td>{{ duration(row.mean) }}</td>
+    <td>{{ duration(row.median) }}</td>
+    <td>{{ duration(row.standard_deviation) }}</td>
+  </tr>
+{% endmacro %}
+{% macro outlier_metrics_table(metrics=None, threshold=None) %}
+  <section>
+    {{ heading(tag="h2", content="First publication journeys over " ~ threshold) }}
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>Period</th>
+            <th>Journeys</th>
+            <th>Range</th>
+            <th>Mean time</th>
+            <th>Median time</th>
+            <th>Population standard deviation</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in metrics.rows %}
+            {{ outlier_row(row) }}
+          {% else %}
+            <tr>
+              <td colspan="6">No journeys over {{ threshold }} are available for this period.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+        {% if metrics.total_row %}<tfoot>{{ outlier_row(metrics.total_row) }}</tfoot>{% endif %}
+      </table>
+    </div>
+  </section>
+{% endmacro %}
