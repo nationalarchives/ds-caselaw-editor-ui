@@ -121,7 +121,9 @@
         font-size: $typography-sm-text-size;
 
         dt {
-          color: colour-var("accent-border");
+          font-size: $typography-md-text-size;
+          font-weight: $typography-bold-font-weight;
+          color: colour-var("font-base");
         }
 
         dd {
@@ -138,6 +140,12 @@
             display: block;
             width: 100%;
           }
+        }
+
+        .govuk-date-input__label {
+          font-size: $typography-sm-text-size;
+          font-weight: $typography-normal-font-weight;
+          color: colour-var("font-base");
         }
       }
 
