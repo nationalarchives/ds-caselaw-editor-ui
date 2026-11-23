@@ -28,6 +28,7 @@ WAFFLE_FLAGS = (
             "judgment_publish_page",
             "judgment_unhold_page",
             "judgment_unpublish_page",
+            "judgment_unpublished_upload_page",
         ),
     ),
     WaffleFlag(REPARSE_FLAG, ("judgment_page",)),
