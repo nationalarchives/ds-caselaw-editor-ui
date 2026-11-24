@@ -41,6 +41,14 @@
     }
   }
 
+  &__filter-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-4;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   &__summary {
     display: flex;
     flex-wrap: wrap;

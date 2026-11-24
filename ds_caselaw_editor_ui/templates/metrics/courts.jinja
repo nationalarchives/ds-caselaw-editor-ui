@@ -1,0 +1,9 @@
+{% extends "metrics/base.jinja" %}
+{% from "metrics/court_publication_metrics_tables.jinja" import court_publication_metrics_tables %}
+{% from "metrics/court_lifecycle_metrics_tables.jinja" import court_lifecycle_metrics_tables %}
+{% block metrics_content %}
+  {% if court_publication_metrics %}
+    {{ court_publication_metrics_tables(metrics=court_publication_metrics) }}
+    {{ court_lifecycle_metrics_tables(metrics=court_lifecycle_metrics) }}
+  {% endif %}
+{% endblock metrics_content %}

@@ -1,0 +1,15 @@
+{% extends "layouts/base.jinja" %}
+{% from "components/navigation_tabs.jinja" import navigation_tabs, navigation_tab %}
+{% from "metrics/filters.jinja" import metrics_filters %}
+{% block content %}
+  <div class="metrics">
+    {% call navigation_tabs() %}
+      {% for item in metrics_navigation %}
+        {{ navigation_tab(label=item.label, url=item.url, active=item.active) }}
+      {% endfor %}
+    {% endcall %}
+    {{ metrics_filters(form=filter_form, court_options=court_options, tribunal_options=tribunal_options, selected_filters=selected_court_filters, court_filter_hint=court_filter_hint, court_filters_open=court_filters_open|default(false), download_url=download_url) }}
+    {% block metrics_content %}
+    {% endblock metrics_content %}
+  </div>
+{% endblock content %}
