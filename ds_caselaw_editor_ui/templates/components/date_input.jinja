@@ -20,9 +20,9 @@
     },
     "hint": { "text": field.help_text } if field.help_text else None,
     "items": [
-      { "name": "day", "value": day, "classes": "govuk-input--width-2" },
-      { "name": "month", "value": month, "classes": "govuk-input--width-2" },
-      { "name": "year", "value": year, "classes": "govuk-input--width-4" }
+      { "name": "day", "value": day, "classes": "govuk-input--width-2", "inputmode": "numeric" },
+      { "name": "month", "value": month, "classes": "govuk-input--width-2", "inputmode": "numeric" },
+      { "name": "year", "value": year, "classes": "govuk-input--width-4", "inputmode": "numeric" }
     ]
   }) }}
 {% endmacro %}
@@ -38,6 +38,9 @@
     <label class="metadata__grid-primary metadata__grid-primary--date govuk-label govuk-label--s"
            id="{{ legend_id }}">{{ field.label }}</label>
     <div class="metadata__grid-secondary metadata__grid-secondary--date">
+      {% if field.help_text %}
+        <div class="govuk-hint" id="{{ id_prefix }}-hint">{{ field.help_text }}</div>
+      {% endif %}
       <div class="govuk-date-input metadata__date-input-columns metadata__date-part-labels">
         <div class="govuk-date-input__item">
           <label class="govuk-label govuk-date-input__label" for="{{ id_prefix }}-day">Day</label>
@@ -56,7 +59,8 @@
       <div class="govuk-date-input metadata__date-input-columns"
            id="{{ id_prefix }}"
            role="group"
-           aria-labelledby="{{ legend_id }}">
+           aria-labelledby="{{ legend_id }}"
+           aria-describedby="{{ id_prefix }}-hint">
         <div class="govuk-date-input__item">
           <input class="govuk-input govuk-input--width-2 govuk-date-input__input"
                  id="{{ id_prefix }}-day"
@@ -98,11 +102,11 @@
     "fieldset": {
       "legend": { "text": field.label, "classes": "govuk-fieldset__legend--s" }
     },
-    "hint":         { "text": field.help_text } if field.help_text else None,
+    "hint":         { "text": field.help_text or default_date_hint },
     "items": [
-      { "name": "day",   "value": day,   "classes": inputClass },
-      { "name": "month", "value": month, "classes": inputClass },
-      { "name": "year",  "value": year,  "classes": "govuk-input--width-4" ~ (" govuk-input--error" if field.errors else "") }
+      { "name": "day",   "value": day,   "classes": inputClass, "inputmode": "numeric" },
+      { "name": "month", "value": month, "classes": inputClass, "inputmode": "numeric" },
+      { "name": "year",  "value": year,  "classes": "govuk-input--width-4" ~ (" govuk-input--error" if field.errors else ""), "inputmode": "numeric" }
     ],
     "errorMessage": errors
   }) }}

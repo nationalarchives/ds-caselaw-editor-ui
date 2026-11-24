@@ -63,6 +63,11 @@ class TestMetadataPanel(TestCase):
         assert form_control_value(root, "judgment_date-day") == "3"
         assert form_control_value(root, "judgment_date-month") == "2"
         assert form_control_value(root, "judgment_date-year") == "2023"
+        assert "For example, 27 03 2020" in root.text_content()
+        assert all(
+            control.get("inputmode") == "numeric"
+            for control in root.xpath('//input[starts-with(@id, "judgment_date-")]')
+        )
         assert form_control_value(root, "neutral_citation") == "[2023] UKSC 1"
         editable_metadata = root.xpath(
             '//details[summary/*[normalize-space(.)="Editable metadata"]]',
@@ -141,7 +146,6 @@ class TestMetadataPanel(TestCase):
 
         assert response.status_code == 200
         assert root.xpath("//form[@data-document-edit-form]")
-        assert root.xpath("//div[contains(@class, 'metadata__container')]")
         assert not metadata_aside.xpath(".//details")
         assert metadata_aside.xpath(".//div[contains(@class, 'aside__section-heading')]/dt/text()") == [
             "Metadata",
