@@ -1,3 +1,4 @@
+from dataclasses import fields
 from datetime import UTC, date, datetime, timedelta
 from typing import Any, Literal, TypedDict, cast
 from urllib.parse import urlencode
@@ -139,6 +140,11 @@ class RawMetricResponse(TypedDict):
     response: dict[str, MetricStatistics]
 
 
+class MetricsResponseCache(TypedDict):
+    metrics: dict[tuple[Any, ...], dict[str, MetricStatistics]]
+    publication_counts: dict[tuple[Any, ...], dict[str, int]]
+
+
 class MetricsFilterForm(forms.Form):
     start_date = forms.DateField(
         label="Start date",
@@ -177,9 +183,17 @@ class BaseMetricsView(TemplateView):
     route_name = "metrics"
     court_filter_hint = "Select one or more, or leave blank to include them all"
 
-    def __init__(self, **kwargs):
+    def __init__(self, *, response_cache: MetricsResponseCache | None = None, **kwargs):
         super().__init__(**kwargs)
         self.raw_metric_responses: list[RawMetricResponse] = []
+        self.response_cache: MetricsResponseCache = response_cache or {
+            "metrics": {},
+            "publication_counts": {},
+        }
+
+    @staticmethod
+    def _search_parameters_cache_key(search_parameters: SearchParameters) -> tuple[tuple[str, str], ...]:
+        return tuple((field.name, repr(getattr(search_parameters, field.name))) for field in fields(search_parameters))
 
     @staticmethod
     def _get_court_choices() -> list[tuple[str, str]]:
@@ -487,14 +501,23 @@ class BaseMetricsView(TemplateView):
         filters: MetricFilters,
         search_parameters: SearchParameters,
     ) -> dict[str, MetricStatistics]:
-        response = api_client.get_metrics(
-            metric=metric,
-            bucketing=filters["bucketing"],
-            start_date=filters["start_date"],
-            end_date=filters["end_date"] + timedelta(days=1),
-            search_parameters=search_parameters,
-            include_total=True,
+        cache_key = (
+            metric,
+            filters["bucketing"],
+            filters["start_date"],
+            filters["end_date"],
+            self._search_parameters_cache_key(search_parameters),
         )
+        if cache_key not in self.response_cache["metrics"]:
+            self.response_cache["metrics"][cache_key] = api_client.get_metrics(
+                metric=metric,
+                bucketing=filters["bucketing"],
+                start_date=filters["start_date"],
+                end_date=filters["end_date"] + timedelta(days=1),
+                search_parameters=search_parameters,
+                include_total=True,
+            )
+        response = self.response_cache["metrics"][cache_key]
         court = search_parameters.court or ""
         if not any(item["metric"] == metric and item["court"] == court for item in self.raw_metric_responses):
             self.raw_metric_responses.append({"metric": metric, "court": court, "response": response})
@@ -505,13 +528,21 @@ class BaseMetricsView(TemplateView):
         filters: MetricFilters,
         search_parameters: SearchParameters,
     ) -> dict[str, int]:
-        return api_client.get_publication_counts(
-            bucketing=filters["bucketing"],
-            start_date=filters["start_date"],
-            end_date=filters["end_date"] + timedelta(days=1),
-            search_parameters=search_parameters,
-            include_total=True,
+        cache_key = (
+            filters["bucketing"],
+            filters["start_date"],
+            filters["end_date"],
+            self._search_parameters_cache_key(search_parameters),
         )
+        if cache_key not in self.response_cache["publication_counts"]:
+            self.response_cache["publication_counts"][cache_key] = api_client.get_publication_counts(
+                bucketing=filters["bucketing"],
+                start_date=filters["start_date"],
+                end_date=filters["end_date"] + timedelta(days=1),
+                search_parameters=search_parameters,
+                include_total=True,
+            )
+        return self.response_cache["publication_counts"][cache_key]
 
     def get_metrics_context(
         self,
@@ -806,9 +837,16 @@ class MetricsXlsxView(BaseMetricsView):
     ) -> dict[str, Any]:
         context: dict[str, Any] = {}
         raw_metrics: list[RawMetricResponse] = []
+        response_cache: MetricsResponseCache = {"metrics": {}, "publication_counts": {}}
         for view_class in (MetricsView, JourneyMetricsView, CourtMetricsView):
-            view = view_class()
-            context.update(view.get_metrics_context(filters, court_definitions))
+            view = view_class(response_cache=response_cache)
+            view_filters = filters
+            if view_class is CourtMetricsView and not filters["courts"]:
+                view_filters = {
+                    **filters,
+                    "courts": [court["canonical_param"] for court in court_definitions],
+                }
+            context.update(view.get_metrics_context(view_filters, court_definitions))
             for response in view.raw_metric_responses:
                 if not any(
                     item["metric"] == response["metric"] and item["court"] == response["court"] for item in raw_metrics

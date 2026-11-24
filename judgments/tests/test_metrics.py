@@ -11,7 +11,14 @@ from django.test import RequestFactory, SimpleTestCase
 from openpyxl import load_workbook
 
 from judgments.utils.metrics_xlsx import build_metrics_workbook
-from judgments.views.metrics import CourtMetricsView, JourneyMetricsView, MetricsView, MetricsXlsxView
+from judgments.views.metrics import (
+    CourtDefinition,
+    CourtMetricsView,
+    JourneyMetricsView,
+    MetricFilters,
+    MetricsView,
+    MetricsXlsxView,
+)
 
 if TYPE_CHECKING:
     from django.template.response import TemplateResponse
@@ -157,7 +164,7 @@ class TestMetricsOverview(MetricsViewTestCase):
                 "courts": ["example-court"],
             },
         )
-        filters = {
+        filters: MetricFilters = {
             "start_date": date(2026, 9, 1),
             "end_date": date(2026, 9, 30),
             "bucketing": "daily",
@@ -390,6 +397,60 @@ class TestCourtMetrics(MetricsViewTestCase):
 
 
 class TestMetricsXlsxView(MetricsViewTestCase):
+    @patch("judgments.views.metrics.api_client.get_metrics")
+    @patch("judgments.views.metrics.api_client.get_publication_counts")
+    def test_unfiltered_report_includes_all_courts(self, mock_get_publication_counts, mock_get_metrics):
+        mock_get_publication_counts.return_value = {"2026-08": 1, "total": 1}
+        mock_get_metrics.return_value = {"2026-08": metric_statistics(), "total": metric_statistics()}
+        filters: MetricFilters = {
+            "start_date": date(2026, 8, 1),
+            "end_date": date(2026, 8, 31),
+            "bucketing": "monthly",
+            "courts": [],
+        }
+        court_definitions: list[CourtDefinition] = [
+            {"canonical_param": "example-court", "name": "Example Court", "type": "Court"},
+            {"canonical_param": "example-tribunal", "name": "Example Tribunal", "type": "Tribunal"},
+        ]
+
+        context = MetricsXlsxView()._get_report_context(filters, court_definitions)
+
+        assert [table["name"] for table in context["court_publication_metrics"]] == [
+            "Example Court",
+            "Example Tribunal",
+        ]
+        assert [table["name"] for table in context["court_lifecycle_metrics"]] == [
+            "Example Court",
+            "Example Tribunal",
+        ]
+        assert filters["courts"] == []
+
+    @patch("judgments.views.metrics.api_client.get_metrics")
+    @patch("judgments.views.metrics.api_client.get_publication_counts")
+    def test_report_reuses_identical_api_responses(self, mock_get_publication_counts, mock_get_metrics):
+        mock_get_publication_counts.return_value = {"2026-08": 1, "total": 1}
+        mock_get_metrics.return_value = {"2026-08": metric_statistics(), "total": metric_statistics()}
+        filters: MetricFilters = {
+            "start_date": date(2026, 8, 1),
+            "end_date": date(2026, 8, 31),
+            "bucketing": "monthly",
+            "courts": ["example-court"],
+        }
+        court_definitions: list[CourtDefinition] = [
+            {"canonical_param": "example-court", "name": "Example Court", "type": "Court"},
+        ]
+
+        context = MetricsXlsxView()._get_report_context(filters, court_definitions)
+
+        assert mock_get_metrics.call_count == 3
+        assert {item.kwargs["metric"] for item in mock_get_metrics.call_args_list} == {
+            "tdr_to_first_publish",
+            "tdr_to_latest_publish",
+            "submissions_before_first_publish",
+        }
+        assert mock_get_publication_counts.call_count == 2
+        assert len(context["raw_metrics"]) == 3
+
     def test_builds_workbook_from_refactored_metrics_context(self):
         percentage = {"display": "50.0%", "raw": 50.0, "numerator": 1, "denominator": 2}
         duration = {"display": "1 hour", "raw": 3600}
