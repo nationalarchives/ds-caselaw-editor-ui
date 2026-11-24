@@ -41,6 +41,12 @@
           {{ csrf_input }}
           <input type="hidden" name="return_to" value="html" />
           <input type="hidden" name="judgment_uri" value="{{ document.uri }}" />
+          {% if can_edit_document %}
+            <p class="aside__unsaved-changes"
+               data-form-actions-status
+               role="status"
+               hidden>Unsaved changes</p>
+          {% endif %}
       {% endif %}
       <div class="aside__form-content">
         {% call details(title="Editable metadata" if is_editable_judgment else "Metadata", variant="panel", open=True) %}
@@ -231,15 +237,15 @@
       </div>
       {% if is_editable_judgment %}
         {% call form_actions({"data-form-actions": ""} if can_edit_document else {}, classes="form-actions--panel") %}
-          {{ button(content="Save",
-            disabled=not can_edit_document,
+          {{ button(content="Save changes",
             size="small",
-            attrs={"type": "submit", "data-form-actions-submit": ""}) }}
-          {{ button(content="Clear changes",
+            disabled=not can_edit_document,
+            attrs={"type": "submit", "data-form-actions-submit": "", "disabled": "disabled"} if can_edit_document else {"type": "submit", "data-form-actions-submit": ""}) }}
+          {{ button(content="Discard changes",
             variant="secondary",
-            disabled=not can_edit_document,
             size="small",
-            attrs={"type": "button", "data-form-actions-clear": ""}) }}
+            disabled=not can_edit_document,
+            attrs={"type": "button", "data-form-actions-discard": "", "disabled": "disabled"} if can_edit_document else {"type": "button", "data-form-actions-discard": ""}) }}
         {% endcall %}
         </form>
       {% endif %}

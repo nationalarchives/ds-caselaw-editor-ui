@@ -269,8 +269,8 @@ class TestDocumentMetadata(TestCase):
         self.assertNotContains(response, 'name="new_claim__date"')
         self.assertContains(response, 'data-form-actions=""')
         self.assertContains(response, 'data-form-actions-submit=""')
-        self.assertContains(response, 'data-form-actions-clear=""')
-        self.assertContains(response, "Clear changes")
+        self.assertContains(response, 'data-form-actions-discard=""')
+        self.assertContains(response, "Discard changes")
 
         for metadata_item in judgment.metadata:
             self.assertContains(response, metadata_item.title)

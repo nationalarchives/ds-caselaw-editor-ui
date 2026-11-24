@@ -9,7 +9,8 @@ const initFormActions = (container) => {
   if (!form) return;
 
   const submitButton = container.querySelector("[data-form-actions-submit]");
-  const clearButton = container.querySelector("[data-form-actions-clear]");
+  const discardButton = container.querySelector("[data-form-actions-discard]");
+  const statusMessage = form.querySelector("[data-form-actions-status]");
   const initialState = formState(form);
 
   const setControlEnabled = (control, enabled) => {
@@ -28,16 +29,22 @@ const initFormActions = (container) => {
     const hasChanges = formState(form) !== initialState;
 
     setControlEnabled(submitButton, hasChanges);
-    setControlEnabled(clearButton, hasChanges);
+    setControlEnabled(discardButton, hasChanges);
+    if (statusMessage) statusMessage.hidden = !hasChanges;
   };
 
   form.addEventListener("input", updateButtonState);
   form.addEventListener("change", updateButtonState);
   form.addEventListener("click", updateButtonState);
 
-  if (clearButton) {
-    clearButton.addEventListener("click", () => {
+  if (discardButton) {
+    discardButton.addEventListener("click", () => {
+      if (!window.confirm("Are you sure you want to discard your changes?")) {
+        return;
+      }
+
       form.reset();
+      form.dispatchEvent(new Event("form-actions:discard"));
       updateButtonState();
     });
   }
