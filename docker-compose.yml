@@ -98,6 +98,9 @@ services:
     profiles: [e2e_tests]
     volumes:
       - "./e2e_tests:/app:z"
+      - ".:/project:ro"
+    environment:
+      PYTHONPATH: /project
     tty: true
 
 volumes:

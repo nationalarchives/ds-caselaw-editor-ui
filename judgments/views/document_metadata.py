@@ -15,7 +15,7 @@ from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
 from waffle import flag_is_active
 
-from judgments.templatetags.navigation_tags import METADATA_ASIDE_JUDGES_FLAG
+from judgments.feature_flags import METADATA_ASIDE_JUDGES_FLAG
 from judgments.utils.govuk_date import (
     METADATA_NEW_DATE_CLAIM_MESSAGES,
     GovukDateParseError,

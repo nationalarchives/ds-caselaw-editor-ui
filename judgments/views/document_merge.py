@@ -8,7 +8,7 @@ from django.http import Http404, HttpResponseRedirect
 from django.urls import reverse
 from waffle import flag_is_active
 
-from judgments.templatetags.navigation_tags import DOCUMENT_MERGE_FLAG
+from judgments.feature_flags import DOCUMENT_MERGE_FLAG
 from judgments.utils.aws import invalidate_caches
 from judgments.utils.document_list import (
     SAVED_VIEW_ALL,

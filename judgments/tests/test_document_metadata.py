@@ -19,7 +19,7 @@ from editing import editing_order, record, tracking_editing_session
 from factories import make_editor
 from waffle.testutils import override_flag
 
-from judgments.templatetags.navigation_tags import METADATA_ASIDE_JUDGES_FLAG
+from judgments.feature_flags import METADATA_ASIDE_JUDGES_FLAG
 from judgments.views.document_metadata import MetadataFieldDisplayDecorator
 
 

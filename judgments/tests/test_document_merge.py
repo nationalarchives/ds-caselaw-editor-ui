@@ -17,7 +17,7 @@ from django.urls import reverse
 from factories import make_editor
 from waffle.testutils import override_flag
 
-from judgments.templatetags.navigation_tags import DOCUMENT_MERGE_FLAG
+from judgments.feature_flags import DOCUMENT_MERGE_FLAG
 from judgments.utils.merge_helpers import (
     IDENTIFIER_ADDITION,
     IDENTIFIER_ADDITIONS,

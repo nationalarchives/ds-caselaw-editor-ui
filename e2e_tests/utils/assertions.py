@@ -13,6 +13,18 @@ VIEWPORTS = {
     "mobile": {"width": 375, "height": 667},
 }
 
+ERROR_PAGE_MARKERS = (
+    "cassette not found",
+    "connection refused",
+    "internal server error",
+    "no match for the request",
+    "page not found (404)",
+    "remote end closed connection",
+    "server error (500)",
+    "traceback",
+    "traceback (most recent call last)",
+)
+
 
 def compare_snapshot(actual_path, expected_path):
     actual_image = Image.open(actual_path).convert("L")
@@ -40,40 +52,45 @@ def compare_snapshot(actual_path, expected_path):
 def assert_matches_snapshot(
     page,
     page_name,
-    viewport_breakpoint: str | None = None,
+    snapshot_group="baseline",
     clip: dict | None = None,
+    page_content: str | None = None,
 ):
     regenerate = os.getenv("E2E_REGENERATE_SNAPSHOTS", "false").lower() == "true"
 
-    viewports = [(viewport_breakpoint, VIEWPORTS[viewport_breakpoint])] if viewport_breakpoint else VIEWPORTS.items()
+    content = page_content if page_content is not None else page.content()
+    error_markers = [marker for marker in ERROR_PAGE_MARKERS if marker in content.lower()]
+    if error_markers:
+        pytest.fail(f"Refusing to snapshot an error page containing: {', '.join(error_markers)}")
+
     screenshot_opts: dict[str, Any] = {"full_page": True}
+    snapshot_directory = Path("snapshots", snapshot_group)
+    snapshot_directory.mkdir(parents=True, exist_ok=True)
 
     if clip:
         screenshot_opts["full_page"] = False
         screenshot_opts["clip"] = clip
 
-    for label, viewport in viewports:
-        actual_path = f"snapshots/{page_name}_{label}_actual.png"
-        expected_path = f"snapshots/{page_name}_{label}_expected.png"
+    for label, viewport in VIEWPORTS.items():
+        actual_path = snapshot_directory / f"{page_name}_{label}_actual.png"
+        expected_path = snapshot_directory / f"{page_name}_{label}_expected.png"
 
         page.set_viewport_size(viewport)
         page.screenshot(path=actual_path, **screenshot_opts)
 
-        if not os.path.exists(expected_path):
+        if regenerate:
             Path(actual_path).replace(expected_path)
-            if regenerate:
-                return
+            continue
 
+        if not expected_path.exists():
+            Path(actual_path).replace(expected_path)
             warnings.warn("Expected snapshot not found — generating from current page.", stacklevel=2)
-            return
+            continue
 
         result, score = compare_snapshot(actual_path, expected_path)
 
         if not result:
-            if regenerate:
-                Path(actual_path).replace(expected_path)
-                continue
-
             pytest.fail(
-                f"\n{page_name} on {label} has changed ({score}). Please check snapshots/{page_name}_{label}_actual.png and update snapshots/{page_name}_{label}_expected.png if happy.",
+                f"\n{page_name} on {label} has changed ({score}). "
+                f"Please check {actual_path} and update {expected_path} if happy.",
             )

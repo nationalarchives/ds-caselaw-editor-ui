@@ -286,3 +286,4 @@ docker/*
 
 # Visual regression testing
 e2e_tests/snapshots/*_actual.png
+e2e_tests/snapshots/**/*_actual.png

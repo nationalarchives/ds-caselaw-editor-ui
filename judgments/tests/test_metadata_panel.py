@@ -18,8 +18,8 @@ from factories import make_editor
 from jinja2 import PackageLoader
 from waffle.testutils import override_flag
 
+from judgments.feature_flags import METADATA_ASIDE_JUDGES_FLAG
 from judgments.jinja import environment
-from judgments.templatetags.navigation_tags import METADATA_ASIDE_JUDGES_FLAG
 from judgments.tests.helpers.metadata_claims import judgment_with_title_claim
 from judgments.utils.metadata_display import MetadataFieldDisplayDecorator
 

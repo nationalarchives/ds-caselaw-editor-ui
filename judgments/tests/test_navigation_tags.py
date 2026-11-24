@@ -2,7 +2,8 @@ from caselawclient.factories import JudgmentFactory
 from django.test import RequestFactory, TestCase
 from waffle.testutils import override_flag
 
-from judgments.templatetags.navigation_tags import DOCUMENT_MERGE_FLAG, DOCUMENT_METADATA_FLAG, get_navigation_items
+from judgments.feature_flags import DOCUMENT_MERGE_FLAG, DOCUMENT_METADATA_FLAG
+from judgments.templatetags.navigation_tags import get_navigation_items
 
 
 class TestNavigationTags(TestCase):
