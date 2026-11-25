@@ -103,6 +103,7 @@
                   {{ govukDateInput({
                     "id": "judgment_date",
                     "namePrefix": "judgment_date",
+                    "hint": { "text": "For example, 27 03 2020" },
                     "fieldset": {
                       "legend": { "text": "Judgment date", "classes": "govuk-visually-hidden" }
                     },
@@ -110,17 +111,20 @@
                       {
                         "name": "day",
                         "value": judgment_date.day|string if judgment_date else "",
-                        "classes": "govuk-input--width-2"
+                        "classes": "govuk-input--width-2",
+                        "inputmode": "numeric"
                       },
                       {
                         "name": "month",
                         "value": judgment_date.month|string if judgment_date else "",
-                        "classes": "govuk-input--width-2"
+                        "classes": "govuk-input--width-2",
+                        "inputmode": "numeric"
                       },
                       {
                         "name": "year",
                         "value": judgment_date.year|string if judgment_date else "",
-                        "classes": "govuk-input--width-4"
+                        "classes": "govuk-input--width-4",
+                        "inputmode": "numeric"
                       }
                     ]
                   }) }}

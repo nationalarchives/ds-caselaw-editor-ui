@@ -18,3 +18,8 @@
   font-weight: $typography-normal-font-weight;
   line-height: $typography-lg-line-height;
 }
+
+.govuk-hint {
+  font-size: $typography-md-text-size;
+  color: colour-var("accent-border");
+}
