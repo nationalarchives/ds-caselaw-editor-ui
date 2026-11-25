@@ -361,6 +361,13 @@ class TestMetadataPanel(TestCase):
         assert "Add another judge" in rendered
         assert "Update judges" not in rendered
         assert len(edit_form.xpath(".//button[@data-form-actions-submit]")) == 1
+        assert edit_form.xpath('.//*[@data-form-actions-status and @hidden][normalize-space(.)="Unsaved changes"]')
+        assert edit_form.xpath(
+            './/button[@data-form-actions-submit and @disabled][normalize-space(.)="Save changes"]',
+        )
+        assert edit_form.xpath(
+            './/button[@data-form-actions-discard and @disabled][normalize-space(.)="Discard changes"]',
+        )
         remove_input = judges_dd.xpath('.//input[@name="suppress_body_judges"]')[0]
         remove_label = judges_dd.xpath('.//label[contains(@class, "aside__metadata-compact-remove-label")]')[0]
         assert "govuk-visually-hidden" in remove_input.get("class")

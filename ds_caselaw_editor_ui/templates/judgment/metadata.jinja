@@ -22,10 +22,10 @@
           </section>
         {% endfor %}
         {% call form_actions({"data-form-actions": ""} if user|can_edit else {}) %}
-          {{ button(content="Update claims", disabled=not user|can_edit, attrs={"data-form-actions-submit": ""}) }}
-          {{ button(content="Clear changes",
+          {{ button(content="Update claims", disabled=not user|can_edit, attrs={"data-form-actions-submit": "", "disabled": "disabled"} if user|can_edit else {"data-form-actions-submit": ""}) }}
+          {{ button(content="Discard changes",
             variant="secondary",
-            attrs={"type": "button", "data-form-actions-clear": ""}) }}
+            attrs={"type": "button", "data-form-actions-discard": "", "disabled": "disabled"} if user|can_edit else {"type": "button", "data-form-actions-discard": ""}) }}
         {% endcall %}
       </form>
     {% else %}

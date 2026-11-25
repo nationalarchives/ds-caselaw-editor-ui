@@ -100,6 +100,15 @@
       min-height: 0;
     }
 
+    .aside__unsaved-changes {
+      margin: 0;
+      padding: $space-3 $space-4;
+      border-bottom: 1px solid colour-var("accent-border");
+
+      font-size: $typography-sm-text-size;
+      font-weight: $typography-bold-font-weight;
+    }
+
     .aside__form-content {
       overflow-y: auto;
       flex: 1;

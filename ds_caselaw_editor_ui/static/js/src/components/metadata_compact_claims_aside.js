@@ -179,24 +179,20 @@ const initMetadataCompactForm = (form) => {
     }
   });
 
-  const clearButton = form.querySelector("[data-form-actions-clear]");
-  if (clearButton) {
-    clearButton.addEventListener("click", () => {
-      form
-        .querySelectorAll(
-          "[data-metadata-compact-new-entry]:not([data-metadata-compact-initial-new-entry])",
-        )
-        .forEach((entry) => entry.remove());
-      form
-        .querySelectorAll("[data-metadata-compact-new-input]")
-        .forEach(syncNewInputName);
-      nextInputIndex = form.querySelectorAll(
-        "[data-metadata-compact-new-entry]",
-      ).length;
-      updateRemoveControls();
-      form.dispatchEvent(new Event("change", { bubbles: true }));
-    });
-  }
+  form.addEventListener("form-actions:discard", () => {
+    form
+      .querySelectorAll(
+        "[data-metadata-compact-new-entry]:not([data-metadata-compact-initial-new-entry])",
+      )
+      .forEach((entry) => entry.remove());
+    form
+      .querySelectorAll("[data-metadata-compact-new-input]")
+      .forEach(syncNewInputName);
+    nextInputIndex = form.querySelectorAll(
+      "[data-metadata-compact-new-entry]",
+    ).length;
+    updateRemoveControls();
+  });
 
   updateRemoveControls();
 };
