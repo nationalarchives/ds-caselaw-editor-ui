@@ -12,7 +12,7 @@ from judgments.utils import (
     ensure_local_referer_url,
     extract_version_number_from_filename,
 )
-from judgments.utils.aws import invalidate_caches
+from judgments.utils.aws import MAX_PATHS_PER_INVALIDATION, invalidate_caches, invalidate_caches_for_uris
 from judgments.utils.paginator import paginator
 
 
@@ -69,6 +69,54 @@ class TestInvalidation:
         cf = mockboto.session.Session.return_value.client.return_value
         cf.create_invalidation.assert_called_once()
         assert cf.create_invalidation.mock_calls[0].kwargs["DistributionId"] == "ASSETS"
+
+    @patch.dict(
+        os.environ,
+        {
+            "CLOUDFRONT_PUBLIC_DISTRIBUTION_ID": "PUBLIC",
+            "CLOUDFRONT_EDITOR_DISTRIBUTION_ID": "EDITOR",
+            "CLOUDFRONT_ASSETS_DISTRIBUTION_ID": "ASSETS",
+        },
+    )
+    @patch("judgments.utils.aws.boto3")
+    def test_invalidating_several_documents_purges_each_site_once(self, mockboto):
+        invalidate_caches_for_uris(["ewhc/2022/1", "ewhc/2022/2"])
+        cf = mockboto.session.Session.return_value.client.return_value
+        public, assets, editor = cf.create_invalidation.mock_calls
+        assert public.kwargs["InvalidationBatch"]["Paths"]["Items"] == ["/*"]
+        assert assets.kwargs["InvalidationBatch"]["Paths"] == {
+            "Quantity": 2,
+            "Items": ["/ewhc/2022/1/*", "/ewhc/2022/2/*"],
+        }
+        assert editor.kwargs["InvalidationBatch"]["Paths"]["Items"] == ["/*"]
+
+    @patch.dict(
+        os.environ,
+        {
+            "CLOUDFRONT_PUBLIC_DISTRIBUTION_ID": "PUBLIC",
+            "CLOUDFRONT_EDITOR_DISTRIBUTION_ID": "EDITOR",
+            "CLOUDFRONT_ASSETS_DISTRIBUTION_ID": "ASSETS",
+        },
+    )
+    @patch("judgments.utils.aws.boto3")
+    def test_asset_paths_are_split_into_batches_of_the_maximum_size(self, mockboto):
+        uris = [f"ewhc/2022/{number}" for number in range(MAX_PATHS_PER_INVALIDATION + 1)]
+
+        invalidate_caches_for_uris(uris)
+
+        cf = mockboto.session.Session.return_value.client.return_value
+        asset_calls = [call for call in cf.create_invalidation.mock_calls if call.kwargs["DistributionId"] == "ASSETS"]
+        assert [call.kwargs["InvalidationBatch"]["Paths"]["Quantity"] for call in asset_calls] == [
+            MAX_PATHS_PER_INVALIDATION,
+            1,
+        ]
+        assert asset_calls[1].kwargs["InvalidationBatch"]["Paths"]["Items"] == [f"/{uris[-1]}/*"]
+        assert len(cf.create_invalidation.mock_calls) == 4
+
+    @patch("judgments.utils.aws.boto3")
+    def test_invalidating_no_documents_does_nothing(self, mockboto):
+        invalidate_caches_for_uris([])
+        mockboto.session.Session.assert_not_called()
 
 
 class TestPaginator:
