@@ -88,8 +88,6 @@ class Command(BaseCommand):
 
             if result.error:
                 failed += 1
-            elif result.skipped_reason and not result.applied:
-                skipped += 1
             elif result.planned.has_changes:
                 changed += 1
                 if result.applied:
@@ -173,7 +171,7 @@ class Command(BaseCommand):
         if result.error:
             self.stderr.write(f"{result.uri}: ERROR {result.error}")
             return
-        if result.skipped_reason and not result.applied:
+        if not result.planned.has_changes:
             self.stdout.write(f"{result.uri}: skipped ({result.skipped_reason})")
             return
         status = "applied" if result.applied else "planned"

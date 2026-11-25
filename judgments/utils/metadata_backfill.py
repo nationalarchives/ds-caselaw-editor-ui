@@ -15,11 +15,9 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Literal, cast
 
-from caselawclient.models.documents.metadata.fields.collection import MetadataFieldAddResult
 from caselawclient.models.documents.metadata.fields.field import (
     MetadataDateValue,
     MetadataField,
-    MetadataFieldValue,
     MetadataStringValue,
 )
 from caselawclient.models.documents.metadata.fields.source import MetadataSource
@@ -33,7 +31,6 @@ if TYPE_CHECKING:
     from caselawclient.models.utilities import VersionsDict
 
 FieldName = Literal["title", "date"]
-ClaimStatus = Literal["added", "restored", "already_present"]
 
 _SUBMISSION_OR_RESTORE = {
     VersionType.SUBMISSION.value,
@@ -43,31 +40,21 @@ _SUBMISSION_OR_RESTORE = {
 
 @dataclass(frozen=True)
 class MetadataBackfillPlan:
-    """Fields that should receive an editor claim copied from the body."""
+    """Fields that should receive an editor claim copied from the body.
+
+    ``already_claimed`` lists fields where an editor claim with the body's value
+    already exists. Only a rejected claim can get here, because an active editor
+    claim would already be winning. They are left alone so that an editor's
+    rejection is not undone.
+    """
 
     title: str | None = None
     date: date | None = None
+    already_claimed: tuple[FieldName, ...] = ()
 
     @property
     def has_changes(self) -> bool:
         return self.title is not None or self.date is not None
-
-    @property
-    def field_names(self) -> list[FieldName]:
-        names: list[FieldName] = []
-        if self.title is not None:
-            names.append("title")
-        if self.date is not None:
-            names.append("date")
-        return names
-
-
-@dataclass(frozen=True)
-class MetadataClaimUpdate:
-    """What ``apply_metadata_backfill_plan`` did with one editor claim."""
-
-    name: FieldName
-    status: ClaimStatus
 
 
 @dataclass
@@ -123,6 +110,7 @@ def plan_metadata_backfill(document: Document) -> MetadataBackfillPlan:
     """Decide which body values should become editor claims for ``document``."""
     title_to_promote: str | None = None
     date_to_promote: date | None = None
+    already_claimed: list[FieldName] = []
     submission = None
 
     claim_title = _winning_document_title(document)
@@ -131,7 +119,10 @@ def plan_metadata_backfill(document: Document) -> MetadataBackfillPlan:
         submission = latest_submission_or_restore_body(document)
         submission_title = submission.body.name.strip() if submission is not None else None
         if submission_title is None or body_title != submission_title:
-            title_to_promote = body_title
+            if document.metadata_fields.has_claim("title", MetadataStringValue(body_title), MetadataSource.EDITOR):
+                already_claimed.append("title")
+            else:
+                title_to_promote = body_title
 
     claim_date = _winning_document_date(document)
     body_date = document.body.document_date_as_date
@@ -140,54 +131,36 @@ def plan_metadata_backfill(document: Document) -> MetadataBackfillPlan:
             submission = latest_submission_or_restore_body(document)
         submission_date = submission.body.document_date_as_date if submission is not None else None
         if submission_date is None or body_date != submission_date:
-            date_to_promote = body_date
+            if document.metadata_fields.has_claim("date", MetadataDateValue(body_date), MetadataSource.EDITOR):
+                already_claimed.append("date")
+            else:
+                date_to_promote = body_date
 
-    return MetadataBackfillPlan(title=title_to_promote, date=date_to_promote)
-
-
-def apply_metadata_backfill_plan(document: Document, plan: MetadataBackfillPlan) -> list[MetadataClaimUpdate]:
-    """Insert editor claims from ``plan``, or restore a rejected claim with the same value.
-
-    ``MetadataFieldsCollection.add`` treats a rejected claim as already present and
-    does not revive it, so a matching rejected editor claim has to be restored or
-    the document-source value keeps winning.
-    """
-    updates: list[MetadataClaimUpdate] = []
-    if plan.title is not None:
-        updates.append(_ensure_editor_claim(document, name="title", value=MetadataStringValue(plan.title)))
-    if plan.date is not None:
-        updates.append(_ensure_editor_claim(document, name="date", value=MetadataDateValue(plan.date)))
-    return updates
-
-
-def _ensure_editor_claim(
-    document: Document,
-    *,
-    name: FieldName,
-    value: MetadataFieldValue,
-) -> MetadataClaimUpdate:
-    outcome = document.metadata_fields.add(
-        MetadataField(
-            name=name,
-            value=value,
-            source=MetadataSource.EDITOR,
-        ),
+    return MetadataBackfillPlan(
+        title=title_to_promote,
+        date=date_to_promote,
+        already_claimed=tuple(already_claimed),
     )
-    if outcome is MetadataFieldAddResult.ADDED:
-        return MetadataClaimUpdate(name=name, status="added")
-
-    existing = _editor_claim(document, name, value)
-    if existing is not None and existing.rejected:
-        existing.restore()
-        return MetadataClaimUpdate(name=name, status="restored")
-    return MetadataClaimUpdate(name=name, status="already_present")
 
 
-def _editor_claim(document: Document, name: str, value: MetadataFieldValue) -> MetadataField | None:
-    for claim in document.metadata_fields.by_name(name):
-        if claim.source is MetadataSource.EDITOR and claim.value == value:
-            return claim
-    return None
+def apply_metadata_backfill_plan(document: Document, plan: MetadataBackfillPlan) -> None:
+    """Add editor claims from ``plan`` onto ``document`` in memory."""
+    if plan.title is not None:
+        document.metadata_fields.add(
+            MetadataField(
+                name="title",
+                value=MetadataStringValue(plan.title),
+                source=MetadataSource.EDITOR,
+            ),
+        )
+    if plan.date is not None:
+        document.metadata_fields.add(
+            MetadataField(
+                name="date",
+                value=MetadataDateValue(plan.date),
+                source=MetadataSource.EDITOR,
+            ),
+        )
 
 
 def backfill_document_metadata(
@@ -214,28 +187,25 @@ def _backfill_loaded_document(document: Document, *, persist: bool) -> MetadataB
     result = MetadataBackfillResult(uri=str(document.uri), planned=plan)
 
     if not plan.has_changes:
-        result.skipped_reason = "no stale document-source title/date"
+        result.skipped_reason = (
+            "editor claim with this value already exists"
+            if plan.already_claimed
+            else "no stale document-source title/date"
+        )
         return result
 
     if plan.title is not None:
         result.notes.append(f"title: {document.metadata.title.value!r} -> {plan.title!r}")
     if plan.date is not None:
         result.notes.append(f"date: {document.metadata.date.value!r} -> {plan.date!r}")
+    result.notes.extend(
+        f"{name}: skipped, editor claim with this value already exists" for name in plan.already_claimed
+    )
 
     if not persist:
         return result
 
-    updates = apply_metadata_backfill_plan(document, plan)
-    for update in updates:
-        if update.status == "restored":
-            result.notes.append(f"{update.name}: restored rejected editor claim")
-        elif update.status == "already_present":
-            result.notes.append(f"{update.name}: editor claim already present")
-
-    if not any(update.status != "already_present" for update in updates):
-        result.skipped_reason = "editor claim already present"
-        return result
-
+    apply_metadata_backfill_plan(document, plan)
     document.save_metadata_fields()
     result.applied = True
     return result
