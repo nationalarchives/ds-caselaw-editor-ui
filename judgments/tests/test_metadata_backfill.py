@@ -606,14 +606,14 @@ class TestBackfillBodyMetadataClaimsCommandUriMode(SimpleTestCase):
 
         with (
             patch(f"{COMMAND}.Document.open_for_editing", return_value=_checked_out(document)) as mock_open,
-            patch(f"{COMMAND}.invalidate_caches") as mock_invalidate,
+            patch(f"{COMMAND}.invalidate_caches_for_uris") as mock_invalidate,
         ):
             stdout, _ = _run_command("--apply", "--uri", "test/2023/123")
 
         mock_open.assert_called_once_with(mock_api_client, "test/2023/123")
         mock_api_client.get_document_by_uri.assert_not_called()
         mock_backfill.assert_called_once_with(document, dry_run=False, lock_held=True)
-        mock_invalidate.assert_called_once_with("test/2023/123")
+        mock_invalidate.assert_called_once_with(["test/2023/123"])
         assert "Backfilling body metadata claims (APPLY)" in stdout
         assert "test/2023/123: applied" in stdout
         assert "Done. considered=1 changed=1 applied=1 skipped=0 failed=0" in stdout
@@ -625,7 +625,7 @@ class TestBackfillBodyMetadataClaimsCommandUriMode(SimpleTestCase):
 
         with (
             patch(f"{COMMAND}.Document.open_for_editing", return_value=_checked_out(document)),
-            patch(f"{COMMAND}.invalidate_caches") as mock_invalidate,
+            patch(f"{COMMAND}.invalidate_caches_for_uris") as mock_invalidate,
         ):
             _run_command("--apply", "--uri", "test/2023/1")
 
@@ -638,7 +638,7 @@ class TestBackfillBodyMetadataClaimsCommandUriMode(SimpleTestCase):
 
         with (
             patch(f"{COMMAND}.Document.open_for_editing", return_value=_checked_out(document)),
-            patch(f"{COMMAND}.invalidate_caches") as mock_invalidate,
+            patch(f"{COMMAND}.invalidate_caches_for_uris") as mock_invalidate,
         ):
             stdout, _ = _run_command("--apply", "--uri", "test/2023/1")
 
@@ -653,12 +653,35 @@ class TestBackfillBodyMetadataClaimsCommandUriMode(SimpleTestCase):
 
         with (
             patch(f"{COMMAND}.Document.open_for_editing", return_value=_checked_out(document)),
-            patch(f"{COMMAND}.invalidate_caches", side_effect=RuntimeError("cloudfront down")),
+            patch(f"{COMMAND}.invalidate_caches_for_uris", side_effect=RuntimeError("cloudfront down")),
         ):
             stdout, stderr = _run_command("--apply", "--uri", "test/2023/1")
 
-        assert "test/2023/1: saved, but cache invalidation failed: cloudfront down" in stderr
+        assert "saved 1 document(s), but cache invalidation failed: cloudfront down" in stderr
         assert "Done. considered=1 changed=1 applied=1 skipped=0 failed=0" in stdout
+
+    @override_settings(DEBUG=False)
+    def test_the_cache_is_invalidated_once_for_every_document_written(self, mock_backfill, mock_api_client):
+        documents = [
+            _judgment(body_name="Editor XML title", body_date="2024-01-01", title_claim="Ingest title")
+            for _ in range(3)
+        ]
+        mock_backfill.side_effect = [
+            _planned_result("test/2023/1", applied=True),
+            _skipped_result("test/2023/2"),
+            _planned_result("test/2023/3", applied=True),
+        ]
+
+        with (
+            patch(
+                f"{COMMAND}.Document.open_for_editing",
+                side_effect=[_checked_out(document) for document in documents],
+            ),
+            patch(f"{COMMAND}.invalidate_caches_for_uris") as mock_invalidate,
+        ):
+            _run_command("--apply", "--uri", "test/2023/1", "--uri", "test/2023/2", "--uri", "test/2023/3")
+
+        mock_invalidate.assert_called_once_with(["test/2023/1", "test/2023/3"])
 
     def test_a_checked_out_document_is_reported_as_failed_and_the_run_continues(self, mock_backfill, mock_api_client):
         document = _judgment(body_name="Editor XML title", body_date="2024-01-01", title_claim="Ingest title")
@@ -669,7 +692,7 @@ class TestBackfillBodyMetadataClaimsCommandUriMode(SimpleTestCase):
                 f"{COMMAND}.Document.open_for_editing",
                 side_effect=[MarklogicCheckoutConflictError("locked"), _checked_out(document)],
             ),
-            patch(f"{COMMAND}.invalidate_caches"),
+            patch(f"{COMMAND}.invalidate_caches_for_uris"),
         ):
             stdout, stderr = _run_command("--apply", "--uri", "test/2023/1", "--uri", "test/2023/2")
 
@@ -752,6 +775,29 @@ class TestBackfillBodyMetadataClaimsCommandScanMode(SimpleTestCase):
 
         assert mock_search.call_count == 2
         assert "Done. considered=1" in stdout
+
+    @override_settings(DEBUG=False)
+    def test_documents_already_written_are_invalidated_when_the_scan_fails_part_way(
+        self,
+        mock_search,
+        mock_backfill,
+        mock_api_client,
+    ):
+        document = _judgment(body_name="Editor XML title", body_date="2024-01-01", title_claim="Ingest title")
+        mock_search.side_effect = [
+            _search_page(["test/2023/1"], total=2),
+            RuntimeError("search unavailable"),
+        ]
+        mock_backfill.return_value = _planned_result("test/2023/1", applied=True)
+
+        with (
+            patch(f"{COMMAND}.Document.open_for_editing", return_value=_checked_out(document)),
+            patch(f"{COMMAND}.invalidate_caches_for_uris") as mock_invalidate,
+            pytest.raises(RuntimeError, match="search unavailable"),
+        ):
+            _run_command("--apply", "--page-size", "1")
+
+        mock_invalidate.assert_called_once_with(["test/2023/1"])
 
     def test_limit_stops_the_scan_part_way_through_a_page(self, mock_search, mock_backfill, mock_api_client):
         mock_search.return_value = _search_page(["test/2023/1", "test/2023/2"], total=50)

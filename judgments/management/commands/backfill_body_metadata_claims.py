@@ -10,7 +10,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError, CommandParser
 
 from judgments.utils import api_client
-from judgments.utils.aws import invalidate_caches
+from judgments.utils.aws import invalidate_caches_for_uris
 from judgments.utils.metadata_backfill import (
     MetadataBackfillPlan,
     MetadataBackfillResult,
@@ -78,22 +78,24 @@ class Command(BaseCommand):
         skipped = 0
         failed = 0
 
-        for document_uri in self._iter_document_uris(uris=uris, page_size=page_size, limit=limit):
-            considered += 1
-            result = self._backfill_uri(document_uri, dry_run=dry_run)
-            self._write_result(result)
+        applied_uris: list[str] = []
+        try:
+            for document_uri in self._iter_document_uris(uris=uris, page_size=page_size, limit=limit):
+                considered += 1
+                result = self._backfill_uri(document_uri, dry_run=dry_run)
+                self._write_result(result)
 
-            if result.applied:
-                self._invalidate_cache(result.uri)
-
-            if result.error:
-                failed += 1
-            elif result.planned.has_changes:
-                changed += 1
-                if result.applied:
-                    applied += 1
-            else:
-                skipped += 1
+                if result.error:
+                    failed += 1
+                elif result.planned.has_changes:
+                    changed += 1
+                    if result.applied:
+                        applied += 1
+                        applied_uris.append(result.uri)
+                else:
+                    skipped += 1
+        finally:
+            self._invalidate_caches(applied_uris)
 
         self.stdout.write(
             f"Done. considered={considered} changed={changed} applied={applied} skipped={skipped} failed={failed}",
@@ -159,13 +161,14 @@ class Command(BaseCommand):
                 error=str(exc),
             )
 
-    def _invalidate_cache(self, uri: str) -> None:
-        if settings.DEBUG:
+    def _invalidate_caches(self, uris: list[str]) -> None:
+        """Invalidate once for the whole run, because each invalidation purges both sites wholesale."""
+        if settings.DEBUG or not uris:
             return
         try:
-            invalidate_caches(uri)
-        except Exception as exc:  # noqa: BLE001 - a saved claim should still be reported if CloudFront fails
-            self.stderr.write(f"{uri}: saved, but cache invalidation failed: {exc}")
+            invalidate_caches_for_uris(uris)
+        except Exception as exc:  # noqa: BLE001 - saved claims should still be reported if CloudFront fails
+            self.stderr.write(f"saved {len(uris)} document(s), but cache invalidation failed: {exc}")
 
     def _write_result(self, result: MetadataBackfillResult) -> None:
         if result.error:
