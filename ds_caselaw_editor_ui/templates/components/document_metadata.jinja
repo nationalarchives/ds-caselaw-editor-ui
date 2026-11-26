@@ -31,10 +31,7 @@
         <div class="aside__title-text">
           <span>Metadata</span>
           {% if is_editable_judgment and can_edit_document %}
-            <p class="aside__unsaved-changes"
-               data-form-actions-status
-               role="status"
-               aria-hidden="true">Unsaved changes</p>
+            <p class="aside__unsaved-changes" data-form-actions-status role="status">Changes saved</p>
           {% endif %}
         </div>
         {{ button(variant="link", size="small", content="Hide panel", attrs={"data-aside-toggle-button":""}) }}

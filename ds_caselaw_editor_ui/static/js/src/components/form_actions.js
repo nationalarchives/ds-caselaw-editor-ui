@@ -35,7 +35,13 @@ const initFormActions = (container) => {
     setControlEnabled(submitButton, hasChanges);
     setControlEnabled(discardButton, hasChanges);
     if (statusMessage) {
-      statusMessage.setAttribute("aria-hidden", String(!hasChanges));
+      statusMessage.textContent = hasChanges
+        ? "Unsaved changes"
+        : "Changes saved";
+      statusMessage.classList.toggle(
+        "aside__unsaved-changes--unsaved",
+        hasChanges,
+      );
     }
   };
 

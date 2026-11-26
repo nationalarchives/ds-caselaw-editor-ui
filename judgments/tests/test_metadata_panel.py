@@ -362,7 +362,7 @@ class TestMetadataPanel(TestCase):
         assert "Update judges" not in rendered
         assert len(edit_form.xpath(".//button[@data-form-actions-submit]")) == 1
         assert root.xpath(
-            './/*[@data-form-actions-status and @aria-hidden="true"][normalize-space(.)="Unsaved changes"]',
+            './/*[@data-form-actions-status][normalize-space(.)="Changes saved"]',
         )
         assert edit_form.xpath(
             './/button[@data-form-actions-submit and @disabled][normalize-space(.)="Save changes"]',

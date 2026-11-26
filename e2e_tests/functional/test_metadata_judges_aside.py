@@ -20,11 +20,11 @@ def test_metadata_aside_judges_editor_form(authenticated_editor_page: Page):
     expect(judges_form.locator("dt").filter(has_text="Judges")).to_be_visible()
     save_changes = judges_form.get_by_role("button", name="Save changes", exact=True)
     discard_changes = judges_form.get_by_role("button", name="Discard changes", exact=True)
-    unsaved_changes = page.get_by_text("Unsaved changes", exact=True)
+    changes_status = page.locator("[data-form-actions-status]")
 
     expect(save_changes).to_be_disabled()
     expect(discard_changes).to_be_disabled()
-    expect(unsaved_changes).to_be_hidden()
+    expect(changes_status).to_have_text("Changes saved")
 
     new_judge_entries = judges_form.locator("[data-metadata-compact-new-entry]")
     initial_entry_count = new_judge_entries.count()
@@ -42,12 +42,12 @@ def test_metadata_aside_judges_editor_form(authenticated_editor_page: Page):
     ).to_be_visible()
     expect(save_changes).to_be_enabled()
     expect(discard_changes).to_be_enabled()
-    expect(unsaved_changes).to_be_visible()
+    expect(changes_status).to_have_text("Unsaved changes")
 
     page.once("dialog", lambda dialog: dialog.accept())
     discard_changes.click()
 
     expect(new_judge_entries).to_have_count(initial_entry_count)
-    expect(unsaved_changes).to_be_hidden()
+    expect(changes_status).to_have_text("Changes saved")
     expect(save_changes).to_be_disabled()
     expect(discard_changes).to_be_disabled()
