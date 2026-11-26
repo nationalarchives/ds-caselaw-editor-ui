@@ -20,7 +20,7 @@ def test_metadata_aside_judges_editor_form(authenticated_editor_page: Page):
     expect(judges_form.locator("dt").filter(has_text="Judges")).to_be_visible()
     save_changes = judges_form.get_by_role("button", name="Save changes", exact=True)
     discard_changes = judges_form.get_by_role("button", name="Discard changes", exact=True)
-    unsaved_changes = judges_form.get_by_text("Unsaved changes", exact=True)
+    unsaved_changes = page.get_by_text("Unsaved changes", exact=True)
 
     expect(save_changes).to_be_disabled()
     expect(discard_changes).to_be_disabled()
