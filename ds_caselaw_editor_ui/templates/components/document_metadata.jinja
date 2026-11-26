@@ -28,7 +28,12 @@
     </button>
     <div class="aside__content">
       <div class="aside__title">
-        <span>Metadata</span>
+        <div class="aside__title-text">
+          <span>Metadata</span>
+          {% if is_editable_judgment and can_edit_document %}
+            <p class="aside__unsaved-changes" data-form-actions-status role="status">Changes saved</p>
+          {% endif %}
+        </div>
         {{ button(variant="link", size="small", content="Hide panel", attrs={"data-aside-toggle-button":""}) }}
       </div>
       {% if is_editable_judgment %}
@@ -41,12 +46,6 @@
           {{ csrf_input }}
           <input type="hidden" name="return_to" value="html" />
           <input type="hidden" name="judgment_uri" value="{{ document.uri }}" />
-          {% if can_edit_document %}
-            <p class="aside__unsaved-changes"
-               data-form-actions-status
-               role="status"
-               hidden>Unsaved changes</p>
-          {% endif %}
       {% endif %}
       <div class="aside__form-content">
         {% call details(title="Editable metadata" if is_editable_judgment else "Metadata", variant="panel", open=True) %}

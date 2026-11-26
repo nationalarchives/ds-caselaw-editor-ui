@@ -361,7 +361,9 @@ class TestMetadataPanel(TestCase):
         assert "Add another judge" in rendered
         assert "Update judges" not in rendered
         assert len(edit_form.xpath(".//button[@data-form-actions-submit]")) == 1
-        assert edit_form.xpath('.//*[@data-form-actions-status and @hidden][normalize-space(.)="Unsaved changes"]')
+        assert root.xpath(
+            './/*[@data-form-actions-status][normalize-space(.)="Changes saved"]',
+        )
         assert edit_form.xpath(
             './/button[@data-form-actions-submit and @disabled][normalize-space(.)="Save changes"]',
         )

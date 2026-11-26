@@ -10,7 +10,11 @@ const initFormActions = (container) => {
 
   const submitButton = container.querySelector("[data-form-actions-submit]");
   const discardButton = container.querySelector("[data-form-actions-discard]");
-  const statusMessage = form.querySelector("[data-form-actions-status]");
+  const statusMessage =
+    form.querySelector("[data-form-actions-status]") ||
+    form
+      .closest(".aside__content")
+      ?.querySelector("[data-form-actions-status]");
   const initialState = formState(form);
 
   const setControlEnabled = (control, enabled) => {
@@ -30,7 +34,15 @@ const initFormActions = (container) => {
 
     setControlEnabled(submitButton, hasChanges);
     setControlEnabled(discardButton, hasChanges);
-    if (statusMessage) statusMessage.hidden = !hasChanges;
+    if (statusMessage) {
+      statusMessage.textContent = hasChanges
+        ? "Unsaved changes"
+        : "Changes saved";
+      statusMessage.classList.toggle(
+        "aside__unsaved-changes--unsaved",
+        hasChanges,
+      );
+    }
   };
 
   form.addEventListener("input", updateButtonState);
