@@ -34,10 +34,12 @@
               aria-label="New judge name"
               data-metadata-compact-new-input
               {% if required %}required{% endif %}></textarea>
-    {{ button(content="Remove",
-      variant="link",
-      size="small",
-      attrs={"type": "button", "data-metadata-compact-remove-new": ""}) }}
+    <div class="aside__metadata-compact-entry__remove">
+      {{ button(content="Remove",
+        variant="link",
+        size="small",
+        attrs={"type": "button", "data-metadata-compact-remove-new": ""}) }}
+    </div>
   </div>
 {% endmacro %}
 {% macro metadata_claim_section(section, variant="full", show_history=true) %}
