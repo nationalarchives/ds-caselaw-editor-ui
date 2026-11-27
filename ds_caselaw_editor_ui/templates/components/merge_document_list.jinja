@@ -1,0 +1,51 @@
+{% from "components/button.jinja" import button %}
+{% macro merge_document_list(total_count=None, total_count_postfix=None) %}
+  <section class="merge-document-list" aria-labelledby="merge-results-heading">
+    <h2 id="merge-results-heading" class="merge-document-list__count">
+      {{ total_count|intcomma }} {{ total_count_postfix }}
+    </h2>
+    <ul class="merge-document-list__items">
+      {{ caller() }}
+    </ul>
+  </section>
+{% endmacro %}
+{% macro merge_document_list_item(document=None, select_url=None, judge_names=[]) %}
+  <li class="merge-document-list__item">
+    <div class="merge-document-list__details">
+      <h3 class="merge-document-list__title">{{ document.name or "[Untitled Document]" }}</h3>
+      <dl class="merge-document-list__metadata">
+        <div>
+          <dt>Neutral citation</dt>
+          <dd>
+            {{ document.neutral_citation or "—" }}
+          </dd>
+        </div>
+        <div>
+          <dt>Court</dt>
+          <dd>
+            {{ document.court.name if document.court else "—" }}
+          </dd>
+        </div>
+        <div>
+          <dt>Judgment date</dt>
+          <dd>
+            {{ document.date|date if document.date else "—" }}
+          </dd>
+        </div>
+        <div>
+          <dt>Judge names</dt>
+          <dd>
+            {{ judge_names|join(", ") if judge_names else "—" }}
+          </dd>
+        </div>
+      </dl>
+    </div>
+    <div class="merge-document-list__actions">
+      {{ button(href=select_url, variant="secondary", content="Compare documents") }}
+      <a href="{{ url('full-text-html', document.uri) }}"
+         target="_blank"
+         rel="noopener noreferrer">Open document <span class="icon icon--sm icon--link icon__arrow-up-right-square"
+       aria-hidden="true"></span><span class="govuk-visually-hidden"> (opens in a new window)</span></a>
+    </div>
+  </li>
+{% endmacro %}

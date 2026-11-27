@@ -2,27 +2,28 @@
 {% from "components/heading.jinja" import heading %}
 {% from "components/notification.jinja" import notification %}
 {% from "components/pagination.jinja" import pagination %}
-{% from "components/button.jinja" import button %}
-{% from "components/documents_table.jinja" import documents_table, documents_table_item %}
+{% from "components/merge_document_list.jinja" import merge_document_list, merge_document_list_item %}
 {% from "components/search_form.jinja" import search_form with context %}
 {% block content %}
-  <div class="container">
+  <div class="container merge-journey">
     {{ heading(content="Choose a document to merge this into") }}
     {{ heading(tag="h2", weight="normal", content=page_title) }}
-    {% call notification() %}
-      The document you choose is kept. This document's content becomes a new version of it, and this document is then deleted.
+    {% call notification(icon=False) %}
+      <h2>What happens when you merge?</h2>
+      <p>The incoming document’s metadata will become the new published record, no changes are made to the judgment text.</p>
+      <p>Previous versions of the existing record remain available in its document history.</p>
     {% endcall %}
     {{ search_form(form_action=url("merge-document", document.uri),
       clear_href=url("merge-document", document.uri),
-      heading="Search for a target document") }}
+      heading="Search for a target document",
+      show_background=false) }}
     {% if total > 0 %}
       {% if merge_results %}
-        {% call documents_table(total_count=total, total_count_postfix=total_count_postfix) %}
+        {% call merge_document_list(total_count=total, total_count_postfix=total_count_postfix) %}
           {% for result in merge_results %}
-            {% set document_item_name_content %}
-              {{ button(size="small", href=result.select_url, content="Select as target") }}
-            {% endset %}
-            {{ documents_table_item(document=result.document, name_content=document_item_name_content) }}
+            {{ merge_document_list_item(document=result.document,
+              select_url=result.select_url,
+              judge_names=result.judge_names) }}
           {% endfor %}
         {% endcall %}
       {% else %}
@@ -38,3 +39,5 @@
     {% endif %}
   </div>
 {% endblock content %}
+{% block aside %}
+{% endblock aside %}

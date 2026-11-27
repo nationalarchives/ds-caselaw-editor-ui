@@ -4,6 +4,7 @@
 {% from "components/badge.jinja" import badge %}
 {% from "components/button.jinja" import button %}
 {% from "components/note_form.jinja" import note_form %}
+{% from "components/form_actions.jinja" import form_actions %}
 {% macro comparison_values(values) %}
   {% if values %}
     {% for value in values %}<div>{{ value }}</div>{% endfor %}
@@ -11,55 +12,67 @@
     —
   {% endif %}
 {% endmacro %}
+{% macro open_existing_record_link(target) %}
+  <a class="merge-journey__record-link"
+     href="{{ url('full-text-html', target.uri) }}"
+     target="_blank"
+     rel="noopener noreferrer">Open the existing record <span class="icon icon--sm icon--link icon__arrow-up-right-square"
+       aria-hidden="true"></span><span class="govuk-visually-hidden"> (opens in a new window)</span></a>
+{% endmacro %}
 {% block content %}
-  <div class="container">
+  <div class="container merge-journey merge-journey--review">
     {{ heading(content="Merge into " ~ target_title) }}
     {{ heading(tag="h2", weight="normal", content="From " ~ page_title) }}
-    {% call notification(variant="warning") %}
-      The source document's content becomes the new version of the target. The source document is deleted. This page shows the metadata that will change, not a comparison of the document text.
+    {% call notification(icon=False) %}
+      <h2>Review the changes before merging</h2>
+      <p>The incoming document's content will become the new version of the existing record. Review the metadata changes below before continuing.</p>
+      <p>This comparison shows changes to metadata, not the judgment text.</p>
     {% endcall %}
-    <p>
-      <a href="{{ url('full-text-html', target.uri) }}"
-         target="_blank"
-         rel="noopener noreferrer">Open the target document</a>
-    </p>
     {% if not can_merge %}
       {% call notification(variant="warning") %}
-        These documents cannot be merged:
+        <strong>These documents cannot be merged:</strong>
+        <ul class="merge-validation-list">
+          {% for message in merge_failure_messages %}<li>{{ message }}</li>{% endfor %}
+        </ul>
       {% endcall %}
-      <ul>
-        {% for message in merge_failure_messages %}<li>{{ message }}</li>{% endfor %}
-      </ul>
     {% endif %}
-    {% for section in comparison_sections %}
-      {{ heading(tag="h2", content=section.title) }}
-      <div class="table">
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">Field</th>
-              <th scope="col">Target</th>
-              <th scope="col">Source</th>
-            </tr>
-          </thead>
-          <tbody>
+    {{ heading(tag="h2", content="What's changed") }}
+    <div class="table merge-comparison-table">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Field</th>
+            <th scope="col">
+              <span class="merge-comparison-table__heading">Incoming document {{ badge(variant="info", size="small", content="New") }}</span>
+            </th>
+            <th scope="col">
+              <span class="merge-comparison-table__heading">Post-merge {{ badge(variant="success", size="small", content="Published") }}</span>
+            </th>
+            <th scope="col">Changed?</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for section in comparison_sections %}
             {% for row in section.rows %}
-              <tr {% if row.changed %}class="table__row--highlight"{% endif %}>
+              <tr {% if row.changed %}class="merge-comparison-table__row--changed"{% endif %}>
                 <th scope="row">{{ row.label }}</th>
-                <td>{{ comparison_values(row.target_values) }}</td>
-                <td>
-                  {{ comparison_values(row.source_values) }}
+                <td>{{ comparison_values(row.source_values) }}</td>
+                <td>{{ comparison_values(row.post_merge_values) }}</td>
+                <td class="merge-comparison-table__changed">
                   {% if row.changed %}
-                    {{ badge(variant="info", size="small", content="Will change") }}
-                    {% if row.detail %}<p>{{ row.detail }}</p>{% endif %}
+                    <span class="icon icon__circle-check" aria-hidden="true"></span>
+                    <span class="govuk-visually-hidden">Yes</span>
+                  {% else %}
+                    <span aria-hidden="true">—</span>
+                    <span class="govuk-visually-hidden">No</span>
                   {% endif %}
                 </td>
               </tr>
             {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    {% endfor %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
     {% if can_merge %}
       <form action="{{ url('merge') }}" method="post" aria-label="Confirm merge">
         {{ csrf_input }}
@@ -70,15 +83,20 @@
           field_name="note",
           rows=4,
           placeholder="Merged from " ~ document.uri,
-          hint="Stored on the new version of the target document. Leave this blank to use the placeholder text.") }}
-        {{ button(content="Merge", disabled=not user|can_edit) }}
+          hint="Stored on the new version of the existing record. Leave this blank to use the placeholder text.") }}
+        {% call form_actions(classes="merge-journey__actions") %}
+          {{ button(content="Merge", disabled=not user|can_edit) }}
+          {{ button(href=url('merge-document', document.uri), variant="secondary", content="Back") }}
+          {{ open_existing_record_link(target) }}
+        {% endcall %}
       </form>
+    {% else %}
+      {% call form_actions(classes="merge-journey__actions") %}
+        {{ button(href=url('merge-document', document.uri), variant="secondary", content="Back") }}
+        {{ open_existing_record_link(target) }}
+      {% endcall %}
     {% endif %}
-    <p>
-      <a href="{{ url('merge-document', document.uri) }}">Choose a different target</a>
-    </p>
-    <p>
-      <a href="{{ url('full-text-html', document.uri) }}">Go back to review</a>
-    </p>
   </div>
 {% endblock content %}
+{% block aside %}
+{% endblock aside %}

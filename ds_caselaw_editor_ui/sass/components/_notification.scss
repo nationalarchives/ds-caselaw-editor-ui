@@ -13,7 +13,7 @@
     align-items: center;
     justify-content: center;
 
-    span:last-child {
+    .notification__content {
       flex: 1;
     }
   }
@@ -23,7 +23,13 @@
   }
 
   &--success {
-    background-color: brand-colour("forest");
+    color: colour-var("font-base");
+    background-color: brand-colour("pastel-green");
+
+    a,
+    a:visited {
+      color: brand-colour("forest");
+    }
   }
 
   &--failure {

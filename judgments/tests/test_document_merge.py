@@ -32,6 +32,7 @@ from judgments.utils.merge_helpers import (
     is_source_in_search_results,
     merge_annotation_message,
     merge_target_search_results,
+    search_result_judge_names,
 )
 
 
@@ -115,6 +116,12 @@ def document_stub(uri, metadata, identifiers=None, **attributes):
 
 
 class TestMergeComparison(TestCase):
+    def test_search_result_judges_use_available_metadata(self):
+        result = SimpleNamespace(metadata=SimpleNamespace(judges=SimpleNamespace(values=["Judge One", "Judge Two"])))
+
+        assert search_result_judge_names(result) == ["Judge One", "Judge Two"]
+        assert search_result_judge_names(SimpleNamespace(metadata=SimpleNamespace())) is None
+
     def test_comparison_highlights_metadata_identifiers_and_submitter_changes(self):
         target = document_stub(
             "target/1",
@@ -165,6 +172,7 @@ class TestMergeComparison(TestCase):
             changed=True,
             detail=MULTIPLE_VALUE_CHANGE,
         )
+        assert metadata["Judges"].post_merge_values == ["Ada", "Grace"]
 
         identifiers = {row.label: row for row in sections["Identifiers"].rows}
         assert identifiers["Neutral citation"] == MergeComparisonRow(
@@ -174,12 +182,14 @@ class TestMergeComparison(TestCase):
             changed=True,
             detail=IDENTIFIER_REPLACEMENT,
         )
+        assert identifiers["Neutral citation"].post_merge_values == ["[2024] UKSC 1"]
 
         properties = {row.label: row for row in sections["Submitter and TDR"].rows}
         assert properties["Submitter name"].changed is True
         assert properties["Submitter name"].detail == PROPERTY_REPLACEMENT
         assert properties["Submitter email"].changed is False
         assert properties["Submitter email"].target_values == ["old@example.com"]
+        assert properties["Submitter email"].post_merge_values == ["old@example.com"]
         assert properties["TDR reference"].changed is False
         assert properties["Submitter organisation"].changed is False
         assert properties["TDR received"] == MergeComparisonRow(
@@ -408,10 +418,33 @@ class TestDocumentMergeViews(TestCase):
 
         search_url = reverse("merge-document", kwargs={"document_uri": "source/1"})
         review_url = reverse("merge-document-review", kwargs={"document_uri": "source/1"})
+        success_url = reverse("merge-document-success", kwargs={"document_uri": "target/1"})
 
         assert self.client.get(search_url).status_code == 404
         assert self.client.get(f"{review_url}?target=target/1").status_code == 404
+        assert self.client.get(success_url).status_code == 404
         assert self.client.post("/merge", {"source_uri": "source/1", "target_uri": "target/1"}).status_code == 404
+
+    @override_flag(DOCUMENT_MERGE_FLAG, active=True)
+    @patch("judgments.utils.view_helpers.api_client.document_exists")
+    @patch("judgments.utils.view_helpers.api_client.get_document_type_from_uri")
+    @patch("judgments.utils.view_helpers.get_document_by_uri_or_404")
+    def test_success_page_links_to_the_updated_record(self, mock_get_document, document_type, document_exists):
+        document_type.return_value = Judgment
+        document_exists.return_value = None
+        target = _judgment("target/1", "Updated record")
+        mock_get_document.return_value = target
+
+        self.client.force_login(self.editor)
+        response = self.client.get(reverse("merge-document-success", kwargs={"document_uri": target.uri}))
+
+        content = response.content.decode("utf-8")
+        assert response.status_code == 200
+        assert "Merge successful" in content
+        assert "The incoming judgment has been merged into the existing record." in content
+        assert "The existing record now contains the updated content." in content
+        assert f'href="{reverse("full-text-html", kwargs={"document_uri": target.uri})}"' in content
+        assert "judgment-metadata-panel" not in content
 
     @override_flag(DOCUMENT_MERGE_FLAG, active=True)
     @patch("judgments.utils.view_helpers.api_client.document_exists")
@@ -470,7 +503,9 @@ class TestDocumentMergeViews(TestCase):
                 author="Ada",
                 editor_status="New",
                 consignment_reference="TDR-9",
+                judges=SimpleNamespace(values=["Lady Justice Example"]),
             ),
+            date=datetime.date(2024, 1, 1),
         )
         same = SimpleNamespace(
             uri=source.uri,
@@ -499,9 +534,13 @@ class TestDocumentMergeViews(TestCase):
         content = response.content.decode("utf-8")
         assert response.status_code == 200
         assert "Other v Case" in content
-        assert "Select as target" in content
+        assert "Compare documents" in content
+        assert "Open document" in content
+        assert "Lady Justice Example" in content
+        assert "What happens when you merge?" in content
+        assert "search-component--plain" in content
         assert "/source/1/merge/review?target=other%2F1" in content
-        assert content.count("Select as target") == 1
+        assert content.count("Compare documents") == 1
 
     @override_flag(DOCUMENT_MERGE_FLAG, active=True)
     @patch("judgments.utils.merge_helpers.get_search_results_from_filters")
@@ -606,7 +645,13 @@ class TestDocumentMergeViews(TestCase):
 
         content = response.content.decode("utf-8")
         assert response.status_code == 200
-        assert "Will change" in content
+        assert "Incoming document" in content
+        assert "Post-merge" in content
+        assert "Changed?" in content
+        assert "What's changed" in content
+        assert content.count("<table>") == 1
+        assert "icon__circle-check" in content
+        assert "merge-comparison-table__row--changed" in content
         assert "You cannot merge a document with itself" in content
         assert 'name="note"' not in content
 
@@ -618,6 +663,12 @@ class TestDocumentMergeViews(TestCase):
         allowed_content = allowed.content.decode("utf-8")
         assert 'name="note"' in allowed_content
         assert "aria-disabled" not in allowed_content
+        assert "Merge documents" not in allowed_content
+        assert "Choose a different document" not in allowed_content
+        assert allowed_content.count("button--small") >= 2
+        assert "Open the existing record" in allowed_content
+        assert "icon__arrow-up-right-square" in allowed_content
+        assert "Go back to review" not in allowed_content
 
         self.client.force_login(self.reader)
         reader_response = self.client.get(
@@ -630,7 +681,7 @@ class TestDocumentMergeViews(TestCase):
     @override_flag(DOCUMENT_MERGE_FLAG, active=True)
     @patch("judgments.views.document_merge.invalidate_caches")
     @patch("judgments.views.document_merge.get_document_by_uri_or_404")
-    def test_editor_merge_uses_the_note_and_returns_to_the_target(self, mock_get_document, mock_invalidate_caches):
+    def test_editor_merge_uses_the_note_and_returns_to_success_page(self, mock_get_document, mock_invalidate_caches):
         source = Mock(uri="source/1")
         target = Mock(uri="target/1")
         mock_get_document.side_effect = lambda uri: source if uri == source.uri else target
@@ -642,13 +693,11 @@ class TestDocumentMergeViews(TestCase):
         )
 
         assert response.status_code == 302
-        assert response["Location"] == reverse("full-text-html", kwargs={"document_uri": target.uri})
+        assert response["Location"] == reverse("merge-document-success", kwargs={"document_uri": target.uri})
         source.merge_into.assert_called_once_with(DocumentURIString(target.uri), "Duplicate submission")
         source.editing_session.assert_not_called()
         assert mock_invalidate_caches.call_args_list == [call(source.uri), call(target.uri)]
-        assert "source/1 was merged into target/1." in [
-            message.message for message in get_messages(response.wsgi_request)
-        ]
+        assert list(get_messages(response.wsgi_request)) == []
 
     @override_flag(DOCUMENT_MERGE_FLAG, active=True)
     @patch("judgments.views.document_merge.invalidate_caches")
@@ -666,9 +715,8 @@ class TestDocumentMergeViews(TestCase):
         response = self.client.post(reverse("merge"), {"source_uri": source.uri, "target_uri": target.uri})
 
         assert response.status_code == 302
-        assert response["Location"] == reverse("full-text-html", kwargs={"document_uri": target.uri})
+        assert response["Location"] == reverse("merge-document-success", kwargs={"document_uri": target.uri})
         message_texts = [message.message for message in get_messages(response.wsgi_request)]
-        assert "source/1 was merged into target/1." in message_texts
         assert any("cache" in message.lower() for message in message_texts)
 
     @override_flag(DOCUMENT_MERGE_FLAG, active=True)

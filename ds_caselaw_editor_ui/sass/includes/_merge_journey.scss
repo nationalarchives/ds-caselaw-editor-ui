@@ -1,0 +1,138 @@
+.merge-journey {
+  max-width: 1120px;
+  margin-right: auto;
+  margin-left: auto;
+
+  &--review {
+    max-width: 1280px;
+  }
+
+  .notification h1,
+  .notification h2,
+  .notification p:first-of-type {
+    margin-top: 0;
+  }
+
+  .notification p:last-child,
+  .notification ul:last-child {
+    margin-bottom: 0;
+  }
+
+  &__actions {
+    margin: $space-6 0;
+  }
+
+  &__record-link {
+    display: inline-flex;
+    gap: $space-1;
+    align-items: center;
+  }
+}
+
+.merge-document-list {
+  margin-top: $space-8;
+
+  &__count {
+    margin-bottom: $space-3;
+    font-size: $typography-lg-text-size;
+  }
+
+  &__items {
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid colour-var("font-base");
+    list-style: none;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: $space-5;
+
+    padding: $space-5 0;
+    border-bottom: 1px solid colour-var("font-base");
+
+    @media (min-width: $grid-breakpoint-medium) {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  &__details {
+    min-width: 0;
+  }
+
+  &__title {
+    margin: 0 0 $space-4;
+  }
+
+  &__metadata {
+    margin: 0;
+
+    div {
+      display: grid;
+      grid-template-columns: minmax(9rem, 1fr) 2fr;
+      gap: $space-3;
+      margin-bottom: $space-2;
+    }
+
+    dt {
+      font-weight: bold;
+    }
+
+    dd {
+      margin: 0;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: $space-3;
+    align-items: flex-start;
+
+    @media (min-width: $grid-breakpoint-medium) {
+      align-items: flex-end;
+    }
+  }
+}
+
+.merge-comparison-table {
+  th,
+  td {
+    vertical-align: top;
+    background: brand-colour("white");
+  }
+
+  &__heading {
+    display: flex;
+    gap: $space-2;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__changed {
+    width: 6rem;
+    text-align: center;
+
+    .icon {
+      background-color: brand-colour("forest");
+    }
+  }
+
+  &__row--changed {
+    th,
+    td {
+      background: brand-colour("pastel-green");
+    }
+  }
+}
+
+.merge-validation-list {
+  margin-top: $space-2;
+}
+
+.merge-success {
+  padding-top: $space-6;
+}

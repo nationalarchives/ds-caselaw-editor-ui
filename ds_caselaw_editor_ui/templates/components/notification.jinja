@@ -21,7 +21,7 @@
   <div class="notification {{ variant_class }} {{ margin_class }}">
     <div class="notification__container">
       {% if icon and icon_class %}<span class="icon {{ icon_class }}"></span>{% endif %}
-      <span>{{ caller() }}</span>
+      <div class="notification__content">{{ caller() }}</div>
     </div>
   </div>
 {% endmacro %}

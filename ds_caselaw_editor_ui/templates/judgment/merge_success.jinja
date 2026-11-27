@@ -1,0 +1,14 @@
+{% extends "layouts/judgment.jinja" %}
+{% from "components/notification.jinja" import notification %}
+{% block content %}
+  <div class="container merge-journey merge-success">
+    {% call notification(variant="success", icon=False) %}
+      <h1>Merge successful</h1>
+      <p>The incoming judgment has been merged into the existing record.</p>
+      <p>The existing record now contains the updated content.</p>
+      <p><a href="{{ url('full-text-html', document.uri) }}">View the updated record</a></p>
+    {% endcall %}
+  </div>
+{% endblock content %}
+{% block aside %}
+{% endblock aside %}

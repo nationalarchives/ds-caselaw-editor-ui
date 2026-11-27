@@ -21,7 +21,12 @@ from .views.document_history import (
 )
 from .views.document_identifiers import AddDocumentIdentifierView, DeleteDocumentIdentifierView, DocumentIdentifiersView
 from .views.document_list import HomeView, ResultsView
-from .views.document_merge import MergeDocumentReviewView, MergeDocumentSearchView, merge
+from .views.document_merge import (
+    MergeDocumentReviewView,
+    MergeDocumentSearchView,
+    MergeDocumentSuccessView,
+    merge,
+)
 from .views.document_metadata import DocumentMetadataView
 from .views.document_reparse import reparse
 from .views.errors import NotFoundView, PermissionDeniedView, ServerErrorView
@@ -217,6 +222,11 @@ urlpatterns = [
         "<path:document_uri>/merge/review",
         MergeDocumentReviewView.as_view(),
         name="merge-document-review",
+    ),
+    path(
+        "<path:document_uri>/merge/success",
+        MergeDocumentSuccessView.as_view(),
+        name="merge-document-success",
     ),
     path(
         "<path:document_uri>/merge",

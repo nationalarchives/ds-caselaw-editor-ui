@@ -1,6 +1,10 @@
 .search-component {
   background-color: colour-var("accent-background-light");
 
+  &--plain {
+    background-color: transparent;
+  }
+
   &__container {
     @include container;
 

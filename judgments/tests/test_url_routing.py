@@ -136,6 +136,7 @@ class TestJudgmentViewsRequireAuthentication(TestCase):
             reverse("delete-document", kwargs={"document_uri": document_uri}),
             reverse("merge-document", kwargs={"document_uri": document_uri}),
             reverse("merge-document-review", kwargs={"document_uri": document_uri}),
+            reverse("merge-document-success", kwargs={"document_uri": document_uri}),
             reverse("full-text-pdf", kwargs={"document_uri": document_uri}),
             reverse("document-downloads", kwargs={"document_uri": document_uri}),
             reverse("full-text-xml", kwargs={"document_uri": document_uri}),

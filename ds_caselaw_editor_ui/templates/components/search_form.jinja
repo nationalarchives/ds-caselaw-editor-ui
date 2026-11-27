@@ -1,8 +1,12 @@
-{% macro search_form(embedded=false, form_action=None, clear_href=None, heading="Search for documents") %}
+{% macro search_form(embedded=false,
+  form_action=None,
+  clear_href=None,
+  heading="Search for documents",
+  show_background=true) %}
   {% if form_action is none %}
     {% set form_action = url('results') %}
   {% endif %}
-  <div class="search-component">
+  <div class="search-component{% if not show_background %} search-component--plain{% endif %}">
     <div class="search-component__container">
       {% if embedded %}
         <div role="search"

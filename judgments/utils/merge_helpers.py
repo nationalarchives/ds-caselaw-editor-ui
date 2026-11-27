@@ -4,6 +4,8 @@ from urllib.parse import urlencode
 
 from caselawclient.client_helpers.search_helpers import search_and_parse_response
 from caselawclient.models.documents.metadata.base import MultipleMetadata
+from caselawclient.models.documents.metadata.fields.unpacker import unpack_all_metadata_fields_from_etree
+from caselawclient.models.documents.metadata.types.judges import judge_names_from_field_values
 from django.urls import reverse
 
 from judgments.utils import api_client
@@ -50,6 +52,15 @@ class MergeComparisonRow:
     changed: bool
     detail: str
 
+    @property
+    def post_merge_values(self) -> list[str]:
+        """Return the values that will be current after the merge."""
+        if self.detail in (MULTIPLE_VALUE_CHANGE, IDENTIFIER_ADDITIONS):
+            return self.target_values + [value for value in self.source_values if value not in self.target_values]
+        if not self.changed:
+            return self.target_values
+        return self.source_values
+
 
 @dataclass(frozen=True)
 class MergeComparisonSection:
@@ -74,6 +85,21 @@ def format_metadata_value(value) -> str:
         return value.strip()
 
     return str(value).strip()
+
+
+def search_result_judge_names(result) -> list[str] | None:
+    """Resolve judge claims included with a search result, or signal that body fallback is needed."""
+    metadata = getattr(result, "metadata", None)
+    metadata_fields_node = getattr(metadata, "node", None)
+    if metadata_fields_node is None:
+        judges = getattr(metadata, "judges", None)
+        return list(getattr(judges, "values", []) or []) if judges is not None else None
+
+    fields = unpack_all_metadata_fields_from_etree(metadata_fields_node.find(".//metadata_fields"))
+    resolved = fields.resolve("judges")
+    if not resolved.has_any_claims:
+        return None
+    return judge_names_from_field_values(resolved.values)
 
 
 def _display_values(metadata_item) -> list[str]:

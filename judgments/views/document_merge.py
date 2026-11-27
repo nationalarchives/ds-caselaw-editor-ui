@@ -20,6 +20,7 @@ from judgments.utils.merge_helpers import (
     merge_annotation_message,
     merge_review_url,
     merge_target_search_results,
+    search_result_judge_names,
 )
 from judgments.utils.paginator import paginator as build_paginator
 from judgments.utils.permissions import editor_required
@@ -59,6 +60,7 @@ class MergeDocumentSearchView(DocumentView, PaginatedView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["view"] = "merge_document"
+        context["metadata_aside_judges_enabled"] = False
 
         try:
             filters = get_document_list_filters(
@@ -79,13 +81,18 @@ class MergeDocumentSearchView(DocumentView, PaginatedView):
             request=self.request,
             paginator=build_paginator(filters.page, backend_total),
         )
-        context["merge_results"] = [
-            {
-                "document": result,
-                "select_url": merge_review_url(self.document.uri, result.uri),
-            }
-            for result in visible_documents
-        ]
+        context["merge_results"] = []
+        for result in visible_documents:
+            judge_names = search_result_judge_names(result)
+            if judge_names is None:
+                judge_names = get_document_by_uri_or_404(result.uri).metadata.judges.values
+            context["merge_results"].append(
+                {
+                    "document": result,
+                    "select_url": merge_review_url(self.document.uri, result.uri),
+                    "judge_names": judge_names,
+                },
+            )
         return context
 
 
@@ -104,6 +111,7 @@ class MergeDocumentReviewView(DocumentView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["view"] = "merge_document"
+        context["metadata_aside_judges_enabled"] = False
         context["target"] = self.target
         context["target_title"] = self.target.metadata.title.value or "Untitled document"
         context["comparison_sections"] = build_merge_comparison(self.target, self.document)
@@ -111,6 +119,21 @@ class MergeDocumentReviewView(DocumentView):
         validation = self.document.merge.check_can_merge_into(self.target)
         context["can_merge"] = bool(validation.success)
         context["merge_failure_messages"] = [] if validation.success else list(validation.messages)
+        return context
+
+
+class MergeDocumentSuccessView(DocumentView):
+    template_engine = "jinja"
+    template_name = "judgment/merge_success.jinja"
+
+    def setup(self, request, *args, **kwargs):
+        _require_merge_flag(request)
+        super().setup(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["view"] = "merge_document"
+        context["metadata_aside_judges_enabled"] = False
         return context
 
 
@@ -144,5 +167,4 @@ def _merge_documents(request):
         return HttpResponseRedirect(review_url)
 
     _invalidate_merge_caches(request, source.uri, target.uri)
-    messages.success(request, f"{source.uri} was merged into {target.uri}.")
-    return HttpResponseRedirect(reverse("full-text-html", kwargs={"document_uri": target.uri}))
+    return HttpResponseRedirect(reverse("merge-document-success", kwargs={"document_uri": target.uri}))
